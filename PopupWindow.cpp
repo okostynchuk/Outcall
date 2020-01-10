@@ -12,8 +12,8 @@ int PopupWindow::m_nLastWindowPosition = 0;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	700//1500 //msec
-#define TIME_TO_LIVE	5000 //msec
+#define TIME_TO_SHOW	800 //msec
+#define TIME_TO_LIVE	30000 //msec
 
 PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     QDialog(parent),

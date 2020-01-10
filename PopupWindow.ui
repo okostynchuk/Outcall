@@ -2,16 +2,30 @@
 <ui version="4.0">
  <class>PopupWindow</class>
  <widget class="QDialog" name="PopupWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>236</width>
-    <height>71</height>
+    <width>420</width>
+    <height>270</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>410</width>
+    <height>260</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string/>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+color: white;
+}</string>
   </property>
   <widget class="QLabel" name="lblBackground">
    <property name="enabled">
@@ -19,15 +33,26 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>241</width>
-     <height>71</height>
+     <x>10</x>
+     <y>10</y>
+     <width>400</width>
+     <height>250</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>400</width>
+     <height>250</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">#lblBackground {
-background-color: rgba(0, 0, 0, 150);
+    <string notr="true">*{
+background-color: rgba(0, 0, 0, 160);
 border-radius: 15px;
 }</string>
    </property>
@@ -41,14 +66,29 @@ border-radius: 15px;
   <widget class="QLabel" name="lblText">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>6</y>
-     <width>171</width>
-     <height>39</height>
+     <x>110</x>
+     <y>70</y>
+     <width>341</width>
+     <height>171</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>231</width>
+     <height>116</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);</string>
+    <string notr="true">*{
+color: #1f1f1f;
+margin: 0px  auto;
+text-align: center;
+}</string>
    </property>
    <property name="text">
     <string>You have a call from: &lt;b&gt;Denis Komadaric (1031)&lt;/b&gt;</string>
@@ -66,10 +106,10 @@ border-radius: 15px;
   <widget class="QLabel" name="lblAvatar">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>32</width>
-     <height>32</height>
+     <x>40</x>
+     <y>80</y>
+     <width>90</width>
+     <height>90</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -80,8 +120,8 @@ border-radius: 15px;
    </property>
    <property name="minimumSize">
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>90</width>
+     <height>90</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -90,6 +130,11 @@ border-radius: 15px;
      <height>24</height>
     </size>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
@@ -97,7 +142,11 @@ border-radius: 15px;
     <string>Chat History</string>
    </property>
    <property name="styleSheet">
-    <string notr="true">/*background-color: rgb(255, 255, 255);*/</string>
+    <string notr="true">*{
+width: 95px;
+height: 95px;
+/*background-color: rgb(255, 255, 255);*/
+}</string>
    </property>
    <property name="text">
     <string/>
