@@ -2,18 +2,21 @@
 <ui version="4.0">
  <class>PopupWindow</class>
  <widget class="QDialog" name="PopupWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>370</height>
+    <width>526</width>
+    <height>327</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>570</width>
-    <height>370</height>
+    <width>510</width>
+    <height>310</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -21,8 +24,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">*{
-height: 370px;
-width: 570px;
+color: white;
 }</string>
   </property>
   <widget class="QLabel" name="lblBackground">
@@ -50,7 +52,7 @@ width: 570px;
    </property>
    <property name="styleSheet">
     <string notr="true">*{
-background-color: rgba(0, 0, 0, 150);
+background-color: rgba(0, 0, 0, 160);
 border-radius: 15px;
 }</string>
    </property>
