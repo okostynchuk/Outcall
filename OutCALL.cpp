@@ -81,10 +81,10 @@ void OutCall::createContextMenu()
 
     QAction* debugInfoAction = new QAction(tr("Debug info"), m_menu);
     connect(debugInfoAction, &QAction::triggered, this, &OutCall::onDebugInfo);
-/*
+
     //test
     QAction* testAction = new QAction(tr("Test"), m_menu);
-    connect(testAction, &QAction::triggered, this, &OutCall::onTestInfo);*/
+    connect(testAction, &QAction::triggered, this, &OutCall::onTestInfo);
 
     // About
     QAction* aboutAction = new QAction(tr("About"), m_menu);
@@ -216,9 +216,9 @@ void OutCall::onSyncing(bool status)
             if (action->text() == tr("Syncing ..."))
             {
                 if (g_pAsteriskManager->isSignedIn())
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Siged In"));
                 else
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Siged In"));
 
                 action->setText(tr("Sync Contacts"));
                 action->setEnabled(true);
@@ -318,7 +318,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         m_signIn->setText(tr("Sign out"));
         PopupWindow::showInformationMessage(tr(APP_NAME), tr("Signed In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Siged In"));
         m_placeCall->setEnabled(true);
         m_timer.stop();
     }
@@ -335,7 +335,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTryIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("&Sign In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Siged In"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
     }
@@ -404,11 +404,11 @@ void OutCall::onDebugInfo()
     m_debugInfoDialog->raise();
 }
 
-/*void OutCall::onTestInfo()
+void OutCall::onTestInfo()
 {
     m_testInfoDialog->show();
     m_testInfoDialog->raise();
-}*/
+}
 
 void OutCall::onPlaceCall()
 {
