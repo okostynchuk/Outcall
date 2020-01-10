@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     SettingsDialog.cpp \
     PopupWindow.cpp \
     QOutCallLabel.cpp \
-    Notifier.cpp
+    Notifier.cpp \
+    testdialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     SettingsDialog.h \
     PopupWindow.h \
     QOutCallLabel.h \
-    Notifier.h
+    Notifier.h \
+    testdialog.h
 
 FORMS    += \
     AboutDialog.ui \
@@ -72,7 +74,8 @@ FORMS    += \
     PlaceCallDialog.ui \
     SettingsDialog.ui \
     SpeedDialDialog.ui \
-    PopupWindow.ui
+    PopupWindow.ui \
+    testdialog.ui
 
 RESOURCES += \
     images.qrc

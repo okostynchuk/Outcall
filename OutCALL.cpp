@@ -1,6 +1,7 @@
 ﻿#include "OutCALL.h"
 #include "DebugInfoDialog.h"
 #include "SettingsDialog.h"
+#include "testdialog.h"
 #include "AboutDialog.h"
 #include "CallHistoryDialog.h"
 #include "Global.h"
@@ -26,6 +27,7 @@ OutCall::OutCall() :
     m_systemTryIcon       = new QSystemTrayIcon(this);
     m_menu                = new QMenu(this);
     m_settingsDialog      = new SettingsDialog;
+    m_testDialog          = new testDialog;
     m_aboutDialog         = new AboutDialog;
     m_debugInfoDialog     = new DebugInfoDialog;
     m_callHistoryDialog   = new CallHistoryDialog;
@@ -56,6 +58,7 @@ OutCall::~OutCall()
 {
     delete m_settingsDialog;
     delete m_debugInfoDialog;
+    delete m_testDialog;
     delete m_aboutDialog;
     delete m_callHistoryDialog;
     delete m_placeCallDialog;
@@ -83,8 +86,8 @@ void OutCall::createContextMenu()
     connect(debugInfoAction, &QAction::triggered, this, &OutCall::onDebugInfo);
 
     //test
-    QAction* testAction = new QAction(tr("Test"), m_menu);
-    connect(testAction, &QAction::triggered, this, &OutCall::onTestInfo);
+    QAction* testInfoAction = new QAction(tr("Test info"), m_menu);
+    connect(testInfoAction, &QAction::triggered, this, &OutCall::onTestInfo);
 
     // About
     QAction* aboutAction = new QAction(tr("About"), m_menu);
@@ -126,6 +129,8 @@ void OutCall::createContextMenu()
 
     m_menu->addAction(settingsAction);
     m_menu->addAction(debugInfoAction);
+    m_menu->addAction(testInfoAction);
+
     m_menu->addSeparator();
 
     m_menu->addAction(m_placeCall);
@@ -406,8 +411,7 @@ void OutCall::onDebugInfo()
 
 void OutCall::onTestInfo()
 {
-    m_testInfoDialog->show();
-    m_testInfoDialog->raise();
+    m_testDialog->show();
 }
 
 void OutCall::onPlaceCall()
@@ -429,6 +433,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
         m_debugInfoDialog->activateWindow();
         m_aboutDialog->activateWindow();
         m_settingsDialog->activateWindow();
+        m_testDialog->activateWindow();
         m_callHistoryDialog->activateWindow();
         g_pContactManager->activateDialog();
         m_placeCallDialog->activateWindow();
