@@ -33,14 +33,14 @@ width: 570px;
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>550</width>
-     <height>350</height>
+     <width>500</width>
+     <height>300</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>550</width>
-     <height>350</height>
+     <width>500</width>
+     <height>300</height>
     </size>
    </property>
    <property name="font">
@@ -52,8 +52,6 @@ width: 570px;
     <string notr="true">*{
 background-color: rgba(0, 0, 0, 150);
 border-radius: 15px;
-width: 550px;
-height: 350px;
 }</string>
    </property>
    <property name="text">
@@ -66,10 +64,10 @@ height: 350px;
   <widget class="QLabel" name="lblText">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>100</y>
+     <x>190</x>
+     <y>89</y>
      <width>341</width>
-     <height>181</height>
+     <height>171</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -87,6 +85,7 @@ height: 350px;
     <string notr="true">*{
 color: #1f1f1f;
 margin: 0px  auto;
+text-align: center;
 }</string>
    </property>
    <property name="text">
@@ -106,7 +105,7 @@ margin: 0px  auto;
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>124</y>
+     <y>90</y>
      <width>120</width>
      <height>120</height>
     </rect>
