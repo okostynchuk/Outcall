@@ -52,7 +52,7 @@ color: white;
    </property>
    <property name="styleSheet">
     <string notr="true">*{
-background-color: rgba(0, 0, 0, 160);
+background-color: rgba(0, 0, 0, 140);
 border-radius: 15px;
 }</string>
    </property>
@@ -85,7 +85,7 @@ border-radius: 15px;
    </property>
    <property name="styleSheet">
     <string notr="true">*{
-color: #1f1f1f;
+color: #1c1616;
 margin: 0px  auto;
 text-align: center;
 }</string>
@@ -106,7 +106,7 @@ text-align: center;
   <widget class="QLabel" name="lblAvatar">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>52</x>
      <y>80</y>
      <width>90</width>
      <height>90</height>

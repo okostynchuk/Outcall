@@ -11,6 +11,9 @@
 #include "Notifier.h"
 #include "PopupWindow.h"
 
+#include <QPainter>
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QMenu>
 #include <QDebug>
 #include <QTcpSocket>
@@ -220,10 +223,12 @@ void OutCall::onSyncing(bool status)
         {
             if (action->text() == tr("Syncing ..."))
             {
-                if (g_pAsteriskManager->isSignedIn())
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Siged In"));
+                if (g_pAsteriskManager->isSignedIn()){
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
+                    m_systemTryIcon->setDuration(500);}
+                /*Here we go*/
                 else
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Siged In"));
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
 
                 action->setText(tr("Sync Contacts"));
                 action->setEnabled(true);
@@ -323,7 +328,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         m_signIn->setText(tr("Sign out"));
         PopupWindow::showInformationMessage(tr(APP_NAME), tr("Signed In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Siged In"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
         m_placeCall->setEnabled(true);
         m_timer.stop();
     }
@@ -340,7 +345,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTryIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("&Sign In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Siged In"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
     }
