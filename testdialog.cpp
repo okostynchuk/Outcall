@@ -23,7 +23,7 @@ testDialog::~testDialog()
 
 void testDialog::onClear()
 {
-    //456
+    //4567
     QSqlQueryModel *setquery1 = new QSqlQueryModel;
     setquery1->setQuery("SELECT * FROM entry");
     QTableView *tv = new QTableView(this);
