@@ -29,5 +29,6 @@ void testDialog::onClear()
     QTableView *tv = new QTableView(this);
     tv->setModel(setquery1);
     ui->tableView->setModel(setquery1);
+    //123
 }
 
