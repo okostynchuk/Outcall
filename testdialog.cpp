@@ -23,7 +23,6 @@ testDialog::~testDialog()
 
 void testDialog::onClear()
 {
-    //123
     //456
     QSqlQueryModel *setquery1 = new QSqlQueryModel;
     setquery1->setQuery("SELECT * FROM entry");
