@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>270</height>
+    <width>417</width>
+    <height>340</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -52,7 +52,7 @@ color: white;
    </property>
    <property name="styleSheet">
     <string notr="true">*{
-background-color: rgba(0, 0, 0, 140);
+background-color: rgba(0, 0, 0, 190);
 border-radius: 15px;
 }</string>
    </property>
@@ -83,15 +83,21 @@ border-radius: 15px;
      <pointsize>18</pointsize>
     </font>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <property name="styleSheet">
     <string notr="true">*{
-color: #1c1616;
+color: #ffb64f;
 margin: 0px  auto;
 text-align: center;
 }</string>
    </property>
+   <property name="locale">
+    <locale language="Russian" country="Russia"/>
+   </property>
    <property name="text">
-    <string>You have a call from: &lt;b&gt;Denis Komadaric (1031)&lt;/b&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You звонок a call from: &lt;span style=&quot; font-weight:600;&quot;&gt;Denis Komadaric (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -156,6 +162,28 @@ height: 95px;
    </property>
    <property name="scaledContents">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>220</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* {
+	background-color: #ff9514;
+	background-radius: 2px;
+	border: 3px solid #7922CC;
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>Add / Edit a contact</string>
    </property>
   </widget>
  </widget>

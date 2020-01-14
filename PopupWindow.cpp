@@ -13,7 +13,7 @@ int PopupWindow::m_nLastWindowPosition = 0;
 #define TASKBAR_ON_BOTTOM	4
 
 #define TIME_TO_SHOW	800 //msec
-#define TIME_TO_LIVE	30000 //msec
+#define TIME_TO_LIVE	4000 //msec
 
 PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     QDialog(parent),
@@ -136,7 +136,7 @@ void PopupWindow::startPopupWaitingTimer()
 	int time2live = TIME_TO_LIVE;
 
     if (this->m_pwi.type == PWPhoneCall)
-        time2live = global::getSettingsValue("call_popup_duration", "popup", "5").toInt() * 1000;
+        time2live = global::getSettingsValue("call_popup_duration", "popup", "20").toInt() * 1000;
 
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
@@ -275,4 +275,6 @@ void PopupWindow::mousePressEvent(QMouseEvent *)
     m_bAppearing = false;
     m_timer.start();
 }
+
+
 

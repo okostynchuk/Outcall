@@ -297,11 +297,11 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     {
         if (callerName.isEmpty() || callerName == "<unknown>")
         {
-            PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));
+            PopupWindow::showCallNotification(QString("(Unknown)").arg(from));
         }
         else
         {
-            PopupWindow::showCallNotification(QString("%1 (Nr: %2)").arg(callerName).arg(from));
+            PopupWindow::showCallNotification(QString("%1 (Unknown)").arg(callerName).arg(from));
         }
     }
 
@@ -323,9 +323,12 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTryIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("Sign out"));
+
         PopupWindow::showInformationMessage(tr(APP_NAME), tr("Signed In"));
         m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
         m_placeCall->setEnabled(true);
+        //Ui::PopupWindow *ui;
+        //ui->pushButton->setEnabled(false);
         m_timer.stop();
     }
     else if (state == AsteriskManager::CONNECTING)
