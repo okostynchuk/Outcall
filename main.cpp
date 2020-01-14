@@ -11,6 +11,7 @@
 #include <QLocalSocket>
 #include <QTranslator>
 #include <QDir>
+#include <QTextCodec>
 
 
 int main(int argc, char *argv[])
