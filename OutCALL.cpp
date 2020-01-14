@@ -1,7 +1,7 @@
-﻿#include "OutCALL.h"
+#include "OutCALL.h"
 #include "DebugInfoDialog.h"
 #include "SettingsDialog.h"
-#include "testdialog.h"
+#include "ContactsDialog.h"
 #include "AboutDialog.h"
 #include "CallHistoryDialog.h"
 #include "Global.h"
@@ -27,7 +27,7 @@ OutCall::OutCall() :
     m_systemTryIcon       = new QSystemTrayIcon(this);
     m_menu                = new QMenu(this);
     m_settingsDialog      = new SettingsDialog;
-    m_testDialog          = new testDialog;
+    m_contactsDialog      = new ContactsDialog;
     m_aboutDialog         = new AboutDialog;
     m_debugInfoDialog     = new DebugInfoDialog;
     m_callHistoryDialog   = new CallHistoryDialog;
@@ -58,7 +58,7 @@ OutCall::~OutCall()
 {
     delete m_settingsDialog;
     delete m_debugInfoDialog;
-    delete m_testDialog;
+    delete m_contactsDialog;
     delete m_aboutDialog;
     delete m_callHistoryDialog;
     delete m_placeCallDialog;
@@ -67,7 +67,7 @@ OutCall::~OutCall()
 void OutCall::createContextMenu()
 {
     // Exit action
-    QAction* exitAction = new QAction(tr("Exit"), m_menu);
+    QAction* exitAction = new QAction(tr("Выход"), m_menu);
     connect(exitAction, &QAction::triggered, this, &OutCall::close);
 
     // Sign In
@@ -85,9 +85,9 @@ void OutCall::createContextMenu()
     QAction* debugInfoAction = new QAction(tr("Debug info"), m_menu);
     connect(debugInfoAction, &QAction::triggered, this, &OutCall::onDebugInfo);
 
-    //test
-    QAction* testInfoAction = new QAction(tr("Test info"), m_menu);
-    connect(testInfoAction, &QAction::triggered, this, &OutCall::onTestInfo);
+    // ContactsDialog
+    QAction* contactsInfoAction = new QAction(tr("Контакты"), m_menu);
+    connect(contactsInfoAction, &QAction::triggered, this, &OutCall::onContactsInfo);
 
     // About
     QAction* aboutAction = new QAction(tr("About"), m_menu);
@@ -129,14 +129,13 @@ void OutCall::createContextMenu()
 
     m_menu->addAction(settingsAction);
     m_menu->addAction(debugInfoAction);
-    m_menu->addAction(testInfoAction);
-
     m_menu->addSeparator();
 
     m_menu->addAction(m_placeCall);
     m_menu->addAction(callHistoryAction);
-    m_menu->addMenu(importContactsMenu);
-    importContactsMenu->addAction(importOutlookAction);
+    m_menu->addAction(contactsInfoAction);
+    /*m_menu->addMenu(importContactsMenu);
+    importContactsMenu->addAction(importOutlookAction);*/
     m_menu->addSeparator();
 
     m_menu->addAction(m_signIn);
@@ -410,15 +409,15 @@ void OutCall::onDebugInfo()
     m_debugInfoDialog->raise();
 }
 
-void OutCall::onTestInfo()
-{
-    m_testDialog->show();
-}
-
 void OutCall::onPlaceCall()
 {
     m_placeCallDialog->show();
     m_placeCallDialog->raise();
+}
+
+void OutCall::onContactsInfo()
+{
+    m_contactsDialog->show();
 }
 
 void OutCall::close()
@@ -434,8 +433,8 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
         m_debugInfoDialog->activateWindow();
         m_aboutDialog->activateWindow();
         m_settingsDialog->activateWindow();
-        m_testDialog->activateWindow();
         m_callHistoryDialog->activateWindow();
+        m_contactsDialog->activateWindow();
         g_pContactManager->activateDialog();
         m_placeCallDialog->activateWindow();
     }

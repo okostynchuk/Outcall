@@ -15,7 +15,7 @@ class QTcpSocket;
 class AboutDialog;
 class CallHistoryDialog;
 class SettingsDialog;
-class testDialog;
+class ContactsDialog;
 class PlaceCallDialog;
 
 class OutCall : public QWidget
@@ -34,7 +34,7 @@ protected:
 protected slots:
     void signInOut();
     void onSettingsDialog();
-    void onTestInfo();
+    void onContactsInfo();
     void onAboutDialog();
     void onDebugInfo();
     void onActiveCalls();
@@ -64,7 +64,7 @@ private:
     QSystemTrayIcon *m_systemTryIcon;
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;
-    testDialog *m_testDialog;
+    ContactsDialog *m_contactsDialog;
     AboutDialog *m_aboutDialog;
     CallHistoryDialog *m_callHistoryDialog;
     PlaceCallDialog *m_placeCallDialog;
