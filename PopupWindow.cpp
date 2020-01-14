@@ -53,9 +53,9 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 	nScreenWidth=rcScreen.width();
 	nScreenHeight=rcScreen.height();
 
-	bool bTaskbarOnRight=nDesktopWidth<nScreenWidth && rcDesktop.left()==0;
-	bool bTaskbarOnLeft=nDesktopWidth<nScreenWidth && rcDesktop.left()!=0;
-	bool bTaskBarOnTop=nDesktopHeight<nScreenHeight && rcDesktop.top()!=0;
+    bool bTaskbarOnRight=nDesktopWidth<=nScreenWidth && rcDesktop.left()==0;
+    bool bTaskbarOnLeft=nDesktopWidth<=nScreenWidth && rcDesktop.left()!=0;
+    bool bTaskBarOnTop=nDesktopHeight<=nScreenHeight && rcDesktop.top()!=0;
 	//bool bTaskbarOnBottom=nDesktopHeight<nScreenHeight && rcDesktop.top()==0;
 
 	int nTimeToShow = TIME_TO_SHOW;
@@ -231,9 +231,10 @@ void PopupWindow::onTimer()
 
 void PopupWindow::showCallNotification(QString caller)
 {
+
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
-	pwi.text = tr("You have a call from:<br><b>%1</b>").arg(caller);
+    pwi.text = tr("Входящий звонок от:<br><b>%1</b>").arg(caller);
     QPixmap avatar;
 
     if (avatar.isNull())
@@ -275,6 +276,3 @@ void PopupWindow::mousePressEvent(QMouseEvent *)
     m_bAppearing = false;
     m_timer.start();
 }
-
-
-

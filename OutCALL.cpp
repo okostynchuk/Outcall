@@ -10,6 +10,7 @@
 #include "AsteriskManager.h"
 #include "Notifier.h"
 #include "PopupWindow.h"
+#include "PopupHelloWindow.h"
 
 #include <QMenu>
 #include <QDebug>
@@ -220,10 +221,10 @@ void OutCall::onSyncing(bool status)
             if (action->text() == tr("Syncing ..."))
             {
                 if (g_pAsteriskManager->isSignedIn())
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
 
                 else
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
 
                 action->setText(tr("Sync Contacts"));
                 action->setEnabled(true);
@@ -284,11 +285,11 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
         {
             if (callerName.isEmpty() || callerName == "<unknown>")
             {
-                PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));
+                PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));/*here*/
             }
             else
             {
-                PopupWindow::showCallNotification(QString("%1 (Nr: %2)").arg(callerName).arg(from));
+                PopupWindow::showCallNotification(QString("%1 (Nr: %2)").arg(callerName).arg(from));/*here*/
             }
         }
     }
@@ -296,11 +297,11 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     {
         if (callerName.isEmpty() || callerName == "<unknown>")
         {
-            PopupWindow::showCallNotification(QString("(Unknown)").arg(from));
+            PopupWindow::showCallNotification(QString("(Неизвестный)").arg(from));/*here*/
         }
         else
         {
-            PopupWindow::showCallNotification(QString("%1 (Unknown)").arg(callerName).arg(from));
+            PopupWindow::showCallNotification(QString("%1 (Неизвестный)").arg(callerName).arg(from));/*here*/
         }
     }
 
@@ -321,19 +322,17 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QString path(":/images/connected.png");
         m_systemTryIcon->setIcon(QIcon(path));
 
-        m_signIn->setText(tr("Sign out"));
+        m_signIn->setText(tr("Выйти из аккаунта"));
 
-        PopupWindow::showInformationMessage(tr(APP_NAME), tr("Signed In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signed In"));
+        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Вы успешно вошли"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
         m_placeCall->setEnabled(true);
-        //Ui::PopupWindow *ui;
-        //ui->pushButton->setEnabled(false);
         m_timer.stop();
     }
     else if (state == AsteriskManager::CONNECTING)
     {
-        m_signIn->setText(tr("Cancel Sign In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Signing In"));
+        m_signIn->setText(tr("Отменить вход"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вход в аккаунт"));
         m_placeCall->setEnabled(false);
         m_timer.start(500);
     }
@@ -342,8 +341,8 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QString path(":/images/disconnected.png");
         m_systemTryIcon->setIcon(QIcon(path));
 
-        m_signIn->setText(tr("&Sign In"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not Signed In"));
+        m_signIn->setText(tr("&Войти в аккаунт"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
     }
@@ -352,9 +351,9 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QString path(":/images/started.png");
         m_systemTryIcon->setIcon(QIcon(path));
 
-        PopupWindow::showInformationMessage(tr(APP_NAME), tr("Authentication failed"));
+        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Authentication failed"));
         m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not configured"));
-        m_signIn->setText(tr("&Sign In"));
+        m_signIn->setText(tr("&Войти в аккаунт"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
     }
@@ -452,3 +451,4 @@ void OutCall::show()
 {
     m_systemTryIcon->show();
 }
+

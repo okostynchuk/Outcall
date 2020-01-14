@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PopupWindow</class>
- <widget class="QDialog" name="PopupWindow">
+ <class>PopupHelloWindow</class>
+ <widget class="QDialog" name="PopupHelloWindow">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>417</width>
-    <height>456</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -162,32 +162,6 @@ height: 95px;
    </property>
    <property name="scaledContents">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>220</y>
-     <width>261</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">* {
-	background-color: #ff9514;
-	border: 3px solid #7922CC;
-}
-
-</string>
-   </property>
-   <property name="text">
-    <string>Добавить / изменить контакт</string>
    </property>
   </widget>
  </widget>
