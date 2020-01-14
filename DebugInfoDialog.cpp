@@ -25,11 +25,6 @@ DebugInfoDialog::~DebugInfoDialog()
 void DebugInfoDialog::onClear() const
 {
     ui->textEdit->clear();
-    QSqlQuery query("SELECT entry_name FROM entry");
-           while (query.next()) {
-               QString entry = query.value(0).toString();
-               ui->textEdit->appendPlainText(entry);
-           }
 }
 
 void DebugInfoDialog::onExit()

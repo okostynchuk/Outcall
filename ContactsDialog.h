@@ -2,6 +2,7 @@
 #define CONTACTSDIALOG_H
 
 #include <QDialog>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class ContactsDialog;
@@ -17,10 +18,14 @@ public:
 
 protected slots:
     void onAdd();
+    void onEdit();
+
     void onDelete();
 
 private:
     Ui::ContactsDialog *ui;
+    QSqlQueryModel *query1;
+    QWidget* createEditButton() const;
 };
 
 #endif // CONTACTSDIALOG_H
