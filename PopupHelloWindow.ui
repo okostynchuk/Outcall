@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>417</width>
-    <height>340</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -97,7 +97,7 @@ text-align: center;
     <locale language="Russian" country="Russia"/>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>

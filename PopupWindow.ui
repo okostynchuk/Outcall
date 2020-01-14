@@ -181,7 +181,7 @@ height: 95px;
    <property name="styleSheet">
     <string notr="true">* {
 	background-color: #ff9514;
-	border: 3px solid #7922CC;
+	border: 3px solid #a53501;
 }
 
 </string>

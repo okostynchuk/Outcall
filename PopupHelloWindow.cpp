@@ -278,5 +278,3 @@ void PopupHelloWindow::mousePressEvent(QMouseEvent *)
     m_bAppearing = false;
     m_timer.start();
 }
-
-
