@@ -12,6 +12,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->showMaximized();
+
+    ui->tableView->resize(1900,1080);
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT id, entry_type, entry_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry");
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
