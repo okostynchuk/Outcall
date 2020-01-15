@@ -2,10 +2,13 @@
 #include "ui_callhistorydialog.h"
 #include "Global.h"
 #include "ContactManager.h"
+#include "AddContactDialog.h"
 
 #include <QDebug>
 #include <QList>
 #include <QMessageBox>
+#include <QWidget>
+#include <QTreeWidget>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -19,6 +22,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->removeButton, &QPushButton::clicked, this, &CallHistoryDialog::onRemoveButton);
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
+
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -156,42 +160,46 @@ void CallHistoryDialog::onCallClicked()
 
 void CallHistoryDialog::onAddContact()
 {
+    AddContactDialog* addContactDialog = new AddContactDialog;
+    //addContactDialog.setWindowTitle("Add Contact");
+    addContactDialog->show();
+
     if (ui->tabWidget->currentIndex() == MISSED)
-    {
-        QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetMissed->selectedItems();
-        if (selectedItems.size() == 0)
-            return;
+        {
+            QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetMissed->selectedItems();
+            if (selectedItems.size() == 0)
+                return;
 
-        QTreeWidgetItem *item = selectedItems.at(0);
-        const QString name = item->text(0);
-        const QString from = item->text(1);
+            QTreeWidgetItem *item = selectedItems.at(0);
+            const QString name = item->text(0);
+            const QString from = item->text(1);
 
-        g_pContactManager->addOutlookContact(from, name);
-    }
-    else if (ui->tabWidget->currentIndex() == RECIEVED)
-    {
-        QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetReceived->selectedItems();
-        if (selectedItems.size() == 0)
-            return;
+            g_pContactManager->addOutlookContact(from, name);
+        }
+        else if (ui->tabWidget->currentIndex() == RECIEVED)
+        {
+            QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetReceived->selectedItems();
+            if (selectedItems.size() == 0)
+                return;
 
-        QTreeWidgetItem *item = selectedItems.at(0);
-        const QString name = item->text(0);
-        const QString from = item->text(1);
+            QTreeWidgetItem *item = selectedItems.at(0);
+            const QString name = item->text(0);
+            const QString from = item->text(1);
 
-        g_pContactManager->addOutlookContact(from, name);
-    }
-    else if(ui->tabWidget->currentIndex() == PLACED)
-    {
-        QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
-        if (selectedItems.size() == 0)
-            return;
+            g_pContactManager->addOutlookContact(from, name);
+        }
+        else if(ui->tabWidget->currentIndex() == PLACED)
+        {
+            QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
+            if (selectedItems.size() == 0)
+                return;
 
-        QTreeWidgetItem *item = selectedItems.at(0);
-        int ind1 = item->text(1).indexOf("(");
-        const QString to = item->text(1).mid(0, ind1);
+            QTreeWidgetItem *item = selectedItems.at(0);
+            int ind1 = item->text(1).indexOf("(");
+            const QString to = item->text(1).mid(0, ind1);
 
-        g_pContactManager->addOutlookContact(to, "");
-    }
+            g_pContactManager->addOutlookContact(to, "");
+        }
 }
 
 void CallHistoryDialog::onRemoveButton()

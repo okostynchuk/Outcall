@@ -2,6 +2,7 @@
 #define CALLHISTORYDIALOG_H
 
 #include "AsteriskManager.h"
+#include "AddContactDialog.h"
 
 #include <QDialog>
 #include <QMap>
