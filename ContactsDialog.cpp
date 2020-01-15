@@ -15,7 +15,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     ui->widget->showMaximized();
     ui->tableView->showMaximized();
-    ui->widget->setMinimumSize(1400,950);
+    ui->widget->setMinimumSize(1200,950);
 
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT id, entry_type, entry_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry");
