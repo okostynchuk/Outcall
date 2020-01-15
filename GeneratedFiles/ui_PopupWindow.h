@@ -71,7 +71,7 @@ public:
     {
         PopupWindow->setWindowTitle(QString());
         lblBackground->setText(QString());
-        lblText->setText(QApplication::translate("PopupWindow", "You have a call from: <b>Denis Komadaric (1031)</b>", 0));
+        lblText->setText(QApplication::translate("PopupWindow", "Входящий звонок от: <b>Денис Комадарик (1031)</b>", 0));
 #ifndef QT_NO_TOOLTIP
         lblAvatar->setToolTip(QApplication::translate("PopupWindow", "Chat History", 0));
 #endif // QT_NO_TOOLTIP
