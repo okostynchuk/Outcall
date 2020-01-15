@@ -34,16 +34,26 @@ void AddContactDialog::onSave()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
+  /*  QString LastName     = ui->LastName->text();
+    QString FirstName    = ui->FirstName->text();
+    QString Patronymic   = ui->Patronymic->text();
+    QString City         = ui->City->text();
+    QString Address      = ui->Address->text();
+    QString Email        = ui->Email->text();
+    QString VyborID      = ui->VyborID->text();*/
+
     query.prepare("INSERT INTO entry (entry_type, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?)"); // подготавливаем запрос
-   /* query.addBindValue("person");
-    query.addBindValue(LastName); // заполняем вопросительные знаки значениями
-    query.addBindValue(FirstName);
-    query.addBindValue(ui->Patronymic);
-    query.addBindValue(ui->City);
-    query.addBindValue(ui->Address);
-    query.addBindValue(ui->Email);
-    query.addBindValue(ui->VyborID);
-    query.exec();*/
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+    query.addBindValue("person");
+    query.addBindValue(ui->LastName->text());
+    query.addBindValue(ui->FirstName->text());
+    query.addBindValue(ui->Patronymic->text());
+    query.addBindValue(ui->City->text());
+    query.addBindValue(ui->Address->text());
+    query.addBindValue(ui->Email->text());
+    query.addBindValue(ui->VyborID->text());
+    query.exec();
+
+
 }
 

@@ -42,7 +42,7 @@ SOURCES += main.cpp\
     Notifier.cpp \
     ContactsDialog.cpp \
     AddContactDialog.cpp \
-    PopupHelloWindow.cpp \
+    PopupHelloWindow.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -66,7 +66,7 @@ HEADERS  += \
     Notifier.h \
     ContactsDialog.h \
     AddContactDialog.h \
-    PopupHelloWindow.h \
+    PopupHelloWindow.h
 
 FORMS    += \
     AboutDialog.ui \
@@ -81,7 +81,7 @@ FORMS    += \
     PopupWindow.ui \
     ContactsDialog.ui \
     AddContactDialog.ui \
-    PopupHelloWindow.ui \
+    PopupHelloWindow.ui
 
 RESOURCES += \
     images.qrc
