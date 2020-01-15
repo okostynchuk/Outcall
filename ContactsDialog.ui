@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>614</width>
-    <height>384</height>
+    <width>630</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Контакты</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QTableView" name="tableView">
    <property name="geometry">
@@ -22,41 +25,24 @@
      <height>301</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QPushButton" name="closeButton">
-   <property name="geometry">
-    <rect>
-     <x>360</x>
-     <y>340</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Закрыть</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addButton">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>340</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Добавить</string>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
   </widget>
   <widget class="QPushButton" name="deleteButton">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>330</y>
-     <width>81</width>
-     <height>41</height>
+     <y>333</y>
+     <width>171</width>
+     <height>23</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>137</width>
+     <height>0</height>
+    </size>
    </property>
    <property name="acceptDrops">
     <bool>false</bool>
@@ -68,19 +54,34 @@
     <set>Qt::ImhNone</set>
    </property>
    <property name="text">
-    <string>Удалить
- выбранные</string>
+    <string>Удалить выбранные</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>320</y>
-     <width>71</width>
-     <height>51</height>
+     <x>290</x>
+     <y>330</y>
+     <width>291</width>
+     <height>31</height>
     </rect>
    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="addButton">
+      <property name="text">
+       <string>Добавить</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="closeButton">
+      <property name="text">
+       <string>Закрыть</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
