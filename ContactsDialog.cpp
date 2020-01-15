@@ -11,8 +11,10 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui(new Ui::ContactsDialog)
 {
     ui->setupUi(this);
+    this->showMaximized();//
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT * FROM entry");
+    //ui->Qdialog->showMaximized();
     ui->tableView->setModel(query1);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -37,7 +39,7 @@ ContactsDialog::~ContactsDialog()
 
 void ContactsDialog::onEdit()
 {
-    ui->textEdit->append("123");
+    //ui->textEdit->append("123");
     /*QWidget *but = qobject_cast<QWidget *>(sender());
     QTableView *tableview = qobject_cast<QTableView*>( but->parent()->parent() );
     int k = tableview->currentIndex().row();
