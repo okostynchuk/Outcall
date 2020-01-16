@@ -26,6 +26,8 @@ protected slots:
 private:
     Ui::ContactsDialog *ui;
     QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+    QWidget* addImageLabel() const;
     QWidget* createEditButton() const;
 };
 

@@ -14,6 +14,7 @@
 #include <QSqlTableModel>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QLabel>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -22,22 +23,27 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     this->showMaximized();
-
     ui->widget->move(0, 0);
     ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
 
-    //ui->widget->showMaximized();
-    //ui->tableView->showMaximized();
-    //ui->widget->setMaximumSize(2000,950);
-
     query1 = new QSqlQueryModel;
+<<<<<<< HEAD
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //ui->tableView->horizontalHeader()->setSizeColumnsToContents(QHeaderView::Stretch);
     //ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
+=======
+    query2 = new QSqlQueryModel;
+    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
+    query2->setQuery("SELECT DISTINCT entry_type FROM entry_phone");
+    //ui->tableView->horizontalHeader()->resizeColumnsToContents();
+    //ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+>>>>>>> 0c932cb4eb4f53ceb8042740980d8e76f521447f
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
+    query1->insertColumn(1);
+    query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
+    //query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
     query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
@@ -48,7 +54,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1->insertColumn(9);
     query1->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
     ui->tableView->setModel(query1);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -60,10 +65,17 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
     {
+        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel());
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
     }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+    ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    //ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
 }
 
 ContactsDialog::~ContactsDialog()
@@ -101,6 +113,18 @@ void ContactsDialog::onAdd()
 void ContactsDialog::onDelete()
 {
 
+}
+
+QWidget* ContactsDialog::addImageLabel() const
+{
+    QWidget* wgt = new QWidget;
+    QBoxLayout* l = new QHBoxLayout;
+    QLabel *imageLabel = new QLabel(wgt);
+    l->addWidget(imageLabel);
+    //if(query2->index(i, 1))
+    imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+    wgt->setLayout(l);
+    return wgt;
 }
 
 QWidget* ContactsDialog::createEditButton() const
