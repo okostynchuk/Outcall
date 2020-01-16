@@ -13,6 +13,11 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->showMaximized();
+
+    ui->widget->showMaximized();
+    ui->tableView->showMaximized();
+    ui->widget->setMinimumSize(1200,950);
+
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -91,5 +96,3 @@ QWidget* ContactsDialog::createEditButton() const
     wgt->setLayout(l);
     return wgt;
 }
-
-
