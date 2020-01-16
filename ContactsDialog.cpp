@@ -27,9 +27,11 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     //ui->widget->showMaximized();
     //ui->tableView->showMaximized();
-    ui->widget->setMaximumSize(2000,950);
+    //ui->widget->setMaximumSize(2000,950);
 
     query1 = new QSqlQueryModel;
+    //ui->tableView->horizontalHeader()->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
@@ -46,6 +48,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
     connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
     connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
     connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
@@ -110,22 +113,31 @@ QWidget* ContactsDialog::createEditButton() const
 
 void ContactsDialog::on_lineEdit_returnPressed()
 {
-//    //    QSqlDatabase db;
-//    //    QSqlTableModel query(db);
+    //    QSqlDatabase db;
+    //    QSqlTableModel query(db);
 
-//    //    query.setFilter("SELECT entry_type = 'org' FROM entry");
+    //    query.setFilter("SELECT entry_type = 'org' FROM entry");
 
-//        QSqlTableModel model;
-//            model.setTable("entry");
-//            model.setFilter("entry_city = 'Киев'");
-//           // model.setFilter("entry_vybor_id = 4978");
-//            model.setSort(2, Qt::DescendingOrder);
-//            model.select();
+//    QSqlTableModel model;
+//    model.setTable("entry");
+//    model.setFilter("entry_city = 'Киев'");
+//    //QString entry_name = ui->lineEdit->text();
+//    //if(model.setFilter("entry_name") == entry_name){
+//        model.select();
+//        query1 = new QSqlQueryModel;
+//        ui->tableView->setModel(query1);
+//        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-//            for (int i = 0; i < model.rowCount(); ++i) {
-//                QString entry_name = model.record(i).value("entry_name").toString();
-//                QString entry_city = model.record(i).value("entry_city").toString();
-//                int id = model.record(i).value("entry_vybor_id").toInt();
-//                qDebug() << entry_name << id << entry_city;
-//            }
+   // }
+    //private: char entry_name;
+    //model.setFilter("entry_city = 'Киев'");
+    //model.setFilter("entry_vybor_id = 4978");
+    //model.setSort(2, Qt::DescendingOrder);
+
+//    for (int i = 0; i < model.rowCount(); ++i) {
+//         QString entry_name = model.record(i).value("entry_name").toString();
+//         QString entry_city = model.record(i).value("entry_city").toString();
+//         int id = model.record(i).value("entry_vybor_id").toInt();
+//         qDebug() << entry_name << id << entry_city;
+//        }
 }
