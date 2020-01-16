@@ -54,7 +54,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Имя</string>
+    <string>Имя*</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -123,7 +123,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>1</string>
+    <string>1*</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
@@ -308,6 +308,19 @@
      <width>271</width>
      <height>201</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>10</y>
+     <width>191</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>* - поля обязательные для ввода</string>
    </property>
   </widget>
  </widget>
