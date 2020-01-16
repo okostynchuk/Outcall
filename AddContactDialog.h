@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
+#include <QValidator>
 
 namespace Ui {
 class AddContactDialog;
