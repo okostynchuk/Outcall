@@ -29,7 +29,11 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
+
     query2->setQuery("SELECT DISTINCT entry_type FROM entry_phone");
+
+    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
@@ -54,11 +58,14 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
     {
-        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel());
+        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
     }
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
@@ -104,14 +111,20 @@ void ContactsDialog::onDelete()
 
 }
 
-QWidget* ContactsDialog::addImageLabel() const
+QWidget* ContactsDialog::addImageLabel(int &i) const
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
     QLabel *imageLabel = new QLabel(wgt);
     l->addWidget(imageLabel);
-    //if(query2->index(i, 1))
-    imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+    if(query2->data(query2->index(i, 0)).toString() == "person")
+    {
+        imageLabel->setPixmap(QPixmap("D:/person.png").scaled(30, 30, Qt::KeepAspectRatio));
+    }
+    else
+    {
+        imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+    }
     wgt->setLayout(l);
     return wgt;
 }
@@ -144,30 +157,30 @@ void ContactsDialog::on_lineEdit_returnPressed()
 //    }
 
 
-//    //if(model.setFilter("entry_name") == entry_name){
-//        //model.select();
-//        //qDebug()<<entry_city;
+    //if(model.setFilter("entry_name") == entry_name){
+        //model.select();
+        //qDebug()<<entry_city;
 
-////        for (int i = 0; i < model.rowCount(); ++i) {
-////                 QString entry_name = model.record(i).value("entry_name").toString();
-////                 QString entry_city = model.record(i).value("entry_city").toString();
-////                 int id = model.record(i).value("entry_vybor_id").toInt();
-////                 qDebug() << entry_name << id << entry_city;
-////                }
-////        query1 = new QSqlQueryModel;
-////        ui->tableView->setModel(query1);
-////        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+//        for (int i = 0; i < model.rowCount(); ++i) {
+//                 QString entry_name = model.record(i).value("entry_name").toString();
+//                 QString entry_city = model.record(i).value("entry_city").toString();
+//                 int id = model.record(i).value("entry_vybor_id").toInt();
+//                 qDebug() << entry_name << id << entry_city;
+//                }
+//        query1 = new QSqlQueryModel;
+//        ui->tableView->setModel(query1);
+//        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-//   // }
-//    //private: char entry_name;
-//    //model.setFilter("entry_city = 'Киев'");
-//    //model.setFilter("entry_vybor_id = 4978");
-//    //model.setSort(2, Qt::DescendingOrder);
+   // }
+    //private: char entry_name;
+    //model.setFilter("entry_city = 'Киев'");
+    //model.setFilter("entry_vybor_id = 4978");
+    //model.setSort(2, Qt::DescendingOrder);
 
-////    for (int i = 0; i < model.rowCount(); ++i) {
-////         QString entry_name = model.record(i).value("entry_name").toString();
-////         QString entry_city = model.record(i).value("entry_city").toString();
-////         int id = model.record(i).value("entry_vybor_id").toInt();
-////         qDebug() << entry_name << id << entry_city;
-////        }
+//    for (int i = 0; i < model.rowCount(); ++i) {
+//         QString entry_name = model.record(i).value("entry_name").toString();
+//         QString entry_city = model.record(i).value("entry_city").toString();
+//         int id = model.record(i).value("entry_vybor_id").toInt();
+//         qDebug() << entry_name << id << entry_city;
+//        }
 }
