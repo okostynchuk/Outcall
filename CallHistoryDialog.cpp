@@ -162,7 +162,7 @@ void CallHistoryDialog::onAddContact()
 {
     AddContactDialog* addContactDialog = new AddContactDialog;
     //addContactDialog.setWindowTitle("Add Contact");
-    addContactDialog->show();
+    addContactDialog->exec();
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
