@@ -1,22 +1,33 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
-#include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <QBoxLayout>
 #include <QClipboard>
+#include <QSqlDatabase>
+#include <QDebug>
+#include <QSqlRecord>
+#include <QSqlQuery>
+#include <QSqlRelationalTableModel>
+#include <QSqlTableModel>
+#include <QGuiApplication>
+#include <QScreen>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ContactsDialog)
 {
     ui->setupUi(this);
+
     this->showMaximized();
 
-    ui->widget->showMaximized();
-    ui->tableView->showMaximized();
-    ui->widget->setMinimumSize(1200,950);
+    ui->widget->move(0, 0);
+    ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
+
+    //ui->widget->showMaximized();
+    //ui->tableView->showMaximized();
+    ui->widget->setMaximumSize(2000,950);
 
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
@@ -95,4 +106,26 @@ QWidget* ContactsDialog::createEditButton() const
     l->addWidget(editButton);
     wgt->setLayout(l);
     return wgt;
+}
+
+void ContactsDialog::on_lineEdit_returnPressed()
+{
+//    //    QSqlDatabase db;
+//    //    QSqlTableModel query(db);
+
+//    //    query.setFilter("SELECT entry_type = 'org' FROM entry");
+
+//        QSqlTableModel model;
+//            model.setTable("entry");
+//            model.setFilter("entry_city = 'Киев'");
+//           // model.setFilter("entry_vybor_id = 4978");
+//            model.setSort(2, Qt::DescendingOrder);
+//            model.select();
+
+//            for (int i = 0; i < model.rowCount(); ++i) {
+//                QString entry_name = model.record(i).value("entry_name").toString();
+//                QString entry_city = model.record(i).value("entry_city").toString();
+//                int id = model.record(i).value("entry_vybor_id").toInt();
+//                qDebug() << entry_name << id << entry_city;
+//            }
 }
