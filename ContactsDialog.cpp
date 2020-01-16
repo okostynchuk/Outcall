@@ -2,6 +2,7 @@
 #include "ui_ContactsDialog.h"
 
 #include <QSqlQueryModel>
+#include <QHeaderView>
 #include <QTableView>
 #include <QBoxLayout>
 #include <QClipboard>
@@ -30,8 +31,10 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     //ui->widget->setMaximumSize(2000,950);
 
     query1 = new QSqlQueryModel;
-    //ui->tableView->horizontalHeader()->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->tableView->horizontalHeader()->setSizeColumnsToContents(QHeaderView::Stretch);
+    //ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
@@ -113,17 +116,30 @@ QWidget* ContactsDialog::createEditButton() const
 
 void ContactsDialog::on_lineEdit_returnPressed()
 {
-    //    QSqlDatabase db;
-    //    QSqlTableModel query(db);
-
-    //    query.setFilter("SELECT entry_type = 'org' FROM entry");
-
 //    QSqlTableModel model;
-//    model.setTable("entry");
-//    model.setFilter("entry_city = 'Киев'");
-//    //QString entry_name = ui->lineEdit->text();
-//    //if(model.setFilter("entry_name") == entry_name){
-//        model.select();
+//    model.setTable("entry_phone");
+//    QString entry_city = ui->lineEdit->text();
+//    QString entry_phone = ui->lineEdit->text();
+//    //model.setFilter(QString("entry_city = %1"));
+
+//    if(model.setFilter(QString("entry_city '%1' or "
+//                               "entry_name '%2' ")
+//                                   .arg(entry_city,
+//                                   entry_phone))){
+//         model.select();
+//         qDebug()<<entry_city<<entry_phone;
+//    }
+
+    //if(model.setFilter("entry_name") == entry_name){
+        //model.select();
+        //qDebug()<<entry_city;
+
+//        for (int i = 0; i < model.rowCount(); ++i) {
+//                 QString entry_name = model.record(i).value("entry_name").toString();
+//                 QString entry_city = model.record(i).value("entry_city").toString();
+//                 int id = model.record(i).value("entry_vybor_id").toInt();
+//                 qDebug() << entry_name << id << entry_city;
+//                }
 //        query1 = new QSqlQueryModel;
 //        ui->tableView->setModel(query1);
 //        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
