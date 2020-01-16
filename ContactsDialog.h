@@ -19,8 +19,9 @@ public:
 protected slots:
     void onAdd();
     void onEdit();
-
+    void onTableClicked(const QModelIndex &);
     void onDelete();
+    void on_lineEdit_returnPressed();
 
 private:
     Ui::ContactsDialog *ui;
