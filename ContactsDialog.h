@@ -19,7 +19,7 @@ public:
 protected slots:
     void onAdd();
     void onEdit();
-
+    void onTableClicked(const QModelIndex &);
     void onDelete();
 
 private:
