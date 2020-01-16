@@ -27,23 +27,12 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
 
     query1 = new QSqlQueryModel;
-<<<<<<< HEAD
-
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //ui->tableView->horizontalHeader()->setSizeColumnsToContents(QHeaderView::Stretch);
-    //ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    query1->setQuery("SELECT ep.entry_id, ep.entry_type, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
-=======
     query2 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query2->setQuery("SELECT DISTINCT entry_type FROM entry_phone");
-    //ui->tableView->horizontalHeader()->resizeColumnsToContents();
-    //ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
->>>>>>> 0c932cb4eb4f53ceb8042740980d8e76f521447f
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
-    //query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
     query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
