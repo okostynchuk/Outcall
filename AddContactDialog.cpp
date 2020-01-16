@@ -12,6 +12,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 
+
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddContactDialog)
@@ -51,11 +52,18 @@ void AddContactDialog::onSave()
     QString lastname = QString(ui->LastName->text());
     QString firstname = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
-    //if(lastname==0)
-   // {
-   //     QLineEdit { background-color: rgb(255, 0, 0) };
+//    if(lastname==0)
+//    {
+//        m_pMyWidget = new QLineEdit(ui->FirstName);
 
-  //  }
+//        QPalette Pal(palette());
+
+//        // устанавливаем цвет фона
+//        Pal.setColor(QPalette::Background, Qt::red);
+//        m_pMyWidget->setAutoFillBackground(true);
+//        m_pMyWidget->setPalette(Pal);
+//        m_pMyWidget->show();
+//    }
 
     query.prepare("INSERT INTO entry (entry_type, entry_name,entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
