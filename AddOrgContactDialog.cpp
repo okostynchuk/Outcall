@@ -1,6 +1,6 @@
-#include "AddContactDialog.h"
+#include "AddOrgContactDialog.h"
+#include "ui_AddOrgContactDialog.h"
 #include "Global.h"
-#include "ui_AddContactDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -12,11 +12,11 @@
 #include <QPlainTextEdit>
 #include <QString>
 
-
-AddContactDialog::AddContactDialog(QWidget *parent) :
+AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AddContactDialog)
+    ui(new Ui::AddOrgContactDialog)
 {
+    ui->setupUi(this);
     ui->setupUi(this);
     QRegExp RegExp("^[\\+]?[0-9]{1,12}$");
     QValidator *Validator = new QRegExpValidator(RegExp, this);
@@ -44,12 +44,13 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
 }
 
-AddContactDialog::~AddContactDialog()
+AddOrgContactDialog::~AddOrgContactDialog()
 {
     delete ui;
 }
 
-void AddContactDialog::onSave()
+
+void AddOrgContactDialog::onSave()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -146,6 +147,3 @@ void AddContactDialog::onSave()
         }
     }
 }
-
-
-
