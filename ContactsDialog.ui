@@ -49,7 +49,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QPushButton" name="deleteButton">
+         <widget class="QPushButton" name="updateButton">
           <property name="minimumSize">
            <size>
             <width>150</width>
@@ -66,7 +66,7 @@
            <set>Qt::ImhNone</set>
           </property>
           <property name="text">
-           <string>Удалить выбранные</string>
+           <string>Обновить</string>
           </property>
          </widget>
         </item>
