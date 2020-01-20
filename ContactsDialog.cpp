@@ -51,9 +51,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
     //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
     //connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
-    //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
-    //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
-    //connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
+    connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
