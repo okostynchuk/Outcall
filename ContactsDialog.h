@@ -21,6 +21,8 @@ protected slots:
     void onAdd();
     void onEdit();
     void onTableClicked(const QModelIndex &);
+    void onComboBoxSelected();
+    void showTable();
     void on_lineEdit_returnPressed();
 
 private:
