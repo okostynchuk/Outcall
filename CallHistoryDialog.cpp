@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "ContactManager.h"
 #include "AddContactDialog.h"
+#include "AddOrgContactDialog.h"
 
 #include <QDebug>
 #include <QList>
@@ -161,8 +162,9 @@ void CallHistoryDialog::onCallClicked()
 void CallHistoryDialog::onAddContact()
 {
     AddContactDialog* addContactDialog = new AddContactDialog;
-    //addContactDialog.setWindowTitle("Add Contact");
+    addContactDialog->setWindowTitle("Add Contact");
     addContactDialog->exec();
+
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -201,6 +203,14 @@ void CallHistoryDialog::onAddContact()
             g_pContactManager->addOutlookContact(to, "");
         }
 }
+
+
+//void CallHistoryDialog::onAddOrgContact()
+//{
+//    AddOrgContactDialog* addOrgContactDialog = new AddOrgContactDialog;
+//    addOrgContactDialog->setWindowTitle("Add Contact");
+//    addOrgContactDialog->exec();
+//}
 
 void CallHistoryDialog::onRemoveButton()
 {

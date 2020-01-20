@@ -20,7 +20,7 @@
    <string>OutCALL - Call History</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -171,7 +171,14 @@
         <item>
          <widget class="QPushButton" name="addContactButton">
           <property name="text">
-           <string>Add Outlok Contact</string>
+           <string>Добавить физ.лицо</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addOrgContactButton">
+          <property name="text">
+           <string>Добавить организацию</string>
           </property>
          </widget>
         </item>
@@ -225,6 +232,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

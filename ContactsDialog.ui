@@ -27,11 +27,24 @@
         </property>
         <item>
          <widget class="QComboBox" name="comboBox">
+         <widget class="QPushButton" name="updateButton">
           <property name="minimumSize">
            <size>
             <width>0</width>
             <height>27</height>
            </size>
+          </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhNone</set>
+          </property>
+          <property name="text">
+           <string>Обновить</string>
           </property>
          </widget>
         </item>
