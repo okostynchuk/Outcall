@@ -218,7 +218,7 @@ void ContactsDialog::showTable(){
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
     {
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
-        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
+        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
     }
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);

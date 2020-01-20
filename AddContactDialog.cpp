@@ -26,7 +26,6 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(Validator);
     ui->FifthNumber->setValidator(Validator);
 
-    QRegExp RegExp2("^[A-ZА-Я][A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QRegExp RegExp2("^[A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
     ui->FirstName->setValidator(ValidatorForName);
