@@ -15,6 +15,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QLabel>
+#include <QAbstractProxyModel>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -29,9 +30,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
-
-    query2->setQuery("SELECT DISTINCT entry_type FROM entry_phone");
-
     query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -50,9 +48,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
-    connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
-    connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
-    connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
+    //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
+    //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
+    //connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
 
@@ -62,10 +60,11 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
     }
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
@@ -143,21 +142,52 @@ QWidget* ContactsDialog::createEditButton() const
 void ContactsDialog::on_lineEdit_returnPressed()
 {
 //    QSqlTableModel model;
-//    model.setTable("entry_phone");
+//    query1 = new QSqlQueryModel;
+//    //model = new QSqlQueryModel;
+//    //model.setTable("entry_phone");
 //    QString entry_city = ui->lineEdit->text();
 //    QString entry_phone = ui->lineEdit->text();
-//    //model.setFilter(QString("entry_city = %1"));
+//    model.setFilter(QString("entry_city = %1"));
+
+
+
+//    //model.setFilter(QString("entry_city = "));
+
+
 
 //    if(model.setFilter(tr("entry_city '%1' or "
 //                               "entry_name '%2'")
-//                                   .arg(entry_city,
-//                                   entry_phone))){
+//                                   .arg(ui->lineEdit->text(),
+//                                   ui->lineEdit->text()))){
 //         model.select();
 //         qDebug()<<entry_city<<entry_phone;
 //    }
 
 
-    //if(model.setFilter("entry_name") == entry_name){
+//    QSqlTableModel model;
+//       model.setTable("entry_phone");
+//       //QString entry_city = ui->lineEdit->text();
+//       //QString entry_name = ui->lineEdit->text();
+//       model.setFilter("entry_city = 'Odessa'");
+////       model.setFilter("entry_name = '%2'");
+//       model.setSort(0, Qt::DescendingOrder);
+//       model.select();
+
+//           qDebug() << entry_city << entry_name;
+
+
+//!    query1 = new QSqlQueryModel;
+
+//    QString entry_city = ui->lineEdit->text();
+//    QString entry_phone = ui->lineEdit->text();
+
+//    query1->setQuery("SELECT entry_type FROM entry_phone WHERE entry_city = '@entry_city'' GROUP BY entry_id");
+
+//!   qDebug()<<entry_city<<entry_phone;
+
+//попробовать через where, если не получится!
+
+    //if(model.setFilter("entry_name") = entry_name){
         //model.select();
         //qDebug()<<entry_city;
 
@@ -172,15 +202,69 @@ void ContactsDialog::on_lineEdit_returnPressed()
 //        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
    // }
-    //private: char entry_name;
-    //model.setFilter("entry_city = 'Киев'");
-    //model.setFilter("entry_vybor_id = 4978");
-    //model.setSort(2, Qt::DescendingOrder);
 
-//    for (int i = 0; i < model.rowCount(); ++i) {
-//         QString entry_name = model.record(i).value("entry_name").toString();
-//         QString entry_city = model.record(i).value("entry_city").toString();
-//         int id = model.record(i).value("entry_vybor_id").toInt();
-//         qDebug() << entry_name << id << entry_city;
-//        }
+
+
+//    QSqlTableModel model;
+//         model.setTable("entry_phone");
+//         QString entry_city = QString(ui->lineEdit->text());
+//         //QString entry_vybor_id = ui->lineEdit->text();
+//         model.setFilter(QString("entry_city = 'Odessa'"));
+//         model.setSort(2, Qt::DescendingOrder);
+//                model.select();
+//                 qDebug()<<entry_city;
+
+
+
+
+
+//         QSqlTableModel model;
+//             model.setTable("entry_phone");
+//             QString entry_city = ui->lineEdit->text();
+//             QString entry_phone = ui->lineEdit->text();
+
+//             if(model.setFilter(tr("entry_city '%1' or "
+//                                        "entry_name '%2'")
+//                                            .arg(entry_city,
+//                                            entry_phone))){
+//                  model.select();
+//                  qDebug()<<entry_city<<entry_phone;
+//             }
+
+
+       /*modelTerminals = new ModelTerminals(this);
+       modelTerminals->setTable("objects");
+       modelTerminals->setHeaderData(2, Qt::Horizontal, "АЗС");
+       modelTerminals->setHeaderData(4, Qt::Horizontal, "Наименование");
+       modelTerminals->setHeaderData(6, Qt::Horizontal, "Примечание");
+       modelTerminals->setHeaderData(5, Qt::Horizontal, "В работе");
+       QString strFilter = QString("client_id = %1 order by terminal_id").arg(clientID);
+       modelTerminals->setFilter(strFilter);
+       modelTerminals->select();*/
+
+
+//    QSqlTableModel model;
+//         model.setTable("entry_phone");
+//         QString entry_city = ui->lineEdit->text();
+//         //QString entry_phone = ui->lineEdit->text();
+//         model.setFilter("entry_city LIKE '%'" + entry_city + "'%'"); // + "or entry_phone = '%2'" + entry_phone
+//         model.setSort(0, Qt::DescendingOrder);
+//         model.select();
+
+
+
+//         for (int i = 0; i < model.rowCount(); ++i) {
+//             QString entry_type1 = model.record(i).value("entry_type").toString();
+//             QString entry_name = model.record(i).value("entry_name").toString();
+//             QString entry_phone = model.record(i).value("entry_phone").toString();
+//             QString entry_city = model.record(i).value("entry_city").toString();
+//             QString entry_email = model.record(i).value("entry_email").toString();
+//             QString entry_vybor_id = model.record(i).value("entry_vybor_id").toString();
+//             qDebug() << "   " << entry_type1 << "   " << entry_name << "   " << entry_phone << "   " << entry_vybor_id << "   " << entry_city << "   " << entry_email;
+
+//         }
+
+         //again try with where in failure case
+
 }
+

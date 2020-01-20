@@ -21,52 +21,17 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTableView" name="tableView">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Minimum</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="bottomMargin">
          <number>6</number>
         </property>
         <item>
-         <widget class="QPushButton" name="deleteButton">
+         <widget class="QComboBox" name="comboBox">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>0</width>
             <height>27</height>
            </size>
-          </property>
-          <property name="acceptDrops">
-           <bool>false</bool>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="inputMethodHints">
-           <set>Qt::ImhNone</set>
-          </property>
-          <property name="text">
-           <string>Удалить выбранные</string>
           </property>
          </widget>
         </item>
@@ -116,34 +81,54 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="addButton">
+           <widget class="QPushButton" name="pushButton">
             <property name="minimumSize">
              <size>
-              <width>150</width>
+              <width>111</width>
               <height>27</height>
              </size>
             </property>
             <property name="text">
-             <string>Добавить</string>
+             <string>Обновить</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="closeButton">
+           <widget class="QPushButton" name="pushButton_2">
             <property name="minimumSize">
              <size>
-              <width>150</width>
+              <width>0</width>
               <height>27</height>
              </size>
             </property>
             <property name="text">
-             <string>Закрыть</string>
+             <string>Добавить физ. лицо</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="minimumSize">
+             <size>
+              <width>111</width>
+              <height>27</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Добавить юр. лицо</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QTableView" name="tableView">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
