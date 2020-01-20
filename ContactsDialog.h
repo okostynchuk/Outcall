@@ -1,6 +1,9 @@
 #ifndef CONTACTSDIALOG_H
 #define CONTACTSDIALOG_H
 
+#include "AddContactDialog.h"
+#include "AddOrgContactDialog.h"
+
 #include <QDialog>
 #include <QSqlQueryModel>
 
@@ -18,7 +21,8 @@ public:
 
 protected slots:
     void onUpdate();
-    void onAdd();
+    void onAddPerson();
+    void onAddOrg();
     void onEdit();
     void onTableClicked(const QModelIndex &);
     void on_lineEdit_returnPressed();
@@ -27,8 +31,9 @@ private:
     Ui::ContactsDialog *ui;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
     QWidget* addImageLabel(int &i) const;
-    QWidget* createEditButton() const;
+    QWidget* createEditButton(int &i) const;
 };
 
 #endif // CONTACTSDIALOG_H

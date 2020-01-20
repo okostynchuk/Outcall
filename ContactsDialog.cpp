@@ -1,5 +1,8 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
+#include "AddContactDialog.h"
+#include "AddOrgContactDialog.h"
+#include "Global.h"
 
 #include <QSqlQueryModel>
 #include <QHeaderView>
@@ -48,15 +51,15 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
-    //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
-    //connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
+    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
+    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
     {
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
-        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
+        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
     }
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
@@ -85,11 +88,12 @@ void ContactsDialog::onUpdate()
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
     query1->insertColumn(9);
     query1->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
+    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query1);
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
     {
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
-        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
+        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
     }
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
@@ -112,20 +116,39 @@ void ContactsDialog::onTableClicked(const QModelIndex &index)
 
 void ContactsDialog::onEdit()
 {
-    //ui->textEdit->append("123");
-    /*QWidget *but = qobject_cast<QWidget *>(sender());
-    QTableView *tableview = qobject_cast<QTableView*>(but->parent()->parent());
-    int k = tableview->currentIndex().row();
-    if(k == 4)
+    int i = sender()->property("i").toInt();
+    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+    if(query2->data(query2->index(i, 0)).toString() == "person")
     {
-        ui->textEdit->append("123");
-    }*/
-
+        g_Switch = "updatePerson";
+        AddContactDialog *addContactDialog = new AddContactDialog;
+        addContactDialog->setWindowTitle("Редактирование физ. лица");
+        //query2->setQuery("");
+        addContactDialog->exec();
+    }
+    else
+    {
+        g_Switch = "updateOrg";
+        AddOrgContactDialog *addOrgContactDialog = new AddOrgContactDialog;
+        addOrgContactDialog->setWindowTitle("Редактирование организации");
+        addOrgContactDialog->exec();
+    }
 }
 
-void ContactsDialog::onAdd()
+void ContactsDialog::onAddPerson()
 {
+    g_Switch = "addPerson";
+    AddContactDialog *addContactDialog = new AddContactDialog;
+    addContactDialog->setWindowTitle("Добавление физ. лица");
+    addContactDialog->exec();
+}
 
+void ContactsDialog::onAddOrg()
+{
+    g_Switch = "addOrg";
+    AddOrgContactDialog *addOrgContactDialog = new AddOrgContactDialog;
+    addOrgContactDialog->setWindowTitle("Добавление организации");
+    addOrgContactDialog->exec();
 }
 
 QWidget* ContactsDialog::addImageLabel(int &i) const
@@ -146,12 +169,13 @@ QWidget* ContactsDialog::addImageLabel(int &i) const
     return wgt;
 }
 
-QWidget* ContactsDialog::createEditButton() const
+QWidget* ContactsDialog::createEditButton(int &i) const
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
     QPushButton* editButton = new QPushButton("Редактировать");
     connect(editButton, SIGNAL(clicked(bool)), SLOT(onEdit()));
+    editButton->setProperty("i", i);
     l->addWidget(editButton);
     wgt->setLayout(l);
     return wgt;

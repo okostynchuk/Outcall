@@ -24,17 +24,14 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     ui->SecondNumber->setValidator(Validator);
     ui->ThirdNumber->setValidator(Validator);
 
-
     QRegExp RegExp2("^[A-ZА-Я][A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
     ui->OrgName->setValidator(ValidatorForName);
 
     query1 = new QSqlQueryModel;
 
-    //ui->textEdit->setReadOnly(true);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //цвета в форме
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText("Название организации<span style=\"color: red;\">*</span>");
 
@@ -49,10 +46,21 @@ AddOrgContactDialog::~AddOrgContactDialog()
 
 void AddOrgContactDialog::onSave()
 {
+    if (g_Switch == "addOrg")
+    {
+        addOrgContact();
+    }
+    else if (g_Switch == "updateOrg")
+    {
+        updateOrgContact();
+    }
+}
+
+void AddOrgContactDialog::addOrgContact()
+{
     QSqlDatabase db;
     QSqlQuery query(db);
     QString OrgName = QString(ui->OrgName->text());
-
 
     query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
@@ -77,7 +85,6 @@ void AddOrgContactDialog::onSave()
     QSqlQuery query2(db);
     QSqlQuery query3(db);
     QSqlQuery query4(db);
-
 
     if(QString(ui->OrgName->text()).isEmpty() == true)
     {
@@ -134,4 +141,9 @@ void AddOrgContactDialog::onSave()
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
         }
     }
+}
+
+void AddOrgContactDialog::updateOrgContact()
+{
+
 }
