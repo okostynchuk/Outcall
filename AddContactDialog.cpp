@@ -26,6 +26,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(Validator);
     ui->FifthNumber->setValidator(Validator);
 
+    QRegExp RegExp2("^[A-ZА-Я][A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QRegExp RegExp2("^[A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
     ui->FirstName->setValidator(ValidatorForName);
@@ -34,10 +35,8 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
 
     query1 = new QSqlQueryModel;
 
-    //ui->textEdit->setReadOnly(true);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //цвета в форме
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
@@ -51,6 +50,18 @@ AddContactDialog::~AddContactDialog()
 }
 
 void AddContactDialog::onSave()
+{
+    if (g_Switch == "addPerson")
+    {
+        addContact();
+    }
+    else if (g_Switch == "updatePerson")
+    {
+        updateContact();
+    }
+}
+
+void AddContactDialog::addContact()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -166,6 +177,11 @@ void AddContactDialog::onSave()
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
         }
     }
+}
+
+void AddContactDialog::updateContact()
+{
+
 }
 
 

@@ -19,6 +19,9 @@ public:
 
 protected:
     void onSave();
+    void addContact();
+    void updateContact();
+    void setValues();
 
 private:
     Ui::AddContactDialog *ui;

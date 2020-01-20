@@ -19,6 +19,8 @@ public:
 
 protected:
     void onSave();
+    void addOrgContact();
+    void updateOrgContact();
 
 private:
     Ui::AddOrgContactDialog *ui;
