@@ -23,7 +23,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->removeButton, &QPushButton::clicked, this, &CallHistoryDialog::onRemoveButton);
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
-
+    connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -205,12 +205,12 @@ void CallHistoryDialog::onAddContact()
 }
 
 
-//void CallHistoryDialog::onAddOrgContact()
-//{
-//    AddOrgContactDialog* addOrgContactDialog = new AddOrgContactDialog;
-//    addOrgContactDialog->setWindowTitle("Add Contact");
-//    addOrgContactDialog->exec();
-//}
+void CallHistoryDialog::onAddOrgContact()
+{
+    AddOrgContactDialog* addOrgContactDialog = new AddOrgContactDialog;
+    addOrgContactDialog->setWindowTitle("Add Contact");
+    addOrgContactDialog->exec();
+}
 
 void CallHistoryDialog::onRemoveButton()
 {

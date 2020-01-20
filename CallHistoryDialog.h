@@ -3,6 +3,7 @@
 
 #include "AsteriskManager.h"
 #include "AddContactDialog.h"
+#include "AddOrgContactDialog.h"
 
 #include <QDialog>
 #include <QMap>
@@ -32,6 +33,7 @@ public:
 protected slots:
 
     void onAddContact();
+    void onAddOrgContact();
     void onRemoveButton();
     void onCallClicked();
 

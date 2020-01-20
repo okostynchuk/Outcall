@@ -1,28 +1,29 @@
-#ifndef ADDORGCONTACDIALOG_H
-#define ADDORGCONTACDIALOG_H
+#ifndef ADDORGCONTACTDIALOG_H
+#define ADDORGCONTACTDIALOG_H
 
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QValidator>
 
 namespace Ui {
-class AddOrgContacDialog;
+class AddOrgContactDialog;
 }
 
-class AddOrgContacDialog : public QDialog
+class AddOrgContactDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AddOrgContacDialog(QWidget *parent = 0);
-    ~AddOrgContacDialog();
+    explicit AddOrgContactDialog(QWidget *parent = 0);
+    ~AddOrgContactDialog();
 
 protected:
     void onSave();
 
 private:
-    Ui::AddOrgContacDialog *ui;
+    Ui::AddOrgContactDialog *ui;
     QSqlQueryModel *query1;
+
 };
 
-#endif // ADDORGCONTACDIALOG_H
+#endif // ADDORGCONTACTDIALOG_H
