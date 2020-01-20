@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
+    <width>790</width>
     <height>357</height>
    </rect>
   </property>
@@ -27,8 +27,25 @@
         </property>
         <item>
          <widget class="QComboBox" name="comboBox">
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="acceptDrops">
            <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Выберите столбец поиска</string>
+          </property>
+          <property name="whatsThis">
+           <string>Выберите столбец поиска</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -87,9 +104,14 @@
            <widget class="QPushButton" name="updateButton">
             <property name="minimumSize">
              <size>
-              <width>111</width>
+              <width>128</width>
               <height>27</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>Обновить</string>
@@ -104,6 +126,11 @@
               <height>27</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Добавить физ. лицо</string>
             </property>
@@ -113,9 +140,14 @@
            <widget class="QPushButton" name="addOrgButton">
             <property name="minimumSize">
              <size>
-              <width>111</width>
+              <width>128</width>
               <height>27</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>Добавить организацию</string>

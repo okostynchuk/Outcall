@@ -23,8 +23,11 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->FirstNumber->setValidator(Validator);
     ui->SecondNumber->setValidator(Validator);
     ui->ThirdNumber->setValidator(Validator);
+    ui->FourthNumber->setValidator(Validator);
+    ui->FifthNumber->setValidator(Validator);
 
     QRegExp RegExp2("^[A-ZА-Я][A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
+    QRegExp RegExp2("^[A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
     QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
     ui->FirstName->setValidator(ValidatorForName);
     ui->LastName->setValidator(ValidatorForName);
@@ -89,7 +92,9 @@ void AddContactDialog::addContact()
     QString sql1 = QString("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '%1' OR entry_phone = '%2' OR entry_phone = '%3');")
             .arg(ui->FirstNumber->text(),
             ui->SecondNumber->text(),
-            ui->ThirdNumber->text());
+            ui->ThirdNumber->text(),
+            ui->FourthNumber->text(),
+            ui->FifthNumber->text());
     query1.prepare(sql1);
     query1.exec();
     query1.next();
@@ -127,6 +132,8 @@ void AddContactDialog::addContact()
             QString firstnum = QString(ui->FirstNumber->text());
             QString secondnum = QString(ui->SecondNumber->text());
             QString thirdnum = QString(ui->ThirdNumber->text());
+            QString fourthnum = QString(ui->FourthNumber->text());
+            QString fifthnum = QString(ui->FifthNumber->text());
             if(firstnum!=0)
             {
                 query2.prepare("INSERT INTO phone (entry_id, phone)"
@@ -137,19 +144,36 @@ void AddContactDialog::addContact()
             }
             if(secondnum!=0)
             {
-                query3.prepare("INSERT INTO phone (entry_id, phone)"
+                query2.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
-                query3.addBindValue(id);
-                query3.addBindValue(ui->SecondNumber->text());
-                query3.exec();
+                query2.addBindValue(id);
+                query2.addBindValue(ui->SecondNumber->text());
+                query2.exec();
             }
             if(thirdnum!=0)
             {
-                query4.prepare("INSERT INTO phone (entry_id, phone)"
+                query2.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
-                query4.addBindValue(id);
-                query4.addBindValue(ui->ThirdNumber->text());
-                query4.exec();
+                query2.addBindValue(id);
+                query2.addBindValue(ui->ThirdNumber->text());
+                query2.exec();
+            }
+            if(fourthnum!=0)
+            {
+                    query2.prepare("INSERT INTO phone (entry_id, phone)"
+                                   "VALUES(?, ?)");
+                    query2.addBindValue(id);
+                    query2.addBindValue(ui->FourthNumber->text());
+                    query2.exec();
+            }
+
+            if(fifthnum!=0)
+            {
+                    query2.prepare("INSERT INTO phone (entry_id, phone)"
+                                   "VALUES(?, ?)");
+                    query2.addBindValue(id);
+                    query2.addBindValue(ui->FifthNumber->text());
+                    query2.exec();
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
         }
