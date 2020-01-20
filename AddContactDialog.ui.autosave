@@ -342,8 +342,8 @@
   <widget class="QLabel" name="label_16">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>370</y>
+     <x>180</x>
+     <y>410</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -419,52 +419,6 @@
    </property>
    <property name="text">
     <string>5</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="FifthNumber_2">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>120</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_20">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>120</y>
-     <width>47</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>5</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_21">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>90</y>
-     <width>47</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>4</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="FourthNumber_2">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>90</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
    </property>
   </widget>
  </widget>
