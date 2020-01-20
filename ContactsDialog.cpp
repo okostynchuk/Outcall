@@ -48,12 +48,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
-    //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
     //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
     //connect(ui->deleteButton, &QAbstractButton::clicked, this, &ContactsDialog::onDelete);
-    //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
-    //connect(ui->addButton, &QAbstractButton::clicked, this, &ContactsDialog::onAdd);
-    //connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
     for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
@@ -94,10 +91,10 @@ void ContactsDialog::onUpdate()
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton());
     }
-    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
