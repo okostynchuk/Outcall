@@ -99,8 +99,7 @@ void AddContactDialog::addContact()
     query1.next();
 
     QSqlQuery query2(db);
-    QSqlQuery query3(db);
-    QSqlQuery query4(db);
+
 
 
     if(QString(ui->FirstName->text()).isEmpty() == true)
