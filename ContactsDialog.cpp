@@ -90,6 +90,13 @@ void ContactsDialog::onUpdate()
     query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
+    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
+    query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
+    query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
+    query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
+    query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
     query1->insertColumn(9);
     query1->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
     ui->tableView->setModel(NULL);

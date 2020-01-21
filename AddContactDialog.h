@@ -26,6 +26,12 @@ protected:
 private:
     Ui::AddContactDialog *ui;
     QSqlQueryModel *query1;
+    QString updateID;
+    QString firstNumber;
+    QString secondNumber;
+    QString thirdNumber;
+    QString fourthNumber;
+    QString fifthNumber;
 };
 
 #endif // ADDCONTACTDIALOG_H
