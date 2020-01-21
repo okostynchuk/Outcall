@@ -26,12 +26,6 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(Validator);
     ui->FifthNumber->setValidator(Validator);
 
-    QRegExp RegExp2("^[A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
-    QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
-    ui->FirstName->setValidator(ValidatorForName);
-    ui->LastName->setValidator(ValidatorForName);
-    ui->Patronymic->setValidator(ValidatorForName);
-
     query1 = new QSqlQueryModel;
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -41,6 +35,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
 
     connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
+
 }
 
 AddContactDialog::~AddContactDialog()
@@ -67,7 +62,6 @@ void AddContactDialog::addContact()
     QString lastname = QString(ui->LastName->text());
     QString firstname = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
-
 
     query.prepare("INSERT INTO entry (entry_type, entry_name,entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -99,8 +93,6 @@ void AddContactDialog::addContact()
     query1.next();
 
     QSqlQuery query2(db);
-
-
 
     if(QString(ui->FirstName->text()).isEmpty() == true)
     {
@@ -181,6 +173,11 @@ void AddContactDialog::addContact()
 void AddContactDialog::updateContact()
 {
 
+}
+
+void AddContactDialog::setValuesCallHistory(QString &number)
+{
+    ui->FirstNumber->setText(number);
 }
 
 

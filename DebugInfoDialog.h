@@ -2,6 +2,7 @@
 #define DEBUGINFODIALOG_H
 
 #include <QDialog>
+#include <QSqlQuery>
 
 namespace Ui {
 class DebugInfoDialog;
