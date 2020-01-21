@@ -15,13 +15,13 @@ class AddContactDialog : public QDialog
 
 public:
     explicit AddContactDialog(QWidget *parent = 0);
+    void setValuesContacts(int &);
     ~AddContactDialog();
 
 protected:
     void onSave();
     void addContact();
     void updateContact();
-    void setValues();
 
 private:
     Ui::AddContactDialog *ui;
