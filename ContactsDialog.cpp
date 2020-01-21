@@ -196,31 +196,30 @@ void ContactsDialog::onComboBoxSelected(){
 
 void ContactsDialog::on_lineEdit_returnPressed()
 {
-         if(ui->comboBox->setProperty("currentIndex", 0)){
-                  QSqlTableModel *model = new QSqlTableModel(ui->tableView);
-                  model->setTable("entry_phone");
-                  QString entry_name = ui->lineEdit->text();
-                  QString strFilterName = QString("entry_name LIKE '%%1%'").arg(entry_name);
-                  model->setFilter(strFilterName);
-                  model->setSort(0, Qt::DescendingOrder);
-
-                  ui->tableView->setModel(NULL);
-                  model->select();
-                  //ui->tableView->setModel(NULL);
-                  ui->tableView->setModel(model);
+    if(ui->comboBox->setProperty("currentIndex", 0)){
+        QSqlTableModel *model = new QSqlTableModel(ui->tableView);
+        model->setTable("entry_phone");
+        QString entry_name = ui->lineEdit->text();
+        QString strFilterName = QString("entry_name LIKE '%%1%'").arg(entry_name);
+        model->setFilter(strFilterName);
+        model->setSort(0, Qt::DescendingOrder);
+        model->select();
+        ui->tableView->setModel(NULL);
+        ui->tableView->setModel(model);
 
 
-         for (int i = 0; i < model->rowCount(); ++i) {
-             QString entry_type1 = model->record(i).value("entry_type").toString();
-             QString entry_name = model->record(i).value("entry_name").toString();
-             QString entry_phone = model->record(i).value("entry_phone").toString();
-             QString entry_city = model->record(i).value("entry_city").toString();
-             QString entry_email = model->record(i).value("entry_email").toString();
-             QString entry_vybor_id = model->record(i).value("entry_vybor_id").toString();
-             qDebug() << "   " << entry_type1 << "   " << entry_name << "   " << entry_phone << "   " << entry_vybor_id << "   " << entry_city << "   " << entry_email;
+//         for (int i = 0; i < model->rowCount(); ++i) {
+//             QString entry_type1 = model->record(i).value("entry_type").toString();
+//             QString entry_name = model->record(i).value("entry_name").toString();
+//             QString entry_phone = model->record(i).value("entry_phone").toString();
+//             QString entry_city = model->record(i).value("entry_city").toString();
+//             QString entry_email = model->record(i).value("entry_email").toString();
+//             QString entry_vybor_id = model->record(i).value("entry_vybor_id").toString();
+//             qDebug() << "   " << entry_type1 << "   " << entry_name << "   " << entry_phone << "   " << entry_vybor_id << "   " << entry_city << "   " << entry_email;
 
-         }
-  }
+//         }
+ }
+
 
 //        if(ui->comboBox->setProperty("currentIndex", 1)){
 //         QSqlTableModel model;

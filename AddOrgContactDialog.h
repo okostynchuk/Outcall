@@ -22,6 +22,7 @@ protected:
     void addOrgContact();
     void updateOrgContact();
 
+
 private:
     Ui::AddOrgContactDialog *ui;
     QSqlQueryModel *query1;
