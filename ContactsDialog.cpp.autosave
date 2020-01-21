@@ -203,10 +203,8 @@ void ContactsDialog::on_lineEdit_returnPressed()
                   QString strFilterName = QString("entry_name LIKE '%%1%'").arg(entry_name);
                   model->setFilter(strFilterName);
                   model->setSort(0, Qt::DescendingOrder);
-
-                  ui->tableView->setModel(NULL);
                   model->select();
-                  //ui->tableView->setModel(NULL);
+                  ui->tableView->setModel(NULL);
                   ui->tableView->setModel(model);
 
 
