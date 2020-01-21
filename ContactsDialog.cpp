@@ -32,7 +32,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
-    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
+    query3 = new QSqlQueryModel;
+    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -70,8 +71,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-    //ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     //ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
 
     QComboBox::AdjustToContents;
@@ -85,7 +86,7 @@ ContactsDialog::~ContactsDialog()
 
 void ContactsDialog::onUpdate()
 {
-    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
+    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
@@ -105,7 +106,8 @@ void ContactsDialog::onUpdate()
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 void ContactsDialog::onTableClicked(const QModelIndex &index)
@@ -126,7 +128,7 @@ void ContactsDialog::onEdit()
         g_Switch = "updatePerson";
         AddContactDialog *addContactDialog = new AddContactDialog;
         addContactDialog->setWindowTitle("Редактирование физ. лица");
-        //query2->setQuery("");
+        addContactDialog->setValuesContacts(i);
         addContactDialog->exec();
     }
     else
@@ -134,6 +136,7 @@ void ContactsDialog::onEdit()
         g_Switch = "updateOrg";
         AddOrgContactDialog *addOrgContactDialog = new AddOrgContactDialog;
         addOrgContactDialog->setWindowTitle("Редактирование организации");
+        addOrgContactDialog->setOrgValuesContacts(i);
         addOrgContactDialog->exec();
     }
 }
@@ -229,8 +232,8 @@ void ContactsDialog::showTable(){
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 void ContactsDialog::on_lineEdit_returnPressed()
