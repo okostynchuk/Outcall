@@ -26,6 +26,7 @@ protected slots:
     void onEdit();
     void onTableClicked(const QModelIndex &);
     void onComboBoxSelected();
+    void tableUpdate();
     void on_lineEdit_returnPressed();
 
 private:
@@ -33,6 +34,7 @@ private:
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
+    QSqlQueryModel *query4;
     QWidget* addImageLabel(int &i) const;
     QWidget* createEditButton(int &i) const;
 };
