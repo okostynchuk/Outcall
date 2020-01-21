@@ -178,6 +178,10 @@ void CallHistoryDialog::onAddContact()
       g_Switch = "addPerson";
       AddContactDialog* addContactDialog = new AddContactDialog;
       addContactDialog->setWindowTitle("Add Contact");
+    g_Switch = "addPerson";
+    AddContactDialog* addContactDialog = new AddContactDialog;
+    addContactDialog->setWindowTitle("Add Contact");
+    addContactDialog->exec();
 
 
     if (ui->tabWidget->currentIndex() == MISSED)

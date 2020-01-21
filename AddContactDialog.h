@@ -16,17 +16,23 @@ class AddContactDialog : public QDialog
 public:
     explicit AddContactDialog(QWidget *parent = 0);
     void setValuesCallHistory(QString &);
+    void setValuesContacts(int &);
     ~AddContactDialog();
 
 protected:
     void onSave();
     void addContact();
     void updateContact();
-    void setValues();
 
 private:
     Ui::AddContactDialog *ui;
     QSqlQueryModel *query1;
+    QString updateID;
+    QString firstNumber;
+    QString secondNumber;
+    QString thirdNumber;
+    QString fourthNumber;
+    QString fifthNumber;
 };
 
 #endif // ADDCONTACTDIALOG_H

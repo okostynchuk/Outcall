@@ -16,12 +16,14 @@ class AddOrgContactDialog : public QDialog
 public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
     void AddOrgContactDialog::setValuesCallHistory(QString &);
+    void setOrgValuesContacts(int &);
     ~AddOrgContactDialog();
 
 protected:
     void onSave();
     void addOrgContact();
     void updateOrgContact();
+
 
 private:
     Ui::AddOrgContactDialog *ui;
