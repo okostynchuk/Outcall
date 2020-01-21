@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ContactsDialog</class>
  <widget class="QDialog" name="ContactsDialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,6 +40,9 @@
            <font>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="acceptDrops">
            <bool>false</bool>
@@ -79,6 +85,9 @@
             <property name="cursor">
              <cursorShape>IBeamCursor</cursorShape>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
             <property name="toolTip">
              <string>Поиск по таблице</string>
             </property>
@@ -113,6 +122,9 @@
               <pointsize>10</pointsize>
              </font>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="text">
              <string>Обновить</string>
             </property>
@@ -130,6 +142,9 @@
              <font>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
              <string>Добавить физ. лицо</string>
@@ -149,6 +164,9 @@
               <pointsize>10</pointsize>
              </font>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="text">
              <string>Добавить организацию</string>
             </property>
@@ -160,6 +178,9 @@
       </item>
       <item>
        <widget class="QTableView" name="tableView">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
