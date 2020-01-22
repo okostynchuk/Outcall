@@ -23,10 +23,6 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     ui->FirstNumber->setValidator(Validator);
     ui->SecondNumber->setValidator(Validator);
     ui->ThirdNumber->setValidator(Validator);
-
-    QRegExp RegExp2("^[A-ZА-Я][A-ZА-Яa-zа-я]+[\\ |\\-]?[A-ZА-Яa-zа-я]+$");
-    QValidator *ValidatorForName = new QRegExpValidator(RegExp2, this);
-    ui->OrgName->setValidator(ValidatorForName);
     ui->FourthNumber->setValidator(Validator);
     ui->FifthNumber->setValidator(Validator);
 
@@ -169,6 +165,11 @@ void AddOrgContactDialog::addOrgContact()
 void AddOrgContactDialog::updateOrgContact()
 {
 
+}
+
+void AddOrgContactDialog::setValuesCallHistory(QString &number)
+{
+    ui->FirstNumber->setText(number);
 }
 
 void AddOrgContactDialog::setOrgValuesContacts(int &i)
