@@ -246,7 +246,8 @@ void OutCall::onMessageReceived(const QString &message)
 
 void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+    QString stateDB = "insert";
+    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
@@ -313,6 +314,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     {
         g_pContactManager->addOutlookContact(from, callerName);
     }
+    QMessageBox::information(this, trUtf8("Epta"), trUtf8("CHTO ZA HYUNA???"));
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)

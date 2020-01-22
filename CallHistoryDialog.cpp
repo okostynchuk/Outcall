@@ -29,25 +29,26 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tabWidget->setCurrentIndex(0);
 
     // Load calls
+    QString stateDB = "notInsert";
     QVariantList missedCalls = global::getSettingsValue("missed", "calls").toList();
     for (int i = 0; i < missedCalls.size(); ++i)
     {
         QMap<QString, QVariant> call = missedCalls[i].toMap();
-        addCall(call, MISSED);
+        addCall(call, MISSED, stateDB);
     }
 
     QVariantList receivedCalls = global::getSettingsValue("received", "calls").toList();
     for (int i = 0; i < receivedCalls.size(); ++i)
     {
         QMap<QString, QVariant> call = receivedCalls[i].toMap();
-        addCall(call, RECIEVED);
+        addCall(call, RECIEVED, stateDB);
     }
 
     QVariantList placedCalls = global::getSettingsValue("placed", "calls").toList();
     for (int i = 0; i < placedCalls.size(); ++i)
     {
         QMap<QString, QVariant> call = placedCalls[i].toMap();
-        addCall(call, PLACED);
+        addCall(call, PLACED, stateDB);
     }
 }
 
@@ -56,18 +57,34 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistoryDialog::Calls calls)
+void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistoryDialog::Calls calls, QString stateDB)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
+
     const QString from     = call.value("from").toString();
     const QString to       = call.value("to").toString();
     const QString protocol = call.value("protocol").toString();
     const QString dateTime = call.value("date_time").toString();
     QString callerIDName   = call.value("callerIDName").toString();
+    QString note;
 
+    query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = ?)");
+    query.addBindValue(from);
+    query.exec();
+    query.next();
+    callerIDName=query.value(0).toString();
 
-
+    if (stateDB == "insert")
+    {
+        query.prepare("INSERT INTO calls(number_from, number_to, date_time, note)"
+                      "VALUES(?, ?, ?, ?)");
+        query.addBindValue(from);
+        query.addBindValue(to);
+        query.addBindValue(dateTime);
+        query.addBindValue(note);
+        query.exec();
+    }
 
 //    QList<Contact*> contactList = g_pContactManager->getContacts();
 //    for(int i = 0; i < contactList.size(); ++i)
@@ -81,16 +98,8 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
 //        }
 //    }
 
-     query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = ?)");
-     query.addBindValue(from);
-     query.exec();
-     query.next();
-     callerIDName=query.value(0).toString();
-
     if (calls == MISSED)
     {
-
-
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
         if (callerIDName != "<unknown>")
             extensionItem->setText(0, callerIDName);
@@ -175,25 +184,20 @@ void CallHistoryDialog::onCallClicked()
 
 void CallHistoryDialog::onAddContact()
 {
-      g_Switch = "addPerson";
-      AddContactDialog* addContactDialog = new AddContactDialog;
-      addContactDialog->setWindowTitle("Add Contact");
     g_Switch = "addPerson";
-    AddContactDialog* addContactDialog = new AddContactDialog;
-    addContactDialog->setWindowTitle("Add Contact");
-    addContactDialog->exec();
-
+    addContactDialog = new AddContactDialog;
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetMissed->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             const QString name = item->text(0);
             QString from = item->text(1);
 
+            addContactDialog->setWindowTitle("Add Contact");
             addContactDialog->setValuesCallHistory(from);
             addContactDialog->exec();
             // g_pContactManager->addOutlookContact(from, name);
@@ -201,12 +205,14 @@ void CallHistoryDialog::onAddContact()
         else if (ui->tabWidget->currentIndex() == RECIEVED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetReceived->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             QString name = item->text(0);
             QString from = item->text(1);
+
+            addContactDialog->setWindowTitle("Add Contact");
             addContactDialog->setValuesCallHistory(from);
             addContactDialog->exec();
 
@@ -215,12 +221,14 @@ void CallHistoryDialog::onAddContact()
         else if(ui->tabWidget->currentIndex() == PLACED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             int ind1 = item->text(1).indexOf("(");
             QString to = item->text(1).mid(0, ind1);
+
+            addContactDialog->setWindowTitle("Add Contact");
             addContactDialog->setValuesCallHistory(to);
             addContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
@@ -230,19 +238,19 @@ void CallHistoryDialog::onAddContact()
 void CallHistoryDialog::onAddOrgContact()
 {
     g_Switch = "addOrg";
-    AddOrgContactDialog* addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setWindowTitle("Add Contact");
+    addOrgContactDialog = new AddOrgContactDialog;
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetMissed->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             const QString name = item->text(0);
             QString from = item->text(1);
 
+            addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(from, name);
@@ -250,12 +258,14 @@ void CallHistoryDialog::onAddOrgContact()
         else if (ui->tabWidget->currentIndex() == RECIEVED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetReceived->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             QString name = item->text(0);
             QString from = item->text(1);
+
+            addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
 
@@ -264,12 +274,14 @@ void CallHistoryDialog::onAddOrgContact()
         else if(ui->tabWidget->currentIndex() == PLACED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
-            if (selectedItems.size() == 0)
+            if (selectedItems.size() == 0 || selectedItems.size() > 1)
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
             int ind1 = item->text(1).indexOf("(");
             QString to = item->text(1).mid(0, ind1);
+
+            addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(to);
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");

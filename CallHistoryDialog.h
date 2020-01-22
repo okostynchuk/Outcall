@@ -28,7 +28,7 @@ public:
         PLACED = 2
     };
 
-    void addCall(const QMap<QString, QVariant> &call, Calls calls);
+    void addCall(const QMap<QString, QVariant> &call, Calls calls, QString stateDB);
 
 protected slots:
 
@@ -39,6 +39,8 @@ protected slots:
 
 private:
     Ui::CallHistoryDialog *ui;
+    AddContactDialog *addContactDialog;
+    AddOrgContactDialog *addOrgContactDialog;
 };
 
 #endif // CALLHISTORYDIALOG_H
