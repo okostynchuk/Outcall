@@ -22,6 +22,12 @@
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>450</height>
+      </size>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -67,7 +73,7 @@
            <widget class="QLineEdit" name="lineEdit">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>100</width>
               <height>27</height>
              </size>
             </property>
@@ -100,7 +106,7 @@
            <widget class="QPushButton" name="sortButton">
             <property name="minimumSize">
              <size>
-              <width>128</width>
+              <width>125</width>
               <height>27</height>
              </size>
             </property>
@@ -134,7 +140,7 @@
            <widget class="QPushButton" name="updateButton">
             <property name="minimumSize">
              <size>
-              <width>128</width>
+              <width>125</width>
               <height>27</height>
              </size>
             </property>
@@ -155,7 +161,7 @@
            <widget class="QPushButton" name="addPersonButton">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>129</width>
               <height>27</height>
              </size>
             </property>
@@ -176,7 +182,7 @@
            <widget class="QPushButton" name="addOrgButton">
             <property name="minimumSize">
              <size>
-              <width>128</width>
+              <width>147</width>
               <height>27</height>
              </size>
             </property>
