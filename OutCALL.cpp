@@ -314,7 +314,6 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     {
         g_pContactManager->addOutlookContact(from, callerName);
     }
-    QMessageBox::information(this, trUtf8("Epta"), trUtf8("CHTO ZA HYUNA???"));
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
