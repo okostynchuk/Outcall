@@ -186,6 +186,7 @@ void CallHistoryDialog::onAddContact()
 {
     g_Switch = "addPerson";
     addContactDialog = new AddContactDialog;
+    addContactDialog->setWindowTitle("Add Contact");
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -218,7 +219,7 @@ void CallHistoryDialog::onAddContact()
 
            // g_pContactManager->addOutlookContact(from, name);
         }
-        else if(ui->tabWidget->currentIndex() == PLACED)
+        else if (ui->tabWidget->currentIndex() == PLACED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
             if (selectedItems.size() == 0 || selectedItems.size() > 1)
@@ -233,12 +234,14 @@ void CallHistoryDialog::onAddContact()
             addContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
         }
+    delete addContactDialog;
 }
 
 void CallHistoryDialog::onAddOrgContact()
 {
     g_Switch = "addOrg";
     addOrgContactDialog = new AddOrgContactDialog;
+    addOrgContactDialog->setWindowTitle("Add Contact");
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -250,6 +253,7 @@ void CallHistoryDialog::onAddOrgContact()
             const QString name = item->text(0);
             QString from = item->text(1);
 
+            addOrgContactDialog->setOrgValuesCallHistory(from);
             addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
@@ -265,13 +269,13 @@ void CallHistoryDialog::onAddOrgContact()
             QString name = item->text(0);
             QString from = item->text(1);
 
+            addOrgContactDialog->setOrgValuesCallHistory(from);
             addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
-
            // g_pContactManager->addOutlookContact(from, name);
         }
-        else if(ui->tabWidget->currentIndex() == PLACED)
+        else if (ui->tabWidget->currentIndex() == PLACED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetPlaced->selectedItems();
             if (selectedItems.size() == 0 || selectedItems.size() > 1)
@@ -281,11 +285,13 @@ void CallHistoryDialog::onAddOrgContact()
             int ind1 = item->text(1).indexOf("(");
             QString to = item->text(1).mid(0, ind1);
 
+            addOrgContactDialog->setOrgValuesCallHistory(to);
             addOrgContactDialog->setWindowTitle("Add Contact");
             addOrgContactDialog->setValuesCallHistory(to);
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
         }
+    delete addOrgContactDialog;
 }
 
 void CallHistoryDialog::onRemoveButton()

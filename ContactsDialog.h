@@ -40,9 +40,13 @@ private:
     Ui::ContactsDialog *ui;
     QSqlQueryModel *query1;    
     QSqlQueryModel *query2;
-    QTreeView *treeView;//
+    QSqlQueryModel *query3;
+    QSqlQueryModel *query4;
+    AddContactDialog *addContactDialog;
+    AddOrgContactDialog *addOrgContactDialog;
+    QTreeView *treeView;
     QSortFilterProxyModel *proxyModel;
-    //MyItemModel *sourceModel;//
+    //MyItemModel *sourceModel;
     QWidget* addImageLabel(int &i) const;
     QWidget* createEditButton(int &i) const;
 
