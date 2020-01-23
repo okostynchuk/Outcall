@@ -42,7 +42,7 @@
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="acceptDrops">
            <bool>false</bool>
@@ -86,7 +86,7 @@
              <cursorShape>IBeamCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="toolTip">
              <string>Поиск по таблице</string>

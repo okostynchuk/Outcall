@@ -29,26 +29,20 @@ protected slots:
     void onEdit();
     void onTableClicked(const QModelIndex &);
     void onComboBoxSelected();
-    void tableUpdate();
     void on_lineEdit_returnPressed();
-
-private slots:
-    void on_sortButton_clicked();
+    void onSort();
 
 private:
     Ui::ContactsDialog *ui;
     QSqlQueryModel *query1;    
     QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
-    QSqlQueryModel *query4;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     QTreeView *treeView;
     QSortFilterProxyModel *proxyModel;
-    //MyItemModel *sourceModel;
     QWidget* addImageLabel(int &i) const;
     QWidget* createEditButton(int &i) const;
-
+    QString update;
 };
 
 #endif // CONTACTSDIALOG_H
