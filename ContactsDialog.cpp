@@ -135,35 +135,39 @@ void ContactsDialog::onEdit()
     if(query2->data(query2->index(i, 0)).toString() == "person")
     {
         g_Switch = "updatePerson";
-        AddContactDialog *addContactDialog = new AddContactDialog;
+        addContactDialog = new AddContactDialog;
         addContactDialog->setWindowTitle("Редактирование физ. лица");
         addContactDialog->setValuesContacts(i);
         addContactDialog->exec();
+        addContactDialog->deleteLater();
     }
     else
     {
         g_Switch = "updateOrg";
-        AddOrgContactDialog *addOrgContactDialog = new AddOrgContactDialog;
+        addOrgContactDialog = new AddOrgContactDialog;
         addOrgContactDialog->setWindowTitle("Редактирование организации");
         addOrgContactDialog->setOrgValuesContacts(i);
         addOrgContactDialog->exec();
+        addOrgContactDialog->deleteLater();
     }
 }
 
 void ContactsDialog::onAddPerson()
 {
     g_Switch = "addPerson";
-    AddContactDialog *addContactDialog = new AddContactDialog;
+    addContactDialog = new AddContactDialog;
     addContactDialog->setWindowTitle("Добавление физ. лица");
     addContactDialog->exec();
+    addContactDialog->deleteLater();
 }
 
 void ContactsDialog::onAddOrg()
 {
     g_Switch = "addOrg";
-    AddOrgContactDialog *addOrgContactDialog = new AddOrgContactDialog;
+    addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Добавление организации");
     addOrgContactDialog->exec();
+    addOrgContactDialog->deleteLater();
 }
 
 QWidget* ContactsDialog::addImageLabel(int &i) const

@@ -15,8 +15,8 @@ class AddOrgContactDialog : public QDialog
 
 public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
-    void AddOrgContactDialog::setValuesCallHistory(QString &);
     void setOrgValuesContacts(int &);
+    void setOrgValuesCallHistory(QString &);
     ~AddOrgContactDialog();
 
 protected:
@@ -24,11 +24,16 @@ protected:
     void addOrgContact();
     void updateOrgContact();
 
-
 private:
     Ui::AddOrgContactDialog *ui;
+    QValidator *validator;
     QSqlQueryModel *query1;
-
+    QString updateID;
+    QString firstNumber;
+    QString secondNumber;
+    QString thirdNumber;
+    QString fourthNumber;
+    QString fifthNumber;
 };
 
 #endif // ADDORGCONTACTDIALOG_H

@@ -39,6 +39,8 @@ protected slots:
 
 private:
     Ui::CallHistoryDialog *ui;
+    AddContactDialog *addContactDialog;
+    AddOrgContactDialog *addOrgContactDialog;
 };
 
 #endif // CALLHISTORYDIALOG_H

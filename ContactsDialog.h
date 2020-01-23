@@ -35,6 +35,9 @@ private:
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
+    AddContactDialog *addContactDialog;
+    AddOrgContactDialog *addOrgContactDialog;
+
     QWidget* addImageLabel(int &i) const;
     QWidget* createEditButton(int &i) const;
 };
