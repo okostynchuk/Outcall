@@ -30,7 +30,7 @@ protected slots:
     void onTableClicked(const QModelIndex &);
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
-    void onSort();
+    void on_sortButton_clicked();
 
 private:
     Ui::ContactsDialog *ui;
