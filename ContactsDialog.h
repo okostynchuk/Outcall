@@ -6,6 +6,9 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
+#include <QTreeView>
+#include <QAbstractProxyModel>
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class ContactsDialog;
@@ -29,17 +32,24 @@ protected slots:
     void tableUpdate();
     void on_lineEdit_returnPressed();
 
+private slots:
+
+    void on_sortButton_clicked();
+
 private:
     Ui::ContactsDialog *ui;
-    QSqlQueryModel *query1;
+    QSqlQueryModel *query1;    
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
-
+    QTreeView *treeView;
+    QSortFilterProxyModel *proxyModel;
+    //MyItemModel *sourceModel;
     QWidget* addImageLabel(int &i) const;
     QWidget* createEditButton(int &i) const;
+
 };
 
 #endif // CONTACTSDIALOG_H

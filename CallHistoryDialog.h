@@ -28,7 +28,7 @@ public:
         PLACED = 2
     };
 
-    void addCall(const QMap<QString, QVariant> &call, Calls calls);
+    void addCall(const QMap<QString, QVariant> &call, Calls calls, QString stateDB);
 
 protected slots:
 

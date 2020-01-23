@@ -19,6 +19,9 @@
 #include <QScreen>
 #include <QLabel>
 #include <QAbstractProxyModel>
+#include <QTreeView>
+#include <QSortFilterProxyModel>
+#include <QModelIndex>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -32,8 +35,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
-    query3 = new QSqlQueryModel;
-    query4 = new QSqlQueryModel;
     query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
     query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
@@ -76,8 +77,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     //ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     //ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
 
-    QComboBox::AdjustToContents;
     onComboBoxSelected();
+    ui->tableView->setSortingEnabled(true);
 }
 
 ContactsDialog::~ContactsDialog()
@@ -202,142 +203,110 @@ QWidget* ContactsDialog::createEditButton(int &i) const
 
 void ContactsDialog::onComboBoxSelected(){
 
-    ui->comboBox->setCurrentIndex(0); ui->comboBox->addItem("Поиск по ФИО / названию" );
-    ui->comboBox->addItem("Поиск по номеру телефона");
-    ui->comboBox->addItem("Поиск по заметке");
+    QString item("Поиск по ФИО / названию");
+    ui->comboBox->addItem(item);
+
+    QString item1("Поиск по номеру телефона");
+    ui->comboBox->addItem(item1);
+
+    QString item2("Поиск по заметке");
+    ui->comboBox->addItem(item2);
 
 }
 
 void ContactsDialog::tableUpdate(){
+    query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    query1->insertColumn(1);
+    query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
+    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
+    query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
+    query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
+    query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
+    query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
+    query1->insertColumn(9);
+    query1->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
 
+    ui->tableView->setModel(NULL);
+    ui->tableView->setModel(query1);
+    for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
+    {
+        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
+        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
+    }
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+    //ui->tableView->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setDefaultSectionSize(115);
+
+    ui->tableView->setColumnHidden(0, true);
+    ui->tableView->resizeRowsToContents();
+    //ui->tableView->resizeColumnsToContents();
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void ContactsDialog::on_lineEdit_returnPressed()
 {
-//    if(ui->comboBox->setProperty("currentIndex", 0)){
-//        QSqlTableModel *model = new QSqlTableModel(ui->tableView);
-//        model->setTable("entry_phone");
-//        QString entry_name = ui->lineEdit->text();
-//        QString strFilterName = QString("entry_name LIKE '%%1%'").arg(entry_name);
-//        model->setFilter(strFilterName);
-//        model->setSort(0, Qt::DescendingOrder);
-//        model->select();
-//        ui->tableView->setModel(NULL);
-//        ui->tableView->setModel(model);
+    QComboBox::AdjustToContents;
 
-
-//         for (int i = 0; i < model->rowCount(); ++i) {
-//             QString entry_type1 = model->record(i).value("entry_type").toString();
-//             QString entry_name = model->record(i).value("entry_name").toString();
-//             QString entry_phone = model->record(i).value("entry_phone").toString();
-//             QString entry_city = model->record(i).value("entry_city").toString();
-//             QString entry_email = model->record(i).value("entry_email").toString();
-//             QString entry_vybor_id = model->record(i).value("entry_vybor_id").toString();
-//             qDebug() << "   " << entry_type1 << "   " << entry_name << "   " << entry_phone << "   " << entry_vybor_id << "   " << entry_city << "   " << entry_email;
-
-//         }
- //}
-
-    if(ui->comboBox->setProperty("currentIndex", 0)){
+    if(ui->comboBox->currentText() == "Поиск по ФИО / названию"){
 
         QString entry_name = ui->lineEdit->text();
-        query3->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-        query4->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
 
-        query3->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-        query3->insertColumn(1);
-        query3->setHeaderData(1, Qt::Horizontal, tr("Тип"));
-        query3->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
-        query3->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
-        query3->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
-        query3->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
-        query3->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
-        query3->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
-        query3->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
-        query3->insertColumn(9);
-        query3->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
-
-        ui->tableView->setModel(NULL);
-        ui->tableView->setModel(query3);
-        for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
-        {
-            ui->tableView->setIndexWidget(query3->index(i, 1), addImageLabel(i));
-            ui->tableView->setIndexWidget(query3->index(i, 9), createEditButton(i));
-        }
-        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
-        //ui->tableView->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setDefaultSectionSize(115);
-
-        ui->tableView->setColumnHidden(0, true);
-        ui->tableView->resizeRowsToContents();
-        //ui->tableView->resizeColumnsToContents();
-        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
+        tableUpdate();
 
 }
 
-//    if(ui->comboBox->setProperty("currentIndex", 1)){
+    if(ui->comboBox->currentText() == "Поиск по номеру телефона"){
 
-//        ui->widget->move(0, 0);
-//        ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
-//        QString entry_phone = ui->lineEdit->text();
-//        query3->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep where entry_phone like '%" + entry_phone + "%' GROUP BY ep.entry_id");
-//        query4->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+        QString entry_phone = ui->lineEdit->text();
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
 
-//        query3->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-//        query3->insertColumn(1);
-//        query3->setHeaderData(1, Qt::Horizontal, tr("Тип"));
-//        query3->setHeaderData(2, Qt::Horizontal, QObject::tr("ФИО / Название"));
-//        query3->setHeaderData(3, Qt::Horizontal, QObject::tr("Телефон"));
-//        query3->setHeaderData(4, Qt::Horizontal, QObject::tr("Город"));
-//        query3->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
-//        query3->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
-//        query3->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
-//        query3->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
-//        query3->insertColumn(9);
-//        query3->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
+        tableUpdate();
 
-//        ui->tableView->setModel(NULL);
-//        ui->tableView->setModel(query3);
-//        for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
-//        {
-//            ui->tableView->setIndexWidget(query3->index(i, 1), addImageLabel(i));
-//            ui->tableView->setIndexWidget(query3->index(i, 9), createEditButton(i));
-//        }
-//        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-//        ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-//        ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
-//        ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
-//        ui->tableView->setColumnHidden(0, true);
-//        ui->tableView->resizeRowsToContents();
-//        ui->tableView->resizeColumnsToContents();
-//        ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-
-//}
-
-//        if(ui->comboBox->setProperty("currentIndex", 2)){
-//         QSqlTableModel model;
-//         model.setTable("entry_comment");
-//         QString entry_comment = ui->lineEdit->text();
-//         QString strFilterComment = QString("entry_phone LIKE '%%1%'").arg(entry_comment);
-//         model.setFilter(strFilterComment);
-//         model.setSort(0, Qt::DescendingOrder);
-//         model.select();
-
-
-//         for (int i = 0; i < model.rowCount(); ++i) {
-//             QString entry_type1 = model.record(i).value("entry_type").toString();
-//             QString entry_name = model.record(i).value("entry_name").toString();
-//             QString entry_phone = model.record(i).value("entry_phone").toString();
-//             QString entry_city = model.record(i).value("entry_city").toString();
-//             QString entry_email = model.record(i).value("entry_email").toString();
-//             QString entry_vybor_id = model.record(i).value("entry_vybor_id").toString();
-//             qDebug() << "   " << entry_type1 << "   " << entry_name << "   " << entry_phone << "   " << entry_vybor_id << "   " << entry_city << "   " << entry_email;
-
-//         }
-//    }
 }
+
+    if(ui->comboBox->currentText() == "Поиск по заметке"){
+
+        QString entry_comment = ui->lineEdit->text();
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
+
+        tableUpdate();
+
+    }
+}
+
+void ContactsDialog::on_sortButton_clicked()
+{
+    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_name ORDER BY ep.entry_name");
+    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY ep.entry_name ORDER BY ep.entry_name");
+
+    tableUpdate();
+
+//    treeView = new QTreeView;
+//    MyItemModel *sourceModel = new MyItemModel(this);
+//    proxyModel = new QSortFilterProxyModel(this);
+//    proxyModel->setSourceModel(sourceModel);
+//    treeView->setModel(proxyModel);
+
+
+   // ui->tableView->sortByColumn(2,Qt::AscendingOrder);
+
+//    sourceModel->(2, Qt::AscendingOrder);
+
+    //ui->tableView->setSortingEnabled(true);
+
+
+
+    //ui->tableView->sortByColumn(2,Qt::AscendingOrder);
+
+}
+
+

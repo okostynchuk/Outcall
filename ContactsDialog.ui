@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>357</height>
+    <width>1098</width>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,6 +93,27 @@
             </property>
             <property name="whatsThis">
              <string>Поиск по таблице</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="sortButton">
+            <property name="minimumSize">
+             <size>
+              <width>128</width>
+              <height>27</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="text">
+             <string>Сортировать</string>
             </property>
            </widget>
           </item>
@@ -183,6 +204,9 @@
         </property>
         <property name="styleSheet">
          <string notr="true"/>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
