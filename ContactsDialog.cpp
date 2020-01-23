@@ -252,7 +252,7 @@ void ContactsDialog::on_lineEdit_returnPressed()
     }
 }
 
-void ContactsDialog::onSort()
+void ContactsDialog::on_sortButton_clicked()
 {
     update = "sort";
 
