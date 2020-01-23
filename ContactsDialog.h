@@ -33,7 +33,6 @@ protected slots:
     void on_lineEdit_returnPressed();
 
 private slots:
-
     void on_sortButton_clicked();
 
 private:

@@ -234,7 +234,7 @@ void CallHistoryDialog::onAddContact()
             addContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
         }
-    delete addContactDialog;
+    addContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onAddOrgContact()
@@ -255,7 +255,6 @@ void CallHistoryDialog::onAddOrgContact()
 
             addOrgContactDialog->setOrgValuesCallHistory(from);
             addOrgContactDialog->setWindowTitle("Add Contact");
-            addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(from, name);
         }
@@ -271,7 +270,6 @@ void CallHistoryDialog::onAddOrgContact()
 
             addOrgContactDialog->setOrgValuesCallHistory(from);
             addOrgContactDialog->setWindowTitle("Add Contact");
-            addOrgContactDialog->setValuesCallHistory(from);
             addOrgContactDialog->exec();
            // g_pContactManager->addOutlookContact(from, name);
         }
@@ -287,11 +285,10 @@ void CallHistoryDialog::onAddOrgContact()
 
             addOrgContactDialog->setOrgValuesCallHistory(to);
             addOrgContactDialog->setWindowTitle("Add Contact");
-            addOrgContactDialog->setValuesCallHistory(to);
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
         }
-    delete addOrgContactDialog;
+    addOrgContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onRemoveButton()
