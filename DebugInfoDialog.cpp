@@ -2,7 +2,7 @@
 #include "ui_debuginfodialog.h"
 #include "Global.h"
 
-#include <QSqlQuery>
+#include <QDebug>
 
 DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     QDialog(parent),

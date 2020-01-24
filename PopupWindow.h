@@ -45,6 +45,7 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void onTimer();

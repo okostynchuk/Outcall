@@ -118,7 +118,7 @@ height: 95px;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>28</x>
@@ -249,7 +249,7 @@ border: 1.5px solid #a53501;
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>85</x>
@@ -300,7 +300,7 @@ text-align: center;
      </widget>
     </item>
     <item>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QTextEdit" name="note">
       <property name="styleSheet">
        <string notr="true">*{
 background-color: rgba(0, 0, 0, 130);

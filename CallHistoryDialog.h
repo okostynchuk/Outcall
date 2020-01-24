@@ -36,9 +36,11 @@ protected slots:
     void onAddOrgContact();
     void onRemoveButton();
     void onCallClicked();
+    bool checkNumber(QString from);
 
 private:
     Ui::CallHistoryDialog *ui;
+    QSqlQuery *query;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
 };

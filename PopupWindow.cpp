@@ -3,6 +3,7 @@
 
 #include <QDesktopWidget>
 #include <QMouseEvent>
+#include <QDebug>
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
 int PopupWindow::m_nLastWindowPosition = 0;
@@ -275,4 +276,15 @@ void PopupWindow::mousePressEvent(QMouseEvent *)
 {
     m_bAppearing = false;
     m_timer.start();
+}
+
+void PopupWindow::keyPressEvent(QKeyEvent *event)
+{
+    int key=event->key();
+    QString note;
+    if (key == Qt::Key_Enter)
+    {
+        note = QString(ui->note->toPlainText());
+        qDebug() << note;
+    }
 }
