@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>417</width>
-    <height>536</height>
+    <height>521</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -34,9 +34,9 @@ color: white;
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>0</y>
      <width>400</width>
-     <height>301</height>
+     <height>311</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -118,7 +118,7 @@ height: 95px;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>28</x>
@@ -249,13 +249,13 @@ border: 1.5px solid #a53501;
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>85</x>
      <y>22</y>
      <width>311</width>
-     <height>205</height>
+     <height>211</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -311,6 +311,34 @@ border-radius: 7px;
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_close">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>0</y>
+     <width>31</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+background: red;
+}</string>
+   </property>
+   <property name="text">
+    <string>Х</string>
+   </property>
   </widget>
  </widget>
  <resources>

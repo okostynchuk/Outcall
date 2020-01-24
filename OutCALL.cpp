@@ -80,7 +80,7 @@ void OutCall::createContextMenu()
     connect(addContactAction, &QAction::triggered, this, &OutCall::onAddContact);
 
     // SettingsDialog
-    QAction* settingsAction = new QAction(tr("Settings"), m_menu);
+    QAction* settingsAction = new QAction(tr("Настройки"), m_menu);
     connect(settingsAction, &QAction::triggered, this, &OutCall::onSettingsDialog);
 
     QAction* debugInfoAction = new QAction(tr("Debug info"), m_menu);
@@ -183,11 +183,11 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
     switch (socketError)
     {
     case QAbstractSocket::RemoteHostClosedError:
-        MsgBoxInformation(tr("The remote host closed the connection."));
+        MsgBoxInformation(tr("Удаленный хост закрыл соединение."));
         break;
     case QAbstractSocket::HostNotFoundError:
-        MsgBoxInformation(tr("The host was not found. Please check the "
-                             "host name and port settings."));
+        MsgBoxInformation(tr("Хост не был найден. Пожалуйста, проверьте имя хоста "
+                             "и настройки порта."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
         MsgBoxInformation(tr("The connection was refused by the peer. "

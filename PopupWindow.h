@@ -49,7 +49,8 @@ protected:
 private slots:
     void onTimer();
     void onPopupTimeout();
-    virtual void mousePressEvent(QMouseEvent *evet);
+    //virtual void mouseMoveEvent(QMouseEvent *evet);//built-in
+    void on_pushButton_close_clicked();
 
 private:
     void startPopupWaitingTimer();
@@ -68,6 +69,12 @@ private:
 
 	static QList<PopupWindow*> m_PopupWindows;
 	static int m_nLastWindowPosition;
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
+
 };
 
 #endif // POPUPWINDOW_H

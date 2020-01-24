@@ -8,6 +8,7 @@
 #include <QSqlQueryModel>
 #include <QTreeView>
 #include <QAbstractProxyModel>
+#include <QHeaderView>
 #include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
@@ -22,6 +23,7 @@ class ContactsDialog : public QDialog
 
 public:
     explicit ContactsDialog(QWidget *parent = 0);
+    int i = 0;
     ~ContactsDialog();
 
 protected slots:
@@ -34,6 +36,7 @@ protected slots:
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void on_sortButton_clicked();
+    void setSortingEnabled();
 
 private:
     Ui::ContactsDialog *ui;
@@ -42,6 +45,7 @@ private:
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     QTreeView *treeView;
+    QHeaderView *tmpHeaderView;
     QSortFilterProxyModel *proxyModel;
     QWidget* addImageLabel(int &i);
     QWidget* createEditButton(int &i);
