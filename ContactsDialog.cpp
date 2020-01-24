@@ -61,7 +61,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
-    for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
+    n = ui->tableView->model()->rowCount();
+    for(int i = 0; i < n; ++i)
     {
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
@@ -85,6 +86,21 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
+void ContactsDialog::deleteObjects()
+{
+    for (int i = 0; i < widgets.size(); ++i)
+    {
+        widgets[i]->deleteLater();
+    }
+    qDeleteAll(layouts);
+    qDeleteAll(labels);
+    qDeleteAll(buttons);
+    widgets.clear();
+    layouts.clear();
+    labels.clear();
+    buttons.clear();
+}
+
 void ContactsDialog::onUpdate()
 {
     if (update == "default")
@@ -92,6 +108,7 @@ void ContactsDialog::onUpdate()
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
+    deleteObjects();
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
@@ -109,7 +126,8 @@ void ContactsDialog::onUpdate()
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
+    n = ui->tableView->model()->rowCount();
+    for(int i = 0; i < n; ++i)
     {
         ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
         ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
@@ -136,14 +154,14 @@ void ContactsDialog::onTableClicked(const QModelIndex &index)
 
 void ContactsDialog::onEdit()
 {
+    QString updateID = sender()->property("updateID").toString();
     int i = sender()->property("i").toInt();
-    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     if(query2->data(query2->index(i, 0)).toString() == "person")
     {
         g_Switch = "updatePerson";
         addContactDialog = new AddContactDialog;
         addContactDialog->setWindowTitle("Редактирование физ. лица");
-        addContactDialog->setValuesContacts(i);
+        addContactDialog->setValuesContacts(updateID);
         addContactDialog->exec();
         addContactDialog->deleteLater();
     }
@@ -152,7 +170,7 @@ void ContactsDialog::onEdit()
         g_Switch = "updateOrg";
         addOrgContactDialog = new AddOrgContactDialog;
         addOrgContactDialog->setWindowTitle("Редактирование организации");
-        addOrgContactDialog->setOrgValuesContacts(i);
+        addOrgContactDialog->setOrgValuesContacts(updateID);
         addOrgContactDialog->exec();
         addOrgContactDialog->deleteLater();
     }
@@ -176,7 +194,7 @@ void ContactsDialog::onAddOrg()
     addOrgContactDialog->deleteLater();
 }
 
-QWidget* ContactsDialog::addImageLabel(int &i) const
+QWidget* ContactsDialog::addImageLabel(int &i)
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
@@ -191,19 +209,27 @@ QWidget* ContactsDialog::addImageLabel(int &i) const
         imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
     wgt->setLayout(l);
+    widgets.append(wgt);
+    layouts.append(l);
+    labels.append(imageLabel);
     return wgt;
 }
 
-QWidget* ContactsDialog::createEditButton(int &i) const
+QWidget* ContactsDialog::createEditButton(int &i)
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
     QPushButton* editButton = new QPushButton("Редактировать");
     connect(editButton, SIGNAL(clicked(bool)), SLOT(onEdit()));
     editButton->setFocusPolicy(Qt::NoFocus);
+    QString updateID = query1->data(query1->index(i, 0)).toString();
+    editButton->setProperty("updateID", updateID);
     editButton->setProperty("i", i);
     l->addWidget(editButton);
     wgt->setLayout(l);
+    widgets.append(wgt);
+    layouts.append(l);
+    buttons.append(editButton);
     return wgt;
 }
 
@@ -256,8 +282,8 @@ void ContactsDialog::on_sortButton_clicked()
 {
     update = "sort";
 
-    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_name ORDER BY ep.entry_name");
-    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY ep.entry_name ORDER BY ep.entry_name");
+    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
+    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
 
     onUpdate();
 

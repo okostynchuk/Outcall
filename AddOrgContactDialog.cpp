@@ -322,13 +322,11 @@ void AddOrgContactDialog::updateOrgContact()
     }
 }
 
-void AddOrgContactDialog::setOrgValuesContacts(int &i)
+void AddOrgContactDialog::setOrgValuesContacts(QString &i)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT entry_id FROM entry_phone GROUP BY entry_id");
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(query1->data(query1->index(i, 0)).toString());
+    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(i);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -341,7 +339,7 @@ void AddOrgContactDialog::setOrgValuesContacts(int &i)
     fourthNumber = query.value(0).toString();
     query.next();
     fifthNumber = query.value(0).toString();
-    sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(query1->data(query1->index(i, 0)).toString());
+    sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(i);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -362,7 +360,7 @@ void AddOrgContactDialog::setOrgValuesContacts(int &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-    delete query1;
+    updateID = i;
 }
 
 void AddOrgContactDialog::setOrgValuesCallHistory(QString &number)

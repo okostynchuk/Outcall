@@ -421,6 +421,7 @@ void OutCall::onPlaceCall()
 void OutCall::onContactsInfo()
 {
     m_contactsDialog->show();
+    m_contactsDialog->raise();
 }
 
 void OutCall::close()

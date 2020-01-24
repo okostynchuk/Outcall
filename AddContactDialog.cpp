@@ -341,13 +341,11 @@ void AddContactDialog::updateContact()
     }
 }
 
-void AddContactDialog::setValuesContacts(int &i)
+void AddContactDialog::setValuesContacts(QString &i)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT entry_id FROM entry_phone GROUP BY entry_id");
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(query1->data(query1->index(i, 0)).toString());
+    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(i);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -360,7 +358,7 @@ void AddContactDialog::setValuesContacts(int &i)
     fourthNumber = query.value(0).toString();
     query.next();
     fifthNumber = query.value(0).toString();
-    sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(query1->data(query1->index(i, 0)).toString());
+    sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(i);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -385,8 +383,7 @@ void AddContactDialog::setValuesContacts(int &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-    updateID = query1->data(query1->index(i, 0)).toString();
-    delete query1;
+    updateID = i;
 }
 
 void AddContactDialog::setValuesCallHistory(QString &number)

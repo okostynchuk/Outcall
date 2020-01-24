@@ -9,6 +9,8 @@
 #include <QTreeView>
 #include <QAbstractProxyModel>
 #include <QSortFilterProxyModel>
+#include <QBoxLayout>
+#include <QLabel>
 
 namespace Ui {
 class ContactsDialog;
@@ -23,6 +25,7 @@ public:
     ~ContactsDialog();
 
 protected slots:
+    void deleteObjects();
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
@@ -40,9 +43,14 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
     QTreeView *treeView;
     QSortFilterProxyModel *proxyModel;
-    QWidget* addImageLabel(int &i) const;
-    QWidget* createEditButton(int &i) const;
+    QWidget* addImageLabel(int &i);
+    QWidget* createEditButton(int &i);
     QString update;
+    int n;
+    QList<QPushButton*> buttons;
+    QList<QWidget*> widgets;
+    QList<QBoxLayout*> layouts;
+    QList<QLabel*> labels;
 };
 
 #endif // CONTACTSDIALOG_H
