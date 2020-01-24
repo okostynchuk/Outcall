@@ -51,6 +51,7 @@ private:
     QWidget* createEditButton(int &i);
     QString update;
     int n;
+    int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
