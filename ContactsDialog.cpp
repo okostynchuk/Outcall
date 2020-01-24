@@ -291,21 +291,20 @@ void ContactsDialog::on_lineEdit_returnPressed()
 
 int counter = 0;
 
-
 void ContactsDialog::on_sortButton_clicked()
 {
 
     if(counter == 0){
         update = "sort";
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_name ORDER BY ep.entry_name");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_name ORDER BY entry_name");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY ep.entry_id ORDER BY entry_name");
         onUpdate();
         counter++;
     }
     else{
         update = "sort";
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_name ORDER BY ep.entry_name DESC");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_name ORDER BY entry_name DESC");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY ep.entry_id ORDER BY entry_name DESC");
         onUpdate();
         counter = 0;
     }
@@ -316,16 +315,13 @@ void ContactsDialog::on_sortButton_clicked()
 //    proxyModel->setSourceModel(sourceModel);
 //    treeView->setModel(proxyModel);
 
-
-   // ui->tableView->sortByColumn(2,Qt::AscendingOrder);
+// ui->tableView->sortByColumn(2,Qt::AscendingOrder);
 
 //    sourceModel->(2, Qt::AscendingOrder);
 
-    //ui->tableView->setSortingEnabled(true);
+//ui->tableView->setSortingEnabled(true);
 
-
-
-    //ui->tableView->sortByColumn(2,Qt::AscendingOrder);
+//ui->tableView->sortByColumn(2,Qt::AscendingOrder);
 }
 
 

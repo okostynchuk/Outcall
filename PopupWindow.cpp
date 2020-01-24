@@ -13,7 +13,7 @@ int PopupWindow::m_nLastWindowPosition = 0;
 #define TASKBAR_ON_BOTTOM	4
 
 #define TIME_TO_SHOW	800 //msec
-#define TIME_TO_LIVE	4000 //msec
+//#define TIME_TO_LIVE	4000 //msec
 
 PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     QDialog(parent),
@@ -35,7 +35,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->lblText->resize(ui->lblText->width(), 60);
 
-	setWindowFlags(Qt::Tool /*| Qt::CustomizeWindowHint*/ | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::Tool /*| Qt::CustomizeWindowHint*/ | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupWindow::onTimer);
 
@@ -68,7 +68,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 		m_nStartPosX=(rcDesktop.right()-m_nLastWindowPosition*width());
 		m_nStartPosY=rcDesktop.bottom()-height();
 		m_nTaskbarPlacement=TASKBAR_ON_RIGHT;
-		nTimerDelay = nTimeToShow/(width()/m_nIncrement);
+        nTimerDelay=nTimeToShow/(width()/m_nIncrement);
 	}
 	else if (bTaskbarOnLeft)
 	{
@@ -93,21 +93,36 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 		nTimerDelay=nTimeToShow/(height()/m_nIncrement);
 	}
 
-	m_nCurrentPosX=m_nStartPosX;
-	m_nCurrentPosY=m_nStartPosY;
+    m_nCurrentPosX=m_nStartPosX;
+    m_nCurrentPosY=m_nStartPosY;
 
-	move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_nCurrentPosX, m_nCurrentPosY);
 
-	m_nLastWindowPosition++;
+    m_nLastWindowPosition++;
 
-	m_bAppearing = true;
-	m_timer.setInterval(nTimerDelay);
-	m_timer.start();
+    m_bAppearing = true;
+    m_timer.setInterval(nTimerDelay);
+    m_timer.start();
 }
 
 PopupWindow::~PopupWindow()
 {
     delete ui;
+}
+
+void PopupWindow::mousePressEvent(QMouseEvent *event)
+{
+
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+
+}
+
+void PopupWindow::mouseMoveEvent(QMouseEvent *event)
+{
+
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+
 }
 
 void PopupWindow::changeEvent(QEvent *e)
@@ -124,21 +139,21 @@ void PopupWindow::changeEvent(QEvent *e)
 
 void PopupWindow::onPopupTimeout()
 {
-	if (isVisible())
-		m_timer.start();
+//      if (isVisible())
+//		m_timer.start();
 }
 
-void PopupWindow::startPopupWaitingTimer()
+void PopupWindow::startPopupWaitingTimer()//
 {
-	m_bAppearing = false;
-	m_timer.stop();
+    //m_bAppearing = false;
+    m_timer.stop();
 
-	int time2live = TIME_TO_LIVE;
+//    int time2live = TIME_TO_LIVE;
 
-    if (this->m_pwi.type == PWPhoneCall)
-        time2live = global::getSettingsValue("call_popup_duration", "popup", "20").toInt() * 1000;
+//    if (this->m_pwi.type == PWPhoneCall)
+//        time2live = global::getSettingsValue("call_popup_duration", "popup", "20").toInt() * 1000;
 
-    QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
+//    QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
 
 void PopupWindow::closeAndDestroy()
@@ -158,75 +173,75 @@ void PopupWindow::onTimer()
 {
     if (m_bAppearing) // APPEARING
     {
-		switch(m_nTaskbarPlacement)
-		{
-		case TASKBAR_ON_BOTTOM:
-			if (m_nCurrentPosY>(m_nStartPosY-height()))
-				m_nCurrentPosY-=m_nIncrement;
-			else
+        switch(m_nTaskbarPlacement)
+        {
+        case TASKBAR_ON_BOTTOM:
+            if (m_nCurrentPosY>(m_nStartPosY-height()))
+                m_nCurrentPosY-=m_nIncrement;
+            else
                 startPopupWaitingTimer();
-			break;
-		case TASKBAR_ON_TOP:
-			if ((m_nCurrentPosY-m_nStartPosY)<height())
-				m_nCurrentPosY+=m_nIncrement;
-			else
+            break;
+        case TASKBAR_ON_TOP:
+            if ((m_nCurrentPosY-m_nStartPosY)<height())
+                m_nCurrentPosY+=m_nIncrement;
+            else
                 startPopupWaitingTimer();
-			break;
-		case TASKBAR_ON_LEFT:
-			if ((m_nCurrentPosX-m_nStartPosX)<width())
-				m_nCurrentPosX+=m_nIncrement;
-			else
+            break;
+        case TASKBAR_ON_LEFT:
+            if ((m_nCurrentPosX-m_nStartPosX)<width())
+                m_nCurrentPosX+=m_nIncrement;
+            else
                 startPopupWaitingTimer();
-			break;
-		case TASKBAR_ON_RIGHT:
-			if (m_nCurrentPosX>(m_nStartPosX-width()))
-				m_nCurrentPosX-=m_nIncrement;
-			else
+            break;
+        case TASKBAR_ON_RIGHT:
+            if (m_nCurrentPosX>(m_nStartPosX-width()))
+                m_nCurrentPosX-=m_nIncrement;
+            else
                 startPopupWaitingTimer();
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-    else // DISSAPPEARING
-    {
-		switch(m_nTaskbarPlacement)
-		{
-		case TASKBAR_ON_BOTTOM:
-			if (m_nCurrentPosY<m_nStartPosY) {
-				m_nCurrentPosY+=m_nIncrement;
-			} else {
-                closeAndDestroy();
-				return;
-			}
-			break;
-		case TASKBAR_ON_TOP:
-			if (m_nCurrentPosY>m_nStartPosY) {
-				m_nCurrentPosY-=m_nIncrement;
-			} else {
-                closeAndDestroy();
-				return;
-			}
-			break;
-		case TASKBAR_ON_LEFT:
-			if (m_nCurrentPosX>m_nStartPosX) {
-				m_nCurrentPosX-=m_nIncrement;
-			} else {
-                closeAndDestroy();
-				return;
-			}
-			break;
-		case TASKBAR_ON_RIGHT:
-			if (m_nCurrentPosX<m_nStartPosX) {
-				m_nCurrentPosX+=m_nIncrement;
-			} else {
-                closeAndDestroy();
-				return;
-			}
-			break;
-		}
-	}
+//    else // DISSAPPEARING
+//    {
+//        switch(m_nTaskbarPlacement)
+//        {
+//        case TASKBAR_ON_BOTTOM:
+//            if (m_nCurrentPosY<m_nStartPosY) {
+//                m_nCurrentPosY+=m_nIncrement;
+//            } else {
+//                closeAndDestroy();
+//                return;
+//            }
+//            break;
+//        case TASKBAR_ON_TOP:
+//            if (m_nCurrentPosY>m_nStartPosY) {
+//                m_nCurrentPosY-=m_nIncrement;
+//            } else {
+//                closeAndDestroy();
+//                return;
+//            }
+//            break;
+//        case TASKBAR_ON_LEFT:
+//            if (m_nCurrentPosX>m_nStartPosX) {
+//                m_nCurrentPosX-=m_nIncrement;
+//            } else {
+//                closeAndDestroy();
+//                return;
+//            }
+//            break;
+//        case TASKBAR_ON_RIGHT:
+//            if (m_nCurrentPosX<m_nStartPosX) {
+//                m_nCurrentPosX+=m_nIncrement;
+//            } else {
+//                closeAndDestroy();
+//                return;
+//            }
+//            break;
+//        }
+//    }
 
-	move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
 void PopupWindow::showCallNotification(QString caller)
@@ -271,8 +286,18 @@ void PopupWindow::closeAll()
 	m_nLastWindowPosition = 0;
 }
 
-void PopupWindow::mousePressEvent(QMouseEvent *)
+//void PopupWindow::mousePressEvent(QMouseEvent *)//built-in function
+//{
+
+//    //m_bAppearing = false;
+//    //m_timer.start();
+//}
+
+void PopupWindow::on_pushButton_close_clicked()
 {
-    m_bAppearing = false;
-    m_timer.start();
+
+    m_PopupWindows.clear();
+    m_nLastWindowPosition = 0;
+
+    close();
 }
