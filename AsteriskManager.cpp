@@ -8,6 +8,7 @@
 #include <QVariantList>
 #include <QVariantMap>
 #include <QTimer>
+#include <QtGlobal>
 
 AsteriskManager *g_pAsteriskManager = nullptr;
 

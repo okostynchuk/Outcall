@@ -300,7 +300,7 @@ text-align: center;
      </widget>
     </item>
     <item>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QTextEdit" name="note">
       <property name="styleSheet">
        <string notr="true">*{
 background-color: rgba(0, 0, 0, 130);

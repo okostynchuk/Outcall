@@ -93,7 +93,7 @@ private:
     QString m_secret;
     QString m_server;
     quint16 m_port;
-
+    qint8 count;
     QTimer m_timer;
     AsteriskState m_currentState;
     bool m_autoSignIn;

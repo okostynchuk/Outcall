@@ -12,6 +12,7 @@
 #include <QTranslator>
 #include <QDir>
 #include <QTextCodec>
+#include <QSqlQuery>
 
 
 int main(int argc, char *argv[])
@@ -23,6 +24,14 @@ int main(int argc, char *argv[])
     db.setPassword("testtest");
     db.setPort(3306);
     db.open();
+
+    QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
+    dbAsterisk.setHostName("192.168.0.8");
+    dbAsterisk.setDatabaseName("cdr");
+    dbAsterisk.setUserName("SMDR");
+    dbAsterisk.setPassword("20SMDR19p");
+    dbAsterisk.setPort(3306);
+    dbAsterisk.open();
 
     QApplication app(argc, argv);
     app.setQuitOnLastWindowClosed(false);
