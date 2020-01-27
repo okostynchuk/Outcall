@@ -201,7 +201,6 @@ void CallHistoryDialog::onAddContact()
             bool a = checkNumber(from);
             if (a == true)
             {
-                g_Switch = "addPerson";
                 addContactDialog = new AddContactDialog;
                 addContactDialog->setWindowTitle("Add Contact");
                 addContactDialog->setValuesCallHistory(from);

@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QTextEdit>
 
 namespace Ui {
     class PopupWindow;
@@ -40,18 +41,17 @@ public:
 
     static void showCallNotification(QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
-
     static void closeAll();
 
 protected:
     void changeEvent(QEvent *e);
-    virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void onTimer();
     void onPopupTimeout();
     //virtual void mouseMoveEvent(QMouseEvent *evet);//built-in
     void on_pushButton_close_clicked();
+  //  void TextChanged(const QString &text);
 
 private:
     void startPopupWaitingTimer();
@@ -59,6 +59,8 @@ private:
 
 private:
     Ui::PopupWindow *ui;
+
+    QTextEdit *note;
 
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
