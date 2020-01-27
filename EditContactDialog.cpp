@@ -9,6 +9,7 @@
 #include <QTableView>
 #include <QPlainTextEdit>
 #include <QString>
+#include <QMessageBox>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),
