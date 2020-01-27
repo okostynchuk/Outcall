@@ -1,9 +1,14 @@
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
+#include "Global.h"
 
 #include <QDesktopWidget>
+#include <QKeyEvent>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QObject>
+#include <QWidget>
+
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
 int PopupWindow::m_nLastWindowPosition = 0;
@@ -104,6 +109,9 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     m_bAppearing = true;
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
+
+   //note = new QTextEdit;
+   // connect(note, SIGNAL(textChanged(const QString &)), this, SLOT(TextChanged(const QString &text)));
 }
 
 PopupWindow::~PopupWindow()
@@ -247,7 +255,6 @@ void PopupWindow::onTimer()
 
 void PopupWindow::showCallNotification(QString caller)
 {
-
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
     pwi.text = tr("Входящий звонок от:<br><b>%1</b>").arg(caller);
@@ -303,13 +310,8 @@ void PopupWindow::on_pushButton_close_clicked()
     close();
 }
 
-void PopupWindow::keyPressEvent(QKeyEvent *event)
-{
-    int key=event->key();
-    QString note;
-    if (key == Qt::Key_Enter)
-    {
-        note = QString(ui->note->toPlainText());
-        qDebug() << note;
-    }
-}
+//void PopupWindow::TextChanged(const QString &text){
+//    if(!note->document()->isEmpty())
+//   // ok->setEnabled (true);
+//}
+

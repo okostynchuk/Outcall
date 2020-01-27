@@ -62,7 +62,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
-    connect(ui->tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showCard()));
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showCard()));
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -91,8 +91,51 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     update = "default";
 }
 
+//void ContactsDialog::showCard(const QModelIndex &index){
 void ContactsDialog::showCard(){
-    qDebug()<<"bblbl";
+
+    //QString a = (index.model()->data(index.model()->index(index.row(), index.column())).toString());
+
+        QString updateID = sender()->property("updateID").toString();
+        int row = ui->tableView->currentIndex().row();
+        if (query2->data(query2->index(row, 0)).toString() == "person")
+        {
+            viewContactDialog = new ViewContactDialog;
+            //viewContactDialog->setWindowTitle("Резюме физ. лица");
+            viewContactDialog->setValuesContacts(updateID);
+            viewContactDialog->exec();
+            viewContactDialog->deleteLater();
+        }
+        else
+        {
+            viewOrgContactDialog = new ViewOrgContactDialog;
+            //viewOrgContactDialog->setWindowTitle("Резюме организации");
+            viewOrgContactDialog->setOrgValuesContacts(updateID);
+            viewOrgContactDialog->exec();
+            viewOrgContactDialog->deleteLater();
+        }
+
+//    QString updateID = sender()->property("updateID").toString();
+//    ui->tableView->currentIndex().isValid();
+//    int row = ui->tableView->currentIndex().row();
+//    //int row_index = sender()->property("row_index").toInt();
+//    if (query2->data(query2->index(row, 0)).toString() == "person")
+//    {
+//        viewContactDialog = new ViewContactDialog;
+//        //viewContactDialog->setWindowTitle("Резюме физ. лица");
+//        viewContactDialog->setValuesContacts(updateID);
+//        viewContactDialog->exec();
+//        viewContactDialog->deleteLater();
+//    }
+//    else
+//    {
+//        viewOrgContactDialog = new ViewOrgContactDialog;
+//        //viewOrgContactDialog->setWindowTitle("Резюме организации");
+//        viewOrgContactDialog->setOrgValuesContacts(updateID);
+//        viewOrgContactDialog->exec();
+//        viewOrgContactDialog->deleteLater();
+//    }
+
 }
 
 void ContactsDialog::setSortingEnabled()
