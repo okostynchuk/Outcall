@@ -26,7 +26,7 @@
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -278,7 +278,7 @@
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="tab_7">
+           <widget class="QWidget" name="tab_3">
             <attribute name="title">
              <string>Missed</string>
             </attribute>
@@ -318,7 +318,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab_8">
+           <widget class="QWidget" name="tab_4">
             <attribute name="title">
              <string>Received</string>
             </attribute>
@@ -358,7 +358,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab_9">
+           <widget class="QWidget" name="tab_7">
             <attribute name="title">
              <string>Placed</string>
             </attribute>
