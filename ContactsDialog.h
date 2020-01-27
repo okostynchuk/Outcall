@@ -39,6 +39,7 @@ protected slots:
     void on_lineEdit_returnPressed();
     void on_sortButton_clicked();
     void setSortingEnabled();
+    void showCard();
 
 private:
     Ui::ContactsDialog *ui;
