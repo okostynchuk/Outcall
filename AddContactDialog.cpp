@@ -30,7 +30,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
-    connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
+    //connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::close);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
 }
 
