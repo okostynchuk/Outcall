@@ -92,7 +92,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 }
 
 void ContactsDialog::showCard(){
-    qDebug()<<"bblbl";
+    
 }
 
 void ContactsDialog::setSortingEnabled()

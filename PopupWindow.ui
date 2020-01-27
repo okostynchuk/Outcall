@@ -121,8 +121,8 @@ height: 95px;
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>28</x>
-     <y>234</y>
+     <x>30</x>
+     <y>240</y>
      <width>361</width>
      <height>61</height>
     </rect>
@@ -249,69 +249,6 @@ border: 1.5px solid #a53501;
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>85</x>
-     <y>22</y>
-     <width>311</width>
-     <height>211</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="lblText">
-      <property name="minimumSize">
-       <size>
-        <width>231</width>
-        <height>116</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>18</pointsize>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">*{
-color: #ffb64f;
-margin: 0px  auto;
-text-align: center;
-}</string>
-      </property>
-      <property name="locale">
-       <locale language="Russian" country="Russia"/>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::RichText</enum>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="note">
-      <property name="styleSheet">
-       <string notr="true">*{
-background-color: rgba(0, 0, 0, 130);
-border: 3px solid #000000;
-border-radius: 7px;
-}</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QPushButton" name="pushButton_close">
    <property name="geometry">
     <rect>
@@ -338,6 +275,107 @@ background: red;
    </property>
    <property name="text">
     <string>Х</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>214</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>95</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+background-color: #ff9514;
+border: 1.5px solid #a53501;
+}</string>
+   </property>
+   <property name="text">
+    <string>Сохранить заметку</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblText">
+   <property name="geometry">
+    <rect>
+     <x>86</x>
+     <y>23</y>
+     <width>309</width>
+     <height>116</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>231</width>
+     <height>116</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+color: #ffb64f;
+margin: 0px  auto;
+text-align: center;
+}</string>
+   </property>
+   <property name="locale">
+    <locale language="Russian" country="Russia"/>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="note">
+   <property name="geometry">
+    <rect>
+     <x>86</x>
+     <y>119</y>
+     <width>309</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+background-color: rgba(0, 0, 0, 130);
+border: 3px solid #000000;
+border-radius: 7px;
+}</string>
    </property>
   </widget>
  </widget>
