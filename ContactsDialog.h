@@ -51,11 +51,9 @@ private:
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
     QSortFilterProxyModel *proxyModel;
-    QWidget* addImageLabel();
-    QWidget* createEditButton();
+    QWidget* addImageLabel(int &);
+    QWidget* createEditButton(int &);
     QString update;
-    QString updateID;
-    int row_index;
     int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
