@@ -5,6 +5,8 @@
 #include "AddOrgContactDialog.h"
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
+#include "ViewContactDialog.h"
+#include "ViewOrgContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -40,6 +42,7 @@ protected slots:
     void on_sortButton_clicked();
     void setSortingEnabled();
     void showCard();
+    //void showCard(const QModelIndex &index);
 
 private:
     Ui::ContactsDialog *ui;
@@ -49,6 +52,8 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
+    ViewContactDialog *viewContactDialog;
+    ViewOrgContactDialog *viewOrgContactDialog;
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
     QSortFilterProxyModel *proxyModel;
