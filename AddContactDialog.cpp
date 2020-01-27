@@ -10,6 +10,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QDebug>
 
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,6 +31,8 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
+
+    onComboBoxSelected();
 }
 
 AddContactDialog::~AddContactDialog()
@@ -46,14 +49,26 @@ void AddContactDialog::onSave()
     QString firstName = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name,entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("person");
     if(ui->LastName->text().isEmpty())
     {
         query.addBindValue(firstName + ' ' + patronymic);
     }
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
+
+    QString orgName = ui->comboBox->currentText();
+    if (orgName != "Нет")
+    {
+        QSqlQuery queryOrg(db);
+        QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
+        queryOrg.prepare(sqlOrg);
+        queryOrg.exec();
+        queryOrg.next();
+        qDebug() << queryOrg.value(0).toString();
+        query.addBindValue(queryOrg.value(0).toString());
+    }
 
     query.addBindValue(lastName);
     query.addBindValue(firstName);
@@ -97,7 +112,7 @@ void AddContactDialog::onSave()
             QMessageBox::information(this, trUtf8("Error"), trUtf8("Record is exists"));
         }
         else
-        {
+        {           
             query.exec();
             qint32 id = query.lastInsertId().toInt();
             QString firstNum = QString(ui->FirstNumber->text());
@@ -147,6 +162,24 @@ void AddContactDialog::onSave()
                     query1.exec();
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+        }
+    }
+}
+
+void AddContactDialog::onComboBoxSelected()
+{
+    ui->comboBox->clear();
+    ui->comboBox->addItem("Нет");
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
+    query.exec();
+    query.next();
+    while (query.next())
+    {
+        if (!query.value(0).toString().isEmpty())
+        {
+            ui->comboBox->addItem(query.value(0).toString());
         }
     }
 }

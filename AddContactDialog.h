@@ -19,6 +19,7 @@ public:
 
 protected:
     void onSave();
+    void onComboBoxSelected();
 
 private:
     Ui::AddContactDialog *ui;
