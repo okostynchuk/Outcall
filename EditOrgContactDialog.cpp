@@ -206,9 +206,10 @@ void EditOrgContactDialog::onSave()
 
 void EditOrgContactDialog::setOrgValuesContacts(QString &i)
 {
+    updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(i);
+    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -221,7 +222,7 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     fourthNumber = query.value(0).toString();
     query.next();
     fifthNumber = query.value(0).toString();
-    sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(i);
+    sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -242,7 +243,6 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-    updateID = i;
 }
 
 void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
