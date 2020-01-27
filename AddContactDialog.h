@@ -2,7 +2,6 @@
 #define ADDCONTACTDIALOG_H
 
 #include <QDialog>
-#include <QSqlQueryModel>
 #include <QValidator>
 
 namespace Ui {
@@ -15,24 +14,15 @@ class AddContactDialog : public QDialog
 
 public:
     explicit AddContactDialog(QWidget *parent = 0);
-    void setValuesContacts(QString &);
     void setValuesCallHistory(QString &);
     ~AddContactDialog();
 
 protected:
     void onSave();
-    void addContact();
-    void updateContact();
 
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
-    QString updateID;
-    QString firstNumber;
-    QString secondNumber;
-    QString thirdNumber;
-    QString fourthNumber;
-    QString fifthNumber;
 };
 
 #endif // ADDCONTACTDIALOG_H

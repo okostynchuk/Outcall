@@ -1,36 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddContactDialog</class>
- <widget class="QDialog" name="AddContactDialog">
+ <class>ViewContactDialog</class>
+ <widget class="QDialog" name="ViewContactDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
-    <height>471</height>
+    <width>531</width>
+    <height>373</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Резюме</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="3">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>* - поля обязательные для заполнения</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="1" colspan="2">
         <widget class="QLineEdit" name="FirstName">
          <property name="minimumSize">
@@ -71,7 +58,7 @@
        <item row="0" column="1" rowspan="2" colspan="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Имя*:</string>
+          <string>Имя:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -88,43 +75,10 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Привязка к организации</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
       <layout class="QGridLayout" name="gridLayout_6">
-       <item row="0" column="4">
-        <widget class="QComboBox" name="comboBox"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>1*</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="SecondNumber"/>
-       </item>
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_5">
          <property name="text">
@@ -139,6 +93,19 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="SecondNumber"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLineEdit" name="Address"/>
+       </item>
        <item row="2" column="3">
         <widget class="QLabel" name="label_9">
          <property name="text">
@@ -146,18 +113,15 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="FirstNumber"/>
+       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
           <string>2</string>
          </property>
         </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="FirstNumber"/>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLineEdit" name="Address"/>
        </item>
        <item row="2" column="4">
         <widget class="QLineEdit" name="City"/>
@@ -179,9 +143,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="ThirdNumber"/>
-       </item>
        <item row="3" column="3">
         <widget class="QLabel" name="label_10">
          <property name="text">
@@ -189,21 +150,14 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="4">
-        <widget class="QLineEdit" name="VyborID"/>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="FifthNumber"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_19">
-         <property name="text">
-          <string>5</string>
-         </property>
-        </widget>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="ThirdNumber"/>
        </item>
        <item row="5" column="4">
         <widget class="QLineEdit" name="Email"/>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLineEdit" name="VyborID"/>
        </item>
        <item row="5" column="3">
         <widget class="QLabel" name="label_12">
@@ -212,16 +166,29 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
-        <widget class="QLabel" name="label_14">
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_19">
          <property name="text">
-          <string/>
+          <string>5</string>
          </property>
         </widget>
        </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="FifthNumber"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Организация:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
       </layout>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
         <widget class="QLabel" name="label_17">
@@ -239,13 +206,6 @@
        </item>
        <item row="1" column="0" colspan="4">
         <widget class="QTextEdit" name="Comment"/>
-       </item>
-       <item row="2" column="3">
-        <widget class="QPushButton" name="saveButton">
-         <property name="text">
-          <string>Сохранить данные</string>
-         </property>
-        </widget>
        </item>
       </layout>
      </item>

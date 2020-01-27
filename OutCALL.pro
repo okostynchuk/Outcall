@@ -43,7 +43,11 @@ SOURCES += main.cpp\
     ContactsDialog.cpp \
     AddContactDialog.cpp \
     PopupHelloWindow.cpp \
-    AddOrgContactDialog.cpp
+    AddOrgContactDialog.cpp \
+    ViewContactDialog.cpp \
+    ViewOrgContactDialog.cpp \
+    EditContactDialog.cpp \
+    EditOrgContactDialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -68,7 +72,11 @@ HEADERS  += \
     ContactsDialog.h \
     AddContactDialog.h \
     PopupHelloWindow.h \
-    AddOrgContactDialog.h
+    AddOrgContactDialog.h \
+    ViewContactDialog.h \
+    ViewOrgContactDialog.h \
+    EditContactDialog.h \
+    EditOrgContactDialog.h
 
 FORMS    += \
     AboutDialog.ui \
@@ -84,7 +92,11 @@ FORMS    += \
     ContactsDialog.ui \
     AddContactDialog.ui \
     PopupHelloWindow.ui \
-    AddOrgContactDialog.ui
+    AddOrgContactDialog.ui \
+    ViewContactDialog.ui \
+    ViewOrgContactDialog.ui \
+    EditContactDialog.ui \
+    EditOrgContactDialog.ui
 
 RESOURCES += \
     images.qrc

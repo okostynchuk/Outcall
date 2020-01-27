@@ -7,6 +7,7 @@
 
 #include <QDialog>
 #include <QMap>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class CallHistoryDialog;
