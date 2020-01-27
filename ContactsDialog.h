@@ -3,6 +3,8 @@
 
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
+#include "EditContactDialog.h"
+#include "EditOrgContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -44,13 +46,16 @@ private:
     QSqlQueryModel *query2;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
+    EditContactDialog *editContactDialog;
+    EditOrgContactDialog *editOrgContactDialog;
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
     QSortFilterProxyModel *proxyModel;
-    QWidget* addImageLabel(int &i);
-    QWidget* createEditButton(int &i);
+    QWidget* addImageLabel();
+    QWidget* createEditButton();
     QString update;
-    int n;
+    QString updateID;
+    int row_index;
     int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;

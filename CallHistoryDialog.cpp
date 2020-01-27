@@ -201,9 +201,8 @@ void CallHistoryDialog::onAddContact()
             bool a = checkNumber(from);
             if (a == true)
             {
-                g_Switch = "addPerson";
                 addContactDialog = new AddContactDialog;
-                addContactDialog->setWindowTitle("Add Contact");
+                addContactDialog->setWindowTitle("Добавление физ. лица");
                 addContactDialog->setValuesCallHistory(from);
                 addContactDialog->exec();
                 addContactDialog->deleteLater();
@@ -224,7 +223,7 @@ void CallHistoryDialog::onAddContact()
             QString name = item->text(0);
             QString from = item->text(1);
 
-            addContactDialog->setWindowTitle("Add Contact");
+            addContactDialog->setWindowTitle("Добавление физ. лица");
             addContactDialog->setValuesCallHistory(from);
             addContactDialog->exec();
 
@@ -240,7 +239,7 @@ void CallHistoryDialog::onAddContact()
             int ind1 = item->text(1).indexOf("(");
             QString to = item->text(1).mid(0, ind1);
 
-            addContactDialog->setWindowTitle("Add Contact");
+            addContactDialog->setWindowTitle("Добавление физ. лица");
             addContactDialog->setValuesCallHistory(to);
             addContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
@@ -250,7 +249,6 @@ void CallHistoryDialog::onAddContact()
 
 void CallHistoryDialog::onAddOrgContact()
 {
-    g_Switch = "addOrg";
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Add Contact");
 
@@ -265,7 +263,7 @@ void CallHistoryDialog::onAddOrgContact()
             QString from = item->text(1);
 
             addOrgContactDialog->setOrgValuesCallHistory(from);
-            addOrgContactDialog->setWindowTitle("Add Contact");
+            addOrgContactDialog->setWindowTitle("Добавление организации");
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(from, name);
         }
@@ -280,7 +278,7 @@ void CallHistoryDialog::onAddOrgContact()
             QString from = item->text(1);
 
             addOrgContactDialog->setOrgValuesCallHistory(from);
-            addOrgContactDialog->setWindowTitle("Add Contact");
+            addOrgContactDialog->setWindowTitle("Добавление организации");
             addOrgContactDialog->exec();
            // g_pContactManager->addOutlookContact(from, name);
         }
@@ -295,7 +293,7 @@ void CallHistoryDialog::onAddOrgContact()
             QString to = item->text(1).mid(0, ind1);
 
             addOrgContactDialog->setOrgValuesCallHistory(to);
-            addOrgContactDialog->setWindowTitle("Add Contact");
+            addOrgContactDialog->setWindowTitle("Добавление организации");
             addOrgContactDialog->exec();
             // g_pContactManager->addOutlookContact(to, "");
         }

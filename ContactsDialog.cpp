@@ -2,7 +2,8 @@
 #include "ui_ContactsDialog.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
-#include "Global.h"
+#include "EditContactDialog.h"
+#include "EditOrgContactDialog.h"
 
 #include <QSqlQueryModel>
 #include <QHeaderView>
@@ -62,11 +63,10 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
 
-    n = ui->tableView->model()->rowCount();
-    for(int i = 0; i < n; ++i)
+    for (row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
-        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
+        ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel());
+        ui->tableView->setIndexWidget(query1->index(row_index, 9), createEditButton());
     }
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -166,11 +166,10 @@ void ContactsDialog::onUpdate()
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    n = ui->tableView->model()->rowCount();
-    for(int i = 0; i < n; ++i)
+    for (row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        ui->tableView->setIndexWidget(query1->index(i, 1), addImageLabel(i));
-        ui->tableView->setIndexWidget(query1->index(i, 9), createEditButton(i));
+        ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel());
+        ui->tableView->setIndexWidget(query1->index(row_index, 9), createEditButton());
     }
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -194,31 +193,26 @@ void ContactsDialog::onTableClicked(const QModelIndex &index)
 
 void ContactsDialog::onEdit()
 {
-    QString updateID = sender()->property("updateID").toString();
-    int i = sender()->property("i").toInt();
-    if(query2->data(query2->index(i, 0)).toString() == "person")
+    if (query2->data(query2->index(row_index, 0)).toString() == "person")
     {
-        g_Switch = "updatePerson";
-        addContactDialog = new AddContactDialog;
-        addContactDialog->setWindowTitle("Редактирование физ. лица");
-        addContactDialog->setValuesContacts(updateID);
-        addContactDialog->exec();
-        addContactDialog->deleteLater();
+        editContactDialog = new EditContactDialog;
+        editContactDialog->setWindowTitle("Редактирование физ. лица");
+        editContactDialog->setValuesContacts(updateID);
+        editContactDialog->exec();
+        editContactDialog->deleteLater();
     }
     else
     {
-        g_Switch = "updateOrg";
-        addOrgContactDialog = new AddOrgContactDialog;
-        addOrgContactDialog->setWindowTitle("Редактирование организации");
-        addOrgContactDialog->setOrgValuesContacts(updateID);
-        addOrgContactDialog->exec();
-        addOrgContactDialog->deleteLater();
+        editOrgContactDialog = new EditOrgContactDialog;
+        editOrgContactDialog->setWindowTitle("Редактирование организации");
+        editOrgContactDialog->setOrgValuesContacts(updateID);
+        editOrgContactDialog->exec();
+        editOrgContactDialog->deleteLater();
     }
 }
 
 void ContactsDialog::onAddPerson()
 {
-    g_Switch = "addPerson";
     addContactDialog = new AddContactDialog;
     addContactDialog->setWindowTitle("Добавление физ. лица");
     addContactDialog->exec();
@@ -227,20 +221,19 @@ void ContactsDialog::onAddPerson()
 
 void ContactsDialog::onAddOrg()
 {
-    g_Switch = "addOrg";
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Добавление организации");
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }
 
-QWidget* ContactsDialog::addImageLabel(int &i)
+QWidget* ContactsDialog::addImageLabel()
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
     QLabel *imageLabel = new QLabel(wgt);
     l->addWidget(imageLabel);
-    if(query2->data(query2->index(i, 0)).toString() == "person")
+    if (query2->data(query2->index(row_index, 0)).toString() == "person")
     {
         imageLabel->setPixmap(QPixmap("D:/person.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
@@ -255,16 +248,14 @@ QWidget* ContactsDialog::addImageLabel(int &i)
     return wgt;
 }
 
-QWidget* ContactsDialog::createEditButton(int &i)
+QWidget* ContactsDialog::createEditButton()
 {
     QWidget* wgt = new QWidget;
     QBoxLayout* l = new QHBoxLayout;
     QPushButton* editButton = new QPushButton("Редактировать");
     connect(editButton, SIGNAL(clicked(bool)), SLOT(onEdit()));
     editButton->setFocusPolicy(Qt::NoFocus);
-    QString updateID = query1->data(query1->index(i, 0)).toString();
-    editButton->setProperty("updateID", updateID);
-    editButton->setProperty("i", i);
+    updateID = query1->data(query1->index(row_index, 0)).toString();
     l->addWidget(editButton);
     wgt->setLayout(l);
     widgets.append(wgt);
