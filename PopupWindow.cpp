@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QObject>
 #include <QWidget>
+#include <QTextEdit>
 
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
@@ -44,6 +45,8 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     setWindowFlags(Qt::Tool /*| Qt::CustomizeWindowHint*/ | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupWindow::onTimer);
+    connect(ui->saveNote, &QAbstractButton::clicked, this, &PopupWindow::onSave);
+    note = new QTextEdit(this);
 
 	unsigned int nDesktopHeight;
 	unsigned int nDesktopWidth;
@@ -314,4 +317,9 @@ void PopupWindow::on_pushButton_close_clicked()
 //    if(!note->document()->isEmpty())
 //   // ok->setEnabled (true);
 //}
+
+void PopupWindow::onSave()
+{
+
+}
 

@@ -4,6 +4,7 @@
 #include "ContactManager.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
+#include "PopupWindow.h"
 
 #include <QDebug>
 #include <QList>
@@ -68,7 +69,7 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
     const QString to       = call.value("to").toString();
     const QString protocol = call.value("protocol").toString();
     const QString dateTime = call.value("date_time").toString();
-    QString note = "ZAMETKA";
+    QString note;
     QString callerIDName   = call.value("callerIDName").toString();
 
     query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = ?)");
@@ -450,3 +451,5 @@ bool CallHistoryDialog::checkNumber(QString from)
     if(query1.value(0) == 0) { return true; }
     else { return false; }
 }
+
+
