@@ -93,6 +93,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
 ContactsDialog::~ContactsDialog()
 {
+    delete query1;
+    delete query2;
     delete ui;
 }
 
@@ -139,13 +141,6 @@ void ContactsDialog::setSortingEnabled()
          update = "sort";
          onUpdate();
      }
-}
-
-ContactsDialog::~ContactsDialog()
-{
-    delete query1;
-    delete query2;
-    delete ui;
 }
 
 void ContactsDialog::deleteObjects()
