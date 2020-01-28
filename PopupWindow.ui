@@ -96,7 +96,7 @@ border-radius: 15px;
     </font>
    </property>
    <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
+    <cursorShape>ArrowCursor</cursorShape>
    </property>
    <property name="toolTip">
     <string>Chat History</string>
@@ -277,44 +277,11 @@ background: red;
     <string>Х</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="saveNote">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>214</y>
-     <width>131</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>95</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-background-color: #ff9514;
-border: 1.5px solid #a53501;
-}</string>
-   </property>
-   <property name="text">
-    <string>Сохранить заметку</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="lblText">
    <property name="geometry">
     <rect>
-     <x>86</x>
-     <y>23</y>
+     <x>90</x>
+     <y>60</y>
      <width>309</width>
      <height>116</height>
     </rect>
@@ -354,28 +321,6 @@ text-align: center;
    </property>
    <property name="wordWrap">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="note">
-   <property name="geometry">
-    <rect>
-     <x>86</x>
-     <y>119</y>
-     <width>309</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>9</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-background-color: rgba(0, 0, 0, 130);
-border: 3px solid #000000;
-border-radius: 7px;
-}</string>
    </property>
   </widget>
  </widget>

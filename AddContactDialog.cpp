@@ -66,8 +66,11 @@ void AddContactDialog::onSave()
         queryOrg.prepare(sqlOrg);
         queryOrg.exec();
         queryOrg.next();
-        qDebug() << queryOrg.value(0).toString();
         query.addBindValue(queryOrg.value(0).toString());
+    }
+    else
+    {
+        query.addBindValue(NULL);
     }
 
     query.addBindValue(lastName);
@@ -168,13 +171,12 @@ void AddContactDialog::onSave()
 
 void AddContactDialog::onComboBoxSelected()
 {
-    ui->comboBox->clear();
-    ui->comboBox->addItem("Нет");
     QSqlDatabase db;
     QSqlQuery query(db);
     query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
     query.exec();
     query.next();
+    ui->comboBox->addItem("Нет");
     while (query.next())
     {
         if (!query.value(0).toString().isEmpty())

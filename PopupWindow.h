@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "CallHistoryDialog.h"
+#include "OutCALL.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -48,12 +49,20 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+protected slots:
+
+    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
+    void onCallReceived(const QMap<QString, QVariant> &call);
 
 private slots:
     void onTimer();
     void onPopupTimeout();
     //virtual void mouseMoveEvent(QMouseEvent *evet);//built-in
     void on_pushButton_close_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     void startPopupWaitingTimer();
@@ -79,6 +88,12 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
+
+
+    AddContactDialog *addContactDialog;
+    AddOrgContactDialog *addOrgContactDialog;
+
+    CallHistoryDialog *m_callHistoryDialog;
 };
 
 #endif // POPUPWINDOW_H
