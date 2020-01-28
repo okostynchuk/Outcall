@@ -250,7 +250,7 @@ void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManag
     m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
 }
 
-void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
+void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
 {
     QString from            = call.value("from").toString();
     QString callerName      = call.value("callerIDName").toString();
@@ -298,11 +298,12 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     {
         if (callerName.isEmpty() || callerName == "<unknown>")
         {
-            PopupWindow::showCallNotification(QString("(Неизвестный)").arg(from));/*here*/
+            PopupWindow::showCallNotification(QString("(%1)").arg(from));
         }
         else
         {
-            PopupWindow::showCallNotification(QString("%1 (Неизвестный)").arg(callerName).arg(from));/*here*/
+            PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+            //qDebug()<<from;
         }
     }
 
