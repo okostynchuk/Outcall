@@ -1,8 +1,12 @@
 #ifndef EDITORGCONTACTDIALOG_H
 #define EDITORGCONTACTDIALOG_H
 
+#include "EditContactDialog.h"
+
 #include <QDialog>
+#include <QSqlQueryModel>
 #include <QValidator>
+#include <QBoxLayout>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -18,8 +22,13 @@ public:
     void setOrgValuesCallHistory(QString &);
     ~EditOrgContactDialog();
 
-protected:
+protected slots:
     void onSave();
+    void onEdit();
+    void onUpdate();
+    void deleteObjects();
+    void onComboBoxSelected();
+    void on_lineEdit_returnPressed();
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -30,6 +39,13 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    QWidget* createEditButton(int &);
+    QSqlQueryModel *query_model;
+    EditContactDialog *editContactDialog;
+    QString update;
+    QList<QPushButton*> buttons;
+    QList<QWidget*> widgets;
+    QList<QBoxLayout*> layouts;
 };
 
 #endif // EDITORGCONTACTDIALOG_H

@@ -27,7 +27,6 @@ class ContactsDialog : public QDialog
 
 public:
     explicit ContactsDialog(QWidget *parent = 0);
-    int i = 0;
     ~ContactsDialog();
 
 protected slots:

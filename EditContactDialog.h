@@ -18,7 +18,7 @@ public:
     void setValuesCallHistory(QString &);
     ~EditContactDialog();
 
-protected:
+protected slots:
     void onSave();
     void onComboBoxSelected();
 
