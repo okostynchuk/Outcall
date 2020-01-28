@@ -40,8 +40,7 @@ protected slots:
     void on_lineEdit_returnPressed();
     void on_sortButton_clicked();
     void setSortingEnabled();
-    void showCard();
-    //void showCard(const QModelIndex &index);
+    void showCard(const QModelIndex &);
 
 private:
     Ui::ContactsDialog *ui;

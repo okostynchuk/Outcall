@@ -4,7 +4,7 @@
 #include "AsteriskManager.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
-
+#include "PopupWindow.h"
 #include <QDialog>
 #include <QMap>
 #include <QSqlQueryModel>
