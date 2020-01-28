@@ -16,6 +16,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui(new Ui::ViewOrgContactDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()

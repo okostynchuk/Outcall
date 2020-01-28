@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>834</width>
-    <height>505</height>
+    <height>513</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,10 +41,23 @@
                  <height>0</height>
                 </size>
                </property>
+               <property name="styleSheet">
+                <string notr="true">*{
+background-color: #fffff8;
+}</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Название организации:</string>
                </property>
@@ -70,10 +83,24 @@
          <item>
           <layout class="QGridLayout" name="gridLayout">
            <item row="3" column="3">
-            <widget class="QLineEdit" name="Address"/>
+            <widget class="QLineEdit" name="Address">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="3" column="2">
             <widget class="QLabel" name="label_10">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Адрес:</string>
              </property>
@@ -81,6 +108,11 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_7">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>2</string>
              </property>
@@ -88,6 +120,11 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>3</string>
              </property>
@@ -95,6 +132,11 @@
            </item>
            <item row="4" column="0">
             <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>4</string>
              </property>
@@ -102,65 +144,167 @@
            </item>
            <item row="5" column="0">
             <widget class="QLabel" name="label_19">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>5</string>
              </property>
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QLineEdit" name="FifthNumber"/>
+            <widget class="QLineEdit" name="FifthNumber">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="5" column="2">
             <widget class="QLabel" name="label_12">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Email:</string>
              </property>
             </widget>
            </item>
            <item row="5" column="3">
-            <widget class="QLineEdit" name="Email"/>
+            <widget class="QLineEdit" name="Email">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="ThirdNumber"/>
+            <widget class="QLineEdit" name="ThirdNumber">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_9">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Город:</string>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="FirstNumber"/>
+            <widget class="QLineEdit" name="FirstNumber">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label_5">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Номера:</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="SecondNumber"/>
+            <widget class="QLineEdit" name="SecondNumber">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="2" column="3">
-            <widget class="QLineEdit" name="City"/>
+            <widget class="QLineEdit" name="City">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="FourthNumber"/>
+            <widget class="QLineEdit" name="FourthNumber">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="4" column="2">
             <widget class="QLabel" name="label_11">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>VyborID:</string>
              </property>
             </widget>
            </item>
            <item row="4" column="3">
-            <widget class="QLineEdit" name="VyborID"/>
+            <widget class="QLineEdit" name="VyborID">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_6">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>1</string>
              </property>
@@ -178,10 +322,28 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="4">
-            <widget class="QTextEdit" name="Comment"/>
+            <widget class="QTextEdit" name="Comment">
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+cursor: default;
+}</string>
+             </property>
+             <property name="undoRedoEnabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_17">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Заметка:</string>
              </property>
