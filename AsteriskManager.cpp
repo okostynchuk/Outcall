@@ -204,7 +204,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         QString callerIDName = eventValues.value("CallerIDName");
         QString ch           = eventValues.value("Channel");
 
-        QRegExp reg("([^/]*)(/)(\\d+)");
+       QRegExp reg("([^/]*)(/)(\\d+)");
         reg.indexIn(ch);
         QString chType = reg.cap(1);
         QString chExten = reg.cap(3);
@@ -354,7 +354,6 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 if (dialStatus == "ANSWER")
                 {
                     QString dateTime = QDateTime::currentDateTime().toString();
-
                     QMap<QString, QVariant> received;
                     received.insert("from",         callerIDNum);
                     received.insert("to",           exten);
@@ -373,6 +372,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     m_dialedNum.remove(uniqueid);
 
                     emit callDeteceted(received, RECIEVED);
+
                 }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
                 {
@@ -422,8 +422,10 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         const QString uniqueid = eventValues.value("Uniqueid");
+
         if (m_calls.contains(uniqueid))
         {
+
             Call *call = m_calls.value(uniqueid);
             delete call;
             m_calls.remove(uniqueid);
