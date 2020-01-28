@@ -31,6 +31,8 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
+
+    onComboBoxSelected();
 }
 
 EditContactDialog::~EditContactDialog()
@@ -212,6 +214,19 @@ void EditContactDialog::onSave()
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
         }
+    }
+}
+
+void EditContactDialog::onComboBoxSelected()
+{
+    ui->comboBox->clear();
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_org_name FROM entry WHERE ");
+    query.exec();
+    while (query.next())
+    {
+        ui->comboBox->addItem(query.value(0).toString());
     }
 }
 
