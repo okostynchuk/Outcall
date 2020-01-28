@@ -277,7 +277,7 @@ background: red;
     <string>Х</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_4">
+  <widget class="QPushButton" name="saveNote">
    <property name="geometry">
     <rect>
      <x>260</x>

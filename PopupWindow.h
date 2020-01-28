@@ -2,6 +2,7 @@
 #define POPUPWINDOW_H
 
 #include "Global.h"
+#include "CallHistoryDialog.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -42,16 +43,17 @@ public:
     static void showCallNotification(QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
+    void onSave();
 
 protected:
     void changeEvent(QEvent *e);
+
 
 private slots:
     void onTimer();
     void onPopupTimeout();
     //virtual void mouseMoveEvent(QMouseEvent *evet);//built-in
     void on_pushButton_close_clicked();
-  //  void TextChanged(const QString &text);
 
 private:
     void startPopupWaitingTimer();
@@ -77,7 +79,6 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
-
 };
 
 #endif // POPUPWINDOW_H

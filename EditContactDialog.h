@@ -20,6 +20,7 @@ public:
 
 protected:
     void onSave();
+    void onComboBoxSelected();
 
 private:
     Ui::EditContactDialog *ui;
