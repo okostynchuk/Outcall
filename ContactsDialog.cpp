@@ -141,6 +141,13 @@ void ContactsDialog::setSortingEnabled()
      }
 }
 
+ContactsDialog::~ContactsDialog()
+{
+    delete query1;
+    delete query2;
+    delete ui;
+}
+
 void ContactsDialog::deleteObjects()
 {
     for (int i = 0; i < widgets.size(); ++i)
@@ -163,7 +170,9 @@ void ContactsDialog::onUpdate()
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
+
     deleteObjects();
+
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, tr("Тип"));
@@ -194,6 +203,7 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+
     update = "default";
 }
 

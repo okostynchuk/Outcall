@@ -10,6 +10,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QDebug>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,8 +32,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
-
-    onComboBoxSelected();
 }
 
 EditContactDialog::~EditContactDialog()
@@ -49,13 +48,28 @@ void EditContactDialog::onSave()
     QString firstName = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
+    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
     query.addBindValue("person");
     if(ui->LastName->text().isEmpty())
     {
         query.addBindValue(firstName + ' ' + patronymic);
     }
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
+
+    QString orgName = ui->comboBox->currentText();
+    if (orgName != "Нет")
+    {
+        QSqlQuery queryOrg(db);
+        QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
+        queryOrg.prepare(sqlOrg);
+        queryOrg.exec();
+        queryOrg.next();
+        query.addBindValue(queryOrg.value(0).toString());
+    }
+    else
+    {
+        query.addBindValue(NULL);
+    }
 
     query.addBindValue(lastName);
     query.addBindValue(firstName);
@@ -219,15 +233,28 @@ void EditContactDialog::onSave()
 
 void EditContactDialog::onComboBoxSelected()
 {
-    ui->comboBox->clear();
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT entry_org_name FROM entry WHERE ");
+    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
     query.exec();
+    query.next();
+    QString orgID = query.value(0).toString();
+    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
+    query.exec();
+    query.next();
+    QString orgName = query.value(0).toString();
+    ui->comboBox->addItem("Нет");
+    query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
+    query.exec();
+    query.next();
     while (query.next())
     {
-        ui->comboBox->addItem(query.value(0).toString());
+        if (!query.value(0).toString().isEmpty())
+        {
+            ui->comboBox->addItem(query.value(0).toString());
+        }
     }
+    ui->comboBox->setCurrentText(orgName);
 }
 
 void EditContactDialog::setValuesContacts(QString &i)
@@ -273,6 +300,7 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
+    onComboBoxSelected();
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)
