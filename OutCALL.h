@@ -3,6 +3,7 @@
 
 #include "ContactManager.h"
 #include "AsteriskManager.h"
+#include "PopupWindow.h"
 
 #include <QWidget>
 #include <QMap>
