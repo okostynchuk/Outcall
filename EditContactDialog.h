@@ -31,6 +31,9 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+
+signals:
+    void sendData(bool);
 };
 
 #endif // EDITCONTACTDIALOG_H

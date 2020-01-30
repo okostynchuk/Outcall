@@ -1,6 +1,7 @@
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
 #include "EditContactDialog.h"
+#include "ViewContactDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -11,6 +12,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QClipboard>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -32,6 +34,8 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
+    connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
+    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
 
     onComboBoxSelected();
 }
@@ -204,8 +208,27 @@ void EditOrgContactDialog::onSave()
                 }
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+            emit sendData(true);
         }
     }
+}
+
+void EditOrgContactDialog::onTableClicked(const QModelIndex &index)
+{
+    if (index.isValid()) {
+        QString cellText = index.data().toString();
+        QClipboard *clipboard = QApplication::clipboard();
+        clipboard->setText(cellText);
+    }
+}
+
+void EditOrgContactDialog::showCard(const QModelIndex &index)
+{
+    QString id = query_model->data(query_model->index(index.row(), 0)).toString();
+    viewContactDialog = new ViewContactDialog;
+    viewContactDialog->setValuesContacts(id);
+    viewContactDialog->exec();
+    viewContactDialog->deleteLater();
 }
 
 void EditOrgContactDialog::deleteObjects()

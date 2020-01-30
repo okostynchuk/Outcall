@@ -24,7 +24,6 @@ ViewContactDialog::~ViewContactDialog()
     delete ui;
 }
 
-
 void ViewContactDialog::setValuesContacts(QString &i)
 {
     updateID = i;

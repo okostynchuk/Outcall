@@ -17,6 +17,7 @@
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTableView>
+#include <QScrollBar>
 
 namespace Ui {
 class ContactsDialog;
@@ -29,6 +30,9 @@ class ContactsDialog : public QDialog
 public:
     explicit ContactsDialog(QWidget *parent = 0);
     ~ContactsDialog();
+
+public slots:
+    void recieveData(bool);
 
 protected slots:
     void deleteObjects();
@@ -55,6 +59,10 @@ private:
     ViewOrgContactDialog *viewOrgContactDialog;
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
+
+    QSortFilterProxyModel *proxyModel;
+    QScrollBar *verticalScroll;
+    QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;

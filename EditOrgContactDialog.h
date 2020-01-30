@@ -2,6 +2,7 @@
 #define EDITORGCONTACTDIALOG_H
 
 #include "EditContactDialog.h"
+#include "ViewContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -29,6 +30,8 @@ protected slots:
     void deleteObjects();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
+    void onTableClicked(const QModelIndex &index);
+    void showCard(const QModelIndex &index);
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -42,10 +45,14 @@ private:
     QWidget* createEditButton(int &);
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
+    ViewContactDialog *viewContactDialog;
     QString update;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
+
+signals:
+    void sendData(bool);
 };
 
 #endif // EDITORGCONTACTDIALOG_H
