@@ -16,6 +16,7 @@
 #include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QTableView>
 
 namespace Ui {
 class ContactsDialog;
@@ -54,7 +55,6 @@ private:
     ViewOrgContactDialog *viewOrgContactDialog;
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
-    QSortFilterProxyModel *proxyModel;
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;
@@ -63,6 +63,7 @@ private:
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;
+
 };
 
 #endif // CONTACTSDIALOG_H

@@ -52,7 +52,10 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
     query1->insertColumn(9);
     query1->setHeaderData(9, Qt::Horizontal, tr("Редактирование"));
+    ui->tableView->setSortingEnabled(true);
+
     ui->tableView->setModel(query1);
+    ui->tableView->model()->sort(2, Qt::AscendingOrder);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -81,11 +84,14 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     onComboBoxSelected();
     //ui->tableView->setSortingEnabled(true);
     //ui->tableView->sortByColumn(2, Qt::AscendingOrder);
-    //comboBox->model()->sort ( int column, Qt::SortOrder order = Qt::AscendingOrder )
 
-    tmpHeaderView = ui->tableView->horizontalHeader();//#include <QHeaderView>
-    //tmpHeaderView->setClickable(true);//#include <QHeaderView>???
-    ui->tableView->setSortingEnabled(true);//#include <QHeaderView>
+
+
+//    QSqlTableModel *model = new QSqlTableModel(this);
+//    model->setTable("entry_phone");
+//    model->select();
+//    model->sort(2, Qt::AscendingOrder);
+//    ui->tableView->setModel(model);
 
     counter = 0;
     update = "default";
@@ -120,27 +126,7 @@ void ContactsDialog::showCard(const QModelIndex &index)
 
 void ContactsDialog::setSortingEnabled()
 {
-    ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
 
-     if (true)
-     {
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-
-         ui->tableView->sortByColumn(ui->tableView->horizontalHeader()->sortIndicatorSection());
-         update = "sort";
-         onUpdate();
-     }
-     else
-     {
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-         update = "sort";
-         onUpdate();
-     }
 }
 
 void ContactsDialog::deleteObjects()
