@@ -24,6 +24,7 @@
 #include <QTreeView>
 #include <QSortFilterProxyModel>
 #include <QModelIndex>
+#include <QScrollBar>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -174,6 +175,11 @@ void ContactsDialog::onUpdate()
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
 
+    verticalScroll = ui->tableView->verticalScrollBar();
+    horizontalScroll = ui->tableView->horizontalScrollBar();
+    int valueV = verticalScroll->value();
+    int valueH = horizontalScroll->value();
+
     deleteObjects();
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -206,6 +212,12 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+
+    if (update == "default")
+    {
+        ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
+        ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
+    }
 
     update = "default";
 }

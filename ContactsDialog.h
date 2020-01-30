@@ -16,6 +16,7 @@
 #include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QScrollBar>
 
 namespace Ui {
 class ContactsDialog;
@@ -58,6 +59,8 @@ private:
     QTreeView *treeView;
     QHeaderView *tmpHeaderView;
     QSortFilterProxyModel *proxyModel;
+    QScrollBar *verticalScroll;
+    QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;
