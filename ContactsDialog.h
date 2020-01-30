@@ -46,7 +46,7 @@ protected slots:
     void on_sortButton_clicked();
     void setSortingEnabled();
     void showCard(const QModelIndex &);
-//    void onSectionClicked ( int logicalIndex );
+    void onSectionClicked ( int logicalIndex );
 
 private:
     Ui::ContactsDialog *ui;

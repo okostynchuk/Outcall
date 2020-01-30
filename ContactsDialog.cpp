@@ -79,6 +79,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 
+    ui->tableView->blockSignals(true);//?!?
     ui->tableView->setSortingEnabled(false);
     connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(on_sortButton_clicked()));
 
@@ -96,12 +97,13 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
-//void ContactsDialog::onSectionClicked ( int logicalIndex )
-//{
-////    m_horiz_header = ui->tableView->horizontalHeader();
-////    m_horiz_header->setSortIndicator(logicalIndex, Qt::AscendingOrder);
-////    ui->tableView->sortByColumn(logicalIndex);
-//}
+void ContactsDialog::onSectionClicked ( int logicalIndex )
+{
+//    m_horiz_header = ui->tableView->horizontalHeader();
+    ui->tableView->horizontalHeader()->setSortIndicator(logicalIndex, Qt::AscendingOrder);
+    ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+
+}
 
 void ContactsDialog::recieveData(bool update)
 {
