@@ -8,6 +8,11 @@
 #include <QDialog>
 #include <QTimer>
 #include <QTextEdit>
+#include <QMap>
+
+class CallHistoryDialog;
+class ContactsDialog;
+
 
 namespace Ui {
     class PopupWindow;
