@@ -94,6 +94,8 @@ private:
     QString m_server;
     quint16 m_port;
     qint8 count;
+    qint32 count1;
+    qint32 count2;
     QTimer m_timer;
     AsteriskState m_currentState;
     bool m_autoSignIn;

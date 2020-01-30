@@ -4,7 +4,6 @@
 #include "ContactManager.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
-#include "PopupWindow.h"
 
 #include <QDebug>
 #include <QList>
@@ -12,6 +11,7 @@
 #include <QWidget>
 #include <QTreeWidget>
 #include <QSqlQuery>
+#include <QSqlDatabase>
 #include <QSqlRelationalTableModel>
 #include <QSqlTableModel>
 
@@ -19,6 +19,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CallHistoryDialog)
 {
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlQuery query(dbAsterisk);
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -33,26 +35,68 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     // Load calls
     QString stateDB = "notInsert";
-    QVariantList missedCalls = global::getSettingsValue("missed", "calls").toList();
-    for (int i = 0; i < missedCalls.size(); ++i)
-    {
-        QMap<QString, QVariant> call = missedCalls[i].toMap();
-        addCall(call, MISSED, stateDB);
-    }
+//    QVariantList missedCalls = global::getSettingsValue("missed", "calls").toList();
+//    for (int i = 0; i < missedCalls.size(); ++i)
+//    {
+//        QMap<QString, QVariant> call = missedCalls[i].toMap();
+//        addCall(call, MISSED, stateDB);
+//    }
 
-    QVariantList receivedCalls = global::getSettingsValue("received", "calls").toList();
-    for (int i = 0; i < receivedCalls.size(); ++i)
-    {
-        QMap<QString, QVariant> call = receivedCalls[i].toMap();
-        addCall(call, RECIEVED, stateDB);
-    }
+//    QVariantList receivedCalls = global::getSettingsValue("received", "calls").toList();
+//    for (int i = 0; i < receivedCalls.size(); ++i)
+//    {
+//        QMap<QString, QVariant> call = receivedCalls[i].toMap();
+//        addCall(call, RECIEVED, stateDB);
+//    }
 
-    QVariantList placedCalls = global::getSettingsValue("placed", "calls").toList();
-    for (int i = 0; i < placedCalls.size(); ++i)
-    {
-        QMap<QString, QVariant> call = placedCalls[i].toMap();
-        addCall(call, PLACED, stateDB);
-    }
+//    QVariantList placedCalls = global::getSettingsValue("placed", "calls").toList();
+//    for (int i = 0; i < placedCalls.size(); ++i)
+//    {
+//        QMap<QString, QVariant> call = placedCalls[i].toMap();
+//        addCall(call, PLACED, stateDB);
+//    }
+
+       //Load Missed calls
+//       query.exec("SELECT src, dst, datetime FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '232' AND src = '222'");
+//       query.next();
+
+//       do {
+//           QMap<QString, QVariant> call;
+//           call["from"] = query.value(0).toString();
+//           call["to"] = query.value(1).toString();
+//           call["date_time"] = query.value(2).toString();
+//           addCall(call, MISSED, stateDB);
+//       } while (query.next());
+
+
+//       //Load Recieved calls
+//       query.prepare("SELECT src, dst, datetime FROM cdr WHERE disposition = 'ANSWERED' AND dst = '232'");
+//       query.exec();
+//       query.next();
+//       query.first();
+
+//       do {
+//           QMap<QString, QVariant> call;
+//           call["from"] = query.value(0).toString();
+//           call["to"] = query.value(1).toString();
+//           call["date_time"] = query.value(2).toString();
+//           addCall(call, RECIEVED, stateDB);
+//       } while (query.next());
+
+
+//       //Load Placed calls
+//       query.prepare("SELECT src, dst, datetime FROM cdr WHERE src = '232'");
+//       query.exec();
+//       query.next();
+//       query.first();
+
+//       do {
+//           QMap<QString, QVariant> call;
+//           call["from"] = query.value(0).toString();
+//           call["to"] = query.value(1).toString();
+//           call["date_time"] = query.value(2).toString();
+//           addCall(call, PLACED, stateDB);
+//       } while (query.next());
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -152,7 +196,7 @@ void CallHistoryDialog::onCallClicked()
        const QString to = item->text(2).mid(0, ind1);
        const QString protocol = item->text(2).mid(ind1 + 1, ind2 - ind1 - 1);
 
-     //  g_pAsteriskManager->originateCall(to, from, protocol, to);
+       g_pAsteriskManager->originateCall(to, from, protocol, to);
     }
     else if (ui->tabWidget->currentIndex() == RECIEVED)
     {
@@ -168,7 +212,7 @@ void CallHistoryDialog::onCallClicked()
        const QString to = item->text(2).mid(0, ind1);
        const QString protocol = item->text(2).mid(ind1+1, ind2-ind1-1);
 
-       //g_pAsteriskManager->originateCall(to, from, protocol, to);
+       g_pAsteriskManager->originateCall(to, from, protocol, to);
     }
     else if (ui->tabWidget->currentIndex() == PLACED)
     {
@@ -184,7 +228,7 @@ void CallHistoryDialog::onCallClicked()
        const QString to = item->text(1);
        const QString protocol = item->text(0).mid(ind1 + 1, ind2 - ind1 - 1);
 
-       //g_pAsteriskManager->originateCall(from, to, protocol, from);
+       g_pAsteriskManager->originateCall(from, to, protocol, from);
     }
 }
 
@@ -439,7 +483,6 @@ void CallHistoryDialog::onRemoveButton()
         global::setSettingsValue("placed", placedList, "calls");
     }
 }
-
 
 bool CallHistoryDialog::checkNumber(QString from)
 {
