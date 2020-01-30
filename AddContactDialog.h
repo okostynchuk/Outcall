@@ -24,6 +24,9 @@ protected:
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
+
+signals:
+    void sendData(bool);
 };
 
 #endif // ADDCONTACTDIALOG_H

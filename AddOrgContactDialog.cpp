@@ -138,6 +138,7 @@ void AddOrgContactDialog::onSave()
                     query1.exec();
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+            emit sendData(true);
         }
     }
 }

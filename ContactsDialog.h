@@ -29,6 +29,9 @@ public:
     explicit ContactsDialog(QWidget *parent = 0);
     ~ContactsDialog();
 
+public slots:
+    void recieveData(bool);
+
 protected slots:
     void deleteObjects();
     void onUpdate();

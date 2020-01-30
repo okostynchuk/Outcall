@@ -98,6 +98,14 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
+void ContactsDialog::recieveData(bool update)
+{
+    if (update)
+    {
+        onUpdate();
+    }
+}
+
 void ContactsDialog::showCard(const QModelIndex &index)
 {
     QString updateID = query1->data(query1->index(index.row(), 0)).toString();
@@ -220,6 +228,7 @@ void ContactsDialog::onEdit()
         editContactDialog = new EditContactDialog;
         editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
+        connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editContactDialog->exec();
         editContactDialog->deleteLater();
     }
@@ -228,6 +237,7 @@ void ContactsDialog::onEdit()
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editOrgContactDialog->exec();
         editOrgContactDialog->deleteLater();
     }
@@ -237,6 +247,7 @@ void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
     addContactDialog->setWindowTitle("Добавление физ. лица");
+    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addContactDialog->exec();
     addContactDialog->deleteLater();
 }
@@ -245,6 +256,7 @@ void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Добавление организации");
+    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }

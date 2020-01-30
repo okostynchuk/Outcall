@@ -1,5 +1,6 @@
 #include "EditContactDialog.h"
 #include "ui_EditContactDialog.h"
+#include "ContactsDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -10,7 +11,6 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
-#include <QDebug>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -227,6 +227,7 @@ void EditContactDialog::onSave()
                 }
             }
             ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+            emit sendData(true);
         }
     }
 }
