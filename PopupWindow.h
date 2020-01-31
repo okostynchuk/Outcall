@@ -99,6 +99,7 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
 
     CallHistoryDialog *m_callHistoryDialog;
+
 };
 
 #endif // POPUPWINDOW_H

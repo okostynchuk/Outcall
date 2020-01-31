@@ -16,6 +16,7 @@
 #include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QTableView>
 #include <QScrollBar>
 
 namespace Ui {
@@ -45,6 +46,7 @@ protected slots:
     void on_sortButton_clicked();
     void setSortingEnabled();
     void showCard(const QModelIndex &);
+    void onSectionClicked ( int logicalIndex );
 
 private:
     Ui::ContactsDialog *ui;
@@ -56,9 +58,7 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-    QTreeView *treeView;
-    QHeaderView *tmpHeaderView;
-    QSortFilterProxyModel *proxyModel;
+
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
@@ -69,6 +69,7 @@ private:
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;
+
 };
 
 #endif // CONTACTSDIALOG_H

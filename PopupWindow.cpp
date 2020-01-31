@@ -326,9 +326,9 @@ void PopupWindow::on_pushButton_close_clicked()
 
 void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-    QString stateDB = "insert";
+    //QString stateDB = "insert";
 
-    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
+    //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
 }
 
 void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/

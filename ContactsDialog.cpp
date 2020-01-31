@@ -81,14 +81,12 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 
-    onComboBoxSelected();
-    //ui->tableView->setSortingEnabled(true);
-    //ui->tableView->sortByColumn(2, Qt::AscendingOrder);
-    //comboBox->model()->sort ( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    ui->tableView->blockSignals(true);//?!?
+    ui->tableView->setSortingEnabled(false);
+    connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(on_sortButton_clicked()));
 
-    tmpHeaderView = ui->tableView->horizontalHeader();//#include <QHeaderView>
-    //tmpHeaderView->setClickable(true);//#include <QHeaderView>???
-    ui->tableView->setSortingEnabled(true);//#include <QHeaderView>
+
+    onComboBoxSelected();
 
     counter = 0;
     update = "default";
@@ -99,6 +97,14 @@ ContactsDialog::~ContactsDialog()
     delete query1;
     delete query2;
     delete ui;
+}
+
+void ContactsDialog::onSectionClicked ( int logicalIndex )
+{
+//    m_horiz_header = ui->tableView->horizontalHeader();
+    ui->tableView->horizontalHeader()->setSortIndicator(logicalIndex, Qt::AscendingOrder);
+    ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+
 }
 
 void ContactsDialog::recieveData(bool update)
@@ -131,27 +137,7 @@ void ContactsDialog::showCard(const QModelIndex &index)
 
 void ContactsDialog::setSortingEnabled()
 {
-    ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
 
-     if (true)
-     {
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-
-         ui->tableView->sortByColumn(ui->tableView->horizontalHeader()->sortIndicatorSection());
-         update = "sort";
-         onUpdate();
-     }
-     else
-     {
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-         update = "sort";
-         onUpdate();
-     }
 }
 
 void ContactsDialog::deleteObjects()
@@ -342,9 +328,6 @@ void ContactsDialog::on_lineEdit_returnPressed()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
 
         onUpdate();
-//        if(ui->sortButton->clicked(true) == setProperty(clicked(),true)){
-//                on_sortButton_clicked();
-//    }
     }
 
     if(ui->comboBox->currentText() == "Поиск по заметке")
@@ -375,20 +358,4 @@ void ContactsDialog::on_sortButton_clicked()
         onUpdate();
         counter = 0;
     }
-
-//    treeView = new QTreeView;
-//    MyItemModel *sourceModel = new MyItemModel(this);
-//    proxyModel = new QSortFilterProxyModel(this);
-//    proxyModel->setSourceModel(sourceModel);
-//    treeView->setModel(proxyModel);
-
-// ui->tableView->sortByColumn(2,Qt::AscendingOrder);
-
-// sourceModel->(2, Qt::AscendingOrder);
-
-// ui->tableView->setSortingEnabled(true);
-
-// ui->tableView->sortByColumn(2,Qt::AscendingOrder);
 }
-
-
