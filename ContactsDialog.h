@@ -43,6 +43,8 @@ protected slots:
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &);
     void onSectionClicked (int logicalIndex);
+    void onSortingSectionClicked(int logicalIndex);
+    void clearEditText();
 
 private:
     Ui::ContactsDialog *ui;

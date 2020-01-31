@@ -36,6 +36,8 @@ protected slots:
     void onTableClicked(const QModelIndex &index);
     void showCard(const QModelIndex &index);    
     void onSectionClicked (int logicalIndex);
+    void onSortingSectionClicked(int logicalIndex);
+    void clearEditText();
 
 private:
     Ui::EditOrgContactDialog *ui;

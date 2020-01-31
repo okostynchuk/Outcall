@@ -44,6 +44,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));    
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &EditOrgContactDialog::clearEditText);
 
     onComboBoxSelected();
 }
@@ -53,6 +54,10 @@ EditOrgContactDialog::~EditOrgContactDialog()
     delete validator;
     delete query_model;
     delete ui;
+}
+
+void EditOrgContactDialog::clearEditText(){
+    ui->lineEdit->clear();
 }
 
 void EditOrgContactDialog::onSave()
@@ -364,6 +369,30 @@ void EditOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
+void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)
+{
+    QString entry_name = ui->lineEdit->text();
+    if(ui->comboBox->currentText() == "Поиск по ФИО")
+    {
+        if(logicalIndex != 1) return;
+
+        update = "sort";
+
+        if (counter == 0)
+        {
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            onUpdate();
+            counter++;
+        }
+        else
+        {
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            onUpdate();
+            counter = 0;
+        }
+    }
+}
+
 void EditOrgContactDialog::on_lineEdit_returnPressed()
 {
     update = "filter";
@@ -375,6 +404,7 @@ void EditOrgContactDialog::on_lineEdit_returnPressed()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
 
         onUpdate();
+        connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
     }
 
     if (ui->comboBox->currentText() == "Поиск по номеру телефона")
