@@ -26,6 +26,9 @@ public:
     void setOrgValuesCallHistory(QString &);
     ~EditOrgContactDialog();
 
+public slots:
+    void recieveData(bool);
+
 protected slots:
     void onSave();
     void onEdit();
@@ -33,11 +36,11 @@ protected slots:
     void deleteObjects();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
-    void onTableClicked(const QModelIndex &index);
     void showCard(const QModelIndex &index);    
     void onSectionClicked (int logicalIndex);
     void onSortingSectionClicked(int logicalIndex);
     void clearEditText();
+    void closeEvent(QCloseEvent *);
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -57,6 +60,7 @@ private:
     QScrollBar *horizontalScroll;
     QString update;
     QStringList numbers;
+    bool updateOnClose;
     int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;

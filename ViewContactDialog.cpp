@@ -42,6 +42,14 @@ void ViewContactDialog::setValuesContacts(QString &i)
     fourthNumber = query.value(0).toString();
     query.next();
     fifthNumber = query.value(0).toString();
+    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
+    query.exec();
+    query.next();
+    QString orgID = query.value(0).toString();
+    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
+    query.exec();
+    query.next();
+    ui->Organization->setText(query.value(0).toString());
     sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();

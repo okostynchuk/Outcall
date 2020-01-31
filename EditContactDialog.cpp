@@ -101,6 +101,10 @@ void EditContactDialog::onSave()
         ui->FirstName->setStyleSheet("border: 1px solid grey");
         ui->label_14->hide();
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
+        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
+        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
+        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
 
         numbers.clear();
         QSqlQuery query1(db);
@@ -260,8 +264,9 @@ void EditContactDialog::onSave()
                     query1.exec();
                 }
             }
-            ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
             emit sendData(true);
+            close();
+            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
         }
     }
 }
@@ -289,7 +294,14 @@ void EditContactDialog::onComboBoxSelected()
             ui->comboBox->addItem(query.value(0).toString());
         }
     }
-    ui->comboBox->setCurrentText(orgName);
+    if (!orgName.isEmpty())
+    {
+        ui->comboBox->setCurrentText(orgName);
+    }
+    else
+    {
+        ui->comboBox->setCurrentText("Нет");
+    }
 }
 
 void EditContactDialog::setValuesContacts(QString &i)
