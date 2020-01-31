@@ -4,6 +4,8 @@
 #include "AddOrgContactDialog.h"
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
+#include "Global.h"
+#include "OutCALL.h"
 
 #include <QSqlQueryModel>
 #include <QHeaderView>
@@ -134,13 +136,13 @@ void ContactsDialog::showCard(const QModelIndex &index)
          viewContactDialog->exec();
          viewContactDialog->deleteLater();
     }
-        else
-        {
-            viewOrgContactDialog = new ViewOrgContactDialog;
-            viewOrgContactDialog->setOrgValuesContacts(updateID);
-            viewOrgContactDialog->exec();
-            viewOrgContactDialog->deleteLater();
-        }
+    else
+    {
+        viewOrgContactDialog = new ViewOrgContactDialog;
+        viewOrgContactDialog->setOrgValuesContacts(updateID);
+        viewOrgContactDialog->exec();
+        viewOrgContactDialog->deleteLater();
+    }
 }
 
 void ContactsDialog::deleteObjects()
@@ -272,11 +274,11 @@ QWidget* ContactsDialog::addImageLabel(int &row_index)
     l->addWidget(imageLabel);
     if (query2->data(query2->index(row_index, 0)).toString() == "person")
     {
-        imageLabel->setPixmap(QPixmap("D:/person.png").scaled(30, 30, Qt::KeepAspectRatio));
+        imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
     else
     {
-        imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+        imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
     wgt->setLayout(l);
     widgets.append(wgt);

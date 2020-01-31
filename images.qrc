@@ -5,5 +5,7 @@
         <file>images/disconnected.png</file>
         <file>images/started.png</file>
         <file>images/outcall-logo.png</file>
+        <file>images/org.png</file>
+        <file>images/person.png</file>
     </qresource>
 </RCC>

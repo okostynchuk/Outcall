@@ -13,6 +13,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <QClipboard>
+#include <QScrollBar>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,7 +32,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
+    ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
@@ -251,6 +252,11 @@ void EditOrgContactDialog::onUpdate()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id");
     }
 
+    verticalScroll = ui->tableView->verticalScrollBar();
+    horizontalScroll = ui->tableView->horizontalScrollBar();
+    int valueV = verticalScroll->value();
+    int valueH = horizontalScroll->value();
+
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
@@ -273,6 +279,12 @@ void EditOrgContactDialog::onUpdate()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+
+    if (update == "default")
+    {
+        ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
+        ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
+    }
 
     update = "default";
 }

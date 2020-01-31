@@ -8,6 +8,7 @@
 #include <QSqlQueryModel>
 #include <QValidator>
 #include <QBoxLayout>
+#include <QScrollBar>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -46,6 +47,8 @@ private:
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
     ViewContactDialog *viewContactDialog;
+    QScrollBar *verticalScroll;
+    QScrollBar *horizontalScroll;
     QString update;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;

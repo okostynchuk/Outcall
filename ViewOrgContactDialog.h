@@ -1,9 +1,13 @@
 #ifndef VIEWORGCONTACTDIALOG_H
 #define VIEWORGCONTACTDIALOG_H
 
+#include "ViewContactDialog.h"
+
 #include <QDialog>
 #include <QValidator>
 #include <QHeaderView>
+#include <QSqlQueryModel>
+#include <QScrollBar>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -19,6 +23,13 @@ public:
     void setOrgValuesCallHistory(QString &);
     ~ViewOrgContactDialog();
 
+protected slots:
+    void onUpdate();
+    void onComboBoxSelected();
+    void on_lineEdit_returnPressed();
+    void onTableClicked(const QModelIndex &index);
+    void showCard(const QModelIndex &index);
+
 private:
     Ui::ViewOrgContactDialog *ui;
     QValidator *validator;
@@ -30,8 +41,14 @@ private:
     QString fourthNumber;
     QString fifthNumber;
 
+
 protected slots:
     void onSectionClicked (int logicalIndex);
+    QSqlQueryModel *query_model;
+    ViewContactDialog *viewContactDialog;
+    QScrollBar *verticalScroll;
+    QScrollBar *horizontalScroll;
+    QString update;
 };
 
 #endif // VIEWORGCONTACTDIALOG_H
