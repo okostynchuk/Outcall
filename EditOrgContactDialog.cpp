@@ -38,6 +38,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
 
     ui->tableView->setSortingEnabled(false);
     m_horiz_header = ui->tableView->horizontalHeader();
+    counter = 0;
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));    
@@ -330,7 +331,6 @@ void EditOrgContactDialog::onUpdate()
         ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
         ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
     }
-
     update = "default";
 }
 
@@ -484,21 +484,22 @@ void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
 
 void EditOrgContactDialog::onSectionClicked (int logicalIndex)
 {
-    if(logicalIndex != 1) return;
+    if (logicalIndex != 1) return;
 
     update = "sort";
 
     if (counter == 0)
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+
         onUpdate();
         counter++;
     }
     else
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+
         onUpdate();
         counter = 0;
     }
-
 }

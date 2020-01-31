@@ -22,7 +22,6 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-
     ui->tableView->setSortingEnabled(false);
     m_horiz_header = ui->tableView->horizontalHeader();
 
@@ -211,6 +210,7 @@ void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
     else
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+
         onUpdate();
         counter = 0;
     }

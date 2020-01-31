@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -247,6 +251,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
