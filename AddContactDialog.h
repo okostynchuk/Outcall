@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QStringList>
 
 namespace Ui {
 class AddContactDialog;
@@ -24,6 +25,7 @@ protected:
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
+    QStringList numbers;
 
 signals:
     void sendData(bool);

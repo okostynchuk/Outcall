@@ -39,6 +39,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
         </widget>
        </item>
        <item row="2" column="3">
@@ -49,6 +52,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
         </widget>
        </item>
        <item row="2" column="0">
@@ -58,6 +64,9 @@
            <width>160</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
          </property>
         </widget>
        </item>
@@ -113,10 +122,18 @@
      <item row="2" column="0">
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="4" column="4">
-        <widget class="QLineEdit" name="VyborID"/>
+        <widget class="QLineEdit" name="VyborID">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="ThirdNumber"/>
+        <widget class="QLineEdit" name="ThirdNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="3" column="3">
         <widget class="QLabel" name="label_10">
@@ -136,10 +153,18 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="FifthNumber"/>
+        <widget class="QLineEdit" name="FifthNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="5" column="4">
-        <widget class="QLineEdit" name="Email"/>
+        <widget class="QLineEdit" name="Email">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="5" column="3">
         <widget class="QLabel" name="label_12">
@@ -152,7 +177,20 @@
         </widget>
        </item>
        <item row="0" column="4">
-        <widget class="QComboBox" name="comboBox"/>
+        <widget class="QComboBox" name="comboBox">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <property name="insertPolicy">
+          <enum>QComboBox::InsertAlphabetically</enum>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToContents</enum>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_6">
@@ -162,7 +200,11 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="SecondNumber"/>
+        <widget class="QLineEdit" name="SecondNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_5">
@@ -189,7 +231,11 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="FirstNumber"/>
+        <widget class="QLineEdit" name="FirstNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_7">
@@ -199,13 +245,25 @@
         </widget>
        </item>
        <item row="3" column="4">
-        <widget class="QLineEdit" name="Address"/>
+        <widget class="QLineEdit" name="Address">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="FourthNumber"/>
+        <widget class="QLineEdit" name="FourthNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="4">
-        <widget class="QLineEdit" name="City"/>
+        <widget class="QLineEdit" name="City">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_18">
@@ -239,6 +297,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
         </widget>
        </item>
       </layout>
@@ -260,7 +321,11 @@
         </widget>
        </item>
        <item row="1" column="0" colspan="4">
-        <widget class="QTextEdit" name="Comment"/>
+        <widget class="QTextEdit" name="Comment">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="3">
         <widget class="QPushButton" name="saveButton">

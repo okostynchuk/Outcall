@@ -9,6 +9,7 @@
 #include <QValidator>
 #include <QBoxLayout>
 #include <QScrollBar>
+#include <QStringList>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -50,6 +51,7 @@ private:
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+    QStringList numbers;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;

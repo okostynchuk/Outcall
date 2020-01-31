@@ -58,7 +58,6 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
