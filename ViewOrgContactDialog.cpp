@@ -31,7 +31,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::clearEditText);
 
     onComboBoxSelected();
-    counter = 0;
+    counter1 = 0;
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -104,28 +104,51 @@ void ViewOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
-void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)
+void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)//????выводит всю таблицу
 {
     QString entry_name = ui->lineEdit->text();
-    if(ui->comboBox->currentText() == "Поиск по ФИО")
+    if (ui->comboBox->currentText() == "Поиск по ФИО")
     {
         if(logicalIndex != 1) return;
 
         update = "sort";
 
-        if (counter == 0)
+        if (counter1 == 0)
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
             onUpdate();
-            counter++;
+            counter1++;
         }
         else
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
             onUpdate();
-            counter = 0;
+            counter1 = 0;
         }
     }
+}
+
+void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
+{
+    if (logicalIndex != 1) return;
+
+    update = "sort";
+
+    if (counter1 == 0)
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+
+        onUpdate();
+        counter1++;
+    }
+    else
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+
+        onUpdate();
+        counter1 = 0;
+    }
+
 }
 
 void ViewOrgContactDialog::on_lineEdit_returnPressed()
@@ -223,27 +246,3 @@ void ViewOrgContactDialog::setOrgValuesCallHistory(QString &number)
 {
     ui->FirstNumber->setText(number);
 }
-
-void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
-{
-    if (logicalIndex != 1) return;
-
-    update = "sort";
-
-    if (counter == 0)
-    {
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-
-        onUpdate();
-        counter++;
-    }
-    else
-    {
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-
-        onUpdate();
-        counter = 0;
-    }
-
-}
-

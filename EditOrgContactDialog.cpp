@@ -385,7 +385,7 @@ void EditOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
-void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)
+void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)//???
 {
     QString entry_name = ui->lineEdit->text();
     if(ui->comboBox->currentText() == "Поиск по ФИО")

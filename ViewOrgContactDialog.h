@@ -45,7 +45,7 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    int counter;
+    int counter1;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
     QScrollBar *verticalScroll;
