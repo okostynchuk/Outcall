@@ -102,6 +102,10 @@ void AddContactDialog::onSave()
         ui->FirstName->setStyleSheet("border: 1px solid grey");
         ui->label_14->hide();
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
+        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
+        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
+        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
 
         numbers.clear();
         QSqlQuery query1(db);
@@ -201,8 +205,9 @@ void AddContactDialog::onSave()
                     query1.addBindValue(ui->FifthNumber->text());
                     query1.exec();
             }
-            ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
             emit sendData(true);
+            close();
+            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно добавлена!"), QMessageBox::Ok);
         }
     }
 }

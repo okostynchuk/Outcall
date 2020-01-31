@@ -40,11 +40,11 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     m_horiz_header = ui->tableView->horizontalHeader();
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
-    connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));    
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 
     onComboBoxSelected();
+    updateOnClose = false;
     counter = 0;
 }
 
@@ -53,6 +53,14 @@ EditOrgContactDialog::~EditOrgContactDialog()
     delete validator;
     delete query_model;
     delete ui;
+}
+
+void EditOrgContactDialog::closeEvent(QCloseEvent *)
+{
+    if (updateOnClose)
+    {
+        emit sendData(true);
+    }
 }
 
 void EditOrgContactDialog::onSave()
@@ -90,6 +98,10 @@ void EditOrgContactDialog::onSave()
         ui->OrgName->setStyleSheet("border: 1px solid grey");
         ui->label_14->hide();
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
+        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
+        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
+        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
 
         numbers.clear();
         QSqlQuery query1(db);
@@ -249,18 +261,10 @@ void EditOrgContactDialog::onSave()
                     query1.exec();
                 }
             }
-            ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
             emit sendData(true);
+            close();
+            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
         }
-    }
-}
-
-void EditOrgContactDialog::onTableClicked(const QModelIndex &index)
-{
-    if (index.isValid()) {
-        QString cellText = index.data().toString();
-        QClipboard *clipboard = QApplication::clipboard();
-        clipboard->setText(cellText);
     }
 }
 
@@ -330,15 +334,24 @@ void EditOrgContactDialog::onUpdate()
     update = "default";
 }
 
+void EditOrgContactDialog::recieveData(bool update)
+{
+    if (update)
+    {
+        onUpdate();
+        updateOnClose = true;
+    }
+}
+
 void EditOrgContactDialog::onEdit()
 {
     QString id = sender()->property("id").toString();
     editContactDialog = new EditContactDialog;
     editContactDialog->setWindowTitle("Редактирование физ. лица");
     editContactDialog->setValuesContacts(id);
+    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     editContactDialog->exec();
     editContactDialog->deleteLater();
-    onUpdate();
 }
 
 QWidget* EditOrgContactDialog::createEditButton(int &row_index)
