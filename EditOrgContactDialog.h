@@ -9,6 +9,7 @@
 #include <QValidator>
 #include <QBoxLayout>
 #include <QScrollBar>
+#include <QStringList>
 #include <QHeaderView>
 
 namespace Ui {
@@ -53,6 +54,7 @@ private:
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+    QStringList numbers;
     int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
