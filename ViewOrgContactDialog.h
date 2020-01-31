@@ -29,9 +29,12 @@ protected slots:
     void on_lineEdit_returnPressed();
     void onTableClicked(const QModelIndex &index);
     void showCard(const QModelIndex &index);
+    void onSectionClicked (int logicalIndex);
 
 private:
     Ui::ViewOrgContactDialog *ui;
+    QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
     QValidator *validator;
     QHeaderView *m_horiz_header;
     QString updateID;
@@ -40,15 +43,13 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-
-
-protected slots:
-    void onSectionClicked (int logicalIndex);
+    int counter;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+
 };
 
 #endif // VIEWORGCONTACTDIALOG_H

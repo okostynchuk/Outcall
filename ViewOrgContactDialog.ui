@@ -334,7 +334,7 @@ background-color: #fffff8;
              </property>
              <property name="styleSheet">
               <string notr="true">*{
-background-color: #fffff8;
+background-color: #fffff0;
 cursor: default;
 }</string>
              </property>

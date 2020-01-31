@@ -9,6 +9,7 @@
 #include <QValidator>
 #include <QBoxLayout>
 #include <QScrollBar>
+#include <QHeaderView>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -32,7 +33,8 @@ protected slots:
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void onTableClicked(const QModelIndex &index);
-    void showCard(const QModelIndex &index);
+    void showCard(const QModelIndex &index);    
+    void onSectionClicked (int logicalIndex);
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -47,9 +49,11 @@ private:
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
     ViewContactDialog *viewContactDialog;
+    QHeaderView *m_horiz_header;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+    int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
