@@ -11,6 +11,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QHeaderView>
 #include <QClipboard>
 #include <QScrollBar>
 
@@ -21,10 +22,16 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+
+    ui->tableView->setSortingEnabled(false);
+    m_horiz_header = ui->tableView->horizontalHeader();
+
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
+    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 
     onComboBoxSelected();
+    counter = 0;
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -186,5 +193,27 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 void ViewOrgContactDialog::setOrgValuesCallHistory(QString &number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
+{
+    if (logicalIndex != 1) return;
+
+    update = "sort";
+
+    if (counter == 0)
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+
+        onUpdate();
+        counter++;
+    }
+    else
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+        onUpdate();
+        counter = 0;
+    }
+
 }
 

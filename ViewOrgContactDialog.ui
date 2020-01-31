@@ -26,7 +26,7 @@
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -334,7 +334,7 @@ background-color: #fffff8;
              </property>
              <property name="styleSheet">
               <string notr="true">*{
-background-color: #fffff8;
+background-color: #fffff0;
 cursor: default;
 }</string>
              </property>
@@ -450,27 +450,6 @@ cursor: default;
                   </property>
                   <property name="whatsThis">
                    <string>Поиск по таблице</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="sortButton">
-                  <property name="minimumSize">
-                   <size>
-                    <width>125</width>
-                    <height>27</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                   </font>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="text">
-                   <string>Сортировать</string>
                   </property>
                  </widget>
                 </item>

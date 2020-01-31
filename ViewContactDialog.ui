@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>605</width>
-    <height>527</height>
+    <height>459</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -419,7 +419,8 @@ background-color: #fffff8;
              </property>
              <property name="styleSheet">
               <string notr="true">*{
-background-color: #fffff8;
+background-color: #fffff0;
+cursor: default;
 }</string>
              </property>
              <property name="frameShadow">

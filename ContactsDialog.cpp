@@ -22,9 +22,6 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QLabel>
-#include <QAbstractProxyModel>
-#include <QTreeView>
-#include <QSortFilterProxyModel>
 #include <QModelIndex>
 #include <QScrollBar>
 
@@ -60,12 +57,15 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setSortingEnabled(false);
+    m_horiz_header = ui->tableView->horizontalHeader();
 
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
+    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -81,11 +81,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 
-    ui->tableView->blockSignals(true);//?!?
-    ui->tableView->setSortingEnabled(false);
-    connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(on_sortButton_clicked()));
-
-
     onComboBoxSelected();
 
     counter = 0;
@@ -99,11 +94,26 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
-void ContactsDialog::onSectionClicked ( int logicalIndex )
+void ContactsDialog::onSectionClicked (int logicalIndex)
 {
-//    m_horiz_header = ui->tableView->horizontalHeader();
-    ui->tableView->horizontalHeader()->setSortIndicator(logicalIndex, Qt::AscendingOrder);
-    ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+    if(logicalIndex != 2) return;
+
+    update = "sort";
+
+    if (counter == 0)
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
+        onUpdate();
+        counter++;
+    }
+    else
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
+        onUpdate();
+        counter = 0;
+    }
 
 }
 
@@ -133,11 +143,6 @@ void ContactsDialog::showCard(const QModelIndex &index)
         viewOrgContactDialog->exec();
         viewOrgContactDialog->deleteLater();
     }
-}
-
-void ContactsDialog::setSortingEnabled()
-{
-
 }
 
 void ContactsDialog::deleteObjects()
@@ -337,25 +342,5 @@ void ContactsDialog::on_lineEdit_returnPressed()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
 
         onUpdate();
-    }
-}
-
-void ContactsDialog::on_sortButton_clicked()
-{
-    update = "sort";
-
-    if (counter == 0)
-    {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
-        onUpdate();
-        counter++;
-    }
-    else
-    {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
-        onUpdate();
-        counter = 0;
     }
 }
