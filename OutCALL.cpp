@@ -300,10 +300,13 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
         if (callerName.isEmpty() || callerName == "<unknown>")
         {
             PopupWindow::showCallNotification(QString("(%1)").arg(from));
+
         }
         else
         {
             PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+
+            //PopupWindow::getNumber(QString("(%1)").arg(from));
             //qDebug()<<from;
 
         }
