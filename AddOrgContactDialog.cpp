@@ -27,7 +27,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
+    ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddOrgContactDialog::onSave);
 }

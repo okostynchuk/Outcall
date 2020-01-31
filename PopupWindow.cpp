@@ -341,9 +341,6 @@ void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
 //    bool isCallerIDUnknown  = true;
 //    int callerLength        = from.size();
 
-    qDebug()<<from;
-
-
 //    if (isMinCallerID)
 //    {
 //         qDebug()<<from;
