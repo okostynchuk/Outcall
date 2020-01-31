@@ -10,6 +10,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QHeaderView>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -17,6 +18,10 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+    ui->tableView->setSortingEnabled(false);
+    m_horiz_header = ui->tableView->horizontalHeader();
+    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -63,5 +68,28 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
+}
+
+void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
+{
+    if(logicalIndex != 2) return;
+
+    update = "sort";
+
+    if (counter == 0)
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
+        onUpdate();
+        counter++;
+    }
+    else
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
+        onUpdate();
+        counter = 0;
+    }
+
 }
 

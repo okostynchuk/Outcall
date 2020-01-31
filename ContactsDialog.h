@@ -10,10 +10,8 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTreeView>
 #include <QAbstractProxyModel>
 #include <QHeaderView>
-#include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTableView>
@@ -43,10 +41,8 @@ protected slots:
     void onTableClicked(const QModelIndex &);
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
-    void on_sortButton_clicked();
-    void setSortingEnabled();
     void showCard(const QModelIndex &);
-    void onSectionClicked ( int logicalIndex );
+    void onSectionClicked (int logicalIndex);
 
 private:
     Ui::ContactsDialog *ui;
@@ -58,7 +54,7 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-
+    QHeaderView *m_horiz_header;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);

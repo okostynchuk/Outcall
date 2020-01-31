@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QHeaderView>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -21,12 +22,16 @@ public:
 private:
     Ui::ViewOrgContactDialog *ui;
     QValidator *validator;
+    QHeaderView *m_horiz_header;
     QString updateID;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+
+protected slots:
+    void onSectionClicked (int logicalIndex);
 };
 
 #endif // VIEWORGCONTACTDIALOG_H
