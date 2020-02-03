@@ -40,7 +40,7 @@
        <item>
         <widget class="QLabel" name="codeLabel">
          <property name="text">
-          <string>Code:</string>
+          <string>Код:</string>
          </property>
         </widget>
        </item>
@@ -67,7 +67,7 @@
        <item>
         <widget class="QLabel" name="phoneLabel">
          <property name="text">
-          <string>Phone:</string>
+          <string>Номер:</string>
          </property>
         </widget>
        </item>

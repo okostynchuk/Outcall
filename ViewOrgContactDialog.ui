@@ -455,6 +455,9 @@ cursor: default;
                   <property name="whatsThis">
                    <string>Поиск по таблице</string>
                   </property>
+                  <property name="placeholderText">
+                   <string>Поиск</string>
+                  </property>
                  </widget>
                 </item>
                 <item>

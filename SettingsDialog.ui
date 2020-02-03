@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>OutCALL  - Settings</string>
+   <string>OutCALL  - Настройки</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">

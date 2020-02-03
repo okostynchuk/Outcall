@@ -84,7 +84,7 @@ void OutCall::createContextMenu()
     connect(contactsInfoAction, &QAction::triggered, this, &OutCall::onContactsInfo);
 
     // Call History
-    QAction* callHistoryAction = new QAction(tr("Call History"), m_menu);
+    QAction* callHistoryAction = new QAction(tr("История звонков"), m_menu);
     connect(callHistoryAction, &QAction::triggered, this, &OutCall::onCallHistory);
 
     // Place a Call

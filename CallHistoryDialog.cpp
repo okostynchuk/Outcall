@@ -25,7 +25,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->closeButton,  &QPushButton::clicked, this, &QDialog::close);
     connect(ui->removeButton, &QPushButton::clicked, this, &CallHistoryDialog::onRemoveButton);
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);

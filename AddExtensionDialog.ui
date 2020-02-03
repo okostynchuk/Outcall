@@ -24,7 +24,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Extension:</string>
+      <string>Расширение:</string>
      </property>
     </widget>
    </item>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Protocol:</string>
+      <string>Протокол:</string>
      </property>
     </widget>
    </item>
