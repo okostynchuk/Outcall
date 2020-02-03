@@ -57,13 +57,14 @@ private:
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
     QHeaderView *m_horiz_header;
+    QHeaderView *m_horiz_header1;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;
     int counter1;
-    int counter;
+    bool counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;

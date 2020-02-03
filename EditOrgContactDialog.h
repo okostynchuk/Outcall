@@ -56,12 +56,13 @@ private:
     EditContactDialog *editContactDialog;
     ViewContactDialog *viewContactDialog;
     QHeaderView *m_horiz_header;
+    QHeaderView *m_horiz_header1;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
     QStringList numbers;
     bool updateOnClose;
-    int counter;
+    bool counter;
     int counter1;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;

@@ -339,7 +339,6 @@ background-color: #fffff8;
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff0;
-cursor: default;
 }</string>
              </property>
              <property name="undoRedoEnabled">

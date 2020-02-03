@@ -25,14 +25,16 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     ui->tableView->setSortingEnabled(false);
     m_horiz_header = ui->tableView->horizontalHeader();
+    m_horiz_header1 = ui->tableView->horizontalHeader();
 
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::clearEditText);
+    connect(m_horiz_header1, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
 
     onComboBoxSelected();
-    counter = 0;
+    counter = true;
     counter1 = 0;
 }
 
@@ -108,8 +110,7 @@ void ViewOrgContactDialog::onComboBoxSelected()
 }
 
 void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)
-{    
-    m_horiz_header = ui->tableView->horizontalHeader();
+{
     QString entry_name1 = ui->lineEdit->text();
     if (ui->comboBox->currentText() == "Поиск по ФИО")
     {
@@ -122,23 +123,14 @@ void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)
             query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
             onUpdate();
             counter1++;
-            qDebug()<<counter1;
-            //connect(ui->lineEdit, SIGNAL(selectionChanged()), this, SLOT(onReset()));
         }
         else
         {
             query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
             onUpdate();
             counter1 = 0;
-            qDebug()<<counter1;
-            //connect(ui->lineEdit, SIGNAL(selectionChanged()), this, SLOT(onReset()));
         }
     }
-}
-
-void ViewOrgContactDialog::onReset(){
-    if(counter1 = 0) counter1 = 1;
-    if(counter1 = 1) counter1 = 0;
 }
 
 void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
@@ -147,23 +139,20 @@ void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
 
     update = "sort";
 
-    if (counter == 0)
+    if (counter == true)
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
 
         onUpdate();
-        counter++;
-        qDebug()<<counter;
+        counter = false;
     }
     else
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
 
         onUpdate();
-        counter = 0;
-        qDebug()<<counter;
+        counter = true;
     }
-
 }
 
 void ViewOrgContactDialog::on_lineEdit_returnPressed()
@@ -177,7 +166,6 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
 
         onUpdate();
-        connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
     }
 
     if (ui->comboBox->currentText() == "Поиск по номеру телефона")

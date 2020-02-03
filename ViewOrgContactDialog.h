@@ -32,7 +32,6 @@ protected slots:
     void onSectionClicked (int logicalIndex);
     void onSortingSectionClicked (int logicalIndex);
     void clearEditText();
-    void onReset();
 
 private:
     Ui::ViewOrgContactDialog *ui;
@@ -40,13 +39,14 @@ private:
     QSqlQueryModel *query2;
     QValidator *validator;
     QHeaderView *m_horiz_header;
+    QHeaderView *m_horiz_header1;
     QString updateID;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    int counter;
+    bool counter;
     int counter1;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
