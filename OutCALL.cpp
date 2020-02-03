@@ -2,7 +2,6 @@
 #include "DebugInfoDialog.h"
 #include "SettingsDialog.h"
 #include "ContactsDialog.h"
-#include "AboutDialog.h"
 #include "CallHistoryDialog.h"
 #include "Global.h"
 #include "ContactManager.h"
@@ -29,7 +28,6 @@ OutCall::OutCall() :
     m_menu                = new QMenu(this);
     m_settingsDialog      = new SettingsDialog;
     m_contactsDialog      = new ContactsDialog;
-    m_aboutDialog         = new AboutDialog;
     m_debugInfoDialog     = new DebugInfoDialog;
     m_callHistoryDialog   = new CallHistoryDialog;
     m_placeCallDialog     = new PlaceCallDialog;
@@ -60,7 +58,6 @@ OutCall::~OutCall()
     delete m_settingsDialog;
     delete m_debugInfoDialog;
     delete m_contactsDialog;
-    delete m_aboutDialog;
     delete m_callHistoryDialog;
     delete m_placeCallDialog;
 }
@@ -75,57 +72,29 @@ void OutCall::createContextMenu()
     m_signIn  = new QAction(tr("Sign In"), m_menu);
     connect(m_signIn, &QAction::triggered, this, &OutCall::signInOut);
 
-    // Add Contacts
-    QAction* addContactAction = new QAction(tr("Add Contact"), m_menu);
-    connect(addContactAction, &QAction::triggered, this, &OutCall::onAddContact);
-
     // SettingsDialog
     QAction* settingsAction = new QAction(tr("Настройки"), m_menu);
     connect(settingsAction, &QAction::triggered, this, &OutCall::onSettingsDialog);
 
-    QAction* debugInfoAction = new QAction(tr("Debug info"), m_menu);
+    QAction* debugInfoAction = new QAction(tr("Отладка"), m_menu);
     connect(debugInfoAction, &QAction::triggered, this, &OutCall::onDebugInfo);
 
     // ContactsDialog
     QAction* contactsInfoAction = new QAction(tr("Контакты"), m_menu);
     connect(contactsInfoAction, &QAction::triggered, this, &OutCall::onContactsInfo);
 
-    // About
-    QAction* aboutAction = new QAction(tr("About"), m_menu);
-    connect(aboutAction, &QAction::triggered, this, &OutCall::onAboutDialog);
-
-    // Help
-    QMenu *helpMenu = new QMenu(tr("Help"), m_menu);
-    m_menu->addMenu(helpMenu);
-
-    QAction* onlineHelp = new QAction(tr("Online HTML"), helpMenu);
-    connect(onlineHelp, &QAction::triggered, this, &OutCall::onOnlineHelp);
-
-    QAction* onlinePdf = new QAction(tr("Online PDF"), helpMenu);
-    connect(onlinePdf, &QAction::triggered, this, &OutCall::onOnlinePdf);
-
     // Call History
     QAction* callHistoryAction = new QAction(tr("Call History"), m_menu);
     connect(callHistoryAction, &QAction::triggered, this, &OutCall::onCallHistory);
 
-    // Import Contacts
-    QMenu *importContactsMenu = new QMenu(tr("Sync Contacts"), m_menu);
-
-    QAction* importOutlookAction = new QAction(tr("From Outlook"), importContactsMenu);
-    connect(importOutlookAction, &QAction::triggered, this, &OutCall::onSyncOutlook);
-
     // Place a Call
-    m_placeCall = new QAction(tr("Place a Call"), 0);
+    m_placeCall = new QAction(tr("Позвонить"), 0);
     QFont font = m_placeCall->font();
     font.setBold(true);
     m_placeCall->setFont(font);
     connect(m_placeCall, &QAction::triggered, this, &OutCall::onPlaceCall);
 
-    helpMenu->addAction(onlineHelp);
-    helpMenu->addAction(onlinePdf);
-
     // Add actions
-    m_menu->addAction(aboutAction);
     m_menu->addSeparator();
 
     m_menu->addAction(settingsAction);
@@ -135,12 +104,9 @@ void OutCall::createContextMenu()
     m_menu->addAction(m_placeCall);
     m_menu->addAction(callHistoryAction);
     m_menu->addAction(contactsInfoAction);
-    /*m_menu->addMenu(importContactsMenu);
-    importContactsMenu->addAction(importOutlookAction);*/
     m_menu->addSeparator();
 
     m_menu->addAction(m_signIn);
-    m_menu->addAction(addContactAction);
     m_menu->addSeparator();
 
     m_menu->addAction(exitAction);
@@ -382,18 +348,6 @@ void OutCall::changeIcon()
     }
 }
 
-void OutCall::onOnlineHelp()
-{
-    QString link = "http://www.bicomsystems.com/docs/outcall/1.0/html/";
-    QDesktopServices::openUrl(QUrl(link));
-}
-
-void OutCall::onOnlinePdf()
-{
-    QString link = "http://www.bicomsystems.com/docs/outcall/1.0/pdf/outcall.pdf";
-    QDesktopServices::openUrl(QUrl(link));
-}
-
 void OutCall::onCallHistory()
 {
     m_callHistoryDialog->show();
@@ -404,12 +358,6 @@ void OutCall::onSettingsDialog()
 {
     SettingsDialog dialog;
     dialog.exec();
-}
-
-void OutCall::onAboutDialog()
-{
-    m_aboutDialog->show();
-    m_aboutDialog->raise();
 }
 
 void OutCall::onDebugInfo()
@@ -441,7 +389,6 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::Trigger)
     {
         m_debugInfoDialog->activateWindow();
-        m_aboutDialog->activateWindow();
         m_settingsDialog->activateWindow();
         m_callHistoryDialog->activateWindow();
         m_contactsDialog->activateWindow();

@@ -14,6 +14,7 @@
 #include <QHeaderView>
 #include <QClipboard>
 #include <QScrollBar>
+#include <QDebug>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,6 +32,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::clearEditText);
 
     onComboBoxSelected();
+    counter = 0;
     counter1 = 0;
 }
 
@@ -78,6 +80,7 @@ void ViewOrgContactDialog::onUpdate()
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -104,28 +107,38 @@ void ViewOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
-void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)//????выводит всю таблицу
-{
-    QString entry_name = ui->lineEdit->text();
+void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)
+{    
+    m_horiz_header = ui->tableView->horizontalHeader();
+    QString entry_name1 = ui->lineEdit->text();
     if (ui->comboBox->currentText() == "Поиск по ФИО")
     {
-        if(logicalIndex != 1) return;
-
         update = "sort";
+
+        if(logicalIndex != 1) return;
 
         if (counter1 == 0)
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
             onUpdate();
             counter1++;
+            qDebug()<<counter1;
+            //connect(ui->lineEdit, SIGNAL(selectionChanged()), this, SLOT(onReset()));
         }
         else
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
             onUpdate();
             counter1 = 0;
+            qDebug()<<counter1;
+            //connect(ui->lineEdit, SIGNAL(selectionChanged()), this, SLOT(onReset()));
         }
     }
+}
+
+void ViewOrgContactDialog::onReset(){
+    if(counter1 = 0) counter1 = 1;
+    if(counter1 = 1) counter1 = 0;
 }
 
 void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
@@ -134,19 +147,21 @@ void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
 
     update = "sort";
 
-    if (counter1 == 0)
+    if (counter == 0)
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
 
         onUpdate();
-        counter1++;
+        counter++;
+        qDebug()<<counter;
     }
     else
     {
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
 
         onUpdate();
-        counter1 = 0;
+        counter = 0;
+        qDebug()<<counter;
     }
 
 }

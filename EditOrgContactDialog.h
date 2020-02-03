@@ -62,6 +62,7 @@ private:
     QStringList numbers;
     bool updateOnClose;
     int counter;
+    int counter1;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;

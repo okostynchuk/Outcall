@@ -62,6 +62,7 @@ private:
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;
+    int counter1;
     int counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;

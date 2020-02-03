@@ -47,7 +47,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
 
     onComboBoxSelected();
     updateOnClose = false;
-    counter = 0;
+    counter1 = 0;
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()
@@ -310,17 +310,18 @@ void EditOrgContactDialog::onUpdate()
     int valueV = verticalScroll->value();
     int valueH = horizontalScroll->value();
 
+    deleteObjects();
+
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
     query_model->insertColumn(4);
     query_model->setHeaderData(4, Qt::Horizontal, tr("Редактирование"));
+    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    deleteObjects();
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -385,26 +386,29 @@ void EditOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
-void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)//???
+void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)
 {
-    QString entry_name = ui->lineEdit->text();
+    m_horiz_header = ui->tableView->horizontalHeader();
+    QString entry_name1 = ui->lineEdit->text();
     if(ui->comboBox->currentText() == "Поиск по ФИО")
     {
         if(logicalIndex != 1) return;
 
         update = "sort";
 
-        if (counter == 0)
+        if (counter1 == 0)
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
             onUpdate();
-            counter++;
+
+            ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+            counter1++;
         }
         else
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
             onUpdate();
-            counter = 0;
+            counter1 = 0;
         }
     }
 }
@@ -420,6 +424,7 @@ void EditOrgContactDialog::on_lineEdit_returnPressed()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
 
         onUpdate();
+
         connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
     }
 

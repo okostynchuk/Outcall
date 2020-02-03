@@ -32,6 +32,7 @@ protected slots:
     void onSectionClicked (int logicalIndex);
     void onSortingSectionClicked (int logicalIndex);
     void clearEditText();
+    void onReset();
 
 private:
     Ui::ViewOrgContactDialog *ui;
@@ -45,6 +46,7 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    int counter;
     int counter1;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
