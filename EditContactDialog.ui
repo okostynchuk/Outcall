@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_13">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
@@ -46,6 +50,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
             </widget>
            </item>
            <item row="2" column="3">
@@ -56,6 +63,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
             </widget>
            </item>
            <item row="2" column="0">
@@ -65,6 +75,9 @@
                <width>160</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
              </property>
             </widget>
            </item>
@@ -119,8 +132,32 @@
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_9">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_27">
+             <property name="text">
+              <string>3</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="FirstNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="4">
-            <widget class="QComboBox" name="comboBox"/>
+            <widget class="QComboBox" name="comboBox">
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+             <property name="insertPolicy">
+              <enum>QComboBox::InsertAlphabetically</enum>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToContents</enum>
+             </property>
+            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_6">
@@ -129,9 +166,6 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="SecondNumber"/>
-           </item>
            <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label_5">
              <property name="text">
@@ -139,17 +173,10 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_27">
+           <item row="1" column="3" colspan="2">
+            <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>3</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QLabel" name="label_29">
-             <property name="text">
-              <string>Город:</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -160,47 +187,39 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="FirstNumber"/>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="SecondNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
-           <item row="3" column="4">
-            <widget class="QLineEdit" name="Address"/>
+           <item row="2" column="3">
+            <widget class="QLabel" name="label_29">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>Город:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
            </item>
            <item row="2" column="4">
-            <widget class="QLineEdit" name="City"/>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLabel" name="label_32">
-             <property name="text">
-              <string>VyborID:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="FourthNumber"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>4</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="ThirdNumber"/>
-           </item>
-           <item row="3" column="3">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Адрес:</string>
+            <widget class="QLineEdit" name="City">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
              </property>
             </widget>
            </item>
            <item row="4" column="4">
-            <widget class="QLineEdit" name="VyborID"/>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="FifthNumber"/>
+            <widget class="QLineEdit" name="VyborID">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="5" column="0">
             <widget class="QLabel" name="label_33">
@@ -209,20 +228,75 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="4">
-            <widget class="QLineEdit" name="Email"/>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="FifthNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="5" column="3">
             <widget class="QLabel" name="label_12">
              <property name="text">
               <string>Email:</string>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
             </widget>
            </item>
-           <item row="1" column="4">
-            <widget class="QLabel" name="label_14">
+           <item row="4" column="3">
+            <widget class="QLabel" name="label_32">
              <property name="text">
-              <string/>
+              <string>VyborID:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="ThirdNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Адрес:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="4">
+            <widget class="QLineEdit" name="Address">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="FourthNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="4">
+            <widget class="QLineEdit" name="Email">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
              </property>
             </widget>
            </item>
@@ -230,10 +304,20 @@
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_7">
-           <item row="2" column="0" colspan="2">
-            <widget class="QLabel" name="label_17">
+           <item row="1" column="0" colspan="3">
+            <widget class="QTextEdit" name="Comment">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="saveButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
-              <string/>
+              <string>Сохранить данные</string>
              </property>
             </widget>
            </item>
@@ -241,19 +325,6 @@
             <widget class="QLabel" name="label_16">
              <property name="text">
               <string>Заметка:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="4">
-            <widget class="QTextEdit" name="Comment"/>
-           </item>
-           <item row="2" column="3">
-            <widget class="QPushButton" name="saveButton">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>Сохранить данные</string>
              </property>
             </widget>
            </item>
@@ -400,6 +471,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

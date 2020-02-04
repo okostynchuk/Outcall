@@ -13,6 +13,8 @@
 #include <QWidget>
 #include <QTextEdit>
 #include <QSqlQuery>
+#include <QMap>
+#include <QString>
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
 int PopupWindow::m_nLastWindowPosition = 0;
@@ -33,8 +35,12 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->setupUi(this);
 
-    m_callHistoryDialog   = new CallHistoryDialog;
-    connect(g_pAsteriskManager, &AsteriskManager::callReceived, this, &PopupWindow::onCallReceived);
+    m_callHistoryDialog = new CallHistoryDialog;
+
+
+ //   connect(g_pAsteriskManager, &AsteriskManager::callDeteceted, this, &PopupWindow::onCallDeteceted);
+   // connect(g_pAsteriskManager, &AsteriskManager::callReceived, this, &PopupWindow::onCallReceived);
+
 
 	ui->lblText->setOpenExternalLinks(true);
 	setAttribute(Qt::WA_TranslucentBackground);
@@ -117,13 +123,14 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
 
-   //note = new QTextEdit;
-   // connect(note, SIGNAL(textChanged(const QString &)), this, SLOT(TextChanged(const QString &text)));
+    //note = new QTextEdit;
+    // connect(note, SIGNAL(textChanged(const QString &)), this, SLOT(TextChanged(const QString &text)));
 }
 
 PopupWindow::~PopupWindow()
 {
     delete ui;
+    delete m_callHistoryDialog;
 }
 
 void PopupWindow::mousePressEvent(QMouseEvent *event)
@@ -301,13 +308,6 @@ void PopupWindow::closeAll()
 	m_nLastWindowPosition = 0;
 }
 
-//void PopupWindow::mousePressEvent(QMouseEvent *)//built-in function
-//{
-
-//    //m_bAppearing = false;
-//    //m_timer.start();
-//}
-
 void PopupWindow::on_pushButton_close_clicked()
 {
 
@@ -337,6 +337,4 @@ void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
     {
         PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
     }
-
-
 }

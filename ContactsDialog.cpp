@@ -4,6 +4,8 @@
 #include "AddOrgContactDialog.h"
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
+#include "Global.h"
+#include "OutCALL.h"
 
 #include <QSqlQueryModel>
 #include <QHeaderView>
@@ -20,10 +22,8 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QLabel>
-#include <QAbstractProxyModel>
-#include <QTreeView>
-#include <QSortFilterProxyModel>
 #include <QModelIndex>
+#include <QScrollBar>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -57,12 +57,18 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setSortingEnabled(false);
+    m_horiz_header = ui->tableView->horizontalHeader();
+    m_horiz_header1 = ui->tableView->horizontalHeader();
 
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
+    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ContactsDialog::clearEditText);
+    connect(m_horiz_header1, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -79,15 +85,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 
     onComboBoxSelected();
-    //ui->tableView->setSortingEnabled(true);
-    //ui->tableView->sortByColumn(2, Qt::AscendingOrder);
-    //comboBox->model()->sort ( int column, Qt::SortOrder order = Qt::AscendingOrder )
 
-    tmpHeaderView = ui->tableView->horizontalHeader();//#include <QHeaderView>
-    //tmpHeaderView->setClickable(true);//#include <QHeaderView>???
-    ui->tableView->setSortingEnabled(true);//#include <QHeaderView>
-
-    counter = 0;
+    counter = true;
+    counter1 = 0;
     update = "default";
 }
 
@@ -96,6 +96,18 @@ ContactsDialog::~ContactsDialog()
     delete query1;
     delete query2;
     delete ui;
+}
+
+void ContactsDialog::clearEditText(){
+    ui->lineEdit->clear();
+}
+
+void ContactsDialog::recieveData(bool update)
+{
+    if (update)
+    {
+        onUpdate();
+    }
 }
 
 void ContactsDialog::showCard(const QModelIndex &index)
@@ -109,38 +121,13 @@ void ContactsDialog::showCard(const QModelIndex &index)
          viewContactDialog->exec();
          viewContactDialog->deleteLater();
     }
-        else
-        {
-            viewOrgContactDialog = new ViewOrgContactDialog;
-            viewOrgContactDialog->setOrgValuesContacts(updateID);
-            viewOrgContactDialog->exec();
-            viewOrgContactDialog->deleteLater();
-        }
-}
-
-void ContactsDialog::setSortingEnabled()
-{
-    ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
-
-     if (true)
-     {
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-
-         ui->tableView->sortByColumn(ui->tableView->horizontalHeader()->sortIndicatorSection());
-         update = "sort";
-         onUpdate();
-     }
-     else
-     {
-
-         connect(ui->tableView->horizontalHeader(), SIGNAL(sectionPressed(int)), this, SLOT(selectColumn(int)));
-
-         disconnect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
-         update = "sort";
-         onUpdate();
-     }
+    else
+    {
+        viewOrgContactDialog = new ViewOrgContactDialog;
+        viewOrgContactDialog->setOrgValuesContacts(updateID);
+        viewOrgContactDialog->exec();
+        viewOrgContactDialog->deleteLater();
+    }
 }
 
 void ContactsDialog::deleteObjects()
@@ -165,6 +152,11 @@ void ContactsDialog::onUpdate()
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
+
+    verticalScroll = ui->tableView->verticalScrollBar();
+    horizontalScroll = ui->tableView->horizontalScrollBar();
+    int valueV = verticalScroll->value();
+    int valueH = horizontalScroll->value();
 
     deleteObjects();
 
@@ -199,6 +191,12 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 
+    if (update == "default")
+    {
+        ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
+        ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
+    }
+
     update = "default";
 }
 
@@ -220,6 +218,7 @@ void ContactsDialog::onEdit()
         editContactDialog = new EditContactDialog;
         editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
+        connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editContactDialog->exec();
         editContactDialog->deleteLater();
     }
@@ -228,6 +227,7 @@ void ContactsDialog::onEdit()
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editOrgContactDialog->exec();
         editOrgContactDialog->deleteLater();
     }
@@ -237,6 +237,7 @@ void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
     addContactDialog->setWindowTitle("Добавление физ. лица");
+    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addContactDialog->exec();
     addContactDialog->deleteLater();
 }
@@ -245,6 +246,7 @@ void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Добавление организации");
+    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }
@@ -257,11 +259,11 @@ QWidget* ContactsDialog::addImageLabel(int &row_index)
     l->addWidget(imageLabel);
     if (query2->data(query2->index(row_index, 0)).toString() == "person")
     {
-        imageLabel->setPixmap(QPixmap("D:/person.png").scaled(30, 30, Qt::KeepAspectRatio));
+        imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
     else
     {
-        imageLabel->setPixmap(QPixmap("D:/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+        imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
     }
     wgt->setLayout(l);
     widgets.append(wgt);
@@ -295,6 +297,55 @@ void ContactsDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
+void ContactsDialog::onSortingSectionClicked(int logicalIndex)
+{
+    QString entry_name1 = ui->lineEdit->text();
+    if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
+    {
+        if(logicalIndex != 2) return;
+
+        update = "sort";
+
+        if (counter1 == 0)
+        {
+            query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name1 + "%' GROUP BY entry_id ORDER BY entry_name");
+            onUpdate();
+            counter1++;
+        }
+        else
+        {
+            query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name1 + "%' GROUP BY entry_id ORDER BY entry_name DESC");
+            onUpdate();
+            counter1 = 0;
+        }
+    }
+}
+
+void ContactsDialog::onSectionClicked (int logicalIndex)
+{
+    if(logicalIndex != 2) return;
+
+    update = "sort";
+
+    if (counter == true)
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
+        onUpdate();
+        counter = false;
+    }
+    else
+    {
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
+        onUpdate();
+        counter = true;
+    }
+
+}
+
 void ContactsDialog::on_lineEdit_returnPressed()
 {
     update = "filter";
@@ -308,7 +359,6 @@ void ContactsDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-
     if(ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
@@ -316,11 +366,7 @@ void ContactsDialog::on_lineEdit_returnPressed()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
 
         onUpdate();
-//        if(ui->sortButton->clicked(true) == setProperty(clicked(),true)){
-//                on_sortButton_clicked();
-//    }
     }
-
     if(ui->comboBox->currentText() == "Поиск по заметке")
     {
         QString entry_comment = ui->lineEdit->text();
@@ -330,39 +376,3 @@ void ContactsDialog::on_lineEdit_returnPressed()
         onUpdate();
     }
 }
-
-void ContactsDialog::on_sortButton_clicked()
-{
-    update = "sort";
-
-    if (counter == 0)
-    {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
-        onUpdate();
-        counter++;
-    }
-    else
-    {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
-        onUpdate();
-        counter = 0;
-    }
-
-//    treeView = new QTreeView;
-//    MyItemModel *sourceModel = new MyItemModel(this);
-//    proxyModel = new QSortFilterProxyModel(this);
-//    proxyModel->setSourceModel(sourceModel);
-//    treeView->setModel(proxyModel);
-
-// ui->tableView->sortByColumn(2,Qt::AscendingOrder);
-
-// sourceModel->(2, Qt::AscendingOrder);
-
-// ui->tableView->setSortingEnabled(true);
-
-// ui->tableView->sortByColumn(2,Qt::AscendingOrder);
-}
-
-

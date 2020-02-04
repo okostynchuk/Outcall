@@ -3,6 +3,7 @@
 
 #include "ContactManager.h"
 #include "AsteriskManager.h"
+#include "PopupWindow.h"
 
 #include <QWidget>
 #include <QMap>
@@ -12,7 +13,6 @@ class QSystemTrayIcon;
 class QMenu;
 class DebugInfoDialog;
 class QTcpSocket;
-class AboutDialog;
 class CallHistoryDialog;
 class SettingsDialog;
 class ContactsDialog;
@@ -35,7 +35,6 @@ protected slots:
     void signInOut();
     void onSettingsDialog();
     void onContactsInfo();
-    void onAboutDialog();
     void onDebugInfo();
     void onActiveCalls();
     void onPlaceCall();
@@ -51,8 +50,6 @@ protected slots:
     void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
     void onCallReceived(const QMap<QString, QVariant> &call);
 
-    void onOnlineHelp();
-    void onOnlinePdf();
     void close();
     void changeIcon();
 
@@ -65,7 +62,6 @@ private:
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;
     ContactsDialog *m_contactsDialog;
-    AboutDialog *m_aboutDialog;
     CallHistoryDialog *m_callHistoryDialog;
     PlaceCallDialog *m_placeCallDialog;
     ContactManager m;

@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>OutCALL  - Settings</string>
+   <string>OutCALL  - Настройки</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
@@ -27,7 +27,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="general">
       <attribute name="title">
@@ -168,7 +168,7 @@
        <item>
         <widget class="QTabWidget" name="dialRulesTabs">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="dialGeneralTab">
           <attribute name="title">

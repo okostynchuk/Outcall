@@ -37,21 +37,21 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>From:</string>
+          <string>От:</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Contact:</string>
+          <string>Контакты:</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Phone:</string>
+          <string>Номер:</string>
          </property>
         </widget>
        </item>
@@ -80,7 +80,7 @@
             </sizepolicy>
            </property>
            <property name="placeholderText">
-            <string>Search</string>
+            <string>Поиск</string>
            </property>
           </widget>
          </item>
@@ -124,14 +124,14 @@
      <item>
       <widget class="QPushButton" name="callButton">
        <property name="text">
-        <string>Call</string>
+        <string>Позвонить</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>Cancel</string>
+        <string>Отмена</string>
        </property>
       </widget>
      </item>

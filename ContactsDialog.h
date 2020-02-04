@@ -10,12 +10,12 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTreeView>
 #include <QAbstractProxyModel>
 #include <QHeaderView>
-#include <QSortFilterProxyModel>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QTableView>
+#include <QScrollBar>
 
 namespace Ui {
 class ContactsDialog;
@@ -29,6 +29,9 @@ public:
     explicit ContactsDialog(QWidget *parent = 0);
     ~ContactsDialog();
 
+public slots:
+    void recieveData(bool);
+
 protected slots:
     void deleteObjects();
     void onUpdate();
@@ -38,9 +41,10 @@ protected slots:
     void onTableClicked(const QModelIndex &);
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
-    void on_sortButton_clicked();
-    void setSortingEnabled();
     void showCard(const QModelIndex &);
+    void onSectionClicked (int logicalIndex);
+    void onSortingSectionClicked(int logicalIndex);
+    void clearEditText();
 
 private:
     Ui::ContactsDialog *ui;
@@ -52,17 +56,20 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-    QTreeView *treeView;
-    QHeaderView *tmpHeaderView;
-    QSortFilterProxyModel *proxyModel;
+    QHeaderView *m_horiz_header;
+    QHeaderView *m_horiz_header1;
+    QScrollBar *verticalScroll;
+    QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
     QWidget* createEditButton(int &);
     QString update;
-    int counter;
+    int counter1;
+    bool counter;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;
+
 };
 
 #endif // CONTACTSDIALOG_H

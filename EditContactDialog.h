@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QStringList>
 
 namespace Ui {
 class EditContactDialog;
@@ -35,6 +36,10 @@ private:
     QString fourthNumber;
     QString fifthNumber;
     QString number;
+    QStringList numbers;
+
+signals:
+    void sendData(bool);
 };
 
 #endif // EDITCONTACTDIALOG_H

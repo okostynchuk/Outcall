@@ -6,18 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>589</width>
-    <height>441</height>
+    <width>655</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -38,7 +42,11 @@
               </widget>
              </item>
              <item row="1" column="0">
-              <widget class="QLineEdit" name="OrgName"/>
+              <widget class="QLineEdit" name="OrgName">
+               <property name="focusPolicy">
+                <enum>Qt::ClickFocus</enum>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_15">
@@ -74,7 +82,11 @@
             </widget>
            </item>
            <item row="3" column="3">
-            <widget class="QLineEdit" name="Address"/>
+            <widget class="QLineEdit" name="Address">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="3" column="2">
             <widget class="QLabel" name="label_10">
@@ -112,7 +124,11 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QLineEdit" name="FifthNumber"/>
+            <widget class="QLineEdit" name="FifthNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="5" column="2">
             <widget class="QLabel" name="label_12">
@@ -122,10 +138,18 @@
             </widget>
            </item>
            <item row="5" column="3">
-            <widget class="QLineEdit" name="Email"/>
+            <widget class="QLineEdit" name="Email">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="ThirdNumber"/>
+            <widget class="QLineEdit" name="ThirdNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_9">
@@ -135,7 +159,11 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="FirstNumber"/>
+            <widget class="QLineEdit" name="FirstNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label_5">
@@ -145,13 +173,25 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="SecondNumber"/>
+            <widget class="QLineEdit" name="SecondNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="2" column="3">
-            <widget class="QLineEdit" name="City"/>
+            <widget class="QLineEdit" name="City">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="FourthNumber"/>
+            <widget class="QLineEdit" name="FourthNumber">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="4" column="2">
             <widget class="QLabel" name="label_11">
@@ -161,7 +201,11 @@
             </widget>
            </item>
            <item row="4" column="3">
-            <widget class="QLineEdit" name="VyborID"/>
+            <widget class="QLineEdit" name="VyborID">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_6">
@@ -182,7 +226,11 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="4">
-            <widget class="QTextEdit" name="Comment"/>
+            <widget class="QTextEdit" name="Comment">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_17">
@@ -234,7 +282,7 @@
                </font>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
+               <enum>Qt::WheelFocus</enum>
               </property>
               <property name="acceptDrops">
                <bool>false</bool>
@@ -278,7 +326,7 @@
                  <cursorShape>IBeamCursor</cursorShape>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::StrongFocus</enum>
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="toolTip">
                  <string>Поиск по таблице</string>
@@ -286,26 +334,8 @@
                 <property name="whatsThis">
                  <string>Поиск по таблице</string>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="sortButton">
-                <property name="minimumSize">
-                 <size>
-                  <width>128</width>
-                  <height>27</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="text">
-                 <string>Сортировать</string>
+                <property name="placeholderText">
+                 <string>Поиск</string>
                 </property>
                </widget>
               </item>
@@ -348,6 +378,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

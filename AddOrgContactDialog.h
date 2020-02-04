@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QStringList>
 
 namespace Ui {
 class AddOrgContactDialog;
@@ -24,6 +25,10 @@ private:
     Ui::AddOrgContactDialog *ui;
     QValidator *validator;
     bool eventFilter(QObject*, QEvent*event);
+    QStringList numbers;
+
+signals:
+    void sendData(bool);
 };
 
 #endif // ADDORGCONTACTDIALOG_H

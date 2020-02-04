@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Контакты</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -100,26 +104,8 @@
             <property name="whatsThis">
              <string>Поиск по таблице</string>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="sortButton">
-            <property name="minimumSize">
-             <size>
-              <width>125</width>
-              <height>27</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>Сортировать</string>
+            <property name="placeholderText">
+             <string>Поиск</string>
             </property>
            </widget>
           </item>
@@ -221,6 +207,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

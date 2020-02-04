@@ -8,6 +8,11 @@
 #include <QDialog>
 #include <QTimer>
 #include <QTextEdit>
+#include <QMap>
+
+class CallHistoryDialog;
+class ContactsDialog;
+
 
 namespace Ui {
     class PopupWindow;
@@ -51,17 +56,15 @@ protected:
 
 protected slots:
 
-    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
-    void onCallReceived(const QMap<QString, QVariant> &call);
+    //void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
+    //void onCallReceived(const QMap<QString, QVariant> &call);
+
 
 private slots:
     void onTimer();
     void onPopupTimeout();
-    //virtual void mouseMoveEvent(QMouseEvent *evet);//built-in
     void on_pushButton_close_clicked();
-
     void on_pushButton_clicked();
-
     void on_pushButton_2_clicked();
 
 private:
@@ -89,11 +92,11 @@ private:
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
 
-
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
 
     CallHistoryDialog *m_callHistoryDialog;
+
 };
 
 #endif // POPUPWINDOW_H

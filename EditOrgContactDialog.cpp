@@ -1,6 +1,7 @@
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
 #include "EditContactDialog.h"
+#include "ViewContactDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -11,6 +12,10 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
+#include <QClipboard>
+#include <QScrollBar>
+#include <QStringList>
+#include <QHeaderView>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -35,11 +40,22 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
+    ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
+
+    ui->tableView->setSortingEnabled(false);
+    m_horiz_header = ui->tableView->horizontalHeader();
+    m_horiz_header1 = ui->tableView->horizontalHeader();
+    counter = true;
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
+    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));    
+    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &EditOrgContactDialog::clearEditText);
+    connect(m_horiz_header1, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
 
     onComboBoxSelected();
+    updateOnClose = false;
+    counter1 = 0;
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()
@@ -47,6 +63,20 @@ EditOrgContactDialog::~EditOrgContactDialog()
     delete validator;
     delete query_model;
     delete ui;
+}
+
+
+void EditOrgContactDialog::clearEditText()
+{
+    ui->lineEdit->clear();
+}
+
+void EditOrgContactDialog::closeEvent(QCloseEvent *)
+{
+    if (updateOnClose)
+    {
+        emit sendData(true);
+    }
 }
 
 void EditOrgContactDialog::onSave()
@@ -66,18 +96,6 @@ void EditOrgContactDialog::onSave()
     query.addBindValue(ui->Comment->toPlainText());
     query.addBindValue(updateID);
 
-    QSqlQuery query1(db);
-    QString sql1 = QString("SELECT entry_phone FROM entry_phone WHERE entry_phone = '%1' AND NOT entry_id = %6 OR entry_phone = '%2' AND NOT entry_id = %6 OR entry_phone = '%3' AND NOT entry_id = %6 OR entry_phone = '%4' AND NOT entry_id = %6 OR entry_phone = '%5' AND NOT entry_id = %6")
-            .arg(ui->FirstNumber->text(),
-            ui->SecondNumber->text(),
-            ui->ThirdNumber->text(),
-            ui->FourthNumber->text(),
-            ui->FifthNumber->text(),
-            updateID);
-    query1.prepare(sql1);
-    query1.exec();
-    query1.next();
-
     if (QString(ui->OrgName->text()).isEmpty() == true)
     {
          ui->label_15->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
@@ -96,8 +114,58 @@ void EditOrgContactDialog::onSave()
         ui->OrgName->setStyleSheet("border: 1px solid grey");
         ui->label_14->hide();
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
-        if (!query1.value(0).isNull()){
-            QMessageBox::information(this, trUtf8("Error"), trUtf8("Record is exists"));
+        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
+        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
+        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
+        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
+
+        numbers.clear();
+        QSqlQuery query1(db);
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FirstNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FirstNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FirstNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->SecondNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->SecondNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->SecondNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->ThirdNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->ThirdNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->ThirdNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FourthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FourthNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FourthNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FifthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FifthNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FifthNumber->text());
+        }
+
+        if (!numbers.isEmpty())
+        {
+            QString str = numbers.join(", ");
+            QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!\n%1").arg(str), QMessageBox::Ok);
         }
         else
         {
@@ -209,9 +277,20 @@ void EditOrgContactDialog::onSave()
                     query1.exec();
                 }
             }
-            ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+            emit sendData(true);
+            close();
+            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
         }
     }
+}
+
+void EditOrgContactDialog::showCard(const QModelIndex &index)
+{
+    QString id = query_model->data(query_model->index(index.row(), 0)).toString();
+    viewContactDialog = new ViewContactDialog;
+    viewContactDialog->setValuesContacts(id);
+    viewContactDialog->exec();
+    viewContactDialog->deleteLater();
 }
 
 void EditOrgContactDialog::deleteObjects()
@@ -234,17 +313,23 @@ void EditOrgContactDialog::onUpdate()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id");
     }
 
+    verticalScroll = ui->tableView->verticalScrollBar();
+    horizontalScroll = ui->tableView->horizontalScrollBar();
+    int valueV = verticalScroll->value();
+    int valueH = horizontalScroll->value();
+
+    deleteObjects();
+
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
     query_model->insertColumn(4);
     query_model->setHeaderData(4, Qt::Horizontal, tr("Редактирование"));
+    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    deleteObjects();
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -257,7 +342,21 @@ void EditOrgContactDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
 
+    if (update == "default")
+    {
+        ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
+        ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
+    }
     update = "default";
+}
+
+void EditOrgContactDialog::recieveData(bool update)
+{
+    if (update)
+    {
+        onUpdate();
+        updateOnClose = true;
+    }
 }
 
 void EditOrgContactDialog::onEdit()
@@ -266,9 +365,9 @@ void EditOrgContactDialog::onEdit()
     editContactDialog = new EditContactDialog;
     editContactDialog->setWindowTitle("Редактирование физ. лица");
     editContactDialog->setValuesContacts(id);
+    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     editContactDialog->exec();
     editContactDialog->deleteLater();
-    onUpdate();
 }
 
 QWidget* EditOrgContactDialog::createEditButton(int &row_index)
@@ -293,6 +392,55 @@ void EditOrgContactDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по ФИО");
     ui->comboBox->addItem("Поиск по номеру телефона");
     ui->comboBox->addItem("Поиск по заметке");
+}
+
+void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)
+{
+
+    QString entry_name1 = ui->lineEdit->text();
+    if(ui->comboBox->currentText() == "Поиск по ФИО")
+    {
+
+        if(logicalIndex != 1) return;
+
+        update = "sort";
+
+        if (counter1 == 0)
+        {
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            onUpdate();
+            counter1++;
+
+        }
+        else
+        {
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            onUpdate();
+            counter1 = 0;
+        }
+    }
+}
+
+void EditOrgContactDialog::onSectionClicked (int logicalIndex)
+{
+    if (logicalIndex != 1) return;
+
+    update = "sort";
+
+    if (counter == true)
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+
+        onUpdate();
+        counter = false;
+    }
+    else
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+
+        onUpdate();
+        counter = true;
+    }
 }
 
 void EditOrgContactDialog::on_lineEdit_returnPressed()

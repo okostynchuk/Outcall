@@ -1,5 +1,6 @@
 #include "EditContactDialog.h"
 #include "ui_EditContactDialog.h"
+#include "ContactsDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -10,7 +11,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
-#include <QDebug>
+#include <QStringList>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -35,7 +36,7 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Имя<span style=\"color: red;\">*</span>");
+    ui->label_3->setText("Имя:<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
 }
@@ -87,18 +88,6 @@ void EditContactDialog::onSave()
     query.addBindValue(ui->Comment->toPlainText());
     query.addBindValue(updateID);
 
-    QSqlQuery query1(db);
-    QString sql1 = QString("SELECT entry_phone FROM entry_phone WHERE entry_phone = '%1' AND NOT entry_id = %6 OR entry_phone = '%2' AND NOT entry_id = %6 OR entry_phone = '%3' AND NOT entry_id = %6 OR entry_phone = '%4' AND NOT entry_id = %6 OR entry_phone = '%5' AND NOT entry_id = %6")
-            .arg(ui->FirstNumber->text(),
-            ui->SecondNumber->text(),
-            ui->ThirdNumber->text(),
-            ui->FourthNumber->text(),
-            ui->FifthNumber->text(),
-            updateID);
-    query1.prepare(sql1);
-    query1.exec();
-    query1.next();
-
     if (QString(ui->FirstName->text()).isEmpty() == true)
     {
          ui->label_15->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
@@ -118,9 +107,58 @@ void EditContactDialog::onSave()
         ui->FirstName->setStyleSheet("border: 1px solid grey");
         ui->label_14->hide();
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
+        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
+        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
+        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
 
-        if (!query1.value(0).isNull()){
-            QMessageBox::information(this, trUtf8("Error"), trUtf8("Record exists"));
+        numbers.clear();
+        QSqlQuery query1(db);
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FirstNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FirstNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FirstNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->SecondNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->SecondNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->SecondNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->ThirdNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->ThirdNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->ThirdNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FourthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FourthNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FourthNumber->text());
+        }
+        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FifthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+        query1.exec();
+        query1.next();
+        if (query1.value(0) != 0)
+        {
+            ui->FifthNumber->setStyleSheet("border: 1px solid red");
+            numbers << QString(ui->FifthNumber->text());
+        }
+
+        if (!numbers.isEmpty())
+        {
+            QString str = numbers.join(", ");
+            QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!\n%1").arg(str), QMessageBox::Ok);
         }
         else
         {
@@ -232,7 +270,9 @@ void EditContactDialog::onSave()
                     query1.exec();
                 }
             }
-            ui->label_16->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+            emit sendData(true);
+            close();
+            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
         }
     }
 }
@@ -260,7 +300,14 @@ void EditContactDialog::onComboBoxSelected()
             ui->comboBox->addItem(query.value(0).toString());
         }
     }
-    ui->comboBox->setCurrentText(orgName);
+    if (!orgName.isEmpty())
+    {
+        ui->comboBox->setCurrentText(orgName);
+    }
+    else
+    {
+        ui->comboBox->setCurrentText("Нет");
+    }
 }
 
 void EditContactDialog::setValuesContacts(QString &i)
