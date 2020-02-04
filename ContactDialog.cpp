@@ -1,4 +1,5 @@
 #include "ui_contactdialog.h"
+#include "ui_ContactDialog.h"
 #include "ContactDialog.h"
 #include "AsteriskManager.h"
 #include "Global.h"
