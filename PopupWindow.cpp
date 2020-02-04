@@ -316,25 +316,3 @@ void PopupWindow::on_pushButton_close_clicked()
 
     close();
 }
-
-void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
-{
-    QString stateDB = "insert";
-    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
-}
-
-void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
-{
-    QString from = call.value("from").toString();
-
-    QString callerName = call.value("callerIDName").toString();
-
-    if (callerName.isEmpty() || callerName == "<unknown>")
-    {
-        PopupWindow::showCallNotification(QString("(%1)").arg(from));
-    }
-    else
-    {
-        PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
-    }
-}

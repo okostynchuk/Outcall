@@ -49,6 +49,7 @@ protected slots:
     void editContact(QString &);
     void loadCalls();
     QString getUpdateId(QString &);
+    //izmenil
 
 private:
     Ui::CallHistoryDialog *ui;
