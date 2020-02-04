@@ -267,7 +267,7 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupWindow::showCallNotification(QString numb,QString caller)
+void PopupWindow::showCallNotification(QString caller)
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
@@ -278,7 +278,6 @@ void PopupWindow::showCallNotification(QString numb,QString caller)
         avatar = QPixmap(":/images/outcall-logo.png");
 
 	PopupWindow *popup = new PopupWindow(pwi);
-    popup->recieveNumber(popup, numb);
 	popup->show();
 	m_PopupWindows.append(popup);
 }
@@ -311,17 +310,9 @@ void PopupWindow::closeAll()
 
 void PopupWindow::on_pushButton_close_clicked()
 {
-    QString numb = sender()->property("numb").toString();
-    number = numb;
-    qDebug() << number;
+
     m_PopupWindows.clear();
     m_nLastWindowPosition = 0;
 
     close();
-}
-
-void PopupWindow::recieveNumber(PopupWindow *popup, QString numb)
-{
-    connect(popup, SIGNAL(rejected()), SLOT(on_pushButton_close_clicked()));
-    popup->setProperty("numb", numb);
 }

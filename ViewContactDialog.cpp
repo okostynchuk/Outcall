@@ -1,5 +1,4 @@
 #include "ViewContactDialog.h"
-#include "SettingsDialog.h"
 #include "ui_ViewContactDialog.h"
 
 #include <QVariantList>
@@ -11,7 +10,6 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
-#include <QDebug>
 
 ViewContactDialog::ViewContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -52,7 +50,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
     query.exec();
     query.next();
     ui->Organization->setText(query.value(0).toString());
-    sql = QString("SELECT distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = %1").arg(updateID);
+    sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -78,31 +76,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
-    if (!firstNumber.isEmpty())
-
-    if(firstNumber != 0)
-    {
-       loadCalls(firstNumber);
-    }
-    if(secondNumber != 0)
-    {
-       loadCalls(secondNumber);
-    }
-    if(thirdNumber != 0)
-    {
-       loadCalls(thirdNumber);
-    }
-    if(fourthNumber != 0)
-    {
-       loadCalls(fourthNumber);
-    }
-    if(fifthNumber != 0)
-    {
-       loadCalls(fifthNumber);
-    }
-
-     if(!firstNumber.isEmpty())
-
+     if (!firstNumber.isEmpty())
           ui->FirstNumber->setInputMask("999-999-9999;_");
      if (!secondNumber.isEmpty())
           ui->SecondNumber->setInputMask("999-999-9999;_");
@@ -114,157 +88,3 @@ void ViewContactDialog::setValuesContacts(QString &i)
           ui->FifthNumber->setInputMask("999-999-9999;_");
 }
 
-
-void ViewContactDialog::loadCalls(QString &contactNumber)
-{
-    QSqlDatabase db;
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlQuery query(dbAsterisk);
-    QSqlQuery query1(db);
-
-    // Load calls
-       QString stateDB = "notInsert";
-       SettingsDialog *settingsDialog = new SettingsDialog();
-       QString number = settingsDialog->getExtension();
-       //Load Missed calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ? AND scr = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, MISSED, stateDB);
-       }
-
-     //Load Recieved calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? AND src = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       query.first();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, RECIEVED, stateDB);
-       }
-
-     //Load Placed calls
-       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? AND dst = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       query.first();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["date_time"] = query.value(1).toString();
-           call["to"] = query.value(2).toString();
-           addCall(call, PLACED, stateDB);
-       }
-       settingsDialog->deleteLater();
-}
-
-
-void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContactDialog::Calls calls, QString stateDB)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    QSqlQuery query1(db);
-
-    const QString from     = call.value("from").toString();
-    const QString to       = call.value("to").toString();
-    const QString dateTime = call.value("date_time").toString();
-    QString note           = call.value("note").toString();
-    QString callerIDName;
-
-    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
-    query.exec();
-    query.first();
-    if(query.value(0) != 0)
-    {
-        query1.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
-        query1.exec();
-        query1.first();
-        callerIDName = query1.value(0).toString();
-    }
-    else
-    {
-        callerIDName = "Неизвестный";
-    }
-
-//    if (stateDB == "insert")
-//    {
-//        query.prepare("INSERT INTO calls(number_from, number_to, date_time, note)"
-//                      "VALUES(?, ?, ?, ?)");
-//        query.addBindValue(from);
-//        query.addBindValue(to);
-//        query.addBindValue(dateTime);
-//        query.addBindValue(note);
-//        query.exec();
-//    }
-
-    if (calls == MISSED)
-    {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
-        extensionItem->setText(0, callerIDName);
-        extensionItem->setText(1, from);
-        extensionItem->setText(2, to);
-        extensionItem->setText(3, dateTime);
-        extensionItem->setText(4, note);
-    }
-    else if (calls == RECIEVED)
-    {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived);
-        extensionItem->setText(0, callerIDName);
-        extensionItem->setText(1, from);
-        extensionItem->setText(2, to);
-        extensionItem->setText(3, dateTime);
-        extensionItem->setText(4, note);
-    }
-    else if (calls == PLACED)
-    {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced);
-        extensionItem->setText(0, from);
-        extensionItem->setText(1, to);
-        extensionItem->setText(2, dateTime);
-        extensionItem->setText(3, note);
-    }
-}

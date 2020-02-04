@@ -192,7 +192,7 @@ text-align: center;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>31</x>
@@ -226,7 +226,7 @@ margin-left: 60px;
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="showCardButton">
+       <widget class="QPushButton" name="pushButton_4">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -267,7 +267,7 @@ border: 1.5px solid #a53501;
        </spacer>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="addPersonButton">
+       <widget class="QPushButton" name="pushButton">
         <property name="minimumSize">
          <size>
           <width>95</width>
@@ -294,7 +294,7 @@ border: 1.5px solid #a53501;
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QPushButton" name="editButton">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="minimumSize">
          <size>
           <width>95</width>
@@ -321,7 +321,7 @@ border: 1.5px solid #a53501;
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="addOrgButton">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="minimumSize">
          <size>
           <width>95</width>
