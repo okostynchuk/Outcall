@@ -267,7 +267,7 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupWindow::showCallNotification(QString caller)
+void PopupWindow::showCallNotification(QString numb,QString caller)
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
@@ -278,6 +278,7 @@ void PopupWindow::showCallNotification(QString caller)
         avatar = QPixmap(":/images/outcall-logo.png");
 
 	PopupWindow *popup = new PopupWindow(pwi);
+    popup->recieveNumber(popup, numb);
 	popup->show();
 	m_PopupWindows.append(popup);
 }
@@ -310,37 +311,17 @@ void PopupWindow::closeAll()
 
 void PopupWindow::on_pushButton_close_clicked()
 {
-
+    QString numb = sender()->property("numb").toString();
+    number = numb;
+    qDebug() << number;
     m_PopupWindows.clear();
     m_nLastWindowPosition = 0;
 
     close();
 }
 
-void PopupWindow::on_pushButton_clicked()
+void PopupWindow::recieveNumber(PopupWindow *popup, QString numb)
 {
-
-//    PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));/*here*/
-//    qDebug()<<from;
-
-    QSqlDatabase db;
-    QSqlQuery query1(db);
-//    QString sql1 = QString("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '%1' OR entry_phone = '%2' OR entry_phone = '%3' OR entry_phone = '%4' OR entry_phone = '%5')")
-//            .arg(ui->FirstNumber->text(),
-//            ui->SecondNumber->text(),
-//            ui->ThirdNumber->text(),
-//            ui->FourthNumber->text(),
-//            ui->FifthNumber->text());
-//    query1.prepare(sql1);
-    query1.exec();
-    query1.next();
-
-    if (query1.value(0) != 0){
-        QMessageBox::information(this, trUtf8("Error"), trUtf8("Record is exists"));
-    }
-}
-
-void PopupWindow::on_pushButton_2_clicked()
-{
-
+    connect(popup, SIGNAL(rejected()), SLOT(on_pushButton_close_clicked()));
+    popup->setProperty("numb", numb);
 }

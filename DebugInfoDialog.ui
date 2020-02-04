@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OutCALL - Debug Info</string>
+   <string>OutCALL - Информация об отладке</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
@@ -21,7 +21,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Debug info:</string>
+      <string>Информация об отладке</string>
      </property>
     </widget>
    </item>
@@ -33,14 +33,14 @@
      <item>
       <widget class="QPushButton" name="clear">
        <property name="text">
-        <string>Clear</string>
+        <string>Очистить</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="exit">
        <property name="text">
-        <string>Exit</string>
+        <string>Выход</string>
        </property>
       </widget>
      </item>

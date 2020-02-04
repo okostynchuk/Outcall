@@ -21,7 +21,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Please select language to add:</string>
+      <string>Выберите язык, чтобы добавить его:</string>
      </property>
     </widget>
    </item>
@@ -53,14 +53,14 @@
       <item>
        <widget class="QPushButton" name="addLanguageBtn">
         <property name="text">
-         <string>Add language</string>
+         <string>Добавить язык</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="cancelBtn">
         <property name="text">
-         <string>Cancel</string>
+         <string>Отмена</string>
         </property>
        </widget>
       </item>

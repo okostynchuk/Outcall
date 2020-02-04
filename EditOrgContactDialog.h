@@ -42,6 +42,9 @@ protected slots:
     void clearEditText();
     void closeEvent(QCloseEvent *);
 
+protected:
+    bool eventFilter(QObject*, QEvent*event);
+
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;
@@ -51,17 +54,20 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    QString number;
     QWidget* createEditButton(int &);
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
     ViewContactDialog *viewContactDialog;
     QHeaderView *m_horiz_header;
+    QHeaderView *m_horiz_header1;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
     QStringList numbers;
     bool updateOnClose;
-    int counter;
+    bool counter;
+    int counter1;
     QList<QPushButton*> buttons;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;

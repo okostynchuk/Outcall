@@ -31,6 +31,12 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
 
+//    ui->FirstNumber->installEventFilter(this);
+//    ui->SecondNumber->installEventFilter(this);
+//    ui->ThirdNumber->installEventFilter(this);
+//    ui->FourthNumber->installEventFilter(this);
+//    ui->FifthNumber->installEventFilter(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
@@ -38,16 +44,18 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
 
     ui->tableView->setSortingEnabled(false);
     m_horiz_header = ui->tableView->horizontalHeader();
-    counter = 0;
+    m_horiz_header1 = ui->tableView->horizontalHeader();
+    counter = true;
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));    
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &EditOrgContactDialog::clearEditText);
+    connect(m_horiz_header1, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
 
     onComboBoxSelected();
     updateOnClose = false;
-    counter = 0;
+    counter1 = 0;
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()
@@ -310,17 +318,18 @@ void EditOrgContactDialog::onUpdate()
     int valueV = verticalScroll->value();
     int valueH = horizontalScroll->value();
 
+    deleteObjects();
+
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
     query_model->insertColumn(4);
     query_model->setHeaderData(4, Qt::Horizontal, tr("Редактирование"));
+    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    deleteObjects();
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -387,25 +396,50 @@ void EditOrgContactDialog::onComboBoxSelected()
 
 void EditOrgContactDialog::onSortingSectionClicked(int logicalIndex)
 {
-    QString entry_name = ui->lineEdit->text();
+
+    QString entry_name1 = ui->lineEdit->text();
     if(ui->comboBox->currentText() == "Поиск по ФИО")
     {
+
         if(logicalIndex != 1) return;
 
         update = "sort";
 
-        if (counter == 0)
+        if (counter1 == 0)
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
             onUpdate();
-            counter++;
+            counter1++;
+
         }
         else
         {
-            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+            query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name1 + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
             onUpdate();
-            counter = 0;
+            counter1 = 0;
         }
+    }
+}
+
+void EditOrgContactDialog::onSectionClicked (int logicalIndex)
+{
+    if (logicalIndex != 1) return;
+
+    update = "sort";
+
+    if (counter == true)
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
+
+        onUpdate();
+        counter = false;
+    }
+    else
+    {
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
+
+        onUpdate();
+        counter = true;
     }
 }
 
@@ -420,7 +454,6 @@ void EditOrgContactDialog::on_lineEdit_returnPressed()
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
 
         onUpdate();
-        connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSortingSectionClicked(int)));
     }
 
     if (ui->comboBox->currentText() == "Поиск по номеру телефона")
@@ -480,6 +513,17 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
+//    if(!firstNumber.isEmpty())
+//         ui->FirstNumber->setInputMask("999-999-9999;_");
+//    if(!secondNumber.isEmpty())
+//         ui->SecondNumber->setInputMask("999-999-9999;_");
+//    if(!thirdNumber.isEmpty())
+//         ui->ThirdNumber->setInputMask("999-999-9999;_");
+//    if(!fourthNumber.isEmpty())
+//         ui->FourthNumber->setInputMask("999-999-9999;_");
+//    if(!fifthNumber.isEmpty())
+//         ui->FifthNumber->setInputMask("999-999-9999;_");
+
     query_model = new QSqlQueryModel;
 
     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id");
@@ -514,24 +558,57 @@ void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
     ui->FirstNumber->setText(number);
 }
 
-void EditOrgContactDialog::onSectionClicked (int logicalIndex)
+
+bool EditOrgContactDialog::eventFilter(QObject *target, QEvent *event)
 {
-    if (logicalIndex != 1) return;
-
-    update = "sort";
-
-    if (counter == 0)
+    if(target == ui->FirstNumber )
     {
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-
-        onUpdate();
-        counter++;
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->FirstNumber->setInputMask("999-999-9999;_");
+             ui->FirstNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
     }
-    else
+
+    if(target == ui->SecondNumber )
     {
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-
-        onUpdate();
-        counter = 0;
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->SecondNumber->setInputMask("999-999-9999;_");
+             ui->SecondNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
     }
+
+    if(target == ui->ThirdNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->ThirdNumber->setInputMask("999-999-9999;_");
+             ui->ThirdNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->FourthNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->FourthNumber->setInputMask("999-999-9999;_");
+             ui->FourthNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->FifthNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->FifthNumber->setInputMask("999-999-9999;_");
+             ui->FifthNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
 }

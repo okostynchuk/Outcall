@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1088</width>
-    <height>472</height>
+    <width>940</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,6 +103,9 @@
             </property>
             <property name="whatsThis">
              <string>Поиск по таблице</string>
+            </property>
+            <property name="placeholderText">
+             <string>Поиск</string>
             </property>
            </widget>
           </item>

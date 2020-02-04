@@ -499,3 +499,14 @@ void SettingsDialog::onMinCallerIDBoxChanged(int state)
 {
     ui->callerIDList->setEnabled(state);
 }
+
+QString SettingsDialog::getExtension()
+{
+    QStringList extensions = global::getSettingKeys("extensions");
+    int nRows              = extensions.size();
+    for (int i = 0; i < nRows; ++i)
+    {
+        const QString extension = extensions.at(i);
+        return extension;
+    }
+}

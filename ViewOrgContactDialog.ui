@@ -339,7 +339,6 @@ background-color: #fffff8;
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff0;
-cursor: default;
 }</string>
              </property>
              <property name="undoRedoEnabled">
@@ -454,6 +453,9 @@ cursor: default;
                   </property>
                   <property name="whatsThis">
                    <string>Поиск по таблице</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Поиск</string>
                   </property>
                  </widget>
                 </item>

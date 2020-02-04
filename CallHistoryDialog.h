@@ -4,10 +4,16 @@
 #include "AsteriskManager.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
-#include "PopupWindow.h"
+#include "EditContactDialog.h"
+#include "EditOrgContactDialog.h"
+#include "SettingsDialog.h"
+#include "AddNoteDialog.h"
+#include "OutCALL.h"
+
 #include <QDialog>
 #include <QMap>
 #include <QSqlQueryModel>
+#include <QTreeWidget>
 
 namespace Ui {
 class CallHistoryDialog;
@@ -37,13 +43,23 @@ protected slots:
     void onAddOrgContact();
     void onRemoveButton();
     void onCallClicked();
-    bool checkNumber(QString from);
+    bool checkNumber(QString &);
+    void onAddNotes();
+    void editContact(QString &);
+    void loadCalls();
+    QString getUpdateId(QString &);
+    //izmenil
 
 private:
     Ui::CallHistoryDialog *ui;
     QSqlQuery *query;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
+    EditContactDialog *editContactDialog;
+    EditOrgContactDialog *editOrgContactDialog;
+    SettingsDialog *settingsDialog;
+    AddNoteDialog *addNoteDialog;
+    QString number;
 };
 
 #endif // CALLHISTORYDIALOG_H

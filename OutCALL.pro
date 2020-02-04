@@ -22,7 +22,6 @@ TRANSLATIONS = translations/outcall_pt-br.ts \
 
 SOURCES += main.cpp\
     DebugInfoDialog.cpp \
-    AboutDialog.cpp \
     AddExtensionDialog.cpp \
     AddLanguageDialog.cpp \
     AsteriskManager.cpp \
@@ -47,12 +46,12 @@ SOURCES += main.cpp\
     ViewContactDialog.cpp \
     ViewOrgContactDialog.cpp \
     EditContactDialog.cpp \
-    EditOrgContactDialog.cpp
+    EditOrgContactDialog.cpp \
+    AddNoteDialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
     SyncContactsThread.h \
-    AboutDialog.h \
     AddLanguageDialog.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
@@ -76,10 +75,10 @@ HEADERS  += \
     ViewContactDialog.h \
     ViewOrgContactDialog.h \
     EditContactDialog.h \
-    EditOrgContactDialog.h
+    EditOrgContactDialog.h \
+    AddNoteDialog.h
 
 FORMS    += \
-    AboutDialog.ui \
     AddExtensionDialog.ui \
     AddLanguageDialog.ui \
     CallHistoryDialog.ui \
@@ -96,7 +95,8 @@ FORMS    += \
     ViewContactDialog.ui \
     ViewOrgContactDialog.ui \
     EditContactDialog.ui \
-    EditOrgContactDialog.ui
+    EditOrgContactDialog.ui \
+    AddNoteDialog.ui
 
 RESOURCES += \
     images.qrc

@@ -4,99 +4,42 @@
 #include "ContactManager.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
+#include "SettingsDialog.h"
+#include "AddNoteDialog.h"
+#include "OutCALL.h"
 
 #include <QDebug>
 #include <QList>
 #include <QMessageBox>
 #include <QWidget>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QSqlQuery>
 #include <QSqlDatabase>
 #include <QSqlRelationalTableModel>
 #include <QSqlTableModel>
+#include <QFile>
+#include <QTextStream>
+#include <QTreeWidgetItem>
+#include <QString>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CallHistoryDialog)
 {
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlQuery query(dbAsterisk);
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->closeButton,  &QPushButton::clicked, this, &QDialog::close);
     connect(ui->removeButton, &QPushButton::clicked, this, &CallHistoryDialog::onRemoveButton);
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
+    connect(ui->addNotes, &QPushButton::clicked, this, &CallHistoryDialog::onAddNotes);
 
     ui->tabWidget->setCurrentIndex(0);
 
-    // Load calls
-    QString stateDB = "notInsert";
-//    QVariantList missedCalls = global::getSettingsValue("missed", "calls").toList();
-//    for (int i = 0; i < missedCalls.size(); ++i)
-//    {
-//        QMap<QString, QVariant> call = missedCalls[i].toMap();
-//        addCall(call, MISSED, stateDB);
-//    }
-
-//    QVariantList receivedCalls = global::getSettingsValue("received", "calls").toList();
-//    for (int i = 0; i < receivedCalls.size(); ++i)
-//    {
-//        QMap<QString, QVariant> call = receivedCalls[i].toMap();
-//        addCall(call, RECIEVED, stateDB);
-//    }
-
-//    QVariantList placedCalls = global::getSettingsValue("placed", "calls").toList();
-//    for (int i = 0; i < placedCalls.size(); ++i)
-//    {
-//        QMap<QString, QVariant> call = placedCalls[i].toMap();
-//        addCall(call, PLACED, stateDB);
-//    }
-
-       //Load Missed calls
-//       query.exec("SELECT src, dst, datetime FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '232' AND src = '222'");
-//       query.next();
-
-//       do {
-//           QMap<QString, QVariant> call;
-//           call["from"] = query.value(0).toString();
-//           call["to"] = query.value(1).toString();
-//           call["date_time"] = query.value(2).toString();
-//           addCall(call, MISSED, stateDB);
-//       } while (query.next());
-
-
-//       //Load Recieved calls
-//       query.prepare("SELECT src, dst, datetime FROM cdr WHERE disposition = 'ANSWERED' AND dst = '232'");
-//       query.exec();
-//       query.next();
-//       query.first();
-
-//       do {
-//           QMap<QString, QVariant> call;
-//           call["from"] = query.value(0).toString();
-//           call["to"] = query.value(1).toString();
-//           call["date_time"] = query.value(2).toString();
-//           addCall(call, RECIEVED, stateDB);
-//       } while (query.next());
-
-
-//       //Load Placed calls
-//       query.prepare("SELECT src, dst, datetime FROM cdr WHERE src = '232'");
-//       query.exec();
-//       query.next();
-//       query.first();
-
-//       do {
-//           QMap<QString, QVariant> call;
-//           call["from"] = query.value(0).toString();
-//           call["to"] = query.value(1).toString();
-//           call["date_time"] = query.value(2).toString();
-//           addCall(call, PLACED, stateDB);
-//       } while (query.next());
+    loadCalls();
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -108,19 +51,29 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
 {
     QSqlDatabase db;
     QSqlQuery query(db);
+    QSqlQuery query1(db);
 
     const QString from     = call.value("from").toString();
     const QString to       = call.value("to").toString();
-    const QString protocol = call.value("protocol").toString();
     const QString dateTime = call.value("date_time").toString();
-    QString note;
-    QString callerIDName   = call.value("callerIDName").toString();
+    QString note           = call.value("note").toString();
+    QString callerIDName;
+    //izmenil2
 
-    query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = ?)");
-    query.addBindValue(from);
+    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
     query.exec();
-    query.next();
-    callerIDName=query.value(0).toString();
+    query.first();
+    if(query.value(0) != 0)
+    {
+        query1.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
+        query1.exec();
+        query1.first();
+        callerIDName = query1.value(0).toString();
+    }
+    else
+    {
+        callerIDName = "Неизвестный";
+    }
 
     if (stateDB == "insert")
     {
@@ -133,45 +86,28 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
         query.exec();
     }
 
-    QList<Contact*> contactList = g_pContactManager->getContacts();
-    for(int i = 0; i < contactList.size(); ++i)
-    {
-        Contact *contact = contactList[i];
-        QList<QString> numbers  = contact->numbers.values();
-        if (numbers.contains(from))
-        {
-            callerIDName = contact->name;
-            break;
-        }
-    }
-
     if (calls == MISSED)
     {
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
-        if (callerIDName != "<unknown>")
-            extensionItem->setText(0, callerIDName);
-
+        extensionItem->setText(0, callerIDName);
         extensionItem->setText(1, from);
-        extensionItem->setText(2, to + "(" + protocol + ")");
+        extensionItem->setText(2, to);
         extensionItem->setText(3, dateTime);
         extensionItem->setText(4, note);
     }
     else if (calls == RECIEVED)
     {
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived);
-        if (callerIDName != "<unknown>")
-            extensionItem->setText(0, callerIDName);
-
+        extensionItem->setText(0, callerIDName);
         extensionItem->setText(1, from);
-        extensionItem->setText(2, to + "(" + protocol + ")");
+        extensionItem->setText(2, to);
         extensionItem->setText(3, dateTime);
         extensionItem->setText(4, note);
     }
     else if (calls == PLACED)
     {
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced);
-
-        extensionItem->setText(0, from + "(" + protocol + ")");
+        extensionItem->setText(0, from);
         extensionItem->setText(1, to);
         extensionItem->setText(2, dateTime);
         extensionItem->setText(3, note);
@@ -233,7 +169,10 @@ void CallHistoryDialog::onCallClicked()
 }
 
 void CallHistoryDialog::onAddContact()
-{ 
+{
+    addContactDialog = new AddContactDialog;
+    addContactDialog->setWindowTitle("Добавление физ. лица");
+
     if (ui->tabWidget->currentIndex() == MISSED)
         {
             QList<QTreeWidgetItem*> selectedItems = ui->treeWidgetMissed->selectedItems();
@@ -241,22 +180,15 @@ void CallHistoryDialog::onAddContact()
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
-            const QString name = item->text(0);
             QString from = item->text(1);
             bool a = checkNumber(from);
             if (a == true)
-            {
-                addContactDialog = new AddContactDialog;
-                addContactDialog->setWindowTitle("Добавление физ. лица");
+            {  
                 addContactDialog->setValuesCallHistory(from);
                 addContactDialog->exec();
                 addContactDialog->deleteLater();
             }
-            else
-            {
-
-            }
-            // g_pContactManager->addOutlookContact(from, name);
+            else if (a == false) { editContact(from); }
         }
         else if (ui->tabWidget->currentIndex() == RECIEVED)
         {
@@ -265,14 +197,18 @@ void CallHistoryDialog::onAddContact()
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
-            QString name = item->text(0);
+            //QString name = item->text(0);
             QString from = item->text(1);
 
-            addContactDialog->setWindowTitle("Добавление физ. лица");
-            addContactDialog->setValuesCallHistory(from);
-            addContactDialog->exec();
+            bool a = checkNumber(from);
+            if (a == true)
+            {
+                addContactDialog->setValuesCallHistory(from);
+                addContactDialog->exec();
+                addContactDialog->deleteLater();
+            }
+            else if (a == false) { editContact(from); }
 
-           // g_pContactManager->addOutlookContact(from, name);
         }
         else if (ui->tabWidget->currentIndex() == PLACED)
         {
@@ -282,20 +218,23 @@ void CallHistoryDialog::onAddContact()
 
             QTreeWidgetItem *item = selectedItems.at(0);
             int ind1 = item->text(1).indexOf("(");
-            QString to = item->text(1).mid(0, ind1);
+            QString to = item->text(0).mid(0, ind1);
 
-            addContactDialog->setWindowTitle("Добавление физ. лица");
-            addContactDialog->setValuesCallHistory(to);
-            addContactDialog->exec();
-            // g_pContactManager->addOutlookContact(to, "");
+            bool a = checkNumber(to);
+            if (a == true)
+            {
+                addContactDialog->setValuesCallHistory(to);
+                addContactDialog->exec();
+                addContactDialog->deleteLater();
+            }
+            else if (a == false) { editContact(to); }
         }
-    addContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onAddOrgContact()
 {
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setWindowTitle("Add Contact");
+    addOrgContactDialog->setWindowTitle("Добавление организации");
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -304,13 +243,17 @@ void CallHistoryDialog::onAddOrgContact()
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
-            const QString name = item->text(0);
+            //const QString name = item->text(0);
             QString from = item->text(1);
 
-            addOrgContactDialog->setOrgValuesCallHistory(from);
-            addOrgContactDialog->setWindowTitle("Добавление организации");
-            addOrgContactDialog->exec();
-            // g_pContactManager->addOutlookContact(from, name);
+            bool a = checkNumber(from);
+            if (a == true)
+            {
+                addOrgContactDialog->setOrgValuesCallHistory(from);
+                addOrgContactDialog->exec();
+                addOrgContactDialog->deleteLater();
+            }
+            else if (a == false) { editContact(from); }
         }
         else if (ui->tabWidget->currentIndex() == RECIEVED)
         {
@@ -319,13 +262,17 @@ void CallHistoryDialog::onAddOrgContact()
                 return;
 
             QTreeWidgetItem *item = selectedItems.at(0);
-            QString name = item->text(0);
+            //QString name = item->text(0);
             QString from = item->text(1);
 
-            addOrgContactDialog->setOrgValuesCallHistory(from);
-            addOrgContactDialog->setWindowTitle("Добавление организации");
-            addOrgContactDialog->exec();
-           // g_pContactManager->addOutlookContact(from, name);
+            bool a = checkNumber(from);
+            if (a == true)
+            {
+                addOrgContactDialog->setOrgValuesCallHistory(from);
+                addOrgContactDialog->exec();
+                addOrgContactDialog->deleteLater();
+            }
+            else if (a == false) { editContact(from); }
         }
         else if (ui->tabWidget->currentIndex() == PLACED)
         {
@@ -337,12 +284,15 @@ void CallHistoryDialog::onAddOrgContact()
             int ind1 = item->text(1).indexOf("(");
             QString to = item->text(1).mid(0, ind1);
 
-            addOrgContactDialog->setOrgValuesCallHistory(to);
-            addOrgContactDialog->setWindowTitle("Добавление организации");
-            addOrgContactDialog->exec();
-            // g_pContactManager->addOutlookContact(to, "");
+            bool a = checkNumber(to);
+            if (a == true)
+            {
+                addOrgContactDialog->setOrgValuesCallHistory(to);
+                addOrgContactDialog->exec();
+                addOrgContactDialog->deleteLater();
+            }
+            else if (a == false) { editContact(to); }
         }
-    addOrgContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onRemoveButton()
@@ -484,15 +434,223 @@ void CallHistoryDialog::onRemoveButton()
     }
 }
 
-bool CallHistoryDialog::checkNumber(QString from)
+bool CallHistoryDialog::checkNumber(QString &number)
 {
     QSqlDatabase db;
     QSqlQuery query1(db);
-    query1.prepare("SELECT phone FROM phone WHERE phone ="+from);
+    query1.prepare("SELECT phone FROM phone WHERE phone ="+number);
     query1.exec();
     query1.next();
-    if(query1.value(0) == 0) { return true; }
+    if(query1.value(0).toString() == 0) { return true; }
     else { return false; }
 }
 
+void CallHistoryDialog::onAddNotes()
+{
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlQuery query(dbAsterisk);
 
+    QList<QTreeWidgetItem*> selectedItems;
+    if (ui->tabWidget->currentIndex() == MISSED)
+    {
+       selectedItems = ui->treeWidgetMissed->selectedItems();
+
+       if (selectedItems.size() == 0)
+           return;
+
+       QTreeWidgetItem *item = selectedItems.at(0);
+       const QString from = item->text(1);
+       const QString to = item->text(2);
+       const QString date_time = item->text(3);
+
+       QString sql = QString("SELECT uniqueid FROM cdr WHERE src = '%1' AND dst = '%2' AND datetime = '%3'")
+               .arg(from,
+                    to,
+                    date_time);
+       query.prepare(sql);
+       query.exec();
+       query.next();
+       QString uniqueid = query.value(0).toString();
+
+       addNoteDialog = new AddNoteDialog;
+       addNoteDialog->setWindowTitle("Добавление заметки");
+       addNoteDialog->setCallId(uniqueid);
+       addNoteDialog->exec();
+       addNoteDialog->deleteLater();
+    }
+    else if (ui->tabWidget->currentIndex() == RECIEVED)
+    {
+       selectedItems = ui->treeWidgetReceived->selectedItems();
+
+       if (selectedItems.size() == 0)
+           return;
+
+       QTreeWidgetItem *item = selectedItems.at(0);
+       const QString from = item->text(1);
+       const QString to = item->text(2);
+       const QString date_time = item->text(3);
+
+       QString sql = QString("SELECT uniqueid FROM cdr WHERE src = '%1' AND dst = '%2' AND datetime = '%3'")
+               .arg(from,
+                    to,
+                    date_time);
+       query.prepare(sql);
+       query.exec();
+       query.next();
+       QString uniqueid = query.value(0).toString();
+
+       addNoteDialog = new AddNoteDialog;
+       addNoteDialog->setWindowTitle("Добавление заметки");
+       addNoteDialog->setCallId(uniqueid);
+       addNoteDialog->exec();
+       addNoteDialog->deleteLater();
+    }
+    else if (ui->tabWidget->currentIndex() == PLACED)
+    {
+       selectedItems = ui->treeWidgetPlaced->selectedItems();
+
+       if (selectedItems.size() == 0)
+           return;
+
+       QTreeWidgetItem *item = selectedItems.at(0);
+       const QString from = item->text(0);
+       const QString to = item->text(1);
+       const QString date_time = item->text(2);
+
+       QString sql = QString("SELECT uniqueid FROM cdr WHERE src = '%1' AND dst = '%2' AND datetime = '%3'")
+               .arg(from,
+                    to,
+                    date_time);
+       query.prepare(sql);
+       query.exec();
+       query.next();
+       QString uniqueid = query.value(0).toString();
+
+       addNoteDialog = new AddNoteDialog;
+       addNoteDialog->setWindowTitle("Добавление заметки");
+       addNoteDialog->setCallId(uniqueid);
+       addNoteDialog->exec();
+       addNoteDialog->deleteLater();
+    }
+}
+
+void CallHistoryDialog::editContact(QString &number)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    QString updateID = getUpdateId(number);
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '"+number+"')");
+    query.exec();
+    query.first();
+    if (query.value(0).toString() == "person")
+    {
+        editContactDialog = new EditContactDialog;
+        editContactDialog->setWindowTitle("Редактирнование физ. лица");
+        editContactDialog->setValuesContacts(updateID);
+        editContactDialog->exec();
+        editContactDialog->deleteLater();
+    }
+    else
+    {
+        editOrgContactDialog = new EditOrgContactDialog;
+        editOrgContactDialog->setWindowTitle("Редактирнование организации");
+        editOrgContactDialog->setOrgValuesContacts(updateID);
+        editOrgContactDialog->exec();
+        editOrgContactDialog->deleteLater();
+    }
+}
+
+QString CallHistoryDialog::getUpdateId(QString &number)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '"+number+"')");
+    query.exec();
+    query.first();
+    QString updateID = query.value(0).toString();
+    return updateID;
+}
+
+void CallHistoryDialog::loadCalls()
+{
+    QSqlDatabase db;
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlQuery query(dbAsterisk);
+    QSqlQuery query1(db);
+
+    // Load calls
+       QString stateDB = "notInsert";
+       SettingsDialog *settingsDialog = new SettingsDialog();
+       QString number = settingsDialog->getExtension();
+       //Load Missed calls
+       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ? ORDER BY datetime DESC");
+       query.addBindValue(number);
+       query.exec();
+       while(query.next()) {
+           QMap<QString, QVariant> call;
+           QString uniqueid = query.value(3).toString();
+           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+           query1.exec();
+           query1.first();
+           if(query1.value(0) != 0)
+           {
+               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+               query1.exec();
+               query1.first();
+               call["note"] = query1.value(0).toString();
+           }
+           call["from"] = query.value(0).toString();
+           call["to"] = query.value(1).toString();
+           call["date_time"] = query.value(2).toString();
+           addCall(call, MISSED, stateDB);
+       }
+
+     //Load Recieved calls
+       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
+       query.addBindValue(number);
+       query.exec();
+       query.first();
+       while(query.next()) {
+           QMap<QString, QVariant> call;
+           QString uniqueid = query.value(3).toString();
+           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+           query1.exec();
+           query1.first();
+           if(query1.value(0) != 0)
+           {
+               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+               query1.exec();
+               query1.first();
+               call["note"] = query1.value(0).toString();
+           }
+           call["from"] = query.value(0).toString();
+           call["to"] = query.value(1).toString();
+           call["date_time"] = query.value(2).toString();
+           addCall(call, RECIEVED, stateDB);
+       }
+
+     //Load Placed calls
+       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
+       query.addBindValue(number);
+       query.exec();
+       query.first();
+       while(query.next()) {
+           QMap<QString, QVariant> call;
+           QString uniqueid = query.value(3).toString();
+           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+           query1.exec();
+           query1.first();
+           if(query1.value(0) != 0)
+           {
+               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+               query1.exec();
+               query1.first();
+               call["note"] = query1.value(0).toString();
+           }
+           call["from"] = query.value(0).toString();
+           call["date_time"] = query.value(1).toString();
+           call["to"] = query.value(2).toString();
+           addCall(call, PLACED, stateDB);
+       }
+       settingsDialog->deleteLater();
+}

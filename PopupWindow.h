@@ -13,7 +13,6 @@
 class CallHistoryDialog;
 class ContactsDialog;
 
-
 namespace Ui {
     class PopupWindow;
 }
@@ -28,6 +27,9 @@ public:
         PWPhoneCall,
         PWInformationMessage
 	};
+
+public slots:
+    void recieveNumber(PopupWindow*, QString);
 
 private:
 
@@ -46,7 +48,7 @@ public:
 	PopupWindow(const PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
 
-    static void showCallNotification(QString caller);
+    static void showCallNotification(QString numb, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
     void onSave();
@@ -54,18 +56,10 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-protected slots:
-
-    //void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
-    //void onCallReceived(const QMap<QString, QVariant> &call);
-
-
 private slots:
     void onTimer();
     void onPopupTimeout();
     void on_pushButton_close_clicked();
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
 
 private:
     void startPopupWaitingTimer();
@@ -96,7 +90,7 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
 
     CallHistoryDialog *m_callHistoryDialog;
-
+    QString number;
 };
 
 #endif // POPUPWINDOW_H
