@@ -225,6 +225,16 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
+    if(!firstNumber.isEmpty())
+         ui->FirstNumber->setInputMask("999-999-9999;_");
+    if(!secondNumber.isEmpty())
+         ui->SecondNumber->setInputMask("999-999-9999;_");
+    if(!thirdNumber.isEmpty())
+         ui->ThirdNumber->setInputMask("999-999-9999;_");
+    if(!fourthNumber.isEmpty())
+         ui->FourthNumber->setInputMask("999-999-9999;_");
+    if(!fifthNumber.isEmpty())
+         ui->FifthNumber->setInputMask("999-999-9999;_");
     query_model = new QSqlQueryModel;
 
     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id");

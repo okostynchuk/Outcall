@@ -27,6 +27,12 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
 
+//    ui->FirstNumber->installEventFilter(this);
+//    ui->SecondNumber->installEventFilter(this);
+//    ui->ThirdNumber->installEventFilter(this);
+//    ui->FourthNumber->installEventFilter(this);
+//    ui->FifthNumber->installEventFilter(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
@@ -348,9 +354,76 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
     onComboBoxSelected();
+
+//    if(!firstNumber.isEmpty())
+//        ui->FirstNumber->setInputMask("999-999-9999;_");
+//    if(!secondNumber.isEmpty())
+//         ui->SecondNumber->setInputMask("999-999-9999;_");
+//    if(!thirdNumber.isEmpty())
+//         ui->ThirdNumber->setInputMask("999-999-9999;_");
+//    if(!fourthNumber.isEmpty())
+//         ui->FourthNumber->setInputMask("999-999-9999;_");
+//    if(!fifthNumber.isEmpty())
+//         ui->FifthNumber->setInputMask("999-999-9999;_");
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)
 {
-    ui->FirstNumber->setText(number);
+
 }
+
+
+bool EditContactDialog::eventFilter(QObject *target, QEvent *event)
+{
+    if(target == ui->FirstNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+            ui->FirstNumber->setInputMask("999 999 9999;_");
+             ui->FirstNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->SecondNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->SecondNumber->setInputMask("999-999-9999;_");
+             ui->SecondNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->ThirdNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->ThirdNumber->setInputMask("999-999-9999;_");
+             ui->ThirdNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->FourthNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->FourthNumber->setInputMask("999-999-9999;_");
+             ui->FourthNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+    if(target == ui->FifthNumber )
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+             ui->FifthNumber->setInputMask("999-999-9999;_");
+             ui->FifthNumber->setCursorPosition(0);
+             return true;
+        } else { return false;}
+    }
+
+}
+

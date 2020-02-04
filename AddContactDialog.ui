@@ -205,6 +205,8 @@
        </item>
        <item row="2" column="1">
         <widget class="QLineEdit" name="SecondNumber">
+         <property name="inputMask">
+          <string/>
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -248,6 +250,22 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="FirstNumber">
+         <property name="cursor">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="cursorPosition">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
        <item row="3" column="4">
         <widget class="QLineEdit" name="Address">
          <property name="focusPolicy">
@@ -269,6 +287,23 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="4">
+        <widget class="QLineEdit" name="VyborID"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="FifthNumber">
+         <property name="font">
+          <font>
+           <stylestrategy>PreferDefault</stylestrategy>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_19">
        <item row="4" column="0">
         <widget class="QLabel" name="label_18">
          <property name="text">

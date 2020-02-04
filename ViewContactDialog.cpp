@@ -75,5 +75,18 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
+
+
+
+     if(!firstNumber.isEmpty())
+          ui->FirstNumber->setInputMask("999-999-9999;_");
+     if(!secondNumber.isEmpty())
+          ui->SecondNumber->setInputMask("999-999-9999;_");
+     if(!thirdNumber.isEmpty())
+          ui->ThirdNumber->setInputMask("999-999-9999;_");
+     if(!fourthNumber.isEmpty())
+          ui->FourthNumber->setInputMask("999-999-9999;_");
+     if(!fifthNumber.isEmpty())
+          ui->FifthNumber->setInputMask("999-999-9999;_");
 }
 

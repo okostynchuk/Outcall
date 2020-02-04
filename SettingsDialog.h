@@ -23,6 +23,7 @@ public:
     void saveSettings();
     void loadSettings();
     void show();
+    QString getExtension();
 
 protected:
     void handleButtonBox(QAbstractButton * button);
@@ -43,11 +44,13 @@ protected:
     void onAddLanguageBtn();
     void loadLanguages();
 
+
 private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
     QStringList m_countries;
+
 };
 
 #endif // SETTINGSDIALOG_H
