@@ -22,6 +22,9 @@ protected slots:
     void onSave();
     void onComboBoxSelected();
 
+protected:
+    bool eventFilter(QObject*, QEvent*event);
+
 private:
     Ui::EditContactDialog *ui;
     QValidator *validator;
@@ -31,6 +34,7 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    QString number;
 };
 
 #endif // EDITCONTACTDIALOG_H

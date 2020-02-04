@@ -23,6 +23,7 @@ protected:
 private:
     Ui::AddOrgContactDialog *ui;
     QValidator *validator;
+    bool eventFilter(QObject*, QEvent*event);
 };
 
 #endif // ADDORGCONTACTDIALOG_H

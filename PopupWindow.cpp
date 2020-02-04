@@ -332,41 +332,11 @@ void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
     if (callerName.isEmpty() || callerName == "<unknown>")
     {
         PopupWindow::showCallNotification(QString("(%1)").arg(from));
-        qDebug()<<from;
     }
     else
     {
         PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
-        qDebug()<<from;
     }
 
-
-}
-
-void PopupWindow::on_pushButton_clicked()
-{
-
-//    PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));/*here*/
-//    qDebug()<<from;
-
-    QSqlDatabase db;
-    QSqlQuery query1(db);
-//    QString sql1 = QString("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '%1' OR entry_phone = '%2' OR entry_phone = '%3' OR entry_phone = '%4' OR entry_phone = '%5')")
-//            .arg(ui->FirstNumber->text(),
-//            ui->SecondNumber->text(),
-//            ui->ThirdNumber->text(),
-//            ui->FourthNumber->text(),
-//            ui->FifthNumber->text());
-//    query1.prepare(sql1);
-    query1.exec();
-    query1.next();
-
-    if (query1.value(0) != 0){
-        QMessageBox::information(this, trUtf8("Error"), trUtf8("Record is exists"));
-    }
-}
-
-void PopupWindow::on_pushButton_2_clicked()
-{
 
 }

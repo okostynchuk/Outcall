@@ -123,7 +123,11 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="SecondNumber"/>
+        <widget class="QLineEdit" name="SecondNumber">
+         <property name="inputMask">
+          <string/>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_5">
@@ -154,7 +158,20 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="FirstNumber"/>
+        <widget class="QLineEdit" name="FirstNumber">
+         <property name="cursor">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="cursorPosition">
+          <number>0</number>
+         </property>
+        </widget>
        </item>
        <item row="3" column="4">
         <widget class="QLineEdit" name="Address"/>
@@ -193,7 +210,16 @@
         <widget class="QLineEdit" name="VyborID"/>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="FifthNumber"/>
+        <widget class="QLineEdit" name="FifthNumber">
+         <property name="font">
+          <font>
+           <stylestrategy>PreferDefault</stylestrategy>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
+        </widget>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_19">

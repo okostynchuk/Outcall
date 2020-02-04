@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QEvent>
+#include <QWidget>
 
 namespace Ui {
 class AddContactDialog;
@@ -20,10 +22,12 @@ public:
 protected:
     void onSave();
     void onComboBoxSelected();
+    bool eventFilter(QObject*, QEvent*event);
 
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
+    //QLineEdit *line1;
 };
 
 #endif // ADDCONTACTDIALOG_H

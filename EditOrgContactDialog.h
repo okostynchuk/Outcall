@@ -30,6 +30,9 @@ protected slots:
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
 
+protected:
+    bool eventFilter(QObject*, QEvent*event);
+
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;
@@ -39,6 +42,7 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    QString number;
     QWidget* createEditButton(int &);
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
