@@ -28,6 +28,9 @@ public:
         PWInformationMessage
 	};
 
+public slots:
+    void recieveNumber(PopupWindow*, QString);
+
 private:
 
     /**
@@ -45,7 +48,7 @@ public:
 	PopupWindow(const PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
 
-    static void showCallNotification(QString caller);
+    static void showCallNotification(QString numb, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
     void onSave();
@@ -87,7 +90,7 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
 
     CallHistoryDialog *m_callHistoryDialog;
-
+    QString number;
 };
 
 #endif // POPUPWINDOW_H
