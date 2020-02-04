@@ -509,6 +509,4 @@ QString SettingsDialog::getExtension()
         const QString extension = extensions.at(i);
         return extension;
     }
-
-
 }

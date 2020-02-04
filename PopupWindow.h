@@ -13,7 +13,6 @@
 class CallHistoryDialog;
 class ContactsDialog;
 
-
 namespace Ui {
     class PopupWindow;
 }

@@ -58,6 +58,7 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
     const QString dateTime = call.value("date_time").toString();
     QString note           = call.value("note").toString();
     QString callerIDName;
+    //izmenil2
 
     query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
     query.exec();
