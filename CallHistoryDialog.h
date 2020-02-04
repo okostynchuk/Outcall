@@ -37,7 +37,6 @@ public:
 
     void addCall(const QMap<QString, QVariant> &call, Calls calls, QString stateDB);
 
-
 protected slots:
 
     void onAddContact();
