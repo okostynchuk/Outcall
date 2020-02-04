@@ -54,18 +54,10 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-protected slots:
-
-    //void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
-    //void onCallReceived(const QMap<QString, QVariant> &call);
-
-
 private slots:
     void onTimer();
     void onPopupTimeout();
     void on_pushButton_close_clicked();
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
 
 private:
     void startPopupWaitingTimer();
