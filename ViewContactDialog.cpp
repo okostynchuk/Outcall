@@ -120,7 +120,6 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
     QSqlQuery query1(db);
 
     // Load calls
-       QString stateDB = "notInsert";
        SettingsDialog *settingsDialog = new SettingsDialog();
        QString number = settingsDialog->getExtension();
        //Load Missed calls
@@ -144,7 +143,7 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
            call["from"] = query.value(0).toString();
            call["to"] = query.value(1).toString();
            call["date_time"] = query.value(2).toString();
-           addCall(call, MISSED, stateDB);
+           addCall(call, MISSED);
        }
 
      //Load Recieved calls
@@ -169,7 +168,7 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
            call["from"] = query.value(0).toString();
            call["to"] = query.value(1).toString();
            call["date_time"] = query.value(2).toString();
-           addCall(call, RECIEVED, stateDB);
+           addCall(call, RECIEVED);
        }
 
      //Load Placed calls
@@ -194,13 +193,13 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
            call["from"] = query.value(0).toString();
            call["date_time"] = query.value(1).toString();
            call["to"] = query.value(2).toString();
-           addCall(call, PLACED, stateDB);
+           addCall(call, PLACED);
        }
        settingsDialog->deleteLater();
 }
 
 
-void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContactDialog::Calls calls, QString stateDB)
+void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContactDialog::Calls calls)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -226,17 +225,6 @@ void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContact
     {
         callerIDName = "Неизвестный";
     }
-
-//    if (stateDB == "insert")
-//    {
-//        query.prepare("INSERT INTO calls(number_from, number_to, date_time, note)"
-//                      "VALUES(?, ?, ?, ?)");
-//        query.addBindValue(from);
-//        query.addBindValue(to);
-//        query.addBindValue(dateTime);
-//        query.addBindValue(note);
-//        query.exec();
-//    }
 
     if (calls == MISSED)
     {

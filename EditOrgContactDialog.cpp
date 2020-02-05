@@ -553,12 +553,6 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     update = "default";
 }
 
-void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
-
 bool EditOrgContactDialog::eventFilter(QObject *target, QEvent *event)
 {
     if(target == ui->FirstNumber )

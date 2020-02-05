@@ -38,8 +38,8 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     m_callHistoryDialog = new CallHistoryDialog;
 
 
- //   connect(g_pAsteriskManager, &AsteriskManager::callDeteceted, this, &PopupWindow::onCallDeteceted);
-   // connect(g_pAsteriskManager, &AsteriskManager::callReceived, this, &PopupWindow::onCallReceived);
+    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted, this, &PopupWindow::onCallDeteceted);
+    connect(g_pAsteriskManager, &AsteriskManager::callReceived, this, &PopupWindow::onCallReceived);
 
 
 	ui->lblText->setOpenExternalLinks(true);
@@ -139,6 +139,27 @@ void PopupWindow::mousePressEvent(QMouseEvent *event)
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 
+}
+
+void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
+{
+    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+}
+
+void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
+{
+    QString from = call.value("from").toString();
+
+    QString callerName = call.value("callerIDName").toString();
+
+    if (callerName.isEmpty() || callerName == "<unknown>")
+    {
+        PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
+    }
+    else
+    {
+        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+    }
 }
 
 void PopupWindow::mouseMoveEvent(QMouseEvent *event)

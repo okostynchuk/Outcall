@@ -16,7 +16,6 @@ class EditContactDialog : public QDialog
 public:
     explicit EditContactDialog(QWidget *parent = 0);
     void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
     ~EditContactDialog();
 
 protected slots:

@@ -20,8 +20,10 @@ AddNoteDialog::~AddNoteDialog()
     delete ui;
 }
 
-void AddNoteDialog::setCallId(QString &uniqueid)
+void AddNoteDialog::setCallId(QString &uniqueid, QString &state)
 {
+    callState = state;
+    qDebug() << callState;
     callId = uniqueid;
 }
 
@@ -29,10 +31,22 @@ void AddNoteDialog::onSave()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("INSERT INTO calls (uniqueid, note)"
-                  "VALUES(?, ?)");
-    query.addBindValue(callId);
-    query.addBindValue(ui->textEdit->toPlainText());
-    query.exec();
-    ui->label->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+    if(callState == "add")
+    {
+        query.prepare("INSERT INTO calls (uniqueid, note)"
+                      "VALUES(?, ?)");
+        query.addBindValue(callId);
+        query.addBindValue(ui->textEdit->toPlainText());
+        query.exec();
+        ui->label->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+    }
+    else if (callState == "edit")
+    {
+        query.prepare("UPDATE calls SET note = ? WHERE uniqueid = ?");
+        query.addBindValue(ui->textEdit->toPlainText());
+        query.addBindValue(callId);
+        query.exec();
+        ui->label->setText("<span style=\"color: green;\">Запись успешно изменена!</span>");
+    }
+
 }

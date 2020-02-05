@@ -212,8 +212,7 @@ void OutCall::onMessageReceived(const QString &message)
 
 void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-//    QString stateDB = "insert";
-//    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state, stateDB);
+     m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/

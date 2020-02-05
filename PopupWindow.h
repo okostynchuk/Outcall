@@ -48,6 +48,7 @@ public:
 	PopupWindow(const PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
 
+
     static void showCallNotification(QString numb, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
@@ -55,6 +56,10 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+
+protected slots:
+    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
+    void onCallReceived(const QMap<QString, QVariant> &call);
 
 private slots:
     void onTimer();

@@ -23,7 +23,6 @@ class EditOrgContactDialog : public QDialog
 public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     void setOrgValuesContacts(QString &);
-    void setOrgValuesCallHistory(QString &);
     ~EditOrgContactDialog();
 
 public slots:

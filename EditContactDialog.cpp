@@ -197,7 +197,7 @@ void EditContactDialog::onSave()
             if (secondNum != 0)
             {
                 if (count > 0)
-                {
+                {+
                     query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
                     query1.addBindValue(secondNum);
                     query1.addBindValue(updateID);
@@ -366,12 +366,6 @@ void EditContactDialog::setValuesContacts(QString &i)
 //    if(!fifthNumber.isEmpty())
 //         ui->FifthNumber->setInputMask("999-999-9999;_");
 }
-
-void EditContactDialog::setValuesCallHistory(QString &number)
-{
-
-}
-
 
 bool EditContactDialog::eventFilter(QObject *target, QEvent *event)
 {
