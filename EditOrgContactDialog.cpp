@@ -610,5 +610,4 @@ bool EditOrgContactDialog::eventFilter(QObject *target, QEvent *event)
              return true;
         } else { return false;}
     }
-
 }

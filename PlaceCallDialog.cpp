@@ -5,7 +5,6 @@
 #include "SearchBox.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
-//#include "ChooseNumber.h"
 
 #include <QHash>
 #include <QString>
@@ -95,6 +94,12 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
         chooseNumber->exec();
         chooseNumber->deleteLater();
     }
+}
+
+void PlaceCallDialog::getValuesNumber(QString &num){
+    QString number = num;
+
+    ui->phoneLine->setText(number);
 }
 
 void PlaceCallDialog::onUpdate()

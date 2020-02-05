@@ -292,5 +292,4 @@ bool AddContactDialog::eventFilter(QObject *target, QEvent *event)
              return true;
         } else { return false;}
     }
-
 }

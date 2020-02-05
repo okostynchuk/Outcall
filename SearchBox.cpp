@@ -31,7 +31,6 @@ SearchBoxCompleter::SearchBoxCompleter(QLineEdit *parent) :
     connect(m_timer, SIGNAL(timeout()), SLOT(autoSuggest()));
     connect(m_editor, SIGNAL(textEdited(QString)), m_timer, SLOT(start()));
     connect(m_popup, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onSelected()));
-
 }
 
 SearchBoxCompleter::~SearchBoxCompleter()

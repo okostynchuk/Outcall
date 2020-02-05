@@ -13,8 +13,7 @@
 ContactManager *g_pContactManager = nullptr;
 
 Contact::Contact()
-{
-}
+{}
 
 void Contact::addNumber(const QString &type, const QString &number)
 {
@@ -82,8 +81,7 @@ void AddOutlookContactThread::run()
 }
 
 void AddOutlookContactThread::stop()
-{
-}
+{}
 
 //*******************************************************************//
 //*********************** ViewOutlookContactThreat*******************//
@@ -151,8 +149,7 @@ void ViewOutlookContactThread::run()
 }
 
 void ViewOutlookContactThread::stop()
-{
-}
+{}
 
 ContactManager::ContactManager(QObject *parent) : QObject(parent)
 {

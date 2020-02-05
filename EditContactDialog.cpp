@@ -372,7 +372,6 @@ void EditContactDialog::setValuesCallHistory(QString &number)
 
 }
 
-
 bool EditContactDialog::eventFilter(QObject *target, QEvent *event)
 {
     if(target == ui->FirstNumber )
@@ -424,6 +423,5 @@ bool EditContactDialog::eventFilter(QObject *target, QEvent *event)
              return true;
         } else { return false;}
     }
-
 }
 

@@ -2,7 +2,6 @@
 #define PLACECALLDIALOG_H
 
 #include "ChooseNumber.h"
-#include "ViewContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -16,6 +15,7 @@
 
 class Contact;
 class QTreeWidgetItem;
+class ChooseNumber;
 
 namespace Ui {
 class PlaceCallDialog;
@@ -27,6 +27,7 @@ class PlaceCallDialog : public QDialog
 
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
+    void getValuesNumber(QString &);
     ~PlaceCallDialog();
 
     void show();
@@ -57,7 +58,6 @@ private:
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QString update;
-    ViewContactDialog *viewContactDialog;
     ChooseNumber *chooseNumber;
 };
 

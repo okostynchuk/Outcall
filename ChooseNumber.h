@@ -6,6 +6,8 @@
 #include <QDialog>
 #include <QValidator>
 
+class PlaceCallDialog;
+
 namespace Ui {
 class ChooseNumber;
 }
@@ -17,17 +19,20 @@ class ChooseNumber : public QDialog
 public:
     explicit ChooseNumber(QWidget *parent = 0);
     void setValuesNumber(QString &);
+    void passNumber(QString &num);
     ~ChooseNumber();
 
 private:
     Ui::ChooseNumber *ui;
     QValidator *validator;
     QString updateID;
+    QString number;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
+    PlaceCallDialog *placeCallDialog;
 };
 
 #endif // CHOOSENUMBER_H
