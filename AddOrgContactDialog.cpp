@@ -11,6 +11,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <QStringList>
+#include <QDebug>
 
 AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -246,5 +247,19 @@ bool AddOrgContactDialog::eventFilter(QObject *target, QEvent *event)
         } else { return false;}
     }
 
+}
+
+void AddOrgContactDialog::setOrgValuesPopupWindow(QString &number)
+{
+    qDebug() << number;
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+    query.exec();
+    query.next();
+    if (query.value(0) != 0)
+    {
+        ui->FirstNumber->setText(number);
+    }
 }
 

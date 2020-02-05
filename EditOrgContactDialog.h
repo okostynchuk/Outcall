@@ -24,6 +24,7 @@ public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     void setOrgValuesContacts(QString &);
     void setOrgValuesCallHistory(QString &);
+    void setOrgValuesPopupWindow(QString &);
     ~EditOrgContactDialog();
 
 public slots:

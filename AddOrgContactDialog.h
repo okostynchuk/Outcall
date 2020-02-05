@@ -16,6 +16,7 @@ class AddOrgContactDialog : public QDialog
 public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
     void setOrgValuesCallHistory(QString &);
+    void setOrgValuesPopupWindow(QString &);
     ~AddOrgContactDialog();
 
 protected:
