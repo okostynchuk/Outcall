@@ -18,6 +18,7 @@ class AddContactDialog : public QDialog
 public:
     explicit AddContactDialog(QWidget *parent = 0);
     void setValuesCallHistory(QString &);
+    void setValuesPopupWindow(QString &);
     ~AddContactDialog();
 
 protected:

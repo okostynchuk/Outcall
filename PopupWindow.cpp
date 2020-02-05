@@ -137,9 +137,17 @@ PopupWindow::~PopupWindow()
     delete m_callHistoryDialog;
 }
 
+void PopupWindow::mousePressEvent(QMouseEvent *event)
+{
+
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+
+}
+
 void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-    //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
 }
 
 void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)
@@ -154,44 +162,13 @@ void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)
     }
     else
     {
-        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));/*here*/
-    }
-}
-
-void PopupWindow::mousePressEvent(QMouseEvent *event)
-{
-
-    m_nMouseClick_X_Coordinate = event->x();
-    m_nMouseClick_Y_Coordinate = event->y();
-
-}
-
-void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
-{
-    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
-}
-
-void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
-{
-    QString from = call.value("from").toString();
-
-    QString callerName = call.value("callerIDName").toString();
-
-    if (callerName.isEmpty() || callerName == "<unknown>")
-    {
-        PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
-    }
-    else
-    {
-        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));
     }
 }
 
 void PopupWindow::mouseMoveEvent(QMouseEvent *event)
 {
-
     move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-
 }
 
 void PopupWindow::changeEvent(QEvent *e)
@@ -212,7 +189,7 @@ void PopupWindow::onPopupTimeout()
 //		m_timer.start();
 }
 
-void PopupWindow::startPopupWaitingTimer()//
+void PopupWindow::startPopupWaitingTimer()
 {
     //m_bAppearing = false;
     m_timer.stop();

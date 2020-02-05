@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QSqlQuery>
 
 namespace Ui {
 class ViewContactDialog;
@@ -17,7 +18,6 @@ public:
     void setValuesContacts(QString &);
     void setValuesCallHistory(QString &);
     void loadCalls(QString &);
-
     enum Calls
     {
         MISSED = 0,
@@ -28,6 +28,7 @@ public:
     ~ViewContactDialog();
 
 private:
+    QSqlQuery *query;
     Ui::ViewContactDialog *ui;
     QValidator *validator;
     QString updateID;

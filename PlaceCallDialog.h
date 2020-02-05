@@ -16,6 +16,7 @@
 
 class Contact;
 class QTreeWidgetItem;
+class ChooseNumber;
 
 namespace Ui {
 class PlaceCallDialog;

@@ -198,7 +198,7 @@ void EditContactDialog::onSave()
             if (secondNum != 0)
             {
                 if (count > 0)
-                {+
+                {
                     query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
                     query1.addBindValue(secondNum);
                     query1.addBindValue(updateID);
