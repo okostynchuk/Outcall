@@ -296,14 +296,5 @@ bool AddContactDialog::eventFilter(QObject *target, QEvent *event)
 
 void AddContactDialog::setValuesPopupWindow(QString &number)
 {
-    qDebug() << number;
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
-    query.exec();
-    query.next();
-    if (query.value(0) != 0)
-    {
-        ui->FirstNumber->setText(number);
-    }
+    ui->FirstNumber->setText(number);
 }
