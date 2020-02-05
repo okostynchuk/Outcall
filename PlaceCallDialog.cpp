@@ -97,10 +97,10 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     }
 }
 
-void PlaceCallDialog::getValuesNumber(QString &num)
+void PlaceCallDialog::getValuesNumber(const QString &number)
 {
-    number = num;
     ui->phoneLine->setText(number);
+    qDebug()<<"norm";
 }
 
 void PlaceCallDialog::onUpdate()

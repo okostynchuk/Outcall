@@ -34,7 +34,7 @@ protected:
      void clearCallTree();
 
 public slots:
-         void getValuesNumber(QString &);
+         void getValuesNumber(const QString &number);
 
 protected slots:
     void onCallButton();

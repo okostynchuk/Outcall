@@ -39,14 +39,12 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->tabWidget->setCurrentIndex(0);
 
-    loadCalls();
-
     state_call = "missed";
     loadCalls(state_call);
-    state_call = "recieved";
-    loadCalls(state_call);
-    state_call = "placed";
-    loadCalls(state_call);
+//    state_call = "recieved";
+//    loadCalls(state_call);
+//    state_call = "placed";
+//    loadCalls(state_call);
 
     //Date_time column size
     ui->treeWidgetMissed->setColumnWidth(3, 115);
