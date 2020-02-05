@@ -2,7 +2,6 @@
 #define POPUPWINDOW_H
 
 #include "Global.h"
-#include "CallHistoryDialog.h"
 #include "OutCALL.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
@@ -15,9 +14,6 @@
 #include <QTimer>
 #include <QTextEdit>
 #include <QMap>
-
-class CallHistoryDialog;
-class ContactsDialog;
 
 namespace Ui {
     class PopupWindow;
@@ -65,22 +61,15 @@ protected:
     void changeEvent(QEvent *e);
 
 protected slots:
-    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
-    void onCallReceived(const QMap<QString, QVariant> &call);
     QString getUpdateId(QString &);
 
 private slots:
     void onTimer();
-    void onPopupTimeout();
     void on_pushButton_close_clicked();
     void onAddPerson();
     void onAddOrg();
     void onEdit();
     void onShowCard();
-
-private:
-    void startPopupWaitingTimer();
-    void closeAndDestroy();
 
 private:
     Ui::PopupWindow *ui;
@@ -97,7 +86,6 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
-    CallHistoryDialog *m_callHistoryDialog;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;

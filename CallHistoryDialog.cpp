@@ -41,10 +41,17 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     loadCalls();
 
+    state_call = "missed";
+    loadCalls(state_call);
+    state_call = "recieved";
+    loadCalls(state_call);
+    state_call = "placed";
+    loadCalls(state_call);
+
+    //Date_time column size
     ui->treeWidgetMissed->setColumnWidth(3, 115);
     ui->treeWidgetReceived->setColumnWidth(3, 115);
     ui->treeWidgetPlaced->setColumnWidth(2, 115);
-
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -79,7 +86,6 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
         callerIDName = "Неизвестный";
     }
 
-
     if (calls == MISSED)
     {
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
@@ -88,6 +94,7 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
         extensionItem->setText(2, to);
         extensionItem->setText(3, dateTime);
         extensionItem->setText(4, note);
+        missed_count++;
     }
     else if (calls == RECIEVED)
     {
@@ -479,6 +486,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetMissed->clear();
+           state_call = "missed";
+           loadCalls(state_call);
        }
        else
        {
@@ -488,6 +498,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetMissed->clear();
+           state_call= "missed";
+           loadCalls(state_call);
        }
     }
     else if (ui->tabWidget->currentIndex() == RECIEVED)
@@ -615,7 +628,7 @@ QString CallHistoryDialog::getUpdateId(QString &number)
     return updateID;
 }
 
-void CallHistoryDialog::loadCalls()
+void CallHistoryDialog::loadCalls(QString &state)
 {
     QSqlDatabase db;
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -626,74 +639,90 @@ void CallHistoryDialog::loadCalls()
        SettingsDialog *settingsDialog = new SettingsDialog();
        QString number = settingsDialog->getExtension();
        //Load Missed calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.exec();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+       if(state == "missed")
+       {
+           query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ?");
+           query.addBindValue(number);
+           query.exec();
+           while(query.next()) {
+               QMap<QString, QVariant> call;
+               QString uniqueid = query.value(3).toString();
+               query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
                query1.exec();
                query1.first();
-               call["note"] = query1.value(0).toString();
+               if(query1.value(0) != 0)
+               {
+                   query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+                   query1.exec();
+                   query1.first();
+                   call["note"] = query1.value(0).toString();
+               }
+               call["from"] = query.value(0).toString();
+               call["to"] = query.value(1).toString();
+               call["date_time"] = query.value(2).toString();
+               addCall(call, MISSED);
            }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, MISSED);
        }
 
-     //Load Recieved calls
-//       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
-//       query.addBindValue(number);
-//       query.exec();
-//       query.first();
-//       while(query.next()) {
-//           QMap<QString, QVariant> call;
-//           QString uniqueid = query.value(3).toString();
-//           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-//           query1.exec();
-//           query1.first();
-//           if(query1.value(0) != 0)
-//           {
-//               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-//               query1.exec();
-//               query1.first();
-//               call["note"] = query1.value(0).toString();
-//           }
-//           call["from"] = query.value(0).toString();
-//           call["to"] = query.value(1).toString();
-//           call["date_time"] = query.value(2).toString();
-//           addCall(call, RECIEVED);
-//       }
 
-//     //Load Placed calls
-//       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
-//       query.addBindValue(number);
-//       query.exec();
-//       query.first();
-//       while(query.next()) {
-//           QMap<QString, QVariant> call;
-//           QString uniqueid = query.value(3).toString();
-//           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-//           query1.exec();
-//           query1.first();
-//           if(query1.value(0) != 0)
-//           {
-//               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-//               query1.exec();
-//               query1.first();
-//               call["note"] = query1.value(0).toString();
-//           }
-//           call["from"] = query.value(0).toString();
-//           call["date_time"] = query.value(1).toString();
-//           call["to"] = query.value(2).toString();
-//           addCall(call, PLACED);
-//       }
+     //Load Recieved calls
+       if(state == "recieved")
+       {
+           query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
+           query.addBindValue(number);
+           query.exec();
+           query.first();
+           while(query.next()) {
+               QMap<QString, QVariant> call;
+               QString uniqueid = query.value(3).toString();
+               query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+               query1.exec();
+               query1.first();
+               if(query1.value(0) != 0)
+               {
+                   query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+                   query1.exec();
+                   query1.first();
+                   call["note"] = query1.value(0).toString();
+               }
+               call["from"] = query.value(0).toString();
+               call["to"] = query.value(1).toString();
+               call["date_time"] = query.value(2).toString();
+               addCall(call, RECIEVED);
+           }
+       }
+
+
+     //Load Placed calls
+       if(state == "placed")
+       {
+           query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
+                  query.addBindValue(number);
+           query.exec();
+           query.first();
+           while(query.next()) {
+               QMap<QString, QVariant> call;
+               QString uniqueid = query.value(3).toString();
+               query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+               query1.exec();
+               query1.first();
+               if(query1.value(0) != 0)
+               {
+                   query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+                   query1.exec();
+                   query1.first();
+                   call["note"] = query1.value(0).toString();
+               }
+               call["from"] = query.value(0).toString();
+               call["date_time"] = query.value(1).toString();
+               call["to"] = query.value(2).toString();
+               addCall(call, PLACED);
+           }
+       }
        settingsDialog->deleteLater();
+}
+
+void CallHistoryDialog::clear()
+{
+    ui->treeWidgetMissed->clear();
 }

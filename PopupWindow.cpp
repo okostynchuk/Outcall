@@ -31,7 +31,6 @@ int PopupWindow::m_nLastWindowPosition = 0;
 #define TASKBAR_ON_BOTTOM	4
 
 #define TIME_TO_SHOW	800 //msec
-//#define TIME_TO_LIVE	4000 //msec
 
 PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     QDialog(parent),
@@ -40,11 +39,6 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 	m_pwi = pwi;
 
     ui->setupUi(this);
-
-    m_callHistoryDialog = new CallHistoryDialog;
-
-    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted, this, &PopupWindow::onCallDeteceted);
-    connect(g_pAsteriskManager, &AsteriskManager::callReceived, this, &PopupWindow::onCallReceived);
 
 	ui->lblText->setOpenExternalLinks(true);
 	setAttribute(Qt::WA_TranslucentBackground);
@@ -58,7 +52,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->lblText->resize(ui->lblText->width(), 60);
 
-    setWindowFlags(Qt::Tool /*| Qt::CustomizeWindowHint*/ | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupWindow::onTimer);
 
@@ -79,7 +73,6 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
     bool bTaskbarOnRight=nDesktopWidth<=nScreenWidth && rcDesktop.left()==0;
     bool bTaskbarOnLeft=nDesktopWidth<=nScreenWidth && rcDesktop.left()!=0;
     bool bTaskBarOnTop=nDesktopHeight<=nScreenHeight && rcDesktop.top()!=0;
-	//bool bTaskbarOnBottom=nDesktopHeight<nScreenHeight && rcDesktop.top()==0;
 
 	int nTimeToShow = TIME_TO_SHOW;
 	int nTimerDelay;
@@ -107,9 +100,8 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 		m_nTaskbarPlacement=TASKBAR_ON_TOP;
 		nTimerDelay=nTimeToShow/(height()/m_nIncrement);
 	}
-	else //if (bTaskbarOnBottom)
+    else
 	{
-		// Taskbar is on the bottom or Invisible
 		m_nStartPosX=rcDesktop.right()-width();
 		m_nStartPosY=(rcDesktop.bottom()-m_nLastWindowPosition*height());
 		m_nTaskbarPlacement=TASKBAR_ON_BOTTOM;
@@ -121,49 +113,22 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 
     move(m_nCurrentPosX, m_nCurrentPosY);
 
-    m_nLastWindowPosition++;
+//    m_nLastWindowPosition++;
 
     m_bAppearing = true;
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
-
-    //note = new QTextEdit;
-    // connect(note, SIGNAL(textChanged(const QString &)), this, SLOT(TextChanged(const QString &text)));
 }
 
 PopupWindow::~PopupWindow()
 {
     delete ui;
-    delete m_callHistoryDialog;
 }
 
 void PopupWindow::mousePressEvent(QMouseEvent *event)
 {
-
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
-
-}
-
-void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
-{
-    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
-}
-
-void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)
-{
-    QString from = call.value("from").toString();
-
-    QString callerName = call.value("callerIDName").toString();
-
-    if (callerName.isEmpty() || callerName == "<unknown>")
-    {
-        PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
-    }
-    else
-    {
-        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));
-    }
 }
 
 void PopupWindow::mouseMoveEvent(QMouseEvent *event)
@@ -183,41 +148,9 @@ void PopupWindow::changeEvent(QEvent *e)
     }
 }
 
-void PopupWindow::onPopupTimeout()
-{
-//      if (isVisible())
-//		m_timer.start();
-}
-
-void PopupWindow::startPopupWaitingTimer()
-{
-    //m_bAppearing = false;
-    m_timer.stop();
-
-//    int time2live = TIME_TO_LIVE;
-
-//    if (this->m_pwi.type == PWPhoneCall)
-//        time2live = global::getSettingsValue("call_popup_duration", "popup", "20").toInt() * 1000;
-
-//    QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
-}
-
-void PopupWindow::closeAndDestroy()
-{
-    if (m_PopupWindows.last() == this)
-        m_nLastWindowPosition = m_PopupWindows.count() - 1;
-
-	hide();
-	m_timer.stop();
-	m_PopupWindows.removeOne(this);
-	delete this;
-	/*close();
-	deleteLater();*/
-}
-
 void PopupWindow::onTimer()
 {
-    if (m_bAppearing) // APPEARING
+    if (m_bAppearing)
     {
         switch(m_nTaskbarPlacement)
         {
@@ -225,67 +158,28 @@ void PopupWindow::onTimer()
             if (m_nCurrentPosY>(m_nStartPosY-height()))
                 m_nCurrentPosY-=m_nIncrement;
             else
-                startPopupWaitingTimer();
+                m_timer.stop();
             break;
         case TASKBAR_ON_TOP:
             if ((m_nCurrentPosY-m_nStartPosY)<height())
                 m_nCurrentPosY+=m_nIncrement;
             else
-                startPopupWaitingTimer();
+                m_timer.stop();
             break;
         case TASKBAR_ON_LEFT:
             if ((m_nCurrentPosX-m_nStartPosX)<width())
                 m_nCurrentPosX+=m_nIncrement;
             else
-                startPopupWaitingTimer();
+                m_timer.stop();
             break;
         case TASKBAR_ON_RIGHT:
             if (m_nCurrentPosX>(m_nStartPosX-width()))
                 m_nCurrentPosX-=m_nIncrement;
             else
-                startPopupWaitingTimer();
+                m_timer.stop();
             break;
         }
     }
-
-//    else // DISSAPPEARING
-//    {
-//        switch(m_nTaskbarPlacement)
-//        {
-//        case TASKBAR_ON_BOTTOM:
-//            if (m_nCurrentPosY<m_nStartPosY) {
-//                m_nCurrentPosY+=m_nIncrement;
-//            } else {
-//                closeAndDestroy();
-//                return;
-//            }
-//            break;
-//        case TASKBAR_ON_TOP:
-//            if (m_nCurrentPosY>m_nStartPosY) {
-//                m_nCurrentPosY-=m_nIncrement;
-//            } else {
-//                closeAndDestroy();
-//                return;
-//            }
-//            break;
-//        case TASKBAR_ON_LEFT:
-//            if (m_nCurrentPosX>m_nStartPosX) {
-//                m_nCurrentPosX-=m_nIncrement;
-//            } else {
-//                closeAndDestroy();
-//                return;
-//            }
-//            break;
-//        case TASKBAR_ON_RIGHT:
-//            if (m_nCurrentPosX<m_nStartPosX) {
-//                m_nCurrentPosX+=m_nIncrement;
-//            } else {
-//                closeAndDestroy();
-//                return;
-//            }
-//            break;
-//        }
-//    }
 
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
@@ -320,7 +214,7 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 
 	pwi.avatar = avatar;
 
-	PopupWindow *popup = new PopupWindow(pwi);
+    PopupWindow *popup = new PopupWindow(pwi);
 	popup->show();
 	m_PopupWindows.append(popup);
 }
@@ -334,19 +228,27 @@ void PopupWindow::closeAll()
 
 void PopupWindow::on_pushButton_close_clicked()
 {
-    m_PopupWindows.clear();
-    m_nLastWindowPosition = 0;
+    if (m_PopupWindows.last() == this)
+        m_nLastWindowPosition = m_PopupWindows.count() - 1;
 
-    close();
+    hide();
+    m_timer.stop();
+    m_PopupWindows.removeOne(this);
+    delete this;
 }
 
 void PopupWindow::onAddPerson()
 {
     QString number = sender()->property("number").toString();
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
     addContactDialog = new AddContactDialog;
     addContactDialog->setWindowTitle("Добавление физ. лица");
     addContactDialog->setValuesPopupWindow(number);
     connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+    addContactDialog->setProperty("number", number);
+    addContactDialog->setProperty("qv_popup", qv_popup);
     addContactDialog->exec();
     addContactDialog->deleteLater();
 }
@@ -354,10 +256,15 @@ void PopupWindow::onAddPerson()
 void PopupWindow::onAddOrg()
 {
     QString number = sender()->property("number").toString();
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog->setWindowTitle("Добавление организации");
     addOrgContactDialog->setOrgValuesPopupWindow(number);
     connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+    addOrgContactDialog->setProperty("number", number);
+    addOrgContactDialog->setProperty("qv_popup", qv_popup);
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }
@@ -367,6 +274,9 @@ void PopupWindow::onEdit()
     QSqlDatabase db;
     QSqlQuery query(db);
     QString number = sender()->property("number").toString();
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
     QString updateID = getUpdateId(number);
     query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
     query.exec();
@@ -376,6 +286,9 @@ void PopupWindow::onEdit()
         editContactDialog = new EditContactDialog;
         editContactDialog->setWindowTitle("Редактирнование физ. лица");
         editContactDialog->setValuesContacts(updateID);
+        connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+        editContactDialog->setProperty("number", number);
+        editContactDialog->setProperty("qv_popup", qv_popup);
         editContactDialog->exec();
         editContactDialog->deleteLater();
     }
@@ -384,6 +297,9 @@ void PopupWindow::onEdit()
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setWindowTitle("Редактирнование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+        editOrgContactDialog->setProperty("number", number);
+        editOrgContactDialog->setProperty("qv_popup", qv_popup);
         editOrgContactDialog->exec();
         editOrgContactDialog->deleteLater();
     }
@@ -427,21 +343,67 @@ QString PopupWindow::getUpdateId(QString &number)
 
 void PopupWindow::recieveData(bool update)
 {
+    QString number = sender()->property("number").toString();
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
     if (update)
     {
-        this->ui->lblText->setText(tr("Входящий звонок от:<br><b>123</b>"));
+        QSqlDatabase db;
+        QSqlQuery query(db);
+        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+        query.exec();
+        query.first();
+        if (!query.value(0).isNull())
+        {
+            popup->ui->label->hide();
+            popup->ui->addPersonButton->hide();
+            popup->ui->addOrgButton->hide();
+            popup->ui->editButton->show();
+            popup->ui->showCardButton->show();
+            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(number));
+        }
+        else
+        {
+            popup->ui->editButton->hide();
+            popup->ui->showCardButton->hide();
+            popup->ui->label->show();
+            popup->ui->addPersonButton->show();
+            popup->ui->addOrgButton->show();
+            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>Неизвестный (%1)</b>").arg(number));
+        }
     }
 }
 
 void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
 {
+    QVariant qv_popup = qVariantFromValue((void *)popup);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+    query.exec();
+    query.first();
+    if (!query.value(0).isNull())
+    {
+        popup->ui->label->hide();
+        popup->ui->addPersonButton->hide();
+        popup->ui->addOrgButton->hide();
+    }
+    else
+    {
+        popup->ui->editButton->hide();
+        popup->ui->showCardButton->hide();
+    }
     connect(popup->ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
     popup->ui->addPersonButton->setProperty("number", number);
+    popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
     popup->ui->addOrgButton->setProperty("number", number);
+    popup->ui->addOrgButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->editButton, SIGNAL(clicked(bool)), this, SLOT(onEdit()));
     popup->ui->editButton->setProperty("number", number);
+    popup->ui->editButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
     popup->ui->showCardButton->setProperty("number", number);
-    //popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>123</b>"));
+    popup->ui->editButton->setProperty("qv_popup", qv_popup);
 }
