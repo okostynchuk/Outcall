@@ -19,8 +19,10 @@ class ChooseNumber : public QDialog
 public:
     explicit ChooseNumber(QWidget *parent = 0);
     void setValuesNumber(QString &);
-    void passNumber(QString &num);
     ~ChooseNumber();
+
+public slots:
+    void passNumber(QString &);
 
 private:
     Ui::ChooseNumber *ui;

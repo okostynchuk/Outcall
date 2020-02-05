@@ -27,13 +27,14 @@ class PlaceCallDialog : public QDialog
 
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
-    void getValuesNumber(QString &);
     ~PlaceCallDialog();
-
     void show();
 
 protected:
      void clearCallTree();
+
+public slots:
+         void getValuesNumber(QString &);
 
 protected slots:
     void onCallButton();
@@ -49,6 +50,7 @@ protected slots:
     void onItemClicked(QTreeWidgetItem * item, int);
     void showNumber(const QModelIndex &);
 
+
 private slots:
     void on_lineEdit_returnPressed();
 
@@ -58,6 +60,7 @@ private:
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QString update;
+    QString number;
     ChooseNumber *chooseNumber;
 };
 

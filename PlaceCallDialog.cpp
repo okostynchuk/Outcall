@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QModelIndex>
 #include <QScrollBar>
+#include <QStringList>
 
 PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     QDialog(parent),
@@ -96,9 +97,9 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     }
 }
 
-void PlaceCallDialog::getValuesNumber(QString &num){
-    QString number = num;
-
+void PlaceCallDialog::getValuesNumber(QString &num)
+{
+    number = num;
     ui->phoneLine->setText(number);
 }
 

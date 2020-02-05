@@ -41,7 +41,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     loadCalls();
 
-
     ui->treeWidgetMissed->setColumnWidth(3, 115);
     ui->treeWidgetReceived->setColumnWidth(3, 115);
     ui->treeWidgetPlaced->setColumnWidth(2, 115);

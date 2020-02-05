@@ -18,8 +18,8 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->FirstNumber, SIGNAL(clicked(int)), this, SLOT(passNumber(QString &)));
-   // connect(ui->FirstNumber, SIGNAL(clicked(const QModelIndex &)), this, SLOT(passNumber(const QModelIndex &)));
+    connect(ui->FirstNumber, SIGNAL(returnPressed()), this, SLOT(passNumber(QString &)));
+    //connect(ui->FirstNumber, SIGNAL(returnPressed()), this, SLOT(passNumber(const QString &)));
 }
 
 ChooseNumber::~ChooseNumber()
@@ -53,8 +53,6 @@ void ChooseNumber::setValuesNumber(QString &i)
     query.exec();
     query.next();
 
-
-
     ui->FirstNumber->setText(firstNumber);
     ui->SecondNumber->setText(secondNumber);
     ui->ThirdNumber->setText(thirdNumber);
@@ -65,9 +63,9 @@ void ChooseNumber::setValuesNumber(QString &i)
 void ChooseNumber::passNumber(QString &num)
 {
     number = num;
-
+    number = ui->FirstNumber->text();
          placeCallDialog = new PlaceCallDialog;
          placeCallDialog->getValuesNumber(number);
-         placeCallDialog->exec();
-         placeCallDialog->deleteLater();
+         //placeCallDialog->exec();
+        // placeCallDialog->deleteLater();
 }
