@@ -43,9 +43,6 @@ protected slots:
     void clearEditText();
     void closeEvent(QCloseEvent *);
 
-protected:
-    bool eventFilter(QObject*, QEvent*event);
-
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;

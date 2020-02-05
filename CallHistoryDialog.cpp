@@ -1,12 +1,5 @@
 #include "CallHistoryDialog.h"
 #include "ui_callhistorydialog.h"
-#include "Global.h"
-#include "ContactManager.h"
-#include "AddContactDialog.h"
-#include "AddOrgContactDialog.h"
-#include "SettingsDialog.h"
-#include "AddNoteDialog.h"
-#include "OutCALL.h"
 
 #include <QDebug>
 #include <QList>
@@ -166,7 +159,6 @@ void CallHistoryDialog::onCallClicked()
 void CallHistoryDialog::onAddContact()
 {
     addContactDialog = new AddContactDialog;
-    addContactDialog->setWindowTitle("Добавление физ. лица");
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -181,7 +173,6 @@ void CallHistoryDialog::onAddContact()
             {  
                 addContactDialog->setValuesCallHistory(from);
                 addContactDialog->exec();
-                addContactDialog->deleteLater();
             }
             else if (a == false) { editContact(from); }
         }
@@ -200,7 +191,6 @@ void CallHistoryDialog::onAddContact()
             {
                 addContactDialog->setValuesCallHistory(from);
                 addContactDialog->exec();
-                addContactDialog->deleteLater();
             }
             else if (a == false) { editContact(from); }
 
@@ -219,17 +209,17 @@ void CallHistoryDialog::onAddContact()
             if (a == true)
             {
                 addContactDialog->setValuesCallHistory(to);
-                addContactDialog->exec();
-                addContactDialog->deleteLater();
+                addContactDialog->exec();             
             }
             else if (a == false) { editContact(to); }
         }
+
+    addContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onAddOrgContact()
 {
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setWindowTitle("Добавление организации");
 
     if (ui->tabWidget->currentIndex() == MISSED)
         {
@@ -246,7 +236,6 @@ void CallHistoryDialog::onAddOrgContact()
             {
                 addOrgContactDialog->setOrgValuesCallHistory(from);
                 addOrgContactDialog->exec();
-                addOrgContactDialog->deleteLater();
             }
             else if (a == false) { editContact(from); }
         }
@@ -265,7 +254,6 @@ void CallHistoryDialog::onAddOrgContact()
             {
                 addOrgContactDialog->setOrgValuesCallHistory(from);
                 addOrgContactDialog->exec();
-                addOrgContactDialog->deleteLater();
             }
             else if (a == false) { editContact(from); }
         }
@@ -284,10 +272,11 @@ void CallHistoryDialog::onAddOrgContact()
             {
                 addOrgContactDialog->setOrgValuesCallHistory(to);
                 addOrgContactDialog->exec();
-                addOrgContactDialog->deleteLater();
             }
             else if (a == false) { editContact(to); }
         }
+
+    addOrgContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onRemoveButton()
@@ -590,7 +579,6 @@ void CallHistoryDialog::editContact(QString &number)
     if (query.value(0).toString() == "person")
     {
         editContactDialog = new EditContactDialog;
-        editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
         editContactDialog->exec();
         editContactDialog->deleteLater();
@@ -598,7 +586,6 @@ void CallHistoryDialog::editContact(QString &number)
     else
     {
         editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
         editOrgContactDialog->exec();
         editOrgContactDialog->deleteLater();

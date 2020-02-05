@@ -9,6 +9,7 @@
 #include "SettingsDialog.h"
 #include "AddNoteDialog.h"
 #include "OutCALL.h"
+#include "Global.h"
 
 #include <QDialog>
 #include <QMap>
@@ -25,9 +26,7 @@ class CallHistoryDialog : public QDialog
 
 public:
     explicit CallHistoryDialog(QWidget *parent = 0);
-
     ~CallHistoryDialog();
-
     enum Calls
     {
         MISSED = 0,
