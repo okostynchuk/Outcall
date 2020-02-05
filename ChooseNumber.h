@@ -19,14 +19,21 @@ class ChooseNumber : public QDialog
 public:
     explicit ChooseNumber(QWidget *parent = 0);
     void setValuesNumber(QString &);
-    void passNumber(QString &num);
     ~ChooseNumber();
+
+public slots:
+    void passNumber();
+    void passNumber2();
 
 private:
     Ui::ChooseNumber *ui;
     QValidator *validator;
     QString updateID;
-    QString number;
+    QString firstPassNumber;
+    QString secondPassNumber;
+    QString thirdPassNumber;
+    QString fourthPassNumber;
+    QString fifthPassNumber;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;

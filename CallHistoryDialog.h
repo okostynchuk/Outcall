@@ -33,7 +33,9 @@ public:
         RECIEVED = 1,
         PLACED = 2
     };
-    void addCall(const QMap<QString, QVariant> &call, Calls calls);
+    void addCall(const QMap<QString, QVariant> &, Calls);
+    void loadCalls(QString &);
+    void clear();
 
 protected slots:
     void onAddContact();
@@ -43,7 +45,6 @@ protected slots:
     bool checkNumber(QString &);
     void onAddNotes();
     void editContact(QString &);
-    void loadCalls();
     QString getUpdateId(QString &);
 
 private:
@@ -56,6 +57,8 @@ private:
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
     QString number;
+    int missed_count = 0;
+    QString state_call;
 };
 
 #endif // CALLHISTORYDIALOG_H

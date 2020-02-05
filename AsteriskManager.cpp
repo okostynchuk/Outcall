@@ -34,8 +34,7 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
 }
 
 AsteriskManager::~AsteriskManager()
-{
-}
+{}
 
 void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
 {

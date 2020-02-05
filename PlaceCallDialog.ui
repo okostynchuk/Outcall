@@ -79,6 +79,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::ClickFocus</enum>
+           </property>
            <property name="placeholderText">
             <string>Поиск</string>
            </property>
@@ -90,7 +93,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="phoneLine"/>
+        <widget class="QLineEdit" name="phoneLine">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -103,6 +110,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="callButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string>Позвонить</string>
        </property>
@@ -110,6 +120,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string>Отмена</string>
        </property>
