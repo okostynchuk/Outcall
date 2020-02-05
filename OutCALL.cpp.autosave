@@ -227,7 +227,7 @@ void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManag
 //    QString state_call = "recieved";
 //    m_callHistoryDialog->clear();
 //    m_callHistoryDialog->loadCalls(state_call);
-    qDebug() << "1243";
+
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
