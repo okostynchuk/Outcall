@@ -40,6 +40,12 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tabWidget->setCurrentIndex(0);
 
     loadCalls();
+
+
+    ui->treeWidgetMissed->setColumnWidth(3, 115);
+    ui->treeWidgetReceived->setColumnWidth(3, 115);
+    ui->treeWidgetPlaced->setColumnWidth(2, 115);
+
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -47,7 +53,7 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistoryDialog::Calls calls, QString stateDB)
+void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistoryDialog::Calls calls)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -58,7 +64,6 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
     const QString dateTime = call.value("date_time").toString();
     QString note           = call.value("note").toString();
     QString callerIDName;
-    //izmenil2
 
     query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
     query.exec();
@@ -75,16 +80,6 @@ void CallHistoryDialog::addCall(const QMap<QString, QVariant> &call, CallHistory
         callerIDName = "Неизвестный";
     }
 
-    if (stateDB == "insert")
-    {
-        query.prepare("INSERT INTO calls(number_from, number_to, date_time, note)"
-                      "VALUES(?, ?, ?, ?)");
-        query.addBindValue(from);
-        query.addBindValue(to);
-        query.addBindValue(dateTime);
-        query.addBindValue(note);
-        query.exec();
-    }
 
     if (calls == MISSED)
     {
@@ -449,6 +444,8 @@ void CallHistoryDialog::onAddNotes()
 {
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     QSqlQuery query(dbAsterisk);
+    QSqlDatabase db;
+    QSqlQuery query1(db);
 
     QList<QTreeWidgetItem*> selectedItems;
     if (ui->tabWidget->currentIndex() == MISSED)
@@ -472,11 +469,27 @@ void CallHistoryDialog::onAddNotes()
        query.next();
        QString uniqueid = query.value(0).toString();
 
-       addNoteDialog = new AddNoteDialog;
-       addNoteDialog->setWindowTitle("Добавление заметки");
-       addNoteDialog->setCallId(uniqueid);
-       addNoteDialog->exec();
-       addNoteDialog->deleteLater();
+       query1.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid ="+uniqueid+")");
+       query1.exec();
+       query1.next();
+       if(query1.value(0) != 0)
+       {
+           QString state = "edit";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Редактирование заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
+       else
+       {
+           QString state = "add";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Добавление заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
     }
     else if (ui->tabWidget->currentIndex() == RECIEVED)
     {
@@ -499,11 +512,27 @@ void CallHistoryDialog::onAddNotes()
        query.next();
        QString uniqueid = query.value(0).toString();
 
-       addNoteDialog = new AddNoteDialog;
-       addNoteDialog->setWindowTitle("Добавление заметки");
-       addNoteDialog->setCallId(uniqueid);
-       addNoteDialog->exec();
-       addNoteDialog->deleteLater();
+       query1.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid ="+uniqueid+")");
+       query1.exec();
+       query1.next();
+       if(query1.value(0) != 0)
+       {
+           QString state = "edit";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Редактирование заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
+       else
+       {
+           QString state = "add";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Добавление заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
     }
     else if (ui->tabWidget->currentIndex() == PLACED)
     {
@@ -526,11 +555,27 @@ void CallHistoryDialog::onAddNotes()
        query.next();
        QString uniqueid = query.value(0).toString();
 
-       addNoteDialog = new AddNoteDialog;
-       addNoteDialog->setWindowTitle("Добавление заметки");
-       addNoteDialog->setCallId(uniqueid);
-       addNoteDialog->exec();
-       addNoteDialog->deleteLater();
+       query1.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid ="+uniqueid+")");
+       query1.exec();
+       query1.next();
+       if(query1.value(0) != 0)
+       {
+           QString state = "edit";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Редактирование заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
+       else
+       {
+           QString state = "add";
+           addNoteDialog = new AddNoteDialog;
+           addNoteDialog->setWindowTitle("Добавление заметки");
+           addNoteDialog->setCallId(uniqueid, state);
+           addNoteDialog->exec();
+           addNoteDialog->deleteLater();
+       }
     }
 }
 
@@ -545,7 +590,7 @@ void CallHistoryDialog::editContact(QString &number)
     if (query.value(0).toString() == "person")
     {
         editContactDialog = new EditContactDialog;
-        editContactDialog->setWindowTitle("Редактирнование физ. лица");
+        editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
         editContactDialog->exec();
         editContactDialog->deleteLater();
@@ -553,7 +598,7 @@ void CallHistoryDialog::editContact(QString &number)
     else
     {
         editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setWindowTitle("Редактирнование организации");
+        editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
         editOrgContactDialog->exec();
         editOrgContactDialog->deleteLater();
@@ -579,7 +624,6 @@ void CallHistoryDialog::loadCalls()
     QSqlQuery query1(db);
 
     // Load calls
-       QString stateDB = "notInsert";
        SettingsDialog *settingsDialog = new SettingsDialog();
        QString number = settingsDialog->getExtension();
        //Load Missed calls
@@ -602,55 +646,55 @@ void CallHistoryDialog::loadCalls()
            call["from"] = query.value(0).toString();
            call["to"] = query.value(1).toString();
            call["date_time"] = query.value(2).toString();
-           addCall(call, MISSED, stateDB);
+           addCall(call, MISSED);
        }
 
      //Load Recieved calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.exec();
-       query.first();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, RECIEVED, stateDB);
-       }
+//       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
+//       query.addBindValue(number);
+//       query.exec();
+//       query.first();
+//       while(query.next()) {
+//           QMap<QString, QVariant> call;
+//           QString uniqueid = query.value(3).toString();
+//           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+//           query1.exec();
+//           query1.first();
+//           if(query1.value(0) != 0)
+//           {
+//               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+//               query1.exec();
+//               query1.first();
+//               call["note"] = query1.value(0).toString();
+//           }
+//           call["from"] = query.value(0).toString();
+//           call["to"] = query.value(1).toString();
+//           call["date_time"] = query.value(2).toString();
+//           addCall(call, RECIEVED);
+//       }
 
-     //Load Placed calls
-       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.exec();
-       query.first();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["date_time"] = query.value(1).toString();
-           call["to"] = query.value(2).toString();
-           addCall(call, PLACED, stateDB);
-       }
+//     //Load Placed calls
+//       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
+//       query.addBindValue(number);
+//       query.exec();
+//       query.first();
+//       while(query.next()) {
+//           QMap<QString, QVariant> call;
+//           QString uniqueid = query.value(3).toString();
+//           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+//           query1.exec();
+//           query1.first();
+//           if(query1.value(0) != 0)
+//           {
+//               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+//               query1.exec();
+//               query1.first();
+//               call["note"] = query1.value(0).toString();
+//           }
+//           call["from"] = query.value(0).toString();
+//           call["date_time"] = query.value(1).toString();
+//           call["to"] = query.value(2).toString();
+//           addCall(call, PLACED);
+//       }
        settingsDialog->deleteLater();
 }

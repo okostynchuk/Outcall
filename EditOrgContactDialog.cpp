@@ -558,6 +558,10 @@ void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
     ui->FirstNumber->setText(number);
 }
 
+void EditOrgContactDialog::setOrgValuesPopupWindow(QString &number)
+{
+    ui->FirstNumber->setText(number);
+}
 
 bool EditOrgContactDialog::eventFilter(QObject *target, QEvent *event)
 {
