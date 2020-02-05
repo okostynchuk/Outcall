@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QSqlQuery>
 
 namespace Ui {
 class ViewContactDialog;
@@ -25,11 +24,10 @@ public:
         RECIEVED = 1,
         PLACED = 2
     };
-    void addCall(const QMap<QString, QVariant> &call, Calls calls, QString stateDB);
+    void addCall(const QMap<QString, QVariant> &call, Calls calls);
     ~ViewContactDialog();
 
 private:
-    QSqlQuery *query;
     Ui::ViewContactDialog *ui;
     QValidator *validator;
     QString updateID;

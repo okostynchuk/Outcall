@@ -586,12 +586,12 @@ background-color: #fffff0;
                 </column>
                 <column>
                  <property name="text">
-                  <string notr="true">From</string>
+                  <string notr="true">Date &amp; Time</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string notr="true">Date &amp; Time</string>
+                  <string notr="true">From</string>
                  </property>
                 </column>
                 <column>

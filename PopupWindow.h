@@ -32,7 +32,7 @@ public:
     {
         PWPhoneCall,
         PWInformationMessage
-	};
+    };
 
 public slots:
     void recieveNumber(PopupWindow*, QString);
@@ -104,6 +104,7 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
+    CallHistoryDialog *m_callHistoryDialog;
 };
 
 #endif // POPUPWINDOW_H

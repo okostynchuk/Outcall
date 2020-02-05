@@ -34,11 +34,9 @@ public:
         RECIEVED = 1,
         PLACED = 2
     };
-
-    void addCall(const QMap<QString, QVariant> &call, Calls calls, QString stateDB);
+    void addCall(const QMap<QString, QVariant> &call, Calls calls);
 
 protected slots:
-
     void onAddContact();
     void onAddOrgContact();
     void onRemoveButton();
@@ -48,7 +46,6 @@ protected slots:
     void editContact(QString &);
     void loadCalls();
     QString getUpdateId(QString &);
-    //izmenil
 
 private:
     Ui::CallHistoryDialog *ui;

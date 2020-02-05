@@ -166,6 +166,27 @@ void PopupWindow::mousePressEvent(QMouseEvent *event)
 
 }
 
+void PopupWindow::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
+{
+    m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+}
+
+void PopupWindow::onCallReceived(const QMap<QString, QVariant> &call)/**/
+{
+    QString from = call.value("from").toString();
+
+    QString callerName = call.value("callerIDName").toString();
+
+    if (callerName.isEmpty() || callerName == "<unknown>")
+    {
+        PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
+    }
+    else
+    {
+        PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+    }
+}
+
 void PopupWindow::mouseMoveEvent(QMouseEvent *event)
 {
 
@@ -302,7 +323,7 @@ void PopupWindow::showCallNotification(QString number, QString caller)
     if (avatar.isNull())
         avatar = QPixmap(":/images/outcall-logo.png");
 
-	PopupWindow *popup = new PopupWindow(pwi);
+    PopupWindow *popup = new PopupWindow(pwi);
     popup->recieveNumber(popup, number);
 	popup->show();
 	m_PopupWindows.append(popup);
