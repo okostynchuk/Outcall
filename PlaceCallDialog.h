@@ -1,15 +1,18 @@
 #ifndef PLACECALLDIALOG_H
 #define PLACECALLDIALOG_H
 
-#include "ui_PlaceCallDialog.h"
+#include "ChooseNumber.h"
+#include "ViewContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QHeaderView>
 #include <QBoxLayout>
+#include <QString>
 #include <QLabel>
 #include <QTableView>
 #include <QScrollBar>
+#include <QAbstractProxyModel>
 
 class Contact;
 class QTreeWidgetItem;
@@ -43,6 +46,7 @@ protected slots:
     void onSettingsChange();
     void onItemDoubleClicked(QTreeWidgetItem * item, int);
     void onItemClicked(QTreeWidgetItem * item, int);
+    void showNumber(const QModelIndex &);
 
 private slots:
     void on_lineEdit_returnPressed();
@@ -51,7 +55,10 @@ private:
     Ui::PlaceCallDialog *ui;
     QList<Contact*> m_contacts;  /**< Contact list from Outlook */
     QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
     QString update;
+    ViewContactDialog *viewContactDialog;
+    ChooseNumber *chooseNumber;
 };
 
 #endif // PLACECALLDIALOG_H

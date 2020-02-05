@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QSqlQuery>
 
 namespace Ui {
 class ViewContactDialog;
@@ -29,7 +28,6 @@ public:
     ~ViewContactDialog();
 
 private:
-    QSqlQuery *query;
     Ui::ViewContactDialog *ui;
     QValidator *validator;
     QString updateID;

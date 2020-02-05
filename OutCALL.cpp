@@ -251,11 +251,11 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
         {
             if (callerName.isEmpty() || callerName == "<unknown>")
             {
-                PopupWindow::showCallNotification(from, QString("(Nr: %2)").arg(from));/*here*/
+                PopupWindow::showCallNotification(QString("(Nr: %2)").arg(from));/*here*/
             }
             else
             {
-                PopupWindow::showCallNotification(from, QString("%1 (Nr: %2)").arg(callerName).arg(from));/*here*/
+                PopupWindow::showCallNotification(QString("%1 (Nr: %2)").arg(callerName).arg(from));/*here*/
             }
         }
     }
@@ -263,12 +263,12 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
     {
         if (callerName.isEmpty() || callerName == "<unknown>")
         {
-            PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
+            PopupWindow::showCallNotification(QString("(%1)").arg(from));
 
         }
         else
         {
-            PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));/*here*/
+            PopupWindow::showCallNotification(QString("%1 (%2)").arg(callerName).arg(from));/*here*/
         }
     }
 

@@ -5,9 +5,10 @@
 #include "SearchBox.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
+//#include "ChooseNumber.h"
 
 #include <QHash>
-
+#include <QString>
 #include <QSqlQueryModel>
 #include <QHeaderView>
 #include <QTableView>
@@ -41,6 +42,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     connect(g_Notifier,        &Notifier::settingsChanged,      this, &PlaceCallDialog::onSettingsChange);
 
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
+    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showNumber(const QModelIndex &)));
 
     //void (QComboBox:: *sig)(const QString&) = &QComboBox::currentIndexChanged;
     //connect(ui->contactBox, sig, this, &PlaceCallDialog::onContactIndexChange);
@@ -63,30 +65,36 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     //ui->searchLine->setData(data);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep GROUP BY ep.entry_id");
-
-    query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО / Название"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    ui->tableView->setModel(query1);
-
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->setSortingEnabled(false);
-
-    ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->resizeColumnsToContents();
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    query2 = new QSqlQueryModel;
 
     onComboBoxSelected();
-
-    update = "default";
 }
 
 PlaceCallDialog::~PlaceCallDialog()
 {
     delete ui;
     delete query1;
+    delete query2;
+}
+
+void PlaceCallDialog::showNumber(const QModelIndex &index)
+{
+    QString updateID = query1->data(query1->index(index.row(), 0)).toString();
+    int row = ui->tableView->currentIndex().row();
+    if (query2->data(query2->index(row, 0)).toString() == "person")
+    {
+         chooseNumber = new ChooseNumber;
+         chooseNumber->setValuesNumber(updateID);
+         chooseNumber->exec();
+         chooseNumber->deleteLater();
+    }
+    else
+    {
+        chooseNumber = new ChooseNumber;
+        chooseNumber->setValuesNumber(updateID);
+        chooseNumber->exec();
+        chooseNumber->deleteLater();
+    }
 }
 
 void PlaceCallDialog::onUpdate()
@@ -94,6 +102,7 @@ void PlaceCallDialog::onUpdate()
     if (update == "default")
     {
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -108,6 +117,7 @@ void PlaceCallDialog::onUpdate()
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
     update = "default";
@@ -128,6 +138,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     {
         QString entry_name = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
         onUpdate();
     }
@@ -135,10 +146,13 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     {
         QString entry_phone = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
         onUpdate();
     }
 }
+
+
 
 void PlaceCallDialog::clearEditText(){
     ui->lineEdit->clear();
@@ -260,3 +274,4 @@ void PlaceCallDialog::onSettingsChange()
 //    for (int i = 0; i < extensions.size(); ++i)
 //        ui->fromBox->addItem(extensions[i]);
 }
+

@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     ViewOrgContactDialog.cpp \
     EditContactDialog.cpp \
     EditOrgContactDialog.cpp \
-    AddNoteDialog.cpp
+    AddNoteDialog.cpp \
+    ChooseNumber.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -76,7 +77,8 @@ HEADERS  += \
     ViewOrgContactDialog.h \
     EditContactDialog.h \
     EditOrgContactDialog.h \
-    AddNoteDialog.h
+    AddNoteDialog.h \
+    ChooseNumber.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -96,7 +98,8 @@ FORMS    += \
     ViewOrgContactDialog.ui \
     EditContactDialog.ui \
     EditOrgContactDialog.ui \
-    AddNoteDialog.ui
+    AddNoteDialog.ui \
+    ChooseNumber.ui
 
 RESOURCES += \
     images.qrc

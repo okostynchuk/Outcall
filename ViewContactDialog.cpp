@@ -1,5 +1,4 @@
 #include "ViewContactDialog.h"
-#include "SettingsDialog.h"
 #include "ui_ViewContactDialog.h"
 
 #include <QVariantList>
@@ -11,7 +10,6 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
-#include <QDebug>
 
 ViewContactDialog::ViewContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -52,7 +50,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
     query.exec();
     query.next();
     ui->Organization->setText(query.value(0).toString());
-    sql = QString("SELECT distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = %1").arg(updateID);
+    sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -78,39 +76,17 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
-    if(firstNumber != 0)
-    {
-       loadCalls(firstNumber);
-    }
-    if(secondNumber != 0)
-    {
-       loadCalls(secondNumber);
-    }
-    if(thirdNumber != 0)
-    {
-       loadCalls(thirdNumber);
-    }
-    if(fourthNumber != 0)
-    {
-       loadCalls(fourthNumber);
-    }
-    if(fifthNumber != 0)
-    {
-       loadCalls(fifthNumber);
-    }
-
-     if(!firstNumber.isEmpty())
+     if (!firstNumber.isEmpty())
           ui->FirstNumber->setInputMask("999-999-9999;_");
-     if(!secondNumber.isEmpty())
+     if (!secondNumber.isEmpty())
           ui->SecondNumber->setInputMask("999-999-9999;_");
-     if(!thirdNumber.isEmpty())
+     if (!thirdNumber.isEmpty())
           ui->ThirdNumber->setInputMask("999-999-9999;_");
-     if(!fourthNumber.isEmpty())
+     if (!fourthNumber.isEmpty())
           ui->FourthNumber->setInputMask("999-999-9999;_");
-     if(!fifthNumber.isEmpty())
+     if (!fifthNumber.isEmpty())
           ui->FifthNumber->setInputMask("999-999-9999;_");
 }
-
 
 void ViewContactDialog::loadCalls(QString &contactNumber)
 {
