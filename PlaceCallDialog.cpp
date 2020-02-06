@@ -162,26 +162,31 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     }
 }
 
-void PlaceCallDialog::setOrgValuesContacts(QString &i, const QModelIndex &index)
+void PlaceCallDialog::setOrgValuesContacts(const QModelIndex &index)
 {
-    updateID1 = i;
-
     QString updateID1 = query1->data(query1->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
     if (query2->data(query2->index(row, 0)).toString() == "person")
     {
-
+         //placeCallDialog = new PlaceCallDialog;
+         placeCallDialog->setIndex(updateID1);
+         //placeCallDialog->exec();
+         //placeCallDialog->deleteLater();
     }
     else
     {
-
+        //placeCallDialog = new PlaceCallDialog;
+        placeCallDialog->setIndex(updateID1);
+        //placeCallDialog->exec();
+        //placeCallDialog->deleteLater();
     }
+
 }
 
-//void PlaceCallDialog::setIndex(const QModelIndex &index)
-//{
-
-//}
+void PlaceCallDialog::setIndex(QString &i)
+{
+    updateID1 = i;
+}
 
 void PlaceCallDialog::clearEditText(){
     ui->lineEdit->clear();
