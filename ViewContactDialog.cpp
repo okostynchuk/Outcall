@@ -146,7 +146,6 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
        query.addBindValue(number);
        query.addBindValue(contactNumber);
        query.exec();
-       query.first();
        while(query.next()) {
            QMap<QString, QVariant> call;
            QString uniqueid = query.value(3).toString();
@@ -171,7 +170,6 @@ void ViewContactDialog::loadCalls(QString &contactNumber)
        query.addBindValue(number);
        query.addBindValue(contactNumber);
        query.exec();
-       query.first();
        while(query.next()) {
            QMap<QString, QVariant> call;
            QString uniqueid = query.value(3).toString();
