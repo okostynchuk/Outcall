@@ -4,7 +4,6 @@
 #include "ContactsDialog.h"
 #include "CallHistoryDialog.h"
 #include "Global.h"
-#include "ContactManager.h"
 #include "PlaceCallDialog.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
@@ -68,7 +67,7 @@ void OutCall::createContextMenu()
     connect(exitAction, &QAction::triggered, this, &OutCall::close);
 
     // Sign In
-    m_signIn  = new QAction(tr("Sign In"), m_menu);
+    m_signIn  = new QAction(tr("Войти в аккаунт"), m_menu);
     connect(m_signIn, &QAction::triggered, this, &OutCall::signInOut);
 
     // SettingsDialog
@@ -96,13 +95,13 @@ void OutCall::createContextMenu()
     // Add actions
     m_menu->addSeparator();
 
-    m_menu->addAction(settingsAction);
-    m_menu->addAction(debugInfoAction);
-    m_menu->addSeparator();
-
     m_menu->addAction(m_placeCall);
     m_menu->addAction(callHistoryAction);
     m_menu->addAction(contactsInfoAction);
+    m_menu->addSeparator();
+
+    m_menu->addAction(settingsAction);
+    m_menu->addAction(debugInfoAction);
     m_menu->addSeparator();
 
     m_menu->addAction(m_signIn);
@@ -120,7 +119,7 @@ void OutCall::automaticlySignIn()
 
 void OutCall::signInOut()
 {
-    if (m_signIn->text() == "Cancel Sign In")
+    if (m_signIn->text() == "Выйти из аккаунта")
     {
         g_pAsteriskManager->signOut();
         return;
@@ -246,14 +245,14 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_signIn->setText(tr("Выйти из аккаунта"));
 
         PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Вы успешно вошли"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
+        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вы успешно вошли"));
         m_placeCall->setEnabled(true);
         m_timer.stop();
     }
     else if (state == AsteriskManager::CONNECTING)
     {
         m_signIn->setText(tr("Отменить вход"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вход в аккаунт"));
+        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вход в аккаунт"));
         m_placeCall->setEnabled(false);
         m_timer.start(500);
     }
@@ -263,7 +262,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTryIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("&Войти в аккаунт"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
+        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
     }
@@ -272,8 +271,8 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QString path(":/images/started.png");
         m_systemTryIcon->setIcon(QIcon(path));
 
-        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Ошибка аутентификации"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Не настроен"));
+        PopupHelloWindow::showInformationMessage(tr(""), tr("Ошибка аутентификации"));
+        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
         m_signIn->setText(tr("&Войти в аккаунт"));
         m_placeCall->setEnabled(false);
         m_timer.stop();

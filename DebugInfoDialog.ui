@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OutCALL - Информация об отладке</string>
+   <string>Информация об отладке</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
