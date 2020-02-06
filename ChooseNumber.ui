@@ -52,13 +52,16 @@
    </item>
    <item row="1" column="1">
     <widget class="QLineEdit" name="FirstNumber">
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
 }</string>
      </property>
      <property name="readOnly">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -82,7 +85,7 @@ background-color: #fffff8;
 }</string>
      </property>
      <property name="readOnly">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>

@@ -83,6 +83,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     int row = ui->tableView->currentIndex().row();
     if (query2->data(query2->index(row, 0)).toString() == "person")
     {
+         close();
          chooseNumber = new ChooseNumber;
          chooseNumber->setValuesNumber(updateID);
          chooseNumber->exec();
@@ -90,6 +91,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     }
     else
     {
+        close();
         chooseNumber = new ChooseNumber;
         chooseNumber->setValuesNumber(updateID);
         chooseNumber->exec();
