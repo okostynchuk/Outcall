@@ -36,7 +36,9 @@ public:
     };
     void addCall(const QMap<QString, QVariant> &, Calls);
     void loadCalls(QString &);
-    void clear();
+    void missed_clear();
+    void received_clear();
+    void placed_clear();
 
 protected slots:
     void onAddContact();
