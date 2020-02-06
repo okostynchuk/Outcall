@@ -424,7 +424,6 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
         if (m_calls.contains(uniqueid))
         {
-
             Call *call = m_calls.value(uniqueid);
             delete call;
             m_calls.remove(uniqueid);
@@ -631,6 +630,10 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             global::setSettingsValue("missed", list, "calls");
 
             emit callDeteceted(missed, MISSED);
+        }
+        if (state == "Up")
+        {
+            qDebug() << "123";
         }
         delete call;
         m_calls.remove(uniqueid);

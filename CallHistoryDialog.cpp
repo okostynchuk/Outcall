@@ -668,7 +668,6 @@ void CallHistoryDialog::loadCalls(QString &state)
            query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
            query.addBindValue(number);
            query.exec();
-           query.first();
            while(query.next()) {
                QMap<QString, QVariant> call;
                QString uniqueid = query.value(3).toString();
