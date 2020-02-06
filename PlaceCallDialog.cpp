@@ -92,6 +92,11 @@ void PlaceCallDialog::getValuesNumber(const QString &number)
     ui->phoneLine->setText(number);
 }
 
+void PlaceCallDialog::modelNull(){
+    ui->tableView->setModel(NULL);
+    ui->lineEdit->clear();
+}
+
 void PlaceCallDialog::onUpdate()
 {
     if (update == "default")
@@ -122,6 +127,7 @@ void PlaceCallDialog::onComboBoxSelected()
 {
     ui->comboBox->addItem("Поиск по ФИО / названию");
     ui->comboBox->addItem("Поиск по номеру телефона");
+    ui->comboBox->addItem("Поиск сотрудников по организации");
 }
 
 void PlaceCallDialog::on_lineEdit_returnPressed()
@@ -145,9 +151,37 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
+    if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
+    {
+        QString entry_org = ui->lineEdit->text();
+
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND entry_name LIKE '%" + entry_org + "%' AND ep.entry_person_org_id = '" + updateID1 + "' GROUP BY ep.entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+
+        onUpdate();
+    }
 }
 
+void PlaceCallDialog::setOrgValuesContacts(QString &i, const QModelIndex &index)
+{
+    updateID1 = i;
 
+    QString updateID1 = query1->data(query1->index(index.row(), 0)).toString();
+    int row = ui->tableView->currentIndex().row();
+    if (query2->data(query2->index(row, 0)).toString() == "person")
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+//void PlaceCallDialog::setIndex(const QModelIndex &index)
+//{
+
+//}
 
 void PlaceCallDialog::clearEditText(){
     ui->lineEdit->clear();
@@ -158,6 +192,7 @@ void PlaceCallDialog::show()
     //ui->contactBox->setCurrentIndex(0);
     //ui->searchLine->clear();
     QDialog::show();
+    modelNull();
 }
 
 void PlaceCallDialog::onCallButton()
@@ -214,30 +249,30 @@ void PlaceCallDialog::onChangeContact(QString name)
 //    }
 }
 
-void PlaceCallDialog::onItemDoubleClicked(QTreeWidgetItem *item, int)
-{
+//void PlaceCallDialog::onItemDoubleClicked(QTreeWidgetItem *item, int)
+//{
 //    QString number = item->text(0);
 //    const QString from = ui->fromBox->currentText();
 //    const QString protocol = global::getSettingsValue(from, "extensions").toString();
 //    g_pAsteriskManager->originateCall(from, number, protocol, from);
 
 //    QDialog::close();
-}
+//}
 
-void PlaceCallDialog::onItemClicked(QTreeWidgetItem *item, int)
-{
+//void PlaceCallDialog::onItemClicked(QTreeWidgetItem *item, int)
+//{
 //    QString number = item->text(0);
 //    ui->phoneLine->setText(number);
-}
+//}
 
-void PlaceCallDialog::onContactIndexChange(const QString &name)
-{
+//void PlaceCallDialog::onContactIndexChange(const QString &name)
+//{
 //    ui->searchLine->setText(name);
 //    onChangeContact(name);
-}
+//}
 
-void PlaceCallDialog::onContactsLoaded(QList<Contact *> &contacts)
-{
+//void PlaceCallDialog::onContactsLoaded(QList<Contact *> &contacts)
+//{
 //    QStringList data;
 //    ui->contactBox->clear();
 
@@ -248,7 +283,7 @@ void PlaceCallDialog::onContactsLoaded(QList<Contact *> &contacts)
 //    }
 
 //    ui->searchLine->setData(data);
-}
+//}
 
 void PlaceCallDialog::clearCallTree()
 {

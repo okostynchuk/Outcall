@@ -96,12 +96,11 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-    else if (QString(ui->SecondNumber->text()).isEmpty() == true)
-        {
-
-        ui->SecondNumber->hide();
-        ui->label_7->hide();
-        }
+//    else if (QString(ui->SecondNumber->text()).isEmpty() == true)
+//        {
+//        ui->SecondNumber->hide();
+//        ui->label_7->hide();
+//        }
 
     if(target == ui->ThirdNumber && QString(ui->ThirdNumber->text()).isEmpty() == false)
     {
@@ -114,11 +113,11 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-    else if (QString(ui->ThirdNumber->text()).isEmpty() == true)
-        {
-        ui->ThirdNumber->hide();
-        ui->label_8->hide();
-        }
+//    else if (QString(ui->ThirdNumber->text()).isEmpty() == true)
+//        {
+//        ui->ThirdNumber->hide();
+//        ui->label_8->hide();
+//        }
 
     if(target == ui->FourthNumber && QString(ui->FourthNumber->text()).isEmpty() == false)
     {
@@ -131,11 +130,11 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-    else if (QString(ui->FourthNumber->text()).isEmpty() == true)
-        {
-        ui->FourthNumber->hide();
-        ui->label_18->hide();
-        }
+//    else if (QString(ui->FourthNumber->text()).isEmpty() == true)
+//        {
+//        ui->FourthNumber->hide();
+//        ui->label_18->hide();
+//        }
 
     if(target == ui->FifthNumber && QString(ui->FifthNumber->text()).isEmpty() == false)
     {
@@ -148,9 +147,10 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else{ return false;}
     }
-    else if (QString(ui->FifthNumber->text()).isEmpty() == true)
-        {
-        ui->FifthNumber->hide();
-        ui->label_19->hide();
-        }
+//    else if (QString(ui->FifthNumber->text()).isEmpty() == true)
+//        {
+//        ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
+//        ui->FifthNumber->hide();
+//        ui->label_19->hide();
+//        }
 }

@@ -27,8 +27,9 @@ class PlaceCallDialog : public QDialog
 
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
-    ~PlaceCallDialog();
     void show();
+    void setOrgValuesContacts(QString &, const QModelIndex &);
+    ~PlaceCallDialog();
 
 protected:
      void clearCallTree();
@@ -40,15 +41,17 @@ protected slots:
     void onCallButton();
     void onCancelButton();
     void onUpdate();
+    void modelNull();
     void onComboBoxSelected();
     void clearEditText();
     void onChangeContact(QString name);
-    void onContactIndexChange(const QString &name);
-    void onContactsLoaded(QList<Contact *> &contacts);
+    //void onContactIndexChange(const QString &name);
+    //void onContactsLoaded(QList<Contact *> &contacts);
     void onSettingsChange();
-    void onItemDoubleClicked(QTreeWidgetItem * item, int);
-    void onItemClicked(QTreeWidgetItem * item, int);
+    //void onItemDoubleClicked(QTreeWidgetItem * item, int);
+    //void onItemClicked(QTreeWidgetItem * item, int);
     void showNumber(const QModelIndex &);
+    //void setIndex(const QModelIndex &);
 
 
 private slots:
@@ -62,6 +65,8 @@ private:
     QString update;
     QString number;
     ChooseNumber *chooseNumber;
+    QString updateID;
+    QString updateID1;
 };
 
 #endif // PLACECALLDIALOG_H
