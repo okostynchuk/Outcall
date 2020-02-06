@@ -1,9 +1,5 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
-#include "AddContactDialog.h"
-#include "AddOrgContactDialog.h"
-#include "EditContactDialog.h"
-#include "EditOrgContactDialog.h"
 #include "Global.h"
 #include "OutCALL.h"
 
@@ -216,7 +212,6 @@ void ContactsDialog::onEdit()
     if (query2->data(query2->index(row_index, 0)).toString() == "person")
     {
         editContactDialog = new EditContactDialog;
-        editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
         connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editContactDialog->exec();
@@ -225,7 +220,6 @@ void ContactsDialog::onEdit()
     else
     {
         editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
         connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editOrgContactDialog->exec();
@@ -236,7 +230,6 @@ void ContactsDialog::onEdit()
 void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
-    addContactDialog->setWindowTitle("Добавление физ. лица");
     connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addContactDialog->exec();
     addContactDialog->deleteLater();
@@ -245,7 +238,6 @@ void ContactsDialog::onAddPerson()
 void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setWindowTitle("Добавление организации");
     connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();

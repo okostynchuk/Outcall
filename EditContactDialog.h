@@ -24,9 +24,6 @@ protected slots:
     void onSave();
     void onComboBoxSelected();
 
-protected:
-    bool eventFilter(QObject*, QEvent*event);
-
 private:
     Ui::EditContactDialog *ui;
     QValidator *validator;

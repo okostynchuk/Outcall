@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QEvent>
 #include <QWidget>
 #include <QStringList>
 
@@ -24,12 +23,10 @@ public:
 protected:
     void onSave();
     void onComboBoxSelected();
-    bool eventFilter(QObject*, QEvent*event);
 
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
-    //QLineEdit *line1;
     QStringList numbers;
 
 signals:

@@ -35,7 +35,7 @@ OutCall::OutCall() :
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
     connect(g_pContactManager,  &ContactManager::syncing,               this, &OutCall::onSyncing);
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
-    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDeteceted);
+    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
     connect(g_pAsteriskManager, &AsteriskManager::error,                this, &OutCall::displayError);
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
@@ -205,9 +205,10 @@ void OutCall::onMessageReceived(const QString &message)
         m_debugInfoDialog->updateDebug(message);
 }
 
-void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
+void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
      //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+
 //    if (state == 0 )
 //    {
 //        QMap<QString, QVariant> call1;
@@ -227,6 +228,27 @@ void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManag
 //    QString state_call = "recieved";
 //    m_callHistoryDialog->clear();
 //    m_callHistoryDialog->loadCalls(state_call);
+
+
+    if (state == 0)
+    {
+        QString state_call = "missed";
+        m_callHistoryDialog->missed_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
+    if (state == 1)
+    {
+        qDebug() << "recieved";
+        QString state_call = "received";
+        m_callHistoryDialog->received_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
+    if (state == 2)
+    {
+        QString state_call = "placed";
+        m_callHistoryDialog->placed_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
 
 }
 

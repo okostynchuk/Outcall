@@ -1,7 +1,6 @@
 #ifndef OUTCALL_H
 #define OUTCALL_H
 
-#include "ContactManager.h"
 #include "AsteriskManager.h"
 #include "PopupWindow.h"
 
@@ -27,7 +26,6 @@ public:
     void show();  
 
 protected:
-
     void automaticlySignIn();
     void createContextMenu();
 
@@ -38,18 +36,13 @@ protected slots:
     void onDebugInfo();
     void onActiveCalls();
     void onPlaceCall();
-    void onSyncOutlook();
     void onCallHistory();
     void onActivated(QSystemTrayIcon::ActivationReason reason);
     void displayError(QAbstractSocket::SocketError socketError, const QString &msg);
-    void onSyncing(bool status);
-    void onAddContact();
     void onStateChanged(AsteriskManager::AsteriskState state);
-
     void onMessageReceived(const QString &message);
-    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
+    void onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
     void onCallReceived(const QMap<QString, QVariant> &call);
-
     void close();
     void changeIcon();
 
@@ -57,14 +50,12 @@ private:
     QMenu *m_menu;
     QAction *m_signIn;
     QAction *m_placeCall;
-
     QSystemTrayIcon *m_systemTryIcon;
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;
     ContactsDialog *m_contactsDialog;
     CallHistoryDialog *m_callHistoryDialog;
     PlaceCallDialog *m_placeCallDialog;
-    ContactManager m;
     QTimer m_timer;
     bool m_switch;
 };

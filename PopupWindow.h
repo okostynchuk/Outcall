@@ -3,6 +3,8 @@
 
 #include "Global.h"
 #include "OutCALL.h"
+#include "CallHistoryDialog.h"
+#include "PlaceCallDialog.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
 #include "EditContactDialog.h"
