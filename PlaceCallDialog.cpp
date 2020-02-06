@@ -90,7 +90,6 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 void PlaceCallDialog::getValuesNumber(const QString &number)
 {
     ui->phoneLine->setText(number);
-    qDebug()<<"norm";
 }
 
 void PlaceCallDialog::onUpdate()

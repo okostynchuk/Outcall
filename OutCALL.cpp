@@ -33,7 +33,7 @@ OutCall::OutCall() :
     m_placeCallDialog     = new PlaceCallDialog;
 
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
-    connect(g_pContactManager,  &ContactManager::syncing,               this, &OutCall::onSyncing);
+    //connect(g_pContactManager,  &ContactManager::syncing,               this, &OutCall::onSyncing);
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
     connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
@@ -139,10 +139,10 @@ void OutCall::signInOut()
     }
 }
 
-void OutCall::onSyncOutlook()
-{
-    g_pContactManager->refreshContacts();
-}
+//void OutCall::onSyncOutlook()
+//{
+//    g_pContactManager->refreshContacts();
+//}
 
 void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
 {
@@ -166,38 +166,38 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
     }
 }
 
-void OutCall::onSyncing(bool status)
-{
-    if (status)
-    {
-        foreach(QAction *action, m_menu->actions())
-        {
-            if (action->text() == tr("Sync Contacts"))
-            {
-                m_systemTryIcon->setToolTip(tr("Syncing contacts"));
-                action->setText(tr("Syncing ..."));
-                action->setDisabled(true);
-            }
-        }
-    }
-    else
-    {
-        foreach(QAction *action, m_menu->actions())
-        {
-            if (action->text() == tr("Syncing ..."))
-            {
-                if (g_pAsteriskManager->isSignedIn())
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
+//void OutCall::onSyncing(bool status)
+//{
+//    if (status)
+//    {
+//        foreach(QAction *action, m_menu->actions())
+//        {
+//            if (action->text() == tr("Sync Contacts"))
+//            {
+//                m_systemTryIcon->setToolTip(tr("Syncing contacts"));
+//                action->setText(tr("Syncing ..."));
+//                action->setDisabled(true);
+//            }
+//        }
+//    }
+//    else
+//    {
+//        foreach(QAction *action, m_menu->actions())
+//        {
+//            if (action->text() == tr("Syncing ..."))
+//            {
+//                if (g_pAsteriskManager->isSignedIn())
+//                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
 
-                else
-                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
+//                else
+//                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
 
-                action->setText(tr("Sync Contacts"));
-                action->setEnabled(true);
-            }
-        }
-    }
-}
+//                action->setText(tr("Sync Contacts"));
+//                action->setEnabled(true);
+//            }
+//        }
+//    }
+//}
 
 void OutCall::onMessageReceived(const QString &message)
 {
