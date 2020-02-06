@@ -32,6 +32,7 @@ OutCall::OutCall() :
     m_placeCallDialog     = new PlaceCallDialog;
 
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
+
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
     connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
@@ -198,7 +199,6 @@ void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManage
     }
     if (state == 1)
     {
-        qDebug() << "recieved";
         QString state_call = "received";
         m_callHistoryDialog->received_clear();
         m_callHistoryDialog->loadCalls(state_call);

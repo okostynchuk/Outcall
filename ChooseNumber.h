@@ -23,8 +23,6 @@ public:
     ~ChooseNumber();
 
 public slots:
-    void passNumber();
-    void passNumber2();
     bool eventFilter(QObject*, QEvent*event);
 
 private:
