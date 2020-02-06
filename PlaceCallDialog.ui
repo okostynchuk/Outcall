@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>OutCALL - Place a Call</string>
+   <string>Звонок</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
