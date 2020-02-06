@@ -1,15 +1,5 @@
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
-#include "Global.h"
-#include "OutCALL.h"
-#include "CallHistoryDialog.h"
-#include "PlaceCallDialog.h"
-#include "AddContactDialog.h"
-#include "AddOrgContactDialog.h"
-#include "EditContactDialog.h"
-#include "EditOrgContactDialog.h"
-#include "ViewContactDialog.h"
-#include "ViewOrgContactDialog.h"
 
 #include <QDesktopWidget>
 #include <QKeyEvent>
@@ -284,7 +274,7 @@ void PopupWindow::onEdit()
     if (query.value(0).toString() == "person")
     {
         editContactDialog = new EditContactDialog;
-        editContactDialog->setWindowTitle("Редактирнование физ. лица");
+        editContactDialog->setWindowTitle("Редактирование физ. лица");
         editContactDialog->setValuesContacts(updateID);
         connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editContactDialog->setProperty("number", number);
@@ -295,7 +285,7 @@ void PopupWindow::onEdit()
     else
     {
         editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setWindowTitle("Редактирнование организации");
+        editOrgContactDialog->setWindowTitle("Редактирование организации");
         editOrgContactDialog->setOrgValuesContacts(updateID);
         connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
         editOrgContactDialog->setProperty("number", number);

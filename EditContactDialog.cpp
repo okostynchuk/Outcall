@@ -1,6 +1,5 @@
 #include "EditContactDialog.h"
 #include "ui_EditContactDialog.h"
-#include "ContactsDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -27,12 +26,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->ThirdNumber->setValidator(validator);
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
-
-//    ui->FirstNumber->installEventFilter(this);
-//    ui->SecondNumber->installEventFilter(this);
-//    ui->ThirdNumber->installEventFilter(this);
-//    ui->FourthNumber->installEventFilter(this);
-//    ui->FifthNumber->installEventFilter(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -284,16 +277,17 @@ void EditContactDialog::onComboBoxSelected()
     QSqlQuery query(db);
     query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
     query.exec();
-    query.next();
-    QString orgID = query.value(0).toString();
+    QString orgID = NULL;
+    while (query.next())
+        orgID = query.value(0).toString();
     query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
     query.exec();
-    query.next();
-    QString orgName = query.value(0).toString();
+    QString orgName = NULL;
+    while (query.next())
+        orgName = query.value(0).toString();
     ui->comboBox->addItem("Нет");
     query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
     query.exec();
-    query.next();
     while (query.next())
     {
         if (!query.value(0).toString().isEmpty())
@@ -319,16 +313,21 @@ void EditContactDialog::setValuesContacts(QString &i)
     QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
-    query.next();
-    firstNumber = query.value(0).toString();
-    query.next();
-    secondNumber = query.value(0).toString();
-    query.next();
-    thirdNumber = query.value(0).toString();
-    query.next();
-    fourthNumber = query.value(0).toString();
-    query.next();
-    fifthNumber = query.value(0).toString();
+    int count = 1;
+    while (query.next())
+    {
+        if (count == 1)
+            firstNumber = query.value(0).toString();
+        else if (count == 2)
+            secondNumber = query.value(0).toString();
+        else if (count == 3)
+            thirdNumber = query.value(0).toString();
+        else if (count == 4)
+            fourthNumber = query.value(0).toString();
+        else if (count == 5)
+            fifthNumber = query.value(0).toString();
+        count++;
+    }
     sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
@@ -355,27 +354,15 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
     onComboBoxSelected();
-
-//    if(!firstNumber.isEmpty())
-//        ui->FirstNumber->setInputMask("999-999-9999;_");
-//    if(!secondNumber.isEmpty())
-//         ui->SecondNumber->setInputMask("999-999-9999;_");
-//    if(!thirdNumber.isEmpty())
-//         ui->ThirdNumber->setInputMask("999-999-9999;_");
-//    if(!fourthNumber.isEmpty())
-//         ui->FourthNumber->setInputMask("999-999-9999;_");
-//    if(!fifthNumber.isEmpty())
-//         ui->FifthNumber->setInputMask("999-999-9999;_");
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)
 {
-
+    ui->FirstNumber->setText(number);
 }
 
 void EditContactDialog::setValuesPopupWindow(QString &number)
 {
-    qDebug() << number;
     QSqlDatabase db;
     QSqlQuery query(db);
     query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
@@ -386,57 +373,3 @@ void EditContactDialog::setValuesPopupWindow(QString &number)
         ui->FirstNumber->setText(number);
     }
 }
-
-bool EditContactDialog::eventFilter(QObject *target, QEvent *event)
-{
-    if(target == ui->FirstNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-            ui->FirstNumber->setInputMask("999 999 9999;_");
-             ui->FirstNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->SecondNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->SecondNumber->setInputMask("999-999-9999;_");
-             ui->SecondNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->ThirdNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->ThirdNumber->setInputMask("999-999-9999;_");
-             ui->ThirdNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->FourthNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->FourthNumber->setInputMask("999-999-9999;_");
-             ui->FourthNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->FifthNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->FifthNumber->setInputMask("999-999-9999;_");
-             ui->FifthNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-}
-

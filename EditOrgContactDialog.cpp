@@ -1,7 +1,5 @@
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
-#include "EditContactDialog.h"
-#include "ViewContactDialog.h"
 
 #include <QVariantList>
 #include <QVariantMap>
@@ -30,12 +28,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->ThirdNumber->setValidator(validator);
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
-
-//    ui->FirstNumber->installEventFilter(this);
-//    ui->SecondNumber->installEventFilter(this);
-//    ui->ThirdNumber->installEventFilter(this);
-//    ui->FourthNumber->installEventFilter(this);
-//    ui->FifthNumber->installEventFilter(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -363,7 +355,6 @@ void EditOrgContactDialog::onEdit()
 {
     QString id = sender()->property("id").toString();
     editContactDialog = new EditContactDialog;
-    editContactDialog->setWindowTitle("Редактирование физ. лица");
     editContactDialog->setValuesContacts(id);
     connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     editContactDialog->exec();
@@ -481,16 +472,21 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
-    query.next();
-    firstNumber = query.value(0).toString();
-    query.next();
-    secondNumber = query.value(0).toString();
-    query.next();
-    thirdNumber = query.value(0).toString();
-    query.next();
-    fourthNumber = query.value(0).toString();
-    query.next();
-    fifthNumber = query.value(0).toString();
+    int count = 1;
+    while (query.next())
+    {
+        if (count == 1)
+            firstNumber = query.value(0).toString();
+        else if (count == 2)
+            secondNumber = query.value(0).toString();
+        else if (count == 3)
+            thirdNumber = query.value(0).toString();
+        else if (count == 4)
+            fourthNumber = query.value(0).toString();
+        else if (count == 5)
+            fifthNumber = query.value(0).toString();
+        count++;
+    }
     sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
@@ -512,17 +508,6 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-
-//    if(!firstNumber.isEmpty())
-//         ui->FirstNumber->setInputMask("999-999-9999;_");
-//    if(!secondNumber.isEmpty())
-//         ui->SecondNumber->setInputMask("999-999-9999;_");
-//    if(!thirdNumber.isEmpty())
-//         ui->ThirdNumber->setInputMask("999-999-9999;_");
-//    if(!fourthNumber.isEmpty())
-//         ui->FourthNumber->setInputMask("999-999-9999;_");
-//    if(!fifthNumber.isEmpty())
-//         ui->FifthNumber->setInputMask("999-999-9999;_");
 
     query_model = new QSqlQueryModel;
 
@@ -561,57 +546,4 @@ void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
 void EditOrgContactDialog::setOrgValuesPopupWindow(QString &number)
 {
     ui->FirstNumber->setText(number);
-}
-
-bool EditOrgContactDialog::eventFilter(QObject *target, QEvent *event)
-{
-    if(target == ui->FirstNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->FirstNumber->setInputMask("999-999-9999;_");
-             ui->FirstNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->SecondNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->SecondNumber->setInputMask("999-999-9999;_");
-             ui->SecondNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->ThirdNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->ThirdNumber->setInputMask("999-999-9999;_");
-             ui->ThirdNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->FourthNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->FourthNumber->setInputMask("999-999-9999;_");
-             ui->FourthNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
-
-    if(target == ui->FifthNumber )
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-             ui->FifthNumber->setInputMask("999-999-9999;_");
-             ui->FifthNumber->setCursorPosition(0);
-             return true;
-        } else { return false;}
-    }
 }

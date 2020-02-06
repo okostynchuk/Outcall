@@ -1,7 +1,6 @@
 #include "PlaceCallDialog.h"
 #include "ui_PlaceCallDialog.h"
 #include "Global.h"
-#include "ContactManager.h"
 #include "SearchBox.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
@@ -25,6 +24,7 @@
 #include <QLabel>
 #include <QModelIndex>
 #include <QScrollBar>
+#include <QStringList>
 
 PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     QDialog(parent),
@@ -37,7 +37,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     //connect(ui->searchLine,    &SearchBox::selected,            this, &PlaceCallDialog::onChangeContact);
     //connect(ui->treeWidget,    &QTreeWidget::itemClicked,       this, &PlaceCallDialog::onItemClicked);
     //connect(ui->treeWidget,    &QTreeWidget::itemDoubleClicked, this, &PlaceCallDialog::onItemDoubleClicked);
-    connect(g_pContactManager, &ContactManager::contactsLoaded, this, &PlaceCallDialog::onContactsLoaded);
     connect(g_Notifier,        &Notifier::settingsChanged,      this, &PlaceCallDialog::onSettingsChange);
 
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
@@ -52,16 +51,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
         ui->fromBox->addItem(extensions[i]);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-    m_contacts = g_pContactManager->getContacts();
-    QStringList data;
-
-    foreach(Contact *contact, m_contacts)
-    {
-        data << contact->name;
-       // ui->contactBox->addItem(contact->name);
-    }
-    //ui->searchLine->setData(data);
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
@@ -96,10 +85,10 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     }
 }
 
-void PlaceCallDialog::getValuesNumber(QString &num){
-    QString number = num;
-
+void PlaceCallDialog::getValuesNumber(const QString &number)
+{
     ui->phoneLine->setText(number);
+    qDebug()<<"norm";
 }
 
 void PlaceCallDialog::onUpdate()
