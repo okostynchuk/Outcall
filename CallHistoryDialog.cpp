@@ -34,6 +34,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     state_call = "missed";
     loadCalls(state_call);
+//    state_call = "received";
 //    state_call = "recieved";
 //    loadCalls(state_call);
 //    state_call = "placed";
@@ -522,6 +523,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetReceived->clear();
+           state_call = "received";
+           loadCalls(state_call);
        }
        else
        {
@@ -531,6 +535,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetReceived->clear();
+           state_call = "received";
+           loadCalls(state_call);
        }
     }
     else if (ui->tabWidget->currentIndex() == PLACED)
@@ -541,8 +548,8 @@ void CallHistoryDialog::onAddNotes()
            return;
 
        QTreeWidgetItem *item = selectedItems.at(0);
-       const QString from = item->text(0);
-       const QString to = item->text(1);
+       const QString to = item->text(0);
+       const QString from = item->text(1);
        const QString date_time = item->text(2);
 
        QString sql = QString("SELECT uniqueid FROM cdr WHERE src = '%1' AND dst = '%2' AND datetime = '%3'")
@@ -565,6 +572,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetPlaced->clear();
+           state_call = "placed";
+           loadCalls(state_call);
        }
        else
        {
@@ -574,6 +584,9 @@ void CallHistoryDialog::onAddNotes()
            addNoteDialog->setCallId(uniqueid, state);
            addNoteDialog->exec();
            addNoteDialog->deleteLater();
+           ui->treeWidgetPlaced->clear();
+           state_call = "placed";
+           loadCalls(state_call);
        }
     }
 }
@@ -620,13 +633,13 @@ void CallHistoryDialog::loadCalls(QString &state)
     QSqlQuery query(dbAsterisk);
     QSqlQuery query1(db);
 
-    // Load calls
+       // Load calls
        SettingsDialog *settingsDialog = new SettingsDialog();
        QString number = settingsDialog->getExtension();
        //Load Missed calls
        if(state == "missed")
        {
-           query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ?");
+           query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ? ORDER BY datetime DESC");
            query.addBindValue(number);
            query.exec();
            while(query.next()) {
@@ -649,9 +662,8 @@ void CallHistoryDialog::loadCalls(QString &state)
            }
        }
 
-
-     //Load Recieved calls
-       if(state == "recieved")
+       //Load Recieved calls
+       if(state == "received")
        {
            query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? ORDER BY datetime DESC");
            query.addBindValue(number);
@@ -677,8 +689,7 @@ void CallHistoryDialog::loadCalls(QString &state)
            }
        }
 
-
-     //Load Placed calls
+       //Load Placed calls
        if(state == "placed")
        {
            query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? ORDER BY datetime DESC");
@@ -707,7 +718,17 @@ void CallHistoryDialog::loadCalls(QString &state)
        settingsDialog->deleteLater();
 }
 
-void CallHistoryDialog::clear()
+void CallHistoryDialog::missed_clear()
 {
     ui->treeWidgetMissed->clear();
+}
+
+void CallHistoryDialog::received_clear()
+{
+    ui->treeWidgetReceived->clear();
+}
+
+void CallHistoryDialog::placed_clear()
+{
+    ui->treeWidgetPlaced->clear();
 }

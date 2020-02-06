@@ -33,8 +33,9 @@ OutCall::OutCall() :
     m_placeCallDialog     = new PlaceCallDialog;
 
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
+    connect(g_pContactManager,  &ContactManager::syncing,               this, &OutCall::onSyncing);
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
-    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDeteceted);
+    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
     connect(g_pAsteriskManager, &AsteriskManager::error,                this, &OutCall::displayError);
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
@@ -138,6 +139,11 @@ void OutCall::signInOut()
     }
 }
 
+void OutCall::onSyncOutlook()
+{
+    g_pContactManager->refreshContacts();
+}
+
 void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
 {
     switch (socketError)
@@ -160,15 +166,49 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
     }
 }
 
+void OutCall::onSyncing(bool status)
+{
+    if (status)
+    {
+        foreach(QAction *action, m_menu->actions())
+        {
+            if (action->text() == tr("Sync Contacts"))
+            {
+                m_systemTryIcon->setToolTip(tr("Syncing contacts"));
+                action->setText(tr("Syncing ..."));
+                action->setDisabled(true);
+            }
+        }
+    }
+    else
+    {
+        foreach(QAction *action, m_menu->actions())
+        {
+            if (action->text() == tr("Syncing ..."))
+            {
+                if (g_pAsteriskManager->isSignedIn())
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы успешно вошли"));
+
+                else
+                    m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Вы не вошли"));
+
+                action->setText(tr("Sync Contacts"));
+                action->setEnabled(true);
+            }
+        }
+    }
+}
+
 void OutCall::onMessageReceived(const QString &message)
 {
     if (m_debugInfoDialog)
         m_debugInfoDialog->updateDebug(message);
 }
 
-void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
+void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
      //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+
 //    if (state == 0 )
 //    {
 //        QMap<QString, QVariant> call1;
@@ -188,32 +228,95 @@ void OutCall::onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManag
 //    QString state_call = "recieved";
 //    m_callHistoryDialog->clear();
 //    m_callHistoryDialog->loadCalls(state_call);
-    qDebug() << "1243";
+
+
+    if (state == 0)
+    {
+        QString state_call = "missed";
+        m_callHistoryDialog->missed_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
+    if (state == 1)
+    {
+        qDebug() << "recieved";
+        QString state_call = "received";
+        m_callHistoryDialog->received_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
+    if (state == 2)
+    {
+        QString state_call = "placed";
+        m_callHistoryDialog->placed_clear();
+        m_callHistoryDialog->loadCalls(state_call);
+    }
+
 }
 
-void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
+void OutCall::onCallReceived(const QMap<QString, QVariant> &call)/**/
 {
     QString from            = call.value("from").toString();
-    QString callerIDName    = call.value("callerIDName").toString();
+    QString callerName      = call.value("callerIDName").toString();
+    bool isMinCallerID      = global::getSettingsValue("min_caller_state", "general").toBool();
+    bool contactOnInboud    = global::getSettingsValue("contact_inbound", "outlook").toBool();
+    bool contactOnUnknown   = global::getSettingsValue("contact_unknown", "outlook").toBool();
+    bool isCallerIDUnknown  = true;
+    int callerLength        = from.size();
 
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
-    query.exec();
-    query.first();
-    if(query.value(0) != 0)
+    QList<Contact*> contactList = g_pContactManager->getContacts();
+    QString outlookContactName;
+    for(int i = 0; i < contactList.size(); ++i)
     {
-        query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
-        query.exec();
-        query.first();
-        callerIDName = query.value(0).toString();
+        Contact *contact = contactList[i];
+        QList<QString> numbers  = contact->numbers.values();
+        if (numbers.contains(from))
+        {
+            outlookContactName = contact->name;
+            isCallerIDUnknown = false;
+            break;
+        }
+    }
+
+    if (callerName.isEmpty() || callerName == "<unknown>" || !outlookContactName.isEmpty())
+    {
+        callerName = outlookContactName;
+    }
+
+    if (isMinCallerID)
+    {
+        int length = global::getSettingsValue("min_caller_id", "general").toInt();
+        if (callerLength >= length)
+        {
+            if (callerName.isEmpty() || callerName == "<unknown>")
+            {
+                PopupWindow::showCallNotification(from, QString("(Nr: %2)").arg(from));
+            }
+            else
+            {
+                PopupWindow::showCallNotification(from, QString("%1 (Nr: %2)").arg(callerName).arg(from));
+            }
+        }
     }
     else
     {
-        callerIDName = "Неизвестный";
+        if (callerName.isEmpty() || callerName == "<unknown>")
+        {
+            PopupWindow::showCallNotification(from, QString("(%1)").arg(from));
+
+        }
+        else
+        {
+            PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerName).arg(from));
+        }
     }
 
-    PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerIDName).arg(from));
+    if (contactOnInboud && !isCallerIDUnknown)
+    {
+        g_pContactManager->viewOutlookContact(callerName, "");
+    }
+    else if (isCallerIDUnknown && contactOnUnknown)
+    {
+        g_pContactManager->addOutlookContact(from, callerName);
+    }
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
@@ -252,8 +355,8 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QString path(":/images/started.png");
         m_systemTryIcon->setIcon(QIcon(path));
 
-        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Ошибка аутентификации"));
-        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Не настроен"));
+        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Authentication failed"));
+        m_systemTryIcon->setToolTip(tr(APP_NAME) + tr(" - ") + tr("Not configured"));
         m_signIn->setText(tr("&Войти в аккаунт"));
         m_placeCall->setEnabled(false);
         m_timer.stop();
@@ -320,6 +423,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
         m_settingsDialog->activateWindow();
         m_callHistoryDialog->activateWindow();
         m_contactsDialog->activateWindow();
+        g_pContactManager->activateDialog();
         m_placeCallDialog->activateWindow();
     }
     else if (reason == QSystemTrayIcon::DoubleClick)

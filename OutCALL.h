@@ -41,7 +41,7 @@ protected slots:
     void displayError(QAbstractSocket::SocketError socketError, const QString &msg);
     void onStateChanged(AsteriskManager::AsteriskState state);
     void onMessageReceived(const QString &message);
-    void onCallDeteceted(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
+    void onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state);
     void onCallReceived(const QMap<QString, QVariant> &call);
     void close();
     void changeIcon();

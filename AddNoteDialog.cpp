@@ -12,7 +12,6 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddNoteDialog::onSave);
-   // qDebug()<<uniqueid;
 }
 
 AddNoteDialog::~AddNoteDialog()
@@ -23,7 +22,6 @@ AddNoteDialog::~AddNoteDialog()
 void AddNoteDialog::setCallId(QString &uniqueid, QString &state)
 {
     callState = state;
-    qDebug() << callState;
     callId = uniqueid;
 }
 
