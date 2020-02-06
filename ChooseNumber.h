@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include <QValidator>
+#include <QEvent>
 
 class PlaceCallDialog;
 
@@ -22,8 +23,7 @@ public:
     ~ChooseNumber();
 
 public slots:
-    void passNumber();
-    void passNumber2();
+    bool eventFilter(QObject*, QEvent*event);
 
 private:
     Ui::ChooseNumber *ui;

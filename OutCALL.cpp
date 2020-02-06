@@ -33,6 +33,7 @@ OutCall::OutCall() :
     m_placeCallDialog     = new PlaceCallDialog;
 
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
+
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
     connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
@@ -169,6 +170,28 @@ void OutCall::onMessageReceived(const QString &message)
 void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
      //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
+
+//    if (state == 0 )
+//    {
+//        QMap<QString, QVariant> call1;
+
+//        QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+//        QSqlQuery query(dbAsterisk);
+//        query.prepare("SELECT date_time FROM cdr WHERE src = ? AND dst = ? ORDER BY date_time DESC");
+//        query.addBindValue(call["from"]);
+//        query.addBindValue(call["to"]);
+//        query.exec();
+//        query.first();
+//        call1["from"] = call["from"];
+//        call1["to"] = call["to"];
+//        call1["date_time"] = query.value(0).toString();
+//        m_callHistoryDialog->addCall(call1, (CallHistoryDialog::Calls)state);
+//    }
+//    QString state_call = "recieved";
+//    m_callHistoryDialog->clear();
+//    m_callHistoryDialog->loadCalls(state_call);
+
+
     if (state == 0)
     {
         QString state_call = "missed";
@@ -187,6 +210,7 @@ void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManage
         m_callHistoryDialog->placed_clear();
         m_callHistoryDialog->loadCalls(state_call);
     }
+
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
@@ -199,7 +223,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
     query.exec();
     query.first();
-    if(query.value(0) != 0)
+    if (query.value(0) != 0)
     {
         query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
         query.exec();
@@ -207,9 +231,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
         callerIDName = query.value(0).toString();
     }
     else
-    {
         callerIDName = "Неизвестный";
-    }
 
     PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerIDName).arg(from));
 }
