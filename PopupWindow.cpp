@@ -34,6 +34,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget *parent) :
 	setAttribute(Qt::WA_TranslucentBackground);
 
 	ui->lblText->setText(pwi.text);
+    ui->lblText->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
 	if (!pwi.avatar.isNull()) {
 		ui->lblAvatar->setScaledContents(true);
