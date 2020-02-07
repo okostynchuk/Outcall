@@ -23,7 +23,6 @@ TRANSLATIONS = translations/outcall_pt-br.ts \
 SOURCES += main.cpp\
     DebugInfoDialog.cpp \
     AddExtensionDialog.cpp \
-    AddLanguageDialog.cpp \
     AsteriskManager.cpp \
     CallHistoryDialog.cpp \
     ContactDialog.cpp \
@@ -53,7 +52,6 @@ SOURCES += main.cpp\
 HEADERS  += \
     DebugInfoDialog.h \
     SyncContactsThread.h \
-    AddLanguageDialog.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
     ContactDialog.h \
@@ -82,7 +80,6 @@ HEADERS  += \
 
 FORMS    += \
     AddExtensionDialog.ui \
-    AddLanguageDialog.ui \
     CallHistoryDialog.ui \
     ContactDialog.ui \
     DebugInfoDialog.ui \
