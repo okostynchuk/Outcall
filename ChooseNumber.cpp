@@ -73,7 +73,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     fifthPassNumber = ui->FifthNumber->text();
     placeCallDialog = new PlaceCallDialog;
 
-    if(target == ui->FirstNumber && QString(ui->FirstNumber->text()).isEmpty() == false)
+    if(target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
@@ -84,8 +84,14 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
+    else if (ui->SecondNumber->text().isEmpty() && ui->ThirdNumber->text().isEmpty() && ui->FourthNumber->text().isEmpty() && ui->FifthNumber->text().isEmpty())
+        {
+        ui->SecondNumber->hide(); ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
+        ui->label_7->hide(); ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
+        QWidget::setFixedHeight(70);
+        }
 
-    if(target == ui->SecondNumber && QString(ui->SecondNumber->text()).isEmpty() == false)
+    if(target == ui->SecondNumber && !ui->SecondNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
@@ -96,13 +102,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-//    else if (QString(ui->SecondNumber->text()).isEmpty() == true)
-//        {
-//        ui->SecondNumber->hide();
-//        ui->label_7->hide();
-//        }
 
-    if(target == ui->ThirdNumber && QString(ui->ThirdNumber->text()).isEmpty() == false)
+    if(target == ui->ThirdNumber && !ui->ThirdNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
@@ -113,13 +114,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-//    else if (QString(ui->ThirdNumber->text()).isEmpty() == true)
-//        {
-//        ui->ThirdNumber->hide();
-//        ui->label_8->hide();
-//        }
 
-    if(target == ui->FourthNumber && QString(ui->FourthNumber->text()).isEmpty() == false)
+    if(target == ui->FourthNumber && !ui->FourthNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
@@ -130,13 +126,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-//    else if (QString(ui->FourthNumber->text()).isEmpty() == true)
-//        {
-//        ui->FourthNumber->hide();
-//        ui->label_18->hide();
-//        }
 
-    if(target == ui->FifthNumber && QString(ui->FifthNumber->text()).isEmpty() == false)
+    if(target == ui->FifthNumber && !ui->FifthNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
@@ -147,10 +138,5 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else{ return false;}
     }
-//    else if (QString(ui->FifthNumber->text()).isEmpty() == true)
-//        {
-//        ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
-//        ui->FifthNumber->hide();
-//        ui->label_19->hide();
-//        }
+    return QWidget::eventFilter(target, event);
 }

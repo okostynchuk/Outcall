@@ -135,7 +135,11 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     update = "filter";
     QComboBox::AdjustToContents;
 
-    if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
+    if (QString(ui->lineEdit->text()).isEmpty())
+    {
+        modelNull();
+    }
+    else if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
         QString entry_name = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
@@ -143,7 +147,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    if(ui->comboBox->currentText() == "Поиск по номеру телефона")
+    else if(ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
@@ -154,7 +158,6 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
     {
         QString entry_org = ui->lineEdit->text();
-
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND entry_name LIKE '%" + entry_org + "%' AND ep.entry_person_org_id = '" + updateID1 + "' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 

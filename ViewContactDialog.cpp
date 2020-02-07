@@ -220,7 +220,7 @@ void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContact
 
     if (calls == MISSED)
     {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed_2);
         extensionItem->setText(0, callerIDName);
         extensionItem->setText(1, from);
         extensionItem->setText(2, to);
@@ -229,7 +229,7 @@ void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContact
     }
     else if (calls == RECIEVED)
     {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived);
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived_2);
         extensionItem->setText(0, callerIDName);
         extensionItem->setText(1, from);
         extensionItem->setText(2, to);
@@ -238,7 +238,7 @@ void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContact
     }
     else if (calls == PLACED)
     {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced);
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced_2);
         extensionItem->setText(0, from);
         extensionItem->setText(1, to);
         extensionItem->setText(2, dateTime);
