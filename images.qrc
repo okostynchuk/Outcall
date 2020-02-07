@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/bicom-logo.png</file>
         <file>images/connected.png</file>
         <file>images/disconnected.png</file>
         <file>images/started.png</file>
