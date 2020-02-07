@@ -20,6 +20,7 @@ class ChooseNumber : public QDialog
 public:
     explicit ChooseNumber(QWidget *parent = 0);
     void setValuesNumber(QString &);
+    void recieveData(const QString &i);
     ~ChooseNumber();
 
 public slots:

@@ -1,3 +1,4 @@
+
 #ifndef CONTACTSDIALOG_H
 #define CONTACTSDIALOG_H
 
