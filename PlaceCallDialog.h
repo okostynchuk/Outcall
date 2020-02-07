@@ -28,7 +28,6 @@ class PlaceCallDialog : public QDialog
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
     void show();
-    void setOrgValuesContacts(const QModelIndex &);
     ~PlaceCallDialog();
 
 protected:
@@ -44,14 +43,13 @@ protected slots:
     void modelNull();
     void onComboBoxSelected();
     void clearEditText();
-    void onChangeContact(QString name);
+    //void onChangeContact(QString name);
     //void onContactIndexChange(const QString &name);
     //void onContactsLoaded(QList<Contact *> &contacts);
-    void onSettingsChange();
+    //void onSettingsChange();
     //void onItemDoubleClicked(QTreeWidgetItem * item, int);
     //void onItemClicked(QTreeWidgetItem * item, int);
     void showNumber(const QModelIndex &);
-    void setIndex(QString &);
 
 
 private slots:

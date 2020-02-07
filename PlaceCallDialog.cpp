@@ -34,16 +34,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     connect(ui->callButton,    &QPushButton::clicked,           this, &PlaceCallDialog::onCallButton);
     connect(ui->cancelButton,  &QPushButton::clicked,           this, &PlaceCallDialog::onCancelButton);
-    //connect(ui->searchLine,    &SearchBox::selected,            this, &PlaceCallDialog::onChangeContact);
-    //connect(ui->treeWidget,    &QTreeWidget::itemClicked,       this, &PlaceCallDialog::onItemClicked);
-    //connect(ui->treeWidget,    &QTreeWidget::itemDoubleClicked, this, &PlaceCallDialog::onItemDoubleClicked);
-    connect(g_Notifier,        &Notifier::settingsChanged,      this, &PlaceCallDialog::onSettingsChange);
-
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showNumber(const QModelIndex &)));
-
-    //void (QComboBox:: *sig)(const QString&) = &QComboBox::currentIndexChanged;
-    //connect(ui->contactBox, sig, this, &PlaceCallDialog::onContactIndexChange);
 
     QStringList extensions = global::getSettingKeys("extensions");
 
@@ -54,6 +46,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
+
+    ui->lineEdit_2->hide();
 
     onComboBoxSelected();
 }
@@ -138,6 +132,8 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     if (QString(ui->lineEdit->text()).isEmpty())
     {
         modelNull();
+        ui->lineEdit_2->clear();
+        ui->lineEdit_2->hide();
     }
     else if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
@@ -155,62 +151,45 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
+    else if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
     {
         QString entry_org = ui->lineEdit->text();
         QSqlDatabase db;
         QSqlQuery query_org(db);
-        query_org.prepare("SELECT entry_id FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_org + "%'");
+        query_org.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_org + "%'");
         query_org.exec();
         QString orgID = NULL;
+        QString orgName = NULL;
+
         while (query_org.next())
+        {
             orgID = query_org.value(0).toString();
+            orgName = query_org.value(1).toString();
+        }
         if (orgID != NULL)
         {
             query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + orgID + "' GROUP BY ep.entry_id");
+            ui->lineEdit_2->show();
+            ui->lineEdit_2->setText("Сотрудники организации \"" + orgName + "\"");
             onUpdate();
+
         }
-        else ui->tableView->setModel(NULL);
+        else
+        {
+            ui->tableView->setModel(NULL);
+            ui->lineEdit_2->clear();
+        }
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
-
-
     }
-}
-
-void PlaceCallDialog::setOrgValuesContacts(const QModelIndex &index)
-{
-    QString updateID1 = query1->data(query1->index(index.row(), 0)).toString();
-    int row = ui->tableView->currentIndex().row();
-    if (query2->data(query2->index(row, 0)).toString() == "person")
-    {
-         //placeCallDialog = new PlaceCallDialog;
-         placeCallDialog->setIndex(updateID1);
-         //placeCallDialog->exec();
-         //placeCallDialog->deleteLater();
-    }
-    else
-    {
-        //placeCallDialog = new PlaceCallDialog;
-        placeCallDialog->setIndex(updateID1);
-        //placeCallDialog->exec();
-        //placeCallDialog->deleteLater();
-    }
-
-}
-
-void PlaceCallDialog::setIndex(QString &i)
-{
-    updateID1 = i;
 }
 
 void PlaceCallDialog::clearEditText(){
     ui->lineEdit->clear();
+    ui->lineEdit_2->hide();
 }
 
 void PlaceCallDialog::show()
 {
-    //ui->contactBox->setCurrentIndex(0);
-    //ui->searchLine->clear();
     QDialog::show();
     modelNull();
 }
@@ -233,95 +212,3 @@ void PlaceCallDialog::onCancelButton()
 {
     QDialog::close();
 }
-
-void PlaceCallDialog::onChangeContact(QString name)
-{
-//    Contact *contact = g_pContactManager->findContact(name);
-
-//    clearCallTree();
-
-//    if (contact != NULL)
-//    {
-//        QList<QString> numbers = contact->numbers.keys();
-
-//        QString number, type;
-
-//        for (int i = 0; i < numbers.size(); ++i)
-//        {
-//            type   = numbers[i];
-//            number = contact->numbers.value(type);
-
-//            QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-//            item->setText(0, number);
-//            item->setText(1, type);
-//        }
-//    }
-//    QTreeWidgetItem *firstItem = ui->treeWidget->topLevelItem(0);
-//    if (firstItem)
-//    {
-//        firstItem->setSelected(true);
-//        QString number = firstItem->text(0);
-//        ui->phoneLine->setText(number);
-//    }
-//    else
-//    {
-//        ui->phoneLine->clear();
-//    }
-}
-
-//void PlaceCallDialog::onItemDoubleClicked(QTreeWidgetItem *item, int)
-//{
-//    QString number = item->text(0);
-//    const QString from = ui->fromBox->currentText();
-//    const QString protocol = global::getSettingsValue(from, "extensions").toString();
-//    g_pAsteriskManager->originateCall(from, number, protocol, from);
-
-//    QDialog::close();
-//}
-
-//void PlaceCallDialog::onItemClicked(QTreeWidgetItem *item, int)
-//{
-//    QString number = item->text(0);
-//    ui->phoneLine->setText(number);
-//}
-
-//void PlaceCallDialog::onContactIndexChange(const QString &name)
-//{
-//    ui->searchLine->setText(name);
-//    onChangeContact(name);
-//}
-
-//void PlaceCallDialog::onContactsLoaded(QList<Contact *> &contacts)
-//{
-//    QStringList data;
-//    ui->contactBox->clear();
-
-//    foreach(Contact *contact, contacts)
-//    {
-//        data << contact->name;
-//        ui->contactBox->addItem(contact->name);
-//    }
-
-//    ui->searchLine->setData(data);
-//}
-
-void PlaceCallDialog::clearCallTree()
-{
-//    int n = ui->treeWidget->topLevelItemCount();
-//    for (int i = 0; i < n; ++i)
-//        ui->treeWidget->takeTopLevelItem(i);
-
-//    if (n > 0)
-//        clearCallTree();
-}
-
-void PlaceCallDialog::onSettingsChange()
-{
-//    ui->fromBox->clear();
-
-//    QStringList extensions = global::getSettingKeys("extensions");
-
-//    for (int i = 0; i < extensions.size(); ++i)
-//        ui->fromBox->addItem(extensions[i]);
-}
-
