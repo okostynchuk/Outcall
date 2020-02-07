@@ -21,6 +21,14 @@ public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
     void setOrgValuesContacts(QString &);
     void setOrgValuesCallHistory(QString &);
+    enum Calls
+    {
+        MISSED = 0,
+        RECIEVED = 1,
+        PLACED = 2
+    };
+    void addCall(const QMap<QString, QVariant> &call, Calls calls);
+
     ~ViewOrgContactDialog();
 
 protected slots:

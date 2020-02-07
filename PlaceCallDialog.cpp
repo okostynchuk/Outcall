@@ -135,7 +135,11 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     update = "filter";
     QComboBox::AdjustToContents;
 
-    if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
+    if (QString(ui->lineEdit->text()).isEmpty())
+    {
+        modelNull();
+    }
+    else if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
         QString entry_name = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
@@ -143,7 +147,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    if(ui->comboBox->currentText() == "Поиск по номеру телефона")
+    else if(ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
@@ -154,7 +158,6 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
     {
         QString entry_org = ui->lineEdit->text();
-
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND entry_name LIKE '%" + entry_org + "%' AND ep.entry_person_org_id = '" + updateID1 + "' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
@@ -162,26 +165,31 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     }
 }
 
-void PlaceCallDialog::setOrgValuesContacts(QString &i, const QModelIndex &index)
+void PlaceCallDialog::setOrgValuesContacts(const QModelIndex &index)
 {
-    updateID1 = i;
-
     QString updateID1 = query1->data(query1->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
     if (query2->data(query2->index(row, 0)).toString() == "person")
     {
-
+         //placeCallDialog = new PlaceCallDialog;
+         placeCallDialog->setIndex(updateID1);
+         //placeCallDialog->exec();
+         //placeCallDialog->deleteLater();
     }
     else
     {
-
+        //placeCallDialog = new PlaceCallDialog;
+        placeCallDialog->setIndex(updateID1);
+        //placeCallDialog->exec();
+        //placeCallDialog->deleteLater();
     }
+
 }
 
-//void PlaceCallDialog::setIndex(const QModelIndex &index)
-//{
-
-//}
+void PlaceCallDialog::setIndex(QString &i)
+{
+    updateID1 = i;
+}
 
 void PlaceCallDialog::clearEditText(){
     ui->lineEdit->clear();

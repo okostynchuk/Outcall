@@ -254,3 +254,58 @@ void ViewOrgContactDialog::setOrgValuesCallHistory(QString &number)
 {
     ui->FirstNumber->setText(number);
 }
+
+void ViewOrgContactDialog::addCall(const QMap<QString, QVariant> &call, ViewOrgContactDialog::Calls calls)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    QSqlQuery query1(db);
+
+    const QString from     = call.value("from").toString();
+    const QString to       = call.value("to").toString();
+    const QString dateTime = call.value("date_time").toString();
+    QString note           = call.value("note").toString();
+    QString callerIDName;
+
+    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
+    query.exec();
+    query.first();
+    if(query.value(0) != 0)
+    {
+        query1.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
+        query1.exec();
+        query1.first();
+        callerIDName = query1.value(0).toString();
+    }
+    else
+    {
+        callerIDName = "Неизвестный";
+    }
+
+    if (calls == MISSED)
+    {
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed_2);
+        extensionItem->setText(0, callerIDName);
+        extensionItem->setText(1, from);
+        extensionItem->setText(2, to);
+        extensionItem->setText(3, dateTime);
+        extensionItem->setText(4, note);
+    }
+    else if (calls == RECIEVED)
+    {
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived_2);
+        extensionItem->setText(0, callerIDName);
+        extensionItem->setText(1, from);
+        extensionItem->setText(2, to);
+        extensionItem->setText(3, dateTime);
+        extensionItem->setText(4, note);
+    }
+    else if (calls == PLACED)
+    {
+        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced_2);
+        extensionItem->setText(0, from);
+        extensionItem->setText(1, to);
+        extensionItem->setText(2, dateTime);
+        extensionItem->setText(3, note);
+    }
+}
