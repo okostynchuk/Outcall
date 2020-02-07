@@ -164,7 +164,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
         query_org.exec();
         QString orgID = NULL;
         while (query_org.next())
-            orgID = query_org.value(0).toString();
+            orgID = query_org.value(0).toString();//доделать
         if (orgID != NULL)
         {
             query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + orgID + "' GROUP BY ep.entry_id");
