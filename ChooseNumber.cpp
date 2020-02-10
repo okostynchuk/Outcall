@@ -20,6 +20,8 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    this->setWindowTitle("Выбор номера");
+
 
     ui->FirstNumber->installEventFilter(this);
     ui->SecondNumber->installEventFilter(this);
@@ -89,13 +91,13 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     thirdPassNumber = ui->ThirdNumber->text();
     fourthPassNumber = ui->FourthNumber->text();
     fifthPassNumber = ui->FifthNumber->text();
-    placeCallDialog = new PlaceCallDialog;
 
     if(target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
+            close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(firstPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -113,23 +115,21 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
+            close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(secondPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
             return true;
         } else { return false;}
-
-    }
-    else{
-        //доделать окошко
     }
 
     if(target == ui->ThirdNumber && !ui->ThirdNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
+            close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(thirdPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -141,7 +141,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
+            close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fourthPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -153,7 +154,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
+            close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fifthPassNumber);
             connect(placeCallDialog, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));
             placeCallDialog->exec();
@@ -163,9 +165,3 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     }
     return QWidget::eventFilter(target, event);
 }
-
-void ChooseNumber::recieveData(const QString &i)
-{
-    //emit sendData(fifthNumber);
-}
-

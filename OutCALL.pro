@@ -25,15 +25,10 @@ SOURCES += main.cpp\
     AddExtensionDialog.cpp \
     AsteriskManager.cpp \
     CallHistoryDialog.cpp \
-    ContactDialog.cpp \
-    ContactManager.cpp \
     Global.cpp \
-    LocalServer.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
     SearchBox.cpp \
-    SpeedDialDialog.cpp \
-    SyncContactsThread.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
     QOutCallLabel.cpp \
@@ -51,17 +46,12 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     DebugInfoDialog.h \
-    SyncContactsThread.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
-    ContactDialog.h \
-    ContactManager.h \
     Global.h \
-    LocalServer.h \
     OutCALL.h \
     PlaceCallDialog.h \
     SearchBox.h \
-    SpeedDialDialog.h \
     AddExtensionDialog.h \
     SettingsDialog.h \
     PopupWindow.h \
@@ -81,11 +71,9 @@ HEADERS  += \
 FORMS    += \
     AddExtensionDialog.ui \
     CallHistoryDialog.ui \
-    ContactDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
     SettingsDialog.ui \
-    SpeedDialDialog.ui \
     PopupWindow.ui \
     ContactsDialog.ui \
     AddContactDialog.ui \

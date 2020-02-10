@@ -39,16 +39,6 @@ namespace global {
     bool containsSettingsKey(const QString key, const QString group = "");
 
     QStringList getSettingKeys(const QString group);
-
-    void log(const QString& msg, int type);
-
-    void IntegrateIntoOutlook();
-
-    bool IsOutlookInstalled();
-
-    bool IsOutlook64bit(bool *bOutlookInstalled=NULL);
-
-    bool EnableOutlookIntegration(bool bEnable);
 }
 
 #endif // GLOBAL_H
