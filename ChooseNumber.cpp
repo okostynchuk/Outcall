@@ -1,17 +1,9 @@
 #include "ChooseNumber.h"
 #include "ui_ChooseNumber.h"
 
-#include <QVariantList>
-#include <QVariantMap>
 #include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlQueryModel>
 #include <QTableView>
-#include <QPlainTextEdit>
 #include <QSqlQuery>
-#include <QSqlQueryModel>
-#include <QString>
-#include <QMessageBox>
 #include <QEvent>
 
 ChooseNumber::ChooseNumber(QWidget *parent) :
@@ -40,7 +32,7 @@ void ChooseNumber::setValuesNumber(QString &i)
     updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
+    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -69,7 +61,7 @@ void ChooseNumber::setValuesNumber(QString &i)
 
     QSqlDatabase db1;
     QSqlQuery query_org(db1);
-    QString orgName = QString ("select entry_name from entry_phone where entry_id = %1").arg(updateID);
+    QString orgName = QString ("SELECT entry_name FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query_org.prepare(orgName);
     query_org.exec();
 
@@ -96,7 +88,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
             placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(firstPassNumber);
             placeCallDialog->exec();
@@ -115,7 +107,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
             placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(secondPassNumber);
             placeCallDialog->exec();
@@ -128,7 +120,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
             placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(thirdPassNumber);
             placeCallDialog->exec();
@@ -141,7 +133,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
             placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fourthPassNumber);
             placeCallDialog->exec();
@@ -154,7 +146,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
             placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fifthPassNumber);
             connect(placeCallDialog, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));

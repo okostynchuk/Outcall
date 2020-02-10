@@ -28,10 +28,8 @@ SOURCES += main.cpp\
     Global.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
-    SearchBox.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
-    QOutCallLabel.cpp \
     Notifier.cpp \
     ContactsDialog.cpp \
     AddContactDialog.cpp \
@@ -51,11 +49,9 @@ HEADERS  += \
     Global.h \
     OutCALL.h \
     PlaceCallDialog.h \
-    SearchBox.h \
     AddExtensionDialog.h \
     SettingsDialog.h \
     PopupWindow.h \
-    QOutCallLabel.h \
     Notifier.h \
     ContactsDialog.h \
     AddContactDialog.h \

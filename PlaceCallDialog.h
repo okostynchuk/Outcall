@@ -5,13 +5,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QHeaderView>
-#include <QBoxLayout>
-#include <QString>
-#include <QLabel>
 #include <QTableView>
-#include <QScrollBar>
-#include <QAbstractProxyModel>
 
 class Contact;
 class QTreeWidgetItem;

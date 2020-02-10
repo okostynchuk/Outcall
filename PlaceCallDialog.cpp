@@ -1,30 +1,15 @@
 #include "PlaceCallDialog.h"
 #include "ui_PlaceCallDialog.h"
 #include "Global.h"
-#include "SearchBox.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
 
-#include <QHash>
-#include <QString>
-#include <QSqlQueryModel>
 #include <QHeaderView>
 #include <QTableView>
 #include <QBoxLayout>
-#include <QClipboard>
 #include <QSqlDatabase>
-#include <QHeaderView>
-#include <QDebug>
-#include <QSqlRecord>
 #include <QSqlQuery>
-#include <QSqlRelationalTableModel>
-#include <QSqlTableModel>
-#include <QGuiApplication>
-#include <QScreen>
-#include <QLabel>
 #include <QModelIndex>
-#include <QScrollBar>
-#include <QStringList>
 
 PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     QDialog(parent),
