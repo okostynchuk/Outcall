@@ -5,9 +5,7 @@
 #include "Windows.h"
 
 #include <QApplication>
-#include <QMessageBox>
 #include <QLocalSocket>
-#include <QTranslator>
 #include <QDir>
 #include <QTextCodec>
 #include <QSqlQuery>
@@ -62,20 +60,6 @@ int main(int argc, char *argv[])
     }
 
     Notifier notifier;
-    QString lang = global::getSettingsValue("language", "general").toString();
-    QTranslator translator;
-    if (!lang.isEmpty())
-    {
-        if (translator.load(QString("%1/%2.lang").arg(g_LanguagesPath).arg(lang)))
-        {
-            qApp->installTranslator(&translator);
-        }
-        else
-        {
-            global::setSettingsValue("language", "", "general");
-            MsgBoxError(QObject::tr("Failed to load language file."));
-        }
-    }
 
     QString username  = global::getSettingsValue("username", "settings").toString();
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();

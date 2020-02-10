@@ -170,27 +170,6 @@ void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManage
 {
      //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
 
-//    if (state == 0 )
-//    {
-//        QMap<QString, QVariant> call1;
-
-//        QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-//        QSqlQuery query(dbAsterisk);
-//        query.prepare("SELECT date_time FROM cdr WHERE src = ? AND dst = ? ORDER BY date_time DESC");
-//        query.addBindValue(call["from"]);
-//        query.addBindValue(call["to"]);
-//        query.exec();
-//        query.first();
-//        call1["from"] = call["from"];
-//        call1["to"] = call["to"];
-//        call1["date_time"] = query.value(0).toString();
-//        m_callHistoryDialog->addCall(call1, (CallHistoryDialog::Calls)state);
-//    }
-//    QString state_call = "recieved";
-//    m_callHistoryDialog->clear();
-//    m_callHistoryDialog->loadCalls(state_call);
-
-
     if (state == 0)
     {
         QString state_call = "missed";
