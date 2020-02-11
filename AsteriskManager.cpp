@@ -369,9 +369,8 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     global::setSettingsValue("received", list, "calls");
 
                     m_dialedNum.remove(uniqueid);
-
+                    //QMap<QString, QVariant> received;
                     emit callDeteceted(received, RECIEVED);
-
                 }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
                 {
@@ -409,7 +408,6 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
                     list.append(QVariant::fromValue(missed));
                     global::setSettingsValue("missed", list, "calls");
-
                     emit callDeteceted(missed, MISSED);
                 }
             }
@@ -421,7 +419,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         const QString uniqueid = eventValues.value("Uniqueid");
-
+//        qDebug() << uniqueid +" hangup" + __LINE__;
+//        if((eventValues.value("Event") == "Hangup") && (eventValues.value("Linkedid") ==  eventValues.value("Uniqueid")) )
+//            qDebug() << "hangup ok , line 426";
         if (m_calls.contains(uniqueid))
         {
             Call *call = m_calls.value(uniqueid);
@@ -628,12 +628,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
 
             list.append(QVariant::fromValue(missed));
             global::setSettingsValue("missed", list, "calls");
-
             emit callDeteceted(missed, MISSED);
-        }
-        if (state == "Up")
-        {
-            qDebug() << "123";
         }
         delete call;
         m_calls.remove(uniqueid);

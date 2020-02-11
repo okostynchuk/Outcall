@@ -87,6 +87,26 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     update = "default";
 }
 
+QWidget* ContactsDialog::addImageLabel(int &row_index)
+{
+    QWidget* wgt = new QWidget;
+    QBoxLayout* l = new QHBoxLayout;
+    QLabel *imageLabel = new QLabel(wgt);
+    l->addWidget(imageLabel);
+    if (query2->data(query2->index(row_index, 0)).toString() == "person")
+    {
+        imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
+    }
+    else
+    {
+        imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
+    }
+    wgt->setLayout(l);
+    widgets.append(wgt);
+    layouts.append(l);
+    labels.append(imageLabel);
+    return wgt;
+}
 ContactsDialog::~ContactsDialog()
 {
     delete query1;
@@ -241,27 +261,6 @@ void ContactsDialog::onAddOrg()
     connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
-}
-
-QWidget* ContactsDialog::addImageLabel(int &row_index)
-{
-    QWidget* wgt = new QWidget;
-    QBoxLayout* l = new QHBoxLayout;
-    QLabel *imageLabel = new QLabel(wgt);
-    l->addWidget(imageLabel);
-    if (query2->data(query2->index(row_index, 0)).toString() == "person")
-    {
-        imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
-    }
-    else
-    {
-        imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
-    }
-    wgt->setLayout(l);
-    widgets.append(wgt);
-    layouts.append(l);
-    labels.append(imageLabel);
-    return wgt;
 }
 
 QWidget* ContactsDialog::createEditButton(int &row_index)

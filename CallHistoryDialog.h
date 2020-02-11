@@ -14,7 +14,9 @@
 #include <QDialog>
 #include <QMap>
 #include <QSqlQueryModel>
-#include <QTreeWidget>
+#include <QTableView>
+#include <QTextEdit>
+#include <QList>
 
 namespace Ui {
 class CallHistoryDialog;
@@ -34,33 +36,54 @@ public:
         PLACED = 2
     };
     void addCall(const QMap<QString, QVariant> &, Calls);
-    void loadCalls(QString &);
-    void missed_clear();
-    void received_clear();
-    void placed_clear();
+
+public slots:
+    void receiveDataToMissed();
+    void receiveDataToReceived();
+    void receiveDataToPlaced();
 
 protected slots:
     void onAddContact();
     void onAddOrgContact();
-    void onRemoveButton();
     void onCallClicked();
     bool checkNumber(QString &);
-    void onAddNotes();
+    void onUpdate();
+    void deleteObjects();
     void editContact(QString &);
+    void editOrgContact(QString &);
+    void showEvent(QShowEvent *);
     QString getUpdateId(QString &);
+    void addNoteToMissed(const QModelIndex &);
+    void addNoteToReceived(const QModelIndex &);
+    void addNoteToPlaced(const QModelIndex &);
+    void loadMissedCalls();
+    void loadReceivedCalls();
+    void loadPlacedCalls();
+    void getNumberMissed(const QModelIndex &index);
+    void getNumberReceived(const QModelIndex &index);
+    void getNumberPlaced(const QModelIndex &index);
 
 private:
     Ui::CallHistoryDialog *ui;
     QSqlQuery *query;
+    QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
+    QWidget* loadNote(int &);
     QString number;
+    QString from;
+    QString uniqueid;
+    QString callerNum;
     int missed_count = 0;
     QString state_call;
+    QList<QWidget*> widgets;
+    QList<QLabel*> notes;
 };
 
 #endif // CALLHISTORYDIALOG_H

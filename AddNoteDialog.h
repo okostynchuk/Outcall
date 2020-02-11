@@ -13,16 +13,22 @@ class AddNoteDialog : public QDialog
 
 public:
     explicit AddNoteDialog(QWidget *parent = 0);
-    void setCallId(QString &uniqueid, QString &state);
+    void setCallId(QString &uniqueid, QString &state_call);
     ~AddNoteDialog();
 
 protected:
     void onSave();
+    void setNote();
 
 private:
     Ui::AddNoteDialog *ui;
     QString callId;
-    QString callState;
+    QString state;
+
+signals:
+    void sendDataToMissed();
+    void sendDataToReceived();
+    void sendDataToPlaced();
 };
 
 #endif // ADDNOTEDIALOG_H

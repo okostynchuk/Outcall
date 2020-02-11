@@ -1,5 +1,6 @@
 #include "AddNoteDialog.h"
 #include "ui_AddNoteDialog.h"
+#include "CallHistoryDialog.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -12,6 +13,7 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddNoteDialog::onSave);
+
 }
 
 AddNoteDialog::~AddNoteDialog()
@@ -19,32 +21,40 @@ AddNoteDialog::~AddNoteDialog()
     delete ui;
 }
 
-void AddNoteDialog::setCallId(QString &uniqueid, QString &state)
+void AddNoteDialog::setCallId(QString &uniqueid, QString &state_call)
 {
-    callState = state;
     callId = uniqueid;
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT note FROM calls WHERE uniqueid = "+callId);
+    query.exec();
+    query.first();
+    QString note = query.value(0).toString();
+    ui->textEdit->setText(note);
+    state = state_call;
 }
 
 void AddNoteDialog::onSave()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    if(callState == "add")
-    {
-        query.prepare("INSERT INTO calls (uniqueid, note)"
-                      "VALUES(?, ?)");
-        query.addBindValue(callId);
-        query.addBindValue(ui->textEdit->toPlainText());
-        query.exec();
-        ui->label->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
-    }
-    else if (callState == "edit")
-    {
-        query.prepare("UPDATE calls SET note = ? WHERE uniqueid = ?");
-        query.addBindValue(ui->textEdit->toPlainText());
-        query.addBindValue(callId);
-        query.exec();
-        ui->label->setText("<span style=\"color: green;\">Запись успешно изменена!</span>");
-    }
 
+    query.prepare("INSERT  INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
+    query.addBindValue(callId);
+    query.addBindValue(ui->textEdit->toPlainText());
+    query.addBindValue(ui->textEdit->toPlainText());
+    query.exec();
+    ui->label->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+    if(state == "missed")
+    {
+       emit sendDataToMissed();
+    }
+    if(state == "received")
+    {
+       emit sendDataToReceived();
+    }
+    if(state == "placed")
+    {
+        emit sendDataToPlaced();
+    }
 }

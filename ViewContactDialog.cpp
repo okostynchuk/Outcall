@@ -20,6 +20,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
 }
 
 ViewContactDialog::~ViewContactDialog()
@@ -87,161 +88,165 @@ void ViewContactDialog::setValuesContacts(QString &i)
 
     if(firstNumber != 0)
     {
-       loadCalls(firstNumber);
+        contact_number = QString(ui->FirstNumber->text());
+        loadMissedCalls();
+        loadReceivedCalls();
+        loadPlacedCalls();
     }
     if(secondNumber != 0)
     {
-       loadCalls(secondNumber);
+        contact_number = QString(ui->SecondNumber->text());
+        loadMissedCalls();
+        loadReceivedCalls();
+        loadPlacedCalls();
     }
     if(thirdNumber != 0)
     {
-       loadCalls(thirdNumber);
+        contact_number = QString(ui->ThirdNumber->text());
+        loadMissedCalls();
+        loadReceivedCalls();
+        loadPlacedCalls();
     }
     if(fourthNumber != 0)
     {
-       loadCalls(fourthNumber);
+        contact_number = QString(ui->FourthNumber->text());
+        loadMissedCalls();
+        loadReceivedCalls();
+        loadPlacedCalls();
     }
     if(fifthNumber != 0)
     {
-       loadCalls(fifthNumber);
+        contact_number = QString(ui->FifthNumber->text());
+        loadMissedCalls();
+        loadReceivedCalls();
+        loadPlacedCalls();
     }
 }
 
-void ViewContactDialog::loadCalls(QString &contactNumber)
+void ViewContactDialog::loadMissedCalls()
 {
-    QSqlDatabase db;
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlQuery query(dbAsterisk);
-    QSqlQuery query1(db);
 
-    // Load calls
-       SettingsDialog *settingsDialog = new SettingsDialog();
-       QString number = settingsDialog->getExtension();
-       //Load Missed calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = ? AND scr = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, MISSED);
-       }
+    SettingsDialog *settingsDialog = new SettingsDialog();
+    QString number = settingsDialog->getExtension();
 
-     //Load Recieved calls
-       query.prepare("SELECT src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = ? AND src = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["to"] = query.value(1).toString();
-           call["date_time"] = query.value(2).toString();
-           addCall(call, RECIEVED);
-       }
-
-     //Load Placed calls
-       query.prepare("SELECT dst, datetime, src, uniqueid FROM cdr WHERE src = ? AND dst = ? ORDER BY datetime DESC");
-       query.addBindValue(number);
-       query.addBindValue(contactNumber);
-       query.exec();
-       while(query.next()) {
-           QMap<QString, QVariant> call;
-           QString uniqueid = query.value(3).toString();
-           query1.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-           query1.exec();
-           query1.first();
-           if(query1.value(0) != 0)
-           {
-               query1.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-               query1.exec();
-               query1.first();
-               call["note"] = query1.value(0).toString();
-           }
-           call["from"] = query.value(0).toString();
-           call["date_time"] = query.value(1).toString();
-           call["to"] = query.value(2).toString();
-           addCall(call, PLACED);
-       }
-       settingsDialog->deleteLater();
-}
-
-void ViewContactDialog::addCall(const QMap<QString, QVariant> &call, ViewContactDialog::Calls calls)
-{
+    query1 = new QSqlQueryModel;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QSqlQuery query1(db);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = "+number+" AND src = "+contact_number, dbAsterisk);
+    query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
+    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
+    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    query1->insertColumn(4);
+    query1->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
-    const QString from     = call.value("from").toString();
-    const QString to       = call.value("to").toString();
-    const QString dateTime = call.value("date_time").toString();
-    QString note           = call.value("note").toString();
-    QString callerIDName;
+    ui->tableView->setModel(query1);
+    ui->tableView->setColumnHidden(5, true);
 
-    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
-    query.exec();
-    query.first();
-    if(query.value(0) != 0)
+    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        query1.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
-        query1.exec();
-        query1.first();
-        callerIDName = query1.value(0).toString();
+        uniqueid = query1->data(query1->index(row_index, 5)).toString();
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.exec();
+        query.first();
+        if(query.value(0) != 0)
+            ui->tableView->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
     }
-    else
-    {
-        callerIDName = "Неизвестный";
-    }
+    ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+}
 
-    if (calls == MISSED)
+void ViewContactDialog::loadReceivedCalls()
+{
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+
+    SettingsDialog *settingsDialog = new SettingsDialog();
+    QString number = settingsDialog->getExtension();
+
+    query2 = new QSqlQueryModel;
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = "+number+" AND src = "+contact_number, dbAsterisk);
+
+    query2->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
+    query2->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
+    query2->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    query2->insertColumn(4);
+    query2->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
+
+    ui->tableView_2->setModel(query2);
+    ui->tableView_2->setColumnHidden(5, true);
+
+    for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetMissed);
-        extensionItem->setText(0, callerIDName);
-        extensionItem->setText(1, from);
-        extensionItem->setText(2, to);
-        extensionItem->setText(3, dateTime);
-        extensionItem->setText(4, note);
+        uniqueid = query2->data(query2->index(row_index, 5)).toString();
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.exec();
+        query.first();
+        if(query.value(0) != 0)
+            ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadNote(row_index));
     }
-    else if (calls == RECIEVED)
+    ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+    ui->tableView_2->resizeRowsToContents();
+    ui->tableView_2->resizeColumnsToContents();
+    ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+}
+
+void ViewContactDialog::loadPlacedCalls()
+{
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+
+    SettingsDialog *settingsDialog = new SettingsDialog();
+    QString number = settingsDialog->getExtension();
+
+    query3 = new QSqlQueryModel;
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query3->setQuery("SELECT extfield2, dst, src, datetime, uniqueid FROM cdr WHERE src = "+number+" AND dst = "+contact_number, dbAsterisk);
+
+    query3->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    query3->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
+    query3->setHeaderData(2, Qt::Horizontal, QObject::tr("Откуда"));
+    query3->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    query3->insertColumn(4);
+    query3->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
+
+    ui->tableView_3->setModel(query3);
+    ui->tableView_3->setColumnHidden(5, true);
+
+    for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetReceived);
-        extensionItem->setText(0, callerIDName);
-        extensionItem->setText(1, from);
-        extensionItem->setText(2, to);
-        extensionItem->setText(3, dateTime);
-        extensionItem->setText(4, note);
+        uniqueid = query3->data(query3->index(row_index, 5)).toString();
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.exec();
+        query.first();
+        if(query.value(0) != 0)
+            ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadNote(row_index));
     }
-    else if (calls == PLACED)
-    {
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidgetPlaced);
-        extensionItem->setText(0, from);
-        extensionItem->setText(1, to);
-        extensionItem->setText(2, dateTime);
-        extensionItem->setText(3, note);
-    }
+    ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+    ui->tableView_3->resizeRowsToContents();
+    ui->tableView_3->resizeColumnsToContents();
+    ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+}
+
+QWidget* ViewContactDialog::loadNote(int &row_index)
+{
+    QWidget* wgt = new QWidget;
+    QLabel *note = new QLabel(wgt);
+
+    QSqlDatabase db;
+    QSqlQuery query2(db);
+
+    query2.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query2.exec();
+    query2.first();
+    note->setText(query2.value(0).toString());
+
+    widgets.append(wgt);
+    notes.append(note);
+    return wgt;
 }
