@@ -82,5 +82,7 @@ FORMS    += \
     AddNoteDialog.ui \
     ChooseNumber.ui
 
+RC_FILE = file.rc
+
 RESOURCES += \
     images.qrc
