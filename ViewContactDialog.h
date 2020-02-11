@@ -1,9 +1,6 @@
 #ifndef VIEWCONTACTDIALOG_H
 #define VIEWCONTACTDIALOG_H
 
-//#include "Global.h"
-//#include "OutCALL.h"
-
 #include <QDialog>
 #include <QValidator>
 #include <QSqlQueryModel>
