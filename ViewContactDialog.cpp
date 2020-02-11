@@ -189,11 +189,12 @@ void ViewContactDialog::loadReceivedCalls()
         query.first();
         if(query.value(0) != 0)
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadNote(row_index));
-    }
+
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    }
 }
 
 void ViewContactDialog::loadPlacedCalls()
@@ -226,11 +227,12 @@ void ViewContactDialog::loadPlacedCalls()
         query.first();
         if(query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadNote(row_index));
-    }
+
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    }
 }
 
 QWidget* ViewContactDialog::loadNote(int &row_index)

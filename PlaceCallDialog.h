@@ -5,13 +5,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QHeaderView>
-#include <QBoxLayout>
-#include <QString>
-#include <QLabel>
 #include <QTableView>
-#include <QScrollBar>
-#include <QAbstractProxyModel>
 
 class Contact;
 class QTreeWidgetItem;
@@ -27,27 +21,22 @@ class PlaceCallDialog : public QDialog
 
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
-    ~PlaceCallDialog();
     void show();
+    ~PlaceCallDialog();
 
 protected:
      void clearCallTree();
 
 public slots:
-         void getValuesNumber(const QString &number);
+    void getValuesNumber(const QString &number);
 
 protected slots:
     void onCallButton();
     void onCancelButton();
     void onUpdate();
+    void modelNull();
     void onComboBoxSelected();
     void clearEditText();
-    void onChangeContact(QString name);
-    void onContactIndexChange(const QString &name);
-    void onContactsLoaded(QList<Contact *> &contacts);
-    void onSettingsChange();
-    void onItemDoubleClicked(QTreeWidgetItem * item, int);
-    void onItemClicked(QTreeWidgetItem * item, int);
     void showNumber(const QModelIndex &);
 
 
@@ -56,12 +45,12 @@ private slots:
 
 private:
     Ui::PlaceCallDialog *ui;
-    QList<Contact*> m_contacts;  /**< Contact list from Outlook */
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QString update;
     QString number;
     ChooseNumber *chooseNumber;
+    PlaceCallDialog *placeCallDialog;
 };
 
 #endif // PLACECALLDIALOG_H

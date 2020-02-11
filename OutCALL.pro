@@ -23,21 +23,13 @@ TRANSLATIONS = translations/outcall_pt-br.ts \
 SOURCES += main.cpp\
     DebugInfoDialog.cpp \
     AddExtensionDialog.cpp \
-    AddLanguageDialog.cpp \
     AsteriskManager.cpp \
     CallHistoryDialog.cpp \
-    ContactDialog.cpp \
-    ContactManager.cpp \
     Global.cpp \
-    LocalServer.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
-    SearchBox.cpp \
-    SpeedDialDialog.cpp \
-    SyncContactsThread.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
-    QOutCallLabel.cpp \
     Notifier.cpp \
     ContactsDialog.cpp \
     AddContactDialog.cpp \
@@ -52,22 +44,14 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     DebugInfoDialog.h \
-    SyncContactsThread.h \
-    AddLanguageDialog.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
-    ContactDialog.h \
-    ContactManager.h \
     Global.h \
-    LocalServer.h \
     OutCALL.h \
     PlaceCallDialog.h \
-    SearchBox.h \
-    SpeedDialDialog.h \
     AddExtensionDialog.h \
     SettingsDialog.h \
     PopupWindow.h \
-    QOutCallLabel.h \
     Notifier.h \
     ContactsDialog.h \
     AddContactDialog.h \
@@ -82,13 +66,10 @@ HEADERS  += \
 
 FORMS    += \
     AddExtensionDialog.ui \
-    AddLanguageDialog.ui \
     CallHistoryDialog.ui \
-    ContactDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
     SettingsDialog.ui \
-    SpeedDialDialog.ui \
     PopupWindow.ui \
     ContactsDialog.ui \
     AddContactDialog.ui \

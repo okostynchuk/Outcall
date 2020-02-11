@@ -29,27 +29,15 @@ protected:
     void handleButtonBox(QAbstractButton * button);
     void okPressed();
     void applyPressed();
-    void onSpeedAddClicked();
-    void onSpeedEditClicked();
-    void onSpeedRemoveClicked();
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onEditButtonClicked();
     void applySettings();
-    void onReplaceDialAddClicked();
-    void onReplaceDialRemoveClicked();
-    void onReplaceDialTreeClicked(QTreeWidgetItem * item, int column);
-    void onReplaceDialTreeDoubleClicked(QTreeWidgetItem * item, int column);
-    void onMinCallerIDBoxChanged(int state);
-    void onAddLanguageBtn();
-    void loadLanguages();
-
 
 private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
-    QStringList m_countries;
 
 };
 
