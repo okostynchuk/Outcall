@@ -11,12 +11,12 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QAbstractProxyModel>
 #include <QHeaderView>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTableView>
 #include <QScrollBar>
+#include <QTimer>
 
 namespace Ui {
 class ContactsDialog;
@@ -38,13 +38,12 @@ protected slots:
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
-    void onEdit();
-    void onTableClicked(const QModelIndex &);
+    void onEdit(const QModelIndex &);
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &);
-    void onSectionClicked (int logicalIndex);
-    void onSortingSectionClicked(int logicalIndex);
+    void onSectionClicked(int);
+    void onSortingSectionClicked(int);
     void clearEditText();
 
 private:
@@ -58,15 +57,11 @@ private:
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
     QHeaderView *m_horiz_header;
-    QHeaderView *m_horiz_header1;
-    QScrollBar *verticalScroll;
-    QScrollBar *horizontalScroll;
     QWidget* addImageLabel(int &);
-    QWidget* createEditButton(int &);
     QString update;
-    int counter1;
-    bool counter;
-    QList<QPushButton*> buttons;
+    int valueV;
+    int valueH;
+    QTimer timer;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;

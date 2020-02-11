@@ -168,26 +168,6 @@ void OutCall::onMessageReceived(const QString &message)
 
 void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-     //m_callHistoryDialog->addCall(call, (CallHistoryDialog::Calls)state);
-
-    if (state == 0)
-    {
-        QString state_call = "missed";
-        m_callHistoryDialog->missed_clear();
-        m_callHistoryDialog->loadCalls(state_call);
-    }
-    if (state == 1)
-    {
-        QString state_call = "received";
-        m_callHistoryDialog->received_clear();
-        m_callHistoryDialog->loadCalls(state_call);
-    }
-    if (state == 2)
-    {
-        QString state_call = "placed";
-        m_callHistoryDialog->placed_clear();
-        m_callHistoryDialog->loadCalls(state_call);
-    }
 
 }
 
