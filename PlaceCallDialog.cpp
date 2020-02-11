@@ -55,7 +55,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
          chooseNumber->setValuesNumber(updateID);
          chooseNumber->exec();
          chooseNumber->deleteLater();
-         closeevent
+         //closeevent
     }
     else
     {
