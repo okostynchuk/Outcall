@@ -135,6 +135,11 @@ void ViewOrgContactDialog::onSortingSectionClicked(int logicalIndex)
 
 void ViewOrgContactDialog::onSectionClicked (int logicalIndex)
 {
+    if((ui->comboBox->currentText() == "Поиск по номеру телефона") || (ui->comboBox->currentText() == "Поиск по заметке"))
+    {
+        if(logicalIndex = 1) return;
+    }
+
     if (logicalIndex != 1) return;
 
     update = "sort";
@@ -168,7 +173,12 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
         onUpdate();
     }
 
-    if (ui->comboBox->currentText() == "Поиск по номеру телефона")
+    if (QString(ui->lineEdit->text()).isEmpty())
+    {
+        return;
+    }
+
+    else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
@@ -176,7 +186,7 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
         onUpdate();
     }
 
-    if (ui->comboBox->currentText() == "Поиск по заметке")
+    else if (ui->comboBox->currentText() == "Поиск по заметке")
     {
         QString entry_comment = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");

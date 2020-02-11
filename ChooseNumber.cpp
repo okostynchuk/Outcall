@@ -1,15 +1,9 @@
 #include "ChooseNumber.h"
 #include "ui_ChooseNumber.h"
 
-#include <QVariantList>
-#include <QVariantMap>
 #include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlQueryModel>
 #include <QTableView>
-#include <QPlainTextEdit>
-#include <QString>
-#include <QMessageBox>
+#include <QSqlQuery>
 #include <QEvent>
 
 ChooseNumber::ChooseNumber(QWidget *parent) :
@@ -18,6 +12,8 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    this->setWindowTitle("Выбор номера");
+
 
     ui->FirstNumber->installEventFilter(this);
     ui->SecondNumber->installEventFilter(this);
@@ -36,7 +32,7 @@ void ChooseNumber::setValuesNumber(QString &i)
     updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
+    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
@@ -62,6 +58,22 @@ void ChooseNumber::setValuesNumber(QString &i)
     ui->ThirdNumber->setText(thirdNumber);
     ui->FourthNumber->setText(fourthNumber);
     ui->FifthNumber->setText(fifthNumber);
+
+    QSqlDatabase db1;
+    QSqlQuery query_org(db1);
+    QString orgName = QString ("SELECT entry_name FROM entry_phone WHERE entry_id = %1").arg(updateID);
+    query_org.prepare(orgName);
+    query_org.exec();
+
+    while (query_org.next())
+    {
+        orgName = query_org.value(0).toString();
+    }
+    if (orgID != NULL)
+    {
+        ui->label_5->show();
+        ui->label_5->setText("Номер(-a) \"" + orgName + "\"");
+    }
 }
 
 bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
@@ -71,13 +83,13 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     thirdPassNumber = ui->ThirdNumber->text();
     fourthPassNumber = ui->FourthNumber->text();
     fifthPassNumber = ui->FifthNumber->text();
-    placeCallDialog = new PlaceCallDialog;
 
     if(target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(firstPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -95,7 +107,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(secondPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -107,7 +120,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(thirdPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -119,7 +133,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fourthPassNumber);
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
@@ -131,8 +146,10 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            //close();
+            placeCallDialog = new PlaceCallDialog;
             placeCallDialog->getValuesNumber(fifthPassNumber);
+            connect(placeCallDialog, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));
             placeCallDialog->exec();
             placeCallDialog->deleteLater();
             return true;

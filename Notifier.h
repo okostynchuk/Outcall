@@ -1,7 +1,7 @@
 #ifndef SETTINGSNOTIFIER_H
 #define SETTINGSNOTIFIER_H
 
-#include<QObject>
+#include <QObject>
 
 class Notifier : public QObject
 {

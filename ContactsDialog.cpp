@@ -255,7 +255,7 @@ void ContactsDialog::onSortingSectionClicked(int logicalIndex)
 //    }
 }
 
-void ContactsDialog::onSectionClicked (int logicalIndex)
+void ContactsDialog::onSectionClicked(int logicalIndex)
 {
     if (logicalIndex != 2)
     {
@@ -272,6 +272,11 @@ void ContactsDialog::onSectionClicked (int logicalIndex)
         else if (update == "default")
             m_horiz_header->setSortIndicatorShown(false);
         return;
+    }
+
+    if ((ui->comboBox->currentText() == "Поиск по ФИО / Названию" && !ui->lineEdit->text().isEmpty()) || (ui->comboBox->currentText() == "Поиск по номеру телефона") || (ui->comboBox->currentText() == "Поиск по заметке"))
+    {
+        if (logicalIndex != 2) return;
     }
 
     if (update == "default")
@@ -314,7 +319,11 @@ void ContactsDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    if(ui->comboBox->currentText() == "Поиск по номеру телефона")
+    if (QString(ui->lineEdit->text()).isEmpty())
+    {
+        return;
+    }
+    else if(ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
@@ -322,7 +331,7 @@ void ContactsDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    if(ui->comboBox->currentText() == "Поиск по заметке")
+    else if(ui->comboBox->currentText() == "Поиск по заметке")
     {
         QString entry_comment = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
