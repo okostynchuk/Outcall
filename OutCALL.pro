@@ -10,15 +10,17 @@ QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+win32:{
+    VERSION = 1.0.0
+    QMAKE_TARGET_COMPANY = Vybor
+    QMAKE_TARGET_PRODUCT = OutCALL
+}
+
 TARGET = OutCALL
 TEMPLATE = app
 
-
 LIBS +=	Shell32.lib \
         Advapi32.lib \
-
-TRANSLATIONS = translations/outcall_pt-br.ts \
-
 
 SOURCES += main.cpp\
     DebugInfoDialog.cpp \
@@ -82,7 +84,7 @@ FORMS    += \
     AddNoteDialog.ui \
     ChooseNumber.ui
 
-RC_FILE = file.rc
-
 RESOURCES += \
     images.qrc
+
+win32: RC_ICONS = $$PWD/images/outcall-logo.ico
