@@ -5,10 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTableView>
-#include <QPlainTextEdit>
-#include <QString>
 #include <QMessageBox>
-#include <QDebug>
 
 ViewContactDialog::ViewContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,6 +23,7 @@ ViewContactDialog::~ViewContactDialog()
 {
     settingsDialog->deleteLater();
     deleteObjects();
+    delete query1;
     delete ui;
 }
 
@@ -36,9 +34,6 @@ void ViewContactDialog::deleteObjects()
         widgets[i]->deleteLater();
     }
     widgets.clear();
-    delete query1;
-    delete query2;
-    delete query3;
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)
@@ -171,7 +166,7 @@ void ViewContactDialog::loadMissedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->resizeRowsToContents();
@@ -229,7 +224,7 @@ void ViewContactDialog::loadReceivedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView_2->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeRowsToContents();
@@ -288,7 +283,7 @@ void ViewContactDialog::loadPlacedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_3->resizeRowsToContents();
@@ -296,18 +291,18 @@ void ViewContactDialog::loadPlacedCalls()
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
 
-QWidget* ViewContactDialog::loadNote(int &row_index)
+QWidget* ViewContactDialog::loadNote()
 {
     QWidget* wgt = new QWidget;
     QLabel *note = new QLabel(wgt);
 
     QSqlDatabase db;
-    QSqlQuery query2(db);
+    QSqlQuery query(db);
 
-    query2.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
-    query2.exec();
-    query2.first();
-    note->setText(query2.value(0).toString());
+    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query.exec();
+    query.first();
+    note->setText(query.value(0).toString());
 
     widgets.append(wgt);
     notes.append(note);

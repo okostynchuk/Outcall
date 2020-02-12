@@ -5,17 +5,13 @@
 #include "SettingsDialog.h"
 #include "Global.h"
 
-#include <QDialog>
-#include <QValidator>
 #include <QHeaderView>
 #include <QSqlQueryModel>
 #include <QScrollBar>
 #include <QTableView>
-#include <QTextEdit>
 #include <QList>
-#include <QMap>
 #include <QWidget>
-#include <QLabel>
+
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -81,7 +77,7 @@ private:
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
-    QWidget* loadNote(int &);
+    QWidget* loadNote();
     QList<QWidget*> widgets;
     QList<QLabel*> notes;
 

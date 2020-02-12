@@ -2,7 +2,6 @@
 #include "ui_callhistorydialog.h"
 #include "SettingsDialog.h"
 
-#include <QDebug>
 #include <QMessageBox>
 #include <QWidget>
 #include <QList>
@@ -34,10 +33,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberPlaced(const QModelIndex &)));
-
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView_3->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -77,6 +72,20 @@ void CallHistoryDialog::onAddContact()
     }
     else if (a == false) editContact(number);
     addContactDialog->deleteLater();
+}
+
+void CallHistoryDialog::onAddOrgContact()
+{
+    addOrgContactDialog = new AddOrgContactDialog;
+
+    bool a = checkNumber(number);
+    if (a == true)
+    {
+        addOrgContactDialog->setOrgValuesCallHistory(number);
+        addOrgContactDialog->exec();
+    }
+    else if (a == false) editOrgContact(number);
+    addOrgContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::addNoteToMissed(const QModelIndex &index)
@@ -119,7 +128,7 @@ void CallHistoryDialog::addNoteToPlaced(const QModelIndex &index)
     uniqueid = query3->data(query3->index(index.row(), 5)).toString();
     addNoteDialog = new AddNoteDialog;
     addNoteDialog->setCallId(uniqueid, state_call);
-    connect(addNoteDialog, SIGNAL(sendDataToPlaced()), this, SLOT(loadPlacedCalls()));
+    connect(addNoteDialog, SIGNAL(sendDataToPlaced()), this, SLOT(receiveDataToPlaced()));
     addNoteDialog->exec();
     addNoteDialog->deleteLater();
 }
@@ -134,9 +143,7 @@ CallHistoryDialog::~CallHistoryDialog()
 {
     settingsDialog->deleteLater();
     delete query;
-    delete query1;
-    delete query2;
-    delete query3;
+    deleteObjects();
     delete ui;
 }
 
@@ -151,20 +158,6 @@ void CallHistoryDialog::onCallClicked()
     QString to = number;
     QString protocol = "PJSIP";
     g_pAsteriskManager->originateCall(to, from, protocol, to);
-}
-
-void CallHistoryDialog::onAddOrgContact()
-{
-    addOrgContactDialog = new AddOrgContactDialog;
-
-    bool a = checkNumber(number);
-    if (a == true)
-    {
-        addOrgContactDialog->setOrgValuesCallHistory(number);
-        addOrgContactDialog->exec();
-    }
-    else if (a == false) editOrgContact(number);
-    addOrgContactDialog->deleteLater();
 }
 
 bool CallHistoryDialog::checkNumber(QString &number)

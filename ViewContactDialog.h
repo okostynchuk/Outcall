@@ -5,12 +5,9 @@
 #include "SettingsDialog.h"
 
 #include <QDialog>
-#include <QValidator>
 #include <QSqlQueryModel>
 #include <QTableView>
-#include <QTextEdit>
 #include <QList>
-#include <QMap>
 #include <QWidget>
 #include <QLabel>
 
@@ -59,7 +56,7 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    QWidget* loadNote(int &);
+    QWidget* loadNote();
     QList<QWidget*> widgets;
     QList<QLabel*> notes;
 };

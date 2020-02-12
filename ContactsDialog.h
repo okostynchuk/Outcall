@@ -13,7 +13,6 @@
 #include <QSqlQueryModel>
 #include <QHeaderView>
 #include <QBoxLayout>
-#include <QLabel>
 #include <QTableView>
 #include <QScrollBar>
 #include <QTimer>

@@ -3,19 +3,13 @@
 #include "ViewContactDialog.h"
 #include "SettingsDialog.h"
 
-#include <QVariantList>
-#include <QVariantMap>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlQueryModel>
+#include <QClipboard>
 #include <QtableView>
-#include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
 #include <QHeaderView>
-#include <QClipboard>
-#include <QScrollBar>
-#include <QDebug>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -47,6 +41,7 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
 {
     settingsDialog->deleteLater();
     delete query_model;
+    delete query1;
     deleteObjects();
     delete ui;
 }
@@ -58,9 +53,8 @@ void ViewOrgContactDialog::deleteObjects()
         widgets[i]->deleteLater();
     }
     widgets.clear();
-//    delete query1;
-//    delete query2;
-//    delete query3;
+
+
 }
 
 void ViewOrgContactDialog::clearEditText(){
@@ -355,7 +349,7 @@ void ViewOrgContactDialog::loadMissedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView_2->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeRowsToContents();
@@ -413,7 +407,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_3->resizeRowsToContents();
@@ -472,7 +466,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
         query.exec();
         query.first();
         if(query.value(0) != 0)
-            ui->tableView_4->setIndexWidget(query1->index(row_index, 4), loadNote(row_index));
+            ui->tableView_4->setIndexWidget(query1->index(row_index, 4), loadNote());
     }
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->resizeRowsToContents();
@@ -480,7 +474,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
 
-QWidget* ViewOrgContactDialog::loadNote(int &row_index)
+QWidget* ViewOrgContactDialog::loadNote()
 {
     QWidget* wgt = new QWidget;
     QLabel *note = new QLabel(wgt);
