@@ -13,6 +13,7 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddNoteDialog::onSave);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 }
 
@@ -23,13 +24,17 @@ AddNoteDialog::~AddNoteDialog()
 
 void AddNoteDialog::setCallId(QString &uniqueid, QString &state_call)
 {
+    QString note;
     callId = uniqueid;
     QSqlDatabase db;
     QSqlQuery query(db);
     query.prepare("SELECT note FROM calls WHERE uniqueid = "+callId);
     query.exec();
-    query.first();
-    QString note = query.value(0).toString();
+    while(query.next())
+        note= query.value(0).toString();
+    QTextCursor  cursor = ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->textEdit->setTextCursor(cursor);
     ui->textEdit->setText(note);
     state = state_call;
 }
@@ -44,7 +49,7 @@ void AddNoteDialog::onSave()
     query.addBindValue(ui->textEdit->toPlainText());
     query.addBindValue(ui->textEdit->toPlainText());
     query.exec();
-    ui->label->setText("<span style=\"color: green;\">Запись успешно добавлена!</span>");
+
     if(state == "missed")
     {
        emit sendDataToMissed();
@@ -57,4 +62,7 @@ void AddNoteDialog::onSave()
     {
         emit sendDataToPlaced();
     }
+    close();
+    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
+
 }

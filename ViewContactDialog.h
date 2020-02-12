@@ -1,13 +1,13 @@
 #ifndef VIEWCONTACTDIALOG_H
 #define VIEWCONTACTDIALOG_H
 
+#include "Global.h"
+#include "SettingsDialog.h"
+
 #include <QDialog>
-#include <QValidator>
 #include <QSqlQueryModel>
 #include <QTableView>
-#include <QTextEdit>
 #include <QList>
-#include <QMap>
 #include <QWidget>
 #include <QLabel>
 
@@ -36,23 +36,27 @@ protected slots:
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
+    void deleteObjects();
 
 private:
     Ui::ViewContactDialog *ui;
-    QSqlQuery *query;
+    SettingsDialog *settingsDialog;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QValidator *validator;
     QString updateID;
     QString uniqueid;
+    QString number;
+    QString my_number;
+    int count2 = 1;
     QString contact_number;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    QWidget* loadNote(int &);
+    QWidget* loadNote();
     QList<QWidget*> widgets;
     QList<QLabel*> notes;
 };

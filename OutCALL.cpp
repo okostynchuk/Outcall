@@ -168,7 +168,6 @@ void OutCall::onMessageReceived(const QString &message)
 
 void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
 {
-
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
