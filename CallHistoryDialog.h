@@ -49,6 +49,9 @@ protected slots:
     bool checkNumber(QString &);
     void onUpdate();
     void deleteObjects();
+    void deleteMissedObjects();
+    void deleteReceivedObjects();
+    void deletePlacedObjects();
     void editContact(QString &);
     void editOrgContact(QString &);
     void showEvent(QShowEvent *);
@@ -75,14 +78,19 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
-    QWidget* loadNote(int &);
     QString number;
     QString from;
+    QString my_number;
     QString uniqueid;
     QString callerNum;
     int missed_count = 0;
     QString state_call;
-    QList<QWidget*> widgets;
+    QWidget* loadMissedNote();
+    QWidget* loadReceivedNote();
+    QWidget* loadPlacedNote();
+    QList<QWidget*> widgetsMissed;
+    QList<QWidget*> widgetsReceived;
+    QList<QWidget*> widgetsPlaced;
     QList<QLabel*> notes;
 };
 

@@ -2,12 +2,20 @@
 #define VIEWORGCONTACTDIALOG_H
 
 #include "ViewContactDialog.h"
+#include "SettingsDialog.h"
+#include "Global.h"
 
 #include <QDialog>
 #include <QValidator>
 #include <QHeaderView>
 #include <QSqlQueryModel>
 #include <QScrollBar>
+#include <QTableView>
+#include <QTextEdit>
+#include <QList>
+#include <QMap>
+#include <QWidget>
+#include <QLabel>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -40,15 +48,27 @@ protected slots:
     void onSectionClicked (int logicalIndex);
     void onSortingSectionClicked (int logicalIndex);
     void clearEditText();
+    void loadMissedCalls();
+    void loadReceivedCalls();
+    void loadPlacedCalls();
+    void deleteObjects();
 
 private:
     Ui::ViewOrgContactDialog *ui;
+    SettingsDialog *settingsDialog;
+    QSqlQuery *query;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
     QValidator *validator;
     QHeaderView *m_horiz_header;
     QHeaderView *m_horiz_header1;
     QString updateID;
+    QString number;
+    QString my_number;
+    QString uniqueid;
+    int count2 = 1;
+    QString contact_number;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;
@@ -61,6 +81,9 @@ private:
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+    QWidget* loadNote(int &);
+    QList<QWidget*> widgets;
+    QList<QLabel*> notes;
 
 };
 
