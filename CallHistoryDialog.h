@@ -79,7 +79,7 @@ private:
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
     QString number;
-    QString from;
+    //QString from;
     QString my_number;
     QString uniqueid;
     QString callerNum;

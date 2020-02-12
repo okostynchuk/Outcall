@@ -4,6 +4,7 @@
 #include <PlaceCallDialog.h>
 
 #include <QDialog>
+#include <QString>
 #include <QValidator>
 #include <QEvent>
 
@@ -24,6 +25,9 @@ public:
 
 public slots:
     bool eventFilter(QObject*, QEvent*event);
+
+signals:
+    void sendNumber(QString &);
 
 private:
     Ui::ChooseNumber *ui;

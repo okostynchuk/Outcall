@@ -1,6 +1,8 @@
 #include "CallHistoryDialog.h"
 #include "ui_callhistorydialog.h"
 #include "SettingsDialog.h"
+#include "Global.h"
+#include "AsteriskManager.h"
 
 #include <QMessageBox>
 #include <QWidget>
@@ -155,8 +157,8 @@ void CallHistoryDialog::onCallClicked()
 {
     QString from = my_number;
     QString to = number;
-    QString protocol = "PJSIP";
-    g_pAsteriskManager->originateCall(to, from, protocol, to);
+    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
 bool CallHistoryDialog::checkNumber(QString &number)
