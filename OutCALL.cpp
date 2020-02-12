@@ -310,4 +310,3 @@ void OutCall::show()
 {
     m_systemTryIcon->show();
 }
-

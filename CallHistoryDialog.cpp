@@ -42,7 +42,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     loadReceivedCalls();
     loadPlacedCalls();
 
-
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
@@ -170,7 +169,6 @@ bool CallHistoryDialog::checkNumber(QString &number)
     query.next();
     if(query.value(0) != 0) return false;
     else return true;
-
 }
 
 void CallHistoryDialog::editContact(QString &number)
