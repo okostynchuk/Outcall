@@ -48,26 +48,17 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 {
     QString updateID = query1->data(query1->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
-    if (query2->data(query2->index(row, 0)).toString() == "person")
+    if (query2->data(query2->index(row, 0)).toString() == "person" || query2->data(query2->index(row, 0)).toString() == "org")
     {
-         close();
          chooseNumber = new ChooseNumber;
          chooseNumber->setValuesNumber(updateID);
+         connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
          chooseNumber->exec();
          chooseNumber->deleteLater();
-         //closeevent
-    }
-    else
-    {
-        close();
-        chooseNumber = new ChooseNumber;
-        chooseNumber->setValuesNumber(updateID);
-        chooseNumber->exec();
-        chooseNumber->deleteLater();
     }
 }
 
-void PlaceCallDialog::getValuesNumber(const QString &number)
+void PlaceCallDialog::receiveNumber(QString &number)
 {
     ui->phoneLine->setText(number);
 }
@@ -113,13 +104,13 @@ void PlaceCallDialog::onComboBoxSelected()
 void PlaceCallDialog::on_lineEdit_returnPressed()
 {
     update = "filter";
-    QComboBox::AdjustToContents;
+    ui->phoneLine->clear();
 
     if (QString(ui->lineEdit->text()).isEmpty())
     {
-        modelNull();
         ui->lineEdit_2->clear();
         ui->lineEdit_2->hide();
+        return;
     }
     else if(ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
@@ -134,7 +125,6 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
         QString entry_phone = ui->lineEdit->text();
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
-
         onUpdate();
     }
     else if(ui->comboBox->currentText() == "Поиск сотрудников по организации")
@@ -170,6 +160,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 }
 
 void PlaceCallDialog::clearEditText(){
+    ui->phoneLine->clear();
     ui->lineEdit->clear();
     ui->lineEdit_2->hide();
 }
@@ -177,6 +168,7 @@ void PlaceCallDialog::clearEditText(){
 void PlaceCallDialog::show()
 {
     QDialog::show();
+    ui->phoneLine->clear();
     modelNull();
 }
 
