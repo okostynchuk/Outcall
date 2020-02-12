@@ -1,4 +1,3 @@
-
 #ifndef CONTACTSDIALOG_H
 #define CONTACTSDIALOG_H
 
@@ -8,6 +7,7 @@
 #include "EditOrgContactDialog.h"
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
+//#include "CallHistoryDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -16,7 +16,7 @@
 #include <QLabel>
 #include <QTableView>
 #include <QScrollBar>
-#include <QTimer>
+#include <QMouseEvent>
 
 namespace Ui {
 class ContactsDialog;
@@ -38,17 +38,17 @@ protected slots:
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
-    void onEdit(const QModelIndex &);
+    void getID(const QModelIndex &);
+    void onEdit();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &);
     void onSectionClicked(int);
-    void onSortingSectionClicked(int);
     void clearEditText();
 
 private:
     Ui::ContactsDialog *ui;
-    QSqlQueryModel *query1;    
+    QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
@@ -56,16 +56,21 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
+    //CallHistoryDialog *callHistoryDialog;
     QHeaderView *m_horiz_header;
     QWidget* addImageLabel(int &);
     QString update;
+    QString updateID;
+    QString updateType;
+    QString entry_name;
+    QString entry_phone;
+    QString entry_comment;
+    bool filter;
     int valueV;
     int valueH;
-    QTimer timer;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;
-
 };
 
 #endif // CONTACTSDIALOG_H
