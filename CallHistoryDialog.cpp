@@ -159,7 +159,7 @@ void CallHistoryDialog::onCallClicked()
     QString from = my_number;
     QString to = number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
-    g_pAsteriskManager->originateCall(to, from, protocol, to);
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
 bool CallHistoryDialog::checkNumber(QString &number)
