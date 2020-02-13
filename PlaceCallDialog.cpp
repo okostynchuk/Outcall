@@ -33,6 +33,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     query2 = new QSqlQueryModel;
 
     ui->lineEdit_2->hide();
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     onComboBoxSelected();
 }
@@ -63,7 +65,8 @@ void PlaceCallDialog::receiveNumber(QString &number)
     ui->phoneLine->setText(number);
 }
 
-void PlaceCallDialog::modelNull(){
+void PlaceCallDialog::modelNull()
+{
     ui->tableView->setModel(NULL);
     ui->lineEdit->clear();
 }
@@ -159,7 +162,8 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     }
 }
 
-void PlaceCallDialog::clearEditText(){
+void PlaceCallDialog::clearEditText()
+{
     ui->phoneLine->clear();
     ui->lineEdit->clear();
     ui->lineEdit_2->hide();

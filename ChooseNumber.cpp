@@ -84,6 +84,31 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     fourthPassNumber = ui->FourthNumber->text();
     fifthPassNumber = ui->FifthNumber->text();
 
+    if (ui->SecondNumber->text().isEmpty())
+    {
+        ui->SecondNumber->hide(); ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
+        ui->label_7->hide(); ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
+        QWidget::setFixedHeight(70);
+    }
+    else if (ui->ThirdNumber->text().isEmpty())
+    {
+        ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
+        ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
+        QWidget::setFixedHeight(100);
+    }
+    else if (ui->FourthNumber->text().isEmpty())
+    {
+        ui->FourthNumber->hide(); ui->FifthNumber->hide();
+        ui->label_18->hide(); ui->label_19->hide();
+        QWidget::setFixedHeight(130);
+    }
+    else if (ui->FifthNumber->text().isEmpty())
+    {
+        ui->FifthNumber->hide();
+        ui->label_19->hide();
+        QWidget::setFixedHeight(160);
+    }
+
     if(target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
     {
         if(event->type() == QEvent::MouseButtonPress)
@@ -93,12 +118,6 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             return true;
         } else { return false;}
     }
-    else if (ui->SecondNumber->text().isEmpty() && ui->ThirdNumber->text().isEmpty() && ui->FourthNumber->text().isEmpty() && ui->FifthNumber->text().isEmpty())
-        {
-        ui->SecondNumber->hide(); ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
-        ui->label_7->hide(); ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
-        QWidget::setFixedHeight(70);
-        }
 
     if(target == ui->SecondNumber && !ui->SecondNumber->text().isEmpty())
     {
