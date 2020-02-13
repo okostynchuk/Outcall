@@ -14,7 +14,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    ui->tableView->setSortingEnabled(false);
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
     m_horiz_header = ui->tableView->horizontalHeader();
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
@@ -45,8 +45,10 @@ void ViewOrgContactDialog::deleteObjects()
     {
         queries[i]->deleteLater();
     }
+    qDeleteAll(notes);
     widgets.clear();
     queries.clear();
+    notes.clear();
 }
 
 void ViewOrgContactDialog::clearEditText()

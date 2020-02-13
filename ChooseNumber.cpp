@@ -35,16 +35,16 @@ void ChooseNumber::setValuesNumber(QString &i)
     QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
-    query.next();
-    firstNumber = query.value(0).toString();
-    query.next();
-    secondNumber = query.value(0).toString();
-    query.next();
-    thirdNumber = query.value(0).toString();
-    query.next();
-    fourthNumber = query.value(0).toString();
-    query.next();
-    fifthNumber = query.value(0).toString();
+    if(query.next())
+        firstNumber = query.value(0).toString();
+    if(query.next())
+        secondNumber = query.value(0).toString();
+    if(query.next())
+        thirdNumber = query.value(0).toString();
+    if(query.next())
+        fourthNumber = query.value(0).toString();
+    if(query.next())
+        fifthNumber = query.value(0).toString();
     query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
     query.exec();
     query.next();
@@ -88,11 +88,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
-            placeCallDialog = new PlaceCallDialog;
-            placeCallDialog->getValuesNumber(firstPassNumber);
-            placeCallDialog->exec();
-            placeCallDialog->deleteLater();
+            emit sendNumber(QString(ui->FirstNumber->text()));
+            close();
             return true;
         } else { return false;}
     }
@@ -107,11 +104,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
-            placeCallDialog = new PlaceCallDialog;
-            placeCallDialog->getValuesNumber(secondPassNumber);
-            placeCallDialog->exec();
-            placeCallDialog->deleteLater();
+            emit sendNumber(QString(ui->SecondNumber->text()));
+            close();
             return true;
         } else { return false;}
     }
@@ -120,11 +114,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
-            placeCallDialog = new PlaceCallDialog;
-            placeCallDialog->getValuesNumber(thirdPassNumber);
-            placeCallDialog->exec();
-            placeCallDialog->deleteLater();
+            emit sendNumber(QString(ui->ThirdNumber->text()));
+            close();
             return true;
         } else { return false;}
     }
@@ -133,11 +124,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
-            placeCallDialog = new PlaceCallDialog;
-            placeCallDialog->getValuesNumber(fourthPassNumber);
-            placeCallDialog->exec();
-            placeCallDialog->deleteLater();
+            emit sendNumber(QString(ui->FourthNumber->text()));
+            close();
             return true;
         } else { return false;}
     }
@@ -146,12 +134,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            //close();
-            placeCallDialog = new PlaceCallDialog;
-            placeCallDialog->getValuesNumber(fifthPassNumber);
-            connect(placeCallDialog, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));
-            placeCallDialog->exec();
-            placeCallDialog->deleteLater();
+            emit sendNumber(QString(ui->FifthNumber->text()));
+            close();
             return true;
         } else{ return false;}
     }

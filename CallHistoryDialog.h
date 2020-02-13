@@ -79,7 +79,7 @@ private:
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
     QString number;
-    QString from;
+    //QString from;
     QString my_number;
     QString uniqueid;
     QString callerNum;
@@ -91,7 +91,9 @@ private:
     QList<QWidget*> widgetsMissed;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
-    QList<QLabel*> notes;
+    QList<QLabel*> notesMissed;
+    QList<QLabel*> notesReceived;
+    QList<QLabel*> notesPlaced;
 };
 
 #endif // CALLHISTORYDIALOG_H

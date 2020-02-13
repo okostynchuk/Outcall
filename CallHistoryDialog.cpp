@@ -1,6 +1,8 @@
 #include "CallHistoryDialog.h"
 #include "ui_callhistorydialog.h"
 #include "SettingsDialog.h"
+#include "Global.h"
+#include "AsteriskManager.h"
 
 #include <QMessageBox>
 #include <QWidget>
@@ -41,7 +43,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
-
 
 }
 
@@ -156,8 +157,8 @@ void CallHistoryDialog::onCallClicked()
 {
     QString from = my_number;
     QString to = number;
-    QString protocol = "PJSIP";
-    g_pAsteriskManager->originateCall(to, from, protocol, to);
+    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
 bool CallHistoryDialog::checkNumber(QString &number)
@@ -170,7 +171,6 @@ bool CallHistoryDialog::checkNumber(QString &number)
     query.next();
     if(query.value(0) != 0) return false;
     else return true;
-
 }
 
 void CallHistoryDialog::editContact(QString &number)
@@ -342,7 +342,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     missedNote->setText(query.value(0).toString());
 
     widgetsMissed.append(missedWgt);
-    notes.append(missedNote);
+    notesMissed.append(missedNote);
     return missedWgt;
 }
 
@@ -360,7 +360,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     receivedNote->setText(query.value(0).toString());
 
     widgetsReceived.append(receivedWgt);
-    notes.append(receivedNote);
+    notesReceived.append(receivedNote);
     return receivedWgt;
 }
 
@@ -378,7 +378,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     placedNote->setText(query.value(0).toString());
 
     widgetsPlaced.append(placedWgt);
-    notes.append(placedNote);
+    notesPlaced.append(placedNote);
     return placedWgt;
 }
 
@@ -397,6 +397,7 @@ void CallHistoryDialog::deleteMissedObjects()
         widgetsMissed[i]->deleteLater();
     }
     widgetsMissed.clear();
+    notesMissed.clear();
     delete query1;
 }
 
@@ -407,6 +408,7 @@ void CallHistoryDialog::deleteReceivedObjects()
         widgetsReceived[i]->deleteLater();
     }
     widgetsReceived.clear();
+    notesReceived.clear();
     delete query2;
 }
 
@@ -417,6 +419,7 @@ void CallHistoryDialog::deletePlacedObjects()
         widgetsPlaced[i]->deleteLater();
     }
     widgetsPlaced.clear();
+    notesPlaced.clear();
     delete query3;
 }
 
@@ -427,16 +430,19 @@ void CallHistoryDialog::deleteObjects()
         widgetsMissed[i]->deleteLater();
     }
     widgetsMissed.clear();
+    notesMissed.clear();
     for (int i = 0; i < widgetsReceived.size(); ++i)
     {
         widgetsReceived[i]->deleteLater();
     }
     widgetsReceived.clear();
+    notesReceived.clear();
     for (int i = 0; i < widgetsPlaced.size(); ++i)
     {
         widgetsPlaced[i]->deleteLater();
     }
     widgetsPlaced.clear();
+    notesPlaced.clear();
     delete query1;
     delete query2;
     delete query3;

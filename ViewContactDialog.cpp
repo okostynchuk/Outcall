@@ -36,8 +36,10 @@ void ViewContactDialog::deleteObjects()
     {
         queries[i]->deleteLater();
     }
+    qDeleteAll(notes);
     widgets.clear();
     queries.clear();
+    notes.clear();
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)
