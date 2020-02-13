@@ -354,6 +354,27 @@
               </item>
              </layout>
             </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="editButton">
+              <property name="minimumSize">
+               <size>
+                <width>125</width>
+                <height>27</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text">
+               <string>Редактировать</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>

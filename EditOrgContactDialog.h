@@ -7,7 +7,6 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QValidator>
-#include <QBoxLayout>
 #include <QScrollBar>
 #include <QStringList>
 #include <QHeaderView>
@@ -27,19 +26,21 @@ public:
     void setOrgValuesPopupWindow(QString &);
     ~EditOrgContactDialog();
 
+signals:
+    void sendData(bool);
+
 public slots:
     void recieveData(bool);
 
 protected slots:
     void onSave();
+    void getID(const QModelIndex &index);
     void onEdit();
     void onUpdate();
-    void deleteObjects();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);    
     void onSectionClicked (int logicalIndex);
-    void onSortingSectionClicked(int logicalIndex);
     void clearEditText();
     void closeEvent(QCloseEvent *);
 
@@ -53,25 +54,23 @@ private:
     QString fourthNumber;
     QString fifthNumber;
     QString number;
-    QWidget* createEditButton(int &);
     QSqlQueryModel *query_model;
     EditContactDialog *editContactDialog;
     ViewContactDialog *viewContactDialog;
     QHeaderView *m_horiz_header;
-    QHeaderView *m_horiz_header1;
     QScrollBar *verticalScroll;
     QScrollBar *horizontalScroll;
     QString update;
+    QString id;
+    QString entry_name;
+    QString entry_phone;
+    QString entry_comment;
+    QString sort;
     QStringList numbers;
     bool updateOnClose;
-    bool counter;
-    int counter1;
-    QList<QPushButton*> buttons;
-    QList<QWidget*> widgets;
-    QList<QBoxLayout*> layouts;
-
-signals:
-    void sendData(bool);
+    bool filter;
+    int valueV;
+    int valueH;
 };
 
 #endif // EDITORGCONTACTDIALOG_H

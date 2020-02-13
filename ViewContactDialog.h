@@ -42,8 +42,6 @@ private:
     Ui::ViewContactDialog *ui;
     SettingsDialog *settingsDialog;
     QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
     QValidator *validator;
     QString updateID;
     QString uniqueid;
@@ -59,6 +57,7 @@ private:
     QWidget* loadNote();
     QList<QWidget*> widgets;
     QList<QLabel*> notes;
+    QList<QSqlQueryModel*> queries;
 };
 
 #endif // VIEWCONTACTDIALOG_H

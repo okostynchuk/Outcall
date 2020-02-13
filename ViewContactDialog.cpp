@@ -21,9 +21,8 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
 ViewContactDialog::~ViewContactDialog()
 {
-    settingsDialog->deleteLater();
     deleteObjects();
-    delete query1;
+    delete settingsDialog;
     delete ui;
 }
 
@@ -33,7 +32,12 @@ void ViewContactDialog::deleteObjects()
     {
         widgets[i]->deleteLater();
     }
+    for (int i = 0; i < queries.size(); ++i)
+    {
+        queries[i]->deleteLater();
+    }
     widgets.clear();
+    queries.clear();
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)
@@ -172,6 +176,7 @@ void ViewContactDialog::loadMissedCalls()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    queries.append(query1);
 }
 
 void ViewContactDialog::loadReceivedCalls()
@@ -230,6 +235,7 @@ void ViewContactDialog::loadReceivedCalls()
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    queries.append(query1);
 }
 
 void ViewContactDialog::loadPlacedCalls()
@@ -289,6 +295,7 @@ void ViewContactDialog::loadPlacedCalls()
     ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    queries.append(query1);
 }
 
 QWidget* ViewContactDialog::loadNote()
