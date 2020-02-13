@@ -13,7 +13,7 @@
 #include <QTableView>
 #include <QLabel>
 #include <QTextBlock>
-#include <QClipboard>
+#include <QItemSelectionModel>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -37,13 +37,18 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberPlaced(const QModelIndex &)));
 
     ui->tabWidget->setCurrentIndex(0);
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
-
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
@@ -63,6 +68,12 @@ void CallHistoryDialog::getNumberPlaced(const QModelIndex &index)
 
 void CallHistoryDialog::onAddContact()
 {
+    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
     addContactDialog = new AddContactDialog;
 
     bool a = checkNumber(number);
@@ -77,6 +88,12 @@ void CallHistoryDialog::onAddContact()
 
 void CallHistoryDialog::onAddOrgContact()
 {
+    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
     addOrgContactDialog = new AddOrgContactDialog;
 
     bool a = checkNumber(number);
@@ -143,18 +160,18 @@ void CallHistoryDialog::receiveDataToPlaced()
 CallHistoryDialog::~CallHistoryDialog()
 {
     settingsDialog->deleteLater();
-    delete query;
     deleteObjects();
     delete ui;
 }
 
-void CallHistoryDialog::showEvent(QShowEvent *)
-{
-   //onUpdate();
-}
-
 void CallHistoryDialog::onCallClicked()
 {
+    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
     QString from = my_number;
     QString to = number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
@@ -396,6 +413,7 @@ void CallHistoryDialog::deleteMissedObjects()
     {
         widgetsMissed[i]->deleteLater();
     }
+    qDeleteAll(notesMissed);
     widgetsMissed.clear();
     notesMissed.clear();
     delete query1;
@@ -407,6 +425,7 @@ void CallHistoryDialog::deleteReceivedObjects()
     {
         widgetsReceived[i]->deleteLater();
     }
+    qDeleteAll(notesReceived);
     widgetsReceived.clear();
     notesReceived.clear();
     delete query2;
@@ -418,6 +437,7 @@ void CallHistoryDialog::deletePlacedObjects()
     {
         widgetsPlaced[i]->deleteLater();
     }
+    qDeleteAll(notesPlaced);
     widgetsPlaced.clear();
     notesPlaced.clear();
     delete query3;
@@ -429,12 +449,14 @@ void CallHistoryDialog::deleteObjects()
     {
         widgetsMissed[i]->deleteLater();
     }
+    qDeleteAll(notesMissed);
     widgetsMissed.clear();
     notesMissed.clear();
     for (int i = 0; i < widgetsReceived.size(); ++i)
     {
         widgetsReceived[i]->deleteLater();
     }
+    qDeleteAll(notesReceived);
     widgetsReceived.clear();
     notesReceived.clear();
     for (int i = 0; i < widgetsPlaced.size(); ++i)

@@ -54,7 +54,6 @@ protected slots:
     void deletePlacedObjects();
     void editContact(QString &);
     void editOrgContact(QString &);
-    void showEvent(QShowEvent *);
     QString getUpdateId(QString &);
     void addNoteToMissed(const QModelIndex &);
     void addNoteToReceived(const QModelIndex &);
@@ -68,7 +67,6 @@ protected slots:
 
 private:
     Ui::CallHistoryDialog *ui;
-    QSqlQuery *query;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
@@ -79,7 +77,6 @@ private:
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
     QString number;
-    //QString from;
     QString my_number;
     QString uniqueid;
     QString callerNum;

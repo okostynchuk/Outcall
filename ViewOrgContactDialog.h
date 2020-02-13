@@ -12,7 +12,6 @@
 #include <QList>
 #include <QWidget>
 
-
 namespace Ui {
 class ViewOrgContactDialog;
 }
@@ -39,10 +38,8 @@ protected slots:
     void onUpdate();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
-    void onTableClicked(const QModelIndex &index);
     void showCard(const QModelIndex &index);
     void onSectionClicked (int logicalIndex);
-    void onSortingSectionClicked (int logicalIndex);
     void clearEditText();
     void loadMissedCalls();
     void loadReceivedCalls();
@@ -54,11 +51,8 @@ private:
     SettingsDialog *settingsDialog;
     QSqlQuery *query;
     QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
     QValidator *validator;
     QHeaderView *m_horiz_header;
-    QHeaderView *m_horiz_header1;
     QString updateID;
     QString number;
     QString my_number;
@@ -70,17 +64,21 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    bool counter;
-    int counter1;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
-    QScrollBar *verticalScroll;
-    QScrollBar *horizontalScroll;
     QString update;
+    QString id;
+    bool filter;
+    int valueV;
+    int valueH;
+    QString entry_name;
+    QString entry_phone;
+    QString entry_comment;
+    QString sort;
     QWidget* loadNote();
     QList<QWidget*> widgets;
     QList<QLabel*> notes;
-
+    QList<QSqlQueryModel*> queries;
 };
 
 #endif // VIEWORGCONTACTDIALOG_H

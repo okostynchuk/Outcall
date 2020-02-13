@@ -7,7 +7,6 @@
 #include "EditOrgContactDialog.h"
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
-//#include "CallHistoryDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -15,7 +14,6 @@
 #include <QBoxLayout>
 #include <QTableView>
 #include <QScrollBar>
-#include <QMouseEvent>
 
 namespace Ui {
 class ContactsDialog;
@@ -55,7 +53,6 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-    //CallHistoryDialog *callHistoryDialog;
     QHeaderView *m_horiz_header;
     QWidget* addImageLabel(int &);
     QString update;
@@ -64,6 +61,7 @@ private:
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
+    QString sort;
     bool filter;
     int valueV;
     int valueH;

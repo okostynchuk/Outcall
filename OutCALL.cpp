@@ -34,7 +34,6 @@ OutCall::OutCall() :
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
 
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
-    connect(g_pAsteriskManager, &AsteriskManager::callDeteceted,        this, &OutCall::onCallDetected);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
     connect(g_pAsteriskManager, &AsteriskManager::error,                this, &OutCall::displayError);
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
@@ -164,10 +163,6 @@ void OutCall::onMessageReceived(const QString &message)
 {
     if (m_debugInfoDialog)
         m_debugInfoDialog->updateDebug(message);
-}
-
-void OutCall::onCallDetected(const QMap<QString, QVariant> &call, AsteriskManager::CallState state)
-{
 }
 
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
