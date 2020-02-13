@@ -131,7 +131,7 @@ void AddOrgContactDialog::onSave()
         else
         {
             query.exec();
-            qint32 id = query.lastInsertId().toInt();
+            int id = query.lastInsertId().toInt();
             QString firstNum = QString(ui->FirstNumber->text());
             QString secondNum = QString(ui->SecondNumber->text());
             QString thirdNum = QString(ui->ThirdNumber->text());
