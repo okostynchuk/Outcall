@@ -29,7 +29,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
 
-    ui->tableView->setSortingEnabled(false);
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
     m_horiz_header = ui->tableView->horizontalHeader();
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);

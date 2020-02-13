@@ -491,7 +491,7 @@ background-color: #fffff0;
                <string notr="true"/>
               </property>
               <property name="sortingEnabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
