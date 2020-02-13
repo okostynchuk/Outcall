@@ -34,6 +34,7 @@ void ViewContactDialog::deleteObjects()
         widgets[i]->deleteLater();
     }
     widgets.clear();
+    notes.clear();
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)

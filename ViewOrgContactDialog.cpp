@@ -53,6 +53,7 @@ void ViewOrgContactDialog::deleteObjects()
         widgets[i]->deleteLater();
     }
     widgets.clear();
+    notes.clear();
 
 
 }

@@ -514,7 +514,7 @@ background-color: #fffff0;
          </property>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
-           <string>Missed</string>
+           <string>Пропущенные</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="0" column="0">
@@ -528,7 +528,7 @@ background-color: #fffff0;
          </widget>
          <widget class="QWidget" name="tab_8">
           <attribute name="title">
-           <string>Recieved</string>
+           <string>Вохядищие</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
@@ -542,7 +542,7 @@ background-color: #fffff0;
          </widget>
          <widget class="QWidget" name="tab_9">
           <attribute name="title">
-           <string>Placed</string>
+           <string>Исходящие</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_12">
            <item row="0" column="0">

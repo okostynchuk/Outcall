@@ -455,10 +455,10 @@ background-color: #fffff0;
          </property>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
-           <string>Missed</string>
+           <string>Пропущенные</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_9">
-           <item>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="0">
             <widget class="QTableView" name="tableView">
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
@@ -469,7 +469,7 @@ background-color: #fffff0;
          </widget>
          <widget class="QWidget" name="tab_8">
           <attribute name="title">
-           <string>Received</string>
+           <string>Входящие</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
@@ -486,7 +486,7 @@ background-color: #fffff0;
          </widget>
          <widget class="QWidget" name="tab_9">
           <attribute name="title">
-           <string>Placed</string>
+           <string>Исходящие</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_11">
            <item>
