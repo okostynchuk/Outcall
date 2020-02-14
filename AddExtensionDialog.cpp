@@ -45,7 +45,7 @@ void AddExtensionDialog::setProtocol(const QString &protocol)
 void AddExtensionDialog::onAccept()
 {
     if (ui->extenLine->text().isEmpty())
-        MsgBoxWarning(tr("Invalid phone number!"));
+        MsgBoxWarning(tr("Неверный номер!"));
     else
         QDialog::accept();
 }

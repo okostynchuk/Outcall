@@ -110,53 +110,58 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     }
 
     if(target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
-    {
-        if(event->type() == QEvent::MouseButtonPress)
         {
-            emit sendNumber(QString(ui->FirstNumber->text()));
-            close();
-            return true;
-        } else { return false;}
-    }
+            if(event->type() == QEvent::MouseButtonPress)
+            {
+                QString numb = ui->FirstNumber->text();
+                emit sendNumber(numb);
+                close();
+                return true;
+            } else { return false;}
+        }
 
-    if(target == ui->SecondNumber && !ui->SecondNumber->text().isEmpty())
-    {
-        if(event->type() == QEvent::MouseButtonPress)
+        if(target == ui->SecondNumber && !ui->SecondNumber->text().isEmpty())
         {
-            emit sendNumber(QString(ui->SecondNumber->text()));
-            close();
-            return true;
-        } else { return false;}
-    }
+            if(event->type() == QEvent::MouseButtonPress)
+            {
+                QString numb = ui->SecondNumber->text();
+                emit sendNumber(numb);
+                close();
+                return true;
+            } else { return false;}
+        }
 
-    if(target == ui->ThirdNumber && !ui->ThirdNumber->text().isEmpty())
-    {
-        if(event->type() == QEvent::MouseButtonPress)
+        if(target == ui->ThirdNumber && !ui->ThirdNumber->text().isEmpty())
         {
-            emit sendNumber(QString(ui->ThirdNumber->text()));
-            close();
-            return true;
-        } else { return false;}
-    }
+            if(event->type() == QEvent::MouseButtonPress)
+            {
+                QString numb = ui->ThirdNumber->text();
+                emit sendNumber(numb);
+                close();
+                return true;
+            } else { return false;}
+        }
 
-    if(target == ui->FourthNumber && !ui->FourthNumber->text().isEmpty())
-    {
-        if(event->type() == QEvent::MouseButtonPress)
+        if(target == ui->FourthNumber && !ui->FourthNumber->text().isEmpty())
         {
-            emit sendNumber(QString(ui->FourthNumber->text()));
-            close();
-            return true;
-        } else { return false;}
-    }
+            if(event->type() == QEvent::MouseButtonPress)
+            {
+                QString numb = ui->FourthNumber->text();
+                emit sendNumber(numb);
+                close();
+                return true;
+            } else { return false;}
+        }
 
-    if(target == ui->FifthNumber && !ui->FifthNumber->text().isEmpty())
-    {
-        if(event->type() == QEvent::MouseButtonPress)
+        if(target == ui->FifthNumber && !ui->FifthNumber->text().isEmpty())
         {
-            emit sendNumber(QString(ui->FifthNumber->text()));
-            close();
-            return true;
-        } else{ return false;}
-    }
-    return QWidget::eventFilter(target, event);
+            if(event->type() == QEvent::MouseButtonPress)
+            {
+                QString numb = ui->FifthNumber->text();
+                emit sendNumber(numb);
+                close();
+                return true;
+            } else{ return false;}
+        }
+        return QWidget::eventFilter(target, event);
 }

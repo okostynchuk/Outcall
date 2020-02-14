@@ -9,6 +9,8 @@
 #include <QDir>
 #include <QTextCodec>
 #include <QSqlQuery>
+#include <QTranslator>
+#include <QLibraryInfo>
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +38,10 @@ int main(int argc, char *argv[])
     dbAsterisk.open();
 
     QApplication app(argc, argv);
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+                QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
     app.setApplicationVersion("2.0");

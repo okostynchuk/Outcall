@@ -158,13 +158,13 @@ QString SettingsDialog::getExtension()
         const QString extension = extensions.at(i);
         return extension;
     }
-    return true;/*?*/
+    return NULL;
 }
 
 void SettingsDialog::onAddButtonClicked()
 {
     AddExtensionDialog addExtensionDialog;
-    addExtensionDialog.setWindowTitle("Add Extension");
+    addExtensionDialog.setWindowTitle("Добавление");
     if(addExtensionDialog.exec())
     {
         QString extension = addExtensionDialog.getExtension();
@@ -187,7 +187,7 @@ void SettingsDialog::onRemoveButtonClicked()
     {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, tr(APP_NAME),
-                                      tr("Are you sure you want to delete the selected items ?"),
+                                      tr("Вы уверены, что хотите удалить выбранные элементы?"),
                                       QMessageBox::Yes|QMessageBox::No);
 
         if (reply == QMessageBox::No)
@@ -204,7 +204,7 @@ void SettingsDialog::onRemoveButtonClicked()
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
-    editExtensionDialog.setWindowTitle("Edit Extension");
+    editExtensionDialog.setWindowTitle("Редактирование");
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
 
     if (selectedItems.size())

@@ -7,8 +7,7 @@
 QT       += core gui
 QT       += network
 QT       += sql
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += widgets
 
 win32:{
     VERSION = 1.0.0
@@ -18,9 +17,6 @@ win32:{
 
 TARGET = OutCALL
 TEMPLATE = app
-
-LIBS +=	Shell32.lib \
-        Advapi32.lib \
 
 SOURCES += main.cpp\
     DebugInfoDialog.cpp \

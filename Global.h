@@ -5,7 +5,7 @@
 #define LOG_WARNING				1
 #define LOG_INFORMATION			2
 #define APP_NAME                "OutCALL"
-#define ORGANIZATION_NAME       "Bicom Systems"
+#define ORGANIZATION_NAME       "Team Nonames"
 
 #include <QString>
 #include <QVariant>

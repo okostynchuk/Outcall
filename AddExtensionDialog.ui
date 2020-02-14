@@ -24,7 +24,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Расширение:</string>
+      <string>Номер:</string>
      </property>
     </widget>
    </item>
@@ -40,6 +40,9 @@
    </item>
    <item>
     <widget class="QComboBox" name="protocol">
+     <property name="currentText">
+      <string>PJSIP</string>
+     </property>
      <item>
       <property name="text">
        <string>SIP</string>
