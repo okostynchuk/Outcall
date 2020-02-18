@@ -11,16 +11,10 @@
 #include <QSqlQuery>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
-    QStringList paths = QCoreApplication::libraryPaths();
-    paths.append(".");
-    paths.append("imageformats");
-    paths.append("platforms");
-    paths.append("sqldrivers");
-    QCoreApplication::setLibraryPaths(paths);
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("192.168.0.30");
     db.setDatabaseName("test");
@@ -38,6 +32,23 @@ int main(int argc, char *argv[])
     dbAsterisk.open();
 
     QApplication app(argc, argv);
+
+    if (!db.open() && !dbAsterisk.open())
+    {
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базам данных!", QMessageBox::Ok);
+        app.closeAllWindows();
+    }
+    else if (!db.open())
+    {
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе контактов!", QMessageBox::Ok);
+        app.closeAllWindows();
+    }
+    else if (!dbAsterisk.open())
+    {
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе истории звонков!", QMessageBox::Ok);
+        app.closeAllWindows();
+    }
+
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(),
                 QLibraryInfo::location(QLibraryInfo::TranslationsPath));
