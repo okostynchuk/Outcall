@@ -15,6 +15,14 @@
 
 int main(int argc, char *argv[])
 {
+
+    QStringList paths = QCoreApplication::libraryPaths();
+    paths.append(".");
+    paths.append("imageformats");
+    paths.append("platforms");
+    paths.append("sqldrivers");
+    QCoreApplication::setLibraryPaths(paths);
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("192.168.0.30");
     db.setDatabaseName("test");

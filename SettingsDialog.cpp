@@ -30,6 +30,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
+    userName = qgetenv("USERNAME");
+    path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
 }
 
@@ -74,7 +76,7 @@ void SettingsDialog::loadSettings()
     ui->port->setText(global::getSettingsValue("port", "settings", "5038").toString());
 
     // Load General SettingsDialog
-    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", true).toBool());
+    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
     bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
@@ -126,16 +128,10 @@ void SettingsDialog::applyPressed()
 
 void SettingsDialog::applySettings()
 {
-    QSettings startup("Microsoft", "Windows");
     if(ui->autoStartBox->isChecked())
-    {
-        QString path = g_AppDirPath;
-        startup.setValue("/CurrentVersion/Run/OutCALL", path.replace("/", "\\") + QString("\\%1.exe").arg(APP_NAME));
-    }
+       f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/OutCALL.lnk");
     else
-    {
-        startup.remove("/CurrentVersion/Run/OutCALL");
-    }
+        f.remove("C:/Users/" + userName + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/OutCALL.lnk");
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
     g_Notifier->emitSettingsChanged();

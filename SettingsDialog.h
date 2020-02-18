@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QFile>
 
 class QAbstractButton;
 class QTcpSocket;
@@ -38,6 +39,9 @@ private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
+    QFile f = nullptr;
+    QString userName;
+    QString path;
 
 };
 
