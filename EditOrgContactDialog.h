@@ -41,8 +41,11 @@ protected slots:
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);    
     void onSectionClicked (int logicalIndex);
-    void clearEditText();
+    void searchFunction();
     void closeEvent(QCloseEvent *);
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::EditOrgContactDialog *ui;

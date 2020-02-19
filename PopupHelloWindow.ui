@@ -67,7 +67,7 @@ border: 4px solid white;
   <widget class="QLabel" name="lblText">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>102</x>
      <y>70</y>
      <width>341</width>
      <height>171</height>
@@ -98,7 +98,7 @@ text-align: center;
     <locale language="Russian" country="Russia"/>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
