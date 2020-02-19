@@ -683,7 +683,8 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
     result =  "Action: Originate\r\n";
     result += "Channel: "       + channel       + "\r\n";
     result += "Exten: "         + exten         + "\r\n";
-    result += "Context: "       + context       + "\r\n";
+    //result += "Context: "       + context       + "\r\n";
+    result += "Context: DLPN_DialPlan" + from + "\r\n";
     result += "Priority: 1\r\n";
     result += "CallerID: "      + callerID      + "\r\n";
 

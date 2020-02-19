@@ -46,11 +46,10 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
-    connect(ui->editButton, &QAbstractButton::clicked, this, &ContactsDialog::onEdit);
+    //connect(ui->editButton, &QAbstractButton::clicked, this, &ContactsDialog::onEdit);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getID(const QModelIndex &)));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ContactsDialog::clearEditText);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
@@ -74,11 +73,6 @@ ContactsDialog::~ContactsDialog()
     delete query1;
     delete query2;
     delete ui;
-}
-
-void ContactsDialog::clearEditText()
-{
-    ui->lineEdit->clear();
 }
 
 void ContactsDialog::recieveData(bool updating)
@@ -136,13 +130,6 @@ void ContactsDialog::deleteObjects()
 
 void ContactsDialog::onUpdate()
 {
-    QMetaMethod metaMethod = sender()->metaObject()->method(senderSignalIndex());
-    if (metaMethod.name() == "clicked")
-    {
-        update = "default";
-        filter = false;
-    }
-
     if (update == "default" && filter == false)
     {
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
@@ -476,7 +463,7 @@ void ContactsDialog::onSectionClicked(int logicalIndex)
     }
 }
 
-void ContactsDialog::on_lineEdit_returnPressed()
+void ContactsDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
         return;
@@ -509,4 +496,14 @@ void ContactsDialog::on_lineEdit_returnPressed()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
         onUpdate();
     }
+}
+
+void ContactsDialog::on_lineEdit_returnPressed()
+{
+    searchFunction();
+}
+
+void ContactsDialog::on_searchButton_clicked()
+{
+    searchFunction();
 }

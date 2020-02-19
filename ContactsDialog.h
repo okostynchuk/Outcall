@@ -38,10 +38,13 @@ protected slots:
     void getID(const QModelIndex &);
     void onEdit();
     void onComboBoxSelected();
-    void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &);
     void onSectionClicked(int);
-    void clearEditText();
+    void on_searchButton_clicked();
+    void searchFunction();
+
+private slots:
+    void on_lineEdit_returnPressed();
 
 private:
     Ui::ContactsDialog *ui;
@@ -61,6 +64,9 @@ private:
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
+    QString entry_name1;
+    QString entry_phone1;
+    QString entry_comment1;
     QString sort;
     bool filter;
     int valueV;
