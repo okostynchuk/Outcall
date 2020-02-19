@@ -65,6 +65,9 @@ protected slots:
     void getNumberReceived(const QModelIndex &index);
     void getNumberPlaced(const QModelIndex &index);
 
+protected:
+   void CallHistoryDialog::showEvent(QShowEvent *);
+
 private:
     Ui::CallHistoryDialog *ui;
     QSqlQueryModel *query1;

@@ -2,6 +2,7 @@
 #define PLACECALLDIALOG_H
 
 #include "ChooseNumber.h"
+#include "SettingsDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -51,6 +52,8 @@ private:
     QString number;
     ChooseNumber *chooseNumber;
     PlaceCallDialog *placeCallDialog;
+    SettingsDialog *settingsDialog;
+    QString my_number;
 };
 
 #endif // PLACECALLDIALOG_H

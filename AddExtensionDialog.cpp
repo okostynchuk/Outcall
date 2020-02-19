@@ -2,6 +2,8 @@
 #include "Global.h"
 #include "ui_addextensiondialog.h"
 
+#include <QDebug>
+
 AddExtensionDialog::AddExtensionDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddExtensionDialog)
@@ -47,5 +49,9 @@ void AddExtensionDialog::onAccept()
     if (ui->extenLine->text().isEmpty())
         MsgBoxWarning(tr("Неверный номер!"));
     else
-        QDialog::accept();
+    {
+         QDialog::accept();
+         emit addExten();
+    }
+
 }

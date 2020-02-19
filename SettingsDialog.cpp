@@ -33,6 +33,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     userName = qgetenv("USERNAME");
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
+
+    checkExten();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -64,6 +66,25 @@ void SettingsDialog::saveSettings()
         QString protocol = item->text(1);
         global::setSettingsValue(extension, protocol, "extensions");
     }
+
+    // Save Databases SettingsDialog
+        //Contact Base
+    global::setSettingsValue("hostName_1", ui->hostName_1->text(), "settings");
+    global::setSettingsValue("databaseName_1",   ui->databaseName_1->text(),   "settings");
+    global::setSettingsValue("userName_1",   ui->userName_1->text(),   "settings");
+    QByteArray ba1;
+    ba1.append(ui->password_1->text());
+    global::setSettingsValue("password-1", ba.toBase64(),            "settings");
+    global::setSettingsValue("port-1", ui->port_1->text().toUInt(),    "settings");
+
+        //Calls Base
+    global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
+    global::setSettingsValue("databaseName_2",   ui->databaseName_2->text(),   "settings");
+    global::setSettingsValue("userName_2",   ui->userName_2->text(),   "settings");
+    QByteArray ba2;
+    ba2.append(ui->password_2->text());
+    global::setSettingsValue("password-2", ba.toBase64(),            "settings");
+    global::setSettingsValue("port-2", ui->port_2->text().toUInt(),    "settings");
 }
 
 void SettingsDialog::loadSettings()
@@ -74,6 +95,23 @@ void SettingsDialog::loadSettings()
     QString ba(QByteArray::fromBase64(password));
     ui->password->setText(ba);
     ui->port->setText(global::getSettingsValue("port", "settings", "5038").toString());
+
+    // Load Databases
+    ui->hostName_1->setText(global::getSettingsValue("hostName_1", "settings").toString());
+    ui->databaseName_1->setText(global::getSettingsValue("databaseName_1", "settings").toString());
+    ui->userName_1->setText(global::getSettingsValue("userName_1", "settings").toString());
+    QByteArray password1((global::getSettingsValue("password_1", "settings").toByteArray()));
+    QString ba1(QByteArray::fromBase64(password1));
+    ui->password_1->setText(ba1);
+    ui->port_1->setText(global::getSettingsValue("port_1", "settings", "5038").toString());
+
+    ui->hostName_2->setText(global::getSettingsValue("hostName_2", "settings").toString());
+    ui->databaseName_2->setText(global::getSettingsValue("databaseName_2", "settings").toString());
+    ui->userName_2->setText(global::getSettingsValue("userName_2", "settings").toString());
+    QByteArray password2((global::getSettingsValue("password_2", "settings").toByteArray()));
+    QString ba2(QByteArray::fromBase64(password2));
+    ui->password_2->setText(ba2);
+    ui->port_2->setText(global::getSettingsValue("port_2", "settings", "5038").toString());
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
@@ -159,12 +197,13 @@ QString SettingsDialog::getExtension()
 
 void SettingsDialog::onAddButtonClicked()
 {
-    AddExtensionDialog addExtensionDialog;
-    addExtensionDialog.setWindowTitle("Добавление");
-    if(addExtensionDialog.exec())
+    m_addExtensionDialog = new AddExtensionDialog;
+    m_addExtensionDialog->setWindowTitle("Добавление");
+    if(m_addExtensionDialog->exec())
     {
-        QString extension = addExtensionDialog.getExtension();
-        QString protocol = addExtensionDialog.getProtocol();
+        ui->addButton->setEnabled(false);
+        QString extension = m_addExtensionDialog->getExtension();
+        QString protocol = m_addExtensionDialog->getProtocol();
 
         QTreeWidgetItem *extensionItem = new QTreeWidgetItem();
         extensionItem->setText(0, extension);
@@ -188,6 +227,9 @@ void SettingsDialog::onRemoveButtonClicked()
 
         if (reply == QMessageBox::No)
             return;
+
+        if (reply == QMessageBox::Yes)
+            ui->addButton->setEnabled(true);
 
         for (int i = 0; i < selectedItems.size(); ++i)
         {
@@ -226,3 +268,15 @@ void SettingsDialog::onEditButtonClicked()
 //****************************************************//
 //**********************Dialing rules*****************//
 //****************************************************//
+
+void SettingsDialog::checkExten()
+{
+    exten = getExtension();
+    if(exten!=0)
+        ui->addButton->setEnabled(false);
+    else
+    {
+        ui->addButton->setEnabled(true);
+    }
+
+}

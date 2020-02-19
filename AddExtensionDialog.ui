@@ -45,12 +45,12 @@
      </property>
      <item>
       <property name="text">
-       <string>SIP</string>
+       <string>PJSIP</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>PJSIP</string>
+       <string>SIP</string>
       </property>
      </item>
     </widget>
