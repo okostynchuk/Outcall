@@ -27,10 +27,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
-    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-
-    onComboBoxSelected();
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()

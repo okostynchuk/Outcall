@@ -73,7 +73,7 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
-void ContactsDialog::recieveData(bool updating)
+void ContactsDialog::receiveData(bool updating)
 {
     if (updating)
     {
