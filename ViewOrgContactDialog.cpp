@@ -17,8 +17,6 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
-    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::clearEditText);
 
     onComboBoxSelected();
 
@@ -57,11 +55,6 @@ void ViewOrgContactDialog::deleteObjects()
     widgets.clear();
     queries.clear();
     notes.clear();
-}
-
-void ViewOrgContactDialog::clearEditText()
-{
-    ui->lineEdit->clear();
 }
 
 void ViewOrgContactDialog::showCard(const QModelIndex &index)
@@ -312,42 +305,6 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
             }
             onUpdate();
         }
-    }
-}
-
-void ViewOrgContactDialog::on_lineEdit_returnPressed()
-{
-    if (ui->lineEdit->text().isEmpty())
-    {
-        update = "default";
-        filter = false;
-        onUpdate();
-    }
-
-    update = "default";
-    filter = true;
-    m_horiz_header->setSortIndicatorShown(false);
-    entry_name = "NULL";
-    entry_phone = "NULL";
-    entry_comment = "NULL";
-
-    if (ui->comboBox->currentText() == "Поиск по ФИО")
-    {
-        entry_name = ui->lineEdit->text();
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
-    {
-        entry_phone = ui->lineEdit->text();
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == "Поиск по заметке")
-    {
-        entry_comment = ui->lineEdit->text();
-        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-        onUpdate();
     }
 }
 
@@ -637,4 +594,50 @@ QWidget* ViewOrgContactDialog::loadNote()
     widgets.append(wgt);
     notes.append(note);
     return wgt;
+}
+
+void ViewOrgContactDialog::searchFunction()
+{
+    if (ui->lineEdit->text().isEmpty())
+    {
+        update = "default";
+        filter = false;
+        onUpdate();
+    }
+
+    update = "default";
+    filter = true;
+    m_horiz_header->setSortIndicatorShown(false);
+    entry_name = "NULL";
+    entry_phone = "NULL";
+    entry_comment = "NULL";
+
+    if (ui->comboBox->currentText() == "Поиск по ФИО")
+    {
+        entry_name = ui->lineEdit->text();
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
+        onUpdate();
+    }
+    else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
+    {
+        entry_phone = ui->lineEdit->text();
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
+        onUpdate();
+    }
+    else if (ui->comboBox->currentText() == "Поиск по заметке")
+    {
+        entry_comment = ui->lineEdit->text();
+        query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
+        onUpdate();
+    }
+}
+
+void ViewOrgContactDialog::on_pushButton_clicked()
+{
+    searchFunction();
+}
+
+void ViewOrgContactDialog::on_lineEdit_returnPressed()
+{
+    searchFunction();
 }

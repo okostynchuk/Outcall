@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QFile>
 
+#include <AddExtensionDialog.h>
+
 class QAbstractButton;
 class QTcpSocket;
 class AddExtensionDialog;
@@ -26,6 +28,9 @@ public:
     void show();
     QString getExtension();
 
+public slots:
+    void checkExten();
+
 protected:
     void handleButtonBox(QAbstractButton * button);
     void okPressed();
@@ -42,6 +47,7 @@ private:
     QFile f = nullptr;
     QString userName;
     QString path;
+    QString exten;
 
 };
 

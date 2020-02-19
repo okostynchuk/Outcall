@@ -48,7 +48,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ContactsDialog::clearEditText);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
@@ -74,12 +73,7 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
-void ContactsDialog::clearEditText()
-{
-    ui->lineEdit->clear();
-}
-
-void ContactsDialog::receiveData(bool updating)
+void ContactsDialog::recieveData(bool updating)
 {
     if (updating)
     {
@@ -136,13 +130,6 @@ void ContactsDialog::deleteObjects()
 
 void ContactsDialog::onUpdate()
 {
-    QMetaMethod metaMethod = sender()->metaObject()->method(senderSignalIndex());
-    if (metaMethod.name() == "clicked")
-    {
-        update = "default";
-        filter = false;
-    }
-
     if (update == "default" && filter == false)
     {
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
@@ -443,46 +430,8 @@ void ContactsDialog::onSectionClicked(int logicalIndex)
     }
 }
 
-void ContactsDialog::on_lineEdit_returnPressed()
+void ContactsDialog::searchFunction()
 {
-    sortFunction();
-}
-
-void ContactsDialog::on_pushButton_clicked()
-{
-    if (ui->lineEdit->text().isEmpty())
-        return;
-
-    update = "default";
-    m_horiz_header->setSortIndicatorShown(false);
-//    entry_name = "NULL";
-//    entry_phone = "NULL";
-//    entry_comment = "NULL";
-
-    if (ui->comboBox->currentText() == "Поиск по ФИО / названию")
-    {
-        entry_name = ui->lineEdit->text();
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
-    {
-        entry_phone = ui->lineEdit->text();
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == "Поиск по заметке")
-    {
-        entry_comment = ui->lineEdit->text();
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
-        onUpdate();
-    }
-}
-
-void ContactsDialog::sortFunction(){
     if (ui->lineEdit->text().isEmpty())
         return;
 
@@ -514,4 +463,14 @@ void ContactsDialog::sortFunction(){
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
         onUpdate();
     }
+}
+
+void ContactsDialog::on_lineEdit_returnPressed()
+{
+    searchFunction();
+}
+
+void ContactsDialog::on_searchButton_clicked()
+{
+    searchFunction();
 }

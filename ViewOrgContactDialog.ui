@@ -470,6 +470,33 @@ background-color: #fffff0;
                  </widget>
                 </item>
                 <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>27</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>45</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="text">
+                   <string>Поиск</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <spacer name="horizontalSpacer_2">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
@@ -538,7 +565,7 @@ background-color: #fffff0;
          </widget>
          <widget class="QWidget" name="tab_8">
           <attribute name="title">
-           <string>Вохядищие</string>
+           <string>Входящие</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>

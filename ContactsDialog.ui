@@ -110,7 +110,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="searchButton">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -163,11 +163,18 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
-             <string>←</string>
+             <string>◄</string>
             </property>
            </widget>
           </item>
@@ -184,6 +191,11 @@
               <width>40</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="focusPolicy">
              <enum>Qt::ClickFocus</enum>
@@ -216,11 +228,16 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
-             <string>→</string>
+             <string>►</string>
             </property>
            </widget>
           </item>

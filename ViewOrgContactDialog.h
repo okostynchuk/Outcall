@@ -47,11 +47,14 @@ protected slots:
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);
     void onSectionClicked (int logicalIndex);
-    void clearEditText();
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
     void deleteObjects();
+    void searchFunction();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::ViewOrgContactDialog *ui;

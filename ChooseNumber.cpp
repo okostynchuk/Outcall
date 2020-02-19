@@ -14,7 +14,6 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     this->setWindowTitle("Выбор номера");
 
-
     ui->FirstNumber->installEventFilter(this);
     ui->SecondNumber->installEventFilter(this);
     ui->ThirdNumber->installEventFilter(this);

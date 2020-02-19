@@ -28,6 +28,9 @@ protected slots:
 
 private:
     Ui::AddExtensionDialog *ui;
+
+signals:
+    void addExten();
 };
 
 #endif // ADDEXTENSIONDIALOG_H
