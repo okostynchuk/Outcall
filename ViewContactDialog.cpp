@@ -1,5 +1,4 @@
 #include "ViewContactDialog.h"
-#include "SettingsDialog.h"
 #include "ui_ViewContactDialog.h"
 
 #include <QSqlDatabase>
@@ -15,6 +14,8 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
+
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
 }
@@ -24,6 +25,22 @@ ViewContactDialog::~ViewContactDialog()
     deleteObjects();
     delete settingsDialog;
     delete ui;
+}
+
+void ViewContactDialog::receiveData(bool updating)
+{
+    if (updating)
+        emit sendData(true);
+}
+
+void ViewContactDialog::onEdit()
+{
+    destroy(true);
+    editContactDialog = new EditContactDialog;
+    editContactDialog->setValuesContacts(updateID);
+    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    editContactDialog->exec();
+    editContactDialog->deleteLater();
 }
 
 void ViewContactDialog::deleteObjects()

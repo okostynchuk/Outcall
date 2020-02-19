@@ -1,7 +1,5 @@
 #include "ViewOrgContactDialog.h"
 #include "ui_ViewOrgContactDialog.h"
-#include "ViewContactDialog.h"
-#include "SettingsDialog.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -19,6 +17,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::clearEditText);
 
     onComboBoxSelected();
@@ -33,6 +32,15 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
     delete settingsDialog;
     delete query_model;
     delete ui;
+}
+
+void ViewOrgContactDialog::receiveData(bool updating)
+{
+    if (updating)
+    {
+        emit sendData(true);
+        onUpdate();
+    }
 }
 
 void ViewOrgContactDialog::deleteObjects()
@@ -61,8 +69,19 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
     viewContactDialog = new ViewContactDialog;
     viewContactDialog->setValuesContacts(id);
+    connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     viewContactDialog->exec();
     viewContactDialog->deleteLater();
+}
+
+void ViewOrgContactDialog::onEdit()
+{
+    destroy(true);
+    editOrgContactDialog = new EditOrgContactDialog;
+    editOrgContactDialog->setOrgValuesContacts(updateID);
+    connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    editOrgContactDialog->exec();
+    editOrgContactDialog->deleteLater();
 }
 
 void ViewOrgContactDialog::onUpdate()
