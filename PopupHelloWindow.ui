@@ -54,6 +54,7 @@ color: white;
     <string notr="true">*{
 background-color: rgba(0, 0, 0, 190);
 border-radius: 15px;
+border: 4px solid white;
 }</string>
    </property>
    <property name="text">
