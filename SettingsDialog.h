@@ -40,6 +40,9 @@ protected:
     void onEditButtonClicked();
     void applySettings();
 
+protected slots:
+    void onComboBoxSelected();
+
 private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;

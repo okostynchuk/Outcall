@@ -86,6 +86,7 @@ FORMS    += \
 TRANSLATIONS = ukrainian.ts russian.ts english.ts
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    translation.qrc
 
 win32: RC_ICONS = $$PWD/images/outcall-logo.ico

@@ -357,11 +357,54 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Error</translation>
+        <translation type="vanished">Error</translation>
     </message>
     <message>
         <source>Выберите одну запись!</source>
-        <translation>Choose one element!</translation>
+        <translation type="vanished">Choose one element!</translation>
+    </message>
+</context>
+<context>
+    <name>DatabasesConnectDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Настойки базы контактов</source>
+        <translation>Set contacts database</translation>
+    </message>
+    <message>
+        <source>Имя хоста: </source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source>Имя базы данных:</source>
+        <translation>Database name:</translation>
+    </message>
+    <message>
+        <source>Имя пользователя:</source>
+        <translation>Username:</translation>
+    </message>
+    <message>
+        <source>Пароль:</source>
+        <translation>Password:</translation>
+    </message>
+    <message>
+        <source>Порт:</source>
+        <translation>Port:</translation>
+    </message>
+    <message>
+        <source>Настройки базы звонков</source>
+        <translation>Set call database</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -479,7 +522,7 @@
     </message>
     <message>
         <source>Контакт</source>
-        <translation>Contact</translation>
+        <translation type="vanished">Contact</translation>
     </message>
     <message>
         <source>Название организации*:</source>
@@ -539,23 +582,23 @@
     </message>
     <message>
         <source>Сотрудники</source>
-        <translation>Staff</translation>
+        <translation type="vanished">Staff</translation>
     </message>
     <message>
         <source>Выберите столбец поиска</source>
-        <translation>Choose search column</translation>
+        <translation type="vanished">Choose search column</translation>
     </message>
     <message>
         <source>Поиск по таблице</source>
-        <translation>Table search</translation>
+        <translation type="vanished">Table search</translation>
     </message>
     <message>
         <source>Поиск</source>
-        <translation>Search</translation>
+        <translation type="vanished">Search</translation>
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -576,11 +619,11 @@
     </message>
     <message>
         <source>Редактирование</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
         <source>Выберите одну запись!</source>
-        <translation>Choose one element!</translation>
+        <translation type="vanished">Choose one element!</translation>
     </message>
 </context>
 <context>
@@ -740,7 +783,7 @@
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
         <source>Организацию</source>
@@ -904,6 +947,26 @@
         <source>(Необходима перезагрузка приложения)</source>
         <translation>(App restart required)</translation>
     </message>
+    <message>
+        <source>Базы данных</source>
+        <translation>Data bases</translation>
+    </message>
+    <message>
+        <source>Настойки базы контактов</source>
+        <translation>Set contact database</translation>
+    </message>
+    <message>
+        <source>Имя хоста: </source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source>Имя базы данных:</source>
+        <translation>Database name:</translation>
+    </message>
+    <message>
+        <source>Настройки базы звонков</source>
+        <translation>Set call database</translation>
+    </message>
 </context>
 <context>
     <name>ViewContactDialog</name>
@@ -990,6 +1053,10 @@
     <message>
         <source>Заметки</source>
         <translation>Notes</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation>Edit</translation>
     </message>
 </context>
 <context>
@@ -1081,6 +1148,10 @@
     <message>
         <source>Заметки</source>
         <translation>Notes</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation>Edit</translation>
     </message>
 </context>
 </TS>
