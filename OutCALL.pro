@@ -80,6 +80,8 @@ FORMS    += \
     AddNoteDialog.ui \
     ChooseNumber.ui
 
+TRANSLATIONS = ukrainian.ts russian.ts english.ts
+
 RESOURCES += \
     images.qrc
 
