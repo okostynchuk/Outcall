@@ -28,15 +28,13 @@ public:
     ~ContactsDialog();
 
 public slots:
-    void recieveData(bool);
+    void receiveData(bool);
 
 protected slots:
     void deleteObjects();
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
-    void getID(const QModelIndex &);
-    void onEdit();
     void onComboBoxSelected();
     void showCard(const QModelIndex &);
     void onSectionClicked(int);
@@ -59,8 +57,6 @@ private:
     QHeaderView *m_horiz_header;
     QWidget* addImageLabel(int &);
     QString update;
-    QString updateID;
-    QString updateType;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;

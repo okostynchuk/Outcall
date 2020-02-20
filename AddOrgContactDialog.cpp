@@ -181,6 +181,7 @@ void AddOrgContactDialog::onSave()
             emit sendData(true);
             close();
             QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно добавлена!"), QMessageBox::Ok);
+            destroy(true);
         }
     }
 }
