@@ -5,6 +5,8 @@
 #include "AsteriskManager.h"
 #include "Notifier.h"
 
+#include <QApplication>
+#include <QProcess>
 #include <QAbstractButton>
 #include <QAbstractSocket>
 #include <QSettings>
@@ -33,6 +35,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     userName = qgetenv("USERNAME");
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
+
+     ui->tabWidget->setCurrentIndex(0);
 
     checkExten();
 }
@@ -75,7 +79,7 @@ void SettingsDialog::saveSettings()
     QByteArray ba1;
     ba1.append(ui->password_1->text());
     global::setSettingsValue("password-1", ba.toBase64(),            "settings");
-    global::setSettingsValue("port-1", ui->port_1->text().toUInt(),    "settings");
+    global::setSettingsValue("port_1", ui->port_1->text(),    "settings");
 
         //Calls Base
     global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
@@ -83,8 +87,8 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("userName_2",   ui->userName_2->text(),   "settings");
     QByteArray ba2;
     ba2.append(ui->password_2->text());
-    global::setSettingsValue("password-2", ba.toBase64(),            "settings");
-    global::setSettingsValue("port-2", ui->port_2->text().toUInt(),    "settings");
+    global::setSettingsValue("password-2", ba.toBase64(),     "settings");
+    global::setSettingsValue("port_2", ui->port_2->text(),    "settings");
 }
 
 void SettingsDialog::loadSettings()
@@ -103,7 +107,7 @@ void SettingsDialog::loadSettings()
     QByteArray password1((global::getSettingsValue("password_1", "settings").toByteArray()));
     QString ba1(QByteArray::fromBase64(password1));
     ui->password_1->setText(ba1);
-    ui->port_1->setText(global::getSettingsValue("port_1", "settings", "5038").toString());
+    ui->port_1->setText(global::getSettingsValue("port_1", "settings").toString());
 
     ui->hostName_2->setText(global::getSettingsValue("hostName_2", "settings").toString());
     ui->databaseName_2->setText(global::getSettingsValue("databaseName_2", "settings").toString());
@@ -111,7 +115,7 @@ void SettingsDialog::loadSettings()
     QByteArray password2((global::getSettingsValue("password_2", "settings").toByteArray()));
     QString ba2(QByteArray::fromBase64(password2));
     ui->password_2->setText(ba2);
-    ui->port_2->setText(global::getSettingsValue("port_2", "settings", "5038").toString());
+    ui->port_2->setText(global::getSettingsValue("port_2", "settings").toString());
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
@@ -155,7 +159,8 @@ void SettingsDialog::okPressed()
 {
     saveSettings();
     applySettings();
-    hide();
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void SettingsDialog::applyPressed()
