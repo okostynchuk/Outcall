@@ -24,9 +24,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     QStringList extensions = global::getSettingKeys("extensions");
 
-    for (int i = 0; i < extensions.size(); ++i)
-        ui->fromBox->addItem(extensions[i]);
-
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     query1 = new QSqlQueryModel;
@@ -37,6 +34,10 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     onComboBoxSelected();
+
+    settingsDialog = new SettingsDialog();
+    my_number = settingsDialog->getExtension();
+    ui->my_Number->setText(my_number);
 }
 
 PlaceCallDialog::~PlaceCallDialog()
@@ -181,7 +182,7 @@ void PlaceCallDialog::onCallButton()
     if (!ui->phoneLine->text().isEmpty())
     {
         const QString number   = ui->phoneLine->text();
-        const QString from     = ui->fromBox->currentText();
+        const QString from     = my_number;
         const QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_pAsteriskManager->originateCall(from, number, protocol, from);

@@ -235,9 +235,8 @@ void PopupWindow::onAddPerson()
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
     addContactDialog = new AddContactDialog;
-    addContactDialog->setWindowTitle("Добавление физ. лица");
     addContactDialog->setValuesPopupWindow(number);
-    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addContactDialog->setProperty("number", number);
     addContactDialog->setProperty("qv_popup", qv_popup);
     addContactDialog->exec();
@@ -251,16 +250,15 @@ void PopupWindow::onAddOrg()
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setWindowTitle("Добавление организации");
     addOrgContactDialog->setOrgValuesPopupWindow(number);
-    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addOrgContactDialog->setProperty("number", number);
     addOrgContactDialog->setProperty("qv_popup", qv_popup);
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }
 
-void PopupWindow::onEdit()
+void PopupWindow::onShowCard()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -274,41 +272,11 @@ void PopupWindow::onEdit()
     query.first();
     if (query.value(0).toString() == "person")
     {
-        editContactDialog = new EditContactDialog;
-        editContactDialog->setWindowTitle("Редактирование физ. лица");
-        editContactDialog->setValuesContacts(updateID);
-        connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
-        editContactDialog->setProperty("number", number);
-        editContactDialog->setProperty("qv_popup", qv_popup);
-        editContactDialog->exec();
-        editContactDialog->deleteLater();
-    }
-    else
-    {
-        editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setWindowTitle("Редактирование организации");
-        editOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
-        editOrgContactDialog->setProperty("number", number);
-        editOrgContactDialog->setProperty("qv_popup", qv_popup);
-        editOrgContactDialog->exec();
-        editOrgContactDialog->deleteLater();
-    }
-}
-
-void PopupWindow::onShowCard()
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    QString number = sender()->property("number").toString();
-    QString updateID = getUpdateId(number);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
-    query.exec();
-    query.first();
-    if (query.value(0).toString() == "person")
-    {
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
+         connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+         viewContactDialog->setProperty("number", number);
+         viewContactDialog->setProperty("qv_popup", qv_popup);
          viewContactDialog->exec();
          viewContactDialog->deleteLater();
     }
@@ -316,6 +284,9 @@ void PopupWindow::onShowCard()
     {
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        viewOrgContactDialog->setProperty("number", number);
+        viewOrgContactDialog->setProperty("qv_popup", qv_popup);
         viewOrgContactDialog->exec();
         viewOrgContactDialog->deleteLater();
     }
@@ -332,7 +303,7 @@ QString PopupWindow::getUpdateId(QString &number)
     return updateID;
 }
 
-void PopupWindow::recieveData(bool update)
+void PopupWindow::receiveData(bool update)
 {
     QString number = sender()->property("number").toString();
     QVariant qv_popup = sender()->property("qv_popup");
@@ -350,13 +321,11 @@ void PopupWindow::recieveData(bool update)
             popup->ui->label->hide();
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
-            popup->ui->editButton->show();
             popup->ui->showCardButton->show();
             popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(number));
         }
         else
         {
-            popup->ui->editButton->hide();
             popup->ui->showCardButton->hide();
             popup->ui->label->show();
             popup->ui->addPersonButton->show();
@@ -374,6 +343,7 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
     query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
     query.exec();
     query.first();
+
     if (!query.value(0).isNull())
     {
         popup->ui->label->hide();
@@ -381,20 +351,15 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
         popup->ui->addOrgButton->hide();
     }
     else
-    {
-        popup->ui->editButton->hide();
         popup->ui->showCardButton->hide();
-    }
+
     connect(popup->ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
     popup->ui->addPersonButton->setProperty("number", number);
     popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
     popup->ui->addOrgButton->setProperty("number", number);
     popup->ui->addOrgButton->setProperty("qv_popup", qv_popup);
-    connect(popup->ui->editButton, SIGNAL(clicked(bool)), this, SLOT(onEdit()));
-    popup->ui->editButton->setProperty("number", number);
-    popup->ui->editButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
     popup->ui->showCardButton->setProperty("number", number);
-    popup->ui->editButton->setProperty("qv_popup", qv_popup);
+    popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
 }

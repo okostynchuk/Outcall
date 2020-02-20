@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>534</width>
-    <height>465</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,14 +20,14 @@
    <string>Настройки</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="images.qrc">
+   <iconset>
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="general">
       <attribute name="title">
@@ -178,6 +178,349 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Базы данных</string>
+      </attribute>
+      <widget class="QTabWidget" name="tabWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>491</width>
+         <height>361</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Настойки базы контактов</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>461</width>
+           <height>311</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="serverLabel_2">
+            <property name="text">
+             <string>Имя хоста: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="hostName_1"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="userLabel_2">
+            <property name="text">
+             <string>Имя базы данных:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="databaseName_1"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="passLabel_2">
+            <property name="text">
+             <string>Имя пользователя:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="userName_1">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="portLabel_2">
+            <property name="text">
+             <string>Пароль:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="password_1">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Порт:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="port_1"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTabWidget" name="tabWidget_3">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>100</y>
+           <width>491</width>
+           <height>361</height>
+          </rect>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab_4">
+          <attribute name="title">
+           <string>Настойки базы контактов</string>
+          </attribute>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>461</width>
+             <height>311</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string/>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QLabel" name="serverLabel_4">
+              <property name="text">
+               <string>Имя хоста: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="hostName_3"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="userLabel_4">
+              <property name="text">
+               <string>Имя базы данных:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="databaseName_3"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="passLabel_4">
+              <property name="text">
+               <string>Имя пользователя:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="userName_3">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="portLabel_4">
+              <property name="text">
+               <string>Пароль:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="password_3">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Порт:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="port_3"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_5">
+          <attribute name="title">
+           <string>Настройки базы звонков</string>
+          </attribute>
+          <widget class="QGroupBox" name="groupBox_6">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>461</width>
+             <height>311</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string/>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QLabel" name="serverLabel_5">
+              <property name="text">
+               <string>Имя хоста: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="hostName_4"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="userLabel_5">
+              <property name="text">
+               <string>Имя базы данных:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="databaseName_4"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="passLabel_5">
+              <property name="text">
+               <string>Имя пользователя:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="userName_4">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="portLabel_5">
+              <property name="text">
+               <string>Пароль:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="password_4">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Порт:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="port_4"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Настройки базы звонков</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>461</width>
+           <height>311</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QLabel" name="serverLabel_3">
+            <property name="text">
+             <string>Имя хоста: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="hostName_2"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="userLabel_3">
+            <property name="text">
+             <string>Имя базы данных:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="databaseName_2"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="passLabel_3">
+            <property name="text">
+             <string>Имя пользователя:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="userName_2">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="portLabel_3">
+            <property name="text">
+             <string>Пароль:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="password_2">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Порт:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="port_2"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
      <widget class="QWidget" name="extensions">
       <attribute name="title">
        <string>Номера</string>
@@ -303,8 +646,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

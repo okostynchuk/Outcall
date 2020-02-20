@@ -23,6 +23,10 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+    settingsDialog = new SettingsDialog();
+    my_number = settingsDialog->getExtension();
+    setWindowTitle("История звонков по номеру: "+my_number);
+
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
@@ -44,11 +48,14 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
+}
+
+void CallHistoryDialog::showEvent( QShowEvent* event ) {
+    QDialog::showEvent( event );
+    onUpdate();
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
@@ -254,13 +261,13 @@ void CallHistoryDialog::loadMissedCalls()
     query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
     query1->insertColumn(4);
     query1->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
     ui->tableView->setModel(query1);
     ui->tableView->setColumnHidden(5, true);
+    ui->tableView->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -295,6 +302,7 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_2->setModel(query2);
     ui->tableView_2->setColumnHidden(5, true);
+    ui->tableView->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
@@ -329,6 +337,7 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->tableView_3->setModel(query3);
     ui->tableView_3->setColumnHidden(5, true);
+    ui->tableView->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {

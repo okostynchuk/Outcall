@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     EditContactDialog.cpp \
     EditOrgContactDialog.cpp \
     AddNoteDialog.cpp \
-    ChooseNumber.cpp
+    ChooseNumber.cpp \
+    DatabasesConnectDialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     EditContactDialog.h \
     EditOrgContactDialog.h \
     AddNoteDialog.h \
-    ChooseNumber.h
+    ChooseNumber.h \
+    DatabasesConnectDialog.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -78,7 +80,8 @@ FORMS    += \
     EditContactDialog.ui \
     EditOrgContactDialog.ui \
     AddNoteDialog.ui \
-    ChooseNumber.ui
+    ChooseNumber.ui \
+    DatabasesConnectDialog.ui
 
 TRANSLATIONS = ukrainian.ts russian.ts english.ts
 
