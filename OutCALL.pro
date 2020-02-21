@@ -84,7 +84,6 @@ FORMS    += \
     DatabasesConnectDialog.ui
 
 RESOURCES += \
-    images.qrc \
-    translation.qrc
+    images.qrc
 
 win32: RC_ICONS = $$PWD/images/outcall-logo.ico

@@ -11,7 +11,6 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QDir>
-#include <QTranslator>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -35,21 +34,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
 
-    onComboBoxSelected();
-
     checkExten();
 }
 
 SettingsDialog::~SettingsDialog()
 {
     delete ui;
-}
-
-void SettingsDialog::onComboBoxSelected()
-{
-    ui->languageList->addItem("Українська");
-    ui->languageList->addItem("Русский");
-    ui->languageList->addItem("English");
 }
 
 void SettingsDialog::saveSettings()
@@ -183,29 +173,6 @@ void SettingsDialog::applySettings()
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
     g_Notifier->emitSettingsChanged();
-
-    QTranslator translator;
-
-    if (ui->languageList->currentText() == "Українська")
-    {
-        translator.load(":/ukrainian.qm");
-        qApp->installTranslator(&translator);
-    }
-    else if (ui->languageList->currentText() == "Русский")
-    {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
-    }
-    else if (ui->languageList->currentText() == "English")
-    {
-        translator.load(":/english.qm");
-        qApp->installTranslator(&translator);
-    }
-    if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
-    {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
-    }
 }
 
 /********************************************/
