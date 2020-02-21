@@ -100,12 +100,13 @@ int main(int argc, char *argv[])
         dbAsterisk.setUserName(userName_2);
         dbAsterisk.setPassword(password_2);
         dbAsterisk.setPort(port_2.toUInt());
+        dbAsterisk.open();
 
-        if(dbAsterisk.open())
-        {
-            qApp->quit();
-            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-        }
+//        if(dbAsterisk.open())
+//        {
+//            qApp->quit();
+//            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+//        }
     }
 
 

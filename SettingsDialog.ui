@@ -312,7 +312,7 @@
               <item>
                <widget class="QLineEdit" name="userName_2">
                 <property name="echoMode">
-                 <enum>QLineEdit::Password</enum>
+                 <enum>QLineEdit::Normal</enum>
                 </property>
                </widget>
               </item>
