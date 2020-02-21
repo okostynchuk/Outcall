@@ -108,8 +108,9 @@ int main(int argc, char *argv[])
         }
     }
 
+
     QTranslator qtTranslator;
-    qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load("qt_uk", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);

@@ -39,6 +39,13 @@ protected:
     void onRemoveButtonClicked();
     void onEditButtonClicked();
     void applySettings();
+    void selectLanguage();
+
+protected slots:
+    void onComboBoxSelected();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::SettingsDialog *ui;
