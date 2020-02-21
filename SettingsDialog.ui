@@ -39,8 +39,40 @@
          <property name="title">
           <string>Основные настройки</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_13">
-          <item>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="languageGroup">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Выбор языка</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="2" column="0">
+              <widget class="QComboBox" name="languageList"/>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="languageLabel">
+               <property name="text">
+                <string>(Необходима перезагрузка приложения)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Выбрать</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_14">
             <item>
              <widget class="QCheckBox" name="autoSignIn">
@@ -67,7 +99,7 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item row="5" column="0">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -164,7 +196,7 @@
          </property>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
-           <string>Настойки базы контактов</string>
+           <string>Настройки базы контактов</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="0" column="0">
