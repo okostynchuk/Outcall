@@ -302,7 +302,7 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_2->setModel(query2);
     ui->tableView_2->setColumnHidden(5, true);
-    ui->tableView->setColumnHidden(2, true);
+    ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
@@ -337,7 +337,7 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->tableView_3->setModel(query3);
     ui->tableView_3->setColumnHidden(5, true);
-    ui->tableView->setColumnHidden(2, true);
+    ui->tableView_3->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {

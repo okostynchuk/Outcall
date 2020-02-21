@@ -3,9 +3,10 @@
 #include "Notifier.h"
 
 #include "Windows.h"
-
+#include "DatabasesConnectDialog.h"
 
 #include <QApplication>
+#include <QProcess>
 #include <QLocalSocket>
 #include <QDir>
 #include <QTextCodec>
@@ -13,7 +14,6 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QSqlDatabase>
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +24,24 @@ int main(int argc, char *argv[])
     paths.append("sqldrivers");
     QCoreApplication::setLibraryPaths(paths);
 
+    QApplication app(argc, argv);
+
+    QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
+    QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
+    QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
+    QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
+    QString password_1 = QString(QByteArray::fromBase64(password1));
+    QString port_1 = global::getSettingsValue("port_1", "settings").toInt();
+
+    QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
+    QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
+    QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
+    QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
+    QString password_2 = QString(QByteArray::fromBase64(password2));
+    QString port_2 = global::getSettingsValue("port_2", "settings").toInt();
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+
       db.setHostName("192.168.0.30");
       db.setDatabaseName("test");
       db.setUserName("test");
@@ -111,7 +128,78 @@ int main(int argc, char *argv[])
 //        app.closeAllWindows();
 //    }
 
-    QApplication app(argc, argv);
+
+
+    db.setHostName(hostName_1);
+    db.setDatabaseName(databaseName_1);
+    db.setUserName(userName_1);
+    db.setPassword(password_1);
+    db.setPort(port_1.toUInt());
+    db.open();
+
+    QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
+    dbAsterisk.setHostName(hostName_2);
+    dbAsterisk.setDatabaseName(databaseName_2);
+    dbAsterisk.setUserName(userName_2);
+    dbAsterisk.setPassword(password_2);
+    dbAsterisk.setPort(port_2.toUInt());
+    dbAsterisk.open();
+
+    while(!db.open())
+    {
+        QString state = "db";
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе контактов!", QMessageBox::Ok);
+        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        databasesConnectDialog->setState(state);
+        databasesConnectDialog->exec();
+        databasesConnectDialog->deleteLater();
+
+        QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
+        QString databaseName_1 = global::getSettingsValue("databasename_1", "settings").toString();
+        QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
+        QByteArray password1(global::getSettingsValue("password_1", "settings").toByteArray());
+        QString password_1(QByteArray::fromBase64(password1));
+        QString port_1 = global::getSettingsValue("port_1", "settings", "3306").toString();
+
+        db.setHostName(hostName_1);
+        db.setDatabaseName(databaseName_1);
+        db.setUserName(userName_1);
+        db.setPassword(password_1);
+        db.setPort(port_1.toUInt());
+        db.open();
+    }
+    while(!dbAsterisk.open())
+    {
+        QString state = "dbAsterisk";
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе звонков!", QMessageBox::Ok);
+        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        databasesConnectDialog->setState(state);
+        databasesConnectDialog->exec();
+        databasesConnectDialog->deleteLater();
+
+        QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
+        QString databaseName_2 = global::getSettingsValue("databasename_1", "settings").toString();
+        QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
+        QByteArray password2(global::getSettingsValue("password_2", "settings").toByteArray());
+        QString password_2(QByteArray::fromBase64(password2));
+        QString port_2 = global::getSettingsValue("port_2", "settings", "3306").toString();
+
+        dbAsterisk.setHostName(hostName_2);
+        dbAsterisk.setDatabaseName(databaseName_2);
+        dbAsterisk.setUserName(userName_2);
+        dbAsterisk.setPassword(password_2);
+        dbAsterisk.setPort(port_2.toUInt());
+        dbAsterisk.open();
+
+//        if(dbAsterisk.open())
+//        {
+//            qApp->quit();
+//            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+//        }
+    }
+
+
+
     QTranslator qtTranslator;
     qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);

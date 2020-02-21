@@ -27,6 +27,10 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
 
+    QRegExp RegExp2("^[0-9]+$");
+    validator2 = new QRegExpValidator(RegExp2, this);
+    ui->VyborID->setValidator(validator2);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
@@ -38,6 +42,7 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
 EditContactDialog::~EditContactDialog()
 {
     delete validator;
+    delete validator2;
     delete ui;
 }
 

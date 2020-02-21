@@ -1,14 +1,11 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
-#include <QSqlDatabase>
 #include <QDebug>
-#include <QSqlQuery>
 #include <QGuiApplication>
 #include <QScreen>
 #include <QModelIndex>
 #include <QItemSelectionModel>
-#include <QMetaMethod>
 #include <QMessageBox>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
@@ -17,19 +14,31 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QRegExp RegExp("^[0-9]*$");
+    validator = new QRegExpValidator(RegExp, this);
+    ui->lineEdit_page->setValidator(validator);
+
     this->showMaximized();
     ui->widget->move(0, 0);
     ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
 
     onComboBoxListSelected();
-    QSqlDatabase db;
-    QSqlQuery query(db);
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
     query.exec();
     query.first();
-    int count = query.value(0).toInt();
+    count = query.value(0).toInt();
     page = "1";
-    QString pages = QString::number(count / ui->comboBox_list->currentText().toInt());
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText("из " + pages);
 
@@ -55,14 +64,13 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
     ui->tableView->verticalHeader()->setSectionsClickable(false);
-    m_horiz_header = ui->tableView->horizontalHeader();
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
-    connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
@@ -78,7 +86,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     onComboBoxSelected();
 
-    update = "default";
     go = "default";
     filter = false;
 }
@@ -86,6 +93,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 ContactsDialog::~ContactsDialog()
 {
     deleteObjects();
+    delete validator;
     delete ui;
 }
 
@@ -95,16 +103,6 @@ void ContactsDialog::receiveData(bool updating)
     {
         query1->setQuery(query1->query().lastQuery());
         query2->setQuery(query2->query().lastQuery());
-        if (update == "sortASC")
-            m_horiz_header->setSortIndicator(1, Qt::AscendingOrder);
-        else if (update == "sortDESC")
-            m_horiz_header->setSortIndicator(1, Qt::DescendingOrder);
-        else if (update == "sortIDASC")
-            m_horiz_header->setSortIndicator(0, Qt::AscendingOrder);
-        else if (update == "sortIDDESC")
-            m_horiz_header->setSortIndicator(0, Qt::DescendingOrder);
-        else if (update == "default")
-            m_horiz_header->setSortIndicatorShown(false);
         onUpdate();
     }
 }
@@ -148,20 +146,32 @@ void ContactsDialog::deleteObjects()
 
 void ContactsDialog::onUpdate()
 {
-    if (update == "default" && filter == false)
+    if (filter == false)
     {
-        QSqlDatabase db;
-        QSqlQuery query(db);
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
         query.exec();
         query.first();
-        int count = query.value(0).toInt();
-        QString pages = QString::number(count / ui->comboBox_list->currentText().toInt());
+        count = query.value(0).toInt();
+        if (count <= ui->comboBox_list->currentText().toInt())
+            pages = "1";
+        else
+        {
+            remainder = count % ui->comboBox_list->currentText().toInt();
+            if (remainder)
+                remainder = 1;
+            else
+                remainder = 0;
+            pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        }
         if (go == "previous" && page != "1")
             page = QString::number(page.toInt() - 1);
+        else if (go == "previousStart" && page != "1")
+            page = "1";
         else if (go == "next" && page.toInt() < pages.toInt())
             page = QString::number(page.toInt() + 1);
         else if (go == "next" && page.toInt() >= pages.toInt())
+            page = pages;
+        else if (go == "nextEnd" && page.toInt() < pages.toInt())
             page = pages;
         else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
             page = ui->lineEdit_page->text();
@@ -180,11 +190,162 @@ void ContactsDialog::onUpdate()
         }
         else
         {
-            query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
-            query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
 
-        m_horiz_header->setSortIndicatorShown(false);
+        go = "default";
+    }
+    else if (filter == true)
+    {
+        if (entry_name != nullptr)
+        {
+            query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%'");
+            query.exec();
+            query.first();
+            count = query.value(0).toInt();
+            if (count <= ui->comboBox_list->currentText().toInt())
+                pages = "1";
+            else
+            {
+                remainder = count % ui->comboBox_list->currentText().toInt();
+                if (remainder)
+                    remainder = 1;
+                else
+                    remainder = 0;
+                pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+            }
+            if (go == "previous" && page != "1")
+                page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
+            else if (go == "next" && page.toInt() < pages.toInt())
+                page = QString::number(page.toInt() + 1);
+            else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
+                page = pages;
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+                page = ui->lineEdit_page->text();
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+            else if (go == "default" && page.toInt() >= pages.toInt())
+                page = pages;
+            ui->lineEdit_page->setText(page);
+            ui->label_pages->setText("из " + pages);
+
+            query1 = new QSqlQueryModel;
+            query2 = new QSqlQueryModel;
+            if (ui->lineEdit_page->text() == "1")
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            }
+            else
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            }
+        }
+        else if (entry_phone != nullptr)
+        {
+            entry_phone = ui->lineEdit->text();
+
+            query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%'");
+            query.exec();
+            query.first();
+            count = query.value(0).toInt();
+            if (count <= ui->comboBox_list->currentText().toInt())
+                pages = "1";
+            else
+            {
+                remainder = count % ui->comboBox_list->currentText().toInt();
+                if (remainder)
+                    remainder = 1;
+                else
+                    remainder = 0;
+                pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+            }
+            if (go == "previous" && page != "1")
+                page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
+            else if (go == "next" && page.toInt() < pages.toInt())
+                page = QString::number(page.toInt() + 1);
+            else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
+                page = pages;
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+                page = ui->lineEdit_page->text();
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+            else if (go == "default" && page.toInt() >= pages.toInt())
+                page = pages;
+            ui->lineEdit_page->setText(page);
+            ui->label_pages->setText("из " + pages);
+
+            query1 = new QSqlQueryModel;
+            query2 = new QSqlQueryModel;
+            if (ui->lineEdit_page->text() == "1")
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            }
+            else
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            }
+        }
+        else if (entry_comment != nullptr)
+        {
+            query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%'");
+            query.exec();
+            query.first();
+            count = query.value(0).toInt();
+            pages = nullptr;
+            if (count <= ui->comboBox_list->currentText().toInt())
+                pages = "1";
+            else
+            {
+                remainder = count % ui->comboBox_list->currentText().toInt();
+                if (remainder)
+                    remainder = 1;
+                else
+                    remainder = 0;
+                pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+            }
+            if (go == "previous" && page != "1")
+                page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
+            else if (go == "next" && page.toInt() < pages.toInt())
+                page = QString::number(page.toInt() + 1);
+            else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
+                page = pages;
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+                page = ui->lineEdit_page->text();
+            else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+            else if (go == "default" && page.toInt() >= pages.toInt())
+                page = pages;
+            ui->lineEdit_page->setText(page);
+            ui->label_pages->setText("из " + pages);
+
+            query1 = new QSqlQueryModel;
+            query2 = new QSqlQueryModel;
+            if (ui->lineEdit_page->text() == "1")
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            }
+            else
+            {
+                query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            }
+        }
+
         go = "default";
     }
 
@@ -269,265 +430,108 @@ void ContactsDialog::onComboBoxSelected()
     ui->comboBox->addItem("Поиск по заметке");
 }
 
-void ContactsDialog::onSectionClicked(int logicalIndex)
-{
-    if (logicalIndex != 0 && logicalIndex != 2 && sort == "id")
-    {
-        if (update == "sortIDASC")
-        {
-            m_horiz_header->setSortIndicator(0, Qt::AscendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-        }
-        else if (update == "sortIDDESC")
-        {
-            m_horiz_header->setSortIndicator(0, Qt::DescendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-        }
-        else if (update == "default")
-            m_horiz_header->setSortIndicatorShown(false);
-        return;
-    }
-    else if (logicalIndex == 0)
-    {
-        if (sort == "name")
-            update = "default";
-        sort = "id";
-        if (update == "default")
-        {
-            update = "sortIDASC";
-            m_horiz_header->setSortIndicator(0, Qt::AscendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-            if (filter == false)
-            {
-                query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_id");
-            }
-            else
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_id");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_id");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_id");
-                }
-            }
-            onUpdate();
-        }
-        else if (update == "sortIDASC")
-        {
-            update = "sortIDDESC";
-            m_horiz_header->setSortIndicator(0, Qt::DescendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-            if (filter == false)
-            {
-                query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_id DESC");
-            }
-            else
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_id DESC");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_id DESC");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_id DESC");
-                }
-            }
-            onUpdate();
-        }
-        else if (update == "sortIDDESC")
-        {
-            update = "default";
-            m_horiz_header->setSortIndicatorShown(false);
-            if (filter == true)
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
-                }
-            }
-            onUpdate();
-        }
-    }
-    else if (logicalIndex != 0 && logicalIndex != 2 && sort == "name")
-    {
-        if (update == "sortASC")
-        {
-            m_horiz_header->setSortIndicator(2, Qt::AscendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-        }
-        else if (update == "sortDESC")
-        {
-            m_horiz_header->setSortIndicator(2, Qt::DescendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-        }
-        else if (update == "default")
-            m_horiz_header->setSortIndicatorShown(false);
-        return;
-    }
-    else if (logicalIndex == 2)
-    {
-        if (sort == "id")
-            update = "default";
-        sort = "name";
-        if (update == "default")
-        {
-            update = "sortASC";
-            m_horiz_header->setSortIndicator(1, Qt::AscendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-            if (filter == false)
-            {
-                query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name");
-            }
-            else
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name");
-                }
-            }
-            onUpdate();
-        }
-        else if (update == "sortASC")
-        {
-            update = "sortDESC";
-            m_horiz_header->setSortIndicator(1, Qt::DescendingOrder);
-            m_horiz_header->setSortIndicatorShown(true);
-            if (filter == false)
-            {
-                query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name DESC");
-            }
-            else
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name DESC");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name DESC");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name DESC");
-                }
-            }
-            onUpdate();
-        }
-        else if (update == "sortDESC")
-        {
-            update = "default";
-            m_horiz_header->setSortIndicatorShown(false);
-            if (filter == true)
-            {
-                if (entry_name != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
-                }
-                else if (entry_phone != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
-                }
-                else if (entry_comment != "NULL")
-                {
-                    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-                    query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
-                }
-            }
-            onUpdate();
-        }
-    }
-}
-
 void ContactsDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
     {
-        update = "default";
         filter = false;
         onUpdate();
         return;
     }
 
-    update = "default";
+    go = "default";
     filter = true;
-    m_horiz_header->setSortIndicatorShown(false);
 
-    entry_name = "NULL";
-    entry_phone = "NULL";
-    entry_comment = "NULL";
+    entry_name = nullptr;
+    entry_phone = nullptr;
+    entry_comment = nullptr;
 
     if (ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
         entry_name = ui->lineEdit->text();
+
+        query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%'");
+        query.exec();
+        query.first();
+        count = query.value(0).toInt();
+        if (count <= ui->comboBox_list->currentText().toInt())
+            pages = "1";
+        else
+        {
+            remainder = count % ui->comboBox_list->currentText().toInt();
+            if (remainder)
+                remainder = 1;
+            else
+                remainder = 0;
+            pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        }
+        page = "1";
+        ui->lineEdit_page->setText(page);
+        ui->label_pages->setText("из " + pages);
+
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
+        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
     else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         entry_phone = ui->lineEdit->text();
+
+        query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%'");
+        query.exec();
+        query.first();
+        count = query.value(0).toInt();
+        if (count <= ui->comboBox_list->currentText().toInt())
+            pages = "1";
+        else
+        {
+            remainder = count % ui->comboBox_list->currentText().toInt();
+            if (remainder)
+                remainder = 1;
+            else
+                remainder = 0;
+            pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        }
+        page = "1";
+        ui->lineEdit_page->setText(page);
+        ui->label_pages->setText("из " + pages);
+
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
+        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
     else if (ui->comboBox->currentText() == "Поиск по заметке")
     {
         entry_comment = ui->lineEdit->text();
+
+        query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%'");
+        query.exec();
+        query.first();
+        count = query.value(0).toInt();
+        pages = nullptr;
+        if (count <= ui->comboBox_list->currentText().toInt())
+            pages = "1";
+        else
+        {
+            remainder = count % ui->comboBox_list->currentText().toInt();
+            if (remainder)
+                remainder = 1;
+            else
+                remainder = 0;
+            pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        }
+        page = "1";
+        ui->lineEdit_page->setText(page);
+        ui->label_pages->setText("из " + pages);
+
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
+        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
 }
@@ -541,6 +545,18 @@ void ContactsDialog::on_previousButton_clicked()
 void ContactsDialog::on_nextButton_clicked()
 {
     go = "next";
+    onUpdate();
+}
+
+void ContactsDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+    onUpdate();
+}
+
+void ContactsDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
     onUpdate();
 }
 

@@ -30,6 +30,7 @@ protected slots:
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;
+    QValidator *validator2;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

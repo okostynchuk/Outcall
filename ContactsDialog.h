@@ -13,7 +13,9 @@
 #include <QHeaderView>
 #include <QBoxLayout>
 #include <QTableView>
-#include <QScrollBar>
+#include <QSqlQuery>
+#include <QSqlDatabase>
+#include <QValidator>
 
 namespace Ui {
 class ContactsDialog;
@@ -38,13 +40,14 @@ protected slots:
     void onComboBoxListSelected();
     void onComboBoxSelected();
     void showCard(const QModelIndex &);
-    void onSectionClicked(int);
     void on_searchButton_clicked();
     void searchFunction();
 
 private slots:
     void on_previousButton_clicked();
     void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
     void on_lineEdit_returnPressed();
 
@@ -54,22 +57,21 @@ private:
     QSqlQueryModel *query2;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
-    EditContactDialog *editContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-    QHeaderView *m_horiz_header;
+    QValidator *validator;
     QWidget* addImageLabel(int &);
-    QString update;
     QString page;
+    int count;
+    int remainder;
+    QString pages;
+    QSqlDatabase db;
+    QSqlQuery query;
     QString go;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
-    QString sort;
     bool filter;
-    int valueV;
-    int valueH;
     QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
