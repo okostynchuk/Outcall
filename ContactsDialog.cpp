@@ -165,9 +165,13 @@ void ContactsDialog::onUpdate()
         }
         if (go == "previous" && page != "1")
             page = QString::number(page.toInt() - 1);
+        else if (go == "previousStart" && page != "1")
+            page = "1";
         else if (go == "next" && page.toInt() < pages.toInt())
             page = QString::number(page.toInt() + 1);
         else if (go == "next" && page.toInt() >= pages.toInt())
+            page = pages;
+        else if (go == "nextEnd" && page.toInt() < pages.toInt())
             page = pages;
         else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
             page = ui->lineEdit_page->text();
@@ -213,9 +217,13 @@ void ContactsDialog::onUpdate()
             }
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
             else if (go == "next" && page.toInt() < pages.toInt())
                 page = QString::number(page.toInt() + 1);
             else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
                 page = pages;
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
                 page = ui->lineEdit_page->text();
@@ -259,9 +267,13 @@ void ContactsDialog::onUpdate()
             }
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
             else if (go == "next" && page.toInt() < pages.toInt())
                 page = QString::number(page.toInt() + 1);
             else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
                 page = pages;
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
                 page = ui->lineEdit_page->text();
@@ -304,9 +316,13 @@ void ContactsDialog::onUpdate()
             }
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
+            else if (go == "previousStart" && page != "1")
+                page = "1";
             else if (go == "next" && page.toInt() < pages.toInt())
                 page = QString::number(page.toInt() + 1);
             else if (go == "next" && page.toInt() >= pages.toInt())
+                page = pages;
+            else if (go == "nextEnd" && page.toInt() < pages.toInt())
                 page = pages;
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
                 page = ui->lineEdit_page->text();
@@ -529,6 +545,18 @@ void ContactsDialog::on_previousButton_clicked()
 void ContactsDialog::on_nextButton_clicked()
 {
     go = "next";
+    onUpdate();
+}
+
+void ContactsDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+    onUpdate();
+}
+
+void ContactsDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
     onUpdate();
 }
 

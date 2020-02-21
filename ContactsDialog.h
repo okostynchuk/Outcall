@@ -46,6 +46,8 @@ protected slots:
 private slots:
     void on_previousButton_clicked();
     void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
     void on_lineEdit_returnPressed();
 
