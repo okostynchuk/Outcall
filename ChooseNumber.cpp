@@ -114,7 +114,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             {
                 QString numb = ui->FirstNumber->text();
                 emit sendNumber(numb);
-                destroy(true);
+                close();
                 return true;
             } else { return false;}
         }
@@ -125,7 +125,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             {
                 QString numb = ui->SecondNumber->text();
                 emit sendNumber(numb);
-                destroy(true);
+                close();
                 return true;
             } else { return false;}
         }
@@ -136,7 +136,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             {
                 QString numb = ui->ThirdNumber->text();
                 emit sendNumber(numb);
-                destroy(true);
+                close();
                 return true;
             } else { return false;}
         }
@@ -147,7 +147,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             {
                 QString numb = ui->FourthNumber->text();
                 emit sendNumber(numb);
-                destroy(true);
+                close();
                 return true;
             } else { return false;}
         }
@@ -158,7 +158,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
             {
                 QString numb = ui->FifthNumber->text();
                 emit sendNumber(numb);
-                destroy(true);
+                close();
                 return true;
             } else{ return false;}
         }

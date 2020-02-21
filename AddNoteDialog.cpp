@@ -64,5 +64,5 @@ void AddNoteDialog::onSave()
     }
     close();
     QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
-    destroy(true);
+
 }

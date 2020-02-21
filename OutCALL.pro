@@ -83,8 +83,6 @@ FORMS    += \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui
 
-TRANSLATIONS = ukrainian.ts russian.ts english.ts
-
 RESOURCES += \
     images.qrc \
     translation.qrc

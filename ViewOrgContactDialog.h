@@ -2,7 +2,6 @@
 #define VIEWORGCONTACTDIALOG_H
 
 #include "ViewContactDialog.h"
-#include "EditOrgContactDialog.h"
 #include "SettingsDialog.h"
 #include "Global.h"
 
@@ -32,17 +31,11 @@ public:
         PLACED = 2
     };
     void addCall(const QMap<QString, QVariant> &call, Calls calls);
+
     ~ViewOrgContactDialog();
-
-signals:
-    void sendData(bool);
-
-public slots:
-    void receiveData(bool);
 
 protected slots:
     void onUpdate();
-    void onEdit();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);
@@ -76,7 +69,6 @@ private:
     QString fifthNumber;
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
     QString update;
     QString id;
     bool filter;

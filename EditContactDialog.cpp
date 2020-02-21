@@ -267,7 +267,6 @@ void EditContactDialog::onSave()
             emit sendData(true);
             close();
             QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
-            destroy(true);
         }
     }
 }

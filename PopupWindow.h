@@ -7,6 +7,8 @@
 #include "PlaceCallDialog.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
+#include "EditContactDialog.h"
+#include "EditOrgContactDialog.h"
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
 
@@ -32,7 +34,7 @@ public:
 
 public slots:
     void recieveNumber(PopupWindow*, QString);
-    void receiveData(bool);
+    void recieveData(bool);
 
 signals:
     void sendSignal(bool);
@@ -68,6 +70,7 @@ private slots:
     void on_pushButton_close_clicked();
     void onAddPerson();
     void onAddOrg();
+    void onEdit();
     void onShowCard();
 
 private:
@@ -87,6 +90,8 @@ private:
     int m_nMouseClick_Y_Coordinate;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
+    EditContactDialog *editContactDialog;
+    EditOrgContactDialog *editOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
 };
