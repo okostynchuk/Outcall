@@ -27,6 +27,7 @@ protected slots:
 private:
     Ui::EditContactDialog *ui;
     QValidator *validator;
+    QValidator *validator2;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

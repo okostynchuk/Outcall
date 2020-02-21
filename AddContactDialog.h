@@ -27,6 +27,7 @@ protected:
 private:
     Ui::AddContactDialog *ui;
     QValidator *validator;
+    QValidator *validator2;
     QStringList numbers;
 
 signals:

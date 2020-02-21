@@ -438,6 +438,7 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     ui->tableView_2->setModel(query1);
     ui->tableView_2->setColumnHidden(5, true);
+    ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
@@ -497,6 +498,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
     ui->tableView_3->setModel(query1);
     ui->tableView_3->setColumnHidden(5, true);
+    ui->tableView_3->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
@@ -557,6 +559,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
     ui->tableView_4->setModel(query1);
     ui->tableView_4->setColumnHidden(5, true);
+    ui->tableView_4->setColumnHidden(1, true);
 
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
