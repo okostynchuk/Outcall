@@ -23,8 +23,8 @@
    <iconset>
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>2</number>
@@ -580,7 +580,6 @@
      </widget>
     </widget>
    </item>
-<<<<<<< HEAD
    <item row="1" column="0">
 <<<<<<< HEAD
     <layout class="QGridLayout" name="gridLayout_3">
@@ -588,17 +587,11 @@
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
 =======
-=======
-   <item>
->>>>>>> parent of 3314824... Подключение к базам и изменные настройки
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-<<<<<<< HEAD
 >>>>>>> parent of 45c73b6... Merge branch 'master' of https://github.com/a1exkos/outcall2-master
-=======
->>>>>>> parent of 3314824... Подключение к базам и изменные настройки
         <widget class="QLabel" name="poweredLabel">
          <property name="text">
           <string>Разработано:</string>
