@@ -35,6 +35,7 @@ protected slots:
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
+    void onComboBoxListSelected();
     void onComboBoxSelected();
     void showCard(const QModelIndex &);
     void onSectionClicked(int);
@@ -42,6 +43,9 @@ protected slots:
     void searchFunction();
 
 private slots:
+    void on_previousButton_clicked();
+    void on_nextButton_clicked();
+    void on_lineEdit_page_returnPressed();
     void on_lineEdit_returnPressed();
 
 private:
@@ -57,16 +61,16 @@ private:
     QHeaderView *m_horiz_header;
     QWidget* addImageLabel(int &);
     QString update;
+    QString page;
+    QString go;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
-    QString entry_name1;
-    QString entry_phone1;
-    QString entry_comment1;
     QString sort;
     bool filter;
     int valueV;
     int valueH;
+    QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;
     QList<QBoxLayout*> layouts;
     QList<QLabel*> labels;

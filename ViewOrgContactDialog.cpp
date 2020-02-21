@@ -17,6 +17,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
 
     onComboBoxSelected();
 
@@ -28,7 +29,6 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
 {
     deleteObjects();
     delete settingsDialog;
-    delete query_model;
     delete ui;
 }
 
@@ -81,30 +81,23 @@ void ViewOrgContactDialog::onUpdate()
 {
     if (update == "default" && filter == false)
     {
+        query_model = new QSqlQueryModel;
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id");
         m_horiz_header->setSortIndicatorShown(false);
     }
-
-    valueV = ui->tableView->verticalScrollBar()->sliderPosition();
-    valueH = ui->tableView->horizontalScrollBar()->sliderPosition();
 
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
-    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query_model);
-
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    queries.append(query_model);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-
-    ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
-    ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
 }
 
 void ViewOrgContactDialog::onComboBoxSelected()
@@ -134,6 +127,7 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
     }
     else if (logicalIndex == 0)
     {
+        query_model = new QSqlQueryModel;
         if (sort == "name")
             update = "default";
         sort = "id";
@@ -229,6 +223,7 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
     }
     else if (logicalIndex == 1)
     {
+        query_model = new QSqlQueryModel;
         if (sort == "id")
             update = "default";
         sort = "name";
@@ -361,6 +356,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
     ui->tableView->setModel(query_model);
+    queries.append(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -603,29 +599,34 @@ void ViewOrgContactDialog::searchFunction()
         update = "default";
         filter = false;
         onUpdate();
+        return;
     }
 
     update = "default";
     filter = true;
     m_horiz_header->setSortIndicatorShown(false);
+
     entry_name = "NULL";
     entry_phone = "NULL";
     entry_comment = "NULL";
 
     if (ui->comboBox->currentText() == "Поиск по ФИО")
     {
+        query_model = new QSqlQueryModel;
         entry_name = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
         onUpdate();
     }
     else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
+        query_model = new QSqlQueryModel;
         entry_phone = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
         onUpdate();
     }
     else if (ui->comboBox->currentText() == "Поиск по заметке")
     {
+        query_model = new QSqlQueryModel;
         entry_comment = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
         onUpdate();

@@ -21,10 +21,22 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->widget->move(0, 0);
     ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
 
+    onComboBoxListSelected();
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
+    query.exec();
+    query.first();
+    int count = query.value(0).toInt();
+    page = "1";
+    QString pages = QString::number(count / ui->comboBox_list->currentText().toInt());
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText("из " + pages);
+
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
-    query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
-    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+    query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+    query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->insertColumn(1);
@@ -37,6 +49,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
     query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
     ui->tableView->setModel(query1);
+    queries.append(query1);
+    queries.append(query2);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -46,6 +60,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
 
@@ -56,6 +71,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
@@ -63,13 +79,13 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     onComboBoxSelected();
 
     update = "default";
+    go = "default";
     filter = false;
 }
 
 ContactsDialog::~ContactsDialog()
 {
-    delete query1;
-    delete query2;
+    deleteObjects();
     delete ui;
 }
 
@@ -123,22 +139,54 @@ void ContactsDialog::deleteObjects()
     }
     qDeleteAll(layouts);
     qDeleteAll(labels);
+    qDeleteAll(queries);
     widgets.clear();
     layouts.clear();
     labels.clear();
+    queries.clear();
 }
 
 void ContactsDialog::onUpdate()
 {
     if (update == "default" && filter == false)
     {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep GROUP BY ep.entry_id");
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
-        m_horiz_header->setSortIndicatorShown(false);
-    }
+        QSqlDatabase db;
+        QSqlQuery query(db);
+        query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
+        query.exec();
+        query.first();
+        int count = query.value(0).toInt();
+        QString pages = QString::number(count / ui->comboBox_list->currentText().toInt());
+        if (go == "previous" && page != "1")
+            page = QString::number(page.toInt() - 1);
+        else if (go == "next" && page.toInt() < pages.toInt())
+            page = QString::number(page.toInt() + 1);
+        else if (go == "next" && page.toInt() >= pages.toInt())
+            page = pages;
+        else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+            page = ui->lineEdit_page->text();
+        else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+        else if (go == "default" && page.toInt() >= pages.toInt())
+            page = pages;
+        ui->lineEdit_page->setText(page);
+        ui->label_pages->setText("из " + pages);
 
-    valueV = ui->tableView->verticalScrollBar()->sliderPosition();
-    valueH = ui->tableView->horizontalScrollBar()->sliderPosition();
+        query1 = new QSqlQueryModel;
+        query2 = new QSqlQueryModel;
+        if (ui->lineEdit_page->text() == "1")
+        {
+            query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        }
+        else
+        {
+            query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+        }
+
+        m_horiz_header->setSortIndicatorShown(false);
+        go = "default";
+    }
 
     deleteObjects();
 
@@ -152,8 +200,9 @@ void ContactsDialog::onUpdate()
     query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
     query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
     query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
-    ui->tableView->setModel(NULL);
     ui->tableView->setModel(query1);
+    queries.append(query1);
+    queries.append(query2);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
@@ -162,12 +211,10 @@ void ContactsDialog::onUpdate()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
-
-    ui->tableView->verticalScrollBar()->setSliderPosition(valueV);
-    ui->tableView->horizontalScrollBar()->setSliderPosition(valueH);
 }
 
 void ContactsDialog::onAddPerson()
@@ -205,6 +252,14 @@ QWidget* ContactsDialog::addImageLabel(int &row_index)
     layouts.append(l);
     labels.append(imageLabel);
     return wgt;
+}
+
+void ContactsDialog::onComboBoxListSelected()
+{
+    ui->comboBox_list->addItem("20");
+    ui->comboBox_list->addItem("40");
+    ui->comboBox_list->addItem("60");
+    ui->comboBox_list->addItem("100");
 }
 
 void ContactsDialog::onComboBoxSelected()
@@ -433,11 +488,17 @@ void ContactsDialog::onSectionClicked(int logicalIndex)
 void ContactsDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
+    {
+        update = "default";
+        filter = false;
+        onUpdate();
         return;
+    }
 
     update = "default";
     filter = true;
     m_horiz_header->setSortIndicatorShown(false);
+
     entry_name = "NULL";
     entry_phone = "NULL";
     entry_comment = "NULL";
@@ -445,6 +506,8 @@ void ContactsDialog::searchFunction()
     if (ui->comboBox->currentText() == "Поиск по ФИО / названию")
     {
         entry_name = ui->lineEdit->text();
+        query1 = new QSqlQueryModel;
+        query2 = new QSqlQueryModel;
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id");
         onUpdate();
@@ -452,6 +515,8 @@ void ContactsDialog::searchFunction()
     else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
     {
         entry_phone = ui->lineEdit->text();
+        query1 = new QSqlQueryModel;
+        query2 = new QSqlQueryModel;
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id");
         onUpdate();
@@ -459,10 +524,30 @@ void ContactsDialog::searchFunction()
     else if (ui->comboBox->currentText() == "Поиск по заметке")
     {
         entry_comment = ui->lineEdit->text();
+        query1 = new QSqlQueryModel;
+        query2 = new QSqlQueryModel;
         query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_city, ep.entry_address, ep.entry_email, ep.entry_vybor_id, ep.entry_comment FROM entry_phone ep WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id");
         onUpdate();
     }
+}
+
+void ContactsDialog::on_previousButton_clicked()
+{
+    go = "previous";
+    onUpdate();
+}
+
+void ContactsDialog::on_nextButton_clicked()
+{
+    go = "next";
+    onUpdate();
+}
+
+void ContactsDialog::on_lineEdit_page_returnPressed()
+{
+    go = "enter";
+    onUpdate();
 }
 
 void ContactsDialog::on_lineEdit_returnPressed()
