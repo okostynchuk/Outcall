@@ -28,7 +28,7 @@ public:
     ~ContactsDialog();
 
 public slots:
-    void receiveData(bool);
+    void recieveData(bool);
 
 protected slots:
     void deleteObjects();

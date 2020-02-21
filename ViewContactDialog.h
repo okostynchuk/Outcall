@@ -3,7 +3,6 @@
 
 #include "Global.h"
 #include "SettingsDialog.h"
-#include "EditContactDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -33,14 +32,7 @@ public:
     void addCall(const QMap<QString, QVariant> &call, Calls calls);
     ~ViewContactDialog();
 
-signals:
-    void sendData(bool);
-
-public slots:
-    void receiveData(bool);
-
 protected slots:
-    void onEdit();
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
@@ -49,7 +41,6 @@ protected slots:
 private:
     Ui::ViewContactDialog *ui;
     SettingsDialog *settingsDialog;
-    EditContactDialog *editContactDialog;
     QSqlQueryModel *query1;
     QValidator *validator;
     QString updateID;

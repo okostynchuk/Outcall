@@ -89,7 +89,7 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
-void ContactsDialog::receiveData(bool updating)
+void ContactsDialog::recieveData(bool updating)
 {
     if (updating)
     {
@@ -111,13 +111,12 @@ void ContactsDialog::receiveData(bool updating)
 
 void ContactsDialog::showCard(const QModelIndex &index)
 {
-    QString updateID = query1->data(query1->index(index.row(), 0)).toString();
+    updateID = query1->data(query1->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
     if (query2->data(query2->index(row, 0)).toString() == "person")
     {
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
-         connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
          viewContactDialog->exec();
          viewContactDialog->deleteLater();
     }
@@ -125,7 +124,6 @@ void ContactsDialog::showCard(const QModelIndex &index)
     {
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         viewOrgContactDialog->exec();
         viewOrgContactDialog->deleteLater();
     }
@@ -217,10 +215,43 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 }
 
+void ContactsDialog::getID(const QModelIndex &index)
+{
+    updateID = query1->data(query1->index(index.row(), 0)).toString();
+    updateType = query2->data(query2->index(index.row(), 0)).toString();
+}
+
+void ContactsDialog::onEdit()
+{
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1 || query1->data(ui->tableView->selectionModel()->selectedRows().at(0), 0).toString() != updateID)
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (updateType == "person")
+    {
+        editContactDialog = new EditContactDialog;
+        editContactDialog->setValuesContacts(updateID);
+        connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+
+        editContactDialog->exec();
+        editContactDialog->deleteLater();
+    }
+    else
+    {
+        editOrgContactDialog = new EditOrgContactDialog;
+        editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
+        editOrgContactDialog->exec();
+        editOrgContactDialog->deleteLater();
+    }
+}
+
 void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
-    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addContactDialog->exec();
     addContactDialog->deleteLater();
 }
@@ -228,7 +259,7 @@ void ContactsDialog::onAddPerson()
 void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
-    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(recieveData(bool)));
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
 }

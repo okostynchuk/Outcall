@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>580</width>
-    <height>421</height>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,66 +119,15 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_9">
-       <item row="5" column="3">
-        <widget class="QLabel" name="label_12">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_27">
          <property name="text">
-          <string>Email:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <string>3</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="3">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Адрес:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
-        <widget class="QLabel" name="label_32">
-         <property name="text">
-          <string>VyborID:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="ThirdNumber">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="FourthNumber">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLineEdit" name="Email">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_18">
-         <property name="text">
-          <string>4</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLineEdit" name="Address">
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="FirstNumber">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -186,9 +135,6 @@
        </item>
        <item row="0" column="4">
         <widget class="QComboBox" name="comboBox">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
          <property name="editable">
           <bool>true</bool>
          </property>
@@ -207,17 +153,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_27">
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>3</string>
+          <string>Номера:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="FirstNumber">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+       <item row="1" column="3" colspan="2">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -225,6 +171,13 @@
         <widget class="QLabel" name="label_28">
          <property name="text">
           <string>2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="SecondNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
          </property>
         </widget>
        </item>
@@ -241,15 +194,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Номера:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="SecondNumber">
+       <item row="2" column="4">
+        <widget class="QLineEdit" name="City">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -276,17 +222,68 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
-        <widget class="QLineEdit" name="City">
+       <item row="5" column="3">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Email:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QLabel" name="label_32">
+         <property name="text">
+          <string>VyborID:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="ThirdNumber">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
         </widget>
        </item>
-       <item row="1" column="3" colspan="2">
-        <widget class="QLabel" name="label_14">
+       <item row="3" column="3">
+        <widget class="QLabel" name="label_10">
          <property name="text">
-          <string/>
+          <string>Адрес:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLineEdit" name="Address">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>4</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="FourthNumber">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QLineEdit" name="Email">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
          </property>
         </widget>
        </item>
@@ -294,10 +291,10 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_7">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Заметка:</string>
+       <item row="1" column="0" colspan="3">
+        <widget class="QTextEdit" name="Comment">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
          </property>
         </widget>
        </item>
@@ -311,16 +308,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3">
-        <widget class="QTextEdit" name="Comment">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Заметка:</string>
          </property>
         </widget>
        </item>
