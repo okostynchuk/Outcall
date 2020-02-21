@@ -19,13 +19,17 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui(new Ui::AddContactDialog)
 {
     ui->setupUi(this);
-    QRegExp RegExp("^[0-9]{1,10}$");
+    QRegExp RegExp("^[\\+]?[0-9]{10}$");
     validator = new QRegExpValidator(RegExp, this);
     ui->FirstNumber->setValidator(validator);
     ui->SecondNumber->setValidator(validator);
     ui->ThirdNumber->setValidator(validator);
     ui->FourthNumber->setValidator(validator);
     ui->FifthNumber->setValidator(validator);
+
+    QRegExp RegExp2("^[0-9]+$");
+    validator2 = new QRegExpValidator(RegExp2, this);
+    ui->VyborID->setValidator(validator2);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -40,6 +44,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
 AddContactDialog::~AddContactDialog()
 {
     delete validator;
+    delete validator2;
     delete ui;
 }
 

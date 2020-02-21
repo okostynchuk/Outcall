@@ -1,5 +1,5 @@
 #include "SettingsDialog.h"
-#include "ui_settingsdialog.h"
+#include "ui_SettingsDialog.h"
 #include "AddExtensionDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
@@ -11,6 +11,8 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QDir>
+#include <QProcess>
+#include <QTranslator>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -34,12 +36,27 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
 
+    onComboBoxSelected();
+
     checkExten();
 }
 
 SettingsDialog::~SettingsDialog()
 {
     delete ui;
+}
+
+void SettingsDialog::onComboBoxSelected()
+{
+    ui->languageList->addItem("Українська");
+    ui->languageList->addItem("Русский");
+    ui->languageList->addItem("English");
+    //ui->languageGroup->hide();
+}
+
+void SettingsDialog::selectLanguage()
+{
+
 }
 
 void SettingsDialog::saveSettings()
@@ -74,8 +91,8 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("userName_1",   ui->userName_1->text(),   "settings");
     QByteArray ba1;
     ba1.append(ui->password_1->text());
-    global::setSettingsValue("password-1", ba.toBase64(),            "settings");
-    global::setSettingsValue("port-1", ui->port_1->text().toUInt(),    "settings");
+    global::setSettingsValue("password_1", ba1.toBase64(),            "settings");
+    global::setSettingsValue("port_1", ui->port_1->text().toUInt(),    "settings");
 
         //Calls Base
     global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
@@ -83,8 +100,8 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("userName_2",   ui->userName_2->text(),   "settings");
     QByteArray ba2;
     ba2.append(ui->password_2->text());
-    global::setSettingsValue("password-2", ba.toBase64(),            "settings");
-    global::setSettingsValue("port-2", ui->port_2->text().toUInt(),    "settings");
+    global::setSettingsValue("password_2", ba2.toBase64(),            "settings");
+    global::setSettingsValue("port_2", ui->port_2->text().toUInt(),    "settings");
 }
 
 void SettingsDialog::loadSettings()
@@ -103,7 +120,7 @@ void SettingsDialog::loadSettings()
     QByteArray password1((global::getSettingsValue("password_1", "settings").toByteArray()));
     QString ba1(QByteArray::fromBase64(password1));
     ui->password_1->setText(ba1);
-    ui->port_1->setText(global::getSettingsValue("port_1", "settings", "5038").toString());
+    ui->port_1->setText(global::getSettingsValue("port_1", "settings").toString());
 
     ui->hostName_2->setText(global::getSettingsValue("hostName_2", "settings").toString());
     ui->databaseName_2->setText(global::getSettingsValue("databaseName_2", "settings").toString());
@@ -111,7 +128,7 @@ void SettingsDialog::loadSettings()
     QByteArray password2((global::getSettingsValue("password_2", "settings").toByteArray()));
     QString ba2(QByteArray::fromBase64(password2));
     ui->password_2->setText(ba2);
-    ui->port_2->setText(global::getSettingsValue("port_2", "settings", "5038").toString());
+    ui->port_2->setText(global::getSettingsValue("port_2", "settings").toString());
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
@@ -155,13 +172,40 @@ void SettingsDialog::okPressed()
 {
     saveSettings();
     applySettings();
-    hide();
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void SettingsDialog::applyPressed()
 {
     saveSettings();
     applySettings();
+
+    QTranslator translator;
+
+    if (ui->languageList->currentText() == "Українська")
+    {
+        translator.load(":/ukrainian.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    else if (ui->languageList->currentText() == "Русский")
+    {
+        translator.load(":/russian.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    else if (ui->languageList->currentText() == "English")
+    {
+        translator.load(":/english.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
+    {
+        translator.load(":/russian.qm");
+        qApp->installTranslator(&translator);
+    }
 }
 
 void SettingsDialog::applySettings()
@@ -277,6 +321,36 @@ void SettingsDialog::checkExten()
     else
     {
         ui->addButton->setEnabled(true);
+    }
+
+}
+
+void SettingsDialog::on_pushButton_clicked()
+{
+    QTranslator translator;
+
+    if (ui->languageList->currentText() == "Українська")
+    {
+        translator.load(":/ukrainian.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    else if (ui->languageList->currentText() == "Русский")
+    {
+        translator.load(":/russian.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    else if (ui->languageList->currentText() == "English")
+    {
+        translator.load(":/english.qm");
+        qApp->installTranslator(&translator);
+        qDebug()<<__LINE__;
+    }
+    if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
+    {
+        translator.load(":/russian.qm");
+        qApp->installTranslator(&translator);
     }
 
 }
