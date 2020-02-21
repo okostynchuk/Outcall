@@ -25,7 +25,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
-    setWindowTitle("История звонков по номеру: "+my_number);
+    setWindowTitle("История звонков по номеру: " + my_number);
 
     connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);

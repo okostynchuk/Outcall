@@ -44,9 +44,6 @@ protected:
 protected slots:
     void onComboBoxSelected();
 
-private slots:
-    void on_pushButton_clicked();
-
 private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
@@ -55,7 +52,6 @@ private:
     QString userName;
     QString path;
     QString exten;
-
 };
 
 #endif // SETTINGSDIALOG_H
