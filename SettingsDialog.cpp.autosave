@@ -207,9 +207,9 @@ void SettingsDialog::onAddLanguageBtn()
 void SettingsDialog::loadLanguages()
 {
     ui->languageList_2->clear();
-        ui->languageList_2->addItem(tr("English (default)"), "");
-        ui->languageList_2->addItem(tr("Русский"), "");
+        ui->languageList_2->addItem(tr("Русский (default)"), "");
         ui->languageList_2->addItem(tr("Українська"), "");
+        ui->languageList_2->addItem(tr("English"), "");
 
 //        QStringList nameFilters;
 //        nameFilters.insert(0,"*.lang");
