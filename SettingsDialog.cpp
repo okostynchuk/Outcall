@@ -61,7 +61,6 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(),   "general");
     global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
-    qDebug() << ui->languageList_2->currentText();
 
     // Save Extension SettingsDialog
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
@@ -69,7 +68,7 @@ void SettingsDialog::saveSettings()
     QByteArray ba;
     ba.append(ui->password->text());
     global::setSettingsValue("password", ba.toBase64(),            "settings");
-    global::setSettingsValue("port", ui->port->text().toUInt(),    "settings");
+    global::setSettingsValue("port", ui->port->text(),    "settings");
 
     // Save extensions
     global::removeSettinsKey("extensions");
@@ -90,7 +89,7 @@ void SettingsDialog::saveSettings()
     QByteArray ba1;
     ba1.append(ui->password_1->text());
     global::setSettingsValue("password_1", ba1.toBase64(),            "settings");
-    global::setSettingsValue("port_1", ui->port_1->text().toUInt(),    "settings");
+    global::setSettingsValue("port_1", ui->port_1->text(),    "settings");
 
         //Calls Base
     global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
@@ -99,7 +98,7 @@ void SettingsDialog::saveSettings()
     QByteArray ba2;
     ba2.append(ui->password_2->text());
     global::setSettingsValue("password_2", ba2.toBase64(),            "settings");
-    global::setSettingsValue("port_2", ui->port_2->text().toUInt(),    "settings");
+    global::setSettingsValue("port_2", ui->port_2->text(),    "settings");
 }
 
 void SettingsDialog::loadSettings()

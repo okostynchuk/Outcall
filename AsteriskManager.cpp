@@ -2,7 +2,6 @@
 #include "Notifier.h"
 #include "Global.h"
 
-#include <QDebug>
 #include <QTcpSocket>
 #include <QTime>
 #include <QVariantList>

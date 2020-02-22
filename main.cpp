@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
     QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
     QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
     QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toInt();
+    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
 
     db.setHostName(hostName_1);
     db.setDatabaseName(databaseName_1);
     db.setUserName(userName_1);
     db.setPassword(password_1);
-    db.setPort(port_1.toUInt());
+    db.setPort(port_1.toInt());
     db.open();
 
     QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
     QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
     QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_2", "settings").toInt();
+    QString port_2 = global::getSettingsValue("port_2", "settings").toString();
 
     dbAsterisk.setHostName(hostName_2);
     dbAsterisk.setDatabaseName(databaseName_2);
     dbAsterisk.setUserName(userName_2);
     dbAsterisk.setPassword(password_2);
-    dbAsterisk.setPort(port_2.toUInt());
+    dbAsterisk.setPort(port_2.toInt());
     dbAsterisk.open();
 
     if(!db.open() && !dbAsterisk.open())

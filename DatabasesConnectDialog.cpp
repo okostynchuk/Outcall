@@ -24,14 +24,14 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
     QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
     QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toInt();
+    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
 
     QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
     QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
     QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
     QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_2", "settings").toInt();
+    QString port_2 = global::getSettingsValue("port_2", "settings").toString();
 
     ui->hostName_1->setText(hostName_1);
     ui->databaseName_1->setText(databaseName_1);
@@ -43,7 +43,7 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     ui->databaseName_2->setText(databaseName_2);
     ui->userName_2->setText(userName_2);
     ui->password_2->setText(password_2);
-    ui->port_2->setText(port_2);                    
+    ui->port_2->setText(port_2);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onSave);
     connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onClose);
@@ -167,7 +167,7 @@ void DatabasesConnectDialog::checkDb()
     DB.setDatabaseName(ui->databaseName_1->text());
     DB.setUserName(ui->userName_1->text());
     DB.setPassword(ui->password_1->text());
-    DB.setPort(ui->port_1->text().toUInt());
+    DB.setPort(ui->port_1->text().toInt());
     DB.open();
 }
 
@@ -177,6 +177,6 @@ void DatabasesConnectDialog::checkDbAsterisk()
     DbAsterisk.setDatabaseName(ui->databaseName_2->text());
     DbAsterisk.setUserName(ui->userName_2->text());
     DbAsterisk.setPassword(ui->password_2->text());
-    DbAsterisk.setPort(ui->port_2->text().toUInt());
+    DbAsterisk.setPort(ui->port_2->text().toInt());
     DbAsterisk.open();
 }
