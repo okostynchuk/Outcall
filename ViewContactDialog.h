@@ -44,6 +44,7 @@ protected slots:
     void loadReceivedCalls();
     void loadPlacedCalls();
     void deleteObjects();
+    void updateCalls();
 
 private:
     Ui::ViewContactDialog *ui;
@@ -56,6 +57,7 @@ private:
     QString number;
     QString my_number;
     int count2 = 1;
+    QString days;
     QString contact_number;
     QString firstNumber;
     QString secondNumber;

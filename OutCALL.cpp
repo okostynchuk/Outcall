@@ -171,12 +171,12 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone ="+from+"))");
+    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone ="+from+"))");
     query.exec();
     query.first();
     if (query.value(0) != 0)
     {
-        query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = "+from+")");
+        query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = "+from+")");
         query.exec();
         query.first();
         callerIDName = query.value(0).toString();

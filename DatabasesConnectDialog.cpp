@@ -57,6 +57,7 @@ void DatabasesConnectDialog::onSave()
             setSettingForSecondDb();
             QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
             close();
+            destroy(true);
         }
     }
     else if(state_db == "db")
@@ -70,6 +71,7 @@ void DatabasesConnectDialog::onSave()
             setSettingForFirstDb();
             QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
             close();
+            destroy(true);
         }
     }
     else if(state_db == "dbAsterisk")
@@ -83,6 +85,7 @@ void DatabasesConnectDialog::onSave()
             setSettingForSecondDb();
             QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
             close();
+            destroy(true);
         }
     }
 }
