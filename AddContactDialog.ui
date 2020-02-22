@@ -42,7 +42,7 @@
         </size>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -55,7 +55,7 @@
         </size>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -68,7 +68,7 @@
         </size>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -155,20 +155,20 @@
        <item>
         <widget class="QPushButton" name="deleteOrgButton">
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text">
-          <string>Удалить</string>
+          <string>Отвязать</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="addOrgButton">
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text">
-          <string>Редактировать</string>
+          <string>Привязать</string>
          </property>
         </widget>
        </item>
@@ -184,7 +184,7 @@
      <item row="2" column="1">
       <widget class="QLineEdit" name="FirstNumber">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -198,7 +198,7 @@
      <item row="3" column="1">
       <widget class="QLineEdit" name="SecondNumber">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -215,7 +215,7 @@
      <item row="3" column="3">
       <widget class="QLineEdit" name="City">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -229,7 +229,7 @@
      <item row="4" column="1">
       <widget class="QLineEdit" name="ThirdNumber">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -246,7 +246,7 @@
      <item row="4" column="3">
       <widget class="QLineEdit" name="Address">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -260,7 +260,7 @@
      <item row="5" column="1">
       <widget class="QLineEdit" name="FourthNumber">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -277,7 +277,7 @@
      <item row="5" column="3">
       <widget class="QLineEdit" name="VyborID">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -291,7 +291,7 @@
      <item row="6" column="1">
       <widget class="QLineEdit" name="FifthNumber">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -308,7 +308,7 @@
      <item row="6" column="3">
       <widget class="QLineEdit" name="Email">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -326,7 +326,7 @@
      <item row="2" column="2">
       <widget class="QPushButton" name="saveButton">
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
        <property name="text">
         <string>Сохранить данные</string>
@@ -351,6 +351,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>LastName</tabstop>
+  <tabstop>FirstName</tabstop>
+  <tabstop>Patronymic</tabstop>
+  <tabstop>FirstNumber</tabstop>
+  <tabstop>SecondNumber</tabstop>
+  <tabstop>ThirdNumber</tabstop>
+  <tabstop>FourthNumber</tabstop>
+  <tabstop>FifthNumber</tabstop>
+  <tabstop>City</tabstop>
+  <tabstop>Address</tabstop>
+  <tabstop>VyborID</tabstop>
+  <tabstop>Email</tabstop>
+  <tabstop>addOrgButton</tabstop>
+  <tabstop>Comment</tabstop>
+  <tabstop>deleteOrgButton</tabstop>
+  <tabstop>saveButton</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>
