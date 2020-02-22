@@ -6,6 +6,7 @@
 #include <QModelIndex>
 #include <QItemSelectionModel>
 #include <QMessageBox>
+#include <QSqlDatabase>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),

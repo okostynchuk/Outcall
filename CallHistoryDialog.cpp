@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QTextBlock>
 #include <QItemSelectionModel>
+#include <QDebug>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -254,7 +255,6 @@ QString CallHistoryDialog::getUpdateId(QString &number)
 
 void CallHistoryDialog::loadMissedCalls()
 {
-
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     QSqlDatabase db;
     QSqlQuery query(db);

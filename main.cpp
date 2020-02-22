@@ -1,7 +1,6 @@
 #include "OutCALL.h"
 #include "Global.h"
 #include "Notifier.h"
-
 #include "Windows.h"
 #include "DatabasesConnectDialog.h"
 
@@ -34,7 +33,6 @@ int main(int argc, char *argv[])
     QString password_1 = QString(QByteArray::fromBase64(password1));
     QString port_1 = global::getSettingsValue("port_1", "settings").toInt();
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName(hostName_1);
     db.setDatabaseName(databaseName_1);
     db.setUserName(userName_1);
@@ -49,7 +47,6 @@ int main(int argc, char *argv[])
     QString password_2 = QString(QByteArray::fromBase64(password2));
     QString port_2 = global::getSettingsValue("port_2", "settings").toInt();
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
     dbAsterisk.setHostName(hostName_2);
     dbAsterisk.setDatabaseName(databaseName_2);
     dbAsterisk.setUserName(userName_2);

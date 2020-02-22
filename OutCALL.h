@@ -17,6 +17,7 @@ class SettingsDialog;
 class ContactsDialog;
 class PlaceCallDialog;
 
+
 class OutCall : public QWidget
 {
 public:
@@ -44,11 +45,16 @@ protected slots:
     void onCallReceived(const QMap<QString, QVariant> &call);
     void close();
     void changeIcon();
+    void connectToDatabases();
+    void enableActions();
+    void disableActions();
 
 private:
     QMenu *m_menu;
     QAction *m_signIn;
     QAction *m_placeCall;
+    QAction *contactsInfoAction;
+    QAction *callHistoryAction;
     QSystemTrayIcon *m_systemTryIcon;
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;

@@ -10,11 +10,13 @@
 #include <QString>
 #include <QVariant>
 #include <QMessageBox>
+#include <QSqlDatabase>
 
 extern QString g_LanguagesPath;
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
-
+extern QSqlDatabase db;
+extern QSqlDatabase dbAsterisk;
 
 QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
                                                      const QString &title=APP_NAME, QWidget *parent=0,

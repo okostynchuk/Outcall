@@ -36,8 +36,6 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
 
-
-
     onComboBoxSelected();
 
     checkExten();

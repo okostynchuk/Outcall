@@ -69,7 +69,7 @@ void AsteriskManager::onError(QAbstractSocket::SocketError socketError)
         setState(DISCONNECTED);
         if (!m_timer.isActive() && m_autoSignIn)
         {
-            m_timer.start(30000); // 30 sec to reconnect
+            m_timer.start(10000); // 10 sec to reconnect
         }
     }
     setState(ERROR_ON_CONNECTING);
@@ -369,7 +369,6 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     global::setSettingsValue("received", list, "calls");
 
                     m_dialedNum.remove(uniqueid);
-                    //QMap<QString, QVariant> received;
                     emit callDeteceted(received, RECIEVED);
                 }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
@@ -419,9 +418,6 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         const QString uniqueid = eventValues.value("Uniqueid");
-//        qDebug() << uniqueid +" hangup" + __LINE__;
-//        if((eventValues.value("Event") == "Hangup") && (eventValues.value("Linkedid") ==  eventValues.value("Uniqueid")) )
-//            qDebug() << "hangup ok , line 426";
         if (m_calls.contains(uniqueid))
         {
             Call *call = m_calls.value(uniqueid);
