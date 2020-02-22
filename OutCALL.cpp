@@ -11,7 +11,6 @@
 #include "PopupHelloWindow.h"
 
 #include <QMenu>
-#include <QDebug>
 #include <QTcpSocket>
 #include <QApplication>
 #include <QDesktopServices>

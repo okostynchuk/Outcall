@@ -14,7 +14,6 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QDebug>
 #include <QSqlError>
 
 int main(int argc, char *argv[])

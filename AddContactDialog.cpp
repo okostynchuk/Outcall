@@ -10,7 +10,6 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
-#include <QDebug>
 #include <QLineEdit>
 #include <QStringList>
 

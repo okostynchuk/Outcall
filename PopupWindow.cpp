@@ -4,7 +4,6 @@
 #include <QDesktopWidget>
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QDebug>
 #include <QObject>
 #include <QWidget>
 #include <QTextEdit>

@@ -12,7 +12,6 @@
 #include "Global.h"
 
 #include <QDialog>
-#include <QMap>
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <QTextEdit>

@@ -11,7 +11,6 @@
 #include <QString>
 #include <QMessageBox>
 #include <QStringList>
-#include <QDebug>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),

@@ -10,7 +10,6 @@
 #include <QTableView>
 #include <QList>
 #include <QWidget>
-#include <QLabel>
 
 namespace Ui {
 class ViewContactDialog;
