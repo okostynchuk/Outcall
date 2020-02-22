@@ -1,10 +1,11 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
+#include <AddExtensionDialog.h>
+
 #include <QDialog>
 #include <QFile>
 
-#include <AddExtensionDialog.h>
 
 class QAbstractButton;
 class QTcpSocket;

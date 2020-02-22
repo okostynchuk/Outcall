@@ -52,6 +52,7 @@ protected slots:
     void loadPlacedCalls();
     void deleteObjects();
     void searchFunction();
+    void updateCalls();
 
 private slots:
     void on_pushButton_clicked();
@@ -79,6 +80,7 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     QString update;
     QString id;
+    QString days;
     bool filter;
     int valueV;
     int valueH;

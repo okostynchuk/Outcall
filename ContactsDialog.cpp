@@ -1,7 +1,6 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
-#include <QDebug>
 #include <QGuiApplication>
 #include <QScreen>
 #include <QModelIndex>

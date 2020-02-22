@@ -12,7 +12,6 @@
 #include "Global.h"
 
 #include <QDialog>
-#include <QMap>
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <QTextEdit>
@@ -79,6 +78,7 @@ private:
     EditOrgContactDialog *editOrgContactDialog;
     SettingsDialog *settingsDialog;
     AddNoteDialog *addNoteDialog;
+    QString days;
     QString number;
     QString my_number;
     QString uniqueid;

@@ -4,7 +4,6 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QDebug>
 
 AddNoteDialog::AddNoteDialog(QWidget *parent) :
     QDialog(parent),

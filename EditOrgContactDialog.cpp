@@ -136,7 +136,7 @@ void EditOrgContactDialog::onSave()
             QString thirdNum = QString(ui->ThirdNumber->text());
             QString fourthNum = QString(ui->FourthNumber->text());
             QString fifthNum = QString(ui->FifthNumber->text());
-            QString sql1 = QString("select COUNT(phone) from phone where entry_id = %1").arg(updateID);
+            QString sql1 = QString("select COUNT(fone) from fones where entry_id = %1").arg(updateID);
             query1.prepare(sql1);
             query1.exec();
             query1.next();
@@ -146,7 +146,7 @@ void EditOrgContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(firstNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(firstNumber);
@@ -155,7 +155,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(firstNum);
                     query1.exec();
@@ -166,7 +166,7 @@ void EditOrgContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(secondNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(secondNumber);
@@ -175,7 +175,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(secondNum);
                     query1.exec();
@@ -185,7 +185,7 @@ void EditOrgContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(thirdNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(thirdNumber);
@@ -194,7 +194,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(thirdNum);
                     query1.exec();
@@ -204,7 +204,7 @@ void EditOrgContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(fourthNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(fourthNumber);
@@ -213,7 +213,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(fourthNum);
                     query1.exec();
@@ -223,7 +223,7 @@ void EditOrgContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(fifthNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(fifthNumber);
@@ -232,7 +232,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(fifthNum);
                     query1.exec();

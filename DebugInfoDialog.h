@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QSqlQuery>
-#include <QSqlQueryModel>
 
 namespace Ui {
 class DebugInfoDialog;
@@ -25,7 +24,6 @@ protected:
 
 private:
     Ui::DebugInfoDialog *ui;
-    QSqlQuery *query;
 };
 
 #endif // DEBUGINFODIALOG_H

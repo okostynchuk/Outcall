@@ -11,7 +11,6 @@
 #include <QString>
 #include <QMessageBox>
 #include <QStringList>
-#include <QDebug>
 
 AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -144,7 +143,7 @@ void AddOrgContactDialog::onSave()
             QString fifthNum = QString(ui->FifthNumber->text());
             if (firstNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->FirstNumber->text());
@@ -152,7 +151,7 @@ void AddOrgContactDialog::onSave()
             }
             if (secondNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->SecondNumber->text());
@@ -160,7 +159,7 @@ void AddOrgContactDialog::onSave()
             }
             if (thirdNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->ThirdNumber->text());
@@ -168,7 +167,7 @@ void AddOrgContactDialog::onSave()
             }
             if (fourthNum != 0)
             {
-                    query1.prepare("INSERT INTO phone (entry_id, phone)"
+                    query1.prepare("INSERT INTO fones (entry_id, fone)"
                                    "VALUES(?, ?)");
                     query1.addBindValue(id);
                     query1.addBindValue(ui->FourthNumber->text());
@@ -177,7 +176,7 @@ void AddOrgContactDialog::onSave()
 
             if (fifthNum != 0)
             {
-                    query1.prepare("INSERT INTO phone (entry_id, phone)"
+                    query1.prepare("INSERT INTO fones (entry_id, fone)"
                                    "VALUES(?, ?)");
                     query1.addBindValue(id);
                     query1.addBindValue(ui->FifthNumber->text());

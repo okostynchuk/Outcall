@@ -2,8 +2,6 @@
 #include "ui_debuginfodialog.h"
 #include "Global.h"
 
-#include <QDebug>
-
 DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DebugInfoDialog)
