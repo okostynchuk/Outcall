@@ -62,7 +62,7 @@ void EditContactDialog::onSave()
     }
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
-    QString orgName = ui->comboBox->currentText();
+    QString orgName = ui->label_org->text();
     if (orgName != "Нет")
     {
         QSqlQuery queryOrg(db);
@@ -277,40 +277,6 @@ void EditContactDialog::onSave()
     }
 }
 
-void EditContactDialog::onComboBoxSelected()
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
-    query.exec();
-    QString orgID = NULL;
-    while (query.next())
-        orgID = query.value(0).toString();
-    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
-    query.exec();
-    QString orgName = NULL;
-    while (query.next())
-        orgName = query.value(0).toString();
-    ui->comboBox->addItem("Нет");
-    query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
-    query.exec();
-    while (query.next())
-    {
-        if (!query.value(0).toString().isEmpty())
-        {
-            ui->comboBox->addItem(query.value(0).toString());
-        }
-    }
-    if (!orgName.isEmpty())
-    {
-        ui->comboBox->setCurrentText(orgName);
-    }
-    else
-    {
-        ui->comboBox->setCurrentText("Нет");
-    }
-}
-
 void EditContactDialog::setValuesContacts(QString &i)
 {
     updateID = i;
@@ -346,6 +312,22 @@ void EditContactDialog::setValuesContacts(QString &i)
     QString entryEmail = query.value(5).toString();
     QString entryVyborID = query.value(6).toString();
     QString entryComment = query.value(7).toString();
+
+    query.prepare("SELECT entry_person_org_id FROM entry_phone WHERE entry_id = " + updateID);
+    query.exec();
+    QString orgID = NULL;
+    while (query.next())
+        orgID = query.value(0).toString();
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + orgID);
+    query.exec();
+    QString orgName = NULL;
+    while (query.next())
+        orgName = query.value(0).toString();
+    if (!orgName.isEmpty() && !orgName.isNull())
+        ui->label_org->setText(orgName);
+    else
+        ui->label_org->setText("Нет");
+
     ui->FirstNumber->setText(firstNumber);
     ui->SecondNumber->setText(secondNumber);
     ui->ThirdNumber->setText(thirdNumber);
@@ -359,7 +341,32 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-    onComboBoxSelected();
+}
+
+void EditContactDialog::receiveOrgID(QString &id)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
+    query.exec();
+    query.first();
+    if (!query.value(0).toString().isEmpty())
+        ui->label_org->setText(query.value(0).toString());
+    else
+        ui->label_org->setText("Нет");
+}
+
+void EditContactDialog::on_addOrgButton_clicked()
+{
+    addOrgToPerson = new AddOrgToPerson;
+    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
+    addOrgToPerson->exec();
+    addOrgToPerson->deleteLater();
+}
+
+void EditContactDialog::on_deleteOrgButton_clicked()
+{
+    ui->label_org->setText("Нет");
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)
