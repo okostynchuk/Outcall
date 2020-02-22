@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>Привязка к организации</source>
-        <translation>Organization binding</translation>
+        <translation type="vanished">Organization binding</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -92,6 +92,18 @@
         <source>Запись успешно добавлена!</source>
         <translation>Success!</translation>
     </message>
+    <message>
+        <source>Организация:</source>
+        <translation>Organization:</translation>
+    </message>
+    <message>
+        <source>Удалить</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation>Edit</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -114,6 +126,49 @@
     <message>
         <source>Неверный номер!</source>
         <translation>Incorrect number!</translation>
+    </message>
+</context>
+<context>
+    <name>AddLanguageDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Please select language to add:</source>
+        <translation>Please select language to add:</translation>
+    </message>
+    <message>
+        <source>Add language</source>
+        <translation>Add language</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Please select language to add first.</source>
+        <translation>Please select language to add first.</translation>
+    </message>
+    <message>
+        <source>Open Language File</source>
+        <translation>Open Language File</translation>
+    </message>
+    <message>
+        <source>Language Files (*.lang)</source>
+        <translation>Language Files (*.lang)</translation>
+    </message>
+    <message>
+        <source>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</source>
+        <translation>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</translation>
+    </message>
+    <message>
+        <source>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</source>
+        <translation>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</translation>
+    </message>
+    <message>
+        <source>Language file was added successfully.</source>
+        <translation>Language file was added successfully.</translation>
     </message>
 </context>
 <context>
@@ -216,6 +271,41 @@
     </message>
 </context>
 <context>
+    <name>AddOrgToPerson</name>
+    <message>
+        <source>Привязка организации</source>
+        <translation>Organization binding</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Choose search column</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Table search</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+</context>
+<context>
     <name>CallHistoryDialog</name>
     <message>
         <source>История звонков</source>
@@ -279,7 +369,27 @@
     </message>
     <message>
         <source>История звонков по номеру: </source>
-        <translation>Call history by the number:</translation>
+        <translation type="vanished">Call history by the number:</translation>
+    </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
     </message>
 </context>
 <context>
@@ -337,7 +447,7 @@
     </message>
     <message>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="vanished">TextLabel</translation>
     </message>
     <message>
         <source>►</source>
@@ -375,36 +485,48 @@
         <source>►►</source>
         <translation>►►</translation>
     </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Search by full name / name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by telephone</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
         <source>Настойки базы контактов</source>
-        <translation>Set contacts database</translation>
+        <translation type="vanished">Set contacts database</translation>
     </message>
     <message>
         <source>Имя хоста: </source>
-        <translation>Host name:</translation>
+        <translation type="vanished">Host name:</translation>
     </message>
     <message>
         <source>Имя базы данных:</source>
-        <translation>Database name:</translation>
+        <translation type="vanished">Database name:</translation>
     </message>
     <message>
         <source>Имя пользователя:</source>
-        <translation>Username:</translation>
+        <translation type="vanished">Username:</translation>
     </message>
     <message>
         <source>Пароль:</source>
-        <translation>Password:</translation>
+        <translation type="vanished">Password:</translation>
     </message>
     <message>
         <source>Порт:</source>
-        <translation>Port:</translation>
+        <translation type="vanished">Port:</translation>
     </message>
     <message>
         <source>Настройки базы звонков</source>
@@ -416,7 +538,40 @@
     </message>
     <message>
         <source>Отмена</source>
-        <translation>Cancel</translation>
+        <translation type="vanished">Cancel</translation>
+    </message>
+    <message>
+        <source>Подключение к базам данных</source>
+        <translation>Connection to databases</translation>
+    </message>
+    <message>
+        <source>Выйти из приложения</source>
+        <translation>Exit</translation>
+    </message>
+    <message>
+        <source>Настройки базы контактов</source>
+        <translation>Contact database settings</translation>
+    </message>
+    <message>
+        <source> Имя хоста: </source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source> Имя базы данных:</source>
+        <translatorcomment>Database name:</translatorcomment>
+        <translation>Database name:</translation>
+    </message>
+    <message>
+        <source> Имя пользователя:</source>
+        <translation>User name:</translation>
+    </message>
+    <message>
+        <source> Пароль:</source>
+        <translation>Password:</translation>
+    </message>
+    <message>
+        <source> Порт:</source>
+        <translation>Port:</translation>
     </message>
 </context>
 <context>
@@ -458,7 +613,7 @@
     </message>
     <message>
         <source>Привязка к организации</source>
-        <translation>Organization binding</translation>
+        <translation type="vanished">Organization binding</translation>
     </message>
     <message>
         <source>3</source>
@@ -524,6 +679,18 @@
     <message>
         <source>Запись успешно изменена!</source>
         <translation>Success!</translation>
+    </message>
+    <message>
+        <source>Организация:</source>
+        <translation>Organization:</translation>
+    </message>
+    <message>
+        <source>Удалить</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation>Edit</translation>
     </message>
 </context>
 <context>
@@ -678,7 +845,7 @@
     </message>
     <message>
         <source>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</source>
-        <translation>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</translation>
+        <translation type="vanished">The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</translation>
     </message>
     <message>
         <source>Выйти из аккаунта</source>
@@ -712,12 +879,16 @@
         <source>Не настроен</source>
         <translation>Not set</translation>
     </message>
+    <message>
+        <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</source>
+        <translation>The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct.</translation>
+    </message>
 </context>
 <context>
     <name>PlaceCallDialog</name>
     <message>
         <source>Звонок</source>
-        <translation>Call</translation>
+        <translation>Place a call</translation>
     </message>
     <message>
         <source>От:</source>
@@ -888,6 +1059,14 @@
         <source>ФИО</source>
         <translation>Full name</translation>
     </message>
+    <message>
+        <source>Название</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Failed to load language file.</source>
+        <translation>Failed to load language file.</translation>
+    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
@@ -921,7 +1100,7 @@
     </message>
     <message>
         <source>Сервер:</source>
-        <translation>Server:</translation>
+        <translation type="vanished">Server:</translation>
     </message>
     <message>
         <source>Имя пользователя:</source>
@@ -969,11 +1148,11 @@
     </message>
     <message>
         <source>Выбор языка</source>
-        <translation>Choose the language</translation>
+        <translation type="vanished">Choose the language</translation>
     </message>
     <message>
         <source>(Необходима перезагрузка приложения)</source>
-        <translation>(App restart required)</translation>
+        <translation type="vanished">(App restart required)</translation>
     </message>
     <message>
         <source>Базы данных</source>
@@ -998,11 +1177,55 @@
     </message>
     <message>
         <source>Выбрать</source>
-        <translation>Choose</translation>
+        <translation type="vanished">Choose</translation>
     </message>
     <message>
         <source>Настройки базы контактов</source>
         <translation>Contact database settings</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>Language</translation>
+    </message>
+    <message>
+        <source>Add another language</source>
+        <translation>Add another language</translation>
+    </message>
+    <message>
+        <source>(Note: application restart is required)</source>
+        <translation>(Note: application restart is required)</translation>
+    </message>
+    <message>
+        <source>Имя хоста:</source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Применение настроек</source>
+        <translation>Apply settings</translation>
+    </message>
+    <message>
+        <source>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</source>
+        <translation>Restarting the application is required to apply the changes. Confirm changes made?</translation>
+    </message>
+    <message>
+        <source>English (default)</source>
+        <translation>English (default)</translation>
+    </message>
+    <message>
+        <source>Добавление</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <source>Редактирование</source>
+        <translation>Edit</translation>
     </message>
 </context>
 <context>
@@ -1094,6 +1317,26 @@
     <message>
         <source>Редактировать</source>
         <translation>Edit</translation>
+    </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
     </message>
 </context>
 <context>
@@ -1189,6 +1432,26 @@
     <message>
         <source>Редактировать</source>
         <translation>Edit</translation>
+    </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
     </message>
 </context>
 </TS>

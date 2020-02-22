@@ -34,18 +34,19 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     // General
     userName = qgetenv("USERNAME");
-    path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName); 
+    path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
 
     //QFile inputFile(g_LanguagesPath + "/languages.txt");
        //inputFile.open(QIODevice::ReadOnly);
        //QTextStream in(&inputFile);
        //m_countries = in.readAll().split(QRegExp("(\\r\\n)|(\\n\\r)|\\r|\\n"), QString::SkipEmptyParts);
-        ui->tabWidget->setCurrentIndex(0);
+       ui->tabWidget->setCurrentIndex(0);
 
     loadLanguages();
 
     //ui->languageGroup->hide();
     loadSettings();
+
     checkExten();
 }
 
@@ -206,9 +207,9 @@ void SettingsDialog::onAddLanguageBtn()
 void SettingsDialog::loadLanguages()
 {
     ui->languageList_2->clear();
-        ui->languageList_2->addItem(tr("English (default)"), "");
-        ui->languageList_2->addItem(tr("Русский"), "");
+        ui->languageList_2->addItem(tr("Русский (default)"), "");
         ui->languageList_2->addItem(tr("Українська"), "");
+        ui->languageList_2->addItem(tr("English"), "");
 
 //        QStringList nameFilters;
 //        nameFilters.insert(0,"*.lang");
