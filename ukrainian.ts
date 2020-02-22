@@ -417,32 +417,42 @@
         <translation>Пошук</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="177"/>
+        <location filename="ContactsDialog.ui" line="175"/>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.ui" line="204"/>
         <source>◄</source>
         <translation>◄</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="216"/>
+        <location filename="ContactsDialog.ui" line="243"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="243"/>
+        <location filename="ContactsDialog.ui" line="270"/>
         <source>►</source>
         <translation>►</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="290"/>
-        <source>Обновить</source>
-        <translation>Обновити</translation>
+        <location filename="ContactsDialog.ui" line="297"/>
+        <source>►►</source>
+        <translation>►►</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="311"/>
+        <location filename="ContactsDialog.ui" line="344"/>
+        <source>Обновить</source>
+        <translation>Оновити</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.ui" line="365"/>
         <source>Добавить физ. лицо</source>
         <translation>Додати фіз.особу</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.ui" line="332"/>
+        <location filename="ContactsDialog.ui" line="386"/>
         <source>Добавить организацию</source>
         <translation>Додати організацію</translation>
     </message>
@@ -920,13 +930,32 @@
         <source>Отмена</source>
         <translation>Скасувати</translation>
     </message>
+    <message>
+        <location filename="PlaceCallDialog.cpp" line="103"/>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Пошук по ФІО / назві</translation>
+    </message>
+    <message>
+        <location filename="PlaceCallDialog.cpp" line="104"/>
+        <source>Поиск по номеру телефона</source>
+        <translation>Пошук по номеру телефона</translation>
+    </message>
+    <message>
+        <location filename="PlaceCallDialog.cpp" line="105"/>
+        <source>Поиск сотрудников по организации</source>
+        <translation>Пошук за співробітниками організації</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
     <message>
-        <location filename="PopupHelloWindow.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ви успішно увійшли &lt;br/&gt;до OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ви успішно увійшли &lt;br/&gt;до OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="PopupHelloWindow.ui" line="101"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="PopupHelloWindow.ui" line="149"/>
@@ -1137,12 +1166,12 @@
         <translation>Основні налаштування</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="73"/>
+        <location filename="SettingsDialog.ui" line="80"/>
         <source>Разрешить автоматический вход в аккаунт при подключении к Интернету</source>
         <translation>Дозволити автоматичний вхід до акаунту при підключенні до Інтернету</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="86"/>
+        <location filename="SettingsDialog.ui" line="93"/>
         <source>Запустить приложение при загрузке Windows</source>
         <translation>Запускати додаток при загрузці Windows</translation>
     </message>
@@ -1157,106 +1186,115 @@
         <translation>Необхідне перезавантаження додатку</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="118"/>
+        <location filename="SettingsDialog.ui" line="68"/>
+        <source>Выбрать</source>
+        <translation>Обрати</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="125"/>
         <source>Сервер</source>
         <translation>Сервер</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="124"/>
+        <location filename="SettingsDialog.ui" line="131"/>
         <source>Настройки сервера</source>
         <translation>Налаштування серверу</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="130"/>
+        <location filename="SettingsDialog.ui" line="137"/>
         <source>Сервер:</source>
         <translation>Сервер:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="140"/>
-        <location filename="SettingsDialog.ui" line="224"/>
-        <location filename="SettingsDialog.ui" line="298"/>
+        <location filename="SettingsDialog.ui" line="147"/>
+        <location filename="SettingsDialog.ui" line="231"/>
+        <location filename="SettingsDialog.ui" line="305"/>
         <source>Имя пользователя:</source>
         <translation>Ім&apos;я користувача:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="150"/>
-        <location filename="SettingsDialog.ui" line="238"/>
-        <location filename="SettingsDialog.ui" line="312"/>
+        <location filename="SettingsDialog.ui" line="157"/>
+        <location filename="SettingsDialog.ui" line="245"/>
+        <location filename="SettingsDialog.ui" line="319"/>
         <source>Пароль:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="164"/>
-        <location filename="SettingsDialog.ui" line="252"/>
-        <location filename="SettingsDialog.ui" line="326"/>
+        <location filename="SettingsDialog.ui" line="171"/>
+        <location filename="SettingsDialog.ui" line="259"/>
+        <location filename="SettingsDialog.ui" line="333"/>
         <source>Порт:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="171"/>
+        <location filename="SettingsDialog.ui" line="178"/>
         <source>5038</source>
         <translation>5038</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="182"/>
+        <location filename="SettingsDialog.ui" line="189"/>
         <source>Базы данных</source>
         <translation>Бази даних</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="192"/>
-        <source>Настойки базы контактов</source>
+        <location filename="SettingsDialog.ui" line="199"/>
+        <source>Настройки базы контактов</source>
         <translation>Налаштування бази контактів</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="204"/>
-        <location filename="SettingsDialog.ui" line="278"/>
+        <source>Настойки базы контактов</source>
+        <translation type="vanished">Налаштування бази контактів</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="211"/>
+        <location filename="SettingsDialog.ui" line="285"/>
         <source>Имя хоста: </source>
         <translation>Ім&apos;я хосту:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="214"/>
-        <location filename="SettingsDialog.ui" line="288"/>
+        <location filename="SettingsDialog.ui" line="221"/>
+        <location filename="SettingsDialog.ui" line="295"/>
         <source>Имя базы данных:</source>
         <translation>Назва бази даних:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="266"/>
+        <location filename="SettingsDialog.ui" line="273"/>
         <source>Настройки базы звонков</source>
         <translation>Налаштування бази дзвінків</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="344"/>
-        <location filename="SettingsDialog.ui" line="356"/>
+        <location filename="SettingsDialog.ui" line="351"/>
+        <location filename="SettingsDialog.ui" line="363"/>
         <source>Номера</source>
         <translation>Номера</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="387"/>
+        <location filename="SettingsDialog.ui" line="394"/>
         <source>Добавить</source>
         <translation>Додати</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="394"/>
+        <location filename="SettingsDialog.ui" line="401"/>
         <source>Удалить</source>
         <translation>Видалити</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="401"/>
+        <location filename="SettingsDialog.ui" line="408"/>
         <source>Редактировать</source>
         <translation>Редагувати</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="434"/>
+        <location filename="SettingsDialog.ui" line="441"/>
         <source>Разработано:</source>
         <translation>Розроблено:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="444"/>
+        <location filename="SettingsDialog.ui" line="451"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="235"/>
+        <location filename="SettingsDialog.cpp" line="271"/>
         <source>Вы уверены, что хотите удалить выбранные элементы?</source>
         <translation>Ви впевнені, що хочете змінити вибрані елементи?</translation>
     </message>

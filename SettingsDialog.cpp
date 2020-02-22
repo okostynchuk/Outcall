@@ -36,6 +36,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
     loadSettings();
 
+
+
     onComboBoxSelected();
 
     checkExten();
@@ -64,6 +66,7 @@ void SettingsDialog::saveSettings()
     // General SettingsDialog
     global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(),   "general");
     global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
+    global::setSettingsValue("language", ui->languageList->itemData(ui->languageList->currentIndex(), Qt::UserRole).toString(), "general");
 
     // Save Extension SettingsDialog
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
@@ -132,6 +135,7 @@ void SettingsDialog::loadSettings()
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
+    ui->languageList->setCurrentText(global::getSettingsValue("language", "general").toString());
     bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
@@ -181,30 +185,33 @@ void SettingsDialog::applyPressed()
     saveSettings();
     applySettings();
 
-    QTranslator translator;
-
     if (ui->languageList->currentText() == "Українська")
     {
-        translator.load(":/ukrainian.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
+
+//        QTranslator qtTranslator;
+//        QApplication app(argc, argv);
+//        qtTranslator.load("qt_uk", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//        app.installTranslator(&qtTranslator);
     }
     else if (ui->languageList->currentText() == "Русский")
     {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
+
+//        QTranslator qtTranslator;
+//        qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//        app.installTranslator(&qtTranslator);
     }
     else if (ui->languageList->currentText() == "English")
     {
-        translator.load(":/english.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
+
+//        QTranslator qtTranslator;
+//        qtTranslator.load("qt_en", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//        app.installTranslator(&qtTranslator);
     }
     if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
     {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
+//        QTranslator qtTranslator;
+//        qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//        app.installTranslator(&qtTranslator);
     }
 }
 
@@ -321,36 +328,6 @@ void SettingsDialog::checkExten()
     else
     {
         ui->addButton->setEnabled(true);
-    }
-
-}
-
-void SettingsDialog::on_pushButton_clicked()
-{
-    QTranslator translator;
-
-    if (ui->languageList->currentText() == "Українська")
-    {
-        translator.load(":/ukrainian.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
-    }
-    else if (ui->languageList->currentText() == "Русский")
-    {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
-    }
-    else if (ui->languageList->currentText() == "English")
-    {
-        translator.load(":/english.qm");
-        qApp->installTranslator(&translator);
-        qDebug()<<__LINE__;
-    }
-    if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
-    {
-        translator.load(":/russian.qm");
-        qApp->installTranslator(&translator);
     }
 
 }

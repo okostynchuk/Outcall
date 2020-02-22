@@ -277,6 +277,10 @@
         <source>Имя</source>
         <translation>Name</translation>
     </message>
+    <message>
+        <source>История звонков по номеру: </source>
+        <translation>Call history by the number:</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -362,6 +366,14 @@
     <message>
         <source>Выберите одну запись!</source>
         <translation type="vanished">Choose one element!</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
     </message>
 </context>
 <context>
@@ -674,7 +686,7 @@
     </message>
     <message>
         <source>Вы успешно вошли</source>
-        <translation>You have successfully sined in</translation>
+        <translation>You have successfully signed in</translation>
     </message>
     <message>
         <source>Отменить вход</source>
@@ -735,12 +747,24 @@
         <source>Отмена</source>
         <translation>Cancel</translation>
     </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Search by full name / name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by telephone</translation>
+    </message>
+    <message>
+        <source>Поиск сотрудников по организации</source>
+        <translation>Search of staff by the org</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;You have successfully signed in&lt;br/&gt; OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;You have successfully signed in&lt;br/&gt; OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Chat History</source>
@@ -753,6 +777,10 @@
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -775,7 +803,7 @@
     </message>
     <message>
         <source>Открыть карточку</source>
-        <translation>Open a crad</translation>
+        <translation>Open a card</translation>
     </message>
     <message>
         <source>Физ. лицо</source>
@@ -954,7 +982,7 @@
     </message>
     <message>
         <source>Настойки базы контактов</source>
-        <translation>Set contact database</translation>
+        <translation type="vanished">Set contact database</translation>
     </message>
     <message>
         <source>Имя хоста: </source>
@@ -967,6 +995,14 @@
     <message>
         <source>Настройки базы звонков</source>
         <translation>Set call database</translation>
+    </message>
+    <message>
+        <source>Выбрать</source>
+        <translation>Choose</translation>
+    </message>
+    <message>
+        <source>Настройки базы контактов</source>
+        <translation>Contact database settings</translation>
     </message>
 </context>
 <context>

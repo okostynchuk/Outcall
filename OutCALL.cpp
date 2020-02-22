@@ -63,7 +63,7 @@ OutCall::~OutCall()
 void OutCall::createContextMenu()
 {
     // Exit action
-    QAction* exitAction = new QAction(tr("Выход"), m_menu);
+    QAction* exitAction = new QAction(trUtf8("Выход"), m_menu);
     connect(exitAction, &QAction::triggered, this, &OutCall::close);
 
     // Sign In
