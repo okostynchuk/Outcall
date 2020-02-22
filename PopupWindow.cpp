@@ -266,7 +266,7 @@ void PopupWindow::onShowCard()
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
     QString updateID = getUpdateId(number);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
     query.first();
     if (query.value(0).toString() == "person")
@@ -295,7 +295,7 @@ QString PopupWindow::getUpdateId(QString &number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
     query.first();
     QString updateID = query.value(0).toString();
@@ -312,7 +312,7 @@ void PopupWindow::receiveData(bool update)
     {
         QSqlDatabase db;
         QSqlQuery query(db);
-        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
         query.exec();
         query.first();
         if (!query.value(0).isNull())
@@ -339,7 +339,7 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
     QVariant qv_popup = qVariantFromValue((void *)popup);
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '" + number + "')");
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
     query.first();
 

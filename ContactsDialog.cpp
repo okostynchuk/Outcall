@@ -247,8 +247,6 @@ void ContactsDialog::onUpdate()
         }
         else if (entry_phone != nullptr)
         {
-            entry_phone = ui->lineEdit->text();
-
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%'");
             query.exec();
             query.first();

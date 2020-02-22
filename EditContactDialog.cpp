@@ -61,7 +61,7 @@ void EditContactDialog::onSave()
     }
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
-    QString orgName = ui->comboBox->currentText();
+    QString orgName = ui->label_org->text();
     if (orgName != "Нет")
     {
         QSqlQuery queryOrg(db);
@@ -166,7 +166,7 @@ void EditContactDialog::onSave()
             QString thirdNum = QString(ui->ThirdNumber->text());
             QString fourthNum = QString(ui->FourthNumber->text());
             QString fifthNum = QString(ui->FifthNumber->text());
-            QString sql1 = QString("select COUNT(phone) from phone where entry_id = %1").arg(updateID);
+            QString sql1 = QString("select COUNT(fone) from fones where entry_id = %1").arg(updateID);
             query1.prepare(sql1);
             query1.exec();
             query1.next();
@@ -176,7 +176,7 @@ void EditContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(firstNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(firstNumber);
@@ -185,7 +185,7 @@ void EditContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(firstNum);
                     query1.exec();
@@ -196,7 +196,7 @@ void EditContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(secondNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(secondNumber);
@@ -205,7 +205,7 @@ void EditContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(secondNum);
                     query1.exec();
@@ -215,7 +215,7 @@ void EditContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(thirdNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(thirdNumber);
@@ -224,7 +224,7 @@ void EditContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(thirdNum);
                     query1.exec();
@@ -234,7 +234,7 @@ void EditContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(fourthNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(fourthNumber);
@@ -243,7 +243,7 @@ void EditContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(fourthNum);
                     query1.exec();
@@ -253,7 +253,7 @@ void EditContactDialog::onSave()
             {
                 if (count > 0)
                 {
-                    query1.prepare("UPDATE phone SET phone = ? WHERE entry_id = ? AND phone = ?");
+                    query1.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                     query1.addBindValue(fifthNum);
                     query1.addBindValue(updateID);
                     query1.addBindValue(fifthNumber);
@@ -262,7 +262,7 @@ void EditContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(fifthNum);
                     query1.exec();
@@ -273,40 +273,6 @@ void EditContactDialog::onSave()
             QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно изменена!"), QMessageBox::Ok);
             destroy(true);
         }
-    }
-}
-
-void EditContactDialog::onComboBoxSelected()
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
-    query.exec();
-    QString orgID = NULL;
-    while (query.next())
-        orgID = query.value(0).toString();
-    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
-    query.exec();
-    QString orgName = NULL;
-    while (query.next())
-        orgName = query.value(0).toString();
-    ui->comboBox->addItem("Нет");
-    query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
-    query.exec();
-    while (query.next())
-    {
-        if (!query.value(0).toString().isEmpty())
-        {
-            ui->comboBox->addItem(query.value(0).toString());
-        }
-    }
-    if (!orgName.isEmpty())
-    {
-        ui->comboBox->setCurrentText(orgName);
-    }
-    else
-    {
-        ui->comboBox->setCurrentText("Нет");
     }
 }
 
@@ -345,6 +311,22 @@ void EditContactDialog::setValuesContacts(QString &i)
     QString entryEmail = query.value(5).toString();
     QString entryVyborID = query.value(6).toString();
     QString entryComment = query.value(7).toString();
+
+    query.prepare("SELECT entry_person_org_id FROM entry_phone WHERE entry_id = " + updateID);
+    query.exec();
+    QString orgID = NULL;
+    while (query.next())
+        orgID = query.value(0).toString();
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + orgID);
+    query.exec();
+    QString orgName = NULL;
+    while (query.next())
+        orgName = query.value(0).toString();
+    if (!orgName.isEmpty() && !orgName.isNull())
+        ui->label_org->setText(orgName);
+    else
+        ui->label_org->setText("Нет");
+
     ui->FirstNumber->setText(firstNumber);
     ui->SecondNumber->setText(secondNumber);
     ui->ThirdNumber->setText(thirdNumber);
@@ -358,7 +340,32 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->Email->setText(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
-    onComboBoxSelected();
+}
+
+void EditContactDialog::receiveOrgID(QString &id)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
+    query.exec();
+    query.first();
+    if (!query.value(0).toString().isEmpty())
+        ui->label_org->setText(query.value(0).toString());
+    else
+        ui->label_org->setText("Нет");
+}
+
+void EditContactDialog::on_addOrgButton_clicked()
+{
+    addOrgToPerson = new AddOrgToPerson;
+    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
+    addOrgToPerson->exec();
+    addOrgToPerson->deleteLater();
+}
+
+void EditContactDialog::on_deleteOrgButton_clicked()
+{
+    ui->label_org->setText("Нет");
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)

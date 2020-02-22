@@ -35,10 +35,9 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText("Имя:<span style=\"color: red;\">*</span>");
+    ui->label_org->setText("Нет");
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
-
-    onComboBoxSelected();
 }
 
 AddContactDialog::~AddContactDialog()
@@ -65,7 +64,7 @@ void AddContactDialog::onSave()
     }
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
-    QString orgName = ui->comboBox->currentText();
+    QString orgName = ui->label_org->text();
     if (orgName != "Нет")
     {
         QSqlQuery queryOrg(db);
@@ -76,9 +75,7 @@ void AddContactDialog::onSave()
         query.addBindValue(queryOrg.value(0).toString());
     }
     else
-    {
         query.addBindValue(NULL);
-    }
 
     query.addBindValue(lastName);
     query.addBindValue(firstName);
@@ -172,7 +169,7 @@ void AddContactDialog::onSave()
             QString fifthNum = QString(ui->FifthNumber->text());
             if(firstNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->FirstNumber->text());
@@ -180,7 +177,7 @@ void AddContactDialog::onSave()
             }
             if (secondNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->SecondNumber->text());
@@ -188,7 +185,7 @@ void AddContactDialog::onSave()
             }
             if (thirdNum != 0)
             {
-                query1.prepare("INSERT INTO phone (entry_id, phone)"
+                query1.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->ThirdNumber->text());
@@ -196,7 +193,7 @@ void AddContactDialog::onSave()
             }
             if (fourthNum != 0)
             {
-                    query1.prepare("INSERT INTO phone (entry_id, phone)"
+                    query1.prepare("INSERT INTO fones (entry_id, fone)"
                                    "VALUES(?, ?)");
                     query1.addBindValue(id);
                     query1.addBindValue(ui->FourthNumber->text());
@@ -205,7 +202,7 @@ void AddContactDialog::onSave()
 
             if (fifthNum != 0)
             {
-                    query1.prepare("INSERT INTO phone (entry_id, phone)"
+                    query1.prepare("INSERT INTO fones (entry_id, fone)"
                                    "VALUES(?, ?)");
                     query1.addBindValue(id);
                     query1.addBindValue(ui->FifthNumber->text());
@@ -219,21 +216,30 @@ void AddContactDialog::onSave()
     }
 }
 
-void AddContactDialog::onComboBoxSelected()
+void AddContactDialog::receiveOrgID(QString &id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT entry_org_name FROM entry WHERE entry_org_name IS NOT NULL");
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
     query.exec();
-    query.next();
-    ui->comboBox->addItem("Нет");
-    while (query.next())
-    {
-        if (!query.value(0).toString().isEmpty())
-        {
-            ui->comboBox->addItem(query.value(0).toString());
-        }
-    }
+    query.first();
+    if (!query.value(0).toString().isEmpty())
+        ui->label_org->setText(query.value(0).toString());
+    else
+        ui->label_org->setText("Нет");
+}
+
+void AddContactDialog::on_addOrgButton_clicked()
+{
+    addOrgToPerson = new AddOrgToPerson;
+    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
+    addOrgToPerson->exec();
+    addOrgToPerson->deleteLater();
+}
+
+void AddContactDialog::on_deleteOrgButton_clicked()
+{
+    ui->label_org->setText("Нет");
 }
 
 void AddContactDialog::setValuesCallHistory(QString &number)

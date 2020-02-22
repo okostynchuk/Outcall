@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     AddNoteDialog.cpp \
     ChooseNumber.cpp \
     DatabasesConnectDialog.cpp \
-    AddLanguageDialog.cpp
+    AddLanguageDialog.cpp \
+    AddOrgToPerson.cpp \
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -64,7 +65,8 @@ HEADERS  += \
     AddNoteDialog.h \
     ChooseNumber.h \
     DatabasesConnectDialog.h \
-    AddLanguageDialog.h
+    AddLanguageDialog.h \
+    AddOrgToPerson.h \
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -84,11 +86,12 @@ FORMS    += \
     AddNoteDialog.ui \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui \
-    AddLanguageDialog.ui
+    AddLanguageDialog.ui \
+    AddOrgToPerson.ui \
 
 RESOURCES += \
     images.qrc \
-    translations.qrc
+    translations.qrc \
 
 TRANSLATIONS = ukrainian.ts russian.ts english.ts
 

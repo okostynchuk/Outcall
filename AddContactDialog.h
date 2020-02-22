@@ -1,6 +1,8 @@
 #ifndef ADDCONTACTDIALOG_H
 #define ADDCONTACTDIALOG_H
 
+#include "AddOrgToPerson.h"
+
 #include <QDialog>
 #include <QValidator>
 #include <QWidget>
@@ -20,15 +22,22 @@ public:
     void setValuesPopupWindow(QString &);
     ~AddContactDialog();
 
-protected:
+public slots:
+    void receiveOrgID(QString &);
+
+protected slots:
     void onSave();
-    void onComboBoxSelected();
 
 private:
     Ui::AddContactDialog *ui;
+    AddOrgToPerson *addOrgToPerson;
     QValidator *validator;
     QValidator *validator2;
     QStringList numbers;
+
+private slots:
+    void on_addOrgButton_clicked();
+    void on_deleteOrgButton_clicked();
 
 signals:
     void sendData(bool);

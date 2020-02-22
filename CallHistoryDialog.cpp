@@ -31,6 +31,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->updateButton, &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
+    connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToReceived(const QModelIndex &)));
@@ -48,6 +49,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
+    days = ui->comboBox_2->currentText();
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
@@ -190,7 +192,7 @@ bool CallHistoryDialog::checkNumber(QString &number)
     QSqlDatabase db;
     QSqlQuery query(db);
     QString number_internal = number;
-    query.prepare("SELECT EXISTS(SELECT phone FROM phone WHERE phone ="+number_internal+")");
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone ="+number_internal+")");
     query.exec();
     query.next();
     if(query.value(0) != 0) return false;
@@ -202,7 +204,7 @@ void CallHistoryDialog::editContact(QString &number)
     QSqlDatabase db;
     QSqlQuery query(db);
     QString updateID = getUpdateId(number);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '"+number+"')");
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
     query.exec();
     query.first();
     if (query.value(0).toString() == "person")
@@ -223,7 +225,7 @@ void CallHistoryDialog::editOrgContact(QString &number)
     QSqlDatabase db;
     QSqlQuery query(db);
     QString updateID = getUpdateId(number);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '"+number+"')");
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
     query.exec();
     query.first();
     if (query.value(0).toString() == "org")
@@ -243,7 +245,7 @@ QString CallHistoryDialog::getUpdateId(QString &number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM phone WHERE phone = '"+number+"')");
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
     query.exec();
     query.first();
     QString updateID = query.value(0).toString();
@@ -258,7 +260,7 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
@@ -291,7 +293,7 @@ void CallHistoryDialog::loadReceivedCalls()
     QSqlQuery query(db);
 
     query2 = new QSqlQueryModel;
-    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
 
     query2->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -326,7 +328,7 @@ void CallHistoryDialog::loadPlacedCalls()
     QSqlQuery query(db);
 
     query3 = new QSqlQueryModel;
-    query3->setQuery("SELECT extfield2, dst, src, datetime, uniqueid FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND src = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query3->setQuery("SELECT extfield2, dst, src, datetime, uniqueid FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND src = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
 
     query3->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query3->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
@@ -410,6 +412,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
 
 void CallHistoryDialog::onUpdate()
 {
+    days = ui->comboBox_2->currentText();
     deleteObjects();
     loadMissedCalls();
     loadReceivedCalls();

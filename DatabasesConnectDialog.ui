@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Подключение к базам данных</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="1" column="1">
     <widget class="QPushButton" name="closeButton">
@@ -44,7 +48,7 @@
      </property>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Настойки базы контактов</string>
+       <string>Настройки базы контактов</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
@@ -239,6 +243,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

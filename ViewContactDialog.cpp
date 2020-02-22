@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QTableView>
 #include <QMessageBox>
+#include <QDebug>
 
 ViewContactDialog::ViewContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
+    connect(ui->comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
@@ -41,6 +43,15 @@ void ViewContactDialog::onEdit()
     connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     editContactDialog->exec();
     editContactDialog->deleteLater();
+}
+
+void ViewContactDialog::updateCalls()
+{
+    days = ui->comboBox->currentText();
+    deleteObjects();
+    loadMissedCalls();
+    loadReceivedCalls();
+    loadPlacedCalls();
 }
 
 void ViewContactDialog::deleteObjects()
@@ -134,6 +145,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
         }
     }
 
+    days = ui->comboBox->currentText();
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
@@ -154,23 +166,23 @@ void ViewContactDialog::loadMissedCalls()
     QSqlQuery query(db);
     if(count2 == 1)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '"+my_number+"' AND src = '"+number1+"' ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND src = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 2)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND src IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 3)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND src IN ('"+number1+"','"+number2+"','"+number3+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 4)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 5)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -181,7 +193,6 @@ void ViewContactDialog::loadMissedCalls()
 
     ui->tableView->setModel(query1);
     ui->tableView->setColumnHidden(5, true);
-    ui->tableView->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -214,23 +225,23 @@ void ViewContactDialog::loadReceivedCalls()
     QSqlQuery query(db);
     if(count2 == 1)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = '"+my_number+"' AND src = '"+number1+"' ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 2)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 3)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 4)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 5)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND dst = '"+my_number+"' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -241,7 +252,6 @@ void ViewContactDialog::loadReceivedCalls()
 
     ui->tableView_2->setModel(query1);
     ui->tableView_2->setColumnHidden(5, true);
-    ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
@@ -274,23 +284,23 @@ void ViewContactDialog::loadPlacedCalls()
     QSqlQuery query(db);
     if(count2 == 1)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE src = '"+my_number+"' AND dst = '"+number1+"' ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 2)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE src = '"+my_number+"' AND dst IN ('"+number1+"','"+number2+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 3)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE src = '"+my_number+"' AND dst IN ('"+number1+"','"+number2+"','"+number3+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 4)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE src = '"+my_number+"' AND dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
     if(count2 == 5)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE src = '"+my_number+"' AND dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') ORDER BY datetime DESC", dbAsterisk);
+        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
@@ -302,7 +312,6 @@ void ViewContactDialog::loadPlacedCalls()
 
     ui->tableView_3->setModel(query1);
     ui->tableView_3->setColumnHidden(5, true);
-    ui->tableView_3->setColumnHidden(1, true);
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
