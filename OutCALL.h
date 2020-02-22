@@ -19,6 +19,8 @@ class PlaceCallDialog;
 
 class OutCall : public QWidget
 {
+    Q_OBJECT
+
 public:
     OutCall();
     ~OutCall();
@@ -34,7 +36,7 @@ protected slots:
     void onSettingsDialog();
     void onContactsInfo();
     void onDebugInfo();
-    void onActiveCalls();
+    //void onActiveCalls();
     void onPlaceCall();
     void onCallHistory();
     void onActivated(QSystemTrayIcon::ActivationReason reason);

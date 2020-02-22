@@ -422,9 +422,9 @@ void ContactsDialog::onComboBoxListSelected()
 
 void ContactsDialog::onComboBoxSelected()
 {
-    ui->comboBox->addItem("Поиск по ФИО / названию");
-    ui->comboBox->addItem("Поиск по номеру телефона");
-    ui->comboBox->addItem("Поиск по заметке");
+    ui->comboBox->addItem(tr("Поиск по ФИО / названию"));
+    ui->comboBox->addItem(tr("Поиск по номеру телефона"));
+    ui->comboBox->addItem(tr("Поиск по заметке"));
 }
 
 void ContactsDialog::searchFunction()

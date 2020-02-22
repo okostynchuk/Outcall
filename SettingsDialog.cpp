@@ -36,10 +36,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     userName = qgetenv("USERNAME");
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
 
-    QFile inputFile(g_LanguagesPath + "/languages.txt");
-       inputFile.open(QIODevice::ReadOnly);
-       QTextStream in(&inputFile);
-       m_countries = in.readAll().split(QRegExp("(\\r\\n)|(\\n\\r)|\\r|\\n"), QString::SkipEmptyParts);
+    //QFile inputFile(g_LanguagesPath + "/languages.txt");
+       //inputFile.open(QIODevice::ReadOnly);
+       //QTextStream in(&inputFile);
+       //m_countries = in.readAll().split(QRegExp("(\\r\\n)|(\\n\\r)|\\r|\\n"), QString::SkipEmptyParts);
        ui->tabWidget->setCurrentIndex(0);
 
     loadLanguages();
@@ -157,8 +157,8 @@ void SettingsDialog::show()
 void SettingsDialog::on_applyButton_clicked()
 {
     QMessageBox msgBox;
-    msgBox.setText("Применение настроек");
-    msgBox.setInformativeText("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?");
+    msgBox.setText(tr("Применение настроек"));
+    msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     int ret = msgBox.exec();
     switch(ret)
@@ -255,7 +255,7 @@ QString SettingsDialog::getExtension()
 void SettingsDialog::onAddButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
-    m_addExtensionDialog->setWindowTitle("Добавление");
+    m_addExtensionDialog->setWindowTitle(tr("Добавление"));
     if(m_addExtensionDialog->exec())
     {
         ui->addButton->setEnabled(false);
@@ -299,7 +299,7 @@ void SettingsDialog::onRemoveButtonClicked()
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
-    editExtensionDialog.setWindowTitle("Редактирование");
+    editExtensionDialog.setWindowTitle(tr("Редактирование"));
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
 
     if (selectedItems.size())

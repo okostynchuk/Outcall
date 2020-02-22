@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    //qtTranslator.load(":/translations/qt_en");
     app.installTranslator(&qtTranslator);
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
@@ -125,16 +126,12 @@ int main(int argc, char *argv[])
     Notifier notifier;
 
     QString lang = global::getSettingsValue("language", "general").toString();
-    QTranslator translator;
-
-    qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&qtTranslator);
 
     if (!lang.isEmpty())
      {
-         if (translator.load(QString(":%1/%2.lang").arg(g_LanguagesPath).arg(lang)))
+         if (qtTranslator.load(QString(":%1/%2.lang").arg(g_LanguagesPath).arg(lang)))
          {
-             qApp->installTranslator(&translator);
+             qApp->installTranslator(&qtTranslator);
              qDebug()<<__LINE__;
          }
          else
