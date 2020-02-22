@@ -14,6 +14,8 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#include <QDebug>
+#include <QSqlError>
 
 int main(int argc, char *argv[])
 {
@@ -56,57 +58,33 @@ int main(int argc, char *argv[])
     dbAsterisk.setPort(port_2.toUInt());
     dbAsterisk.open();
 
-    while(!db.open())
+    if(!db.open() && !dbAsterisk.open())
+    {
+        QString state = "twoDb";
+        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базам данных!", QMessageBox::Ok);
+        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
+        databasesConnectDialog->exec();
+        databasesConnectDialog->deleteLater();
+    }
+    else if(!db.open())
     {
         QString state = "db";
         QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе контактов!", QMessageBox::Ok);
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setState(state);
+        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
 
-        QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
-        QString databaseName_1 = global::getSettingsValue("databasename_1", "settings").toString();
-        QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
-        QByteArray password1(global::getSettingsValue("password_1", "settings").toByteArray());
-        QString password_1(QByteArray::fromBase64(password1));
-        QString port_1 = global::getSettingsValue("port_1", "settings", "3306").toString();
-
-        db.setHostName(hostName_1);
-        db.setDatabaseName(databaseName_1);
-        db.setUserName(userName_1);
-        db.setPassword(password_1);
-        db.setPort(port_1.toUInt());
-        db.open();
     }
-    while(!dbAsterisk.open())
+    else if(!dbAsterisk.open())
     {
         QString state = "dbAsterisk";
         QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе звонков!", QMessageBox::Ok);
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setState(state);
+        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
-
-        QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
-        QString databaseName_2 = global::getSettingsValue("databasename_1", "settings").toString();
-        QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
-        QByteArray password2(global::getSettingsValue("password_2", "settings").toByteArray());
-        QString password_2(QByteArray::fromBase64(password2));
-        QString port_2 = global::getSettingsValue("port_2", "settings", "3306").toString();
-
-        dbAsterisk.setHostName(hostName_2);
-        dbAsterisk.setDatabaseName(databaseName_2);
-        dbAsterisk.setUserName(userName_2);
-        dbAsterisk.setPassword(password_2);
-        dbAsterisk.setPort(port_2.toUInt());
-        dbAsterisk.open();
-
-//        if(dbAsterisk.open())
-//        {
-//            qApp->quit();
-//            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-//        }
     }
 
 

@@ -7,6 +7,7 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QTableView>
+#include <QValidator>
 
 class Contact;
 class QTreeWidgetItem;
@@ -48,6 +49,7 @@ private:
     Ui::PlaceCallDialog *ui;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
+    QValidator *validator;
     QString update;
     QString number;
     ChooseNumber *chooseNumber;

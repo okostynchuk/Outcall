@@ -9,6 +9,7 @@
 #include <QSettings>
 #include <QKeyEvent>
 #include <QTabWidget>
+#include <QProcess>
 
 DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     QDialog(parent),
@@ -29,27 +30,60 @@ DatabasesConnectDialog::~DatabasesConnectDialog()
 
 void DatabasesConnectDialog::onSave()
 {
-    if(state_db == "db")
-        setSettingForFirstDb();
-    else if(state_db == "dbAsterisk")
-        setSettingForSecondDb();
-
-    close();
-}
-
-void DatabasesConnectDialog::setState(QString &state)
-{
-    if(state == "db")
+    if(state_db == "twoDb")
     {
-        state_db = state;
-        ui->tabWidget_2->setCurrentIndex(0);
-        ui->tabWidget_2->setTabEnabled(1, false);
+        checkDb();
+        checkDbAsterisk();
+
+        if(!DB.open() && !DbAsterisk.open())
+            QMessageBox::critical(nullptr, "Ошибка", "Подключение не создано!", QMessageBox::Ok);
+        else if(!DB.open())
+        {
+            ui->tabWidget_2->setCurrentIndex(0);
+            ui->tabWidget_2->setTabEnabled(1, false);
+            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
+            setSettingForSecondDb();
+        }
+        else if(!DbAsterisk.open())
+        {
+            ui->tabWidget_2->setCurrentIndex(1);
+            ui->tabWidget_2->setTabEnabled(0, false);
+            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
+            setSettingForFirstDb();
+        }
+        else if(DB.open() && DbAsterisk.open())
+        {
+            setSettingForFirstDb();
+            setSettingForSecondDb();
+            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            close();
+        }
     }
-    else if(state == "dbAsterisk")
+    else if(state_db == "db")
     {
-        state_db = state;
-        ui->tabWidget_2->setCurrentIndex(1);
-        ui->tabWidget_2->setTabEnabled(0, false);
+        checkDb();
+
+        if(!DB.open())
+            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
+        else
+        {
+            setSettingForFirstDb();
+            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            close();
+        }
+    }
+    else if(state_db == "dbAsterisk")
+    {
+        checkDbAsterisk();
+
+        if(!DbAsterisk.open())
+            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
+        else
+        {
+            setSettingForSecondDb();
+            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            close();
+        }
     }
 }
 
@@ -79,4 +113,41 @@ void DatabasesConnectDialog::onClose()
 {
      g_pAsteriskManager->signOut();
      qApp->quit();
+}
+
+void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbAsterisk, QString state)
+{
+    state_db = state;
+    if(state_db == "db")
+    {
+        ui->tabWidget_2->setCurrentIndex(0);
+        ui->tabWidget_2->setTabEnabled(1, false);
+    }
+    else if(state_db == "dbAsterisk")
+    {
+        ui->tabWidget_2->setCurrentIndex(1);
+        ui->tabWidget_2->setTabEnabled(0, false);
+    }
+    DB = db;
+    DbAsterisk = dbAsterisk;
+}
+
+void DatabasesConnectDialog::checkDb()
+{
+    DB.setHostName(ui->hostName_1->text());
+    DB.setDatabaseName(ui->databaseName_1->text());
+    DB.setUserName(ui->userName_1->text());
+    DB.setPassword(ui->password_1->text());
+    DB.setPort(ui->port_1->text().toUInt());
+    DB.open();
+}
+
+void DatabasesConnectDialog::checkDbAsterisk()
+{
+    DbAsterisk.setHostName(ui->hostName_2->text());
+    DbAsterisk.setDatabaseName(ui->databaseName_2->text());
+    DbAsterisk.setUserName(ui->userName_2->text());
+    DbAsterisk.setPassword(ui->password_2->text());
+    DbAsterisk.setPort(ui->port_2->text().toUInt());
+    DbAsterisk.open();
 }

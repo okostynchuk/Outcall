@@ -21,6 +21,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->setupUi(this);
     QRegExp RegExp("^[\\+]?[0-9]{10}$");
     validator = new QRegExpValidator(RegExp, this);
+
     ui->FirstNumber->setValidator(validator);
     ui->SecondNumber->setValidator(validator);
     ui->ThirdNumber->setValidator(validator);

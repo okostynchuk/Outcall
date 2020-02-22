@@ -17,12 +17,14 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QRegExp RegExp("^[\\+]?[0-9]*$");
+    validator = new QRegExpValidator(RegExp, this);
+    ui->phoneLine->setValidator(validator);
+
     connect(ui->callButton,    &QPushButton::clicked,           this, &PlaceCallDialog::onCallButton);
     connect(ui->cancelButton,  &QPushButton::clicked,           this, &PlaceCallDialog::onCancelButton);
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showNumber(const QModelIndex &)));
-
-    QStringList extensions = global::getSettingKeys("extensions");
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -45,6 +47,7 @@ PlaceCallDialog::~PlaceCallDialog()
     delete ui;
     delete query1;
     delete query2;
+    delete validator;
 }
 
 void PlaceCallDialog::showNumber(const QModelIndex &index)
