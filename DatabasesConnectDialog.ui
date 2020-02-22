@@ -21,7 +21,7 @@
    <item row="1" column="1">
     <widget class="QPushButton" name="closeButton">
      <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="text">
       <string>Выйти из приложения</string>
@@ -31,7 +31,7 @@
    <item row="1" column="0">
     <widget class="QPushButton" name="saveButton">
      <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="text">
       <string>Сохранить</string>
@@ -41,7 +41,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="tabWidget_2">
      <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+      <enum>Qt::StrongFocus</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -93,7 +93,7 @@
           <item>
            <widget class="QLineEdit" name="databaseName_1">
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
            </widget>
           </item>
@@ -110,7 +110,7 @@
           <item>
            <widget class="QLineEdit" name="userName_1">
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="echoMode">
              <enum>QLineEdit::Normal</enum>
@@ -130,7 +130,7 @@
           <item>
            <widget class="QLineEdit" name="password_1">
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
              <string/>
@@ -153,7 +153,7 @@
           <item>
            <widget class="QLineEdit" name="port_1">
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
            </widget>
           </item>
@@ -243,6 +243,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>hostName_1</tabstop>
+  <tabstop>databaseName_1</tabstop>
+  <tabstop>userName_1</tabstop>
+  <tabstop>password_1</tabstop>
+  <tabstop>port_1</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>hostName_2</tabstop>
+  <tabstop>databaseName_2</tabstop>
+  <tabstop>userName_2</tabstop>
+  <tabstop>password_2</tabstop>
+  <tabstop>port_2</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>closeButton</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

@@ -45,7 +45,6 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     ui->password_2->setText(password_2);
     ui->port_2->setText(port_2);
 
-
     connect(ui->saveButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onSave);
     connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onClose);
 }

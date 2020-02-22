@@ -34,7 +34,7 @@
          <item row="1" column="0">
           <widget class="QLineEdit" name="OrgName">
            <property name="focusPolicy">
-            <enum>Qt::ClickFocus</enum>
+            <enum>Qt::StrongFocus</enum>
            </property>
           </widget>
          </item>
@@ -74,7 +74,7 @@
        <item row="3" column="3">
         <widget class="QLineEdit" name="Address">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -116,7 +116,7 @@
        <item row="5" column="1">
         <widget class="QLineEdit" name="FifthNumber">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -130,14 +130,14 @@
        <item row="5" column="3">
         <widget class="QLineEdit" name="Email">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
         <widget class="QLineEdit" name="ThirdNumber">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -151,7 +151,7 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="FirstNumber">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -165,21 +165,21 @@
        <item row="2" column="1">
         <widget class="QLineEdit" name="SecondNumber">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
        <item row="2" column="3">
         <widget class="QLineEdit" name="City">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
        <item row="4" column="1">
         <widget class="QLineEdit" name="FourthNumber">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -193,7 +193,7 @@
        <item row="4" column="3">
         <widget class="QLineEdit" name="VyborID">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -232,7 +232,7 @@
        <item row="2" column="3">
         <widget class="QPushButton" name="saveButton">
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text">
           <string>Сохранить данные</string>
@@ -245,6 +245,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>OrgName</tabstop>
+  <tabstop>FirstNumber</tabstop>
+  <tabstop>SecondNumber</tabstop>
+  <tabstop>ThirdNumber</tabstop>
+  <tabstop>FourthNumber</tabstop>
+  <tabstop>FifthNumber</tabstop>
+  <tabstop>City</tabstop>
+  <tabstop>Address</tabstop>
+  <tabstop>VyborID</tabstop>
+  <tabstop>Email</tabstop>
+  <tabstop>saveButton</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>
