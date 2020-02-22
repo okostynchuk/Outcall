@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setLibraryPaths(paths);
 
     QApplication app(argc, argv);
+    g_LanguagesPath = QApplication::applicationDirPath() + "/translations";
+    g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
+    g_AppDirPath = QApplication::applicationDirPath();
 
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
     QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
@@ -120,6 +123,26 @@ int main(int argc, char *argv[])
     }
 
     Notifier notifier;
+
+    QString lang = global::getSettingsValue("language", "general").toString();
+    QTranslator translator;
+
+    qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
+
+    if (!lang.isEmpty())
+     {
+         if (translator.load(QString(":%1/%2.lang").arg(g_LanguagesPath).arg(lang)))
+         {
+             qApp->installTranslator(&translator);
+             qDebug()<<__LINE__;
+         }
+         else
+         {
+             global::setSettingsValue("language", "", "general");
+             MsgBoxError(QObject::tr("Failed to load language file."));
+         }
+     }
 
     QString username  = global::getSettingsValue("username", "settings").toString();
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();

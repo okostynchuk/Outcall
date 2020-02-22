@@ -3,6 +3,7 @@
 #include "AddExtensionDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
+#include "AddLanguageDialog.h"
 #include "Notifier.h"
 
 #include <QAbstractButton>
@@ -13,6 +14,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QTranslator>
+#include <QMessageBox>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -23,22 +25,27 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &SettingsDialog::handleButtonBox);
-
     // Extensions
     connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
     connect(ui->removeButton, &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
     connect(ui->editButton,   &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
+    connect(ui->languageButton_2, &QPushButton::clicked, this, &SettingsDialog::onAddLanguageBtn);
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
     userName = qgetenv("USERNAME");
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
+
+    QFile inputFile(g_LanguagesPath + "/languages.txt");
+       inputFile.open(QIODevice::ReadOnly);
+       QTextStream in(&inputFile);
+       m_countries = in.readAll().split(QRegExp("(\\r\\n)|(\\n\\r)|\\r|\\n"), QString::SkipEmptyParts);
+       ui->tabWidget->setCurrentIndex(0);
+
+    loadLanguages();
+
+    ui->languageGroup->hide();
     loadSettings();
-
-
-
-    onComboBoxSelected();
 
     checkExten();
 }
@@ -48,25 +55,12 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
-void SettingsDialog::onComboBoxSelected()
-{
-    ui->languageList->addItem("Українська");
-    ui->languageList->addItem("Русский");
-    ui->languageList->addItem("English");
-    //ui->languageGroup->hide();
-}
-
-void SettingsDialog::selectLanguage()
-{
-
-}
-
 void SettingsDialog::saveSettings()
 {
     // General SettingsDialog
     global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(),   "general");
     global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
-    global::setSettingsValue("language", ui->languageList->itemData(ui->languageList->currentIndex(), Qt::UserRole).toString(), "general");
+    global::setSettingsValue("language", ui->languageList_2->itemData(ui->languageList_2->currentIndex(), Qt::UserRole).toString(), "general");
 
     // Save Extension SettingsDialog
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
@@ -135,7 +129,7 @@ void SettingsDialog::loadSettings()
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
-    ui->languageList->setCurrentText(global::getSettingsValue("language", "general").toString());
+    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "general").toString());
     bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
@@ -160,59 +154,32 @@ void SettingsDialog::show()
     QDialog::show();
 }
 
-void SettingsDialog::handleButtonBox(QAbstractButton *button)
+void SettingsDialog::on_applyButton_clicked()
 {
-    if(ui->buttonBox->standardButton(button) == QDialogButtonBox::Ok)
+    QMessageBox msgBox;
+    msgBox.setText("Применение настроек");
+    msgBox.setInformativeText("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    int ret = msgBox.exec();
+    switch(ret)
     {
-        okPressed();
-    }
-    else if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Apply)
-    {
-        applyPressed();
+        case QMessageBox::Yes:
+            saveSettings();
+            applySettings();
+            qApp->quit();
+            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+            break;
+        case QMessageBox::No:
+            msgBox.close();
+            break;
+        default:
+            break;
     }
 }
 
-void SettingsDialog::okPressed()
+void SettingsDialog::on_cancelButton_clicked()
 {
-    saveSettings();
-    applySettings();
-    qApp->quit();
-    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-}
-
-void SettingsDialog::applyPressed()
-{
-    saveSettings();
-    applySettings();
-
-    if (ui->languageList->currentText() == "Українська")
-    {
-
-//        QTranslator qtTranslator;
-//        QApplication app(argc, argv);
-//        qtTranslator.load("qt_uk", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//        app.installTranslator(&qtTranslator);
-    }
-    else if (ui->languageList->currentText() == "Русский")
-    {
-
-//        QTranslator qtTranslator;
-//        qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//        app.installTranslator(&qtTranslator);
-    }
-    else if (ui->languageList->currentText() == "English")
-    {
-
-//        QTranslator qtTranslator;
-//        qtTranslator.load("qt_en", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//        app.installTranslator(&qtTranslator);
-    }
-    if (ui->languageList->currentText() != "Українська" && ui->languageList->currentText() != "Русский" && ui->languageList->currentText() != "English")
-    {
-//        QTranslator qtTranslator;
-//        qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//        app.installTranslator(&qtTranslator);
-    }
+    QDialog::close();
 }
 
 void SettingsDialog::applySettings()
@@ -226,13 +193,52 @@ void SettingsDialog::applySettings()
     g_Notifier->emitSettingsChanged();
 }
 
-/********************************************/
-/****************General*********************/
-/********************************************/
+void SettingsDialog::onAddLanguageBtn()
+{
+    AddLanguageDialog dlg(m_countries, this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        loadLanguages();
+    }
+}
 
-/********************************************/
-/****************Extensions******************/
-/********************************************/
+void SettingsDialog::loadLanguages()
+{
+    ui->languageList_2->clear();
+        ui->languageList_2->addItem(tr("English (default)"), "");
+
+        QStringList nameFilters;
+        nameFilters.insert(0,"*.lang");
+        QDir langDirectory(g_LanguagesPath);
+        QStringList languages = langDirectory.entryList(nameFilters,QDir::Files,QDir::NoSort);
+        QString country, file;
+
+        int pos;
+
+        for (int j = 0; j < languages.count(); ++j)
+        {
+            file = languages[j];
+            file.replace(".lang", "");
+            for (int i = 0; i < m_countries.count(); ++i)
+            {
+                country = m_countries[i];
+                pos = country.indexOf(" ");
+                if (pos==-1)
+                    continue;
+                if (country.left(pos).compare(file, Qt::CaseInsensitive)==0)
+                {
+                    ui->languageList_2->addItem(country.mid(pos+1), country.left(pos));
+                    break;
+                }
+            }
+        }
+
+        QString lang = global::getSettingsValue("language", "general").toString();
+        if(lang == "")
+            ui->languageList_2->setCurrentIndex(0);
+        else
+            ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
+}
 
 QString SettingsDialog::getExtension()
 {
@@ -316,10 +322,6 @@ void SettingsDialog::onEditButtonClicked()
     }
 }
 
-//****************************************************//
-//**********************Dialing rules*****************//
-//****************************************************//
-
 void SettingsDialog::checkExten()
 {
     exten = getExtension();
@@ -329,5 +331,4 @@ void SettingsDialog::checkExten()
     {
         ui->addButton->setEnabled(true);
     }
-
 }

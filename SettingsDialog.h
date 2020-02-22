@@ -6,7 +6,6 @@
 #include <QDialog>
 #include <QFile>
 
-
 class QAbstractButton;
 class QTcpSocket;
 class AddExtensionDialog;
@@ -33,17 +32,17 @@ public slots:
     void checkExten();
 
 protected:
-    void handleButtonBox(QAbstractButton * button);
-    void okPressed();
-    void applyPressed();
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onEditButtonClicked();
     void applySettings();
     void selectLanguage();
+    void loadLanguages();
+    void onAddLanguageBtn();
 
 protected slots:
-    void onComboBoxSelected();
+    void on_applyButton_clicked();
+    void on_cancelButton_clicked();
 
 private:
     Ui::SettingsDialog *ui;
@@ -53,6 +52,7 @@ private:
     QString userName;
     QString path;
     QString exten;
+    QStringList m_countries;
 };
 
 #endif // SETTINGSDIALOG_H
