@@ -148,10 +148,10 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
                              "и настройки порта."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        MsgBoxInformation(tr("The connection was refused by the peer. "
-                             "Make sure the server is running, "
-                             "and check that the host name and port "
-                             "settings are correct."));
+        MsgBoxInformation(tr("Соединение было отклонено узлом. "
+                             "Убедитесь, что сервер работает, "
+                             "и проверьте правильность имени хоста "
+                             "и настроек порта."));
         break;
     default:
         MsgBoxInformation(msg);
