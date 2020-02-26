@@ -14,8 +14,7 @@
 extern QString g_LanguagesPath = "";
 extern QString g_AppDirPath = "";
 extern QString g_AppSettingsFolderPath = "";
-extern QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-extern QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
+extern bool opened = false;
 
 QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent,
         QMessageBox::StandardButton defaultButton) {

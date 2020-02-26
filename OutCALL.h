@@ -47,8 +47,6 @@ protected slots:
     void onCallReceived(const QMap<QString, QVariant> &call);
     void close();
     void changeIcon();
-    void connectToDatabases();
-    void enableActions();
     void disableActions();
 
 private:

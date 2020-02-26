@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
 
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
     QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
     QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     db.setPort(port_1.toUInt());
     db.open();
 
+    QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
     QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
     QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
@@ -87,19 +89,21 @@ int main(int argc, char *argv[])
         databasesConnectDialog->deleteLater();
     }
 
+    opened = true;
+
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
     if(languages == "Русский (default)")
     {
-        qtTranslator.load("..\\translations\\qt_ru");
+        qtTranslator.load(".\\translations\\qt_ru");
     }
     else if(languages == "Українська")
     {
-        qtTranslator.load("..\\translations\\qt_uk");
+        qtTranslator.load(".\\translations\\qt_uk");
     }
     else if(languages == "English")
     {
-        qtTranslator.load("..\\translations\\qt_en");
+        qtTranslator.load(".\\translations\\qt_en");
     }
     app.installTranslator(&qtTranslator);
 
