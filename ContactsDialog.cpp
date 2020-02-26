@@ -444,7 +444,7 @@ void ContactsDialog::searchFunction()
     entry_phone = nullptr;
     entry_comment = nullptr;
 
-    if (ui->comboBox->currentText() == "Поиск по ФИО / названию")
+    if (ui->comboBox->currentText() == "Поиск по ФИО / названию" || ui->comboBox->currentText() == "Пошук по ПІБ / назві" || ui->comboBox->currentText() == "Search by full name / name")
     {
         entry_name = ui->lineEdit->text();
 

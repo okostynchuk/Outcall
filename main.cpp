@@ -91,58 +91,18 @@ int main(int argc, char *argv[])
     QTranslator qtTranslator;
     if(languages == "Русский (default)")
     {
-//    qtTranslator.load("qt_ru", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-        qtTranslator.load(".\\translations\\qt_ru");
+        qtTranslator.load("..\\translations\\qt_ru");
     }
     else if(languages == "Українська")
     {
-        qtTranslator.load(".\\translations\\qt_uk");
+        qtTranslator.load("..\\translations\\qt_uk");
     }
     else if(languages == "English")
     {
-        qtTranslator.load(".\\translations\\qt_en");
+        qtTranslator.load("..\\translations\\qt_en");
     }
     app.installTranslator(&qtTranslator);
 
-    /*
-    QString languages = global::getSettingsValue("language", "settings").toString();
-    qDebug()<<languages;
-    QDir dir;
-    qDebug()<<dir.currentPath();
-
-    QMessageBox msgBox;
-    msgBox.setText(dir.currentPath());
-    msgBox.exec();
-
-    bool f;
-    bool a;
-
-    if(languages == "English (default)")
-    {
-    QTranslator qtTranslator;
-    f = qtTranslator.load("..\\translations\\qt_en.qm");
-    qDebug()<< "english load:" << f;
-    a = app.installTranslator(&qtTranslator);
-    qDebug()<< "english load:" << a;
-    }
-    else if(languages == "Русский")
-    {
-    QTranslator qtTranslator;
-    f = qtTranslator.load("..\\translations\\qt_ru.qm");
-    qDebug()<< "russian load:" << f;
-    a = app.installTranslator(&qtTranslator);
-    qDebug()<< "russian load:" << a;
-    }
-    else if(languages == "Українська")
-    {
-    QTranslator qtTranslator;
-    f= qtTranslator.load("..\\translations\\qt_uk.qm");
-    qDebug()<< "ukr load:" << f;
-    a = app.installTranslator(&qtTranslator);
-    qDebug()<< "urk load:" << a;
-    }
-
-    */
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
     app.setApplicationVersion("2.0");
@@ -174,22 +134,6 @@ int main(int argc, char *argv[])
     }
 
     Notifier notifier;
-
-//    QString lang = global::getSettingsValue("language", "general").toString();
-
-//    if (!lang.isEmpty())
-//     {
-//         if (qtTranslator.load(QString(":%1/%2.lang").arg(g_LanguagesPath).arg(lang)))
-//         {
-//             qApp->installTranslator(&qtTranslator);
-//             qDebug()<<__LINE__;
-//         }
-//         else
-//         {
-//             global::setSettingsValue("language", "", "general");
-//             MsgBoxError(QObject::tr("Failed to load language file."));
-//         }
-//     }
 
     QString username  = global::getSettingsValue("username", "settings").toString();
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();

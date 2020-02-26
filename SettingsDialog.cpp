@@ -29,22 +29,15 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
     connect(ui->removeButton, &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
     connect(ui->editButton,   &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
-    connect(ui->languageButton_2, &QPushButton::clicked, this, &SettingsDialog::onAddLanguageBtn);
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
     userName = qgetenv("USERNAME");
     path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
 
-    //QFile inputFile(g_LanguagesPath + "/languages.txt");
-       //inputFile.open(QIODevice::ReadOnly);
-       //QTextStream in(&inputFile);
-       //m_countries = in.readAll().split(QRegExp("(\\r\\n)|(\\n\\r)|\\r|\\n"), QString::SkipEmptyParts);
-       ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget->setCurrentIndex(0);
 
     loadLanguages();
-
-    //ui->languageGroup->hide();
     loadSettings();
 
     checkExten();
@@ -205,36 +198,11 @@ void SettingsDialog::onAddLanguageBtn()
 
 void SettingsDialog::loadLanguages()
 {
-    ui->languageList_2->clear();
+        //ui->languageList_2->clear();
+
         ui->languageList_2->addItem(tr("Русский (default)"), "");
         ui->languageList_2->addItem(tr("Українська"), "");
         ui->languageList_2->addItem(tr("English"), "");
-
-//        QStringList nameFilters;
-//        nameFilters.insert(0,"*.lang");
-//        QDir langDirectory(g_LanguagesPath);
-//        QStringList languages = langDirectory.entryList(nameFilters,QDir::Files,QDir::NoSort);
-//        QString country, file;
-
-//        int pos;
-
-//        for (int j = 0; j < languages.count(); ++j)
-//        {
-//            file = languages[j];
-//            file.replace(".lang", "");
-//            for (int i = 0; i < m_countries.count(); ++i)
-//            {
-//                country = m_countries[i];
-//                pos = country.indexOf(" ");
-//                if (pos==-1)
-//                    continue;
-//                if (country.left(pos).compare(file, Qt::CaseInsensitive)==0)
-//                {
-//                    ui->languageList_2->addItem(country.mid(pos+1), country.left(pos));
-//                    break;
-//                }
-//            }
-//        }
 
         QString lang = global::getSettingsValue("language", "settings").toString();
         if(lang == "")
