@@ -35,6 +35,11 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
+    if(!opened)
+        ui->lineEdit->setReadOnly(true);
+    else
+        ui->lineEdit->setReadOnly(false);
+
     onComboBoxSelected();
 
     settingsDialog = new SettingsDialog();

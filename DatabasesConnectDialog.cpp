@@ -56,6 +56,9 @@ DatabasesConnectDialog::~DatabasesConnectDialog()
 
 void DatabasesConnectDialog::onSave()
 {
+    setSettingForFirstDb();
+    setSettingForSecondDb();
+
     if(state_db == "twoDb")
     {
         checkDb();

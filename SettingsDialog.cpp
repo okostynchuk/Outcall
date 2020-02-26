@@ -162,7 +162,6 @@ void SettingsDialog::on_applyButton_clicked()
             saveSettings();
             applySettings();
             qApp->quit();
-
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
             break;
         case QMessageBox::No:
