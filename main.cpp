@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     db.setDatabaseName(databaseName_1);
     db.setUserName(userName_1);
     db.setPassword(password_1);
-    db.setPort(port_1.toInt());
+    db.setPort(port_1.toUInt());
     db.open();
 
     QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
@@ -55,10 +55,10 @@ int main(int argc, char *argv[])
     dbAsterisk.setDatabaseName(databaseName_2);
     dbAsterisk.setUserName(userName_2);
     dbAsterisk.setPassword(password_2);
-    dbAsterisk.setPort(port_2.toInt());
+    dbAsterisk.setPort(port_2.toUInt());
     dbAsterisk.open();
 
-    if(!db.open() && !dbAsterisk.open())
+    if(!db.isOpen() && !dbAsterisk.isOpen())
     {
         QString state = "twoDb";
         QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базам данных!", QMessageBox::Ok);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
-    else if(!db.open())
+    else if(!db.isOpen())
     {
         QString state = "db";
         QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе контактов!", QMessageBox::Ok);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         databasesConnectDialog->deleteLater();
 
     }
-    else if(!dbAsterisk.open())
+    else if(!dbAsterisk.isOpen())
     {
         QString state = "dbAsterisk";
         QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе звонков!", QMessageBox::Ok);

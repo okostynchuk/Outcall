@@ -221,6 +221,10 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
 
         disableActions();
+        if(db.isOpen())
+            db.close();
+        if(dbAsterisk.isOpen())
+            dbAsterisk.close();
 
         m_timer.stop();
     }
@@ -265,7 +269,10 @@ void OutCall::connectToDatabases()
     QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
     QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
     QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toInt();
+    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
+
+    if(db.isOpen())
+        db.close();
 
     db.setHostName(hostName_1);
     db.setDatabaseName(databaseName_1);
@@ -279,7 +286,10 @@ void OutCall::connectToDatabases()
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
     QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
     QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_2", "settings").toInt();
+    QString port_2 = global::getSettingsValue("port_2", "settings").toString();
+
+    if(dbAsterisk.isOpen())
+        dbAsterisk.close();
 
     dbAsterisk.setHostName(hostName_2);
     dbAsterisk.setDatabaseName(databaseName_2);

@@ -31,7 +31,7 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
     QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
     QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_2", "settings").toString();
+    QString port_2 = global::getSettingsValue("port_1", "settings").toString();
 
     ui->hostName_1->setText(hostName_1);
     ui->databaseName_1->setText(databaseName_1);
@@ -43,7 +43,7 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     ui->databaseName_2->setText(databaseName_2);
     ui->userName_2->setText(userName_2);
     ui->password_2->setText(password_2);
-    ui->port_2->setText(port_2);                    
+    ui->port_2->setText(port_2);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onSave);
     connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onClose);
@@ -61,23 +61,23 @@ void DatabasesConnectDialog::onSave()
         checkDb();
         checkDbAsterisk();
 
-        if(!DB.open() && !DbAsterisk.open())
+        if(!DB.isOpen() && !DbAsterisk.isOpen())
             QMessageBox::critical(nullptr, "Ошибка", "Подключение не создано!", QMessageBox::Ok);
-        else if(!DB.open())
+        else if(!DB.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
             QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
             setSettingForSecondDb();
         }
-        else if(!DbAsterisk.open())
+        else if(!DbAsterisk.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
             QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
             setSettingForFirstDb();
         }
-        else if(DB.open() && DbAsterisk.open())
+        else if(DB.isOpen() && DbAsterisk.isOpen())
         {
             setSettingForFirstDb();
             setSettingForSecondDb();
@@ -90,7 +90,7 @@ void DatabasesConnectDialog::onSave()
     {
         checkDb();
 
-        if(!DB.open())
+        if(!DB.isOpen())
             QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
         else
         {
@@ -104,7 +104,7 @@ void DatabasesConnectDialog::onSave()
     {
         checkDbAsterisk();
 
-        if(!DbAsterisk.open())
+        if(!DbAsterisk.isOpen())
             QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
         else
         {
@@ -167,7 +167,7 @@ void DatabasesConnectDialog::checkDb()
     DB.setDatabaseName(ui->databaseName_1->text());
     DB.setUserName(ui->userName_1->text());
     DB.setPassword(ui->password_1->text());
-    DB.setPort(ui->port_1->text().toInt());
+    DB.setPort(ui->port_1->text().toUInt());
     DB.open();
 }
 
@@ -176,7 +176,7 @@ void DatabasesConnectDialog::checkDbAsterisk()
     DbAsterisk.setHostName(ui->hostName_2->text());
     DbAsterisk.setDatabaseName(ui->databaseName_2->text());
     DbAsterisk.setUserName(ui->userName_2->text());
-    DbAsterisk.setPassword(ui->password_2->text());
-    DbAsterisk.setPort(ui->port_2->text().toInt());
+    DbAsterisk.setPassword( ui->password_2->text() );
+    DbAsterisk.setPort( ui->port_2->text().toUInt() );
     DbAsterisk.open();
 }
