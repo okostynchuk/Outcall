@@ -1126,7 +1126,7 @@
     <message>
         <location filename="PlaceCallDialog.cpp" line="106"/>
         <source>Поиск по ФИО / названию</source>
-        <translation>Пошук по ФІО / назві</translation>
+        <translation>Пошук по ПІБ / назві</translation>
     </message>
     <message>
         <location filename="PlaceCallDialog.cpp" line="107"/>

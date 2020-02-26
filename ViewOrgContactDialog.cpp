@@ -112,9 +112,9 @@ void ViewOrgContactDialog::onUpdate()
 
 void ViewOrgContactDialog::onComboBoxSelected()
 {
-    ui->comboBox->addItem("Поиск по ФИО");
-    ui->comboBox->addItem("Поиск по номеру телефона");
-    ui->comboBox->addItem("Поиск по заметке");
+    ui->comboBox->addItem(tr("Поиск по ФИО"));
+    ui->comboBox->addItem(tr("Поиск по номеру телефона"));
+    ui->comboBox->addItem(tr("Поиск по заметке"));
 }
 
 void ViewOrgContactDialog::onSectionClicked(int logicalIndex)

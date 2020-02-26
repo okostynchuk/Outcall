@@ -601,7 +601,7 @@
     <message>
         <location filename="ContactsDialog.cpp" line="425"/>
         <source>Поиск по ФИО / названию</source>
-        <translation>Поиск по ФИО / названии</translation>
+        <translation>Поиск по ФИО / названию</translation>
     </message>
     <message>
         <location filename="ContactsDialog.cpp" line="426"/>
@@ -1130,17 +1130,17 @@
     <message>
         <location filename="PlaceCallDialog.cpp" line="106"/>
         <source>Поиск по ФИО / названию</source>
-        <translation></translation>
+        <translation>Поиск по ФИО / названию</translation>
     </message>
     <message>
         <location filename="PlaceCallDialog.cpp" line="107"/>
         <source>Поиск по номеру телефона</source>
-        <translation></translation>
+        <translation>Поиск по номеру телефона</translation>
     </message>
     <message>
         <location filename="PlaceCallDialog.cpp" line="108"/>
         <source>Поиск сотрудников по организации</source>
-        <translation></translation>
+        <translation>Поиск сотрудников по организации</translation>
     </message>
 </context>
 <context>
