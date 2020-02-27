@@ -174,7 +174,7 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupWindow::showCallNotification(QString number, QString caller)
+void PopupWindow::showCallNotification(QString uniqueid, QString number, QString caller)
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
@@ -185,7 +185,7 @@ void PopupWindow::showCallNotification(QString number, QString caller)
         avatar = QPixmap(":/images/outcall-logo.png");
 
     PopupWindow *popup = new PopupWindow(pwi);
-    popup->recieveNumber(popup, number);
+    popup->recieveNumber(popup, number, uniqueid);
 	popup->show();
 	m_PopupWindows.append(popup);
 }
@@ -291,6 +291,25 @@ void PopupWindow::onShowCard()
     }
 }
 
+void PopupWindow::onSaveNote()
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+    QString uniqueid = sender()->property("uniqueid").toString();
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("INSERT INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
+    query.addBindValue(uniqueid);
+    query.addBindValue(ui->textEdit->toPlainText());
+    query.addBindValue(ui->textEdit->toPlainText());
+    query.exec();
+
+    popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen");
+}
+
 QString PopupWindow::getUpdateId(QString &number)
 {
     QSqlDatabase db;
@@ -334,7 +353,16 @@ void PopupWindow::receiveData(bool update)
     }
 }
 
-void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
+void PopupWindow::onTextChanged()
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+
+    popup->ui->textEdit->setStyleSheet("border: 2px solid grey");
+}
+
+void PopupWindow::recieveNumber(PopupWindow *popup, QString number, QString uniqueid)
 {
     QVariant qv_popup = qVariantFromValue((void *)popup);
     QSqlDatabase db;
@@ -352,6 +380,8 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
     else
         popup->ui->showCardButton->hide();
 
+    connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    popup->ui->textEdit->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
     popup->ui->addPersonButton->setProperty("number", number);
     popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
@@ -361,4 +391,7 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number)
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
     popup->ui->showCardButton->setProperty("number", number);
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
+    connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
+    popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
+    popup->ui->saveNoteButton->setProperty("uniqueid", uniqueid);
 }

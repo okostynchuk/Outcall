@@ -8,6 +8,7 @@
 #include <QVariantMap>
 #include <QTimer>
 #include <QtGlobal>
+#include <QDebug>
 
 AsteriskManager *g_pAsteriskManager = nullptr;
 
@@ -301,6 +302,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     received.insert("to", destExten);
                     received.insert("protocol", destProtocol);
                     received.insert("callerIDName", callerIDName);
+                    received.insert("uniqueid", uniqueid);
 
                     int counter = m_dialedNum.value(uniqueid, 0);
                     counter++;

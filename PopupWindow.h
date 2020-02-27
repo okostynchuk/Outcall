@@ -31,7 +31,7 @@ public:
     };
 
 public slots:
-    void recieveNumber(PopupWindow*, QString);
+    void recieveNumber(PopupWindow*, QString, QString);
     void receiveData(bool);
 
 signals:
@@ -52,7 +52,7 @@ private:
 public:
 	PopupWindow(const PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
-    static void showCallNotification(QString number, QString caller);
+    static void showCallNotification(QString uniqueid, QString number, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
     void onSave();
@@ -69,6 +69,8 @@ private slots:
     void onAddPerson();
     void onAddOrg();
     void onShowCard();
+    void onSaveNote();
+    void onTextChanged();
 
 private:
     Ui::PopupWindow *ui;

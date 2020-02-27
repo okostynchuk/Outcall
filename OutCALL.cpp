@@ -170,6 +170,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 {
     QString from            = call.value("from").toString();
     QString callerIDName    = call.value("callerIDName").toString();
+    QString uniqueid        = call.value("uniqueid").toString();
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -186,7 +187,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     else
         callerIDName = "Неизвестный";
 
-    PopupWindow::showCallNotification(from, QString("%1 (%2)").arg(callerIDName).arg(from));
+    PopupWindow::showCallNotification(uniqueid, from, QString("%1 (%2)").arg(callerIDName).arg(from));
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
