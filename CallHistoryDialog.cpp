@@ -169,7 +169,7 @@ void CallHistoryDialog::receiveDataToPlaced()
 
 CallHistoryDialog::~CallHistoryDialog()
 {
-    settingsDialog->deleteLater();
+    delete settingsDialog;
     deleteObjects();
     delete ui;
 }

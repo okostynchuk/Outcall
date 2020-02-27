@@ -35,6 +35,24 @@
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_5">
+           <item row="2" column="3">
+            <widget class="QLineEdit" name="Patronymic">
+             <property name="minimumSize">
+              <size>
+               <width>160</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="1" colspan="2">
             <widget class="QLineEdit" name="FirstName">
              <property name="minimumSize">
@@ -53,21 +71,33 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="2" column="3">
-            <widget class="QLineEdit" name="Patronymic">
-             <property name="minimumSize">
-              <size>
-               <width>160</width>
-               <height>0</height>
-              </size>
+           <item row="0" column="1" rowspan="2" colspan="2">
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
              </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
+             <property name="text">
+              <string>Имя:</string>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
+             <property name="alignment">
+              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" rowspan="2">
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Фамилия:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
              </property>
             </widget>
            </item>
@@ -107,36 +137,6 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="0" column="1" rowspan="2" colspan="2">
-            <widget class="QLabel" name="label_3">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Имя:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" rowspan="2">
-            <widget class="QLabel" name="label_2">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Фамилия:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="3">
             <widget class="QPushButton" name="editButton">
              <property name="focusPolicy">
@@ -144,6 +144,50 @@ background-color: #fffff8;
              </property>
              <property name="text">
               <string>Редактировать</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_17">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Заметка:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="4">
+            <widget class="QTextEdit" name="Comment">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff0;
+}</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="undoRedoEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -403,47 +447,10 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
-          <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="callButton">
              <property name="text">
-              <string>Заметка:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="4">
-            <widget class="QTextEdit" name="Comment">
-             <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff0;
-}</string>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="undoRedoEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
+              <string>Позвонить</string>
              </property>
             </widget>
            </item>

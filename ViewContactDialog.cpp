@@ -1,5 +1,6 @@
 #include "ViewContactDialog.h"
 #include "ui_ViewContactDialog.h"
+#include "AsteriskManager.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -16,6 +17,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
+    connect(ui->callButton, &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
     connect(ui->comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
 
     settingsDialog = new SettingsDialog();
@@ -33,6 +35,22 @@ void ViewContactDialog::receiveData(bool updating)
 {
     if (updating)
         emit sendData(true);
+}
+
+void ViewContactDialog::receiveNumber(QString &to)
+{
+    QString from = my_number;
+    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
+}
+
+void ViewContactDialog::onCall()
+{
+    chooseNumber = new ChooseNumber;
+    chooseNumber->setValuesNumber(updateID);
+    connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+    chooseNumber->exec();
+    chooseNumber->deleteLater();
 }
 
 void ViewContactDialog::onEdit()

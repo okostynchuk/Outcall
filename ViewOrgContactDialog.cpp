@@ -1,5 +1,6 @@
 #include "ViewOrgContactDialog.h"
 #include "ui_ViewOrgContactDialog.h"
+#include "AsteriskManager.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -17,6 +18,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
     connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
 
@@ -40,6 +42,22 @@ void ViewOrgContactDialog::receiveData(bool updating)
         emit sendData(true);
         onUpdate();
     }
+}
+
+void ViewOrgContactDialog::receiveNumber(QString &to)
+{
+    QString from = my_number;
+    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
+}
+
+void ViewOrgContactDialog::onCall()
+{
+    chooseNumber = new ChooseNumber;
+    chooseNumber->setValuesNumber(updateID);
+    connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+    chooseNumber->exec();
+    chooseNumber->deleteLater();
 }
 
 void ViewOrgContactDialog::deleteObjects()

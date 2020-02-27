@@ -3,6 +3,7 @@
 
 #include "ViewContactDialog.h"
 #include "EditOrgContactDialog.h"
+#include "ChooseNumber.h"
 #include "SettingsDialog.h"
 #include "Global.h"
 
@@ -36,12 +37,15 @@ public:
 
 signals:
     void sendData(bool);
+    void sendNumber(QString &);
 
 public slots:
     void receiveData(bool);
+    void receiveNumber(QString &);
 
 protected slots:
     void onUpdate();
+    void onCall();
     void onEdit();
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
@@ -78,6 +82,7 @@ private:
     QSqlQueryModel *query_model;
     ViewContactDialog *viewContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
+    ChooseNumber *chooseNumber;
     QString update;
     QString id;
     QString days;

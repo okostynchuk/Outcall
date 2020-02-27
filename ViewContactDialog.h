@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "SettingsDialog.h"
 #include "EditContactDialog.h"
+#include "ChooseNumber.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -34,11 +35,14 @@ public:
 
 signals:
     void sendData(bool);
+    void sendNumber(QString &);
 
 public slots:
     void receiveData(bool);
+    void receiveNumber(QString &);
 
 protected slots:
+    void onCall();
     void onEdit();
     void loadMissedCalls();
     void loadReceivedCalls();
@@ -49,6 +53,7 @@ protected slots:
 private:
     Ui::ViewContactDialog *ui;
     SettingsDialog *settingsDialog;
+    ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
     QSqlQueryModel *query1;
     QValidator *validator;
