@@ -493,7 +493,7 @@ background-color: #fffff0;
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>45</width>
+                    <width>55</width>
                     <height>16777215</height>
                    </size>
                   </property>

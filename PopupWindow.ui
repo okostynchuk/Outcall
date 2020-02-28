@@ -164,7 +164,7 @@ background: red;
    </property>
    <property name="font">
     <font>
-     <pointsize>18</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="autoFillBackground">
@@ -347,7 +347,7 @@ color: black;
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>160</y>
+     <y>170</y>
      <width>361</width>
      <height>51</height>
     </rect>
