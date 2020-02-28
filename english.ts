@@ -478,6 +478,18 @@
         <source>4</source>
         <translation>4</translation>
     </message>
+    <message>
+        <source>Выбор номера</source>
+        <translation>Choose the number</translation>
+    </message>
+    <message>
+        <source>Номер(-a) &quot;</source>
+        <translation>Phone number(-s) &quot;</translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
+    </message>
 </context>
 <context>
     <name>ContactsDialog</name>
@@ -1308,7 +1320,7 @@
     </message>
     <message>
         <source>Разработано:</source>
-        <translation>Developed:</translation>
+        <translation>Developed by:</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

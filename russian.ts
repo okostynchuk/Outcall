@@ -593,6 +593,21 @@
         <source>4</source>
         <translation>4</translation>
     </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="15"/>
+        <source>Выбор номера</source>
+        <translation>Выбор номера</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>Номер(-a) &quot;</source>
+        <translation>Номер(-a) &quot;</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
+    </message>
 </context>
 <context>
     <name>ContactsDialog</name>

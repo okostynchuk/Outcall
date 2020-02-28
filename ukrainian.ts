@@ -591,6 +591,21 @@
         <source>4</source>
         <translation>4</translation>
     </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="15"/>
+        <source>Выбор номера</source>
+        <translation>Вибір номеру</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>Номер(-a) &quot;</source>
+        <translation>Номер(-и) &quot;</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
+    </message>
 </context>
 <context>
     <name>ContactsDialog</name>
@@ -649,7 +664,7 @@
     <message>
         <location filename="ContactsDialog.ui" line="365"/>
         <source>Добавить физ. лицо</source>
-        <translation>Додати фіз.особу</translation>
+        <translation>Додати фіз. особу</translation>
     </message>
     <message>
         <location filename="ContactsDialog.ui" line="386"/>
@@ -851,7 +866,7 @@
         <location filename="DebugInfoDialog.ui" line="14"/>
         <location filename="DebugInfoDialog.ui" line="24"/>
         <source>Информация об отладке</source>
-        <translation>Інформацію про відладку</translation>
+        <translation>Інформація про відладку</translation>
     </message>
     <message>
         <location filename="DebugInfoDialog.ui" line="36"/>
@@ -1752,7 +1767,7 @@
     <message>
         <location filename="SettingsDialog.cpp" line="155"/>
         <source>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</source>
-        <translation>Для застосування змін потрібно перезапуск програми. Підтвердити внесені зміни?</translation>
+        <translation>Для застосування змін потрібно перезапустити програму. Підтвердити внесені зміни?</translation>
     </message>
     <message>
         <source>English (default)</source>
