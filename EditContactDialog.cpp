@@ -33,7 +33,7 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Имя:<span style=\"color: red;\">*</span>");
+    ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
 }
@@ -88,13 +88,13 @@ void EditContactDialog::onSave()
 
     if (QString(ui->FirstName->text()).isEmpty() == true)
     {
-         ui->label_15->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
+         ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
          ui->FirstName->setStyleSheet("border: 1px solid red");
     }
     else { ui->label_15->hide();  ui->FirstName->setStyleSheet("border: 1px solid grey"); }
     if (QString(ui->FirstNumber->text()).isEmpty() == true)
     {
-        ui->label_14->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
+        ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
     }
     else { ui->label_14->hide(); ui->FirstNumber->setStyleSheet("border: 1px solid grey"); }
@@ -325,7 +325,7 @@ void EditContactDialog::setValuesContacts(QString &i)
     if (!orgName.isEmpty() && !orgName.isNull())
         ui->label_org->setText(orgName);
     else
-        ui->label_org->setText("Нет");
+        ui->label_org->setText(tr("Нет"));
 
     ui->FirstNumber->setText(firstNumber);
     ui->SecondNumber->setText(secondNumber);
@@ -352,7 +352,7 @@ void EditContactDialog::receiveOrgID(QString &id)
     if (!query.value(0).toString().isEmpty())
         ui->label_org->setText(query.value(0).toString());
     else
-        ui->label_org->setText("Нет");
+        ui->label_org->setText(tr("Нет"));
 }
 
 void EditContactDialog::on_addOrgButton_clicked()
@@ -365,7 +365,7 @@ void EditContactDialog::on_addOrgButton_clicked()
 
 void EditContactDialog::on_deleteOrgButton_clicked()
 {
-    ui->label_org->setText("Нет");
+    ui->label_org->setText(tr("Нет"));
 }
 
 void EditContactDialog::setValuesCallHistory(QString &number)

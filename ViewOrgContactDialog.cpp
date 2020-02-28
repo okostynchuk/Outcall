@@ -639,21 +639,21 @@ void ViewOrgContactDialog::searchFunction()
     entry_phone = "NULL";
     entry_comment = "NULL";
 
-    if (ui->comboBox->currentText() == "Поиск по ФИО")
+    if (ui->comboBox->currentText() == "Поиск по ФИО" || ui->comboBox->currentText() == "Пошук по ПІБ" || ui->comboBox->currentText() == "Search by full name")
     {
         query_model = new QSqlQueryModel;
         entry_name = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона")
+    else if (ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Пошук за номером телефона" || ui->comboBox->currentText() == "Search by phone number")
     {
         query_model = new QSqlQueryModel;
         entry_phone = ui->lineEdit->text();
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по заметке")
+    else if (ui->comboBox->currentText() == "Поиск по заметке" || ui->comboBox->currentText() == "Пошук за коментарем" || ui->comboBox->currentText() == "Search by the note")
     {
         query_model = new QSqlQueryModel;
         entry_comment = ui->lineEdit->text();

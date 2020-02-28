@@ -40,7 +40,6 @@ SOURCES += main.cpp\
     AddNoteDialog.cpp \
     ChooseNumber.cpp \
     DatabasesConnectDialog.cpp \
-    AddLanguageDialog.cpp \
     AddOrgToPerson.cpp \
 
 HEADERS  += \
@@ -65,7 +64,6 @@ HEADERS  += \
     AddNoteDialog.h \
     ChooseNumber.h \
     DatabasesConnectDialog.h \
-    AddLanguageDialog.h \
     AddOrgToPerson.h \
 
 FORMS    += \
@@ -86,7 +84,6 @@ FORMS    += \
     AddNoteDialog.ui \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui \
-    AddLanguageDialog.ui \
     AddOrgToPerson.ui \
 
 RESOURCES += \

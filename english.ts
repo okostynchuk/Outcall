@@ -98,11 +98,19 @@
     </message>
     <message>
         <source>Удалить</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
+    </message>
+    <message>
+        <source>Отвязать</source>
+        <translation>Unbind</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>Bind</translation>
     </message>
 </context>
 <context>
@@ -132,50 +140,50 @@
     <name>AddLanguageDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
         <source>Please select language to add:</source>
-        <translation>Please select language to add:</translation>
+        <translation type="vanished">Please select language to add:</translation>
     </message>
     <message>
         <source>Add language</source>
-        <translation>Add language</translation>
+        <translation type="vanished">Add language</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="vanished">Cancel</translation>
     </message>
     <message>
         <source>Please select language to add first.</source>
-        <translation>Please select language to add first.</translation>
+        <translation type="vanished">Please select language to add first.</translation>
     </message>
     <message>
         <source>Open Language File</source>
-        <translation>Open Language File</translation>
+        <translation type="vanished">Open Language File</translation>
     </message>
     <message>
         <source>Language Files (*.lang)</source>
-        <translation>Language Files (*.lang)</translation>
+        <translation type="vanished">Language Files (*.lang)</translation>
     </message>
     <message>
         <source>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</source>
-        <translation>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</translation>
+        <translation type="vanished">Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</translation>
     </message>
     <message>
         <source>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</source>
-        <translation>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</translation>
+        <translation type="vanished">Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</translation>
     </message>
     <message>
         <source>Language file was added successfully.</source>
-        <translation>Language file was added successfully.</translation>
+        <translation type="vanished">Language file was added successfully.</translation>
     </message>
 </context>
 <context>
     <name>AddNoteDialog</name>
     <message>
         <source>Добавление / изменение заметки</source>
-        <translation>Add/edit note</translation>
+        <translation>Add / edit note</translation>
     </message>
     <message>
         <source>Сохранить</source>
@@ -400,7 +408,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Numbers:</translation>
+        <translation>Phone numbers:</translation>
     </message>
     <message>
         <source>1</source>
@@ -491,7 +499,7 @@
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation>Search by telephone</translation>
+        <translation>Search by phone number</translation>
     </message>
     <message>
         <source>Поиск по заметке</source>
@@ -686,11 +694,19 @@
     </message>
     <message>
         <source>Удалить</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
+    </message>
+    <message>
+        <source>Отвязать</source>
+        <translation>Unbind</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>Bind</translation>
     </message>
 </context>
 <context>
@@ -833,15 +849,15 @@
     </message>
     <message>
         <source>Позвонить</source>
-        <translation>Call</translation>
+        <translation>Place a call</translation>
     </message>
     <message>
         <source>Удаленный хост закрыл соединение.</source>
-        <translation>The remote host has closed the connection.</translation>
+        <translation type="vanished">The remote host has closed the connection.</translation>
     </message>
     <message>
         <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта.</source>
-        <translation>The host was not found. Please check the host name and port settings.</translation>
+        <translation type="vanished">The host was not found. Please check the host name and port settings.</translation>
     </message>
     <message>
         <source>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</source>
@@ -881,7 +897,27 @@
     </message>
     <message>
         <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</source>
-        <translation>The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct.</translation>
+        <translation type="vanished">The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct.</translation>
+    </message>
+    <message>
+        <source>Удаленный хост закрыл соединение</source>
+        <translation>The remote host has closed the connection</translation>
+    </message>
+    <message>
+        <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</source>
+        <translation>The host was not found. Please check host name and port settings</translation>
+    </message>
+    <message>
+        <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</source>
+        <translation>The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Соединение восстановлено. Приложение будет перезапущено!</source>
+        <translation>Connection restored. The application will restart!</translation>
     </message>
 </context>
 <context>
@@ -1004,6 +1040,18 @@
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
         <translation>Incoming call from:&lt;br&gt;&lt;b&gt;Unknown (%1)&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
+    <message>
+        <source>Сохранить заметку</source>
+        <translation>Save the note</translation>
+    </message>
+    <message>
+        <source>💾</source>
+        <translation>💾</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -1029,7 +1077,7 @@
     </message>
     <message>
         <source>ФИО / Название</source>
-        <translation>Privatel name / Org name</translation>
+        <translation>Private name / Org. name</translation>
     </message>
     <message>
         <source>Телефон</source>
@@ -1065,7 +1113,7 @@
     </message>
     <message>
         <source>Failed to load language file.</source>
-        <translation>Failed to load language file.</translation>
+        <translation type="vanished">Failed to load language file.</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1196,7 @@
     </message>
     <message>
         <source>Выбор языка</source>
-        <translation type="vanished">Choose the language</translation>
+        <translation>Choose the language</translation>
     </message>
     <message>
         <source>(Необходима перезагрузка приложения)</source>
@@ -1185,15 +1233,15 @@
     </message>
     <message>
         <source>Language</source>
-        <translation>Language</translation>
+        <translation type="vanished">Language</translation>
     </message>
     <message>
         <source>Add another language</source>
-        <translation>Add another language</translation>
+        <translation type="vanished">Add another language</translation>
     </message>
     <message>
         <source>(Note: application restart is required)</source>
-        <translation>(Note: application restart is required)</translation>
+        <translation type="vanished">(Note: application restart is required)</translation>
     </message>
     <message>
         <source>Имя хоста:</source>
@@ -1217,7 +1265,7 @@
     </message>
     <message>
         <source>English (default)</source>
-        <translation>English (default)</translation>
+        <translation type="vanished">English (default)</translation>
     </message>
     <message>
         <source>Добавление</source>
@@ -1226,6 +1274,18 @@
     <message>
         <source>Редактирование</source>
         <translation>Edit</translation>
+    </message>
+    <message>
+        <source>Русский (default)</source>
+        <translation>Русский (default)</translation>
+    </message>
+    <message>
+        <source>Українська</source>
+        <translation>Українська</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>English</translation>
     </message>
 </context>
 <context>
@@ -1337,6 +1397,10 @@
     <message>
         <source>30</source>
         <translation>30</translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
+        <translation>Call</translation>
     </message>
 </context>
 <context>
@@ -1452,6 +1516,22 @@
     <message>
         <source>30</source>
         <translation>30</translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
+        <translation>Call</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО</source>
+        <translation>Search by full name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by phone number</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
     </message>
 </context>
 </TS>

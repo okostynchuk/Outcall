@@ -27,8 +27,8 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText("Название организации:<span style=\"color: red;\">*</span>");
+    ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
+    ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 }
@@ -59,13 +59,13 @@ void EditOrgContactDialog::onSave()
 
     if (QString(ui->OrgName->text()).isEmpty() == true)
     {
-         ui->label_15->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
+         ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
          ui->OrgName->setStyleSheet("border: 1px solid red");
     }
     else { ui->label_15->hide();  ui->OrgName->setStyleSheet("border: 1px solid grey"); }
     if (QString(ui->FirstNumber->text()).isEmpty() == true)
     {
-        ui->label_14->setText("<span style=\"color: red;\">Заполните обязательное поле!</span>");
+        ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
     }
     else { ui->label_14->hide(); ui->FirstNumber->setStyleSheet("border: 1px solid grey"); }

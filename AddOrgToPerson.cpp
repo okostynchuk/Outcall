@@ -235,16 +235,16 @@ void AddOrgToPerson::onUpdate()
 
 void AddOrgToPerson::onComboBoxListSelected()
 {
-    ui->comboBox_list->addItem("20");
-    ui->comboBox_list->addItem("40");
-    ui->comboBox_list->addItem("60");
-    ui->comboBox_list->addItem("100");
+    ui->comboBox_list->addItem(tr("20"));
+    ui->comboBox_list->addItem(tr("40"));
+    ui->comboBox_list->addItem(tr("60"));
+    ui->comboBox_list->addItem(tr("100"));
 }
 
 void AddOrgToPerson::onComboBoxSelected()
 {
-    ui->comboBox->addItem("Поиск по названию");
-    ui->comboBox->addItem("Поиск по городу");
+    ui->comboBox->addItem(tr("Поиск по названию"));
+    ui->comboBox->addItem(tr("Поиск по городу"));
 }
 
 void AddOrgToPerson::searchFunction()

@@ -65,26 +65,26 @@ void DatabasesConnectDialog::onSave()
         checkDbAsterisk();
 
         if(!DB.isOpen() && !DbAsterisk.isOpen())
-            QMessageBox::critical(nullptr, "Ошибка", "Подключение не создано!", QMessageBox::Ok);
+            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение не создано!"), QMessageBox::Ok);
         else if(!DB.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
-            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
+            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
             setSettingForSecondDb();
         }
         else if(!DbAsterisk.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
-            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
+            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
             setSettingForFirstDb();
         }
         else if(DB.isOpen() && DbAsterisk.isOpen())
         {
             setSettingForFirstDb();
             setSettingForSecondDb();
-            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
             close();
             destroy(true);
         }
@@ -94,11 +94,11 @@ void DatabasesConnectDialog::onSave()
         checkDb();
 
         if(!DB.isOpen())
-            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе контактов не создано!", QMessageBox::Ok);
+            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
         else
         {
             setSettingForFirstDb();
-            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
             close();
             destroy(true);
         }
@@ -108,11 +108,11 @@ void DatabasesConnectDialog::onSave()
         checkDbAsterisk();
 
         if(!DbAsterisk.isOpen())
-            QMessageBox::critical(nullptr, "Ошибка", "Подключение к базе звонков не создано!", QMessageBox::Ok);
+            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
         else
         {
             setSettingForSecondDb();
-            QMessageBox::information(nullptr, "Уведомление", "Подключение успешно создано!", QMessageBox::Ok);
+            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
             close();
             destroy(true);
         }
