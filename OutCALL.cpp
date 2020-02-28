@@ -277,7 +277,7 @@ void OutCall::changeIcon()
 
 void OutCall::onCallHistory()
 {
-    m_callHistoryDialog->show();
+    m_callHistoryDialog->showNormal();
     m_callHistoryDialog->raise();
 }
 
@@ -301,7 +301,7 @@ void OutCall::onPlaceCall()
 
 void OutCall::onContactsInfo()
 {
-    m_contactsDialog->show();
+    m_contactsDialog->showNormal();
     m_contactsDialog->raise();
 }
 

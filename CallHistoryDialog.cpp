@@ -23,6 +23,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
@@ -193,7 +194,7 @@ bool CallHistoryDialog::checkNumber(QString &number)
     QSqlDatabase db;
     QSqlQuery query(db);
     QString number_internal = number;
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone ="+number_internal+")");
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '"+number_internal+"')");
     query.exec();
     query.next();
     if(query.value(0) != 0) return false;
