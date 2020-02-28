@@ -301,6 +301,13 @@ void PopupWindow::onSaveNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
+    query.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid = '" + uniqueid + "')");
+    query.exec();
+    query.first();
+
+    if (popup->ui->textEdit->toPlainText().isEmpty() && query.value(0).toString() == 0)
+        return;
+
     query.prepare("INSERT INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
     query.addBindValue(uniqueid);
     query.addBindValue(ui->textEdit->toPlainText());
