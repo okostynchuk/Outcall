@@ -13,14 +13,11 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui(new Ui::ContactsDialog)
 {
     ui->setupUi(this);
-
     QRegExp RegExp("^[0-9]*$");
     validator = new QRegExpValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
 
-    this->showMaximized();
-    ui->widget->move(0, 0);
-    ui->widget->resize(QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
+    this->showFullScreen();
 
     onComboBoxListSelected();
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");

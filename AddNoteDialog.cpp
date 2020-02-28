@@ -43,6 +43,13 @@ void AddNoteDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
+    query.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid = '"+callId+"')");
+    query.exec();
+    query.first();
+
+    if(ui->textEdit->toPlainText().isEmpty() && query.value(0) == 0)
+        return;
+
     query.prepare("INSERT  INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
     query.addBindValue(callId);
     query.addBindValue(ui->textEdit->toPlainText());
