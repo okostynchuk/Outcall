@@ -37,7 +37,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
     ui->lineEdit_page->setText(page);
-    ui->label_pages->setText("из " + pages);
+    ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
@@ -176,7 +176,7 @@ void ContactsDialog::onUpdate()
         else if (go == "default" && page.toInt() >= pages.toInt())
             page = pages;
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
@@ -228,7 +228,7 @@ void ContactsDialog::onUpdate()
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
             ui->lineEdit_page->setText(page);
-            ui->label_pages->setText("из " + pages);
+            ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
             query2 = new QSqlQueryModel;
@@ -276,7 +276,7 @@ void ContactsDialog::onUpdate()
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
             ui->lineEdit_page->setText(page);
-            ui->label_pages->setText("из " + pages);
+            ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
             query2 = new QSqlQueryModel;
@@ -325,7 +325,7 @@ void ContactsDialog::onUpdate()
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
             ui->lineEdit_page->setText(page);
-            ui->label_pages->setText("из " + pages);
+            ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
             query2 = new QSqlQueryModel;
@@ -412,10 +412,10 @@ QWidget* ContactsDialog::addImageLabel(int &row_index)
 
 void ContactsDialog::onComboBoxListSelected()
 {
-    ui->comboBox_list->addItem("20");
-    ui->comboBox_list->addItem("40");
-    ui->comboBox_list->addItem("60");
-    ui->comboBox_list->addItem("100");
+    ui->comboBox_list->addItem(tr("20"));
+    ui->comboBox_list->addItem(tr("40"));
+    ui->comboBox_list->addItem(tr("60"));
+    ui->comboBox_list->addItem(tr("100"));
 }
 
 void ContactsDialog::onComboBoxSelected()
@@ -462,7 +462,7 @@ void ContactsDialog::searchFunction()
         }
         page = "1";
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
@@ -470,7 +470,7 @@ void ContactsDialog::searchFunction()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Search by telephone" || ui->comboBox->currentText() == "Пошук по номеру телефона")
+    else if (ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Search by phone number" || ui->comboBox->currentText() == "Пошук за номером телефона")
     {
         entry_phone = ui->lineEdit->text();
 
@@ -491,7 +491,7 @@ void ContactsDialog::searchFunction()
         }
         page = "1";
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;
@@ -521,7 +521,7 @@ void ContactsDialog::searchFunction()
         }
         page = "1";
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query2 = new QSqlQueryModel;

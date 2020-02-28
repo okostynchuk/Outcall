@@ -38,7 +38,6 @@ protected:
     void applySettings();
     void selectLanguage();
     void loadLanguages();
-    void onAddLanguageBtn();
 
 protected slots:
     void on_applyButton_clicked();

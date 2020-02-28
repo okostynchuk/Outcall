@@ -12,7 +12,7 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    this->setWindowTitle("Выбор номера");
+    this->setWindowTitle(tr("Выбор номера"));
 
     ui->FirstNumber->installEventFilter(this);
     ui->SecondNumber->installEventFilter(this);
@@ -71,7 +71,7 @@ void ChooseNumber::setValuesNumber(QString &i)
     if (orgID != NULL)
     {
         ui->label_5->show();
-        ui->label_5->setText("Номер(-a) \"" + orgName + "\"");
+        ui->label_5->setText(tr("Номер(-a) \"") + orgName + tr("\""));
     }
 }
 

@@ -3,7 +3,6 @@
 #include "AddExtensionDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
-#include "AddLanguageDialog.h"
 #include "Notifier.h"
 
 #include <QAbstractButton>
@@ -186,15 +185,6 @@ void SettingsDialog::applySettings()
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
     g_Notifier->emitSettingsChanged();
-}
-
-void SettingsDialog::onAddLanguageBtn()
-{
-    AddLanguageDialog dlg(m_countries, this);
-    if (dlg.exec() == QDialog::Accepted)
-    {
-        loadLanguages();
-    }
 }
 
 void SettingsDialog::loadLanguages()

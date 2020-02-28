@@ -29,7 +29,7 @@ AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
     ui->lineEdit_page->setText(page);
-    ui->label_pages->setText("из " + pages);
+    ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
     query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
@@ -118,7 +118,7 @@ void AddOrgToPerson::onUpdate()
         else if (go == "default" && page.toInt() >= pages.toInt())
             page = pages;
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         if (ui->lineEdit_page->text() == "1")
@@ -163,7 +163,7 @@ void AddOrgToPerson::onUpdate()
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
             ui->lineEdit_page->setText(page);
-            ui->label_pages->setText("из " + pages);
+            ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
             if (ui->lineEdit_page->text() == "1")
@@ -204,7 +204,7 @@ void AddOrgToPerson::onUpdate()
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
             ui->lineEdit_page->setText(page);
-            ui->label_pages->setText("из " + pages);
+            ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
             if (ui->lineEdit_page->text() == "1")
@@ -235,16 +235,16 @@ void AddOrgToPerson::onUpdate()
 
 void AddOrgToPerson::onComboBoxListSelected()
 {
-    ui->comboBox_list->addItem("20");
-    ui->comboBox_list->addItem("40");
-    ui->comboBox_list->addItem("60");
-    ui->comboBox_list->addItem("100");
+    ui->comboBox_list->addItem(tr("20"));
+    ui->comboBox_list->addItem(tr("40"));
+    ui->comboBox_list->addItem(tr("60"));
+    ui->comboBox_list->addItem(tr("100"));
 }
 
 void AddOrgToPerson::onComboBoxSelected()
 {
-    ui->comboBox->addItem("Поиск по названию");
-    ui->comboBox->addItem("Поиск по городу");
+    ui->comboBox->addItem(tr("Поиск по названию"));
+    ui->comboBox->addItem(tr("Поиск по городу"));
 }
 
 void AddOrgToPerson::searchFunction()
@@ -262,7 +262,7 @@ void AddOrgToPerson::searchFunction()
     entry_name = nullptr;
     entry_city = nullptr;
 
-    if (ui->comboBox->currentText() == "Поиск по названию")
+    if (ui->comboBox->currentText() == "Поиск по названию" || ui->comboBox->currentText() == "Search by the name" || ui->comboBox->currentText() == "Пошук за назвою")
     {
         entry_name = ui->lineEdit->text();
 
@@ -283,13 +283,13 @@ void AddOrgToPerson::searchFunction()
         }
         page = "1";
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по городу")
+    else if (ui->comboBox->currentText() == "Поиск по городу" || ui->comboBox->currentText() == "Search by the city" || ui->comboBox->currentText() == "Пошук за містом")
     {
         entry_city = ui->lineEdit->text();
 
@@ -310,7 +310,7 @@ void AddOrgToPerson::searchFunction()
         }
         page = "1";
         ui->lineEdit_page->setText(page);
-        ui->label_pages->setText("из " + pages);
+        ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
         query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));

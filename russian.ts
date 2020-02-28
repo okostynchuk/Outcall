@@ -36,13 +36,15 @@
     </message>
     <message>
         <location filename="AddContactDialog.ui" line="161"/>
-        <source>Удалить</source>
-        <translation>Удалить</translation>
+        <source>Отвязать</source>
+        <oldsource>Удалить</oldsource>
+        <translation>Отвязать</translation>
     </message>
     <message>
         <location filename="AddContactDialog.ui" line="171"/>
-        <source>Редактировать</source>
-        <translation>Редактировать</translation>
+        <source>Привязать</source>
+        <oldsource>Редактировать</oldsource>
+        <translation>Привязать</translation>
     </message>
     <message>
         <location filename="AddContactDialog.ui" line="239"/>
@@ -105,6 +107,24 @@
         <translation>Заметка:</translation>
     </message>
     <message>
+        <location filename="AddContactDialog.cpp" line="37"/>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="AddContactDialog.cpp" line="38"/>
+        <location filename="AddContactDialog.cpp" line="229"/>
+        <location filename="AddContactDialog.cpp" line="242"/>
+        <source>Нет</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="AddContactDialog.cpp" line="91"/>
+        <location filename="AddContactDialog.cpp" line="97"/>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+    </message>
+    <message>
         <location filename="AddContactDialog.cpp" line="159"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
@@ -159,54 +179,44 @@
 <context>
     <name>AddLanguageDialog</name>
     <message>
-        <location filename="AddLanguageDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.ui" line="22"/>
         <source>Please select language to add:</source>
-        <translation>Выберите язык для добавления:</translation>
+        <translation type="vanished">Выберите язык для добавления:</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.ui" line="54"/>
         <source>Add language</source>
-        <translation>Добавить язык</translation>
+        <translation type="vanished">Добавить язык</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.ui" line="61"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation type="vanished">Отменить</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="65"/>
         <source>Please select language to add first.</source>
-        <translation>Пожалуйста, выберите язык для добавления.</translation>
+        <translation type="vanished">Пожалуйста, выберите язык для добавления.</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="71"/>
         <source>Open Language File</source>
-        <translation>Открыть файл с языками</translation>
+        <translation type="vanished">Открыть файл с языками</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="71"/>
         <source>Language Files (*.lang)</source>
-        <translation>Language Files (*.lang)</translation>
+        <translation type="vanished">Language Files (*.lang)</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="80"/>
         <source>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</source>
-        <translation>Такой же языковой файл уже существует в папке языков. Это не могло быть удалено. Возможно, вам следует попробовать запустить приложение с правами администратора.</translation>
+        <translation type="vanished">Такой же языковой файл уже существует в папке языков. Это не могло быть удалено. Возможно, вам следует попробовать запустить приложение с правами администратора.</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="86"/>
         <source>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</source>
-        <translation>Не удалось скопировать языковой файл в папку языков. Возможно, вам следует попробовать запустить приложение с правами администратора.</translation>
+        <translation type="vanished">Не удалось скопировать языковой файл в папку языков. Возможно, вам следует попробовать запустить приложение с правами администратора.</translation>
     </message>
     <message>
-        <location filename="AddLanguageDialog.cpp" line="89"/>
         <source>Language file was added successfully.</source>
-        <translation>Языковой файл был успешно добавлен.</translation>
+        <translation type="vanished">Языковой файл был успешно добавлен.</translation>
     </message>
 </context>
 <context>
@@ -222,12 +232,12 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="AddNoteDialog.cpp" line="65"/>
+        <location filename="AddNoteDialog.cpp" line="72"/>
         <source>Уведомление</source>
         <translation>Уведомление</translation>
     </message>
     <message>
-        <location filename="AddNoteDialog.cpp" line="65"/>
+        <location filename="AddNoteDialog.cpp" line="72"/>
         <source>Заметка успешно добавлена!</source>
         <translation>Заметка успешно добавлена!</translation>
     </message>
@@ -310,6 +320,17 @@
         <translation>Сохранить данные</translation>
     </message>
     <message>
+        <location filename="AddOrgContactDialog.cpp" line="35"/>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="AddOrgContactDialog.cpp" line="66"/>
+        <location filename="AddOrgContactDialog.cpp" line="72"/>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+    </message>
+    <message>
         <location filename="AddOrgContactDialog.cpp" line="133"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
@@ -376,6 +397,46 @@
         <location filename="AddOrgToPerson.ui" line="291"/>
         <source>►►</source>
         <translation>►►</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="32"/>
+        <location filename="AddOrgToPerson.cpp" line="121"/>
+        <location filename="AddOrgToPerson.cpp" line="166"/>
+        <location filename="AddOrgToPerson.cpp" line="207"/>
+        <location filename="AddOrgToPerson.cpp" line="286"/>
+        <location filename="AddOrgToPerson.cpp" line="313"/>
+        <source>из </source>
+        <translation>из </translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="238"/>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="239"/>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="240"/>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="241"/>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="246"/>
+        <source>Поиск по названию</source>
+        <translation>Поиск по названию</translation>
+    </message>
+    <message>
+        <location filename="AddOrgToPerson.cpp" line="247"/>
+        <source>Поиск по городу</source>
+        <translation>Поиск по городу</translation>
     </message>
 </context>
 <context>
@@ -451,41 +512,46 @@
         <translation>Добавить / изменить организацию</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="82"/>
-        <location filename="CallHistoryDialog.cpp" line="102"/>
-        <location filename="CallHistoryDialog.cpp" line="180"/>
-        <location filename="CallHistoryDialog.cpp" line="219"/>
-        <location filename="CallHistoryDialog.cpp" line="240"/>
+        <location filename="CallHistoryDialog.cpp" line="30"/>
+        <source>История звонков по номеру: </source>
+        <translation>История звонков по номеру: </translation>
+    </message>
+    <message>
+        <location filename="CallHistoryDialog.cpp" line="84"/>
+        <location filename="CallHistoryDialog.cpp" line="104"/>
+        <location filename="CallHistoryDialog.cpp" line="182"/>
+        <location filename="CallHistoryDialog.cpp" line="221"/>
+        <location filename="CallHistoryDialog.cpp" line="242"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="82"/>
-        <location filename="CallHistoryDialog.cpp" line="102"/>
-        <location filename="CallHistoryDialog.cpp" line="180"/>
+        <location filename="CallHistoryDialog.cpp" line="84"/>
+        <location filename="CallHistoryDialog.cpp" line="104"/>
+        <location filename="CallHistoryDialog.cpp" line="182"/>
         <source>Выберите одну запись!</source>
         <translation>Выберите одну запись!</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="219"/>
+        <location filename="CallHistoryDialog.cpp" line="221"/>
         <source>Данный контакт принадлежит организации!</source>
         <translation>Данный контакт принадлежит организации!</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="240"/>
+        <location filename="CallHistoryDialog.cpp" line="242"/>
         <source>Данный контакт принадлежит физ. лицу!</source>
         <translation>Данный контакт принадлежит физ. лицу!</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="268"/>
-        <location filename="CallHistoryDialog.cpp" line="303"/>
-        <location filename="CallHistoryDialog.cpp" line="338"/>
+        <location filename="CallHistoryDialog.cpp" line="269"/>
+        <location filename="CallHistoryDialog.cpp" line="304"/>
+        <location filename="CallHistoryDialog.cpp" line="339"/>
         <source>Заметки</source>
         <translation>Заметки</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="298"/>
-        <location filename="CallHistoryDialog.cpp" line="333"/>
+        <location filename="CallHistoryDialog.cpp" line="299"/>
+        <location filename="CallHistoryDialog.cpp" line="334"/>
         <source>Имя</source>
         <translation>Имя</translation>
     </message>
@@ -526,6 +592,21 @@
         <location filename="ChooseNumber.ui" line="152"/>
         <source>4</source>
         <translation>4</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="15"/>
+        <source>Выбор номера</source>
+        <translation>Выбор номера</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>Номер(-a) &quot;</source>
+        <translation>Номер(-a) &quot;</translation>
+    </message>
+    <message>
+        <location filename="ChooseNumber.cpp" line="74"/>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
     </message>
 </context>
 <context>
@@ -593,23 +674,55 @@
         <translation>Добавить организацию</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="51"/>
-        <location filename="ContactsDialog.cpp" line="353"/>
+        <location filename="ContactsDialog.cpp" line="40"/>
+        <location filename="ContactsDialog.cpp" line="179"/>
+        <location filename="ContactsDialog.cpp" line="231"/>
+        <location filename="ContactsDialog.cpp" line="279"/>
+        <location filename="ContactsDialog.cpp" line="328"/>
+        <location filename="ContactsDialog.cpp" line="465"/>
+        <location filename="ContactsDialog.cpp" line="494"/>
+        <location filename="ContactsDialog.cpp" line="524"/>
+        <source>из </source>
+        <translation>из </translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.cpp" line="49"/>
+        <location filename="ContactsDialog.cpp" line="351"/>
         <source>Тип</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="425"/>
+        <location filename="ContactsDialog.cpp" line="415"/>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.cpp" line="416"/>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.cpp" line="417"/>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.cpp" line="418"/>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <location filename="ContactsDialog.cpp" line="423"/>
         <source>Поиск по ФИО / названию</source>
         <translation>Поиск по ФИО / названию</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="426"/>
+        <location filename="ContactsDialog.cpp" line="424"/>
         <source>Поиск по номеру телефона</source>
         <translation>Поиск по номеру телефона</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="427"/>
+        <location filename="ContactsDialog.cpp" line="425"/>
         <source>Поиск по заметке</source>
         <translation>Поиск по заметке</translation>
     </message>
@@ -708,6 +821,46 @@
         <source>Отмена</source>
         <translation type="vanished">Отмена</translation>
     </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="68"/>
+        <location filename="DatabasesConnectDialog.cpp" line="73"/>
+        <location filename="DatabasesConnectDialog.cpp" line="80"/>
+        <location filename="DatabasesConnectDialog.cpp" line="97"/>
+        <location filename="DatabasesConnectDialog.cpp" line="111"/>
+        <source>Ошибка</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="68"/>
+        <source>Подключение не создано!</source>
+        <translation>Подключение не создано!</translation>
+    </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="73"/>
+        <location filename="DatabasesConnectDialog.cpp" line="97"/>
+        <source>Подключение к базе контактов не создано!</source>
+        <translation>Подключение к базе контактов не создано!</translation>
+    </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="80"/>
+        <location filename="DatabasesConnectDialog.cpp" line="111"/>
+        <source>Подключение к базе звонков не создано!</source>
+        <translation>Подключение к базе звонков не создано!</translation>
+    </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="87"/>
+        <location filename="DatabasesConnectDialog.cpp" line="101"/>
+        <location filename="DatabasesConnectDialog.cpp" line="115"/>
+        <source>Уведомление</source>
+        <translation>Уведомление</translation>
+    </message>
+    <message>
+        <location filename="DatabasesConnectDialog.cpp" line="87"/>
+        <location filename="DatabasesConnectDialog.cpp" line="101"/>
+        <location filename="DatabasesConnectDialog.cpp" line="115"/>
+        <source>Подключение успешно создано!</source>
+        <translation>Подключение успешно создано!</translation>
+    </message>
 </context>
 <context>
     <name>DebugInfoDialog</name>
@@ -762,22 +915,20 @@
         <translation>Организация:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="155"/>
         <source>Удалить</source>
-        <translation>Удалить</translation>
+        <translation type="vanished">Удалить</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="165"/>
         <source>Редактировать</source>
-        <translation>Редактировать</translation>
+        <translation type="vanished">Редактировать</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="222"/>
+        <location filename="EditContactDialog.ui" line="227"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="174"/>
+        <location filename="EditContactDialog.ui" line="179"/>
         <source>1*</source>
         <translation>1*</translation>
     </message>
@@ -787,49 +938,70 @@
         <translation>Номера:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="188"/>
+        <location filename="EditContactDialog.ui" line="160"/>
+        <source>Отвязать</source>
+        <translation>Отвязать</translation>
+    </message>
+    <message>
+        <location filename="EditContactDialog.ui" line="170"/>
+        <source>Привязать</source>
+        <translation>Привязать</translation>
+    </message>
+    <message>
+        <location filename="EditContactDialog.ui" line="193"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="205"/>
+        <location filename="EditContactDialog.ui" line="210"/>
         <source>Город:</source>
         <translation>Город:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="284"/>
+        <location filename="EditContactDialog.ui" line="289"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="298"/>
+        <location filename="EditContactDialog.ui" line="303"/>
         <source>Email:</source>
         <translation>Email:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="267"/>
+        <location filename="EditContactDialog.ui" line="272"/>
         <source>VyborID:</source>
         <translation>VyborID:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="236"/>
+        <location filename="EditContactDialog.ui" line="241"/>
         <source>Адрес:</source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="253"/>
+        <location filename="EditContactDialog.ui" line="258"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="336"/>
+        <location filename="EditContactDialog.ui" line="341"/>
         <source>Сохранить данные</source>
         <translation>Сохранить данные</translation>
     </message>
     <message>
-        <location filename="EditContactDialog.ui" line="326"/>
+        <location filename="EditContactDialog.ui" line="331"/>
         <source>Заметка:</source>
         <translation>Заметка:</translation>
+    </message>
+    <message>
+        <location filename="EditContactDialog.cpp" line="36"/>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="EditContactDialog.cpp" line="91"/>
+        <location filename="EditContactDialog.cpp" line="97"/>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="EditContactDialog.cpp" line="159"/>
@@ -852,6 +1024,13 @@
         <location filename="EditContactDialog.cpp" line="273"/>
         <source>Запись успешно изменена!</source>
         <translation>Запись успешно изменена!</translation>
+    </message>
+    <message>
+        <location filename="EditContactDialog.cpp" line="328"/>
+        <location filename="EditContactDialog.cpp" line="355"/>
+        <location filename="EditContactDialog.cpp" line="368"/>
+        <source>Нет</source>
+        <translation>Нет</translation>
     </message>
 </context>
 <context>
@@ -956,6 +1135,22 @@
         <translation type="vanished">Редактировать</translation>
     </message>
     <message>
+        <location filename="EditOrgContactDialog.cpp" line="30"/>
+        <source>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="EditOrgContactDialog.cpp" line="31"/>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="EditOrgContactDialog.cpp" line="62"/>
+        <location filename="EditOrgContactDialog.cpp" line="68"/>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+    </message>
+    <message>
         <location filename="EditOrgContactDialog.cpp" line="129"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
@@ -989,98 +1184,120 @@
 <context>
     <name>OutCall</name>
     <message>
-        <location filename="OutCALL.cpp" line="65"/>
+        <location filename="OutCALL.cpp" line="67"/>
         <source>Выход</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="69"/>
+        <location filename="OutCALL.cpp" line="71"/>
         <source>Войти в аккаунт</source>
         <translation>Войти в аккаунт</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="73"/>
+        <location filename="OutCALL.cpp" line="75"/>
         <source>Настройки</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="76"/>
+        <location filename="OutCALL.cpp" line="78"/>
         <source>Отладка</source>
         <translation>Отладка</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="80"/>
+        <location filename="OutCALL.cpp" line="82"/>
         <source>Контакты</source>
         <translation>Контакты</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="84"/>
+        <location filename="OutCALL.cpp" line="86"/>
         <source>История звонков</source>
         <translation>История звонков</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="88"/>
+        <location filename="OutCALL.cpp" line="90"/>
         <source>Позвонить</source>
         <translation>Позвонить</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="144"/>
         <source>Удаленный хост закрыл соединение.</source>
-        <translation>Удаленный хост закрыл соединение.</translation>
+        <translation type="vanished">Удаленный хост закрыл соединение.</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="147"/>
         <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта.</source>
-        <translation>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта.</translation>
+        <translation type="vanished">Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта.</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="151"/>
         <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</source>
-        <translation>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</translation>
+        <translation type="vanished">Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</translation>
     </message>
     <message>
         <source>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</source>
         <translation type="vanished">The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="197"/>
+        <location filename="OutCALL.cpp" line="146"/>
+        <source>Удаленный хост закрыл соединение</source>
+        <translation>Удаленный хост закрыл соединение</translation>
+    </message>
+    <message>
+        <location filename="OutCALL.cpp" line="149"/>
+        <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</source>
+        <translation>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</translation>
+    </message>
+    <message>
+        <location filename="OutCALL.cpp" line="153"/>
+        <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</source>
+        <translation>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</translation>
+    </message>
+    <message>
+        <location filename="OutCALL.cpp" line="200"/>
         <source>Выйти из аккаунта</source>
         <translation>Выйти из аккаунта</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="199"/>
-        <location filename="OutCALL.cpp" line="200"/>
+        <location filename="OutCALL.cpp" line="202"/>
+        <location filename="OutCALL.cpp" line="203"/>
         <source>Вы успешно вошли</source>
         <translation>Вы успешно вошли</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="206"/>
+        <location filename="OutCALL.cpp" line="209"/>
+        <source>Уведомление</source>
+        <translation>Уведомление</translation>
+    </message>
+    <message>
+        <location filename="OutCALL.cpp" line="209"/>
+        <source>Соединение восстановлено. Приложение будет перезапущено!</source>
+        <translation>Соединение восстановлено. Приложение будет перезапущено!</translation>
+    </message>
+    <message>
+        <location filename="OutCALL.cpp" line="216"/>
         <source>Отменить вход</source>
         <translation>Отменить вход</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="207"/>
+        <location filename="OutCALL.cpp" line="217"/>
         <source>Вход в аккаунт</source>
         <translation>Вход в аккаунт</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="216"/>
-        <location filename="OutCALL.cpp" line="228"/>
+        <location filename="OutCALL.cpp" line="226"/>
+        <location filename="OutCALL.cpp" line="241"/>
         <source>&amp;Войти в аккаунт</source>
         <translation>&amp;Войти в аккаунт</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="217"/>
+        <location filename="OutCALL.cpp" line="227"/>
         <source>Вы не вошли</source>
         <translation>Вы не вошли</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="226"/>
+        <location filename="OutCALL.cpp" line="239"/>
         <source>Ошибка аутентификации</source>
         <translation>Ошибка аутентификации</translation>
     </message>
     <message>
-        <location filename="OutCALL.cpp" line="227"/>
+        <location filename="OutCALL.cpp" line="240"/>
         <source>Не настроен</source>
         <translation>Не настроен</translation>
     </message>
@@ -1128,19 +1345,29 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="PlaceCallDialog.cpp" line="106"/>
+        <location filename="PlaceCallDialog.cpp" line="111"/>
         <source>Поиск по ФИО / названию</source>
         <translation>Поиск по ФИО / названию</translation>
     </message>
     <message>
-        <location filename="PlaceCallDialog.cpp" line="107"/>
+        <location filename="PlaceCallDialog.cpp" line="112"/>
         <source>Поиск по номеру телефона</source>
         <translation>Поиск по номеру телефона</translation>
     </message>
     <message>
-        <location filename="PlaceCallDialog.cpp" line="108"/>
+        <location filename="PlaceCallDialog.cpp" line="113"/>
         <source>Поиск сотрудников по организации</source>
         <translation>Поиск сотрудников по организации</translation>
+    </message>
+    <message>
+        <location filename="PlaceCallDialog.cpp" line="161"/>
+        <source>Сотрудники организации &quot;</source>
+        <translation>Сотрудники организации &quot;</translation>
+    </message>
+    <message>
+        <location filename="PlaceCallDialog.cpp" line="161"/>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
     </message>
 </context>
 <context>
@@ -1209,6 +1436,21 @@
         <translation>Организацию</translation>
     </message>
     <message>
+        <location filename="PopupWindow.ui" line="782"/>
+        <source>Ввод заметки</source>
+        <translation>Ввод заметки</translation>
+    </message>
+    <message>
+        <location filename="PopupWindow.ui" line="804"/>
+        <source>Сохранить заметку</source>
+        <translation>Сохранить заметку</translation>
+    </message>
+    <message>
+        <location filename="PopupWindow.ui" line="814"/>
+        <source>💾</source>
+        <translation>💾</translation>
+    </message>
+    <message>
         <location filename="PopupWindow.cpp" line="181"/>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
@@ -1219,12 +1461,12 @@
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="PopupWindow.cpp" line="324"/>
+        <location filename="PopupWindow.cpp" line="350"/>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</source>
         <translation>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="PopupWindow.cpp" line="332"/>
+        <location filename="PopupWindow.cpp" line="358"/>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
         <translation>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</translation>
     </message>
@@ -1232,78 +1474,78 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="264"/>
-        <location filename="ViewContactDialog.cpp" line="187"/>
-        <location filename="ViewContactDialog.cpp" line="246"/>
-        <location filename="ViewContactDialog.cpp" line="306"/>
-        <location filename="ViewOrgContactDialog.cpp" line="443"/>
-        <location filename="ViewOrgContactDialog.cpp" line="502"/>
-        <location filename="ViewOrgContactDialog.cpp" line="562"/>
+        <location filename="CallHistoryDialog.cpp" line="265"/>
+        <location filename="ViewContactDialog.cpp" line="205"/>
+        <location filename="ViewContactDialog.cpp" line="264"/>
+        <location filename="ViewContactDialog.cpp" line="324"/>
+        <location filename="ViewOrgContactDialog.cpp" line="461"/>
+        <location filename="ViewOrgContactDialog.cpp" line="520"/>
+        <location filename="ViewOrgContactDialog.cpp" line="580"/>
         <source>Имя</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="265"/>
-        <location filename="CallHistoryDialog.cpp" line="299"/>
-        <location filename="CallHistoryDialog.cpp" line="335"/>
-        <location filename="ViewContactDialog.cpp" line="188"/>
-        <location filename="ViewContactDialog.cpp" line="247"/>
-        <location filename="ViewContactDialog.cpp" line="307"/>
-        <location filename="ViewOrgContactDialog.cpp" line="444"/>
-        <location filename="ViewOrgContactDialog.cpp" line="503"/>
-        <location filename="ViewOrgContactDialog.cpp" line="563"/>
+        <location filename="CallHistoryDialog.cpp" line="266"/>
+        <location filename="CallHistoryDialog.cpp" line="300"/>
+        <location filename="CallHistoryDialog.cpp" line="336"/>
+        <location filename="ViewContactDialog.cpp" line="206"/>
+        <location filename="ViewContactDialog.cpp" line="265"/>
+        <location filename="ViewContactDialog.cpp" line="325"/>
+        <location filename="ViewOrgContactDialog.cpp" line="462"/>
+        <location filename="ViewOrgContactDialog.cpp" line="521"/>
+        <location filename="ViewOrgContactDialog.cpp" line="581"/>
         <source>Откуда</source>
         <translation>Откуда</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="300"/>
-        <location filename="CallHistoryDialog.cpp" line="334"/>
-        <location filename="ViewContactDialog.cpp" line="189"/>
-        <location filename="ViewContactDialog.cpp" line="248"/>
-        <location filename="ViewContactDialog.cpp" line="308"/>
-        <location filename="ViewOrgContactDialog.cpp" line="445"/>
-        <location filename="ViewOrgContactDialog.cpp" line="504"/>
-        <location filename="ViewOrgContactDialog.cpp" line="564"/>
+        <location filename="CallHistoryDialog.cpp" line="301"/>
+        <location filename="CallHistoryDialog.cpp" line="335"/>
+        <location filename="ViewContactDialog.cpp" line="207"/>
+        <location filename="ViewContactDialog.cpp" line="266"/>
+        <location filename="ViewContactDialog.cpp" line="326"/>
+        <location filename="ViewOrgContactDialog.cpp" line="463"/>
+        <location filename="ViewOrgContactDialog.cpp" line="522"/>
+        <location filename="ViewOrgContactDialog.cpp" line="582"/>
         <source>Кому</source>
         <translation>Кому</translation>
     </message>
     <message>
-        <location filename="CallHistoryDialog.cpp" line="266"/>
-        <location filename="CallHistoryDialog.cpp" line="301"/>
-        <location filename="CallHistoryDialog.cpp" line="336"/>
-        <location filename="ViewContactDialog.cpp" line="190"/>
-        <location filename="ViewContactDialog.cpp" line="249"/>
-        <location filename="ViewContactDialog.cpp" line="309"/>
-        <location filename="ViewOrgContactDialog.cpp" line="446"/>
-        <location filename="ViewOrgContactDialog.cpp" line="505"/>
-        <location filename="ViewOrgContactDialog.cpp" line="565"/>
+        <location filename="CallHistoryDialog.cpp" line="267"/>
+        <location filename="CallHistoryDialog.cpp" line="302"/>
+        <location filename="CallHistoryDialog.cpp" line="337"/>
+        <location filename="ViewContactDialog.cpp" line="208"/>
+        <location filename="ViewContactDialog.cpp" line="267"/>
+        <location filename="ViewContactDialog.cpp" line="327"/>
+        <location filename="ViewOrgContactDialog.cpp" line="464"/>
+        <location filename="ViewOrgContactDialog.cpp" line="523"/>
+        <location filename="ViewOrgContactDialog.cpp" line="583"/>
         <source>Дата и время</source>
         <translation>Дата и время</translation>
     </message>
     <message>
         <location filename="AddOrgToPerson.cpp" line="37"/>
         <location filename="AddOrgToPerson.cpp" line="221"/>
-        <location filename="ContactsDialog.cpp" line="49"/>
-        <location filename="ContactsDialog.cpp" line="351"/>
-        <location filename="PlaceCallDialog.cpp" line="86"/>
-        <location filename="ViewOrgContactDialog.cpp" line="99"/>
-        <location filename="ViewOrgContactDialog.cpp" line="364"/>
+        <location filename="ContactsDialog.cpp" line="47"/>
+        <location filename="ContactsDialog.cpp" line="349"/>
+        <location filename="PlaceCallDialog.cpp" line="91"/>
+        <location filename="ViewOrgContactDialog.cpp" line="117"/>
+        <location filename="ViewOrgContactDialog.cpp" line="382"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="52"/>
-        <location filename="ContactsDialog.cpp" line="354"/>
-        <location filename="PlaceCallDialog.cpp" line="87"/>
+        <location filename="ContactsDialog.cpp" line="50"/>
+        <location filename="ContactsDialog.cpp" line="352"/>
+        <location filename="PlaceCallDialog.cpp" line="92"/>
         <source>ФИО / Название</source>
         <translation>ФИО / Название</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="53"/>
-        <location filename="ContactsDialog.cpp" line="355"/>
-        <location filename="PlaceCallDialog.cpp" line="88"/>
-        <location filename="ViewOrgContactDialog.cpp" line="101"/>
-        <location filename="ViewOrgContactDialog.cpp" line="366"/>
+        <location filename="ContactsDialog.cpp" line="51"/>
+        <location filename="ContactsDialog.cpp" line="353"/>
+        <location filename="PlaceCallDialog.cpp" line="93"/>
+        <location filename="ViewOrgContactDialog.cpp" line="119"/>
+        <location filename="ViewOrgContactDialog.cpp" line="384"/>
         <source>Телефон</source>
         <translation>Телефон</translation>
     </message>
@@ -1316,49 +1558,48 @@
     <message>
         <location filename="AddOrgToPerson.cpp" line="39"/>
         <location filename="AddOrgToPerson.cpp" line="223"/>
-        <location filename="ContactsDialog.cpp" line="54"/>
-        <location filename="ContactsDialog.cpp" line="356"/>
+        <location filename="ContactsDialog.cpp" line="52"/>
+        <location filename="ContactsDialog.cpp" line="354"/>
         <source>Город</source>
         <translation>Город</translation>
     </message>
     <message>
         <location filename="AddOrgToPerson.cpp" line="40"/>
         <location filename="AddOrgToPerson.cpp" line="224"/>
-        <location filename="ContactsDialog.cpp" line="55"/>
-        <location filename="ContactsDialog.cpp" line="357"/>
+        <location filename="ContactsDialog.cpp" line="53"/>
+        <location filename="ContactsDialog.cpp" line="355"/>
         <source>Адрес</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="56"/>
-        <location filename="ContactsDialog.cpp" line="358"/>
+        <location filename="ContactsDialog.cpp" line="54"/>
+        <location filename="ContactsDialog.cpp" line="356"/>
         <source>Email</source>
         <translation>Email</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="57"/>
-        <location filename="ContactsDialog.cpp" line="359"/>
+        <location filename="ContactsDialog.cpp" line="55"/>
+        <location filename="ContactsDialog.cpp" line="357"/>
         <source>VyborID</source>
         <translation>VyborID</translation>
     </message>
     <message>
-        <location filename="ContactsDialog.cpp" line="58"/>
-        <location filename="ContactsDialog.cpp" line="360"/>
-        <location filename="ViewOrgContactDialog.cpp" line="102"/>
-        <location filename="ViewOrgContactDialog.cpp" line="367"/>
+        <location filename="ContactsDialog.cpp" line="56"/>
+        <location filename="ContactsDialog.cpp" line="358"/>
+        <location filename="ViewOrgContactDialog.cpp" line="120"/>
+        <location filename="ViewOrgContactDialog.cpp" line="385"/>
         <source>Заметка</source>
         <translation>Заметка</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.cpp" line="100"/>
-        <location filename="ViewOrgContactDialog.cpp" line="365"/>
+        <location filename="ViewOrgContactDialog.cpp" line="118"/>
+        <location filename="ViewOrgContactDialog.cpp" line="383"/>
         <source>ФИО</source>
         <translation>ФИО</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="140"/>
         <source>Failed to load language file.</source>
-        <translation>Не удалось загрузить файл с языком.</translation>
+        <translation type="vanished">Не удалось загрузить файл с языком.</translation>
     </message>
 </context>
 <context>
@@ -1379,8 +1620,9 @@
         <translation>Основные настройки</translation>
     </message>
     <message>
+        <location filename="SettingsDialog.ui" line="95"/>
         <source>Выбор языка</source>
-        <translation type="vanished">Выбор языка</translation>
+        <translation>Выбор языка</translation>
     </message>
     <message>
         <location filename="SettingsDialog.ui" line="61"/>
@@ -1394,28 +1636,25 @@
         <translation>Разрешить автоматический вход в аккаунт при подключении к Интернету</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="95"/>
         <source>Language</source>
-        <translation>Язык</translation>
+        <translation type="vanished">Язык</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="104"/>
         <source>Add another language</source>
-        <translation>Добавить другой язык</translation>
+        <translation type="vanished">Добавить другой язык</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="111"/>
         <source>(Note: application restart is required)</source>
         <translatorcomment>(додаток треба перезавантажити)</translatorcomment>
-        <translation>(приложение нуждается в перезагрузке)</translation>
+        <translation type="vanished">(приложение нуждается в перезагрузке)</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="125"/>
+        <location filename="SettingsDialog.ui" line="124"/>
         <source>Сервер</source>
         <translation>Сервер</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="131"/>
+        <location filename="SettingsDialog.ui" line="130"/>
         <source>Настройки сервера</source>
         <translation>Настройки сервера</translation>
     </message>
@@ -1424,38 +1663,38 @@
         <translation type="vanished">Сервер:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="147"/>
-        <location filename="SettingsDialog.ui" line="231"/>
-        <location filename="SettingsDialog.ui" line="308"/>
+        <location filename="SettingsDialog.ui" line="146"/>
+        <location filename="SettingsDialog.ui" line="230"/>
+        <location filename="SettingsDialog.ui" line="307"/>
         <source>Имя пользователя:</source>
         <translation>Имя пользователя:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="157"/>
-        <location filename="SettingsDialog.ui" line="245"/>
-        <location filename="SettingsDialog.ui" line="322"/>
+        <location filename="SettingsDialog.ui" line="156"/>
+        <location filename="SettingsDialog.ui" line="244"/>
+        <location filename="SettingsDialog.ui" line="321"/>
         <source>Пароль:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="171"/>
-        <location filename="SettingsDialog.ui" line="262"/>
-        <location filename="SettingsDialog.ui" line="339"/>
+        <location filename="SettingsDialog.ui" line="170"/>
+        <location filename="SettingsDialog.ui" line="261"/>
+        <location filename="SettingsDialog.ui" line="338"/>
         <source>Порт:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="178"/>
+        <location filename="SettingsDialog.ui" line="177"/>
         <source>5038</source>
         <translation>5038</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="189"/>
+        <location filename="SettingsDialog.ui" line="188"/>
         <source>Базы данных</source>
         <translation>Базы данных</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="199"/>
+        <location filename="SettingsDialog.ui" line="198"/>
         <source>Настройки базы контактов</source>
         <translation>Настройки базы контактов</translation>
     </message>
@@ -1464,95 +1703,109 @@
         <translation type="vanished">Настройки базы контактов</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="137"/>
+        <location filename="SettingsDialog.ui" line="136"/>
         <source>Имя хоста:</source>
         <translation>Имя хоста:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="211"/>
-        <location filename="SettingsDialog.ui" line="288"/>
+        <location filename="SettingsDialog.ui" line="210"/>
+        <location filename="SettingsDialog.ui" line="287"/>
         <source>Имя хоста: </source>
         <translation>Имя хоста:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="221"/>
-        <location filename="SettingsDialog.ui" line="298"/>
+        <location filename="SettingsDialog.ui" line="220"/>
+        <location filename="SettingsDialog.ui" line="297"/>
         <source>Имя базы данных:</source>
         <translation>Имя базы данных:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="276"/>
+        <location filename="SettingsDialog.ui" line="275"/>
         <source>Настройки базы звонков</source>
         <translation>Настройки базы звонков</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="357"/>
-        <location filename="SettingsDialog.ui" line="369"/>
+        <location filename="SettingsDialog.ui" line="356"/>
+        <location filename="SettingsDialog.ui" line="368"/>
         <source>Номера</source>
         <translation>Номера</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="400"/>
+        <location filename="SettingsDialog.ui" line="399"/>
         <source>Добавить</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="407"/>
+        <location filename="SettingsDialog.ui" line="406"/>
         <source>Удалить</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="414"/>
+        <location filename="SettingsDialog.ui" line="413"/>
         <source>Редактировать</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="445"/>
+        <location filename="SettingsDialog.ui" line="444"/>
         <source>Разработано:</source>
         <translation>Разработано:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="470"/>
+        <location filename="SettingsDialog.ui" line="469"/>
         <source>Применить</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="480"/>
+        <location filename="SettingsDialog.ui" line="479"/>
         <source>Отмена</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="492"/>
+        <location filename="SettingsDialog.ui" line="491"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="160"/>
+        <location filename="SettingsDialog.cpp" line="154"/>
         <source>Применение настроек</source>
         <translation>Применить настройки</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="161"/>
+        <location filename="SettingsDialog.cpp" line="155"/>
         <source>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</source>
         <translation>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="208"/>
         <source>English (default)</source>
-        <translation>English (default)</translation>
+        <translation type="vanished">English (default)</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="258"/>
+        <location filename="SettingsDialog.cpp" line="194"/>
+        <source>Русский (default)</source>
+        <translation>Русский (default)</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.cpp" line="195"/>
+        <source>Українська</source>
+        <translation>Українська</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.cpp" line="196"/>
+        <source>English</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.cpp" line="220"/>
         <source>Добавление</source>
         <translation>Добавление</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="282"/>
+        <location filename="SettingsDialog.cpp" line="244"/>
         <source>Вы уверены, что хотите удалить выбранные элементы?</source>
         <translation>Вы уверены, что хотите удалить выбранные элементы?</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="302"/>
+        <location filename="SettingsDialog.cpp" line="264"/>
         <source>Редактирование</source>
         <translation>Редактирование</translation>
     </message>
@@ -1566,129 +1819,139 @@
         <translation>Резюме физ. лица</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="106"/>
+        <location filename="ViewContactDialog.ui" line="68"/>
         <source>Отчество:</source>
         <translation>Отчество:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="118"/>
+        <location filename="ViewContactDialog.ui" line="140"/>
         <source>Имя:</source>
         <translation>Имя:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="133"/>
+        <location filename="ViewContactDialog.ui" line="155"/>
         <source>Фамилия:</source>
         <translation>Фамилия:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="146"/>
+        <location filename="ViewContactDialog.ui" line="54"/>
         <source>Редактировать</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="162"/>
+        <location filename="ViewContactDialog.ui" line="174"/>
         <source>Номера:</source>
         <translation>Номера:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="174"/>
+        <location filename="ViewContactDialog.ui" line="186"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="198"/>
+        <location filename="ViewContactDialog.ui" line="210"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="222"/>
+        <location filename="ViewContactDialog.ui" line="234"/>
         <source>Город:</source>
         <translation>Город:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="246"/>
+        <location filename="ViewContactDialog.ui" line="258"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="270"/>
+        <location filename="ViewContactDialog.ui" line="282"/>
         <source>VyborID:</source>
         <translation>VyborID:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="294"/>
+        <location filename="ViewContactDialog.ui" line="306"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="306"/>
+        <location filename="ViewContactDialog.ui" line="318"/>
         <source>Адрес:</source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="354"/>
+        <location filename="ViewContactDialog.ui" line="366"/>
         <source>Email:</source>
         <translation>Email:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="366"/>
+        <location filename="ViewContactDialog.ui" line="378"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="390"/>
+        <location filename="ViewContactDialog.ui" line="402"/>
         <source>Организация:</source>
         <translation>Организация:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="418"/>
+        <location filename="ViewContactDialog.ui" line="430"/>
         <source>Заметка:</source>
         <translation>Заметка:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="458"/>
+        <location filename="ViewContactDialog.ui" line="44"/>
+        <source>Позвонить</source>
+        <translation>Позвонить</translation>
+    </message>
+    <message>
+        <location filename="ViewContactDialog.ui" line="470"/>
         <source>Журнал вызовов</source>
         <translation>Журнал вызовов</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="475"/>
+        <location filename="ViewContactDialog.ui" line="480"/>
+        <source> дней</source>
+        <translation>дней</translation>
+    </message>
+    <message>
+        <location filename="ViewContactDialog.ui" line="487"/>
         <source>Показать звонки за последние:</source>
         <translation>Показать звонки за последние:</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="483"/>
+        <location filename="ViewContactDialog.ui" line="495"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="488"/>
+        <location filename="ViewContactDialog.ui" line="500"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="493"/>
+        <location filename="ViewContactDialog.ui" line="505"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="520"/>
+        <location filename="ViewContactDialog.ui" line="532"/>
         <source>Пропущенные</source>
         <translation>Пропущенные</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="534"/>
+        <location filename="ViewContactDialog.ui" line="546"/>
         <source>Входящие</source>
         <translation>Входящие</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.ui" line="551"/>
+        <location filename="ViewContactDialog.ui" line="563"/>
         <source>Исходящие</source>
         <translation>Исходящие</translation>
     </message>
     <message>
-        <location filename="ViewContactDialog.cpp" line="192"/>
-        <location filename="ViewContactDialog.cpp" line="251"/>
-        <location filename="ViewContactDialog.cpp" line="311"/>
+        <location filename="ViewContactDialog.cpp" line="210"/>
+        <location filename="ViewContactDialog.cpp" line="269"/>
+        <location filename="ViewContactDialog.cpp" line="329"/>
         <source>Заметки</source>
         <translation>Заметки</translation>
     </message>
@@ -1702,142 +1965,162 @@
         <translation>Резюме организации</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="72"/>
+        <location filename="ViewOrgContactDialog.ui" line="96"/>
         <source>Название организации:</source>
         <translation>Название организации:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="97"/>
+        <location filename="ViewOrgContactDialog.ui" line="62"/>
         <source>Редактировать</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="125"/>
+        <location filename="ViewOrgContactDialog.ui" line="139"/>
         <source>Адрес:</source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="137"/>
+        <location filename="ViewOrgContactDialog.ui" line="151"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="149"/>
+        <location filename="ViewOrgContactDialog.ui" line="163"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="161"/>
+        <location filename="ViewOrgContactDialog.ui" line="175"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="173"/>
+        <location filename="ViewOrgContactDialog.ui" line="187"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="197"/>
+        <location filename="ViewOrgContactDialog.ui" line="211"/>
         <source>Email:</source>
         <translation>Email:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="233"/>
+        <location filename="ViewOrgContactDialog.ui" line="247"/>
         <source>Город:</source>
         <translation>Город:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="257"/>
+        <location filename="ViewOrgContactDialog.ui" line="271"/>
         <source>Номера:</source>
         <translation>Номера:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="305"/>
+        <location filename="ViewOrgContactDialog.ui" line="319"/>
         <source>VyborID:</source>
         <translation>VyborID:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="329"/>
+        <location filename="ViewOrgContactDialog.ui" line="343"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="370"/>
+        <location filename="ViewOrgContactDialog.ui" line="52"/>
+        <source>Позвонить</source>
+        <translation>Позвонить</translation>
+    </message>
+    <message>
+        <location filename="ViewOrgContactDialog.ui" line="384"/>
         <source>Заметка:</source>
         <translation>Заметка:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="382"/>
+        <location filename="ViewOrgContactDialog.ui" line="396"/>
         <source>Сотрудники</source>
         <translation>Сотрудники</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="421"/>
-        <location filename="ViewOrgContactDialog.ui" line="424"/>
+        <location filename="ViewOrgContactDialog.ui" line="435"/>
+        <location filename="ViewOrgContactDialog.ui" line="438"/>
         <source>Выберите столбец поиска</source>
         <translation>Выберите столбец поиска</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="462"/>
-        <location filename="ViewOrgContactDialog.ui" line="465"/>
+        <location filename="ViewOrgContactDialog.ui" line="476"/>
+        <location filename="ViewOrgContactDialog.ui" line="479"/>
         <source>Поиск по таблице</source>
         <translation>Поиск по таблице</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="468"/>
-        <location filename="ViewOrgContactDialog.ui" line="495"/>
+        <location filename="ViewOrgContactDialog.ui" line="482"/>
+        <location filename="ViewOrgContactDialog.ui" line="509"/>
         <source>Поиск</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="547"/>
+        <location filename="ViewOrgContactDialog.ui" line="561"/>
         <source>Журнал звонков</source>
         <translation>Журнал звонков</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="557"/>
+        <location filename="ViewOrgContactDialog.ui" line="571"/>
         <source>Пропущенные</source>
         <translation>Пропущенные</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="571"/>
+        <location filename="ViewOrgContactDialog.ui" line="585"/>
         <source>Входящие</source>
         <translation>Входящие</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="585"/>
+        <location filename="ViewOrgContactDialog.ui" line="599"/>
         <source>Исходящие</source>
         <translation>Исходящие</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="604"/>
+        <location filename="ViewOrgContactDialog.ui" line="618"/>
         <source> дней</source>
         <translation>дней</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="611"/>
+        <location filename="ViewOrgContactDialog.ui" line="625"/>
         <source>Показать звонки за последние:</source>
         <translation>Показать звонки за последние:</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="619"/>
+        <location filename="ViewOrgContactDialog.ui" line="633"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="624"/>
+        <location filename="ViewOrgContactDialog.ui" line="638"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.ui" line="629"/>
+        <location filename="ViewOrgContactDialog.ui" line="643"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="ViewOrgContactDialog.cpp" line="448"/>
-        <location filename="ViewOrgContactDialog.cpp" line="507"/>
-        <location filename="ViewOrgContactDialog.cpp" line="567"/>
+        <location filename="ViewOrgContactDialog.cpp" line="133"/>
+        <source>Поиск по ФИО</source>
+        <translation>Поиск по ФИО</translation>
+    </message>
+    <message>
+        <location filename="ViewOrgContactDialog.cpp" line="134"/>
+        <source>Поиск по номеру телефона</source>
+        <translation>Поиск по номеру телефона</translation>
+    </message>
+    <message>
+        <location filename="ViewOrgContactDialog.cpp" line="135"/>
+        <source>Поиск по заметке</source>
+        <translation>Поиск по заметке</translation>
+    </message>
+    <message>
+        <location filename="ViewOrgContactDialog.cpp" line="466"/>
+        <location filename="ViewOrgContactDialog.cpp" line="525"/>
+        <location filename="ViewOrgContactDialog.cpp" line="585"/>
         <source>Заметки</source>
         <translation>Заметки</translation>
     </message>

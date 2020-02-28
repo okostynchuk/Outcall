@@ -373,7 +373,7 @@ void PopupWindow::onSaveNote()
     query.addBindValue(ui->textEdit->toPlainText());
     query.exec();
 
-    popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen");
+    popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
 }
 
 QString PopupWindow::getUpdateId(QString &number)
@@ -425,7 +425,7 @@ void PopupWindow::onTextChanged()
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
 
-    popup->ui->textEdit->setStyleSheet("border: 2px solid grey");
+    popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a; border-radius: 5px;");
 }
 
 void PopupWindow::recieveNumber(PopupWindow *popup, QString number, QString uniqueid)
