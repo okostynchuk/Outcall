@@ -62,7 +62,7 @@ void EditContactDialog::onSave()
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
     QString orgName = ui->label_org->text();
-    if (orgName != "Нет")
+    if (orgName != "Нет" || orgName != "Any" || orgName != "Відсутня")
     {
         QSqlQuery queryOrg(db);
         QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);

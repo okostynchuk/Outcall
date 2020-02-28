@@ -65,7 +65,7 @@ void AddContactDialog::onSave()
     else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
     QString orgName = ui->label_org->text();
-    if (orgName != "Нет")
+    if (orgName != "Нет" || orgName != "Any" || orgName != "Відсутня")
     {
         QSqlQuery queryOrg(db);
         QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
@@ -239,7 +239,7 @@ void AddContactDialog::on_addOrgButton_clicked()
 
 void AddContactDialog::on_deleteOrgButton_clicked()
 {
-    ui->label_org->setText(tr("Нет"));
+    ui->label_org->setText(trUtf8("Нет"));
 }
 
 void AddContactDialog::setValuesCallHistory(QString &number)

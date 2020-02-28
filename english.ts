@@ -112,6 +112,18 @@
         <source>Привязать</source>
         <translation>Bind</translation>
     </message>
+    <message>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Any</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -277,6 +289,14 @@
         <source>Запись успешно добавлена!</source>
         <translation>Success!</translation>
     </message>
+    <message>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Organization name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
 </context>
 <context>
     <name>AddOrgToPerson</name>
@@ -311,6 +331,34 @@
     <message>
         <source>►►</source>
         <translation>►►</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по названию</source>
+        <translation>Search by the name</translation>
+    </message>
+    <message>
+        <source>Поиск по городу</source>
+        <translation>Search by the city</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
     </message>
 </context>
 <context>
@@ -377,7 +425,7 @@
     </message>
     <message>
         <source>История звонков по номеру: </source>
-        <translation type="vanished">Call history by the number:</translation>
+        <translation>Call history by the number:</translation>
     </message>
     <message>
         <source> дней</source>
@@ -505,6 +553,26 @@
         <source>Поиск по заметке</source>
         <translation>Search by the note</translation>
     </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
@@ -580,6 +648,30 @@
     <message>
         <source> Порт:</source>
         <translation>Port:</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Подключение не создано!</source>
+        <translation>Connection not created!</translation>
+    </message>
+    <message>
+        <source>Подключение к базе контактов не создано!</source>
+        <translation>Connection to contact database not created!</translation>
+    </message>
+    <message>
+        <source>Подключение к базе звонков не создано!</source>
+        <translation>Call database connection not created!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Подключение успешно создано!</source>
+        <translation>Connection created successfully!</translation>
     </message>
 </context>
 <context>
@@ -708,6 +800,18 @@
         <source>Привязать</source>
         <translation>Bind</translation>
     </message>
+    <message>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Any</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -819,6 +923,18 @@
     <message>
         <source>Выберите одну запись!</source>
         <translation type="vanished">Choose one element!</translation>
+    </message>
+    <message>
+        <source>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Organization name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -965,6 +1081,14 @@
     <message>
         <source>Поиск сотрудников по организации</source>
         <translation>Search of staff by the org</translation>
+    </message>
+    <message>
+        <source>Сотрудники организации &quot;</source>
+        <translation>Employees at &quot;</translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
     </message>
 </context>
 <context>

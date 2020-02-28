@@ -158,7 +158,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
         {
             query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + orgID + "' GROUP BY ep.entry_id");
             ui->lineEdit_2->show();
-            ui->lineEdit_2->setText("Сотрудники организации \"" + orgName + "\"");
+            ui->lineEdit_2->setText(tr("Сотрудники организации \"") + orgName + tr("\""));
             onUpdate();
 
         }
