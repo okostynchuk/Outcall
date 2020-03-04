@@ -32,12 +32,12 @@ private:
     Ui::AddContactDialog *ui;
     AddOrgToPerson *addOrgToPerson;
     QValidator *validator;
-    QValidator *validator2;
     QStringList numbers;
 
 private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
+    bool isPhone(QString *str);
 
 signals:
     void sendData(bool);

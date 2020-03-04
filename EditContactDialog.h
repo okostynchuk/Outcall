@@ -32,7 +32,6 @@ private:
     Ui::EditContactDialog *ui;
     AddOrgToPerson *addOrgToPerson;
     QValidator *validator;
-    QValidator *validator2;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

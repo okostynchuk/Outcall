@@ -261,7 +261,7 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'NO ANSWER' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
