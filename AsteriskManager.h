@@ -75,6 +75,7 @@ protected slots:
     void onSettingsChange();
 
 signals:
+    void callStart(QString);
     void messageReceived(const QString &message);
     void authenticationState(bool state);
     void callDeteceted(const QMap<QString, QVariant> &call, CallState state);

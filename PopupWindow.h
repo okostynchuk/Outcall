@@ -31,8 +31,9 @@ public:
     };
 
 public slots:
-    void recieveNumber(PopupWindow*, QString, QString);
+    void receiveNumber(PopupWindow*);
     void receiveData(bool);
+    void timerStart(QString);
 
 signals:
     void sendSignal(bool);
@@ -47,6 +48,8 @@ private:
         QString text;
         QPixmap avatar;
         QString extension;
+        QString uniqueid;
+        QString number;
         bool stopTimer = false;
     };
 
@@ -56,9 +59,9 @@ public:
     static void showCallNotification(QString uniqueid, QString number, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
-    void onSave();
 
 protected:
+    void onSave();
     void changeEvent(QEvent *e);
 
 protected slots:

@@ -118,12 +118,14 @@ PopupWindow::~PopupWindow()
 
 void PopupWindow::mousePressEvent(QMouseEvent *event)
 {
+    this->m_pwi.stopTimer = true;
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void PopupWindow::mouseMoveEvent(QMouseEvent *event)
 {
+    this->m_pwi.stopTimer = true;
     move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
 }
 
@@ -166,9 +168,6 @@ void PopupWindow::closeAndDestroy()
     hide();
     m_timer.stop();
     m_PopupWindows.removeOne(this);
-    delete this;
-    /*close();
-    deleteLater();*/
 }
 
 void PopupWindow::onTimer()
@@ -234,13 +233,15 @@ void PopupWindow::showCallNotification(QString uniqueid, QString number, QString
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
     pwi.text = tr("Входящий звонок от:<br><b>%1</b>").arg(caller);
+    pwi.uniqueid = uniqueid;
+    pwi.number = number;
     QPixmap avatar;
 
     if (avatar.isNull())
         avatar = QPixmap(":/images/outcall-logo.png");
 
     PopupWindow *popup = new PopupWindow(pwi);
-    popup->recieveNumber(popup, number, uniqueid);
+    popup->receiveNumber(popup);
 	popup->show();
 	m_PopupWindows.append(popup);
 }
@@ -284,15 +285,14 @@ void PopupWindow::on_pushButton_close_clicked()
 
 void PopupWindow::onAddPerson()
 {
-    this->m_pwi.stopTimer = true;
-    QString number = sender()->property("number").toString();
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+    popup->m_pwi.stopTimer = true;
+
     addContactDialog = new AddContactDialog;
-    addContactDialog->setValuesPopupWindow(number);
+    addContactDialog->setValuesPopupWindow(popup->m_pwi.number);
     connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    addContactDialog->setProperty("number", number);
     addContactDialog->setProperty("qv_popup", qv_popup);
     addContactDialog->exec();
     addContactDialog->deleteLater();
@@ -300,15 +300,14 @@ void PopupWindow::onAddPerson()
 
 void PopupWindow::onAddOrg()
 {
-    this->m_pwi.stopTimer = true;
-    QString number = sender()->property("number").toString();
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+    popup->m_pwi.stopTimer = true;
+
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setOrgValuesPopupWindow(number);
+    addOrgContactDialog->setOrgValuesPopupWindow(popup->m_pwi.number);
     connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    addOrgContactDialog->setProperty("number", number);
     addOrgContactDialog->setProperty("qv_popup", qv_popup);
     addOrgContactDialog->exec();
     addOrgContactDialog->deleteLater();
@@ -316,15 +315,15 @@ void PopupWindow::onAddOrg()
 
 void PopupWindow::onShowCard()
 {
-    this->m_pwi.stopTimer = true;
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    QString number = sender()->property("number").toString();
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
-    QString updateID = getUpdateId(number);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
+    popup->m_pwi.stopTimer = true;
+
+    QString updateID = getUpdateId(popup->m_pwi.number);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
     query.first();
     if (query.value(0).toString() == "person")
@@ -332,7 +331,6 @@ void PopupWindow::onShowCard()
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
          connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-         viewContactDialog->setProperty("number", number);
          viewContactDialog->setProperty("qv_popup", qv_popup);
          viewContactDialog->exec();
          viewContactDialog->deleteLater();
@@ -342,7 +340,6 @@ void PopupWindow::onShowCard()
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog->setOrgValuesContacts(updateID);
         connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-        viewOrgContactDialog->setProperty("number", number);
         viewOrgContactDialog->setProperty("qv_popup", qv_popup);
         viewOrgContactDialog->exec();
         viewOrgContactDialog->deleteLater();
@@ -351,16 +348,15 @@ void PopupWindow::onShowCard()
 
 void PopupWindow::onSaveNote()
 {
-    this->m_pwi.stopTimer = true;
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
-    QString uniqueid = sender()->property("uniqueid").toString();
+    popup->m_pwi.stopTimer = true;
 
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid = '" + uniqueid + "')");
+    query.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid = '" + popup->m_pwi.uniqueid + "')");
     query.exec();
     query.first();
 
@@ -368,7 +364,7 @@ void PopupWindow::onSaveNote()
         return;
 
     query.prepare("INSERT INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
-    query.addBindValue(uniqueid);
+    query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(ui->textEdit->toPlainText());
     query.addBindValue(ui->textEdit->toPlainText());
     query.exec();
@@ -388,15 +384,15 @@ QString PopupWindow::getUpdateId(QString &number)
 
 void PopupWindow::receiveData(bool update)
 {
-    QString number = sender()->property("number").toString();
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     if (update)
     {
         QSqlDatabase db;
         QSqlQuery query(db);
-        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
+        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
         query.exec();
 
         if (query.next())
@@ -405,7 +401,7 @@ void PopupWindow::receiveData(bool update)
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
             popup->ui->showCardButton->show();
-            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(number));
+            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(popup->m_pwi.number));
         }
         else
         {
@@ -413,27 +409,37 @@ void PopupWindow::receiveData(bool update)
             popup->ui->label->show();
             popup->ui->addPersonButton->show();
             popup->ui->addOrgButton->show();
-            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>Неизвестный (%1)</b>").arg(number));
+            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>Неизвестный (%1)</b>").arg(popup->m_pwi.number));
         }
     }
 }
 
 void PopupWindow::onTextChanged()
 {
-    this->m_pwi.stopTimer = true;
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+    popup->m_pwi.stopTimer = true;
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a; border-radius: 5px;");
 }
 
-void PopupWindow::recieveNumber(PopupWindow *popup, QString number, QString uniqueid)
+void PopupWindow::timerStart(QString uniqueid)
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+
+    if (popup->m_pwi.uniqueid == uniqueid)
+        popup->m_pwi.stopTimer = true;
+}
+
+void PopupWindow::receiveNumber(PopupWindow *popup)
 {
     QVariant qv_popup = qVariantFromValue((void *)popup);
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
 
     if (query.next())
@@ -445,18 +451,16 @@ void PopupWindow::recieveNumber(PopupWindow *popup, QString number, QString uniq
     else
         popup->ui->showCardButton->hide();
 
+    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStart(QString)));
+    g_pAsteriskManager->setProperty("qv_popup", qv_popup);
     connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     popup->ui->textEdit->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
-    popup->ui->addPersonButton->setProperty("number", number);
     popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
-    popup->ui->addOrgButton->setProperty("number", number);
     popup->ui->addOrgButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
-    popup->ui->showCardButton->setProperty("number", number);
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
-    popup->ui->saveNoteButton->setProperty("uniqueid", uniqueid);
 }
