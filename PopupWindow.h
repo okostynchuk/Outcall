@@ -31,8 +31,9 @@ public:
     };
 
 public slots:
-    void recieveNumber(PopupWindow*, QString, QString);
+    void receiveNumber(PopupWindow*);
     void receiveData(bool);
+    void timerStart(QString);
 
 signals:
     void sendSignal(bool);
@@ -43,27 +44,31 @@ private:
      */
     struct PWInformation
     {
-		PWType type;
-		QString text;
-		QPixmap avatar;
-		QString extension;
-	};
+        PWType type;
+        QString text;
+        QPixmap avatar;
+        QString extension;
+        QString uniqueid;
+        QString number;
+        bool stopTimer = false;
+    };
 
 public:
-	PopupWindow(const PWInformation& pwi, QWidget *parent = 0);
+    PopupWindow(PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
     static void showCallNotification(QString uniqueid, QString number, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
-    void onSave();
 
 protected:
+    void onSave();
     void changeEvent(QEvent *e);
 
 protected slots:
     QString getUpdateId(QString &);
 
 private slots:
+    void onPopupTimeout();
     void onTimer();
     void on_pushButton_close_clicked();
     void onAddPerson();
@@ -71,6 +76,10 @@ private slots:
     void onShowCard();
     void onSaveNote();
     void onTextChanged();
+
+private:
+    void startPopupWaitingTimer();
+    void closeAndDestroy();
 
 private:
     Ui::PopupWindow *ui;

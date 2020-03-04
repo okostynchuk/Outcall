@@ -288,6 +288,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
             {
                 QString protocol        = global::getSettingsValue(destExten, "extensions").toString();
                 bool recievedProtocol   = false;
+                bool stopTimer = false;
 
                 if (protocol == destProtocol)
                     recievedProtocol = true;
@@ -308,8 +309,17 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     counter++;
                     m_dialedNum.insert(uniqueid, counter);
 
-                    if (counter == 1)
+                    if (counter == 1 && channelStateDesc == "Ring")
+                    {
+                        received.insert("stopTimer", stopTimer);
                         emit callReceived(received);
+                    }
+                    else if (counter == 1 && channelStateDesc == "Up")
+                    {
+                        stopTimer = true;
+                        received.insert("stopTimer", stopTimer);
+                        emit callReceived(received);
+                    }
                 }
             }
         }
@@ -370,6 +380,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     global::setSettingsValue("received", list, "calls");
 
                     m_dialedNum.remove(uniqueid);
+
+                    emit callStart(uniqueid);
+
                     emit callDeteceted(received, RECIEVED);
                 }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")

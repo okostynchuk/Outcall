@@ -343,13 +343,13 @@ color: black;
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>170</y>
      <width>361</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -784,7 +784,7 @@ color: black;
       <property name="styleSheet">
        <string notr="true">*{
 background-color: #1a1a1a;
-border: 1.5px solid #a53501;
+border: 1.5px solid grey;
 border-radius: 5px;
 }</string>
       </property>
