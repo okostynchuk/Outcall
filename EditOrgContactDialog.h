@@ -26,6 +26,8 @@ signals:
 
 protected slots:
     void onSave();
+    bool isPhone(QString *str);
+    bool isVyborID(QString *str);
 
 private:
     Ui::EditOrgContactDialog *ui;
