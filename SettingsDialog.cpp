@@ -23,6 +23,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
     ui->autoSignIn->hide();
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     // Extensions
     connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);

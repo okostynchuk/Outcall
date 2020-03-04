@@ -10,6 +10,7 @@ DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
 
     ui->textEdit->setReadOnly(true);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     connect(ui->exit,  &QAbstractButton::clicked, this, &DebugInfoDialog::onExit);
     connect(ui->clear, &QAbstractButton::clicked, this, &DebugInfoDialog::onClear);

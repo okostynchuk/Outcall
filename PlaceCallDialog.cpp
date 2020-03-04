@@ -27,6 +27,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showNumber(const QModelIndex &)));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;

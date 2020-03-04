@@ -13,7 +13,7 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) :
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddNoteDialog::onSave);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 }
 
 AddNoteDialog::~AddNoteDialog()
