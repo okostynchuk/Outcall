@@ -119,7 +119,20 @@ void AddContactDialog::onSave()
             QString thirdNum = QString(ui->ThirdNumber->text());
             QString fourthNum = QString(ui->FourthNumber->text());
             QString fifthNum = QString(ui->FifthNumber->text());
+            QString vyborId = QString(ui->VyborID->text());
             bool validPhones = true;
+
+            if (vyborId != 0)
+            {
+                if (isVyborID(&vyborId) == true)
+                { ui->VyborID->setStyleSheet("border: 1px solid grey");  }
+                else
+                {
+                    ui->VyborID->setStyleSheet("border: 1px solid red");
+                    QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("VyborID не соответствует формату!"), QMessageBox::Ok);
+                    return;
+                }
+            }
 
             if (firstNum != 0)
             {
@@ -209,32 +222,31 @@ void AddContactDialog::onSave()
                 query.exec();
 
                 int id = query.lastInsertId().toInt();
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
+                query1.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->FirstNumber->text());
                 query1.exec();
 
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
+                query1.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->SecondNumber->text());
                 query1.exec();
 
-                ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
+                query1.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->ThirdNumber->text());
                 query1.exec();
 
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
+                query1.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->FourthNumber->text());
                 query1.exec();
 
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
+                query1.prepare("INSERT INTO phone (entry_id, phone)"
                                "VALUES(?, ?)");
                 query1.addBindValue(id);
                 query1.addBindValue(ui->FifthNumber->text());
@@ -254,6 +266,16 @@ bool AddContactDialog::isPhone(QString *str)
     int pos = 0;
 
     QRegExpValidator validator(QRegExp("[\\+]?[0-9]{1,12}"));
+    if(validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+    return false;
+}
+
+bool AddContactDialog::isVyborID(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator(QRegExp("[\\+]?[0-9]*"));
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
     return false;

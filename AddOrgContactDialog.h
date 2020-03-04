@@ -21,6 +21,8 @@ public:
 
 protected:
     void onSave();
+    bool isPhone(QString *str);
+    bool isVyborID(QString *str);
 
 private:
     Ui::AddOrgContactDialog *ui;
