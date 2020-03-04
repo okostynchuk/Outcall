@@ -229,7 +229,7 @@ void EditOrgContactDialog::onSave()
                 }
                 else
                 {
-                    query1.prepare("INSERT INTO phone (entry_id, phone) VALUES(?, ?)");
+                    query1.prepare("INSERT INTO fones (entry_id, fone) VALUES(?, ?)");
                     query1.addBindValue(updateID);
                     query1.addBindValue(secondNum);
                     query1.exec();
