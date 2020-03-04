@@ -64,9 +64,6 @@ protected:
     void onSave();
     void changeEvent(QEvent *e);
 
-protected slots:
-    QString getUpdateId(QString &);
-
 private slots:
     void onPopupTimeout();
     void onTimer();

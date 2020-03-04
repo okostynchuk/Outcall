@@ -301,7 +301,7 @@ void OutCall::onPlaceCall()
 
 void OutCall::onContactsInfo()
 {
-    m_contactsDialog->showNormal();
+    m_contactsDialog->showMaximized();
     m_contactsDialog->raise();
 }
 

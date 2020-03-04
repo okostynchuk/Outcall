@@ -7,6 +7,7 @@
 #include <QItemSelectionModel>
 #include <QMessageBox>
 #include <QSqlDatabase>
+#include <QDebug>
 
 ContactsDialog::ContactsDialog(QWidget *parent) :
     QDialog(parent),
@@ -16,8 +17,6 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     QRegExp RegExp("^[0-9]*$");
     validator = new QRegExpValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
-
-    this->showFullScreen();
 
     onComboBoxListSelected();
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
@@ -104,6 +103,22 @@ void ContactsDialog::receiveData(bool updating)
     }
 }
 
+void ContactsDialog::onAddPerson()
+{
+    addContactDialog = new AddContactDialog;
+    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addContactDialog->show();
+    addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void ContactsDialog::onAddOrg()
+{
+    addOrgContactDialog = new AddOrgContactDialog;
+    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addOrgContactDialog->show();
+    addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 void ContactsDialog::showCard(const QModelIndex &index)
 {
     QString updateID = query1->data(query1->index(index.row(), 0)).toString();
@@ -113,16 +128,16 @@ void ContactsDialog::showCard(const QModelIndex &index)
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
          connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-         viewContactDialog->exec();
-         viewContactDialog->deleteLater();
+         viewContactDialog->show();
+         viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog->setOrgValuesContacts(updateID);
         connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-        viewOrgContactDialog->exec();
-        viewOrgContactDialog->deleteLater();
+        viewOrgContactDialog->show();
+        viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -371,22 +386,6 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
-}
-
-void ContactsDialog::onAddPerson()
-{
-    addContactDialog = new AddContactDialog;
-    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    addContactDialog->exec();
-    addContactDialog->deleteLater();
-}
-
-void ContactsDialog::onAddOrg()
-{
-    addOrgContactDialog = new AddOrgContactDialog;
-    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    addOrgContactDialog->exec();
-    addOrgContactDialog->deleteLater();
 }
 
 QWidget* ContactsDialog::addImageLabel(int &row_index)

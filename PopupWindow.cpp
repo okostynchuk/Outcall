@@ -294,8 +294,8 @@ void PopupWindow::onAddPerson()
     addContactDialog->setValuesPopupWindow(popup->m_pwi.number);
     connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addContactDialog->setProperty("qv_popup", qv_popup);
-    addContactDialog->exec();
-    addContactDialog->deleteLater();
+    addContactDialog->show();
+    addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void PopupWindow::onAddOrg()
@@ -309,8 +309,8 @@ void PopupWindow::onAddOrg()
     addOrgContactDialog->setOrgValuesPopupWindow(popup->m_pwi.number);
     connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addOrgContactDialog->setProperty("qv_popup", qv_popup);
-    addOrgContactDialog->exec();
-    addOrgContactDialog->deleteLater();
+    addOrgContactDialog->show();
+    addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void PopupWindow::onShowCard()
@@ -320,20 +320,21 @@ void PopupWindow::onShowCard()
     popup = (PopupWindow*)qv_popup.value<void *>();
     popup->m_pwi.stopTimer = true;
 
-    QString updateID = getUpdateId(popup->m_pwi.number);
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+    query.prepare("SELECT id, entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
     query.first();
-    if (query.value(0).toString() == "person")
+    QString updateID = query.value(0).toString();
+
+    if (query.value(1).toString() == "person")
     {
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
          connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
          viewContactDialog->setProperty("qv_popup", qv_popup);
-         viewContactDialog->exec();
-         viewContactDialog->deleteLater();
+         viewContactDialog->show();
+         viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
@@ -341,8 +342,8 @@ void PopupWindow::onShowCard()
         viewOrgContactDialog->setOrgValuesContacts(updateID);
         connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         viewOrgContactDialog->setProperty("qv_popup", qv_popup);
-        viewOrgContactDialog->exec();
-        viewOrgContactDialog->deleteLater();
+        viewOrgContactDialog->show();
+        viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -370,16 +371,6 @@ void PopupWindow::onSaveNote()
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
-}
-
-QString PopupWindow::getUpdateId(QString &number)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
-    query.exec();
-    QString updateID = query.value(0).toString();
-    return updateID;
 }
 
 void PopupWindow::receiveData(bool update)
