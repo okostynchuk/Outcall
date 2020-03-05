@@ -124,6 +124,14 @@
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
         <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
     </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -146,6 +154,14 @@
     <message>
         <source>Неверный номер!</source>
         <translation>Incorrect number!</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -296,6 +312,14 @@
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
         <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
     </message>
 </context>
 <context>
@@ -824,6 +848,14 @@
         <source>Нет</source>
         <translation>Any</translation>
     </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -947,6 +979,14 @@
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
         <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
     </message>
 </context>
 <context>
@@ -1328,7 +1368,7 @@
     </message>
     <message>
         <source>Вы уверены, что хотите удалить выбранные элементы?</source>
-        <translation>Are you sure you want to delete the selected items?</translation>
+        <translation type="vanished">Are you sure you want to delete the selected items?</translation>
     </message>
     <message>
         <source>Выбор языка</source>
@@ -1423,6 +1463,22 @@
         <source>English</source>
         <translation>English</translation>
     </message>
+    <message>
+        <source>Да</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Удаление номера</source>
+        <translation>Phone number delition</translation>
+    </message>
+    <message>
+        <source>Вы уверены, что хотите удалить выбранный номер?</source>
+        <translation>Are you sure, that you want to delete the number?</translation>
+    </message>
 </context>
 <context>
     <name>ViewContactDialog</name>
@@ -1487,10 +1543,6 @@
         <translation>Organization:</translation>
     </message>
     <message>
-        <source>Заметка:</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Журнал вызовов</source>
         <translation>Call log</translation>
     </message>
@@ -1537,6 +1589,10 @@
     <message>
         <source>Позвонить</source>
         <translation>Call</translation>
+    </message>
+    <message>
+        <source>Заметка:</source>
+        <translation>Note:</translation>
     </message>
 </context>
 <context>

@@ -26,7 +26,7 @@ public:
     OutCall();
     ~OutCall();
 
-    void show();  
+    void show();
 
 protected:
     void automaticlySignIn();

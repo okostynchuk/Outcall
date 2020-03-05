@@ -36,11 +36,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    if(!opened)
-        ui->lineEdit->setReadOnly(true);
-    else
-        ui->lineEdit->setReadOnly(false);
-
     onComboBoxSelected();
 
     settingsDialog = new SettingsDialog();
@@ -181,7 +176,13 @@ void PlaceCallDialog::clearEditText()
 
 void PlaceCallDialog::show()
 {
-    QDialog::show();
+    if (!opened)
+    {
+        ui->lineEdit->setReadOnly(true);
+        ui->phoneLine->setReadOnly(true);
+    }
+
+    QDialog::show();    
     ui->phoneLine->clear();
     modelNull();
 }
