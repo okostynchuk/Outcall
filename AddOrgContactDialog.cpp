@@ -38,8 +38,6 @@ void AddOrgContactDialog::onSave()
     QSqlQuery query(db);
     QString orgName = QString(ui->OrgName->text());
 
-
-
     if (QString(ui->OrgName->text()).isEmpty() == true)
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
@@ -64,6 +62,7 @@ void AddOrgContactDialog::onSave()
         ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
         ui->FourthNumber->setStyleSheet("border: 1px solid grey");
         ui->FifthNumber->setStyleSheet("border: 1px solid grey");
+        ui->VyborID->setStyleSheet("border: 1px solid grey");
 
         numbers.clear();
         QSqlQuery query1(db);
@@ -125,7 +124,7 @@ void AddOrgContactDialog::onSave()
             if (vyborId != 0)
             {
                 if(isVyborID(&vyborId) == true)
-                { ui->VyborID->setStyleSheet("border: 1px solid grey");  }
+                    ui->VyborID->setStyleSheet("border: 1px solid grey");
                 else
                 {
                     ui->VyborID->setStyleSheet("border: 1px solid red");
@@ -255,7 +254,7 @@ bool AddOrgContactDialog::isVyborID(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[\\+]?[0-9]*"));
+    QRegExpValidator validator(QRegExp("[0-9]*"));
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
     return false;

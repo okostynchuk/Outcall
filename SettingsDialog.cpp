@@ -63,8 +63,6 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("password", ba.toBase64(),            "settings");
     global::setSettingsValue("port", ui->port->text(),    "settings");
 
-
-
     // Save extensions
     global::removeSettinsKey("extensions");
     int nRow = ui->treeWidget->topLevelItemCount();
@@ -232,6 +230,7 @@ void SettingsDialog::onAddButtonClicked()
 
         ui->treeWidget->addTopLevelItem(extensionItem);
     }
+    m_addExtensionDialog->deleteLater();
 }
 
 void SettingsDialog::onRemoveButtonClicked()

@@ -33,7 +33,7 @@ public:
 public slots:
     void receiveNumber(PopupWindow*);
     void receiveData(bool);
-    void timerStart(QString);
+    void timerStop(QString);
 
 signals:
     void sendSignal(bool);

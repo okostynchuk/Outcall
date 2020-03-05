@@ -65,8 +65,8 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
          chooseNumber = new ChooseNumber;
          chooseNumber->setValuesNumber(updateID);
          connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
-         chooseNumber->exec();
-         chooseNumber->deleteLater();
+         chooseNumber->show();
+         chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -195,8 +195,6 @@ void PlaceCallDialog::onCallButton()
         const QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_pAsteriskManager->originateCall(from, number, protocol, from);
-
-        QDialog::close();
     }
 }
 

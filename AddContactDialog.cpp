@@ -65,6 +65,7 @@ void AddContactDialog::onSave()
         ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
         ui->FourthNumber->setStyleSheet("border: 1px solid grey");
         ui->FifthNumber->setStyleSheet("border: 1px solid grey");
+        ui->VyborID->setStyleSheet("border: 1px solid grey");
 
         numbers.clear();
         QSqlQuery query1(db);
@@ -126,7 +127,7 @@ void AddContactDialog::onSave()
             if (vyborId != 0)
             {
                 if (isVyborID(&vyborId) == true)
-                { ui->VyborID->setStyleSheet("border: 1px solid grey");  }
+                    ui->VyborID->setStyleSheet("border: 1px solid grey");
                 else
                 {
                     ui->VyborID->setStyleSheet("border: 1px solid red");
@@ -276,7 +277,7 @@ bool AddContactDialog::isVyborID(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[\\+]?[0-9]*"));
+    QRegExpValidator validator(QRegExp("[0-9]*"));
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
     return false;
@@ -299,8 +300,8 @@ void AddContactDialog::on_addOrgButton_clicked()
 {
     addOrgToPerson = new AddOrgToPerson;
     connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
-    addOrgToPerson->exec();
-    addOrgToPerson->deleteLater();
+    addOrgToPerson->show();
+    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void AddContactDialog::on_deleteOrgButton_clicked()

@@ -671,21 +671,21 @@ void AsteriskManager::login()
 void AsteriskManager::originateCall(QString from, QString exten, QString protocol,
                             QString callerID, QString context)
 {
-    QStringList speedDialList = global::getSettingKeys("speed_dial");
-    if(speedDialList.contains(exten))
-    {
-        exten = global::getSettingsValue(exten, "speed_dial").toString();
-    }
+//    QStringList speedDialList = global::getSettingKeys("speed_dial");
+//    if(speedDialList.contains(exten))
+//    {
+//        exten = global::getSettingsValue(exten, "speed_dial").toString();
+//    }
 
-    formatNumber(exten);
+//    formatNumber(exten);
 
-    context = global::getSettingsValue("context", "dial_rules").toString();
-    if (context.isEmpty())
-        context = "default";
+//    context = global::getSettingsValue("context", "dial_rules").toString();
+//    if (context.isEmpty())
+//        context = "default";
 
-    QString prefix = global::getSettingsValue("prefix", "dial_rules").toString();
+//    QString prefix = global::getSettingsValue("prefix", "dial_rules").toString();
 
-    exten = prefix + exten;
+//    exten = prefix + exten;
 
     const QString channel = protocol + "/" + from;
 
@@ -697,6 +697,8 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
     result += "Context: DLPN_DialPlan" + from + "\r\n";
     result += "Priority: 1\r\n";
     result += "CallerID: "      + callerID      + "\r\n";
+
+    qDebug() << result;
 
     m_tcpSocket->write(result.toLatin1().data());
     m_tcpSocket->write("\r\n");

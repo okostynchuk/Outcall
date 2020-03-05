@@ -154,9 +154,6 @@ void PopupWindow::startPopupWaitingTimer()
 
     int time2live = TIME_TO_LIVE;
 
-    if (this->m_pwi.type == PWPhoneCall)
-        time2live = global::getSettingsValue("call_popup_duration", "popup", "5").toInt() * 1000;
-
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
 
@@ -168,6 +165,7 @@ void PopupWindow::closeAndDestroy()
     hide();
     m_timer.stop();
     m_PopupWindows.removeOne(this);
+    delete this;
 }
 
 void PopupWindow::onTimer()
@@ -415,7 +413,7 @@ void PopupWindow::onTextChanged()
     popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a; border-radius: 5px;");
 }
 
-void PopupWindow::timerStart(QString uniqueid)
+void PopupWindow::timerStop(QString uniqueid)
 {
     QVariant qv_popup = sender()->property("qv_popup");
     PopupWindow *popup;
@@ -442,7 +440,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     else
         popup->ui->showCardButton->hide();
 
-    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStart(QString)));
+    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStop(QString)));
     g_pAsteriskManager->setProperty("qv_popup", qv_popup);
     connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     popup->ui->textEdit->setProperty("qv_popup", qv_popup);

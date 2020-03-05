@@ -37,7 +37,7 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->lblText->resize(ui->lblText->width(), 60);
 
-    setWindowFlags(Qt::Tool /*| Qt::CustomizeWindowHint*/ | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupHelloWindow::onTimer);
 
@@ -58,7 +58,6 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     bool bTaskbarOnRight=nDesktopWidth<nScreenWidth && rcDesktop.left()==0;
     bool bTaskbarOnLeft=nDesktopWidth<nScreenWidth && rcDesktop.left()!=0;
     bool bTaskBarOnTop=nDesktopHeight<nScreenHeight && rcDesktop.top()!=0;
-    //bool bTaskbarOnBottom=nDesktopHeight<nScreenHeight && rcDesktop.top()==0;
 
     int nTimeToShow = TIME_TO_SHOW;
     int nTimerDelay;
@@ -86,9 +85,8 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
         m_nTaskbarPlacement=TASKBAR_ON_TOP;
         nTimerDelay=nTimeToShow/(height()/m_nIncrement);
     }
-    else //if (bTaskbarOnBottom)
+    else
     {
-        // Taskbar is on the bottom or Invisible
         m_nStartPosX=rcDesktop.right()-width();
         m_nStartPosY=(rcDesktop.bottom()-m_nLastWindowPosition*height());
         m_nTaskbarPlacement=TASKBAR_ON_BOTTOM;
@@ -152,8 +150,6 @@ void PopupHelloWindow::closeAndDestroy()
     m_timer.stop();
     m_PopupHelloWindows.removeOne(this);
     delete this;
-    /*close();
-    deleteLater();*/
 }
 
 void PopupHelloWindow::onTimer()

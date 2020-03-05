@@ -15,6 +15,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
@@ -37,9 +38,9 @@ void ViewContactDialog::receiveData(bool updating)
         emit sendData(true);
 }
 
-void ViewContactDialog::receiveNumber(QString &to)
+void ViewContactDialog::receiveNumber(const QString &to)
 {
-    QString from = my_number;
+    const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
@@ -49,8 +50,8 @@ void ViewContactDialog::onCall()
     chooseNumber = new ChooseNumber;
     chooseNumber->setValuesNumber(updateID);
     connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
-    chooseNumber->exec();
-    chooseNumber->deleteLater();
+    chooseNumber->show();
+    chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewContactDialog::onEdit()
@@ -59,8 +60,8 @@ void ViewContactDialog::onEdit()
     editContactDialog = new EditContactDialog;
     editContactDialog->setValuesContacts(updateID);
     connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    editContactDialog->exec();
-    editContactDialog->deleteLater();
+    editContactDialog->show();
+    editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewContactDialog::updateCalls()

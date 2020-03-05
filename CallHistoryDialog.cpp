@@ -91,10 +91,10 @@ void CallHistoryDialog::onAddContact()
     if (a == true)
     {
         addContactDialog->setValuesCallHistory(number);
-        addContactDialog->exec();
+        addContactDialog->show();
+        addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else if (a == false) editContact(number);
-    addContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::onAddOrgContact()
@@ -111,10 +111,10 @@ void CallHistoryDialog::onAddOrgContact()
     if (a == true)
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
-        addOrgContactDialog->exec();
+        addOrgContactDialog->show();
+        addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else if (a == false) editOrgContact(number);
-    addOrgContactDialog->deleteLater();
 }
 
 void CallHistoryDialog::addNoteToMissed(const QModelIndex &index)
@@ -124,8 +124,8 @@ void CallHistoryDialog::addNoteToMissed(const QModelIndex &index)
     addNoteDialog = new AddNoteDialog;
     addNoteDialog->setCallId(uniqueid, state_call);
     connect(addNoteDialog, SIGNAL(sendDataToMissed()), this, SLOT(receiveDataToMissed()));
-    addNoteDialog->exec();
-    addNoteDialog->deleteLater();
+    addNoteDialog->show();
+    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToMissed()
@@ -141,8 +141,8 @@ void CallHistoryDialog::addNoteToReceived(const QModelIndex &index)
     addNoteDialog = new AddNoteDialog;
     addNoteDialog->setCallId(uniqueid, state_call);
     connect(addNoteDialog, SIGNAL(sendDataToReceived()), this, SLOT(receiveDataToReceived()));
-    addNoteDialog->exec();
-    addNoteDialog->deleteLater();
+    addNoteDialog->show();
+    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToReceived()
@@ -158,8 +158,8 @@ void CallHistoryDialog::addNoteToPlaced(const QModelIndex &index)
     addNoteDialog = new AddNoteDialog;
     addNoteDialog->setCallId(uniqueid, state_call);
     connect(addNoteDialog, SIGNAL(sendDataToPlaced()), this, SLOT(receiveDataToPlaced()));
-    addNoteDialog->exec();
-    addNoteDialog->deleteLater();
+    addNoteDialog->show();
+    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToPlaced()
@@ -183,8 +183,8 @@ void CallHistoryDialog::onCallClicked()
         return;
     }
 
-    QString from = my_number;
-    QString to = number;
+    const QString from = my_number;
+    const QString to = number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
@@ -213,8 +213,8 @@ void CallHistoryDialog::editContact(QString &number)
     {
         editContactDialog = new EditContactDialog;
         editContactDialog->setValuesContacts(updateID);
-        editContactDialog->exec();
-        editContactDialog->deleteLater();
+        editContactDialog->show();
+        editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
@@ -234,8 +234,8 @@ void CallHistoryDialog::editOrgContact(QString &number)
     {
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setOrgValuesContacts(updateID);
-        editOrgContactDialog->exec();
-        editOrgContactDialog->deleteLater();
+        editOrgContactDialog->show();
+        editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {

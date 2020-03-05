@@ -11,7 +11,9 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui(new Ui::ViewOrgContactDialog)
 {
     ui->setupUi(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     m_horiz_header = ui->tableView->horizontalHeader();
@@ -44,9 +46,9 @@ void ViewOrgContactDialog::receiveData(bool updating)
     }
 }
 
-void ViewOrgContactDialog::receiveNumber(QString &to)
+void ViewOrgContactDialog::receiveNumber(const QString &to)
 {
-    QString from = my_number;
+    const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
@@ -56,8 +58,8 @@ void ViewOrgContactDialog::onCall()
     chooseNumber = new ChooseNumber;
     chooseNumber->setValuesNumber(updateID);
     connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
-    chooseNumber->exec();
-    chooseNumber->deleteLater();
+    chooseNumber->show();
+    chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::deleteObjects()
@@ -91,8 +93,8 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
     viewContactDialog = new ViewContactDialog;
     viewContactDialog->setValuesContacts(id);
     connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    viewContactDialog->exec();
-    viewContactDialog->deleteLater();
+    viewContactDialog->show();
+    viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::onEdit()
@@ -101,8 +103,8 @@ void ViewOrgContactDialog::onEdit()
     editOrgContactDialog = new EditOrgContactDialog;
     editOrgContactDialog->setOrgValuesContacts(updateID);
     connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    editOrgContactDialog->exec();
-    editOrgContactDialog->deleteLater();
+    editOrgContactDialog->show();
+    editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::onUpdate()
