@@ -46,7 +46,7 @@ void ViewOrgContactDialog::receiveData(bool updating)
     }
 }
 
-void ViewOrgContactDialog::receiveNumber(const QString &to)
+void ViewOrgContactDialog::receiveNumber(QString &to)
 {
     const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();

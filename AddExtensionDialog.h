@@ -24,7 +24,8 @@ public:
     void setProtocol(const QString &protocol);
 
 protected slots:
-    void onAccept();
+    void on_applyButton_pressed();
+    void on_cancelButton_pressed();
 
 private:
     Ui::AddExtensionDialog *ui;

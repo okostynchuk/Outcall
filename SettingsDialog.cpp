@@ -13,7 +13,6 @@
 #include <QDir>
 #include <QProcess>
 #include <QTranslator>
-#include <QMessageBox>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -153,8 +152,10 @@ void SettingsDialog::on_applyButton_clicked()
     msgBox.setText(tr("Применение настроек"));
     msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    int ret = msgBox.exec();
-    switch(ret)
+    msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
+    msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+    int reply = msgBox.exec();
+    switch(reply)
     {
         case QMessageBox::Yes:
             saveSettings();
@@ -239,16 +240,25 @@ void SettingsDialog::onRemoveButtonClicked()
 
     if (selectedItems.size() > 0)
     {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, tr(APP_NAME),
-                                      tr("Вы уверены, что хотите удалить выбранные элементы?"),
-                                      QMessageBox::Yes|QMessageBox::No);
-
-        if (reply == QMessageBox::No)
-            return;
-
-        if (reply == QMessageBox::Yes)
-            ui->addButton->setEnabled(true);
+        QMessageBox msgBox;
+        msgBox.setText(tr("Удаление номера"));
+        msgBox.setInformativeText(tr("Вы уверены, что хотите удалить выбранный номер?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
+        msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+        int reply = msgBox.exec();
+        switch(reply)
+        {
+            case QMessageBox::Yes:
+                ui->addButton->setEnabled(true);
+                break;
+            case QMessageBox::No:
+                msgBox.close();
+                return;
+                break;
+            default:
+                break;
+        }
 
         for (int i = 0; i < selectedItems.size(); ++i)
         {

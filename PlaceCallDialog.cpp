@@ -195,6 +195,8 @@ void PlaceCallDialog::onCallButton()
         const QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_pAsteriskManager->originateCall(from, number, protocol, from);
+
+        QDialog::close();
     }
 }
 

@@ -11,9 +11,6 @@ AddExtensionDialog::AddExtensionDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    QObject::connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &AddExtensionDialog::onAccept);
-    QObject::connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
     ui->extenLine->setValidator(new QIntValidator(this));
 }
 
@@ -43,7 +40,7 @@ void AddExtensionDialog::setProtocol(const QString &protocol)
     ui->protocol->setCurrentIndex(index);
 }
 
-void AddExtensionDialog::onAccept()
+void AddExtensionDialog::on_applyButton_pressed()
 {
     if (ui->extenLine->text().isEmpty())
         MsgBoxWarning(tr("Неверный номер!"));
@@ -52,5 +49,9 @@ void AddExtensionDialog::onAccept()
          QDialog::accept();
          emit addExten();
     }
+}
 
+void AddExtensionDialog::on_cancelButton_pressed()
+{
+    QDialog::close();
 }

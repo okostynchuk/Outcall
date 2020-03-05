@@ -698,8 +698,6 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
     result += "Priority: 1\r\n";
     result += "CallerID: "      + callerID      + "\r\n";
 
-    qDebug() << result;
-
     m_tcpSocket->write(result.toLatin1().data());
     m_tcpSocket->write("\r\n");
     m_tcpSocket->flush();

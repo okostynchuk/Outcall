@@ -39,7 +39,7 @@ signals:
 
 public slots:
     void receiveData(bool);
-    void receiveNumber(const QString &);
+    void receiveNumber(QString &);
 
 protected slots:
     void onCall();
