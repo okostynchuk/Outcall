@@ -80,7 +80,7 @@ void PlaceCallDialog::onUpdate()
 {
     if (update == "default")
     {
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep GROUP BY ep.entry_id");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep GROUP BY ep.entry_id ORDER BY entry_name ASC");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
     }
 
@@ -123,7 +123,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     else if(ui->comboBox->currentText() == "Поиск по ФИО / названию" || ui->comboBox->currentText() == "Search by full name / name" || ui->comboBox->currentText() == "Пошук по ПІБ / назві")
     {
         QString entry_name = ui->lineEdit->text();
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY entry_name ASC");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
 
         onUpdate();
@@ -131,7 +131,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     else if(ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Search by telephone" || ui->comboBox->currentText() == "Пошук по номеру телефона")
     {
         QString entry_phone = ui->lineEdit->text();
-        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
+        query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY entry_name ASC");
         query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
         onUpdate();
     }
@@ -152,7 +152,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
         }
         if (orgID != NULL)
         {
-            query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + orgID + "' GROUP BY ep.entry_id");
+            query1->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n') FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + orgID + "' GROUP BY ep.entry_id ORDER BY entry_name ASC");
             ui->lineEdit_2->show();
             ui->lineEdit_2->setText(tr("Сотрудники организации \"") + orgName + tr("\""));
             onUpdate();
@@ -163,14 +163,13 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
             ui->tableView->setModel(NULL);
             ui->lineEdit_2->clear();
         }
-        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id");
+        query2->setQuery("SELECT entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name ASC");
     }
 }
 
 void PlaceCallDialog::clearEditText()
 {
     ui->phoneLine->clear();
-    ui->lineEdit->clear();
     ui->lineEdit_2->hide();
 }
 

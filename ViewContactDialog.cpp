@@ -94,7 +94,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
     updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
+    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     int count = 1;
@@ -275,7 +275,7 @@ void ViewContactDialog::loadReceivedCalls()
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
@@ -335,7 +335,7 @@ void ViewContactDialog::loadPlacedCalls()
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
@@ -356,7 +356,7 @@ QWidget* ViewContactDialog::loadNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query.prepare("SELECT note FROM calls WHERE uniqueid =" + uniqueid);
     query.exec();
     query.first();
     note->setText(query.value(0).toString());

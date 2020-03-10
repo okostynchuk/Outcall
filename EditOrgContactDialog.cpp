@@ -115,7 +115,7 @@ void EditOrgContactDialog::onSave()
             QString thirdNum = QString(ui->ThirdNumber->text());
             QString fourthNum = QString(ui->FourthNumber->text());
             QString fifthNum = QString(ui->FifthNumber->text());
-            QString sql1 = QString("select COUNT(fone) from fones where entry_id = %1").arg(updateID);
+            QString sql1 = QString("SELECT COUNT(fone) FROM fones WHERE entry_id = %1").arg(updateID);
             query1.prepare(sql1);
             query1.exec();
             query1.next();
@@ -322,7 +322,7 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
+    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     int count = 1;
@@ -340,7 +340,7 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
             fifthNumber = query.value(0).toString();
         count++;
     }
-    sql = QString("select distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
+    sql = QString("SELECT distinct entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();

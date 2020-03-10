@@ -350,7 +350,7 @@ void EditContactDialog::setValuesContacts(QString &i)
     updateID = i;
     QSqlDatabase db;
     QSqlQuery query(db);
-    QString sql = QString("select entry_phone from entry_phone where entry_id = %1").arg(updateID);
+    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     int count = 1;
@@ -368,7 +368,7 @@ void EditContactDialog::setValuesContacts(QString &i)
             fifthNumber = query.value(0).toString();
         count++;
     }
-    sql = QString("select distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment from entry where id = %1").arg(updateID);
+    sql = QString("SELECT distinct entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = %1").arg(updateID);
     query.prepare(sql);
     query.exec();
     query.next();
