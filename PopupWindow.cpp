@@ -423,22 +423,43 @@ void PopupWindow::timerStop(QString uniqueid)
         popup->m_pwi.stopTimer = true;
 }
 
+bool PopupWindow::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+    if(validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+    return false;
+}
+
 void PopupWindow::receiveNumber(PopupWindow *popup)
 {
     QVariant qv_popup = qVariantFromValue((void *)popup);
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
-    query.exec();
 
-    if (query.next())
+    if (isInnerPhone(&popup->m_pwi.number))
     {
         popup->ui->label->hide();
         popup->ui->addPersonButton->hide();
         popup->ui->addOrgButton->hide();
+        popup->ui->showCardButton->hide();
     }
     else
-        popup->ui->showCardButton->hide();
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+        query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+        query.exec();
+
+        if (query.next())
+        {
+            popup->ui->label->hide();
+            popup->ui->addPersonButton->hide();
+            popup->ui->addOrgButton->hide();
+        }
+        else
+            popup->ui->showCardButton->hide();
+    }
 
     connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStop(QString)));
     g_pAsteriskManager->setProperty("qv_popup", qv_popup);

@@ -83,7 +83,7 @@
        <item>
         <widget class="QLineEdit" name="phoneLine">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -93,6 +93,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QLineEdit" name="lineEdit_2">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
@@ -107,14 +110,18 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QTableView" name="tableView">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="callButton">
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
        <property name="text">
         <string>Позвонить</string>
@@ -124,7 +131,7 @@ background-color: #fffff8;
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
        <property name="text">
         <string>Отмена</string>
