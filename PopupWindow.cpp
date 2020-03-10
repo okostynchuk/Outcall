@@ -439,9 +439,9 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     if (isInnerPhone(&popup->m_pwi.number))
     {
-        popup->ui->label->hide();
-        popup->ui->addPersonButton->hide();
-        popup->ui->addOrgButton->hide();
+//        popup->ui->label->hide();
+//        popup->ui->addPersonButton->hide();
+//        popup->ui->addOrgButton->hide();
         popup->ui->showCardButton->hide();
     }
     else
