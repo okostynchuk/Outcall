@@ -65,6 +65,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private slots:
+    bool isInnerPhone(QString *str);
     void onPopupTimeout();
     void onTimer();
     void on_pushButton_close_clicked();

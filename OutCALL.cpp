@@ -172,19 +172,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     QString callerIDName    = call.value("callerIDName").toString();
     QString uniqueid        = call.value("uniqueid").toString();
 
-    QSqlDatabase db;
-    QSqlQuery query(db);
-    query.prepare("SELECT EXISTS(SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone ="+from+"))");
-    query.exec();
-    query.first();
-    if (query.value(0) != 0)
-    {
-        query.prepare("SELECT entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = "+from+")");
-        query.exec();
-        query.first();
-        callerIDName = query.value(0).toString();
-    }
-    else
+    if (from == callerIDName)
         callerIDName = "Неизвестный";
 
     PopupWindow::showCallNotification(uniqueid, from, QString("%1 (%2)").arg(callerIDName).arg(from));
