@@ -151,9 +151,9 @@ background: red;
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>44</y>
+     <y>23</y>
      <width>309</width>
-     <height>170</height>
+     <height>191</height>
     </rect>
    </property>
    <property name="minimumSize">
