@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     ChooseNumber.cpp \
     DatabasesConnectDialog.cpp \
     AddOrgToPerson.cpp \
-    AddPersonToOrg.cpp
+    AddPhoneNumberToContactDialog.cpp \
+    AddPersonToOrg.cpp \
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -66,7 +67,8 @@ HEADERS  += \
     ChooseNumber.h \
     DatabasesConnectDialog.h \
     AddOrgToPerson.h \
-    AddPersonToOrg.h
+    AddPhoneNumberToContactDialog.h \
+    AddPersonToOrg.h \
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -87,7 +89,8 @@ FORMS    += \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui \
     AddOrgToPerson.ui \
-    AddPersonToOrg.ui
+    AddPhoneNumberToContactDialog.ui \
+    AddPersonToOrg.ui \
 
 RESOURCES += \
     images.qrc \
