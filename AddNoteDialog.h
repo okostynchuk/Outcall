@@ -26,6 +26,7 @@ private:
     QString state;
 
 signals:
+    void sendDataToAllCalls();
     void sendDataToMissed();
     void sendDataToReceived();
     void sendDataToPlaced();

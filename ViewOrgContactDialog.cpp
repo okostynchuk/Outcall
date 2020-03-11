@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
+#include <QDebug>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -672,4 +673,22 @@ void ViewOrgContactDialog::on_pushButton_clicked()
 void ViewOrgContactDialog::on_lineEdit_returnPressed()
 {
     searchFunction();
+}
+
+void ViewOrgContactDialog::receivePersonID(QString &id)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    qDebug() << id + " id";
+    qDebug() << updateID;
+    query.prepare("UPDATE entry SET entry_person_org_id = '" + updateID + "' WHERE id = "+id);
+    query.exec();
+}
+
+void ViewOrgContactDialog::on_addPersonToOrg_clicked()
+{
+    addPersonToOrg = new AddPersonToOrg;
+    connect(addPersonToOrg, SIGNAL(sendPersonID(QString&)), this, SLOT(receivePersonID(QString&)));
+    addPersonToOrg->show();
+    addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
 }

@@ -88,6 +88,20 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Все звонки</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QTableView" name="tableView_4">
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
         <widget class="QWidget" name="tab">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
