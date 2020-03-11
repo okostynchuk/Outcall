@@ -9,6 +9,7 @@
 #include <QSqlQuery>
 #include <QSqlDatabase>
 #include <QValidator>
+#include <QMessageBox>
 
 namespace Ui {
 class AddPersonToOrg;
@@ -55,6 +56,8 @@ private:
     QString go;
     QString entry_name;
     QString entry_city;
+    QString entry_phone;
+    QString entry_comment;
     bool filter;
     QList<QSqlQueryModel*> queries;
 };

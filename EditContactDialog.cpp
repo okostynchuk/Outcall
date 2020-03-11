@@ -44,20 +44,20 @@ void EditContactDialog::onSave()
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
          ui->FirstName->setStyleSheet("border: 1px solid red");
     }
-    else { ui->label_15->hide();  ui->FirstName->setStyleSheet("border: 1px solid grey"); }
+    else { ui->label_15->setText(tr(""));  ui->FirstName->setStyleSheet("border: 1px solid grey"); }
     if (QString(ui->FirstNumber->text()).isEmpty() == true)
     {
         ui->label_14->show();
         ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
     }
-    else { ui->label_14->hide(); ui->FirstNumber->setStyleSheet("border: 1px solid grey"); }
+    else { ui->label_14->setText(tr("")); ui->FirstNumber->setStyleSheet("border: 1px solid grey"); }
 
     if (QString(ui->FirstName->text()).isEmpty() == false && QString(ui->FirstNumber->text()).isEmpty() == false)
     {
-        ui->label_15->hide();
+        ui->label_15->setText(tr(""));
         ui->FirstName->setStyleSheet("border: 1px solid grey");
-        ui->label_14->hide();
+        ui->label_14->setText(tr(""));
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
         ui->SecondNumber->setStyleSheet("border: 1px solid grey");
         ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
