@@ -155,7 +155,7 @@ void SettingsDialog::on_applyButton_clicked()
     msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
     msgBox.setButtonText(QMessageBox::No, tr("Нет"));
     int reply = msgBox.exec();
-    switch(reply)
+    switch (reply)
     {
         case QMessageBox::Yes:
             saveSettings();

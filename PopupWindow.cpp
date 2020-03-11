@@ -311,6 +311,21 @@ void PopupWindow::onAddOrg()
     addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+void PopupWindow::onAddPhoneNumberToContact()
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+    popup->m_pwi.stopTimer = true;
+
+    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+    addPhoneNumberToContactDialog->setPhoneNumberPopupWindow(popup->m_pwi.number);
+    connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addPhoneNumberToContactDialog->setProperty("qv_popup", qv_popup);
+    addPhoneNumberToContactDialog->show();
+    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 void PopupWindow::onShowCard()
 {
     QVariant qv_popup = sender()->property("qv_popup");
@@ -389,6 +404,7 @@ void PopupWindow::receiveData(bool update)
             popup->ui->label->hide();
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
+            popup->ui->addPhoneNumberButton->hide();
             popup->ui->showCardButton->show();
             popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(popup->m_pwi.number));
         }
@@ -456,6 +472,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
             popup->ui->label->hide();
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
+            popup->ui->addPhoneNumberButton->hide();
         }
         else
             popup->ui->showCardButton->hide();
@@ -469,6 +486,8 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
     popup->ui->addOrgButton->setProperty("qv_popup", qv_popup);
+    connect(popup->ui->addPhoneNumberButton, SIGNAL(clicked(bool)), this, SLOT(onAddPhoneNumberToContact()));
+    popup->ui->addPhoneNumberButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
