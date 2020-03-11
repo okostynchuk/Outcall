@@ -123,7 +123,6 @@ private:
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
     QList<QLabel*> notesPlaced;
-    QList<QBoxLayout*> layouts;
 };
 
 #endif // CALLHISTORYDIALOG_H

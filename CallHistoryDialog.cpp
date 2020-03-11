@@ -347,36 +347,22 @@ void CallHistoryDialog::loadAllCalls()
         if(query.value(0) != 0)
             ui->tableView_4->setIndexWidget(query4->index(row_index, 6), loadAllNotes());
     }
-    ui->tableView_4->setVisible(false);
+
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView_4->resizeColumnsToContents();
-
-    //ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_4->setColumnWidth(4, 90 );
     ui->tableView_4->resizeRowsToContents();
-
-//    ui->tableView_4->resizeColumnToContents(0);
-//    ui->tableView_4->resizeColumnToContents(1);
-//    ui->tableView_4->resizeColumnToContents(2);
-//    ui->tableView_4->resizeColumnToContents(3);
-//    ui->tableView_4->resizeColumnToContents(4);
-//    ui->tableView_4->resizeColumnToContents(5);
-    ui->tableView_4->setVisible(true);
 }
 
 QWidget* CallHistoryDialog::loadMissedStatus()
 {
     QWidget* missedStatusWgt = new QWidget;
-    //QBoxLayout* l = new QHBoxLayout;
     QLabel * missedStatusLabel = new QLabel(missedStatusWgt);
-    //l->addWidget(missedStatusLabel);
     missedStatusLabel->setText(tr("Пропущенный"));
 
-   //missedStatusWgt->setLayout(l);
     widgetsMissedStatus.append(missedStatusWgt);
     StatusLabelMissed.append(missedStatusLabel);
-    //layouts.append(l);
     return missedStatusWgt;
 }
 
