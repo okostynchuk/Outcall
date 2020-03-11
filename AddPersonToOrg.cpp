@@ -32,7 +32,7 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+    query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Название"));

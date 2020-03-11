@@ -679,18 +679,10 @@ void ViewOrgContactDialog::receivePersonID(QString &id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
-    qDebug()<<id;
+    qDebug() << id + " id";
+    qDebug() << updateID;
+    query.prepare("UPDATE entry SET entry_person_org_id = '" + updateID + "' WHERE id = "+id);
     query.exec();
-    query.first();
-    if (!query.value(0).toString().isEmpty())
-    {
-        ui->tableView->setModel(query_model);
-
-    }
-//        ui->label_org->setText(query.value(0).toString());
-//    else
-//        ui->label_org->setText(tr("Нет"));
 }
 
 void ViewOrgContactDialog::on_addPersonToOrg_clicked()
