@@ -312,7 +312,6 @@ void ContactsDialog::onUpdate()
             query.exec();
             query.first();
             count = query.value(0).toInt();
-            pages = nullptr;
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
@@ -506,7 +505,6 @@ void ContactsDialog::searchFunction()
         query.exec();
         query.first();
         count = query.value(0).toInt();
-        pages = nullptr;
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else

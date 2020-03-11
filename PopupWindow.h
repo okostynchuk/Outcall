@@ -7,6 +7,7 @@
 #include "PlaceCallDialog.h"
 #include "AddContactDialog.h"
 #include "AddOrgContactDialog.h"
+#include "AddPhoneNumberToContactDialog.h"
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
 
@@ -71,6 +72,7 @@ private slots:
     void on_pushButton_close_clicked();
     void onAddPerson();
     void onAddOrg();
+    void onAddPhoneNumberToContact();
     void onShowCard();
     void onSaveNote();
     void onTextChanged();
@@ -96,6 +98,7 @@ private:
     int m_nMouseClick_Y_Coordinate;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
+    AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
 };
