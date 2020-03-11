@@ -32,7 +32,7 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+    query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Название"));
@@ -124,7 +124,7 @@ void AddPersonToOrg::onUpdate()
         if (ui->lineEdit_page->text() == "1")
             query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         else
-            query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
 
         go = "default";
     }
@@ -169,7 +169,7 @@ void AddPersonToOrg::onUpdate()
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
-                query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
         else if (entry_city != nullptr)
         {
@@ -210,7 +210,7 @@ void AddPersonToOrg::onUpdate()
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
-                query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'person' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
 
         go = "default";
