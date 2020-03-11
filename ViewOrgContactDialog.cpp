@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
+#include <QDebug>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -672,4 +673,30 @@ void ViewOrgContactDialog::on_pushButton_clicked()
 void ViewOrgContactDialog::on_lineEdit_returnPressed()
 {
     searchFunction();
+}
+
+void ViewOrgContactDialog::receivePersonID(QString &id)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
+    qDebug()<<id;
+    query.exec();
+    query.first();
+    if (!query.value(0).toString().isEmpty())
+    {
+        ui->tableView->setModel(query_model);
+
+    }
+//        ui->label_org->setText(query.value(0).toString());
+//    else
+//        ui->label_org->setText(tr("Нет"));
+}
+
+void ViewOrgContactDialog::on_addPersonToOrg_clicked()
+{
+    addPersonToOrg = new AddPersonToOrg;
+    connect(addPersonToOrg, SIGNAL(sendPersonID(QString&)), this, SLOT(receivePersonID(QString&)));
+    addPersonToOrg->show();
+    addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
 }

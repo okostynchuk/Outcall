@@ -6,6 +6,7 @@
 #include "ChooseNumber.h"
 #include "SettingsDialog.h"
 #include "Global.h"
+#include "AddPersonToOrg.h"
 
 #include <QHeaderView>
 #include <QSqlQueryModel>
@@ -42,6 +43,7 @@ signals:
 public slots:
     void receiveData(bool);
     void receiveNumber(QString &);
+    void receivePersonID(QString &);
 
 protected slots:
     void onUpdate();
@@ -61,6 +63,8 @@ protected slots:
 private slots:
     void on_pushButton_clicked();
 
+    void on_addPersonToOrg_clicked();
+
 private:
     Ui::ViewOrgContactDialog *ui;
     SettingsDialog *settingsDialog;
@@ -68,6 +72,7 @@ private:
     QSqlQueryModel *query1;
     QValidator *validator;
     QHeaderView *m_horiz_header;
+    AddPersonToOrg *addPersonToOrg;
     QString updateID;
     QString number;
     QString my_number;
@@ -80,6 +85,7 @@ private:
     QString fourthNumber;
     QString fifthNumber;
     QSqlQueryModel *query_model;
+    QSqlQueryModel *query2;
     ViewContactDialog *viewContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     ChooseNumber *chooseNumber;
