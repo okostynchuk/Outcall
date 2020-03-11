@@ -56,18 +56,15 @@ void AddNoteDialog::onSave()
     query.addBindValue(ui->textEdit->toPlainText());
     query.exec();
 
-    if(state == "missed")
-    {
+    if(state == "all")
+        emit sendDataToAllCalls();
+    else if(state == "missed")
        emit sendDataToMissed();
-    }
-    if(state == "received")
-    {
+    else if(state == "received")
        emit sendDataToReceived();
-    }
-    if(state == "placed")
-    {
+    else if(state == "placed")
         emit sendDataToPlaced();
-    }
+
     close();
     QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
     destroy(true);
