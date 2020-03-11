@@ -37,6 +37,7 @@ public:
     void addCall(const QMap<QString, QVariant> &, Calls);
 
 public slots:
+    void receiveDataToAllCalls();
     void receiveDataToMissed();
     void receiveDataToReceived();
     void receiveDataToPlaced();
@@ -48,21 +49,30 @@ protected slots:
     bool checkNumber(QString &);
     void onUpdate();
     void deleteObjects();
+    void deleteObjectsOfAllCalls();
     void deleteMissedObjects();
     void deleteReceivedObjects();
     void deletePlacedObjects();
+    void deleteMissedStatusObjects();
+    void deleteBusyStatusObjects();
+    void deleteCancelStatusObjects();
+    void deleteReceivedStatusObjects();
     void editContact(QString &);
     void editOrgContact(QString &);
     QString getUpdateId(QString &);
+    void addNotes(const QModelIndex &);
     void addNoteToMissed(const QModelIndex &);
     void addNoteToReceived(const QModelIndex &);
     void addNoteToPlaced(const QModelIndex &);
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
+    void getNumber(const QModelIndex &index);
     void getNumberMissed(const QModelIndex &index);
     void getNumberReceived(const QModelIndex &index);
     void getNumberPlaced(const QModelIndex &index);
+    void loadAllCalls();
+    void tabSelected();
 
 protected:
    void CallHistoryDialog::showEvent(QShowEvent *);
@@ -72,6 +82,7 @@ private:
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
+    QSqlQueryModel *query4;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
@@ -82,18 +93,37 @@ private:
     QString number;
     QString my_number;
     QString uniqueid;
+    QString dialogStatus;
     QString callerNum;
     int missed_count = 0;
     QString state_call;
+    QWidget* loadMissedStatus();
+    QWidget* loadBusyStatus();
+    QWidget* loadCancelStatus();
+    QWidget* loadReceivedStatus();
+    QWidget* loadAllNotes();
     QWidget* loadMissedNote();
     QWidget* loadReceivedNote();
     QWidget* loadPlacedNote();
+    QList<QWidget*> widgetsMissedStatus;
+    QList<QWidget*> widgetsBusyStatus;
+    QList<QWidget*> widgetsCancelStatus;
+    QList<QWidget*> widgetsReceivedStatus;
+    QList<QWidget*> widgets;
     QList<QWidget*> widgetsMissed;
+    QList<QWidget*> widgetsBusy;
+    QList<QWidget*> widgetsCancel;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
+    QList<QLabel*> StatusLabelMissed;
+    QList<QLabel*> StatusLabelBusy;
+    QList<QLabel*> StatusLabelCancel;
+    QList<QLabel*> StatusLabelReceived;
+    QList<QLabel*> notes;
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
     QList<QLabel*> notesPlaced;
+    QList<QBoxLayout*> layouts;
 };
 
 #endif // CALLHISTORYDIALOG_H
