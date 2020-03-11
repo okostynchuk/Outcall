@@ -226,11 +226,11 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupWindow::showCallNotification(QString uniqueid, QString number, QString caller)
+void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller)
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
-    pwi.text = tr("Входящий звонок от:<br><b>%1</b>").arg(caller);
+    pwi.text = tr("<font size = 1>%1</font><br>Входящий звонок от:<br><b>%2</b>").arg(dateTime).arg(caller);
     pwi.uniqueid = uniqueid;
     pwi.number = number;
     QPixmap avatar;
@@ -455,10 +455,11 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     if (isInnerPhone(&popup->m_pwi.number))
     {
-//        popup->ui->label->hide();
-//        popup->ui->addPersonButton->hide();
-//        popup->ui->addOrgButton->hide();
+        popup->ui->label->hide();
+        popup->ui->addPersonButton->hide();
+        popup->ui->addOrgButton->hide();
         popup->ui->showCardButton->hide();
+        popup->ui->addPhoneNumberButton->hide();
     }
     else
     {

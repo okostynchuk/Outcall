@@ -57,7 +57,7 @@ private:
 public:
     PopupWindow(PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
-    static void showCallNotification(QString uniqueid, QString number, QString caller);
+    static void showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
 

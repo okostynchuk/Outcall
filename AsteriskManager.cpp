@@ -277,6 +277,8 @@ void AsteriskManager::parseEvent(const QString &eventData)
         const QString uniqueid          = eventValues.value("Uniqueid");
         QString destProtocol;
 
+        QString dateTime = QTime::currentTime().toString();
+
         QRegExp reg("([^/]*)(/)(\\d+)");
         reg.indexIn(destChannel);
         destProtocol = reg.cap(1);
@@ -298,6 +300,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 if (recievedProtocol)
                 {
                     QMap<QString, QVariant> received;
+                    received.insert("dateTime", dateTime);
                     received.insert("from", callerIDNum);
                     received.insert("to", destExten);
                     received.insert("protocol", destProtocol);
