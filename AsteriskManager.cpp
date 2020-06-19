@@ -275,6 +275,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         const QString destChannel       = eventValues.value("DestChannel");
         const QString callerIDName      = eventValues.value("CallerIDName");
         const QString uniqueid          = eventValues.value("Uniqueid");
+        const QString context           = eventValues.value("Context");
         QString destProtocol;
 
         QString dateTime = QTime::currentTime().toString();
@@ -306,6 +307,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     received.insert("protocol", destProtocol);
                     received.insert("callerIDName", callerIDName);
                     received.insert("uniqueid", uniqueid);
+                    received.insert("context", context);
 
                     int counter = m_dialedNum.value(uniqueid, 0);
                     counter++;

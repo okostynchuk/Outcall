@@ -172,6 +172,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     QString from            = call.value("from").toString();
     QString callerIDName    = call.value("callerIDName").toString();
     QString uniqueid        = call.value("uniqueid").toString();
+    //QString context         = call.value("context").toString();
 
     if (from == callerIDName)
         callerIDName = "Неизвестный";

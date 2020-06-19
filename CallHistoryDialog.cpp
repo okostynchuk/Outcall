@@ -315,7 +315,7 @@ void CallHistoryDialog::loadAllCalls()
     QSqlQuery query(db);
 
     query4 = new QSqlQueryModel;
-    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
+    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query4->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -453,7 +453,7 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$') ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
@@ -488,7 +488,7 @@ void CallHistoryDialog::loadReceivedCalls()
     QSqlQuery query(db);
 
     query2 = new QSqlQueryModel;
-    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND dst = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$') ORDER BY datetime DESC", dbAsterisk);
 
     query2->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
