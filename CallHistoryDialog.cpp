@@ -227,7 +227,8 @@ void CallHistoryDialog::onCallClicked()
     }
 
     const QString from = my_number;
-    const QString to = number;
+    QString to = number;
+    to.remove(QRegExp("\\([0-9]+\\)"));
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
