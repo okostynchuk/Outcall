@@ -35,6 +35,7 @@ public slots:
     void receiveNumber(PopupWindow*);
     void receiveData(bool);
     void timerStop(QString);
+    bool eventFilter(QObject *object, QEvent *event);
 
 signals:
     void sendSignal(bool);

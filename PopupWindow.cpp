@@ -449,6 +449,35 @@ bool PopupWindow::isInnerPhone(QString *str)
     return false;
 }
 
+bool PopupWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if (object->objectName() == "textEdit")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("textEdit2");
+                return true;
+            }
+        }
+    }
+    else if (object->objectName() == "textEdit2")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("textEdit");
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void PopupWindow::receiveNumber(PopupWindow *popup)
 {
     QVariant qv_popup = qVariantFromValue((void *)popup);
@@ -479,6 +508,10 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
             popup->ui->showCardButton->hide();
     }
 
+    popup->ui->textEdit->installEventFilter(this);
+
+    connect(popup->ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSaveNote()));
+    popup->ui->textEdit->setProperty("qv_popup", qv_popup);
     connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStop(QString)));
     g_pAsteriskManager->setProperty("qv_popup", qv_popup);
     connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
