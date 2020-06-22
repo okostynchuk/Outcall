@@ -649,6 +649,9 @@ border-radius: 5px;
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
+        <property name="tabChangesFocus">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -758,7 +761,7 @@ color: black;
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="styleSheet">
            <string notr="true">*{
@@ -786,7 +789,7 @@ color: black;
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="styleSheet">
            <string notr="true">*{
@@ -827,7 +830,7 @@ color: black;
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="styleSheet">
            <string notr="true">*{

@@ -42,7 +42,7 @@
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::WheelFocus</enum>
           </property>
           <property name="acceptDrops">
            <bool>false</bool>
@@ -86,7 +86,7 @@
              <cursorShape>IBeamCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="toolTip">
              <string>Поиск по таблице</string>
@@ -119,7 +119,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::TabFocus</enum>
             </property>
             <property name="text">
              <string>Поиск</string>
@@ -159,7 +159,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
              <string>◄◄</string>
@@ -188,7 +188,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
              <string>◄</string>
@@ -215,7 +215,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -254,7 +254,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
              <string>►</string>
@@ -281,7 +281,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
              <string>►►</string>

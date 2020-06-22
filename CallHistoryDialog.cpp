@@ -147,11 +147,11 @@ void CallHistoryDialog::addNotes(const QModelIndex &index)
 {
     state_call = "all";
     uniqueid = query4->data(query4->index(index.row(), 7)).toString();
-    addNoteDialog = new AddNoteDialog;
-    addNoteDialog->setCallId(uniqueid, state_call);
-    connect(addNoteDialog, SIGNAL(sendDataToAllCalls()), this, SLOT(receiveDataToAllCalls()));
-    addNoteDialog->show();
-    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    notesDialog = new NotesDialog;
+    notesDialog->setCallId(uniqueid, state_call);
+    connect(notesDialog, SIGNAL(sendDataToAllCalls()), this, SLOT(receiveDataToAllCalls()));
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToAllCalls()
@@ -164,11 +164,11 @@ void CallHistoryDialog::addNoteToMissed(const QModelIndex &index)
 {
     state_call = "missed";
     uniqueid = query1->data(query1->index(index.row(), 5)).toString();
-    addNoteDialog = new AddNoteDialog;
-    addNoteDialog->setCallId(uniqueid, state_call);
-    connect(addNoteDialog, SIGNAL(sendDataToMissed()), this, SLOT(receiveDataToMissed()));
-    addNoteDialog->show();
-    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    notesDialog = new NotesDialog;
+    notesDialog->setCallId(uniqueid, state_call);
+    connect(notesDialog, SIGNAL(sendDataToMissed()), this, SLOT(receiveDataToMissed()));
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToMissed()
@@ -181,11 +181,11 @@ void CallHistoryDialog::addNoteToReceived(const QModelIndex &index)
 {
     state_call = "received";
     uniqueid = query2->data(query2->index(index.row(), 5)).toString();
-    addNoteDialog = new AddNoteDialog;
-    addNoteDialog->setCallId(uniqueid, state_call);
-    connect(addNoteDialog, SIGNAL(sendDataToReceived()), this, SLOT(receiveDataToReceived()));
-    addNoteDialog->show();
-    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    notesDialog = new NotesDialog;
+    notesDialog->setCallId(uniqueid, state_call);
+    connect(notesDialog, SIGNAL(sendDataToReceived()), this, SLOT(receiveDataToReceived()));
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToReceived()
@@ -198,11 +198,11 @@ void CallHistoryDialog::addNoteToPlaced(const QModelIndex &index)
 {
     state_call = "placed";
     uniqueid = query3->data(query3->index(index.row(), 5)).toString();
-    addNoteDialog = new AddNoteDialog;
-    addNoteDialog->setCallId(uniqueid, state_call);
-    connect(addNoteDialog, SIGNAL(sendDataToPlaced()), this, SLOT(receiveDataToPlaced()));
-    addNoteDialog->show();
-    addNoteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    notesDialog = new NotesDialog;
+    notesDialog->setCallId(uniqueid, state_call);
+    connect(notesDialog, SIGNAL(sendDataToPlaced()), this, SLOT(receiveDataToPlaced()));
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::receiveDataToPlaced()
@@ -616,7 +616,7 @@ QWidget* CallHistoryDialog::loadAllNotes()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
     query.exec();
     query.first();
     Note->setText(query.value(0).toString());

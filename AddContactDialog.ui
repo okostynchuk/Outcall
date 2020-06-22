@@ -343,7 +343,10 @@
      <item row="1" column="0" colspan="3">
       <widget class="QTextEdit" name="Comment">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="tabChangesFocus">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -378,8 +381,8 @@
   <tabstop>VyborID</tabstop>
   <tabstop>Email</tabstop>
   <tabstop>addOrgButton</tabstop>
-  <tabstop>Comment</tabstop>
   <tabstop>deleteOrgButton</tabstop>
+  <tabstop>Comment</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources>

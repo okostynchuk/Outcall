@@ -59,7 +59,7 @@
        <item>
         <widget class="QPushButton" name="applyButton">
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text">
           <string>Применить</string>
@@ -69,7 +69,7 @@
        <item>
         <widget class="QPushButton" name="cancelButton">
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text">
           <string>Отмена</string>

@@ -83,10 +83,10 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
@@ -160,7 +160,7 @@
         <item>
          <widget class="QPushButton" name="callButton">
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
            <string>Позвонить</string>
@@ -170,7 +170,7 @@
         <item>
          <widget class="QPushButton" name="updateButton">
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
            <string>Обновить</string>
@@ -180,7 +180,7 @@
         <item>
          <widget class="QPushButton" name="addContactButton">
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
            <string>Добавить / изменить физ. лицо</string>
@@ -190,7 +190,7 @@
         <item>
          <widget class="QPushButton" name="addOrgContactButton">
           <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
            <string>Добавить / изменить организацию</string>
@@ -204,6 +204,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboBox_2</tabstop>
+  <tabstop>tableView_4</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>tableView_2</tabstop>
+  <tabstop>tableView_3</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>callButton</tabstop>
+  <tabstop>updateButton</tabstop>
+  <tabstop>addContactButton</tabstop>
+  <tabstop>addOrgContactButton</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>
