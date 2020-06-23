@@ -43,8 +43,9 @@ SOURCES += main.cpp\
     AddOrgToPerson.cpp \
     AddPhoneNumberToContactDialog.cpp \
     AddPersonToOrg.cpp \
-    RemindersDialog.cpp
-    NotesDialog.cpp
+    RemindersDialog.cpp \
+    RemindersThread.cpp \
+    NotesDialog.cpp \
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -71,8 +72,9 @@ HEADERS  += \
     AddOrgToPerson.h \
     AddPhoneNumberToContactDialog.h \
     AddPersonToOrg.h \
-    RemindersDialog.h
-    NotesDialog.h
+    RemindersDialog.h \
+    RemindersThread.h \
+    NotesDialog.h \
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -95,8 +97,8 @@ FORMS    += \
     AddOrgToPerson.ui \
     AddPhoneNumberToContactDialog.ui \
     AddPersonToOrg.ui \
-    RemindersDialog.ui
-    NotesDialog.ui
+    RemindersDialog.ui \
+    NotesDialog.ui \
 
 RESOURCES += \
     images.qrc \
