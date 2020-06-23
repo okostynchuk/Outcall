@@ -224,7 +224,7 @@
        <item row="1" column="0" colspan="4">
         <widget class="QTextEdit" name="Comment">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -262,6 +262,7 @@
   <tabstop>Address</tabstop>
   <tabstop>VyborID</tabstop>
   <tabstop>Email</tabstop>
+  <tabstop>Comment</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources>

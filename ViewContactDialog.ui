@@ -462,8 +462,6 @@ background-color: #fffff0;
         </layout>
        </item>
       </layout>
-      <zorder>callButton</zorder>
-      <zorder>callButton</zorder>
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">

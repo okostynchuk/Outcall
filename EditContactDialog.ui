@@ -351,7 +351,7 @@
         </size>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
@@ -374,6 +374,7 @@
   <tabstop>Email</tabstop>
   <tabstop>addOrgButton</tabstop>
   <tabstop>deleteOrgButton</tabstop>
+  <tabstop>Comment</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources>
