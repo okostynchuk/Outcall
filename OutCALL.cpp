@@ -9,6 +9,7 @@
 #include "Notifier.h"
 #include "PopupWindow.h"
 #include "PopupHelloWindow.h"
+#include "RemindersDialog.h"
 
 #include <QMenu>
 #include <QTcpSocket>
@@ -31,6 +32,7 @@ OutCall::OutCall() :
     m_debugInfoDialog     = new DebugInfoDialog;
     m_callHistoryDialog   = new CallHistoryDialog;
     m_placeCallDialog     = new PlaceCallDialog;
+    m_remindersDialog     = new RemindersDialog;
 
     connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
 
@@ -59,6 +61,7 @@ OutCall::~OutCall()
     delete m_contactsDialog;
     delete m_callHistoryDialog;
     delete m_placeCallDialog;
+    delete m_remindersDialog;
 }
 
 void OutCall::createContextMenu()
@@ -71,20 +74,24 @@ void OutCall::createContextMenu()
     m_signIn  = new QAction(tr("Войти в аккаунт"), m_menu);
     connect(m_signIn, &QAction::triggered, this, &OutCall::signInOut);
 
-    // SettingsDialog
+    // Settings
     QAction* settingsAction = new QAction(tr("Настройки"), m_menu);
     connect(settingsAction, &QAction::triggered, this, &OutCall::onSettingsDialog);
 
     QAction* debugInfoAction = new QAction(tr("Отладка"), m_menu);
     connect(debugInfoAction, &QAction::triggered, this, &OutCall::onDebugInfo);
 
-    // ContactsDialog
-    contactsInfoAction = new QAction(tr("Контакты"), m_menu);
-    connect(contactsInfoAction, &QAction::triggered, this, &OutCall::onContactsInfo);
+    // Contacts
+    contactsAction = new QAction(tr("Контакты"), m_menu);
+    connect(contactsAction, &QAction::triggered, this, &OutCall::onContactsDialog);
 
     // Call History
     callHistoryAction = new QAction(tr("История звонков"), m_menu);
     connect(callHistoryAction, &QAction::triggered, this, &OutCall::onCallHistory);
+
+    // Reminders
+    remindersAction = new QAction(tr("Напоминания"), m_menu);
+    connect(remindersAction, &QAction::triggered, this, &OutCall::onRemindersDialog);
 
     // Place a Call
     m_placeCall = new QAction(tr("Позвонить"), 0);
@@ -98,7 +105,10 @@ void OutCall::createContextMenu()
 
     m_menu->addAction(m_placeCall);
     m_menu->addAction(callHistoryAction);
-    m_menu->addAction(contactsInfoAction);
+    m_menu->addAction(contactsAction);
+    m_menu->addSeparator();
+
+    m_menu->addAction(remindersAction);
     m_menu->addSeparator();
 
     m_menu->addAction(settingsAction);
@@ -246,7 +256,7 @@ void OutCall::disableActions()
         m_callHistoryDialog->close();
     m_placeCall->setEnabled(false);
     callHistoryAction->setEnabled(false);
-    contactsInfoAction->setEnabled(false);
+    contactsAction->setEnabled(false);
 }
 
 void OutCall::changeIcon()
@@ -289,10 +299,16 @@ void OutCall::onPlaceCall()
     m_placeCallDialog->raise();
 }
 
-void OutCall::onContactsInfo()
+void OutCall::onContactsDialog()
 {
     m_contactsDialog->showMaximized();
     m_contactsDialog->raise();
+}
+
+void OutCall::onRemindersDialog()
+{
+    m_remindersDialog->show();
+    m_remindersDialog->raise();
 }
 
 void OutCall::close()
@@ -310,6 +326,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
         m_callHistoryDialog->activateWindow();
         m_contactsDialog->activateWindow();
         m_placeCallDialog->activateWindow();
+        m_remindersDialog->activateWindow();
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
