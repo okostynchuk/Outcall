@@ -370,17 +370,16 @@ void PopupWindow::onSaveNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT EXISTS(SELECT uniqueid FROM calls WHERE uniqueid = '" + popup->m_pwi.uniqueid + "')");
-    query.exec();
-    query.first();
+    QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if (popup->ui->textEdit->toPlainText().isEmpty() && query.value(0) == 0)
+    if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
         return;
 
-    query.prepare("INSERT INTO calls (uniqueid, note) VALUES(?, ?) ON DUPLICATE KEY UPDATE note = ?");
-    query.addBindValue(popup->m_pwi.uniqueid);
+    query.prepare("INSERT  INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
+    query.addBindValue(callId);
+    query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());
-    query.addBindValue(ui->textEdit->toPlainText());
+    query.first();
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
