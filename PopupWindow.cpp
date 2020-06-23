@@ -10,6 +10,7 @@
 #include <QSqlQuery>
 #include <QMap>
 #include <QString>
+#include <QDateTime>
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
 int PopupWindow::m_nLastWindowPosition = 0;
@@ -376,10 +377,9 @@ void PopupWindow::onSaveNote()
         return;
 
     query.prepare("INSERT  INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
-    query.addBindValue(callId);
+    query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());
-    query.first();
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
