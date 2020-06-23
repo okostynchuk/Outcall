@@ -11,15 +11,9 @@ class RemindersDialog : public QDialog
 {
     Q_OBJECT
 
-signals:
-    void sendData(bool);
-
 public:
     explicit RemindersDialog(QWidget *parent = 0);
     ~RemindersDialog();
-
-public slots:
-    void receiveData(bool);
 
 protected:
     void onSave();
