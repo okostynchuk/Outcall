@@ -562,7 +562,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
     query.exec();
     query.first();
     missedNote->setText(query.value(0).toString());
@@ -580,7 +580,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
     query.exec();
     query.first();
     receivedNote->setText(query.value(0).toString());
@@ -598,7 +598,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid ="+uniqueid);
+     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());
