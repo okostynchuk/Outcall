@@ -109,7 +109,7 @@ void AddContactDialog::onSave()
             ui->FifthNumber->setStyleSheet("border: 1px solid red");
             numbers << QString(ui->FifthNumber->text());
         }
-        if (!numbers.isEmpty())
+        if (numbers[0] != NULL)
         {
             QString str = numbers.join(", ");
             QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!\n%1").arg(str), QMessageBox::Ok);

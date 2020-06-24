@@ -50,6 +50,7 @@ protected slots:
     bool checkNumber(QString &);
     void onUpdate();
     void deleteObjects();
+    void deleteNameObjects();
     void deleteObjectsOfAllCalls();
     void deleteMissedObjects();
     void deleteReceivedObjects();
@@ -94,7 +95,7 @@ private:
     QString days;
     QString number;
     QString my_number;
-    QString extfield;
+    QString extfield1;
     QString src;
     QString uniqueid;
     QString dialogStatus;
@@ -109,7 +110,9 @@ private:
     QWidget* loadMissedNote();
     QWidget* loadReceivedNote();
     QWidget* loadPlacedNote();
-    QWidget *loadReceivedName();
+    QWidget *loadName();
+    QList<QLayout*> layoutsName;
+    QList<QWidget*> widgetsName;
     QList<QWidget*> widgetsMissedStatus;
     QList<QWidget*> widgetsBusyStatus;
     QList<QWidget*> widgetsCancelStatus;
@@ -120,6 +123,7 @@ private:
     QList<QWidget*> widgetsCancel;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
+    QList<QLabel*> labelsName;
     QList<QLabel*> StatusLabelMissed;
     QList<QLabel*> StatusLabelBusy;
     QList<QLabel*> StatusLabelCancel;

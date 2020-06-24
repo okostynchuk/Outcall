@@ -222,6 +222,39 @@ void AsteriskManager::parseEvent(const QString &eventData)
             m_calls.insert(uniqueid, call);
         }
     }
+    else if (eventData.contains("Event: BlindTransfer"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+    }
+    else if (eventData.contains("Event: AttendedTransfer"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+        const QString number         = eventValues.value("TransferTargetCallerIDNum");
+        const QString uniqueid       = eventValues.value("TransfereeUniqueid");
+        const QString callerIDName   = eventValues.value("TransfereeCallerIDName");
+        const QString callerIDNum    = eventValues.value("TransfereeCallerIDNum");
+
+        QString dateTime = QTime::currentTime().toString();
+
+        if (global::containsSettingsKey(number, "extensions"))
+        {
+            QMap<QString, QVariant> received;
+            received.insert("dateTime", dateTime);
+            received.insert("from", callerIDNum);
+            received.insert("to", number);
+            received.insert("callerIDName", callerIDName);
+            received.insert("uniqueid", uniqueid);
+
+            int counter = m_dialedNum.value(uniqueid, 0);
+            counter++;
+            m_dialedNum.insert(uniqueid, counter);
+
+            if (counter == 1)
+                emit callReceived(received);
+        }
+    }
     else if (eventData.contains("Event: Newexten"))
     {
         QMap<QString, QString> eventValues;
