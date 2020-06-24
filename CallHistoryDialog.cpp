@@ -316,7 +316,7 @@ void CallHistoryDialog::loadAllCalls()
     QSqlQuery query(db);
 
     query4 = new QSqlQueryModel;
-    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (extfield1 IS NOT NULL AND extfield1 <> ' ') AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
+    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query4->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -332,6 +332,8 @@ void CallHistoryDialog::loadAllCalls()
 
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
+        extfield = query4->data(query4->index(row_index, 0)).toString();
+        src = query4->data(query4->index(row_index, 1)).toString();
         uniqueid = query4->data(query4->index(row_index, 7)).toString();
         dialogStatus = query4->data(query4->index(row_index, 3)).toString();
         if(dialogStatus == "NO ANSWER")
@@ -341,7 +343,11 @@ void CallHistoryDialog::loadAllCalls()
         if(dialogStatus == "CANCEL")
             ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadCancelStatus());
         if(dialogStatus == "ANSWERED")
+        {
+            if (extfield.isEmpty())
+                ui->tableView_4->setIndexWidget(query4->index(row_index, 0), loadReceivedName());
             ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadReceivedStatus());
+        }
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
@@ -356,11 +362,32 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView_4->resizeRowsToContents();
 }
 
+QWidget* CallHistoryDialog::loadReceivedName()
+{
+    QHBoxLayout* layout = new QHBoxLayout;
+    QWidget* receivedNameWgt = new QWidget;
+    QLabel * receivedNameLabel = new QLabel(receivedNameWgt);
+    receivedNameLabel->setText(src);
+    receivedNameLabel->setStyleSheet("QLabel { background-color : white; color : blue; }");
+
+    layout->addWidget(receivedNameLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
+    receivedNameWgt->setLayout(layout);
+    //widgetsMissedStatus.append(missedStatusWgt);
+    //StatusLabelMissed.append(receivedNameLabel);
+    return receivedNameWgt;
+}
+
 QWidget* CallHistoryDialog::loadMissedStatus()
 {
+    QHBoxLayout* layout = new QHBoxLayout;
     QWidget* missedStatusWgt = new QWidget;
     QLabel * missedStatusLabel = new QLabel(missedStatusWgt);
     missedStatusLabel->setText(tr("Пропущенный"));
+
+    layout->addWidget(missedStatusLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
+    missedStatusWgt->setLayout(layout);
 
     widgetsMissedStatus.append(missedStatusWgt);
     StatusLabelMissed.append(missedStatusLabel);
@@ -454,7 +481,7 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (extfield1 IS NOT NULL AND extfield1 <> ' ') AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$') ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$') ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
@@ -489,7 +516,7 @@ void CallHistoryDialog::loadReceivedCalls()
     QSqlQuery query(db);
 
     query2 = new QSqlQueryModel;
-    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (extfield1 IS NOT NULL AND extfield1 <> ' ') AND disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$') ORDER BY datetime DESC", dbAsterisk);
+    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$') ORDER BY datetime DESC", dbAsterisk);
 
     query2->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -526,7 +553,7 @@ void CallHistoryDialog::loadPlacedCalls()
     QSqlQuery query(db);
 
     query3 = new QSqlQueryModel;
-    query3->setQuery("SELECT extfield2, dst, src, datetime, uniqueid FROM cdr WHERE (extfield1 IS NOT NULL AND extfield1 <> ' ') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND src = '"+my_number+"'ORDER BY datetime DESC", dbAsterisk);
+    query3->setQuery("SELECT extfield2, dst, src, datetime, uniqueid FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND src = '"+my_number+"' ORDER BY datetime DESC", dbAsterisk);
 
     query3->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query3->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
@@ -592,6 +619,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
 
 QWidget* CallHistoryDialog::loadPlacedNote()
 {
+    QHBoxLayout* layout = new QHBoxLayout;
     QWidget* placedWgt = new QWidget;
     QLabel *placedNote = new QLabel(placedWgt);
 
@@ -602,6 +630,10 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());
+
+    layout->addWidget(placedNote);
+    layout->setContentsMargins(3, 0, 0, 0);
+    placedWgt->setLayout(layout);
 
     widgetsPlaced.append(placedWgt);
     notesPlaced.append(placedNote);

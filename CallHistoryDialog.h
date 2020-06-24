@@ -94,6 +94,8 @@ private:
     QString days;
     QString number;
     QString my_number;
+    QString extfield;
+    QString src;
     QString uniqueid;
     QString dialogStatus;
     QString callerNum;
@@ -107,6 +109,7 @@ private:
     QWidget* loadMissedNote();
     QWidget* loadReceivedNote();
     QWidget* loadPlacedNote();
+    QWidget *loadReceivedName();
     QList<QWidget*> widgetsMissedStatus;
     QList<QWidget*> widgetsBusyStatus;
     QList<QWidget*> widgetsCancelStatus;
