@@ -15,6 +15,7 @@
 #include <QTimer>
 #include <QTextEdit>
 #include <QMap>
+#include <QSqlQuery>
 
 namespace Ui {
     class PopupWindow;
@@ -85,6 +86,7 @@ private:
 private:
     Ui::PopupWindow *ui;
     QTextEdit *note;
+    QSqlQuery *query;
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
 	int m_nIncrement; // px

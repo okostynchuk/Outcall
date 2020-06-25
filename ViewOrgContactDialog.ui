@@ -46,7 +46,7 @@
              <item>
               <widget class="QPushButton" name="callButton">
                <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
                <property name="text">
                 <string>Позвонить</string>
@@ -56,7 +56,7 @@
              <item>
               <widget class="QPushButton" name="editButton">
                <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
                <property name="text">
                 <string>Редактировать</string>
@@ -358,7 +358,7 @@ background-color: #fffff8;
            <item row="1" column="0" colspan="4">
             <widget class="QTextEdit" name="Comment">
              <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
+              <enum>Qt::StrongFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">*{
@@ -426,7 +426,7 @@ background-color: #fffff0;
                  </font>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                 <enum>Qt::StrongFocus</enum>
                 </property>
                 <property name="acceptDrops">
                  <bool>false</bool>
@@ -470,7 +470,7 @@ background-color: #fffff0;
                    <cursorShape>IBeamCursor</cursorShape>
                   </property>
                   <property name="focusPolicy">
-                   <enum>Qt::ClickFocus</enum>
+                   <enum>Qt::StrongFocus</enum>
                   </property>
                   <property name="toolTip">
                    <string>Поиск по таблице</string>
@@ -503,7 +503,7 @@ background-color: #fffff0;
                    </font>
                   </property>
                   <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
+                   <enum>Qt::StrongFocus</enum>
                   </property>
                   <property name="text">
                    <string>Поиск</string>
@@ -518,7 +518,7 @@ background-color: #fffff0;
                    </font>
                   </property>
                   <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
+                   <enum>Qt::StrongFocus</enum>
                   </property>
                   <property name="text">
                    <string>Добавить сотрудника</string>
@@ -551,7 +551,7 @@ background-color: #fffff0;
                </size>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true"/>
@@ -681,6 +681,32 @@ background-color: #fffff0;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>callButton</tabstop>
+  <tabstop>editButton</tabstop>
+  <tabstop>OrgName</tabstop>
+  <tabstop>FirstNumber</tabstop>
+  <tabstop>SecondNumber</tabstop>
+  <tabstop>ThirdNumber</tabstop>
+  <tabstop>FourthNumber</tabstop>
+  <tabstop>FifthNumber</tabstop>
+  <tabstop>City</tabstop>
+  <tabstop>Address</tabstop>
+  <tabstop>VyborID</tabstop>
+  <tabstop>Email</tabstop>
+  <tabstop>Comment</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>addPersonToOrg</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>comboBox_2</tabstop>
+  <tabstop>tabWidget_3</tabstop>
+  <tabstop>tableView_2</tabstop>
+  <tabstop>tableView_3</tabstop>
+  <tabstop>tableView_4</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

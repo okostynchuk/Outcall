@@ -38,7 +38,7 @@
            <item>
             <widget class="QPushButton" name="callButton">
              <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+              <enum>Qt::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Позвонить</string>
@@ -48,7 +48,7 @@
            <item>
             <widget class="QPushButton" name="editButton">
              <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+              <enum>Qt::StrongFocus</enum>
              </property>
              <property name="text">
               <string>Редактировать</string>
@@ -441,15 +441,21 @@ background-color: #fffff8;
          <item row="1" column="0" colspan="4">
           <widget class="QTextEdit" name="Comment">
            <property name="focusPolicy">
-            <enum>Qt::ClickFocus</enum>
+            <enum>Qt::StrongFocus</enum>
            </property>
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff0;
 }</string>
            </property>
+           <property name="locale">
+            <locale language="Russian" country="Russia"/>
+           </property>
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
+           </property>
+           <property name="tabChangesFocus">
+            <bool>true</bool>
            </property>
            <property name="undoRedoEnabled">
             <bool>true</bool>
@@ -580,6 +586,30 @@ background-color: #fffff0;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>callButton</tabstop>
+  <tabstop>editButton</tabstop>
+  <tabstop>LastName</tabstop>
+  <tabstop>FirstName</tabstop>
+  <tabstop>Patronymic</tabstop>
+  <tabstop>FirstNumber</tabstop>
+  <tabstop>SecondNumber</tabstop>
+  <tabstop>ThirdNumber</tabstop>
+  <tabstop>FourthNumber</tabstop>
+  <tabstop>FifthNumber</tabstop>
+  <tabstop>Organization</tabstop>
+  <tabstop>City</tabstop>
+  <tabstop>Address</tabstop>
+  <tabstop>VyborID</tabstop>
+  <tabstop>Email</tabstop>
+  <tabstop>Comment</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>tableView_2</tabstop>
+  <tabstop>tableView_3</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

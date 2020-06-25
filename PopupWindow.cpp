@@ -11,6 +11,8 @@
 #include <QMap>
 #include <QString>
 #include <QDateTime>
+#include <QTextCursor>
+#include <QMessageBox>
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
 int PopupWindow::m_nLastWindowPosition = 0;
@@ -30,6 +32,18 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 	m_pwi = pwi;
 
     ui->setupUi(this);
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    QString note;
+    query.prepare("SELECT note FROM calls WHERE uniqueid = " + pwi.uniqueid);
+    query.exec();
+    while(query.next())
+        note = query.value(0).toString();
+    QTextCursor cursor = ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->textEdit->setTextCursor(cursor);
+    ui->textEdit->setText(note);
 
 	ui->lblText->setOpenExternalLinks(true);
 	setAttribute(Qt::WA_TranslucentBackground);
@@ -373,10 +387,20 @@ void PopupWindow::onSaveNote()
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
+    if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText() == 0 )
         return;
 
-    query.prepare("INSERT  INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
+    query.prepare("SELECT EXISTS (SELECT uniqueid, note FROM calls WHERE uniqueid = " + popup->m_pwi.uniqueid + " AND note = '" + ui->textEdit->toPlainText() + "')");
+    query.exec();
+    query.next();
+    if(query.value(0) != 0)
+    {
+        setStyleSheet("QMessageBox{ color: #000000; }");
+        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Данная заметка уже существует!"), QMessageBox::Ok);
+        return;
+    }
+
+    query.prepare("INSERT INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
     query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());

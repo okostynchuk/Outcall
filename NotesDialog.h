@@ -21,8 +21,10 @@ public:
 
 protected:
     void onSave();
+    void onUpdate();
     void setNote();
     void loadNotes();
+    void deleteObjects();
 
 private:
     Ui::NotesDialog *ui;

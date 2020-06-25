@@ -16,6 +16,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -26,6 +27,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 NotesDialog::~NotesDialog()
 {
     delete ui;
+    deleteObjects();
 }
 
 void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
@@ -43,6 +45,7 @@ void NotesDialog::loadNotes() {
     ui->tableView->setModel(query);
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void NotesDialog::onSave()
@@ -73,4 +76,13 @@ void NotesDialog::onSave()
     close();
    // QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
     destroy(true);
+}
+
+void NotesDialog::onUpdate() {
+    deleteObjects();
+    loadNotes();
+}
+
+void NotesDialog::deleteObjects() {
+    delete query;
 }

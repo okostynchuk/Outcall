@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>401</width>
-     <height>81</height>
+     <height>92</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -80,7 +80,7 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QPushButton" name="Update">
+     <widget class="QPushButton" name="updateButton">
       <property name="text">
        <string>Обновить</string>
       </property>
@@ -100,7 +100,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>textEdit</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>tableView</tabstop>
-  <tabstop>Update</tabstop>
+  <tabstop>updateButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
