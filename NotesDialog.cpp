@@ -1,3 +1,4 @@
+#include "SettingsDialog.h"
 #include "NotesDialog.h"
 #include "ui_NotesDialog.h"
 #include "CallHistoryDialog.h"
@@ -22,11 +23,15 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
+
+    settingsDialog = new SettingsDialog();
+    my_number = settingsDialog->getExtension();
 }
 
 NotesDialog::~NotesDialog()
 {
     delete ui;
+    delete settingsDialog;
     deleteObjects();
 }
 
@@ -39,13 +44,21 @@ void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
 
 void NotesDialog::loadNotes() {
     query = new QSqlQueryModel;
-    query->setQuery("SELECT datetime, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
+    query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
-    query->setHeaderData(1, Qt::Horizontal, tr("Заметка"));
+    query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
+    query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
     ui->tableView->setModel(query);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    if(state=="save_disable")
+    {
+        ui->label->setDisabled(true);
+        ui->textEdit->setDisabled(true);
+        ui->saveButton->setDisabled(true);
+    }
 }
 
 void NotesDialog::onSave()
@@ -57,10 +70,16 @@ void NotesDialog::onSave()
     if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
         return;
 
-    query.prepare("INSERT  INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + my_number);
+    query.exec();
+    query.next();
+    QString author = query.value(0).toString();
+
+    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());
+    query.addBindValue(author);
     query.first();
     query.exec();
 
