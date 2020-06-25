@@ -241,14 +241,13 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
+void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller)
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
     pwi.text = tr("<font size = 1>%1</font><br>Входящий звонок от:<br><b>%2</b>").arg(dateTime).arg(caller);
     pwi.uniqueid = uniqueid;
     pwi.number = number;
-    pwi.my_number = my_number;
     QPixmap avatar;
 
     if (avatar.isNull())
@@ -401,16 +400,10 @@ void PopupWindow::onSaveNote()
         return;
     }
 
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + m_pwi.my_number);
-    query.exec();
-    query.next();
-    QString author = query.value(0).toString();
-
-    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
+    query.prepare("INSERT INTO calls (uniqueid, datetime, note) VALUES(?, ?, ?)");
     query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());
-    query.addBindValue(author);
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");

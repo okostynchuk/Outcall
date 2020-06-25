@@ -182,13 +182,12 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     QString from            = call.value("from").toString();
     QString callerIDName    = call.value("callerIDName").toString();
     QString uniqueid        = call.value("uniqueid").toString();
-    QString my_number        = call.value("to").toString();
     //QString context         = call.value("context").toString();
 
     if (from == callerIDName)
         callerIDName = "Неизвестный";
 
-    PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("%1 (%2)").arg(callerIDName).arg(from), my_number);
+    PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("%1 (%2)").arg(callerIDName).arg(from));
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
