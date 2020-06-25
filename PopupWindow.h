@@ -53,14 +53,13 @@ private:
         QString extension;
         QString uniqueid;
         QString number;
-        QString my_number;
         bool stopTimer = false;
     };
 
 public:
     PopupWindow(PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
-    static void showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number);
+    static void showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
 
