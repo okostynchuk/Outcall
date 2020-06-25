@@ -551,7 +551,7 @@ background-color: #fffff0;
                </size>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
+               <enum>Qt::ClickFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true"/>
@@ -588,6 +588,9 @@ background-color: #fffff0;
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="0" column="0">
             <widget class="QTableView" name="tableView_2">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
