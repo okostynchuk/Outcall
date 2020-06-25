@@ -7,6 +7,7 @@
 #include "SettingsDialog.h"
 #include "Global.h"
 #include "AddPersonToOrg.h"
+#include "NotesDialog.h"
 
 #include <QHeaderView>
 #include <QSqlQueryModel>
@@ -52,6 +53,9 @@ protected slots:
     void onComboBoxSelected();
     void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);
+    void viewMissedNotes(const QModelIndex &index);
+    void viewRecievedNotes(const QModelIndex &index);
+    void viewPlacedNotes(const QModelIndex &index);
     void onSectionClicked (int logicalIndex);
     void loadMissedCalls();
     void loadReceivedCalls();
@@ -68,12 +72,16 @@ private slots:
 private:
     Ui::ViewOrgContactDialog *ui;
     SettingsDialog *settingsDialog;
+    NotesDialog *notesDialog;
     QSqlQuery *query;
     QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
     QValidator *validator;
     QHeaderView *m_horiz_header;
     AddPersonToOrg *addPersonToOrg;
     QString updateID;
+    QString state_call;
     QString number;
     QString my_number;
     QString uniqueid;
@@ -85,7 +93,6 @@ private:
     QString fourthNumber;
     QString fifthNumber;
     QSqlQueryModel *query_model;
-    QSqlQueryModel *query2;
     ViewContactDialog *viewContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     ChooseNumber *chooseNumber;
