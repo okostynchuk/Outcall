@@ -348,7 +348,7 @@ void CallHistoryDialog::loadAllCalls()
             ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadCancelStatus());
         if(dialogStatus == "ANSWERED")
             ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadReceivedStatus());
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = "+uniqueid+")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
@@ -364,17 +364,16 @@ void CallHistoryDialog::loadAllCalls()
 
 QWidget* CallHistoryDialog::loadName()
 {
-    QHBoxLayout* layout = new QHBoxLayout;
+    QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
-    QLabel * nameLabel = new QLabel(nameWgt);
+    QLabel* nameLabel = new QLabel(nameWgt);
     nameLabel->setText(src);
-    nameLabel->setStyleSheet("QLabel { background-color: white; color: blue; }");
 
-    layout->addWidget(nameLabel);
-    layout->setContentsMargins(3, 0, 0, 0);
-    nameWgt->setLayout(layout);
+    nameLayout->addWidget(nameLabel);
+    nameLayout->setContentsMargins(3, 0, 0, 0);
+    nameWgt->setLayout(nameLayout);
 
-    layoutsName.append(layout);
+    layoutsName.append(nameLayout);
     widgetsName.append(nameWgt);
     labelsName.append(nameLabel);
     return nameWgt;
@@ -382,14 +381,12 @@ QWidget* CallHistoryDialog::loadName()
 
 void CallHistoryDialog::deleteNameObjects()
 {
-//    for (int i = 0; i < layoutsName.size(); ++i)
-//    {
-//        layoutsName[i]->deleteLater();
-//    }
-//    for (int i = 0; i < widgetsName.size(); ++i)
-//    {
-//        widgetsName[i]->deleteLater();
-//    }
+    for (int i = 0; i < layoutsName.size(); ++i)
+        layoutsName[i]->deleteLater();
+
+    for (int i = 0; i < widgetsName.size(); ++i)
+        widgetsName[i]->deleteLater();
+
     qDeleteAll(labelsName);
     layoutsName.clear();
     widgetsName.clear();
@@ -398,105 +395,133 @@ void CallHistoryDialog::deleteNameObjects()
 
 QWidget* CallHistoryDialog::loadMissedStatus()
 {
-    QHBoxLayout* layout = new QHBoxLayout;
+    QHBoxLayout* missedStatusLayout = new QHBoxLayout;
     QWidget* missedStatusWgt = new QWidget;
-    QLabel * missedStatusLabel = new QLabel(missedStatusWgt);
+    QLabel* missedStatusLabel = new QLabel(missedStatusWgt);
     missedStatusLabel->setText(tr("Пропущенный"));
 
-    layout->addWidget(missedStatusLabel);
-    layout->setContentsMargins(3, 0, 0, 0);
-    missedStatusWgt->setLayout(layout);
+    missedStatusLayout->addWidget(missedStatusLabel);
+    missedStatusLayout->setContentsMargins(3, 0, 0, 0);
+    missedStatusWgt->setLayout(missedStatusLayout);
 
-    layoutsName.append(layout);
+    layoutsMissedStatus.append(missedStatusLayout);
     widgetsMissedStatus.append(missedStatusWgt);
-    StatusLabelMissed.append(missedStatusLabel);
+    labelsMissedStatus.append(missedStatusLabel);
     return missedStatusWgt;
 }
 
 void CallHistoryDialog::deleteMissedStatusObjects()
 {
+    for (int i = 0; i < layoutsMissedStatus.size(); ++i)
+        layoutsMissedStatus[i]->deleteLater();
+
     for (int i = 0; i < widgetsMissedStatus.size(); ++i)
-    {
         widgetsMissedStatus[i]->deleteLater();
-    }
-    qDeleteAll(StatusLabelMissed);
+
+    qDeleteAll(labelsMissedStatus);
+    layoutsMissedStatus.clear();
     widgetsMissedStatus.clear();
-    StatusLabelMissed.clear();
+    labelsMissedStatus.clear();
 }
 
 QWidget* CallHistoryDialog::loadBusyStatus()
 {
+    QHBoxLayout* busyStatusLayout = new QHBoxLayout;
     QWidget* busyStatusWgt = new QWidget;
     QLabel * busyStatusLabel = new QLabel(busyStatusWgt);
     busyStatusLabel->setText(tr("Занято"));
 
+    busyStatusLayout->addWidget(busyStatusLabel);
+    busyStatusLayout->setContentsMargins(3, 0, 0, 0);
+    busyStatusWgt->setLayout(busyStatusLayout);
+
+    layoutsBusyStatus.append(busyStatusLayout);
     widgetsBusyStatus.append(busyStatusWgt);
-    StatusLabelBusy.append(busyStatusLabel);
+    labelsBusyStatus.append(busyStatusLabel);
     return busyStatusWgt;
 }
 
 void CallHistoryDialog::deleteBusyStatusObjects()
 {
+    for (int i = 0; i < layoutsBusyStatus.size(); ++i)
+        layoutsBusyStatus[i]->deleteLater();
+
     for (int i = 0; i < widgetsBusyStatus.size(); ++i)
-    {
         widgetsBusyStatus[i]->deleteLater();
-    }
-    qDeleteAll(StatusLabelBusy);
+
+    qDeleteAll(labelsBusyStatus);
+    layoutsBusyStatus.clear();
     widgetsBusyStatus.clear();
-    StatusLabelBusy.clear();
+    labelsBusyStatus.clear();
 }
 
 QWidget* CallHistoryDialog::loadCancelStatus()
 {
+    QHBoxLayout* cancelStatusLayout = new QHBoxLayout;
     QWidget* cancelStatusWgt = new QWidget;
     QLabel * cancelStatusLabel = new QLabel(cancelStatusWgt);
     cancelStatusLabel->setText(tr("Отклонено"));
 
+    cancelStatusLayout->addWidget(cancelStatusLabel);
+    cancelStatusLayout->setContentsMargins(3, 0, 0, 0);
+    cancelStatusWgt->setLayout(cancelStatusLayout);
+
+    layoutsCancelStatus.append(cancelStatusLayout);
     widgetsCancelStatus.append(cancelStatusWgt);
-    StatusLabelCancel.append(cancelStatusLabel);
+    labelsCancelStatus.append(cancelStatusLabel);
     return cancelStatusWgt;
 }
 
 void CallHistoryDialog::deleteCancelStatusObjects()
 {
+    for (int i = 0; i < layoutsCancelStatus.size(); ++i)
+        layoutsCancelStatus[i]->deleteLater();
+
     for (int i = 0; i < widgetsCancelStatus.size(); ++i)
-    {
         widgetsCancelStatus[i]->deleteLater();
-    }
-    qDeleteAll(StatusLabelCancel);
+
+    qDeleteAll(labelsCancelStatus);
+    layoutsCancelStatus.clear();
     widgetsCancelStatus.clear();
-    StatusLabelCancel.clear();
+    labelsCancelStatus.clear();
 }
 
 QWidget* CallHistoryDialog::loadReceivedStatus()
 {
+    QHBoxLayout* receivedStatusLayout = new QHBoxLayout;
     QWidget* receivedStatusWgt = new QWidget;
     QLabel * receivedStatusLabel = new QLabel(receivedStatusWgt);
-
     receivedStatusLabel->setText(tr("Принятый"));
 
+    receivedStatusLayout->addWidget(receivedStatusLabel);
+    receivedStatusLayout->setContentsMargins(3, 0, 0, 0);
+    receivedStatusWgt->setLayout(receivedStatusLayout);
+
+    layoutsReceivedStatus.append(receivedStatusLayout);
     widgetsReceivedStatus.append(receivedStatusWgt);
-    StatusLabelReceived.append(receivedStatusLabel);
+    labelsReceivedStatus.append(receivedStatusLabel);
     return receivedStatusWgt;
 }
 
 void CallHistoryDialog::deleteReceivedStatusObjects()
 {
+    for (int i = 0; i < layoutsReceivedStatus.size(); ++i)
+        layoutsReceivedStatus[i]->deleteLater();
+
     for (int i = 0; i < widgetsReceivedStatus.size(); ++i)
-    {
         widgetsReceivedStatus[i]->deleteLater();
-    }
-    qDeleteAll(StatusLabelReceived);
+
+    qDeleteAll(labelsReceivedStatus);
+    layoutsReceivedStatus.clear();
     widgetsReceivedStatus.clear();
-    StatusLabelReceived.clear();
+    labelsReceivedStatus.clear();
 }
 
 void CallHistoryDialog::loadMissedCalls()
 {
     if(!widgetsMissed.isEmpty())
         deleteMissedObjects();
-    if (!widgetsName.isEmpty())
-        deleteNameObjects();
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -532,8 +557,7 @@ void CallHistoryDialog::loadReceivedCalls()
 {
     if(!widgetsReceived.isEmpty())
         deleteReceivedObjects();
-    if (!widgetsName.isEmpty())
-        deleteNameObjects();
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -571,8 +595,7 @@ void CallHistoryDialog::loadPlacedCalls()
 {
     if(!widgetsPlaced.isEmpty())
         deletePlacedObjects();
-    if (!widgetsName.isEmpty())
-        deleteNameObjects();
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -606,6 +629,48 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
 
+void CallHistoryDialog::onUpdate()
+{
+    if(ui->tabWidget->currentIndex() == 0)
+        loadAllCalls();
+    if(ui->tabWidget->currentIndex() == 1)
+        loadMissedCalls();
+    if(ui->tabWidget->currentIndex() == 2)
+        loadReceivedCalls();
+    if(ui->tabWidget->currentIndex() == 3)
+        loadPlacedCalls();
+
+}
+
+QWidget* CallHistoryDialog::loadAllNotes()
+{
+    QWidget* wgt = new QWidget;
+    QLabel* note = new QLabel(wgt);
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.exec();
+    query.first();
+    note->setText(query.value(0).toString());
+
+    widgets.append(wgt);
+    notes.append(note);
+    return wgt;
+}
+
+void CallHistoryDialog::deleteObjectsOfAllCalls()
+{
+    for (int i = 0; i < widgets.size(); ++i)
+        widgets[i]->deleteLater();
+
+    qDeleteAll(notes);
+    widgets.clear();
+    notes.clear();
+    delete query4;
+}
+
 QWidget* CallHistoryDialog::loadMissedNote()
 {
     QWidget* missedWgt = new QWidget;
@@ -622,6 +687,17 @@ QWidget* CallHistoryDialog::loadMissedNote()
     widgetsMissed.append(missedWgt);
     notesMissed.append(missedNote);
     return missedWgt;
+}
+
+void CallHistoryDialog::deleteMissedObjects()
+{
+    for (int i = 0; i < widgetsMissed.size(); ++i)
+        widgetsMissed[i]->deleteLater();
+
+    qDeleteAll(notesMissed);
+    widgetsMissed.clear();
+    notesMissed.clear();
+    delete query1;
 }
 
 QWidget* CallHistoryDialog::loadReceivedNote()
@@ -642,6 +718,17 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     return receivedWgt;
 }
 
+void CallHistoryDialog::deleteReceivedObjects()
+{
+    for (int i = 0; i < widgetsReceived.size(); ++i)
+        widgetsReceived[i]->deleteLater();
+
+    qDeleteAll(notesReceived);
+    widgetsReceived.clear();
+    notesReceived.clear();
+    delete query2;
+}
+
 QWidget* CallHistoryDialog::loadPlacedNote()
 {
     QHBoxLayout* layout = new QHBoxLayout;
@@ -651,7 +738,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());
@@ -665,79 +752,11 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     return placedWgt;
 }
 
-QWidget* CallHistoryDialog::loadAllNotes()
-{
-    QWidget* Wgt = new QWidget;
-    QLabel *Note = new QLabel(Wgt);
-
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
-    query.exec();
-    query.first();
-    Note->setText(query.value(0).toString());
-
-    widgets.append(Wgt);
-    notes.append(Note);
-    return Wgt;
-}
-
-void CallHistoryDialog::onUpdate()
-{
-    if(ui->tabWidget->currentIndex() == 0)
-        loadAllCalls();
-    if(ui->tabWidget->currentIndex() == 1)
-        loadMissedCalls();
-    if(ui->tabWidget->currentIndex() == 2)
-        loadReceivedCalls();
-    if(ui->tabWidget->currentIndex() == 3)
-        loadPlacedCalls();
-
-}
-
-void CallHistoryDialog::deleteObjectsOfAllCalls()
-{
-    for (int i = 0; i < widgets.size(); ++i)
-    {
-        widgets[i]->deleteLater();
-    }
-    qDeleteAll(notes);
-    widgets.clear();
-    notes.clear();
-    delete query4;
-}
-
-void CallHistoryDialog::deleteMissedObjects()
-{
-    for (int i = 0; i < widgetsMissed.size(); ++i)
-    {
-        widgetsMissed[i]->deleteLater();
-    }
-    qDeleteAll(notesMissed);
-    widgetsMissed.clear();
-    notesMissed.clear();
-    delete query1;
-}
-
-void CallHistoryDialog::deleteReceivedObjects()
-{
-    for (int i = 0; i < widgetsReceived.size(); ++i)
-    {
-        widgetsReceived[i]->deleteLater();
-    }
-    qDeleteAll(notesReceived);
-    widgetsReceived.clear();
-    notesReceived.clear();
-    delete query2;
-}
-
 void CallHistoryDialog::deletePlacedObjects()
 {
     for (int i = 0; i < widgetsPlaced.size(); ++i)
-    {
         widgetsPlaced[i]->deleteLater();
-    }
+
     qDeleteAll(notesPlaced);
     widgetsPlaced.clear();
     notesPlaced.clear();
@@ -746,27 +765,13 @@ void CallHistoryDialog::deletePlacedObjects()
 
 void CallHistoryDialog::deleteObjects()
 {
-    for (int i = 0; i < widgetsMissed.size(); ++i)
-    {
-        widgetsMissed[i]->deleteLater();
-    }
-    qDeleteAll(notesMissed);
-    widgetsMissed.clear();
-    notesMissed.clear();
-    for (int i = 0; i < widgetsReceived.size(); ++i)
-    {
-        widgetsReceived[i]->deleteLater();
-    }
-    qDeleteAll(notesReceived);
-    widgetsReceived.clear();
-    notesReceived.clear();
-    for (int i = 0; i < widgetsPlaced.size(); ++i)
-    {
-        widgetsPlaced[i]->deleteLater();
-    }
-    widgetsPlaced.clear();
-    notesPlaced.clear();
-    delete query1;
-    delete query2;
-    delete query3;
+    deleteObjectsOfAllCalls();
+    deleteMissedObjects();
+    deleteReceivedObjects();
+    deletePlacedObjects();
+    deleteReceivedStatusObjects();
+    deleteMissedStatusObjects();
+    deleteCancelStatusObjects();
+    deleteBusyStatusObjects();
+    deleteNameObjects();
 }
