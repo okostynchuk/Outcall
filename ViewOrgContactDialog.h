@@ -74,7 +74,6 @@ private:
     SettingsDialog *settingsDialog;
     NotesDialog *notesDialog;
     QSqlQuery *query;
-    QSqlQueryModel *query1;
     QValidator *validator;
     QHeaderView *m_horiz_header;
     AddPersonToOrg *addPersonToOrg;
