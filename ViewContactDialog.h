@@ -5,6 +5,7 @@
 #include "SettingsDialog.h"
 #include "EditContactDialog.h"
 #include "ChooseNumber.h"
+#include "NotesDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -49,13 +50,19 @@ protected slots:
     void loadPlacedCalls();
     void deleteObjects();
     void updateCalls();
+    void viewMissedNotes(const QModelIndex &index);
+    void viewRecievedNotes(const QModelIndex &index);
+    void viewPlacedNotes(const QModelIndex &index);
 
 private:
     Ui::ViewContactDialog *ui;
     SettingsDialog *settingsDialog;
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
+    NotesDialog *notesDialog;
     QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
     QValidator *validator;
     QString updateID;
     QString uniqueid;
@@ -63,6 +70,7 @@ private:
     QString my_number;
     int count2 = 1;
     QString days;
+    QString state_call;
     QString contact_number;
     QString firstNumber;
     QString secondNumber;

@@ -5,6 +5,8 @@
 #include <QSqlQueryModel>
 #include <QTableView>
 
+#include "SettingsDialog.h"
+
 namespace Ui {
 class NotesDialog;
 }
@@ -30,7 +32,9 @@ private:
     Ui::NotesDialog *ui;
     QString callId;
     QString state;
+    QString my_number;
     QSqlQueryModel *query;
+    SettingsDialog *settingsDialog;
 
 signals:
     void sendDataToAllCalls();
