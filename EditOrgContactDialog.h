@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
+#include <QSqlQuery>
 #include <QValidator>
 #include <QStringList>
 
@@ -32,6 +33,7 @@ protected slots:
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;
+    QSqlQuery *query1;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

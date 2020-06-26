@@ -59,53 +59,67 @@ void EditOrgContactDialog::onSave()
         ui->FifthNumber->setStyleSheet("border: 1px solid grey");
         ui->VyborID->setStyleSheet("border: 1px solid grey");
 
-        numbers.clear();
+        int count_invalid_num = 0;
         QSqlQuery query1(db);
-        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FirstNumber->text() + "' AND NOT entry_id = " + updateID + ")");
-        query1.exec();
-        query1.next();
-        if (query1.value(0) != 0)
+        if(!ui->FirstNumber->text().isEmpty())
         {
-            ui->FirstNumber->setStyleSheet("border: 1px solid red");
-            numbers << QString(ui->FirstNumber->text());
+            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FirstNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+            query1.exec();
+            query1.next();
+            if (query1.value(0) != 0)
+            {
+                ui->FirstNumber->setStyleSheet("border: 1px solid red");
+                count_invalid_num++;
+            }
         }
-        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->SecondNumber->text() + "' AND NOT entry_id = " + updateID + ")");
-        query1.exec();
-        query1.next();
-        if (query1.value(0) != 0)
+        if(!ui->SecondNumber->text().isEmpty())
         {
-            ui->SecondNumber->setStyleSheet("border: 1px solid red");
-            numbers << QString(ui->SecondNumber->text());
+            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->SecondNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+            query1.exec();
+            query1.next();
+            if (query1.value(0) != 0)
+            {
+                ui->SecondNumber->setStyleSheet("border: 1px solid red");
+                count_invalid_num++;
+            }
         }
-        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->ThirdNumber->text() + "' AND NOT entry_id = " + updateID + ")");
-        query1.exec();
-        query1.next();
-        if (query1.value(0) != 0)
+        if(!ui->ThirdNumber->text().isEmpty())
         {
-            ui->ThirdNumber->setStyleSheet("border: 1px solid red");
-            numbers << QString(ui->ThirdNumber->text());
+            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->ThirdNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+            query1.exec();
+            query1.next();
+            if (query1.value(0) != 0)
+            {
+                ui->ThirdNumber->setStyleSheet("border: 1px solid red");
+                count_invalid_num++;
+            }
         }
-        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FourthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
-        query1.exec();
-        query1.next();
-        if (query1.value(0) != 0)
+        if(!ui->FourthNumber->text().isEmpty())
         {
-            ui->FourthNumber->setStyleSheet("border: 1px solid red");
-            numbers << QString(ui->FourthNumber->text());
+            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FourthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+            query1.exec();
+            query1.next();
+            if (query1.value(0) != 0)
+            {
+                ui->FourthNumber->setStyleSheet("border: 1px solid red");
+                count_invalid_num++;
+            }
         }
-        query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FifthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
-        query1.exec();
-        query1.next();
-        if (query1.value(0) != 0)
+        if(!ui->FifthNumber->text().isEmpty())
         {
-            ui->FifthNumber->setStyleSheet("border: 1px solid red");
-            numbers << QString(ui->FifthNumber->text());
+            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FifthNumber->text() + "' AND NOT entry_id = " + updateID + ")");
+            query1.exec();
+            query1.next();
+            if (query1.value(0) != 0)
+            {
+                ui->FifthNumber->setStyleSheet("border: 1px solid red");
+                count_invalid_num++;
+            }
         }
 
-        if (numbers[0] != NULL)
+        if(count_invalid_num != 0)
         {
-            QString str = numbers.join(", ");
-            QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!\n%1").arg(str), QMessageBox::Ok);
+            QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!"), QMessageBox::Ok);
         }
         else
         {
