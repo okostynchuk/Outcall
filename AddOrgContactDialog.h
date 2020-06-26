@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QValidator>
 #include <QStringList>
+#include <QSqlQuery>
 
 namespace Ui {
 class AddOrgContactDialog;
@@ -27,6 +28,7 @@ protected:
 private:
     Ui::AddOrgContactDialog *ui;
     QValidator *validator;
+    QSqlQuery *query1;
     QStringList numbers;
 
 signals:
