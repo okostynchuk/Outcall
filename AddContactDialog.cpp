@@ -6,13 +6,11 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
-#include <QTableView>
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QStringList>
-#include <QDebug>
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddContactDialog)

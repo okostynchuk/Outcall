@@ -55,6 +55,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
     days = ui->comboBox_2->currentText();
     loadAllCalls();
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));

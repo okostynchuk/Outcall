@@ -230,6 +230,7 @@ void ViewContactDialog::loadMissedCalls()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     queries.append(query1);
 }
 
@@ -289,6 +290,7 @@ void ViewContactDialog::loadReceivedCalls()
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     queries.append(query2);
 }
 
@@ -349,6 +351,7 @@ void ViewContactDialog::loadPlacedCalls()
     ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     queries.append(query3);
 }
 
