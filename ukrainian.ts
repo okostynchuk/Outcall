@@ -109,7 +109,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомленння</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -214,7 +214,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
@@ -302,7 +302,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -574,7 +574,7 @@
     </message>
     <message>
         <source>Показать звонки за последние:</source>
-        <translation>Показати дзвінкі за останні:</translation>
+        <translation>Показати дзвінки за останні:</translation>
     </message>
     <message>
         <source>7</source>
@@ -606,7 +606,7 @@
     </message>
     <message>
         <source>Обновить</source>
-        <translation>Обновити</translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <source>Добавить / изменить физ. лицо</source>
@@ -673,7 +673,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номер:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>1</source>
@@ -716,7 +716,7 @@
     </message>
     <message>
         <source>Выберите столбец поиска</source>
-        <translation>Оберіть стовбець пошуку</translation>
+        <translation>Оберіть стовбчик пошуку</translation>
     </message>
     <message>
         <source>Поиск по таблице</source>
@@ -892,7 +892,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Подключение успешно создано!</source>
@@ -959,7 +959,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>Отвязать</source>
@@ -1024,11 +1024,11 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation>Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Нет</source>
@@ -1095,7 +1095,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>VyborID:</source>
@@ -1156,11 +1156,11 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation>Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Редактирование</source>
@@ -1278,11 +1278,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</source>
-        <translation>Хост не був знайдений. Будь ласка, перевірте ім&apos;я хоста і настройки порту</translation>
+        <translation>Хост не був знайдений. Будь ласка, перевірте ім&apos;я хосту і налаштування порту</translation>
     </message>
     <message>
         <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</source>
-        <translation>З&apos;єднання було відхилено вузлом. Переконайтеся, що сервер працює, і перевірте правильність імені хоста і налаштувань порту</translation>
+        <translation>З&apos;єднання було відхилено вузлом. Переконайтеся, що сервер працює, і перевірте правильність імені хосту і налаштувань порту</translation>
     </message>
     <message>
         <source>Выйти из аккаунта</source>
@@ -1294,7 +1294,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Соединение восстановлено. Приложение будет перезапущено!</source>
@@ -1345,7 +1345,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Номер:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>Поиск</source>
@@ -1440,7 +1440,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ввод заметки</source>
-        <translation>Введення коментаря</translation>
+        <translation>Введення коментарю</translation>
     </message>
     <message>
         <source>Сохранить заметку</source>
@@ -1593,7 +1593,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Запустить приложение при загрузке Windows</source>
-        <translation>Запускати додаток при загрузці Windows</translation>
+        <translation>Запускати додаток при завантаженні Windows</translation>
     </message>
     <message>
         <source>Выбор языка</source>
@@ -1669,7 +1669,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Номера</source>
-        <translation>Номера</translation>
+        <translation>Номери</translation>
     </message>
     <message>
         <source>Добавить</source>
@@ -1776,7 +1776,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>3</source>
@@ -1911,7 +1911,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>VyborID:</source>

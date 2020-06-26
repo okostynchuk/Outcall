@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgId:</translation>
+        <translation>VyborId:</translation>
     </message>
     <message>
         <source>Сохранить данные</source>
@@ -278,7 +278,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1*</source>
@@ -901,7 +901,7 @@
     </message>
     <message>
         <source>Подключение к базе звонков не создано!</source>
-        <translation>Call database connection not created!</translation>
+        <translation>Connection to call database not created!</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -983,7 +983,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -1115,7 +1115,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1*</source>
@@ -1546,7 +1546,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>VyborID</source>
-        <translation>OrgID</translation>
+        <translation>VyborID</translation>
     </message>
     <message>
         <source>Заметка</source>
@@ -1680,7 +1680,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Базы данных</source>
-        <translatorcomment>Базы данных</translatorcomment>
         <translation>Data bases</translation>
     </message>
     <message>
@@ -1777,7 +1776,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Вы уверены, что хотите удалить выбранный номер?</source>
-        <translation>Are you sure, that you want to delete the number?</translation>
+        <translation>Are you sure that you want to delete the number?</translation>
     </message>
 </context>
 <context>
@@ -1820,7 +1819,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>4</source>
@@ -1939,7 +1938,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1</source>

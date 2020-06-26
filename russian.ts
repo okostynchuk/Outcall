@@ -48,7 +48,7 @@
     </message>
     <message>
         <source>Email:</source>
-        <translation>Адрес:</translation>
+        <translation>Email:</translation>
     </message>
     <message>
         <source>1*</source>
@@ -1326,7 +1326,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Не настроен</source>
-        <translation>Не настроен</translation>
+        <translation>Не настроено</translation>
     </message>
     <message>
         <source>Напоминания</source>
@@ -1423,7 +1423,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Incoming call from: &lt;span style=&quot; font-weight:600;&quot;&gt;Ben Franklin (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Добавить:</source>
