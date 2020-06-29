@@ -12,7 +12,6 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QProcess>
-#include <QTranslator>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -189,17 +188,15 @@ void SettingsDialog::applySettings()
 
 void SettingsDialog::loadLanguages()
 {
-        //ui->languageList_2->clear();
+    ui->languageList_2->addItem(tr("Русский (default)"), "");
+    ui->languageList_2->addItem(tr("Українська"), "");
+    ui->languageList_2->addItem(tr("English"), "");
 
-        ui->languageList_2->addItem(tr("Русский (default)"), "");
-        ui->languageList_2->addItem(tr("Українська"), "");
-        ui->languageList_2->addItem(tr("English"), "");
-
-        QString lang = global::getSettingsValue("language", "settings").toString();
-        if(lang == "")
-            ui->languageList_2->setCurrentIndex(0);
-        else
-            ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
+    QString lang = global::getSettingsValue("language", "settings").toString();
+    if(lang == "")
+        ui->languageList_2->setCurrentIndex(0);
+    else
+        ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
 }
 
 QString SettingsDialog::getExtension()
