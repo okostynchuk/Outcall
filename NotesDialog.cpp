@@ -17,6 +17,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
+    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -30,6 +31,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 NotesDialog::~NotesDialog()
 {
     delete ui;
+    delete settingsDialog;
     deleteObjects();
 }
 
@@ -42,12 +44,15 @@ void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
 
 void NotesDialog::loadNotes() {
     query = new QSqlQueryModel;
-     query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
+    query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
     query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
     ui->tableView->setModel(query);
+    ui->tableView->setWordWrap(true);
     ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -95,9 +100,14 @@ void NotesDialog::onSave()
     destroy(true);
 }
 
+void NotesDialog::onTextChanged()
+{
+    if(ui->textEdit->toPlainText().length() > 255)
+        ui->textEdit->textCursor().deletePreviousChar();
+}
+
 void NotesDialog::onUpdate() {
     deleteObjects();
-    delete settingsDialog;
     loadNotes();
 }
 

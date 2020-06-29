@@ -356,10 +356,9 @@ void CallHistoryDialog::loadAllCalls()
     }
 
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView_4->resizeColumnsToContents();
+    ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView_4->setColumnWidth(4, 90);
-    ui->tableView_4->resizeRowsToContents();
 }
 
 QWidget* CallHistoryDialog::loadName()
@@ -548,7 +547,6 @@ void CallHistoryDialog::loadMissedCalls()
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadMissedNote());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -586,7 +584,6 @@ void CallHistoryDialog::loadReceivedCalls()
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadReceivedNote());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -623,8 +620,8 @@ void CallHistoryDialog::loadPlacedCalls()
         if(query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadPlacedNote());
     }
+
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -654,6 +651,7 @@ QWidget* CallHistoryDialog::loadAllNotes()
     query.exec();
     query.first();
     note->setText(query.value(0).toString());
+    note->setWordWrap(true);
 
     widgets.append(wgt);
     notes.append(note);
@@ -683,6 +681,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     query.exec();
     query.first();
     missedNote->setText(query.value(0).toString());
+    missedNote->setWordWrap(true);
 
     widgetsMissed.append(missedWgt);
     notesMissed.append(missedNote);
@@ -712,6 +711,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     query.exec();
     query.first();
     receivedNote->setText(query.value(0).toString());
+    receivedNote->setWordWrap(true);
 
     widgetsReceived.append(receivedWgt);
     notesReceived.append(receivedNote);
@@ -742,6 +742,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());
+    placedNote->setWordWrap(true);
 
     layout->addWidget(placedNote);
     layout->setContentsMargins(3, 0, 0, 0);

@@ -28,6 +28,9 @@ protected:
     void loadNotes();
     void deleteObjects();
 
+protected slots:
+    void onTextChanged();
+
 private:
     Ui::NotesDialog *ui;
     QString callId;
