@@ -10,6 +10,7 @@
 #include "AddPhoneNumberToContactDialog.h"
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
+#include "SettingsDialog.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -79,6 +80,7 @@ private slots:
     void onShowCard();
     void onSaveNote();
     void onTextChanged();
+    void onOpenAccess();
 
 private:
     void startPopupWaitingTimer();
@@ -86,8 +88,10 @@ private:
 
 private:
     Ui::PopupWindow *ui;
+    SettingsDialog *settingsDialog;
     QTextEdit *note;
     QSqlQuery *query;
+    QString userID;
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
 	int m_nIncrement; // px

@@ -850,6 +850,31 @@ color: black;
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="openAccess">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>140</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+background-color: #ffb64f;
+border: 1.5px solid #a53501;
+color: black;
+}</string>
+   </property>
+   <property name="text">
+    <string>Заказы</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="images.qrc"/>
