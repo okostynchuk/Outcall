@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QTime>
 #include <QSqlQuery>
-
+#include <QKeyEvent>
 
 NotesDialog::NotesDialog(QWidget *parent) :
     QDialog(parent),
@@ -15,9 +15,13 @@ NotesDialog::NotesDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->textEdit->installEventFilter(this);
+
+    connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -42,7 +46,8 @@ void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
     loadNotes();
 }
 
-void NotesDialog::loadNotes() {
+void NotesDialog::loadNotes()
+{
     query = new QSqlQueryModel;
     query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
@@ -56,7 +61,9 @@ void NotesDialog::loadNotes() {
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     if(state=="save_disable")
+    if (state == "save_disable")
     {
        ui->label->setDisabled(true);
        ui->textEdit->setDisabled(true);
@@ -70,7 +77,7 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
+    if (ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
         return;
 
     query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + my_number);
@@ -86,13 +93,13 @@ void NotesDialog::onSave()
     query.first();
     query.exec();
 
-    if(state == "all")
+    if (state == "all")
         emit sendDataToAllCalls();
-    else if(state == "missed")
+    else if (state == "missed")
        emit sendDataToMissed();
-    else if(state == "received")
+    else if (state == "received")
        emit sendDataToReceived();
-    else if(state == "placed")
+    else if (state == "placed")
         emit sendDataToPlaced();
 
     close();
@@ -106,11 +113,42 @@ void NotesDialog::onTextChanged()
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
-void NotesDialog::onUpdate() {
+void NotesDialog::onUpdate()
+{
     deleteObjects();
     loadNotes();
 }
 
-void NotesDialog::deleteObjects() {
+bool NotesDialog::eventFilter(QObject *object, QEvent *event)
+{
+    if (object->objectName() == "textEdit")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("textEdit2");
+                return true;
+            }
+        }
+    }
+    else if (object->objectName() == "textEdit2")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("textEdit");
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void NotesDialog::deleteObjects()
+{
     delete query;
 }

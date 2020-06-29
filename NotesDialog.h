@@ -17,12 +17,13 @@ class NotesDialog : public QDialog
 
 public:
     explicit NotesDialog(QWidget *parent = 0);
-     void setCallId(QString &uniqueid, QString &state_call);
+    void setCallId(QString &uniqueid, QString &state_call);
     ~NotesDialog();
 
+public slots:
+    bool eventFilter(QObject *object, QEvent *event);
 
 protected:
-    void onSave();
     void onUpdate();
     void setNote();
     void loadNotes();
@@ -38,6 +39,9 @@ private:
     QString my_number;
     QSqlQueryModel *query;
     SettingsDialog *settingsDialog;
+
+private slots:
+    void onSave();
 
 signals:
     void sendDataToAllCalls();
