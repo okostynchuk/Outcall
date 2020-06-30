@@ -29,18 +29,19 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     my_number = settingsDialog->getExtension();
     setWindowTitle(tr("История звонков по номеру: ") + my_number);
 
-    connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
+    connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton, &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
+    connect(ui->updateButton,        &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
+
     connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(tabSelected()));
 
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
+    connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToPlaced(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNotes(const QModelIndex &)));
 
-    connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberMissed(const QModelIndex &)));
+    connect(ui->tableView,   SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberPlaced(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumber(const QModelIndex &)));
@@ -55,7 +56,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
@@ -90,7 +91,6 @@ void CallHistoryDialog::getNumber(const QModelIndex &index)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
     }
-
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
@@ -117,15 +117,15 @@ void CallHistoryDialog::onAddContact()
     }
 
     addContactDialog = new AddContactDialog;
-
     bool a = checkNumber(number);
-    if (a == true)
+    if (a)
     {
         addContactDialog->setValuesCallHistory(number);
         addContactDialog->show();
         addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else if (a == false) editContact(number);
+    else
+        editContact(number);
 }
 
 void CallHistoryDialog::onAddOrgContact()
@@ -139,13 +139,14 @@ void CallHistoryDialog::onAddOrgContact()
     addOrgContactDialog = new AddOrgContactDialog;
 
     bool a = checkNumber(number);
-    if (a == true)
+    if (a)
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
         addOrgContactDialog->show();
         addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else if (a == false) editOrgContact(number);
+    else
+        editOrgContact(number);
 }
 
 void CallHistoryDialog::addNotes(const QModelIndex &index)

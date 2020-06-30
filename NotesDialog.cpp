@@ -17,6 +17,9 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->textEdit->installEventFilter(this);
 
+    settingsDialog = new SettingsDialog();
+    my_number = settingsDialog->getExtension();
+
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
@@ -27,9 +30,6 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
-
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
 }
 
 NotesDialog::~NotesDialog()

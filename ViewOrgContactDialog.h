@@ -47,6 +47,7 @@ public slots:
     void receivePersonID(QString &);
 
 protected slots:
+    void onOpenAccess();
     void onUpdate();
     void onCall();
     void onEdit();
@@ -77,6 +78,7 @@ private:
     QValidator *validator;
     QHeaderView *m_horiz_header;
     AddPersonToOrg *addPersonToOrg;
+    QString userID;
     QString updateID;
     QString number;
     QString my_number;

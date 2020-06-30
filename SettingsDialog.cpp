@@ -93,6 +93,7 @@ void SettingsDialog::saveSettings()
 
         //MSSQL Base
     global::setSettingsValue("hostName_3", ui->hostName_3->text(), "settings");
+    global::setSettingsValue("databaseName_3", ui->databaseName_3->text(), "settings");
     global::setSettingsValue("userName_3", ui->userName_3->text(), "settings");
     QByteArray ba3;
     ba3.append(ui->password_3->text());
@@ -129,6 +130,7 @@ void SettingsDialog::loadSettings()
     ui->port_2->setText(global::getSettingsValue("port_2", "settings").toString());
 
     ui->hostName_3->setText(global::getSettingsValue("hostName_3", "settings").toString());
+    ui->databaseName_3->setText(global::getSettingsValue("databaseName_3", "settings").toString());
     ui->userName_3->setText(global::getSettingsValue("userName_3", "settings").toString());
     QByteArray password3((global::getSettingsValue("password_3", "settings").toByteArray()));
     QString ba3(QByteArray::fromBase64(password3));

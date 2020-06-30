@@ -431,22 +431,37 @@ void PopupWindow::onOpenAccess()
     query.first();
     QString vyborID = query.value(0).toString();
 
-    QSqlDatabase dbMSSQL = QSqlDatabase::database("Third");
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                            "Server="+hostName_3+","+port_3+";"
+                            "Database="+databaseName_3+";"
+                            "Uid="+userName_3+";"
+                            "Pwd="+password_3);
+    bool ok = dbMSSQL.open();
+
     QSqlQuery query1(dbMSSQL);
 
-    if (dbMSSQL.isOpen())
+    if (ok)
     {
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (?, ?)");
         query1.addBindValue(userID);
         query1.addBindValue(vyborID);
         query1.exec();
+        popup->ui->openAccess->hide();
+        dbMSSQL.close();
     }
     else
     {
         QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
     }
-    popup->ui->openAccess->hide();
 }
 
 void PopupWindow::receiveData(bool update)

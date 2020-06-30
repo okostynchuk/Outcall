@@ -12,12 +12,15 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    userID = global::getSettingsValue("user_login", "settings").toString();
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     m_horiz_header = ui->tableView->horizontalHeader();
 
+    connect(ui->openAccess, &QPushButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
@@ -38,6 +41,40 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
     deleteObjects();
     delete settingsDialog;
     delete ui;
+}
+
+void ViewOrgContactDialog::onOpenAccess() {
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                            "Server="+hostName_3+","+port_3+";"
+                            "Database="+databaseName_3+";"
+                            "Uid="+userName_3+";"
+                            "Pwd="+password_3);
+    bool ok = dbMSSQL.open();
+
+    QSqlQuery query(dbMSSQL);
+
+    if (ok)
+    {
+        query.prepare("INSERT INTO CallTable (UserID, ClientID)"
+                    "VALUES (?, ?)");
+        query.addBindValue(userID);
+        query.addBindValue(ui->VyborID->text().toInt());
+        query.exec();
+        ui->openAccess->setDisabled(true);
+        dbMSSQL.close();
+    }
+    else
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+    }
 }
 
 void ViewOrgContactDialog::receiveData(bool updating)
