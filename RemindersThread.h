@@ -2,26 +2,29 @@
 #define REMINDERSTHREAD_H
 
 #include <QObject>
+#include <QTime>
+#include <QDate>
 
 class RemindersThread : public QObject
 {
     Q_OBJECT
 
 public:
-    //explicit RemindersThread(QObject *parent = 0);
-    RemindersThread();
+    RemindersThread(QString receivedNumber, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes);
     ~RemindersThread();
 
 public slots:
-    void process(QString);
-    void receiveData(bool, QString);
+    void process();
+    void receiveNewValues(QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes);
 
 signals:
+    void notify(QString);
     void finished();
-    void sendData(bool, QString);
 
 private:
-
+    QString my_number;
+    QList<QDateTime> dateTimes;
+    QList<QString> notes;
 };
 
 #endif // REMINDERSTHREAD_H

@@ -95,15 +95,15 @@ int main(int argc, char *argv[])
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
-    if(languages == "Русский (default)")
+    if (languages == "Русский (по умолчанию)")
     {
         qtTranslator.load(".\\translations\\qt_ru");
     }
-    else if(languages == "Українська")
+    else if (languages == "Українська")
     {
         qtTranslator.load(".\\translations\\qt_uk");
     }
-    else if(languages == "English")
+    else if (languages == "English")
     {
         qtTranslator.load(".\\translations\\qt_en");
     }

@@ -1,17 +1,15 @@
 #include "RemindersThread.h"
 
-#include <QTime>
-#include <QDate>
 #include <QDebug>
+#include <QThread>
+#include <QMessageBox>
+#include <QSqlQuery>
 
-//RemindersThread::RemindersThread(QObject *parent) : QObject(parent)
-//{
-
-//}
-
-RemindersThread::RemindersThread()
+RemindersThread::RemindersThread(QString receivedNumber, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes)
 {
-    //connect(this, SIGNAL(sendData(bool, QString)), this, SLOT(receiveData(bool, QString)));
+    my_number = receivedNumber;
+    dateTimes = receivedDateTimes;
+    notes = receivedNotes;
 }
 
 RemindersThread::~RemindersThread()
@@ -19,24 +17,43 @@ RemindersThread::~RemindersThread()
 
 }
 
-void RemindersThread::receiveData(bool opa, QString time)
+void RemindersThread::receiveNewValues(QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes)
 {
-    if (opa)
-    {
-        if (time > QTime::currentTime().toString())
-        {
-            emit sendData(true, time);
-        }
-        else
-        {
-            qDebug("123");
-            emit finished();
-        }
-    }
+    dateTimes = receivedDateTimes;
+    notes = receivedNotes;
 }
 
-void RemindersThread::process(QString time)
+void RemindersThread::process()
 {
-    //emit sendData(true, time);
+    forever
+    {
+        if (QThread::currentThread()->isInterruptionRequested())
+        {
+            emit finished();
+            return;
+        }
+
+        for (int i = 0; i < dateTimes.count(); i++)
+        {
+            if (dateTimes.at(i) <= QDateTime::currentDateTime())
+            {
+                QSqlDatabase db;
+                QSqlQuery query(db);
+
+                query.prepare("UPDATE reminders SET active = false WHERE phone = ? AND datetime = ? AND content = ?");
+                query.addBindValue(my_number);
+                query.addBindValue(dateTimes.at(i));
+                query.addBindValue(notes.at(i));
+                query.exec();
+
+                emit notify(notes.at(i));
+
+                dateTimes.removeAt(i);
+                notes.removeAt(i);
+            }
+
+            QThread::currentThread()->msleep(10);
+        }
+    }
 }
 

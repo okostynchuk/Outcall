@@ -49,11 +49,15 @@ void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
 void NotesDialog::loadNotes()
 {
     query = new QSqlQueryModel;
+
     query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
+
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
     query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
+
     ui->tableView->setModel(query);
+
     ui->tableView->setWordWrap(true);
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
@@ -61,8 +65,9 @@ void NotesDialog::loadNotes()
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    if(state=="save_disable")
+
     if (state == "save_disable")
     {
        ui->label->setDisabled(true);
@@ -77,20 +82,23 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if (ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0 )
+    if (ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0)
         return;
+
+    QString author;
 
     query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + my_number);
     query.exec();
-    query.next();
-    QString author = query.value(0).toString();
+    if (query.next())
+        author = query.value(0).toString();
+    else
+        author = my_number;
 
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText());
     query.addBindValue(author);
-    query.first();
     query.exec();
 
     if (state == "all")

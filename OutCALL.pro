@@ -37,7 +37,6 @@ SOURCES += main.cpp\
     ViewOrgContactDialog.cpp \
     EditContactDialog.cpp \
     EditOrgContactDialog.cpp \
-    AddNoteDialog.cpp \
     ChooseNumber.cpp \
     DatabasesConnectDialog.cpp \
     AddOrgToPerson.cpp \
@@ -46,6 +45,7 @@ SOURCES += main.cpp\
     RemindersDialog.cpp \
     RemindersThread.cpp \
     NotesDialog.cpp \
+    EditReminderDialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -66,7 +66,6 @@ HEADERS  += \
     ViewOrgContactDialog.h \
     EditContactDialog.h \
     EditOrgContactDialog.h \
-    AddNoteDialog.h \
     ChooseNumber.h \
     DatabasesConnectDialog.h \
     AddOrgToPerson.h \
@@ -75,6 +74,7 @@ HEADERS  += \
     RemindersDialog.h \
     RemindersThread.h \
     NotesDialog.h \
+    EditReminderDialog.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -91,7 +91,6 @@ FORMS    += \
     ViewOrgContactDialog.ui \
     EditContactDialog.ui \
     EditOrgContactDialog.ui \
-    AddNoteDialog.ui \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui \
     AddOrgToPerson.ui \
@@ -99,6 +98,7 @@ FORMS    += \
     AddPersonToOrg.ui \
     RemindersDialog.ui \
     NotesDialog.ui \
+    EditReminderDialog.ui
 
 RESOURCES += \
     images.qrc \

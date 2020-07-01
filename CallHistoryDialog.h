@@ -7,7 +7,6 @@
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
 #include "SettingsDialog.h"
-#include "AddNoteDialog.h"
 #include "NotesDialog.h"
 #include "OutCALL.h"
 #include "Global.h"
@@ -90,7 +89,6 @@ private:
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     SettingsDialog *settingsDialog;
-    AddNoteDialog *addNoteDialog;
     NotesDialog *notesDialog;
     QString days;
     QString number;
