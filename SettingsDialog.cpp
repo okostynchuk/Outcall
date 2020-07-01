@@ -236,7 +236,7 @@ void SettingsDialog::applySettings()
 
 void SettingsDialog::loadLanguages()
 {
-    ui->languageList_2->addItem(tr("Русский (default)"), "");
+    ui->languageList_2->addItem(tr("Русский (по умолчанию)"), "");
     ui->languageList_2->addItem(tr("Українська"), "");
     ui->languageList_2->addItem(tr("English"), "");
 

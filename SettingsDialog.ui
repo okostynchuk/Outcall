@@ -433,20 +433,6 @@
             </widget>
            </item>
           </layout>
-          <zorder>userName_3</zorder>
-          <zorder>portLabel_4</zorder>
-          <zorder>userName_3</zorder>
-          <zorder>passLabel_4</zorder>
-          <zorder>serverLabel_4</zorder>
-          <zorder>userLabel_4</zorder>
-          <zorder>password_3</zorder>
-          <zorder>databaseName_3</zorder>
-          <zorder>hostName_3</zorder>
-          <zorder>port_3</zorder>
-          <zorder>label_3</zorder>
-          <zorder>label_4</zorder>
-          <zorder>port_4</zorder>
-          <zorder>groupBox_5</zorder>
          </widget>
         </widget>
        </item>
@@ -719,20 +705,19 @@
   <tabstop>addButton</tabstop>
   <tabstop>removeButton</tabstop>
   <tabstop>editButton</tabstop>
-  <tabstop>addButton_4</tabstop>
-  <tabstop>removeButton_4</tabstop>
-  <tabstop>editButton_4</tabstop>
-  <tabstop>treeWidget_4</tabstop>
-  <tabstop>treeWidget_3</tabstop>
-  <tabstop>addButton_3</tabstop>
-  <tabstop>removeButton_3</tabstop>
-  <tabstop>editButton_3</tabstop>
   <tabstop>treeWidget_2</tabstop>
   <tabstop>addButton_2</tabstop>
   <tabstop>removeButton_2</tabstop>
   <tabstop>editButton_2</tabstop>
   <tabstop>applyButton</tabstop>
   <tabstop>cancelButton</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>hostName_3</tabstop>
+  <tabstop>databaseName_3</tabstop>
+  <tabstop>userName_3</tabstop>
+  <tabstop>password_3</tabstop>
+  <tabstop>port_3</tabstop>
+  <tabstop>user_login</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

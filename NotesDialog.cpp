@@ -82,8 +82,11 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if (ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText()== 0)
+    if (ui->textEdit->toPlainText().isEmpty())
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
         return;
+    }
 
     QString author;
 
@@ -111,7 +114,7 @@ void NotesDialog::onSave()
         emit sendDataToPlaced();
 
     close();
-   // QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
+    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
     destroy(true);
 }
 
