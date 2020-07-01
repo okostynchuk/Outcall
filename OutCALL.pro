@@ -46,6 +46,7 @@ SOURCES += main.cpp\
     RemindersDialog.cpp \
     RemindersThread.cpp \
     NotesDialog.cpp \
+    EditReminderDialog.cpp
 
 HEADERS  += \
     DebugInfoDialog.h \
@@ -75,6 +76,7 @@ HEADERS  += \
     RemindersDialog.h \
     RemindersThread.h \
     NotesDialog.h \
+    EditReminderDialog.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -99,6 +101,7 @@ FORMS    += \
     AddPersonToOrg.ui \
     RemindersDialog.ui \
     NotesDialog.ui \
+    EditReminderDialog.ui
 
 RESOURCES += \
     images.qrc \

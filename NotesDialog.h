@@ -20,14 +20,14 @@ public:
     void setCallId(QString &uniqueid, QString &state_call);
     ~NotesDialog();
 
-public slots:
-    bool eventFilter(QObject *object, QEvent *event);
-
 protected:
     void onUpdate();
     void setNote();
     void loadNotes();
     void deleteObjects();
+
+protected slots:
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     Ui::NotesDialog *ui;
