@@ -32,6 +32,9 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &RemindersDialog::onSave);
 
+    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
 

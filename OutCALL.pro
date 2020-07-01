@@ -37,7 +37,6 @@ SOURCES += main.cpp\
     ViewOrgContactDialog.cpp \
     EditContactDialog.cpp \
     EditOrgContactDialog.cpp \
-    AddNoteDialog.cpp \
     ChooseNumber.cpp \
     DatabasesConnectDialog.cpp \
     AddOrgToPerson.cpp \
@@ -67,7 +66,6 @@ HEADERS  += \
     ViewOrgContactDialog.h \
     EditContactDialog.h \
     EditOrgContactDialog.h \
-    AddNoteDialog.h \
     ChooseNumber.h \
     DatabasesConnectDialog.h \
     AddOrgToPerson.h \
@@ -93,7 +91,6 @@ FORMS    += \
     ViewOrgContactDialog.ui \
     EditContactDialog.ui \
     EditOrgContactDialog.ui \
-    AddNoteDialog.ui \
     ChooseNumber.ui \
     DatabasesConnectDialog.ui \
     AddOrgToPerson.ui \
