@@ -95,6 +95,7 @@ private:
     QString days;
     QString number;
     QString my_number;
+    QString my_group;
     QString extfield1;
     QString src;
     QString uniqueid;

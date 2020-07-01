@@ -14,7 +14,7 @@
 #include <QLabel>
 #include <QTextBlock>
 #include <QItemSelectionModel>
-#include <QDebug>
+#include <QRegExp>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -27,6 +27,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
+    my_group = settingsDialog->getGroupExtension();
     setWindowTitle(tr("История звонков по номеру: ") + my_number);
 
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
@@ -34,7 +35,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->updateButton,        &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
 
-    connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(tabSelected()));
+    connect(ui->comboBox_2,  SIGNAL(currentTextChanged(QString)), this, SLOT(tabSelected()));
 
     connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToReceived(const QModelIndex &)));
@@ -87,25 +88,30 @@ void CallHistoryDialog::showEvent( QShowEvent* event ) {
 void CallHistoryDialog::getNumber(const QModelIndex &index)
 {
     number = query4->data(query4->index(index.row(), 1)).toString();
+
     if(number == my_number)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
+        number.remove(QRegExp(".(from [0-9]+.)"));
     }
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
 {
     number = query1->data(query1->index(index.row(), 1)).toString();
+    number.remove(QRegExp(".(from [0-9]+.)"));
 }
 
 void CallHistoryDialog::getNumberReceived(const QModelIndex &index)
 {
     number = query2->data(query2->index(index.row(), 1)).toString();
+    number.remove(QRegExp(".(from [0-9]+.)"));
 }
 
 void CallHistoryDialog::getNumberPlaced(const QModelIndex &index)
 {
     number = query3->data(query3->index(index.row(), 1)).toString();
+    number.remove(QRegExp(".(from [0-9]+.)"));
 }
 
 void CallHistoryDialog::onAddContact()
@@ -234,7 +240,7 @@ void CallHistoryDialog::onCallClicked()
 
     const QString from = my_number;
     QString to = number;
-    to.remove(QRegExp("\\([0-9]+\\)"));
+
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
@@ -324,7 +330,7 @@ void CallHistoryDialog::loadAllCalls()
     QSqlQuery query(db);
 
     query4 = new QSqlQueryModel;
-    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.("+my_number+".).)$' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
+    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.("+my_number+".).)$' OR dst = '"+my_group+"' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query4->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -532,16 +538,18 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.("+my_number+".).)$') ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+.("+my_number+".)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.)$' OR dst REGEXP '^"+my_number+".(from [0-9]+.("+my_number+".).)$' OR dst = '"+my_group+"') ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
     query1->insertColumn(4);
     query1->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
     ui->tableView->setModel(query1);
     ui->tableView->setColumnHidden(5, true);
-    ui->tableView->setColumnHidden(2, true);
+    if(my_group.isEmpty())
+        ui->tableView->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -578,7 +586,8 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_2->setModel(query2);
     ui->tableView_2->setColumnHidden(5, true);
-    ui->tableView_2->setColumnHidden(2, true);
+    if(my_group.isEmpty())
+        ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {

@@ -27,14 +27,19 @@ public:
     void loadSettings();
     void show();
     QString getExtension();
+    QString getGroupExtension();
 
 public slots:
     void checkExten();
+    void checkGroupExten();
 
 protected:
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onEditButtonClicked();
+    void onAddGroupButtonClicked();
+    void onRemoveGroupButtonClicked();
+    void onEditGroupButtonClicked();
     void applySettings();
     void selectLanguage();
     void loadLanguages();
@@ -51,6 +56,7 @@ private:
     QString userName;
     QString path;
     QString exten;
+    QString group_exten;
     QStringList m_countries;
 };
 

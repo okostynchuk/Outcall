@@ -27,6 +27,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
     connect(ui->removeButton, &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
     connect(ui->editButton,   &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
+    connect(ui->addButton_2,    &QPushButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
+    connect(ui->removeButton_2, &QPushButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
+    connect(ui->editButton_2,   &QPushButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
@@ -39,6 +42,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     loadSettings();
 
     checkExten();
+    checkGroupExten();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -70,6 +74,17 @@ void SettingsDialog::saveSettings()
         QString extension = item->text(0);
         QString protocol = item->text(1);
         global::setSettingsValue(extension, protocol, "extensions");
+    }
+
+    // Save group extensions
+    global::removeSettinsKey("group_extensions");
+    int nRow2 = ui->treeWidget_2->topLevelItemCount();
+    for (int i = 0; i < nRow2; ++i)
+    {
+        QTreeWidgetItem *group_item = ui->treeWidget_2->topLevelItem(i);
+        QString group_extension = group_item->text(0);
+        QString group_protocol = group_item->text(1);
+        global::setSettingsValue(group_extension, group_protocol, "group_extensions");
     }
 
     // Save Databases SettingsDialog
@@ -157,6 +172,19 @@ void SettingsDialog::loadSettings()
         extensionItem->setText(0, extension);
         extensionItem->setText(1, protocol);
     }
+
+    // Load group extensions
+    QStringList group_extensions = global::getSettingKeys("group_extensions");
+    int nRows2              = group_extensions.size();
+    for (int i = 0; i < nRows2; ++i)
+    {
+        const QString group_extension = group_extensions.at(i);
+        const QString group_protocol  = global::getSettingsValue(group_extension, "group_extensions").toString();
+
+        QTreeWidgetItem *group_extensionItem = new QTreeWidgetItem(ui->treeWidget_2);
+        group_extensionItem->setText(0, group_extension);
+        group_extensionItem->setText(1, group_protocol);
+    }
 }
 
 void SettingsDialog::show()
@@ -231,6 +259,18 @@ QString SettingsDialog::getExtension()
     return NULL;
 }
 
+QString SettingsDialog::getGroupExtension()
+{
+    QStringList group_extensions = global::getSettingKeys("group_extensions");
+    int nRows2              = group_extensions.size();
+    for (int i = 0; i < nRows2; ++i)
+    {
+        const QString group_extension = group_extensions.at(i);
+        return group_extension;
+    }
+    return NULL;
+}
+
 void SettingsDialog::onAddButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
@@ -247,6 +287,26 @@ void SettingsDialog::onAddButtonClicked()
         extensionItem->setData(0, Qt::CheckStateRole, QVariant());
 
         ui->treeWidget->addTopLevelItem(extensionItem);
+    }
+    m_addExtensionDialog->deleteLater();
+}
+
+void SettingsDialog::onAddGroupButtonClicked()
+{
+    m_addExtensionDialog = new AddExtensionDialog;
+    m_addExtensionDialog->setWindowTitle(tr("Добавление"));
+    if(m_addExtensionDialog->exec())
+    {
+        ui->addButton_2->setEnabled(false);
+        QString group_extension = m_addExtensionDialog->getExtension();
+        QString group_protocol = m_addExtensionDialog->getProtocol();
+
+        QTreeWidgetItem *group_extensionItem = new QTreeWidgetItem();
+        group_extensionItem->setText(0, group_extension);
+        group_extensionItem->setText(1, group_protocol);
+        group_extensionItem->setData(0, Qt::CheckStateRole, QVariant());
+
+        ui->treeWidget_2->addTopLevelItem(group_extensionItem);
     }
     m_addExtensionDialog->deleteLater();
 }
@@ -285,6 +345,40 @@ void SettingsDialog::onRemoveButtonClicked()
     }
 }
 
+void SettingsDialog::onRemoveGroupButtonClicked()
+{
+    QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
+
+    if (selectedItems.size() > 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Удаление номера"));
+        msgBox.setInformativeText(tr("Вы уверены, что хотите удалить выбранный номер?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
+        msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+        int reply = msgBox.exec();
+        switch(reply)
+        {
+            case QMessageBox::Yes:
+                ui->addButton_2->setEnabled(true);
+                break;
+            case QMessageBox::No:
+                msgBox.close();
+                return;
+                break;
+            default:
+                break;
+        }
+
+        for (int i = 0; i < selectedItems.size(); ++i)
+        {
+            int index = ui->treeWidget_2->indexOfTopLevelItem(selectedItems.at(i));
+            ui->treeWidget_2->takeTopLevelItem(index);
+        }
+    }
+}
+
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
@@ -311,6 +405,32 @@ void SettingsDialog::onEditButtonClicked()
     }
 }
 
+void SettingsDialog::onEditGroupButtonClicked()
+{
+    AddExtensionDialog editExtensionDialog;
+    editExtensionDialog.setWindowTitle(tr("Редактирование"));
+    QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
+
+    if (selectedItems.size())
+    {
+        QTreeWidgetItem *item = selectedItems.at(0);
+        const QString group_extension = item->text(0);
+        const QString group_protocol = item->text(1);
+
+        editExtensionDialog.setExtension(group_extension);
+        editExtensionDialog.setProtocol(group_protocol);
+
+        if(editExtensionDialog.exec())
+        {
+            const QString newExtension = editExtensionDialog.getExtension();
+            const QString newProtocol = editExtensionDialog.getProtocol();
+
+            item->setText(0, newExtension);
+            item->setText(1, newProtocol);
+        }
+    }
+}
+
 void SettingsDialog::checkExten()
 {
     exten = getExtension();
@@ -319,5 +439,16 @@ void SettingsDialog::checkExten()
     else
     {
         ui->addButton->setEnabled(true);
+    }
+}
+
+void SettingsDialog::checkGroupExten()
+{
+    group_exten = getGroupExtension();
+    if(group_exten!=0)
+        ui->addButton_2->setEnabled(false);
+    else
+    {
+        ui->addButton_2->setEnabled(true);
     }
 }
