@@ -28,6 +28,7 @@ protected:
 
 protected slots:
     bool eventFilter(QObject *object, QEvent *event);
+    void onTextChanged();
 
 private:
     Ui::NotesDialog *ui;

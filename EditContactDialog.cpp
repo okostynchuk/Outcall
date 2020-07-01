@@ -6,7 +6,6 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
-#include <QTableView>
 #include <QPlainTextEdit>
 #include <QString>
 #include <QMessageBox>

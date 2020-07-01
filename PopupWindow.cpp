@@ -33,6 +33,8 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     ui->setupUi(this);
 
+    userID = global::getSettingsValue("user_login", "settings").toString();
+
     QSqlDatabase db;
     QSqlQuery query(db);
     QString note;
@@ -351,7 +353,7 @@ void PopupWindow::onShowCard()
 
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT id, entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+    query.prepare("SELECT id, entry_type, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
     query.first();
     QString updateID = query.value(0).toString();
@@ -414,6 +416,52 @@ void PopupWindow::onSaveNote()
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
+}
+
+void PopupWindow::onOpenAccess()
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+    query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+    query.exec();
+    query.first();
+    QString vyborID = query.value(0).toString();
+
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                            "Server="+hostName_3+","+port_3+";"
+                            "Database="+databaseName_3+";"
+                            "Uid="+userName_3+";"
+                            "Pwd="+password_3);
+    bool ok = dbMSSQL.open();
+
+    QSqlQuery query1(dbMSSQL);
+
+    if (ok)
+    {
+        query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
+                   "VALUES (?, ?)");
+        query1.addBindValue(userID);
+        query1.addBindValue(vyborID);
+        query1.exec();
+        popup->ui->openAccess->hide();
+        dbMSSQL.close();
+    }
+    else
+    {
+        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+    }
 }
 
 void PopupWindow::receiveData(bool update)
@@ -556,4 +604,6 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
+    connect(popup->ui->openAccess, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
+    popup->ui->openAccess->setProperty("qv_popup", qv_popup);
 }

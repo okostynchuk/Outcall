@@ -43,6 +43,7 @@ public slots:
     void receiveNumber(QString &);
 
 protected slots:
+    void onOpenAccess();
     void onCall();
     void onEdit();
     void loadMissedCalls();
@@ -64,6 +65,7 @@ private:
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QValidator *validator;
+    QString userID;
     QString updateID;
     QString uniqueid;
     QString number;

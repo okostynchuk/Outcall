@@ -12,7 +12,6 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QProcess>
-#include <QTranslator>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -75,22 +74,33 @@ void SettingsDialog::saveSettings()
 
     // Save Databases SettingsDialog
         //Contact Base
-    global::setSettingsValue("hostName_1", ui->hostName_1->text(), "settings");
-    global::setSettingsValue("databaseName_1",   ui->databaseName_1->text(),   "settings");
-    global::setSettingsValue("userName_1",   ui->userName_1->text(),   "settings");
+    global::setSettingsValue("hostName_1", ui->hostName_1->text(),         "settings");
+    global::setSettingsValue("databaseName_1", ui->databaseName_1->text(), "settings");
+    global::setSettingsValue("userName_1", ui->userName_1->text(),         "settings");
     QByteArray ba1;
     ba1.append(ui->password_1->text());
-    global::setSettingsValue("password_1", ba1.toBase64(),            "settings");
-    global::setSettingsValue("port_1", ui->port_1->text(),    "settings");
+    global::setSettingsValue("password_1", ba1.toBase64(), "settings");
+    global::setSettingsValue("port_1", ui->port_1->text(), "settings");
 
         //Calls Base
-    global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
-    global::setSettingsValue("databaseName_2",   ui->databaseName_2->text(),   "settings");
-    global::setSettingsValue("userName_2",   ui->userName_2->text(),   "settings");
+    global::setSettingsValue("hostName_2", ui->hostName_2->text(),         "settings");
+    global::setSettingsValue("databaseName_2", ui->databaseName_2->text(), "settings");
+    global::setSettingsValue("userName_2", ui->userName_2->text(),         "settings");
     QByteArray ba2;
     ba2.append(ui->password_2->text());
-    global::setSettingsValue("password_2", ba2.toBase64(),            "settings");
-    global::setSettingsValue("port_2", ui->port_2->text(),    "settings");
+    global::setSettingsValue("password_2", ba2.toBase64(), "settings");
+    global::setSettingsValue("port_2", ui->port_2->text(), "settings");
+
+        //MSSQL Base
+    global::setSettingsValue("hostName_3", ui->hostName_3->text(), "settings");
+    global::setSettingsValue("databaseName_3", ui->databaseName_3->text(), "settings");
+    global::setSettingsValue("userName_3", ui->userName_3->text(), "settings");
+    QByteArray ba3;
+    ba3.append(ui->password_3->text());
+    global::setSettingsValue("password_3", ba3.toBase64(), "settings");
+    global::setSettingsValue("port_3", ui->port_3->text(), "settings");
+    global::setSettingsValue("user_login", ui->user_login->text(), "settings");
+
 }
 
 void SettingsDialog::loadSettings()
@@ -118,6 +128,15 @@ void SettingsDialog::loadSettings()
     QString ba2(QByteArray::fromBase64(password2));
     ui->password_2->setText(ba2);
     ui->port_2->setText(global::getSettingsValue("port_2", "settings").toString());
+
+    ui->hostName_3->setText(global::getSettingsValue("hostName_3", "settings").toString());
+    ui->databaseName_3->setText(global::getSettingsValue("databaseName_3", "settings").toString());
+    ui->userName_3->setText(global::getSettingsValue("userName_3", "settings").toString());
+    QByteArray password3((global::getSettingsValue("password_3", "settings").toByteArray()));
+    QString ba3(QByteArray::fromBase64(password3));
+    ui->password_3->setText(ba3);
+    ui->user_login->setText(global::getSettingsValue("user_login", "settings").toString());
+    ui->port_3->setText(global::getSettingsValue("port_3", "settings").toString());
 
     // Load General SettingsDialog
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
@@ -189,17 +208,15 @@ void SettingsDialog::applySettings()
 
 void SettingsDialog::loadLanguages()
 {
-        //ui->languageList_2->clear();
+    ui->languageList_2->addItem(tr("Русский (default)"), "");
+    ui->languageList_2->addItem(tr("Українська"), "");
+    ui->languageList_2->addItem(tr("English"), "");
 
-        ui->languageList_2->addItem(tr("Русский (default)"), "");
-        ui->languageList_2->addItem(tr("Українська"), "");
-        ui->languageList_2->addItem(tr("English"), "");
-
-        QString lang = global::getSettingsValue("language", "settings").toString();
-        if(lang == "")
-            ui->languageList_2->setCurrentIndex(0);
-        else
-            ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
+    QString lang = global::getSettingsValue("language", "settings").toString();
+    if(lang == "")
+        ui->languageList_2->setCurrentIndex(0);
+    else
+        ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
 }
 
 QString SettingsDialog::getExtension()

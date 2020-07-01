@@ -17,23 +17,25 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->textEdit->installEventFilter(this);
 
+    settingsDialog = new SettingsDialog();
+    my_number = settingsDialog->getExtension();
+
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
+    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
-
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
 }
 
 NotesDialog::~NotesDialog()
 {
     delete ui;
+    delete settingsDialog;
     deleteObjects();
 }
 
@@ -52,10 +54,15 @@ void NotesDialog::loadNotes()
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
     query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
     ui->tableView->setModel(query);
+    ui->tableView->setWordWrap(true);
     ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    if(state=="save_disable")
     if (state == "save_disable")
     {
        ui->label->setDisabled(true);
@@ -100,10 +107,15 @@ void NotesDialog::onSave()
     destroy(true);
 }
 
+void NotesDialog::onTextChanged()
+{
+    if(ui->textEdit->toPlainText().length() > 255)
+        ui->textEdit->textCursor().deletePreviousChar();
+}
+
 void NotesDialog::onUpdate()
 {
     deleteObjects();
-    delete settingsDialog;
     loadNotes();
 }
 

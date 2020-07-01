@@ -15,6 +15,8 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QDebug>
+#include <QtSql>
+#include <QSqlDatabase>
 
 int main(int argc, char *argv[])
 {

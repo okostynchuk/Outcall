@@ -105,11 +105,11 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Введені існуючі номера! %1</translation>
+        <translation type="vanished">Введені існуючі номера! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомленння</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -122,6 +122,10 @@
     <message>
         <source>Номер не соответствует формату!</source>
         <translation>Номер не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Введені існуючі номера!</translation>
     </message>
 </context>
 <context>
@@ -210,7 +214,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
@@ -294,11 +298,11 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Введені існуючі номера! %1</translation>
+        <translation type="vanished">Введені існуючі номера! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -311,6 +315,10 @@
     <message>
         <source>Номер не соответствует формату!</source>
         <translation>Номер не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Введені наявні номера!</translation>
     </message>
 </context>
 <context>
@@ -377,6 +385,180 @@
     </message>
 </context>
 <context>
+    <name>AddPersonToOrg</name>
+    <message>
+        <source>Добавление сотрудников к организации</source>
+        <translation>Додавання співробітників до організації</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Оберіть стовбчик для пошуку</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Пошук по таблиці</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Пошук</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Сотрудник успешно добавлен!</source>
+        <translation>Співробітник успішно доданий!</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО</source>
+        <translation>Пошук по ПІБ</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Пошук за номером телефона</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Пошук за коментарем</translation>
+    </message>
+</context>
+<context>
+    <name>AddPhoneNumberToContactDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Оберіть стовбчик для пошуку</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Пошук по таблиці</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Пошук</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
+    </message>
+    <message>
+        <source>Добавление номера</source>
+        <translation>Додавання номеру</translation>
+    </message>
+    <message>
+        <source>Вы действительно хотите добавить номер к выбранному контакту?</source>
+        <translation>Ви дійсно хочете додати номер до обраного контакту?</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Так</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Ні</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Номер успешно добавлен!</source>
+        <translation>Номер успішно доданий!</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Контакту не может быть присвоено больше 5 номеров!</source>
+        <translation>Контакт не може мати більше ніж 5 номерів!</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Пошук по ПІБ / назві</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Пошук за номером телефона</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Пошук за коментарем</translation>
+    </message>
+</context>
+<context>
     <name>CallHistoryDialog</name>
     <message>
         <source>История звонков</source>
@@ -392,7 +574,7 @@
     </message>
     <message>
         <source>Показать звонки за последние:</source>
-        <translation>Показати дзвінкі за останні:</translation>
+        <translation>Показати дзвінки за останні:</translation>
     </message>
     <message>
         <source>7</source>
@@ -424,7 +606,7 @@
     </message>
     <message>
         <source>Обновить</source>
-        <translation>Обновити</translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <source>Добавить / изменить физ. лицо</source>
@@ -462,6 +644,26 @@
         <source>Имя</source>
         <translation>Ім&apos;я</translation>
     </message>
+    <message>
+        <source>Все звонки</source>
+        <translation>Усі дзвінки</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Пропущений</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Зайнято</translation>
+    </message>
+    <message>
+        <source>Отклонено</source>
+        <translation>Відхилено</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Прийнятий</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -471,7 +673,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номер:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>1</source>
@@ -514,7 +716,7 @@
     </message>
     <message>
         <source>Выберите столбец поиска</source>
-        <translation>Оберіть стовбець пошуку</translation>
+        <translation>Оберіть стовбчик пошуку</translation>
     </message>
     <message>
         <source>Поиск по таблице</source>
@@ -690,7 +892,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Подключение успешно создано!</source>
@@ -757,7 +959,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>Отвязать</source>
@@ -818,15 +1020,15 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Введені існуючі номера! %1</translation>
+        <translation type="vanished">Введені існуючі номера! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation>Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Нет</source>
@@ -839,6 +1041,10 @@
     <message>
         <source>Номер не соответствует формату!</source>
         <translation>Номер не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Введені існуючі номери!</translation>
     </message>
 </context>
 <context>
@@ -889,7 +1095,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>VyborID:</source>
@@ -946,15 +1152,15 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Введені існуючі номера! %1</translation>
+        <translation type="vanished">Введені існуючі номера! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation>Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Редактирование</source>
@@ -971,6 +1177,53 @@
     <message>
         <source>Номер не соответствует формату!</source>
         <translation>Номер не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Введені існуючі номери!</translation>
+    </message>
+</context>
+<context>
+    <name>NotesDialog</name>
+    <message>
+        <source>Заметки</source>
+        <translation>Коментарі</translation>
+    </message>
+    <message>
+        <source>Добавить заметку</source>
+        <translation>Додати коментар</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Зберегти</translation>
+    </message>
+    <message>
+        <source>Обновить</source>
+        <translation>Оновити</translation>
+    </message>
+    <message>
+        <source>Список заметок</source>
+        <translation>Список коментарів</translation>
+    </message>
+    <message>
+        <source>Автор</source>
+        <translation>Автор</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Коментар</translation>
     </message>
 </context>
 <context>
@@ -1025,11 +1278,11 @@
     </message>
     <message>
         <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</source>
-        <translation>Хост не був знайдений. Будь ласка, перевірте ім&apos;я хоста і настройки порту</translation>
+        <translation>Хост не був знайдений. Будь ласка, перевірте ім&apos;я хосту і налаштування порту</translation>
     </message>
     <message>
         <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</source>
-        <translation>З&apos;єднання було відхилено вузлом. Переконайтеся, що сервер працює, і перевірте правильність імені хоста і налаштувань порту</translation>
+        <translation>З&apos;єднання було відхилено вузлом. Переконайтеся, що сервер працює, і перевірте правильність імені хосту і налаштувань порту</translation>
     </message>
     <message>
         <source>Выйти из аккаунта</source>
@@ -1041,7 +1294,7 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Повідомлення</translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Соединение восстановлено. Приложение будет перезапущено!</source>
@@ -1071,6 +1324,10 @@
         <source>Не настроен</source>
         <translation>Не налаштовано</translation>
     </message>
+    <message>
+        <source>Напоминания</source>
+        <translation>Нагадування</translation>
+    </message>
 </context>
 <context>
     <name>PlaceCallDialog</name>
@@ -1088,7 +1345,7 @@
     </message>
     <message>
         <source>Номер:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>Поиск</source>
@@ -1183,7 +1440,7 @@
     </message>
     <message>
         <source>Ввод заметки</source>
-        <translation>Введення коментаря</translation>
+        <translation>Введення коментарю</translation>
     </message>
     <message>
         <source>Сохранить заметку</source>
@@ -1195,7 +1452,7 @@
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
@@ -1208,6 +1465,22 @@
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
         <translation>Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;Невідомий (%1)&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>К существующему</source>
+        <translation>До існуючого</translation>
+    </message>
+    <message>
+        <source>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Входящий звонок от:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Данная заметка уже существует!</source>
+        <translation>Такий коментар уже існує!</translation>
     </message>
 </context>
 <context>
@@ -1272,6 +1545,33 @@
         <source>Failed to load language file.</source>
         <translation type="vanished">Не вдалося загрузити файл з мовою.</translation>
     </message>
+    <message>
+        <source>Статус</source>
+        <translation>Статус</translation>
+    </message>
+</context>
+<context>
+    <name>RemindersDialog</name>
+    <message>
+        <source>Напоминания</source>
+        <translation>Нагадування</translation>
+    </message>
+    <message>
+        <source>HH:mm</source>
+        <translation>HH:mm</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Зберегти</translation>
+    </message>
+    <message>
+        <source>Содержание</source>
+        <translation>Зміст</translation>
+    </message>
+    <message>
+        <source>Список напоминаний</source>
+        <translation>Список нагадувань</translation>
+    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
@@ -1293,7 +1593,7 @@
     </message>
     <message>
         <source>Запустить приложение при загрузке Windows</source>
-        <translation>Запускати додаток при загрузці Windows</translation>
+        <translation>Запускати додаток при завантаженні Windows</translation>
     </message>
     <message>
         <source>Выбор языка</source>
@@ -1369,7 +1669,7 @@
     </message>
     <message>
         <source>Номера</source>
-        <translation>Номера</translation>
+        <translation>Номери</translation>
     </message>
     <message>
         <source>Добавить</source>
@@ -1476,7 +1776,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>3</source>
@@ -1611,7 +1911,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>VyborID:</source>
@@ -1696,6 +1996,10 @@
     <message>
         <source>Заметки</source>
         <translation>Коментарі</translation>
+    </message>
+    <message>
+        <source>Добавить сотрудника</source>
+        <translation>Додати співробітника</translation>
     </message>
 </context>
 </TS>

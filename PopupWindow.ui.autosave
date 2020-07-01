@@ -193,19 +193,44 @@ text-align: center;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QPushButton" name="openAccess">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>170</y>
-     <width>361</width>
-     <height>151</height>
+     <x>311</x>
+     <y>150</y>
+     <width>81</width>
+     <height>23</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+background-color: #ffb64f;
+border: 1.5px solid #a53501;
+color: black;
+}</string>
+   </property>
+   <property name="text">
+    <string>Заказы</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>31</x>
+     <y>176</y>
+     <width>361</width>
+     <height>148</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
        <widget class="QTextEdit" name="textEdit">
         <property name="maximumSize">
          <size>
@@ -654,7 +679,7 @@ border-radius: 5px;
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QPushButton" name="saveNoteButton">
         <property name="font">
          <font>
@@ -678,7 +703,7 @@ color: black;
       </item>
      </layout>
     </item>
-    <item>
+    <item row="1" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
@@ -849,31 +874,6 @@ color: black;
      </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="openAccess">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>140</y>
-     <width>81</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-background-color: #ffb64f;
-border: 1.5px solid #a53501;
-color: black;
-}</string>
-   </property>
-   <property name="text">
-    <string>Заказы</string>
-   </property>
   </widget>
  </widget>
  <resources>

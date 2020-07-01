@@ -2,6 +2,8 @@
 #include "ui_debuginfodialog.h"
 #include "Global.h"
 
+#include <QDesktopServices>
+
 DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DebugInfoDialog)
@@ -11,6 +13,8 @@ DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     ui->textEdit->setReadOnly(true);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+   // QDesktopServices::openUrl(QUrl("file:///C:/vybor/view.ade", QUrl::TolerantMode));
 
     connect(ui->exit,  &QAbstractButton::clicked, this, &DebugInfoDialog::onExit);
     connect(ui->clear, &QAbstractButton::clicked, this, &DebugInfoDialog::onClear);

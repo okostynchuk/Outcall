@@ -29,18 +29,19 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     my_number = settingsDialog->getExtension();
     setWindowTitle(tr("История звонков по номеру: ") + my_number);
 
-    connect(ui->callButton,   &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->addContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
+    connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton, &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
+    connect(ui->updateButton,        &QPushButton::clicked, this, &CallHistoryDialog::onUpdate);
+
     connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(tabSelected()));
 
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
+    connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNoteToPlaced(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNotes(const QModelIndex &)));
 
-    connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberMissed(const QModelIndex &)));
+    connect(ui->tableView,   SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberMissed(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberPlaced(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumber(const QModelIndex &)));
@@ -54,6 +55,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
+
+    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     days = ui->comboBox_2->currentText();
     loadAllCalls();
@@ -85,7 +91,6 @@ void CallHistoryDialog::getNumber(const QModelIndex &index)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
     }
-
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
@@ -112,15 +117,15 @@ void CallHistoryDialog::onAddContact()
     }
 
     addContactDialog = new AddContactDialog;
-
     bool a = checkNumber(number);
-    if (a == true)
+    if (a)
     {
         addContactDialog->setValuesCallHistory(number);
         addContactDialog->show();
         addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else if (a == false) editContact(number);
+    else
+        editContact(number);
 }
 
 void CallHistoryDialog::onAddOrgContact()
@@ -134,13 +139,14 @@ void CallHistoryDialog::onAddOrgContact()
     addOrgContactDialog = new AddOrgContactDialog;
 
     bool a = checkNumber(number);
-    if (a == true)
+    if (a)
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
         addOrgContactDialog->show();
         addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else if (a == false) editOrgContact(number);
+    else
+        editOrgContact(number);
 }
 
 void CallHistoryDialog::addNotes(const QModelIndex &index)
@@ -356,10 +362,9 @@ void CallHistoryDialog::loadAllCalls()
     }
 
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView_4->resizeColumnsToContents();
+    ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView_4->setColumnWidth(4, 90);
-    ui->tableView_4->resizeRowsToContents();
 }
 
 QWidget* CallHistoryDialog::loadName()
@@ -548,7 +553,6 @@ void CallHistoryDialog::loadMissedCalls()
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadMissedNote());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -586,7 +590,6 @@ void CallHistoryDialog::loadReceivedCalls()
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadReceivedNote());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -623,8 +626,8 @@ void CallHistoryDialog::loadPlacedCalls()
         if(query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadPlacedNote());
     }
+
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -654,6 +657,7 @@ QWidget* CallHistoryDialog::loadAllNotes()
     query.exec();
     query.first();
     note->setText(query.value(0).toString());
+    note->setWordWrap(true);
 
     widgets.append(wgt);
     notes.append(note);
@@ -683,6 +687,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     query.exec();
     query.first();
     missedNote->setText(query.value(0).toString());
+    missedNote->setWordWrap(true);
 
     widgetsMissed.append(missedWgt);
     notesMissed.append(missedNote);
@@ -712,6 +717,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     query.exec();
     query.first();
     receivedNote->setText(query.value(0).toString());
+    receivedNote->setWordWrap(true);
 
     widgetsReceived.append(receivedWgt);
     notesReceived.append(receivedNote);
@@ -742,6 +748,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());
+    placedNote->setWordWrap(true);
 
     layout->addWidget(placedNote);
     layout->setContentsMargins(3, 0, 0, 0);
