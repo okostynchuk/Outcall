@@ -189,6 +189,9 @@
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
            </property>
+           <property name="tabKeyNavigation">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
         </layout>
@@ -202,6 +205,9 @@
           <widget class="QTableView" name="tableView_2">
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
+           </property>
+           <property name="tabKeyNavigation">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
