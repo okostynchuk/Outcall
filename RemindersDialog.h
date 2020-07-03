@@ -23,6 +23,8 @@ public:
     ~RemindersDialog();
 
 public slots:
+    void onUpdate();
+    void sendNewValues();
     void receiveData(bool);
 
 protected:
@@ -30,15 +32,13 @@ protected:
     void loadInactiveReminders();
 
 protected slots:
-    void onUpdate();
     void onEditReminder(const QModelIndex &);
     void onTextChanged();
-    void sendNewValues();
     void deleteObjects();
     void changeState();
     void onSave();
     bool eventFilter(QObject *object, QEvent *event);
-    void onNotify(QString reminderNote);
+    void onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote);
 
 private:
     Ui::RemindersDialog *ui;

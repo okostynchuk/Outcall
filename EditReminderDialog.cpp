@@ -30,7 +30,7 @@ EditReminderDialog::~EditReminderDialog()
 void EditReminderDialog::onSave()
 {
     QDateTime dateTime = ui->dateTimeEdit->dateTime();
-    QString note = ui->textEdit->toPlainText();
+    QString note = ui->textEdit->toPlainText().simplified();
 
     if (dateTime < QDateTime::currentDateTime())
     {
@@ -38,7 +38,7 @@ void EditReminderDialog::onSave()
         return;
     }
 
-    if (ui->textEdit->toPlainText().isEmpty())
+    if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
         return;
@@ -46,17 +46,6 @@ void EditReminderDialog::onSave()
 
     QSqlDatabase db;
     QSqlQuery query(db);
-
-    query.prepare("SELECT EXISTS (SELECT datetime FROM reminders WHERE phone = '" + my_number + "' AND datetime = ? AND datetime <> ? AND active IS TRUE)");
-    query.addBindValue(dateTime);
-    query.addBindValue(oldDateTime);
-    query.exec();
-    query.next();
-    if (query.value(0) != 0)
-    {
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Напоминание на заданное время уже существует и активно!"), QMessageBox::Ok);
-        return;
-    }
 
     query.prepare("UPDATE reminders SET datetime = ?, content = ?, active = true WHERE id = ? AND phone = ? AND datetime = ? AND content = ?");
     query.addBindValue(dateTime);
@@ -90,7 +79,7 @@ void EditReminderDialog::setValuesReminders(QString receivedNumber, QString rece
 
 void EditReminderDialog::onTextChanged()
 {
-    if(ui->textEdit->toPlainText().length() > 255)
+    if(ui->textEdit->toPlainText().simplified().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
