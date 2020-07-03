@@ -82,7 +82,7 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if (ui->textEdit->toPlainText().isEmpty())
+    if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
         return;
@@ -100,7 +100,7 @@ void NotesDialog::onSave()
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
-    query.addBindValue(ui->textEdit->toPlainText());
+    query.addBindValue(ui->textEdit->toPlainText().simplified());
     query.addBindValue(author);
     query.exec();
 
@@ -120,7 +120,7 @@ void NotesDialog::onSave()
 
 void NotesDialog::onTextChanged()
 {
-    if(ui->textEdit->toPlainText().length() > 255)
+    if(ui->textEdit->toPlainText().simplified().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 

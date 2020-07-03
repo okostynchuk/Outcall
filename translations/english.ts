@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>Привязка к организации</source>
-        <translation>Organization binding</translation>
+        <translation type="vanished">Organization binding</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgId:</translation>
+        <translation>VyborId:</translation>
     </message>
     <message>
         <source>Сохранить данные</source>
@@ -82,7 +82,7 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Entered existing numbers! %1</translation>
+        <translation type="vanished">Entered existing numbers! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -91,6 +91,50 @@
     <message>
         <source>Запись успешно добавлена!</source>
         <translation>Success!</translation>
+    </message>
+    <message>
+        <source>Организация:</source>
+        <translation>Organization:</translation>
+    </message>
+    <message>
+        <source>Удалить</source>
+        <translation type="vanished">Delete</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation type="vanished">Edit</translation>
+    </message>
+    <message>
+        <source>Отвязать</source>
+        <translation>Unbind</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>Bind</translation>
+    </message>
+    <message>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Any</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Entered existing numbers!</translation>
     </message>
 </context>
 <context>
@@ -115,24 +159,75 @@
         <source>Неверный номер!</source>
         <translation>Incorrect number!</translation>
     </message>
+    <message>
+        <source>Применить</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>AddLanguageDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="vanished">Dialog</translation>
+    </message>
+    <message>
+        <source>Please select language to add:</source>
+        <translation type="vanished">Please select language to add:</translation>
+    </message>
+    <message>
+        <source>Add language</source>
+        <translation type="vanished">Add language</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Cancel</translation>
+    </message>
+    <message>
+        <source>Please select language to add first.</source>
+        <translation type="vanished">Please select language to add first.</translation>
+    </message>
+    <message>
+        <source>Open Language File</source>
+        <translation type="vanished">Open Language File</translation>
+    </message>
+    <message>
+        <source>Language Files (*.lang)</source>
+        <translation type="vanished">Language Files (*.lang)</translation>
+    </message>
+    <message>
+        <source>Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</source>
+        <translation type="vanished">Same language file already exists in the languages folder. It could not be removed. Perhaps you should try running application with administrative privileges.</translation>
+    </message>
+    <message>
+        <source>Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</source>
+        <translation type="vanished">Could not copy language file into languages folder. Perhaps you should try running application with administrative privileges.</translation>
+    </message>
+    <message>
+        <source>Language file was added successfully.</source>
+        <translation type="vanished">Language file was added successfully.</translation>
+    </message>
 </context>
 <context>
     <name>AddNoteDialog</name>
     <message>
         <source>Добавление / изменение заметки</source>
-        <translation>Add/edit note</translation>
+        <translation type="vanished">Add / edit note</translation>
     </message>
     <message>
         <source>Сохранить</source>
-        <translation>Save</translation>
+        <translation type="vanished">Save</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Notification</translation>
+        <translation type="vanished">Notification</translation>
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
-        <translation>Note was added successfully!</translation>
+        <translation type="vanished">Note was added successfully!</translation>
     </message>
 </context>
 <context>
@@ -183,7 +278,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1*</source>
@@ -204,7 +299,7 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>You have entered incorrect numbers! %1</translation>
+        <translation type="vanished">You have entered incorrect numbers! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -213,6 +308,263 @@
     <message>
         <source>Запись успешно добавлена!</source>
         <translation>Success!</translation>
+    </message>
+    <message>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Organization name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Entered existing numbers!</translation>
+    </message>
+</context>
+<context>
+    <name>AddOrgToPerson</name>
+    <message>
+        <source>Привязка организации</source>
+        <translation>Organization binding</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Choose search column</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Table search</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по названию</source>
+        <translation>Search by the name</translation>
+    </message>
+    <message>
+        <source>Поиск по городу</source>
+        <translation>Search by the city</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
+    </message>
+</context>
+<context>
+    <name>AddPersonToOrg</name>
+    <message>
+        <source>Добавление сотрудников к организации</source>
+        <translation>Adding staff to the organization</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Choose search column</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Table search</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Сотрудник успешно добавлен!</source>
+        <translation>Employee added successfully!</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО</source>
+        <translation>Search by full name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by phone number</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
+    </message>
+</context>
+<context>
+    <name>AddPhoneNumberToContactDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Выберите столбец поиска</source>
+        <translation>Choose search column</translation>
+    </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Table search</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
+    </message>
+    <message>
+        <source>Добавление номера</source>
+        <translation>Adding number</translation>
+    </message>
+    <message>
+        <source>Вы действительно хотите добавить номер к выбранному контакту?</source>
+        <translation>Add number to the chosen contact?</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Номер успешно добавлен!</source>
+        <translation>Number added successfully!</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Контакту не может быть присвоено больше 5 номеров!</source>
+        <translation>The contact can not have more than 5 numbers!</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Search by full name / name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by phone number</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
     </message>
 </context>
 <context>
@@ -243,7 +595,7 @@
     </message>
     <message>
         <source>Обновить</source>
-        <translation>Update</translation>
+        <translation>Refresh</translation>
     </message>
     <message>
         <source>Добавить / изменить физ. лицо</source>
@@ -281,6 +633,46 @@
         <source>История звонков по номеру: </source>
         <translation>Call history by the number:</translation>
     </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
+    </message>
+    <message>
+        <source>Все звонки</source>
+        <translation>All calls</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Missed</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Busy</translation>
+    </message>
+    <message>
+        <source>Отклонено</source>
+        <translation>Rejected</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Accepted</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -290,7 +682,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Numbers:</translation>
+        <translation>Phone numbers:</translation>
     </message>
     <message>
         <source>1</source>
@@ -311,6 +703,18 @@
     <message>
         <source>4</source>
         <translation>4</translation>
+    </message>
+    <message>
+        <source>Выбор номера</source>
+        <translation>Choose the number</translation>
+    </message>
+    <message>
+        <source>Номер(-a) &quot;</source>
+        <translation>Phone number(-s) &quot;</translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
     </message>
 </context>
 <context>
@@ -337,7 +741,7 @@
     </message>
     <message>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="vanished">TextLabel</translation>
     </message>
     <message>
         <source>►</source>
@@ -345,7 +749,7 @@
     </message>
     <message>
         <source>Обновить</source>
-        <translation>Update</translation>
+        <translation>Refresh</translation>
     </message>
     <message>
         <source>Добавить физ. лицо</source>
@@ -375,36 +779,68 @@
         <source>►►</source>
         <translation>►►</translation>
     </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Search by full name / name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by phone number</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
         <source>Настойки базы контактов</source>
-        <translation>Set contacts database</translation>
+        <translation type="vanished">Set contacts database</translation>
     </message>
     <message>
         <source>Имя хоста: </source>
-        <translation>Host name:</translation>
+        <translation type="vanished">Host name:</translation>
     </message>
     <message>
         <source>Имя базы данных:</source>
-        <translation>Database name:</translation>
+        <translation type="vanished">Database name:</translation>
     </message>
     <message>
         <source>Имя пользователя:</source>
-        <translation>Username:</translation>
+        <translation type="vanished">Username:</translation>
     </message>
     <message>
         <source>Пароль:</source>
-        <translation>Password:</translation>
+        <translation type="vanished">Password:</translation>
     </message>
     <message>
         <source>Порт:</source>
-        <translation>Port:</translation>
+        <translation type="vanished">Port:</translation>
     </message>
     <message>
         <source>Настройки базы звонков</source>
@@ -416,7 +852,64 @@
     </message>
     <message>
         <source>Отмена</source>
-        <translation>Cancel</translation>
+        <translation type="vanished">Cancel</translation>
+    </message>
+    <message>
+        <source>Подключение к базам данных</source>
+        <translation>Connection to databases</translation>
+    </message>
+    <message>
+        <source>Выйти из приложения</source>
+        <translation>Exit</translation>
+    </message>
+    <message>
+        <source>Настройки базы контактов</source>
+        <translation>Contact database settings</translation>
+    </message>
+    <message>
+        <source> Имя хоста: </source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source> Имя базы данных:</source>
+        <translatorcomment>Database name:</translatorcomment>
+        <translation>Database name:</translation>
+    </message>
+    <message>
+        <source> Имя пользователя:</source>
+        <translation>User name:</translation>
+    </message>
+    <message>
+        <source> Пароль:</source>
+        <translation>Password:</translation>
+    </message>
+    <message>
+        <source> Порт:</source>
+        <translation>Port:</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Подключение не создано!</source>
+        <translation>Connection not created!</translation>
+    </message>
+    <message>
+        <source>Подключение к базе контактов не создано!</source>
+        <translation>Connection to contact database not created!</translation>
+    </message>
+    <message>
+        <source>Подключение к базе звонков не создано!</source>
+        <translation>Connection to call database not created!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Подключение успешно создано!</source>
+        <translation>Connection created successfully!</translation>
     </message>
 </context>
 <context>
@@ -458,7 +951,7 @@
     </message>
     <message>
         <source>Привязка к организации</source>
-        <translation>Organization binding</translation>
+        <translation type="vanished">Organization binding</translation>
     </message>
     <message>
         <source>3</source>
@@ -490,7 +983,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -515,7 +1008,7 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Entered existing numbers! %1</translation>
+        <translation type="vanished">Entered existing numbers! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -524,6 +1017,50 @@
     <message>
         <source>Запись успешно изменена!</source>
         <translation>Success!</translation>
+    </message>
+    <message>
+        <source>Организация:</source>
+        <translation>Organization:</translation>
+    </message>
+    <message>
+        <source>Удалить</source>
+        <translation type="vanished">Delete</translation>
+    </message>
+    <message>
+        <source>Редактировать</source>
+        <translation type="vanished">Edit</translation>
+    </message>
+    <message>
+        <source>Отвязать</source>
+        <translation>Unbind</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>Bind</translation>
+    </message>
+    <message>
+        <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Any</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Entered existing numbers!</translation>
     </message>
 </context>
 <context>
@@ -578,7 +1115,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1*</source>
@@ -619,7 +1156,7 @@
     <message>
         <source>Введены существующие номера!
 %1</source>
-        <translation>Etered existing numbers! %1</translation>
+        <translation type="vanished">Etered existing numbers! %1</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -636,6 +1173,120 @@
     <message>
         <source>Выберите одну запись!</source>
         <translation type="vanished">Choose one element!</translation>
+    </message>
+    <message>
+        <source>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>Organization name:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
+        <translation>&lt;span style=&quot;color: red;&quot;&gt;Fill required field!&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID is not formatted!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Entered existing numbers!</translation>
+    </message>
+</context>
+<context>
+    <name>EditReminderDialog</name>
+    <message>
+        <source>Редактирование напоминания</source>
+        <translation>Reminder&apos;s editing</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Указано прошедшее время!</source>
+        <translation>Past time is indicated!</translation>
+    </message>
+    <message>
+        <source>Содержание напоминания не может быть пустым!</source>
+        <translation>The content of the reminder cannot be empty!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно изменено!</source>
+        <translation>Reminder changed successfully!</translation>
+    </message>
+</context>
+<context>
+    <name>NotesDialog</name>
+    <message>
+        <source>Заметки</source>
+        <translation>Notes</translation>
+    </message>
+    <message>
+        <source>Добавить заметку</source>
+        <translation>Add a comment</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Обновить</source>
+        <translation>Refresh</translation>
+    </message>
+    <message>
+        <source>Список заметок</source>
+        <translation>Notes list</translation>
+    </message>
+    <message>
+        <source>Автор</source>
+        <translation>Author</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Note</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Содержание заметки не может быть пустым!</source>
+        <translation>The content of the note cannot be empty!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Notification</translation>
+    </message>
+    <message>
+        <source>Заметка успешно добавлена!</source>
+        <translation>Note was added successfully!</translation>
     </message>
 </context>
 <context>
@@ -666,19 +1317,19 @@
     </message>
     <message>
         <source>Позвонить</source>
-        <translation>Call</translation>
+        <translation>Place a call</translation>
     </message>
     <message>
         <source>Удаленный хост закрыл соединение.</source>
-        <translation>The remote host has closed the connection.</translation>
+        <translation type="vanished">The remote host has closed the connection.</translation>
     </message>
     <message>
         <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта.</source>
-        <translation>The host was not found. Please check the host name and port settings.</translation>
+        <translation type="vanished">The host was not found. Please check the host name and port settings.</translation>
     </message>
     <message>
         <source>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</source>
-        <translation>The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</translation>
+        <translation type="vanished">The connection was refused by the peer. Make sure the server is running, and check that the host name and port settings are correct.</translation>
     </message>
     <message>
         <source>Выйти из аккаунта</source>
@@ -712,12 +1363,40 @@
         <source>Не настроен</source>
         <translation>Not set</translation>
     </message>
+    <message>
+        <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта.</source>
+        <translation type="vanished">The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct.</translation>
+    </message>
+    <message>
+        <source>Удаленный хост закрыл соединение</source>
+        <translation>The remote host has closed the connection</translation>
+    </message>
+    <message>
+        <source>Хост не был найден. Пожалуйста, проверьте имя хоста и настройки порта</source>
+        <translation>The host was not found. Please check host name and port settings</translation>
+    </message>
+    <message>
+        <source>Соединение было отклонено узлом. Убедитесь, что сервер работает, и проверьте правильность имени хоста и настроек порта</source>
+        <translation>The connection was rejected by the node. Verify that the server is running and verify that the host name and port settings are correct</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation type="vanished">Notification</translation>
+    </message>
+    <message>
+        <source>Соединение восстановлено. Приложение будет перезапущено!</source>
+        <translation type="vanished">Connection restored. The application will restart!</translation>
+    </message>
+    <message>
+        <source>Напоминания</source>
+        <translation>Reminders</translation>
+    </message>
 </context>
 <context>
     <name>PlaceCallDialog</name>
     <message>
         <source>Звонок</source>
-        <translation>Call</translation>
+        <translation>Place a call</translation>
     </message>
     <message>
         <source>От:</source>
@@ -759,6 +1438,14 @@
         <source>Поиск сотрудников по организации</source>
         <translation>Search of staff by the org</translation>
     </message>
+    <message>
+        <source>Сотрудники организации &quot;</source>
+        <translation>Employees at &quot;</translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation>&quot;</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
@@ -781,6 +1468,53 @@
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>PopupReminder</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Call back Denis Komadaric&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>ОК</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Напомнить позже</source>
+        <translation>Remind later</translation>
+    </message>
+    <message>
+        <source>Задать время</source>
+        <translation>Set time</translation>
+    </message>
+    <message>
+        <source>Через 10 минут</source>
+        <translation>In 10 minutes</translation>
+    </message>
+    <message>
+        <source>Через 30 минут</source>
+        <translation>In 30 minutes</translation>
+    </message>
+    <message>
+        <source>Через 1 час</source>
+        <translation>In 1 hour</translation>
+    </message>
+    <message>
+        <source>Через 24 часа</source>
+        <translation>In 24 hours</translation>
+    </message>
+    <message>
+        <source>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -819,7 +1553,7 @@
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Incoming call from:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">Incoming call from:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
@@ -832,6 +1566,46 @@
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
         <translation>Incoming call from:&lt;br&gt;&lt;b&gt;Unknown (%1)&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
+    <message>
+        <source>Сохранить заметку</source>
+        <translation>Save the note</translation>
+    </message>
+    <message>
+        <source>💾</source>
+        <translation>💾</translation>
+    </message>
+    <message>
+        <source>К существующему</source>
+        <translation>To existing</translation>
+    </message>
+    <message>
+        <source>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Входящий звонок от:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Incoming call from:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation type="vanished">Notification</translation>
+    </message>
+    <message>
+        <source>Данная заметка уже существует!</source>
+        <translation type="vanished">This note already exists!</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Orders</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>There is no access to the Access database!</translation>
     </message>
 </context>
 <context>
@@ -858,7 +1632,7 @@
     </message>
     <message>
         <source>ФИО / Название</source>
-        <translation>Privatel name / Org name</translation>
+        <translation>Private name / Org. name</translation>
     </message>
     <message>
         <source>Телефон</source>
@@ -878,7 +1652,7 @@
     </message>
     <message>
         <source>VyborID</source>
-        <translation>OrgID</translation>
+        <translation>VyborID</translation>
     </message>
     <message>
         <source>Заметка</source>
@@ -887,6 +1661,69 @@
     <message>
         <source>ФИО</source>
         <translation>Full name</translation>
+    </message>
+    <message>
+        <source>Название</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Failed to load language file.</source>
+        <translation type="vanished">Failed to load language file.</translation>
+    </message>
+    <message>
+        <source>Статус</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Активное</source>
+        <translation>Active</translation>
+    </message>
+    <message>
+        <source>Содержание</source>
+        <translation>Content</translation>
+    </message>
+</context>
+<context>
+    <name>RemindersDialog</name>
+    <message>
+        <source>Напоминания</source>
+        <translation>Reminders</translation>
+    </message>
+    <message>
+        <source>HH:mm</source>
+        <translation>HH:mm</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Содержание</source>
+        <translation>Content</translation>
+    </message>
+    <message>
+        <source>Список напоминаний</source>
+        <translation>Reminders list</translation>
+    </message>
+    <message>
+        <source>Актуальные</source>
+        <translation>Actual</translation>
+    </message>
+    <message>
+        <source>Прошедшие</source>
+        <translation>Past</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Указано прошедшее время!</source>
+        <translation>Past time is indicated!</translation>
+    </message>
+    <message>
+        <source>Содержание напоминания не может быть пустым!</source>
+        <translation>The content of the reminder cannot be empty!</translation>
     </message>
 </context>
 <context>
@@ -921,7 +1758,7 @@
     </message>
     <message>
         <source>Сервер:</source>
-        <translation>Server:</translation>
+        <translation type="vanished">Server:</translation>
     </message>
     <message>
         <source>Имя пользователя:</source>
@@ -957,7 +1794,7 @@
     </message>
     <message>
         <source>Разработано:</source>
-        <translation>Developed:</translation>
+        <translation>Developed by:</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Team Nonames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -965,7 +1802,7 @@
     </message>
     <message>
         <source>Вы уверены, что хотите удалить выбранные элементы?</source>
-        <translation>Are you sure you want to delete the selected items?</translation>
+        <translation type="vanished">Are you sure you want to delete the selected items?</translation>
     </message>
     <message>
         <source>Выбор языка</source>
@@ -973,11 +1810,10 @@
     </message>
     <message>
         <source>(Необходима перезагрузка приложения)</source>
-        <translation>(App restart required)</translation>
+        <translation type="vanished">(App restart required)</translation>
     </message>
     <message>
         <source>Базы данных</source>
-        <translatorcomment>Базы данных</translatorcomment>
         <translation>Data bases</translation>
     </message>
     <message>
@@ -994,15 +1830,107 @@
     </message>
     <message>
         <source>Настройки базы звонков</source>
-        <translation>Set call database</translation>
+        <translation>Call database settings</translation>
     </message>
     <message>
         <source>Выбрать</source>
-        <translation>Choose</translation>
+        <translation type="vanished">Choose</translation>
     </message>
     <message>
         <source>Настройки базы контактов</source>
         <translation>Contact database settings</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="vanished">Language</translation>
+    </message>
+    <message>
+        <source>Add another language</source>
+        <translation type="vanished">Add another language</translation>
+    </message>
+    <message>
+        <source>(Note: application restart is required)</source>
+        <translation type="vanished">(Note: application restart is required)</translation>
+    </message>
+    <message>
+        <source>Имя хоста:</source>
+        <translation>Host name:</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Применение настроек</source>
+        <translation>Apply settings</translation>
+    </message>
+    <message>
+        <source>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</source>
+        <translation>Restarting the application is required to apply the changes. Confirm changes made?</translation>
+    </message>
+    <message>
+        <source>English (default)</source>
+        <translation type="vanished">English (default)</translation>
+    </message>
+    <message>
+        <source>Добавление</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <source>Редактирование</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <source>Русский (default)</source>
+        <translation type="vanished">Русский (default)</translation>
+    </message>
+    <message>
+        <source>Українська</source>
+        <translation>Українська</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Удаление номера</source>
+        <translation>Phone number delition</translation>
+    </message>
+    <message>
+        <source>Вы уверены, что хотите удалить выбранный номер?</source>
+        <translation>Are you sure that you want to delete the number?</translation>
+    </message>
+    <message>
+        <source>Настройки базы MSSQL</source>
+        <translation>MSSQL database settings</translation>
+    </message>
+    <message>
+        <source>Логин пользователя:</source>
+        <translation>User login:</translation>
+    </message>
+    <message>
+        <source>Личный номер</source>
+        <translation>Personal number</translation>
+    </message>
+    <message>
+        <source>Номер группы</source>
+        <translation>Group&apos;s number</translation>
+    </message>
+    <message>
+        <source>Русский (по умолчанию)</source>
+        <translation>Русский (по умолчанию)</translation>
     </message>
 </context>
 <context>
@@ -1045,7 +1973,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>4</source>
@@ -1066,10 +1994,6 @@
     <message>
         <source>Организация:</source>
         <translation>Organization:</translation>
-    </message>
-    <message>
-        <source>Заметка:</source>
-        <translation></translation>
     </message>
     <message>
         <source>Журнал вызовов</source>
@@ -1094,6 +2018,46 @@
     <message>
         <source>Редактировать</source>
         <translation>Edit</translation>
+    </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
+        <translation>Call</translation>
+    </message>
+    <message>
+        <source>Заметка:</source>
+        <translation>Note:</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Orders</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>There is no access to the Access database!</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +2104,7 @@
     </message>
     <message>
         <source>VyborID:</source>
-        <translation>OrgID:</translation>
+        <translation>VyborID:</translation>
     </message>
     <message>
         <source>1</source>
@@ -1189,6 +2153,58 @@
     <message>
         <source>Редактировать</source>
         <translation>Edit</translation>
+    </message>
+    <message>
+        <source> дней</source>
+        <translation>days</translation>
+    </message>
+    <message>
+        <source>Показать звонки за последние:</source>
+        <translation>Show calls for the last:</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation>30</translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
+        <translation>Call</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО</source>
+        <translation>Search by full name</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Search by phone number</translation>
+    </message>
+    <message>
+        <source>Поиск по заметке</source>
+        <translation>Search by the note</translation>
+    </message>
+    <message>
+        <source>Добавить сотрудника</source>
+        <translation>Add employee</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Orders</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>There is no access to the Access database!</translation>
     </message>
 </context>
 </TS>

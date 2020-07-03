@@ -181,7 +181,7 @@
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>Активные</string>
+         <string>Актуальные</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="0">
@@ -198,7 +198,7 @@
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>Неактивные</string>
+         <string>Прошедшие</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">

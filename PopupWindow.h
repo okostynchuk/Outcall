@@ -81,6 +81,7 @@ private slots:
     void onSaveNote();
     void onTextChanged();
     void onOpenAccess();
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     void startPopupWaitingTimer();
@@ -98,8 +99,7 @@ private:
 	bool m_bAppearing;
 	QTimer m_timer;
 	PWInformation m_pwi;
-	static QList<PopupWindow*> m_PopupWindows;
-	static int m_nLastWindowPosition;
+    static QList<PopupWindow*> m_PopupWindows;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;

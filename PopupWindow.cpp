@@ -15,7 +15,6 @@
 #include <QMessageBox>
 
 QList<PopupWindow*> PopupWindow::m_PopupWindows;
-int PopupWindow::m_nLastWindowPosition = 0;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -53,7 +52,8 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 	ui->lblText->setText(pwi.text);
     ui->lblText->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-	if (!pwi.avatar.isNull()) {
+    if (!pwi.avatar.isNull())
+    {
 		ui->lblAvatar->setScaledContents(true);
 		ui->lblAvatar->setPixmap(pwi.avatar);
     }
@@ -73,55 +73,53 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 	QRect rcScreen = desktop.screenGeometry(this);
 	QRect rcDesktop = desktop.availableGeometry(this);
 
-	nDesktopWidth=rcDesktop.width();
-	nDesktopHeight=rcDesktop.height();
-	nScreenWidth=rcScreen.width();
-	nScreenHeight=rcScreen.height();
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+    nScreenWidth = rcScreen.width();
+    nScreenHeight = rcScreen.height();
 
-    bool bTaskbarOnRight=nDesktopWidth<=nScreenWidth && rcDesktop.left()==0;
-    bool bTaskbarOnLeft=nDesktopWidth<=nScreenWidth && rcDesktop.left()!=0;
-    bool bTaskBarOnTop=nDesktopHeight<=nScreenHeight && rcDesktop.top()!=0;
+    bool bTaskbarOnRight = nDesktopWidth <= nScreenWidth && rcDesktop.left() == 0;
+    bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
+    bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
 
 	int nTimeToShow = TIME_TO_SHOW;
 	int nTimerDelay;
 
 	m_nIncrement = 2;
 
-	if (bTaskbarOnRight)
-	{
-		m_nStartPosX=(rcDesktop.right()-m_nLastWindowPosition*width());
-		m_nStartPosY=rcDesktop.bottom()-height();
-		m_nTaskbarPlacement=TASKBAR_ON_RIGHT;
-        nTimerDelay=nTimeToShow/(width()/m_nIncrement);
-	}
-	else if (bTaskbarOnLeft)
-	{
-		m_nStartPosX=(rcDesktop.left()-width()+m_nLastWindowPosition*width());
-		m_nStartPosY=rcDesktop.bottom()-height();
-		m_nTaskbarPlacement=TASKBAR_ON_LEFT;
-		nTimerDelay=nTimeToShow/(width()/m_nIncrement);
-	}
-	else if (bTaskBarOnTop)
-	{
-		m_nStartPosX=rcDesktop.right()-width();
-		m_nStartPosY=(rcDesktop.top()-height()+m_nLastWindowPosition*height());
-		m_nTaskbarPlacement=TASKBAR_ON_TOP;
-		nTimerDelay=nTimeToShow/(height()/m_nIncrement);
-	}
+    if (bTaskbarOnRight)
+    {
+        m_nStartPosX = (rcDesktop.right());
+        m_nStartPosY = rcDesktop.bottom() - height();
+        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
+        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+    }
+    else if (bTaskbarOnLeft)
+    {
+        m_nStartPosX = (rcDesktop.left() - width());
+        m_nStartPosY = rcDesktop.bottom() - height();
+        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
+        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+    }
+    else if (bTaskBarOnTop)
+    {
+        m_nStartPosX = rcDesktop.right() - width();
+        m_nStartPosY = (rcDesktop.top() - height());
+        m_nTaskbarPlacement = TASKBAR_ON_TOP;
+        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+    }
     else
-	{
-		m_nStartPosX=rcDesktop.right()-width();
-		m_nStartPosY=(rcDesktop.bottom()-m_nLastWindowPosition*height());
-		m_nTaskbarPlacement=TASKBAR_ON_BOTTOM;
-		nTimerDelay=nTimeToShow/(height()/m_nIncrement);
-	}
+    {
+        m_nStartPosX = rcDesktop.right() - width();
+        m_nStartPosY = rcDesktop.bottom();
+        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
+        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+    }
 
-    m_nCurrentPosX=m_nStartPosX;
-    m_nCurrentPosY=m_nStartPosY;
+    m_nCurrentPosX = m_nStartPosX;
+    m_nCurrentPosY = m_nStartPosY;
 
     move(m_nCurrentPosX, m_nCurrentPosY);
-
-    //m_nLastWindowPosition++;
 
     m_bAppearing = true;
     m_timer.setInterval(nTimerDelay);
@@ -176,9 +174,6 @@ void PopupWindow::startPopupWaitingTimer()
 
 void PopupWindow::closeAndDestroy()
 {
-    if (m_PopupWindows.last() == this)
-        m_nLastWindowPosition = m_PopupWindows.count() - 1;
-
     hide();
     m_timer.stop();
     m_PopupWindows.removeOne(this);
@@ -284,15 +279,11 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 void PopupWindow::closeAll()
 {
 	qDeleteAll(m_PopupWindows);
-	m_PopupWindows.clear();
-	m_nLastWindowPosition = 0;
+    m_PopupWindows.clear();
 }
 
 void PopupWindow::on_pushButton_close_clicked()
 {
-    if (m_PopupWindows.last() == this)
-        m_nLastWindowPosition = m_PopupWindows.count() - 1;
-
     hide();
     m_timer.stop();
     m_PopupWindows.removeOne(this);
@@ -390,28 +381,22 @@ void PopupWindow::onSaveNote()
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if(ui->textEdit->toPlainText().isEmpty() || ui->textEdit->toPlainText() == 0 )
+    if (ui->textEdit->toPlainText().simplified().isEmpty())
         return;
 
-    query.prepare("SELECT EXISTS (SELECT uniqueid, note FROM calls WHERE uniqueid = " + popup->m_pwi.uniqueid + " AND note = '" + ui->textEdit->toPlainText() + "')");
-    query.exec();
-    query.next();
-    if(query.value(0) != 0)
-    {
-        setStyleSheet("QMessageBox{ color: #000000; }");
-        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Данная заметка уже существует!"), QMessageBox::Ok);
-        return;
-    }
+    QString author;
 
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + m_pwi.my_number);
+    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + popup->m_pwi.my_number);
     query.exec();
-    query.next();
-    QString author = query.value(0).toString();
+    if (query.next())
+        author = query.value(0).toString();
+    else
+        author = popup->m_pwi.my_number;
 
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
-    query.addBindValue(ui->textEdit->toPlainText());
+    query.addBindValue(ui->textEdit->toPlainText().simplified());
     query.addBindValue(author);
     query.exec();
 
@@ -460,6 +445,7 @@ void PopupWindow::onOpenAccess()
     }
     else
     {
+        setStyleSheet("QMessageBox{ color: #000000; }");
         QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
     }
 }
@@ -525,6 +511,14 @@ bool PopupWindow::isInnerPhone(QString *str)
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
     return false;
+}
+
+void PopupWindow::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+         closeAndDestroy();
+    else
+        QWidget::keyPressEvent(event);
 }
 
 bool PopupWindow::eventFilter(QObject *object, QEvent *event)

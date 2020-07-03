@@ -206,19 +206,19 @@
     <name>AddNoteDialog</name>
     <message>
         <source>Добавление / изменение заметки</source>
-        <translation>Додати / змінити коментар</translation>
+        <translation type="vanished">Додати / змінити коментар</translation>
     </message>
     <message>
         <source>Сохранить</source>
-        <translation>Зберегти</translation>
+        <translation type="vanished">Зберегти</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
-        <translation>Коментар успішно доданий!</translation>
+        <translation type="vanished">Коментар успішно доданий!</translation>
     </message>
 </context>
 <context>
@@ -1184,6 +1184,37 @@
     </message>
 </context>
 <context>
+    <name>EditReminderDialog</name>
+    <message>
+        <source>Редактирование напоминания</source>
+        <translation>Редагування нагадування</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Зберегти</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Указано прошедшее время!</source>
+        <translation>Вказано минулий час!</translation>
+    </message>
+    <message>
+        <source>Содержание напоминания не может быть пустым!</source>
+        <translation>Зміст нагадування не може бути пустим!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно изменено!</source>
+        <translation>Нагадування успішно змінено!</translation>
+    </message>
+</context>
+<context>
     <name>NotesDialog</name>
     <message>
         <source>Заметки</source>
@@ -1224,6 +1255,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заметка</source>
         <translation>Коментар</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Содержание заметки не может быть пустым!</source>
+        <translation>Зміст коментаря не може бути пустим!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Заметка успешно добавлена!</source>
+        <translation>Коментар успішно доданий!</translation>
     </message>
 </context>
 <context>
@@ -1294,11 +1341,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Соединение восстановлено. Приложение будет перезапущено!</source>
-        <translation>З&apos;єднання відновлено. Програма перезапуститься!</translation>
+        <translation type="vanished">З&apos;єднання відновлено. Програма перезапуститься!</translation>
     </message>
     <message>
         <source>Отменить вход</source>
@@ -1408,6 +1455,53 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>PopupReminder</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Передзвонити Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>ОК</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Напомнить позже</source>
+        <translation>Нагадати пізніше</translation>
+    </message>
+    <message>
+        <source>Задать время</source>
+        <translation>Задати час</translation>
+    </message>
+    <message>
+        <source>Через 10 минут</source>
+        <translation>Через 10 хвилин</translation>
+    </message>
+    <message>
+        <source>Через 30 минут</source>
+        <translation>Через 30 хвилин</translation>
+    </message>
+    <message>
+        <source>Через 1 час</source>
+        <translation>Через 1 годину</translation>
+    </message>
+    <message>
+        <source>Через 24 часа</source>
+        <translation>Через 24 години</translation>
+    </message>
+    <message>
+        <source>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+</context>
+<context>
     <name>PopupWindow</name>
     <message>
         <source>Chat History</source>
@@ -1476,11 +1570,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Данная заметка уже существует!</source>
-        <translation>Такий коментар уже існує!</translation>
+        <translation type="vanished">Такий коментар уже існує!</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Замовлення</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>Відсутнє підключення до бази Access!</translation>
     </message>
 </context>
 <context>
@@ -1549,6 +1655,14 @@ p, li { white-space: pre-wrap; }
         <source>Статус</source>
         <translation>Статус</translation>
     </message>
+    <message>
+        <source>Активное</source>
+        <translation>Активне</translation>
+    </message>
+    <message>
+        <source>Содержание</source>
+        <translation>Зміст</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1571,6 +1685,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Список напоминаний</source>
         <translation>Список нагадувань</translation>
+    </message>
+    <message>
+        <source>Актуальные</source>
+        <translation>Актуальні</translation>
+    </message>
+    <message>
+        <source>Прошедшие</source>
+        <translation>Минулі</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Указано прошедшее время!</source>
+        <translation>Вказано минулий час!</translation>
+    </message>
+    <message>
+        <source>Содержание напоминания не может быть пустым!</source>
+        <translation>Зміст нагадування не може бути пустим!</translation>
     </message>
 </context>
 <context>
@@ -1713,7 +1847,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Русский (default)</source>
-        <translation>Русский (default)</translation>
+        <translation type="vanished">Русский (default)</translation>
     </message>
     <message>
         <source>Українська</source>
@@ -1750,6 +1884,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Вы уверены, что хотите удалить выбранный номер?</source>
         <translation>Вы впевнені, що хочете видалити обраний номер?</translation>
+    </message>
+    <message>
+        <source>Настройки базы MSSQL</source>
+        <translation>Налаштування бази MSSQL</translation>
+    </message>
+    <message>
+        <source>Логин пользователя:</source>
+        <translation>Логін користувача:</translation>
+    </message>
+    <message>
+        <source>Личный номер</source>
+        <translation>Особистий номер</translation>
+    </message>
+    <message>
+        <source>Номер группы</source>
+        <translation>Номер групи</translation>
+    </message>
+    <message>
+        <source>Русский (по умолчанию)</source>
+        <translation>Русский (по умолчанию)</translation>
     </message>
 </context>
 <context>
@@ -1865,6 +2019,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заметки</source>
         <translation>Коментарі</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Замовлення</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>Відсутнє підключення до бази Access!</translation>
     </message>
 </context>
 <context>
@@ -2000,6 +2166,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить сотрудника</source>
         <translation>Додати співробітника</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Замовлення</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>Відсутнє підключення до бази Access!</translation>
     </message>
 </context>
 </TS>

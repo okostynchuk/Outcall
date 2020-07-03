@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>417</width>
-    <height>521</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -146,6 +146,9 @@ background: red;
    <property name="text">
     <string>Х</string>
    </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="lblText">
    <property name="geometry">
@@ -196,13 +199,58 @@ text-align: center;
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>170</y>
-     <width>361</width>
-     <height>151</height>
+     <x>20</x>
+     <y>150</y>
+     <width>381</width>
+     <height>179</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="openAccess">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>23</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">*{
+background-color: #ffb64f;
+border: 1.5px solid #a53501;
+color: black;
+}</string>
+        </property>
+        <property name="text">
+         <string>Заказы</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -674,6 +722,9 @@ color: black;
         <property name="text">
          <string>💾</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -728,6 +779,9 @@ color: black;
           <property name="text">
            <string>Открыть карточку</string>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="0" column="1">
@@ -773,6 +827,9 @@ color: black;
           <property name="text">
            <string>Физ. лицо</string>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="0" column="1">
@@ -800,6 +857,9 @@ color: black;
           </property>
           <property name="text">
            <string>Организацию</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -842,6 +902,9 @@ color: black;
           <property name="text">
            <string>К существующему</string>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -850,32 +913,17 @@ color: black;
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="openAccess">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>140</y>
-     <width>81</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-background-color: #ffb64f;
-border: 1.5px solid #a53501;
-color: black;
-}</string>
-   </property>
-   <property name="text">
-    <string>Заказы</string>
-   </property>
-  </widget>
  </widget>
+ <tabstops>
+  <tabstop>textEdit</tabstop>
+  <tabstop>saveNoteButton</tabstop>
+  <tabstop>openAccess</tabstop>
+  <tabstop>showCardButton</tabstop>
+  <tabstop>addPersonButton</tabstop>
+  <tabstop>addOrgButton</tabstop>
+  <tabstop>addPhoneNumberButton</tabstop>
+  <tabstop>pushButton_close</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

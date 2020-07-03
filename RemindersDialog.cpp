@@ -1,5 +1,6 @@
 #include "RemindersDialog.h"
 #include "ui_RemindersDialog.h"
+#include "PopupReminder.h"
 
 #include <QDebug>
 #include <QThread>
@@ -42,25 +43,27 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     loadActiveReminders();
 
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
+    QList<QString> ids;
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
-    query.prepare("SELECT datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
     query.exec();
     while (query.next())
     {
-        dateTimes.append(query.value(0).value<QDateTime>());
-        notes.append(query.value(1).value<QString>());
+        ids.append(query.value(0).value<QString>());
+        dateTimes.append(query.value(1).value<QDateTime>());
+        notes.append(query.value(2).value<QString>());
     }
 
     remindersThread = new QThread;
-    remindersThreadManager = new RemindersThread(my_number, dateTimes, notes);
+    remindersThreadManager = new RemindersThread(my_number, ids, dateTimes, notes);
     remindersThreadManager->moveToThread(remindersThread);
     connect(remindersThread, SIGNAL(started()), remindersThreadManager, SLOT(process()));
-    connect(remindersThreadManager, SIGNAL(notify(QString)), this, SLOT(onNotify(QString)));
+    connect(remindersThreadManager, SIGNAL(notify(QString, QDateTime, QString)), this, SLOT(onNotify(QString, QDateTime, QString)));
     connect(remindersThreadManager, SIGNAL(finished()), remindersThread, SLOT(quit()));
     connect(remindersThreadManager, SIGNAL(finished()), remindersThreadManager, SLOT(deleteLater()));
     connect(remindersThread, SIGNAL(finished()), remindersThread, SLOT(deleteLater()));
@@ -118,26 +121,28 @@ void RemindersDialog::deleteObjects()
 
 void RemindersDialog::sendNewValues()
 {
+    QList<QString> ids;
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
     query.exec();
     while (query.next())
     {
-        dateTimes.append(query.value(0).value<QDateTime>());
-        notes.append(query.value(1).value<QString>());
+        ids.append(query.value(0).value<QString>());
+        dateTimes.append(query.value(1).value<QDateTime>());
+        notes.append(query.value(2).value<QString>());
     }
 
-    remindersThreadManager->receiveNewValues(dateTimes, notes);
+    remindersThreadManager->receiveNewValues(ids, dateTimes, notes);
 }
 
 void RemindersDialog::onTextChanged()
 {
-    if(ui->textEdit->toPlainText().length() > 255)
+    if(ui->textEdit->toPlainText().simplified().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
@@ -158,15 +163,15 @@ void RemindersDialog::loadActiveReminders()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ? AND active IS TRUE");
+    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ?");
     query.addBindValue(QDateTime::currentDateTime());
     query.exec();
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
 
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
@@ -199,15 +204,15 @@ void RemindersDialog::loadInactiveReminders()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ? AND active IS TRUE");
+    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ?");
     query.addBindValue(QDateTime::currentDateTime());
     query.exec();
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
 
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
@@ -273,16 +278,6 @@ void RemindersDialog::changeState()
         }
         else
         {
-            query.prepare("SELECT EXISTS (SELECT datetime FROM reminders WHERE phone = '" + my_number + "' AND datetime = ? AND active IS TRUE)");
-            query.addBindValue(dateTime);
-            query.exec();
-            query.next();
-            if (query.value(0) != 0)
-            {
-                QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Напоминание на заданное время уже существует и активно!"), QMessageBox::Ok);
-                return;
-            }
-
             checkBox->setChecked(true);
 
             query.prepare("UPDATE reminders SET active = true WHERE id = ? AND phone = '" + my_number + "' AND datetime = ? AND active IS FALSE");
@@ -345,9 +340,9 @@ void RemindersDialog::onUpdate()
         loadInactiveReminders();
 }
 
-void RemindersDialog::onNotify(QString reminderNote)
+void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
 {
-    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("%1!").arg(reminderNote), QMessageBox::Ok);
+    PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 
     onUpdate();
 }
@@ -357,7 +352,7 @@ void RemindersDialog::onSave()
     QDate date = ui->calendarWidget->selectedDate();
     QTime time(ui->timeEdit->time().hour(), ui->timeEdit->time().minute(), 0);
     QDateTime dateTime = QDateTime::QDateTime(date, time);
-    QString note = ui->textEdit->toPlainText();
+    QString note = ui->textEdit->toPlainText().simplified();
 
     if (dateTime < QDateTime::currentDateTime())
     {
@@ -365,7 +360,7 @@ void RemindersDialog::onSave()
         return;
     }
 
-    if (ui->textEdit->toPlainText().isEmpty())
+    if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
         return;
@@ -373,16 +368,6 @@ void RemindersDialog::onSave()
 
     QSqlDatabase db;
     QSqlQuery query(db);
-
-    query.prepare("SELECT EXISTS (SELECT datetime FROM reminders WHERE phone = '" + my_number + "' AND datetime = ? AND active IS TRUE)");
-    query.addBindValue(dateTime);
-    query.exec();
-    query.next();
-    if (query.value(0) != 0)
-    {
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Напоминание на заданное время уже существует и активно!"), QMessageBox::Ok);
-        return;
-    }
 
     query.prepare("INSERT INTO reminders (phone, datetime, content, active) VALUES(?, ?, ?, ?)");
     query.addBindValue(my_number);

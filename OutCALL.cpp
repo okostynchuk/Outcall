@@ -205,9 +205,8 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         m_timer.stop();
 
-        if(!opened)
+        if (!opened)
         {
-            QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Соединение восстановлено. Приложение будет перезапущено!"), QMessageBox::Ok);
             qApp->quit();
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
         }
@@ -255,9 +254,12 @@ void OutCall::disableActions()
         m_contactsDialog->close();
     if (m_callHistoryDialog->isVisible())
         m_callHistoryDialog->close();
+    if (m_remindersDialog->isVisible())
+        m_remindersDialog->close();
     m_placeCall->setEnabled(false);
     callHistoryAction->setEnabled(false);
     contactsAction->setEnabled(false);
+    remindersAction->setEnabled(false);
 }
 
 void OutCall::changeIcon()
@@ -290,13 +292,13 @@ void OutCall::onSettingsDialog()
 
 void OutCall::onDebugInfo()
 {
-    m_debugInfoDialog->show();
+    m_debugInfoDialog->showNormal();
     m_debugInfoDialog->raise();
 }
 
 void OutCall::onPlaceCall()
 {
-    m_placeCallDialog->show();
+    m_placeCallDialog->showNormal();
     m_placeCallDialog->raise();
 }
 
@@ -308,7 +310,7 @@ void OutCall::onContactsDialog()
 
 void OutCall::onRemindersDialog()
 {
-    m_remindersDialog->show();
+    m_remindersDialog->showNormal();
     m_remindersDialog->raise();
 }
 
