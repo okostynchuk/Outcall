@@ -606,4 +606,5 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->openAccess, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     popup->ui->openAccess->setProperty("qv_popup", qv_popup);
+    popup->ui->openAccess->setVisible(false);
 }

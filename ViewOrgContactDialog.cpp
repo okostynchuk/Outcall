@@ -13,7 +13,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->setupUi(this);
 
     userID = global::getSettingsValue("user_login", "settings").toString();
-
+    ui->openAccess->setVisible(false);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
