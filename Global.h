@@ -16,6 +16,7 @@ extern QString g_LanguagesPath;
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
 extern bool opened;
+extern bool MSSQLopened;
 
 QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
                                                      const QString &title=APP_NAME, QWidget *parent=0,

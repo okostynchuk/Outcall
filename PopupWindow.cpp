@@ -1,5 +1,6 @@
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
+#include "Global.h"
 
 #include <QDesktopWidget>
 #include <QKeyEvent>
@@ -600,5 +601,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->openAccess, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     popup->ui->openAccess->setProperty("qv_popup", qv_popup);
-    popup->ui->openAccess->setVisible(false);
+
+    if (!MSSQLopened)
+        ui->openAccess->setVisible(false);
 }

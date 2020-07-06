@@ -32,6 +32,28 @@ int main(int argc, char *argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
 
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    if (!hostName_3.isEmpty() && !databaseName_3.isEmpty() && !userName_3.isEmpty() && !password3.isEmpty() && !port_3.isEmpty())
+    {
+        QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+        dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                                "Server="+hostName_3+","+port_3+";"
+                                "Database="+databaseName_3+";"
+                                "Uid="+userName_3+";"
+                                "Pwd="+password_3);
+        bool ok = dbMSSQL.open();
+        if (ok)
+            MSSQLopened = true;
+        else
+             QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе Access!", QMessageBox::Ok);
+    }
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
     QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();

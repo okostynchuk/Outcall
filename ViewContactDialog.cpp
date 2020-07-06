@@ -1,6 +1,7 @@
 #include "ViewContactDialog.h"
 #include "ui_ViewContactDialog.h"
 #include "AsteriskManager.h"
+#include "Global.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -15,7 +16,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->setupUi(this);
 
     userID = global::getSettingsValue("user_login", "settings").toString();
-    ui->openAccess->setVisible(false);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -29,6 +30,9 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
+
+    if (!MSSQLopened)
+        ui->openAccess->setVisible(false);
 }
 
 ViewContactDialog::~ViewContactDialog()
