@@ -1667,6 +1667,26 @@ p, li { white-space: pre-wrap; }
         <source>Содержание</source>
         <translation>Содержание</translation>
     </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе Access!</source>
+        <translation>Отсутствует подключение к базе Access!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базам данных!</source>
+        <translation>Отсутствует подключение к базам данных!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе контактов!</source>
+        <translation>Отсутствует подключение к базе контактов!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе звонков!</source>
+        <translation>Отсутствует подключение к базе звонков!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         if (ok)
             MSSQLopened = true;
         else
-             QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе Access!", QMessageBox::Ok);
+             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе Access!"), QMessageBox::Ok);
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     if(!db.isOpen() && !dbAsterisk.isOpen())
     {
         QString state = "twoDb";
-        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базам данных!", QMessageBox::Ok);
+        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     else if(!db.isOpen())
     {
         QString state = "db";
-        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе контактов!", QMessageBox::Ok);
+        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     else if(!dbAsterisk.isOpen())
     {
         QString state = "dbAsterisk";
-        QMessageBox::critical(nullptr, "Ошибка", "Отсутствует подключение к базе звонков!", QMessageBox::Ok);
+        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();

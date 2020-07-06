@@ -1663,6 +1663,26 @@ p, li { white-space: pre-wrap; }
         <source>Содержание</source>
         <translation>Зміст</translation>
     </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Помилка</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе Access!</source>
+        <translation>Відсутнє підключення до бази Access!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базам данных!</source>
+        <translation>Відсутнє підключення до баз даних!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе контактов!</source>
+        <translation>Відсутнє підключення до бази контактів!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе звонков!</source>
+        <translation>Відсутнє підключення до бази дзвінків!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
