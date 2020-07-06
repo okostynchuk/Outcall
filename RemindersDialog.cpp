@@ -271,18 +271,16 @@ void RemindersDialog::changeState()
         {
             checkBox->setChecked(false);
 
-            query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone = '" + my_number + "' AND datetime = ? AND active IS TRUE");
+            query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone = '" + my_number + "' AND active IS TRUE");
             query.addBindValue(id);
-            query.addBindValue(dateTime);
             query.exec();
         }
         else
         {
             checkBox->setChecked(true);
 
-            query.prepare("UPDATE reminders SET active = true WHERE id = ? AND phone = '" + my_number + "' AND datetime = ? AND active IS FALSE");
+            query.prepare("UPDATE reminders SET active = true WHERE id = ? AND phone = '" + my_number + "' AND active IS FALSE");
             query.addBindValue(id);
-            query.addBindValue(dateTime);
             query.exec();
         }
 

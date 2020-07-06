@@ -44,11 +44,9 @@ void RemindersThread::process()
                 QSqlDatabase db;
                 QSqlQuery query(db);
 
-                query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone = ? AND datetime = ? AND content = ?");
+                query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone = ?");
                 query.addBindValue(ids.at(i));
                 query.addBindValue(my_number);
-                query.addBindValue(dateTimes.at(i));
-                query.addBindValue(notes.at(i));
                 query.exec();
 
                 ids.removeAt(i);
