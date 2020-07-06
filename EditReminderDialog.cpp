@@ -47,13 +47,11 @@ void EditReminderDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET datetime = ?, content = ?, active = true WHERE id = ? AND phone = ? AND datetime = ? AND content = ?");
+    query.prepare("UPDATE reminders SET datetime = ?, content = ?, active = true WHERE id = ? AND phone = ?");
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(id);
     query.addBindValue(my_number);
-    query.addBindValue(oldDateTime);
-    query.addBindValue(oldNote);
     query.exec();
 
     emit sendData(true);
