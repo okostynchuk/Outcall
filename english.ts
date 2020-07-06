@@ -1048,7 +1048,7 @@
     </message>
     <message>
         <source>Нет</source>
-        <translation>Any</translation>
+        <translation>None</translation>
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>

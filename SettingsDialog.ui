@@ -27,7 +27,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="general">
       <attribute name="title">
@@ -548,12 +548,12 @@
                   </property>
                   <column>
                    <property name="text">
-                    <string notr="true">Номер</string>
+                    <string>Номер</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string notr="true">Протокол</string>
+                    <string>Протокол</string>
                    </property>
                   </column>
                  </widget>
