@@ -120,6 +120,8 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
     m_nCurrentPosX = m_nStartPosX;
     m_nCurrentPosY = m_nStartPosY;
 
+    position = QPoint();
+
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
@@ -132,17 +134,35 @@ PopupWindow::~PopupWindow()
     delete ui;
 }
 
-void PopupWindow::mousePressEvent(QMouseEvent *event)
+void PopupWindow::mousePressEvent(QMouseEvent* event)
 {
     this->m_pwi.stopTimer = true;
-    m_nMouseClick_X_Coordinate = event->x();
-    m_nMouseClick_Y_Coordinate = event->y();
+
+    position = event->globalPos();
 }
 
-void PopupWindow::mouseMoveEvent(QMouseEvent *event)
+void PopupWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    (void) event;
+    position = QPoint();
+}
+
+void PopupWindow::mouseMoveEvent(QMouseEvent* event)
 {
     this->m_pwi.stopTimer = true;
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+
+    if (!position.isNull())
+    {
+        QPoint delta = event->globalPos() - position;
+        if (position.x() > this->x() + this->width() - 10
+                || position.y() > this->y() + this->height() - 10)
+        {}
+        else
+        {
+            move(this->x() + delta.x(), this->y() + delta.y());
+            position = event->globalPos();
+        }
+    }
 }
 
 void PopupWindow::changeEvent(QEvent *e)
@@ -183,7 +203,7 @@ void PopupWindow::closeAndDestroy()
 
 void PopupWindow::onTimer()
 {
-    if (m_bAppearing)
+    if (m_bAppearing) // APPEARING
     {
         switch(m_nTaskbarPlacement)
         {

@@ -33,6 +33,7 @@ private:
     void closeAndDestroy();
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 public slots:
     void receiveData(bool);
@@ -59,8 +60,7 @@ private:
     int m_nIncrement;
     bool m_bAppearing;
 
-    int m_nMouseClick_X_Coordinate;
-    int m_nMouseClick_Y_Coordinate;
+    QPoint position;
 
     QTimer m_timer;
     PopupReminderInfo m_pri;
