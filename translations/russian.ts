@@ -620,7 +620,7 @@
     </message>
     <message>
         <source>История звонков по номеру: </source>
-        <translation>История звонков по номеру: </translation>
+        <translation type="vanished">История звонков по номеру: </translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -1687,6 +1687,10 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе звонков!</source>
         <translation>Отсутствует подключение к базе звонков!</translation>
     </message>
+    <message>
+        <source>История звонков по номеру:</source>
+        <translation>История звонков по номеру:</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1930,6 +1934,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Русский (по умолчанию)</source>
         <translation>Русский (по умолчанию)</translation>
+    </message>
+    <message>
+        <source>Номер</source>
+        <translation>Номер</translation>
+    </message>
+    <message>
+        <source>Протокол</source>
+        <translation>Протокол</translation>
     </message>
 </context>
 <context>
