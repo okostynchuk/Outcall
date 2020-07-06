@@ -1,6 +1,7 @@
 #include "RemindersDialog.h"
 #include "ui_RemindersDialog.h"
 #include "PopupReminder.h"
+#include "Global.h"
 
 #include <QDebug>
 #include <QThread>
@@ -21,6 +22,20 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_2->verticalHeader()->setSectionsClickable(false);
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
+
+    QString languages = global::getSettingsValue("language", "settings").toString();
+    if (languages == "Русский (по умолчанию)")
+    {
+        ui->calendarWidget->setLocale(QLocale::Russian);
+    }
+    else if (languages == "Українська")
+    {
+        ui->calendarWidget->setLocale(QLocale::Ukrainian);
+    }
+    else if (languages == "English")
+    {
+        ui->calendarWidget->setLocale(QLocale::English);
+    }
 
     ui->calendarWidget->setGridVisible(true);
     ui->timeEdit->setTime(QTime::currentTime());
