@@ -35,17 +35,11 @@ int main(int argc, char *argv[])
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
     if (languages == "Русский (по умолчанию)")
-    {
         qtTranslator.load(".\\translations\\qt_ru");
-    }
     else if (languages == "Українська")
-    {
         qtTranslator.load(".\\translations\\qt_uk");
-    }
     else if (languages == "English")
-    {
         qtTranslator.load(".\\translations\\qt_en");
-    }
     app.installTranslator(&qtTranslator);
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
@@ -147,9 +141,7 @@ int main(int argc, char *argv[])
     }
 
     if (argc == 2)
-    {
         bCallRequest = QString(argv[1]).contains("Dial#####");
-    }
 
     if (bCallRequest)
     {

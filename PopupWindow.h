@@ -11,6 +11,7 @@
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
 #include "SettingsDialog.h"
+#include "EditReminderDialog.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -81,6 +82,7 @@ private slots:
     void onSaveNote();
     void onTextChanged();
     void onOpenAccess();
+    void onAddReminder();
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -111,6 +113,7 @@ private:
     AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
+    EditReminderDialog *editReminderDialog;
 };
 
 #endif // POPUPWINDOW_H

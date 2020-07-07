@@ -390,6 +390,15 @@ void PopupWindow::onShowCard()
     }
 }
 
+void PopupWindow::onAddReminder()
+{
+//    editReminderDialog = new EditReminderDialog;
+//    editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
+//    connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+//    editReminderDialog->show();
+//    editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 void PopupWindow::onSaveNote()
 {
     QVariant qv_popup = sender()->property("qv_popup");
@@ -621,6 +630,8 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->openAccess, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     popup->ui->openAccess->setProperty("qv_popup", qv_popup);
+    connect(popup->ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
+    popup->ui->addReminderButton->setProperty("qv_popup", qv_popup);
 
     if (!MSSQLopened)
         ui->openAccess->setVisible(false);
