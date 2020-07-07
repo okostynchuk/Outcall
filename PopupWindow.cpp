@@ -437,7 +437,7 @@ void PopupWindow::onOpenAccess()
     if (ok)
     {
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
-                   "VALUES (?, ?)");
+                   "VALUES (user_id(?), ?)");
         query1.addBindValue(userID);
         query1.addBindValue(vyborID);
         query1.exec();
