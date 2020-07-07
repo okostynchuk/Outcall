@@ -186,7 +186,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     //QString context         = call.value("context").toString();
 
     if (from == callerIDName)
-        callerIDName = "Неизвестный";
+        callerIDName = QObject::tr("Неизвестный");
 
     PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("%1 (%2)").arg(callerIDName).arg(from), my_number);
 }

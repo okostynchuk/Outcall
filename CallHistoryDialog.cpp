@@ -80,8 +80,9 @@ void CallHistoryDialog::tabSelected()
         loadPlacedCalls();
 }
 
-void CallHistoryDialog::showEvent( QShowEvent* event ) {
-    QDialog::showEvent( event );
+void CallHistoryDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
     onUpdate();
 }
 
@@ -92,26 +93,26 @@ void CallHistoryDialog::getNumber(const QModelIndex &index)
     if(number == my_number)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
-        number.remove(QRegExp("[(]from [0-9]+[)]"));
+        number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
     }
 }
 
 void CallHistoryDialog::getNumberMissed(const QModelIndex &index)
 {
     number = query1->data(query1->index(index.row(), 1)).toString();
-    number.remove(QRegExp("[(]from [0-9]+[)]"));
+    number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 }
 
 void CallHistoryDialog::getNumberReceived(const QModelIndex &index)
 {
     number = query2->data(query2->index(index.row(), 1)).toString();
-    number.remove(QRegExp("[(]from [0-9]+[)]"));
+    number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 }
 
 void CallHistoryDialog::getNumberPlaced(const QModelIndex &index)
 {
     number = query3->data(query3->index(index.row(), 1)).toString();
-    number.remove(QRegExp("[(]from [0-9]+[)]"));
+    number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 }
 
 void CallHistoryDialog::onAddContact()
@@ -330,7 +331,7 @@ void CallHistoryDialog::loadAllCalls()
     QSqlQuery query(db);
 
     query4 = new QSqlQueryModel;
-    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
+    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query4->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -538,7 +539,7 @@ void CallHistoryDialog::loadMissedCalls()
     QSqlQuery query(db);
 
     query1 = new QSqlQueryModel;
-    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"') ORDER BY datetime DESC", dbAsterisk);
+    query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"') ORDER BY datetime DESC", dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -575,7 +576,7 @@ void CallHistoryDialog::loadReceivedCalls()
     QSqlQuery query(db);
 
     query2 = new QSqlQueryModel;
-    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(]from [0-9]+[(]"+my_number+"[)][)]$') ORDER BY datetime DESC", dbAsterisk);
+    query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') ORDER BY datetime DESC", dbAsterisk);
 
     query2->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));

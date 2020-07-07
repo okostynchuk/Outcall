@@ -25,19 +25,15 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     if (languages == "Русский (по умолчанию)")
-    {
         ui->calendarWidget->setLocale(QLocale::Russian);
-    }
     else if (languages == "Українська")
-    {
         ui->calendarWidget->setLocale(QLocale::Ukrainian);
-    }
     else if (languages == "English")
-    {
         ui->calendarWidget->setLocale(QLocale::English);
-    }
 
     ui->calendarWidget->setGridVisible(true);
+    ui->calendarWidget->setMinimumDate(QDate::currentDate());
+    ui->calendarWidget->setSelectedDate(QDate::currentDate());
     ui->timeEdit->setTime(QTime::currentTime());
     ui->textEdit->installEventFilter(this);
 
@@ -56,7 +52,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     ui->tabWidget->setCurrentIndex(0);
 
-    loadActiveReminders();
+    loadActualReminders();
 
     QList<QString> ids;
     QList<QDateTime> dateTimes;
@@ -92,45 +88,56 @@ RemindersDialog::~RemindersDialog()
     delete ui;
 }
 
+void RemindersDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+    ui->calendarWidget->setMinimumDate(QDate::currentDate());
+    ui->calendarWidget->setSelectedDate(QDate::currentDate());
+    ui->timeEdit->setTime(QTime::currentTime());
+
+    onUpdate();
+}
+
 void RemindersDialog::deleteObjects()
 {
     if (ui->tabWidget->currentIndex() == 0)
     {
-        for (int i = 0; i < widgetsActive.size(); ++i)
-            widgetsActive[i]->deleteLater();
+        for (int i = 0; i < widgetsActual.size(); ++i)
+            widgetsActual[i]->deleteLater();
 
-        for (int i = 0; i < layoutsActive.size(); ++i)
-            layoutsActive[i]->deleteLater();
+        for (int i = 0; i < layoutsActual.size(); ++i)
+            layoutsActual[i]->deleteLater();
 
-        for (int i = 0; i < boxesActive.size(); ++i)
-            boxesActive[i]->deleteLater();
+        for (int i = 0; i < boxesActual.size(); ++i)
+            boxesActual[i]->deleteLater();
 
-        for (int i = 0; i < queriesActive.size(); ++i)
-            queriesActive[i]->deleteLater();
+        for (int i = 0; i < queriesActual.size(); ++i)
+            queriesActual[i]->deleteLater();
 
-        queriesActive.clear();
-        widgetsActive.clear();
-        layoutsActive.clear();
-        boxesActive.clear();
+        queriesActual.clear();
+        widgetsActual.clear();
+        layoutsActual.clear();
+        boxesActual.clear();
     }
     if (ui->tabWidget->currentIndex() == 1)
     {
-        for (int i = 0; i < widgetsInactive.size(); ++i)
-            widgetsInactive[i]->deleteLater();
+        for (int i = 0; i < widgetsPast.size(); ++i)
+            widgetsPast[i]->deleteLater();
 
-        for (int i = 0; i < layoutsInactive.size(); ++i)
-            layoutsInactive[i]->deleteLater();
+        for (int i = 0; i < layoutsPast.size(); ++i)
+            layoutsPast[i]->deleteLater();
 
-        for (int i = 0; i < boxesInactive.size(); ++i)
-            boxesInactive[i]->deleteLater();
+        for (int i = 0; i < boxesPast.size(); ++i)
+            boxesPast[i]->deleteLater();
 
-        for (int i = 0; i < queriesInactive.size(); ++i)
-            queriesInactive[i]->deleteLater();
+        for (int i = 0; i < queriesPast.size(); ++i)
+            queriesPast[i]->deleteLater();
 
-        queriesInactive.clear();
-        widgetsInactive.clear();
-        layoutsInactive.clear();
-        boxesInactive.clear();
+        queriesPast.clear();
+        widgetsPast.clear();
+        layoutsPast.clear();
+        boxesPast.clear();
     }
 }
 
@@ -170,9 +177,9 @@ void RemindersDialog::receiveData(bool updating)
     }
 }
 
-void RemindersDialog::loadActiveReminders()
+void RemindersDialog::loadActualReminders()
 {
-    if (!widgetsActive.isEmpty())
+    if (!widgetsActual.isEmpty())
         deleteObjects();
 
     QSqlDatabase db;
@@ -207,13 +214,13 @@ void RemindersDialog::loadActiveReminders()
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    queriesActive.append(query1);
-    queriesActive.append(query2);
+    queriesActual.append(query1);
+    queriesActual.append(query2);
 }
 
-void RemindersDialog::loadInactiveReminders()
+void RemindersDialog::loadPastReminders()
 {
-    if (!widgetsInactive.isEmpty())
+    if (!widgetsPast.isEmpty())
         deleteObjects();
 
     QSqlDatabase db;
@@ -248,8 +255,8 @@ void RemindersDialog::loadInactiveReminders()
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    queriesInactive.append(query1);
-    queriesInactive.append(query2);
+    queriesPast.append(query1);
+    queriesPast.append(query2);
 }
 
 void RemindersDialog::onEditReminder(const QModelIndex &index)
@@ -323,15 +330,15 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
 
     if (ui->tabWidget->currentIndex() == 0)
     {
-        widgetsActive.append(wgt);
-        layoutsActive.append(layout);
-        boxesActive.append(checkBox);
+        widgetsActual.append(wgt);
+        layoutsActual.append(layout);
+        boxesActual.append(checkBox);
     }
     if (ui->tabWidget->currentIndex() == 1)
     {
-        widgetsInactive.append(wgt);
-        layoutsInactive.append(layout);
-        boxesInactive.append(checkBox);
+        widgetsPast.append(wgt);
+        layoutsPast.append(layout);
+        boxesPast.append(checkBox);
     }
 
     QString id = query1->data(query1->index(row_index, 0)).toString();
@@ -348,9 +355,9 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
 void RemindersDialog::onUpdate()
 {
     if (ui->tabWidget->currentIndex() == 0)
-        loadActiveReminders();
+        loadActualReminders();
     if (ui->tabWidget->currentIndex() == 1)
-        loadInactiveReminders();
+        loadPastReminders();
 }
 
 void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)

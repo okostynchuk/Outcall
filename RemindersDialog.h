@@ -28,8 +28,9 @@ public slots:
     void receiveData(bool);
 
 protected:
-    void loadActiveReminders();
-    void loadInactiveReminders();
+    void loadActualReminders();
+    void loadPastReminders();
+    void showEvent(QShowEvent *event);
 
 protected slots:
     void onEditReminder(const QModelIndex &);
@@ -52,14 +53,14 @@ private:
     RemindersThread* remindersThreadManager;
     EditReminderDialog* editReminderDialog;
     QWidget* addCheckBox(int);
-    QList<QSqlQueryModel*> queriesActive;
-    QList<QSqlQueryModel*> queriesInactive;
-    QList<QWidget*> widgetsActive;
-    QList<QHBoxLayout*> layoutsActive;
-    QList<QCheckBox*> boxesActive;
-    QList<QWidget*> widgetsInactive;
-    QList<QHBoxLayout*> layoutsInactive;
-    QList<QCheckBox*> boxesInactive;
+    QList<QSqlQueryModel*> queriesActual;
+    QList<QSqlQueryModel*> queriesPast;
+    QList<QWidget*> widgetsActual;
+    QList<QHBoxLayout*> layoutsActual;
+    QList<QCheckBox*> boxesActual;
+    QList<QWidget*> widgetsPast;
+    QList<QHBoxLayout*> layoutsPast;
+    QList<QCheckBox*> boxesPast;
 };
 
 #endif // REMINDERSDIALOG_H
