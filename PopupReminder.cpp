@@ -38,10 +38,13 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     ui->comboBox->addItem(tr("Через 24 часа"));
 
     qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
+    this->installEventFilter(this);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectTime()));
+    ui->okButton->installEventFilter(this);
+    ui->comboBox->installEventFilter(this);
 
     unsigned int nDesktopHeight;
     unsigned int nDesktopWidth;
@@ -57,9 +60,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     nScreenWidth = rcScreen.width();
     nScreenHeight = rcScreen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth < nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth < nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight < nScreenHeight && rcDesktop.top() != 0;
+    bool bTaskbarOnRight = nDesktopWidth <= nScreenWidth && rcDesktop.left() == 0;
+    bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
+    bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
 
     int nTimeToShow = TIME_TO_SHOW;
     int nTimerDelay;
@@ -98,6 +101,8 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     m_nCurrentPosX = m_nStartPosX;
     m_nCurrentPosY = m_nStartPosY;
 
+    position = QPoint();
+
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
@@ -118,15 +123,31 @@ void PopupReminder::closeAndDestroy()
     delete this;
 }
 
-void PopupReminder::mousePressEvent(QMouseEvent *event)
+void PopupReminder::mousePressEvent(QMouseEvent* event)
 {
-    m_nMouseClick_X_Coordinate = event->x();
-    m_nMouseClick_Y_Coordinate = event->y();
+    position = event->globalPos();
 }
 
-void PopupReminder::mouseMoveEvent(QMouseEvent *event)
+void PopupReminder::mouseReleaseEvent(QMouseEvent *event)
 {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    (void) event;
+    position = QPoint();
+}
+
+void PopupReminder::mouseMoveEvent(QMouseEvent* event)
+{
+    if (!position.isNull())
+    {
+        QPoint delta = event->globalPos() - position;
+        if (position.x() > this->x() + this->width() - 10
+                || position.y() > this->y() + this->height() - 10)
+        {}
+        else
+        {
+            move(this->x() + delta.x(), this->y() + delta.y());
+            position = event->globalPos();
+        }
+    }
 }
 
 void PopupReminder::onTimer()

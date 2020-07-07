@@ -89,21 +89,23 @@ private:
 
 private:
     Ui::PopupWindow *ui;
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+
+    QPoint position;
     SettingsDialog *settingsDialog;
     QTextEdit *note;
     QSqlQuery *query;
     QString userID;
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
-	int m_nIncrement; // px
+    int m_nIncrement;
 	bool m_bAppearing;
 	QTimer m_timer;
 	PWInformation m_pwi;
     static QList<PopupWindow*> m_PopupWindows;
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    int m_nMouseClick_X_Coordinate;
-    int m_nMouseClick_Y_Coordinate;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;

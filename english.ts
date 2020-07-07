@@ -274,7 +274,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Number:</translation>
+        <translation>Numbers:</translation>
     </message>
     <message>
         <source>VyborID:</source>
@@ -631,7 +631,7 @@
     </message>
     <message>
         <source>История звонков по номеру: </source>
-        <translation>Call history by the number:</translation>
+        <translation type="vanished">Call history by the number:</translation>
     </message>
     <message>
         <source> дней</source>
@@ -1048,7 +1048,7 @@
     </message>
     <message>
         <source>Нет</source>
-        <translation>Any</translation>
+        <translation>None</translation>
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
@@ -1702,6 +1702,10 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе звонков!</source>
         <translation>Connection to call database not created!</translation>
     </message>
+    <message>
+        <source>История звонков по номеру:</source>
+        <translation>Call history by the number:</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1834,7 +1838,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Базы данных</source>
-        <translation>Data bases</translation>
+        <translation>Databases</translation>
     </message>
     <message>
         <source>Настойки базы контактов</source>
@@ -1952,12 +1956,20 @@ p, li { white-space: pre-wrap; }
         <source>Русский (по умолчанию)</source>
         <translation>Русский (по умолчанию)</translation>
     </message>
+    <message>
+        <source>Номер</source>
+        <translation>Number</translation>
+    </message>
+    <message>
+        <source>Протокол</source>
+        <translation>Protocol</translation>
+    </message>
 </context>
 <context>
     <name>ViewContactDialog</name>
     <message>
         <source>Резюме физ. лица</source>
-        <translation>Curriculum vitae of the private</translation>
+        <translation>Private summary</translation>
     </message>
     <message>
         <source>Отчество:</source>
@@ -2084,7 +2096,7 @@ p, li { white-space: pre-wrap; }
     <name>ViewOrgContactDialog</name>
     <message>
         <source>Резюме организации</source>
-        <translation>Curriculum vitae of the organization</translation>
+        <translation>Organization summary</translation>
     </message>
     <message>
         <source>Название организации:</source>

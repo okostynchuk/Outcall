@@ -56,7 +56,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номера:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>3</source>
@@ -265,7 +265,7 @@
     </message>
     <message>
         <source>Номера:</source>
-        <translation>Номер:</translation>
+        <translation>Номери:</translation>
     </message>
     <message>
         <source>VyborID:</source>
@@ -618,7 +618,7 @@
     </message>
     <message>
         <source>История звонков по номеру: </source>
-        <translation>Історія дзвінків за номером:</translation>
+        <translation type="vanished">Історія дзвінків за номером:</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -1392,7 +1392,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Номер:</source>
-        <translation>Номери:</translation>
+        <translation>Номер:</translation>
     </message>
     <message>
         <source>Поиск</source>
@@ -1683,6 +1683,10 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе звонков!</source>
         <translation>Відсутнє підключення до бази дзвінків!</translation>
     </message>
+    <message>
+        <source>История звонков по номеру:</source>
+        <translation>Історія дзвінків за номером:</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1924,6 +1928,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Русский (по умолчанию)</source>
         <translation>Русский (по умолчанию)</translation>
+    </message>
+    <message>
+        <source>Номер</source>
+        <translation>Номер</translation>
+    </message>
+    <message>
+        <source>Протокол</source>
+        <translation>Протокол</translation>
     </message>
 </context>
 <context>

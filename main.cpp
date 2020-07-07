@@ -32,6 +32,22 @@ int main(int argc, char *argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
 
+    QString languages = global::getSettingsValue("language", "settings").toString();
+    QTranslator qtTranslator;
+    if (languages == "Русский (по умолчанию)")
+    {
+        qtTranslator.load(".\\translations\\qt_ru");
+    }
+    else if (languages == "Українська")
+    {
+        qtTranslator.load(".\\translations\\qt_uk");
+    }
+    else if (languages == "English")
+    {
+        qtTranslator.load(".\\translations\\qt_en");
+    }
+    app.installTranslator(&qtTranslator);
+
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
     QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
@@ -114,22 +130,6 @@ int main(int argc, char *argv[])
     }
 
     opened = true;
-
-    QString languages = global::getSettingsValue("language", "settings").toString();
-    QTranslator qtTranslator;
-    if (languages == "Русский (по умолчанию)")
-    {
-        qtTranslator.load(".\\translations\\qt_ru");
-    }
-    else if (languages == "Українська")
-    {
-        qtTranslator.load(".\\translations\\qt_uk");
-    }
-    else if (languages == "English")
-    {
-        qtTranslator.load(".\\translations\\qt_en");
-    }
-    app.installTranslator(&qtTranslator);
 
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
