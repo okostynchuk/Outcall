@@ -240,14 +240,14 @@ void PopupReminder::onSelectTime()
     {
     case 1:
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.my_number, m_pri.id, m_pri.dateTime, m_pri.note);
+        editReminderDialog->setValuesReminders(m_pri.my_number, m_pri.selectedNumber, m_pri.id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
         hide();
         break;
     case 2:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime::QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(600)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
@@ -259,7 +259,7 @@ void PopupReminder::onSelectTime()
         onClosePopup();
         break;
     case 3:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime::QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(1800)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
@@ -271,7 +271,7 @@ void PopupReminder::onSelectTime()
         onClosePopup();
         break;
     case 4:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime::QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(3600)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
@@ -283,7 +283,7 @@ void PopupReminder::onSelectTime()
         onClosePopup();
         break;
     case 5:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime::QDateTime(QDate::currentDate().addDays(1), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
@@ -311,12 +311,13 @@ void PopupReminder::closeAll()
     m_PopupReminders.clear();
 }
 
-void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedSelectedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {
     PopupReminderInfo pri;
 
     pri.remindersDialog = receivedRemindersDialog;
     pri.my_number = receivedNumber;
+    pri.selectedNumber = receivedSelectedNumber;
     pri.id = receivedId;
     pri.dateTime = receivedDateTime;
     pri.note = receivedNote;

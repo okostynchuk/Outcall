@@ -222,6 +222,46 @@ void AsteriskManager::parseEvent(const QString &eventData)
             m_calls.insert(uniqueid, call);
         }
     }
+    else if (eventData.contains("Event: EndpointList"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+
+        endpoints.append(eventValues.value("Aor"));
+
+        if (eventValues.value("Event") == "EndpointListComplete")
+        {
+            for (int i = 0; i < endpoints.length(); i++)
+            {
+                QString command;
+                command   = "Action: PJSIPShowEndpoint\r\n";
+                command  += "Endpoint: " + endpoints.at(i) + "\r\n";
+
+                m_tcpSocket->write(command.toLatin1().data());
+                m_tcpSocket->write("\r\n");
+                m_tcpSocket->flush();
+            }
+        }
+    }
+    else if (eventData.contains("Event: EndpointDetail"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+
+        if (eventValues.value("Event") == "EndpointDetailComplete")
+            return;
+
+        const QString callerId = eventValues.value("Callerid");
+        QString name;
+        QString number;
+
+        QRegExp reg("([\\][\"])(.+)([\\][\"] [<])([0-9]+)([>])");
+        reg.indexIn(callerId);
+        name = reg.cap(2);
+        number = reg.cap(4);
+
+        extensionNumbers.insert(number, name);
+    }
     else if (eventData.contains("Event: BlindTransfer"))
     {
         QMap<QString, QString> eventValues;
@@ -686,6 +726,18 @@ void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &
     }
 }
 
+void AsteriskManager::getExtensionNumbers()
+{
+    extensionNumbers.clear();
+
+    QString command;
+    command = "Action: PJSIPShowEndpoints\r\n";
+
+    m_tcpSocket->write(command.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
 void AsteriskManager::login()
 {
     QString login;
@@ -696,6 +748,8 @@ void AsteriskManager::login()
     m_tcpSocket->write(login.toLatin1().data());
     m_tcpSocket->write("\r\n");
     m_tcpSocket->flush();
+
+    getExtensionNumbers();
 }
 
 void AsteriskManager::originateCall(QString from, QString exten, QString protocol,

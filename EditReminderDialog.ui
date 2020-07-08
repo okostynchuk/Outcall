@@ -90,6 +90,19 @@
        </item>
       </layout>
      </item>
+     <item row="1" column="0">
+      <widget class="QComboBox" name="comboBox">
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="modelColumn">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

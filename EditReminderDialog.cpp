@@ -47,7 +47,11 @@ void EditReminderDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET datetime = ?, content = ?, active = true WHERE id = ? AND phone = ?");
+    QRegExp reg("([0-9]+)(.+)");
+    reg.indexIn(ui->comboBox->currentText());
+
+    query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ? AND phone_from = ?");
+    query.addBindValue(reg.cap(1));
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(id);
@@ -60,9 +64,10 @@ void EditReminderDialog::onSave()
     destroy(true);
 }
 
-void EditReminderDialog::setValuesReminders(QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void EditReminderDialog::setValuesReminders(QString receivedNumber, QString receivedSelectedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {
     my_number = receivedNumber;
+    selectedNumber = receivedSelectedNumber;
     id = receivedId;
     oldDateTime = receivedDateTime;
     oldNote = receivedNote;
@@ -73,6 +78,9 @@ void EditReminderDialog::setValuesReminders(QString receivedNumber, QString rece
     QTextCursor cursor = ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->textEdit->setTextCursor(cursor);
+
+    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(selectedNumber));
+    ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 }
 
 void EditReminderDialog::onTextChanged()
