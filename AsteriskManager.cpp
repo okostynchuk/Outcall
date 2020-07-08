@@ -203,7 +203,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         QString callerIDName = eventValues.value("CallerIDName");
         QString ch           = eventValues.value("Channel");
 
-       QRegExp reg("([^/]*)(/)(\\d+)");
+        QRegExp reg("([^/]*)(/)(\\d+)");
         reg.indexIn(ch);
         QString chType = reg.cap(1);
         QString chExten = reg.cap(3);
@@ -309,7 +309,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         const QString callerIDName      = eventValues.value("CallerIDName");
         const QString uniqueid          = eventValues.value("Uniqueid");
         const QString context           = eventValues.value("Context");
-        const QString linkedid           = eventValues.value("Linkedid");
+        const QString linkedid          = eventValues.value("Linkedid");
         QString destProtocol;
 
         QString dateTime = QTime::currentTime().toString();
