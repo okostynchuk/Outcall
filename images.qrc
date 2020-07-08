@@ -6,5 +6,12 @@
         <file>images/outcall-logo.png</file>
         <file>images/org.png</file>
         <file>images/person.png</file>
+        <file>images/reminders_R.png</file>
+        <file>images/save_R.png</file>
+        <file>images/addToExisting_R.png</file>
+        <file>images/AddPerson_R.png</file>
+        <file>images/openCard_R.png</file>
+        <file>images/orders_R.png</file>
+        <file>images/addOrg_R.png</file>
     </qresource>
 </RCC>

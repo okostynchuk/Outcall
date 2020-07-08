@@ -349,7 +349,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         const QString callerIDName      = eventValues.value("CallerIDName");
         const QString uniqueid          = eventValues.value("Uniqueid");
         const QString context           = eventValues.value("Context");
-        const QString linkedid           = eventValues.value("Linkedid");
+        const QString linkedid          = eventValues.value("Linkedid");
         QString destProtocol;
 
         QString dateTime = QTime::currentTime().toString();

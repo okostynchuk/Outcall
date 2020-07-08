@@ -263,7 +263,7 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
-    pwi.text = tr("<font size = 1>%1</font><br>Входящий звонок от:<br><b>%2</b>").arg(dateTime).arg(caller);
+    pwi.text = tr("<b>%2</b>").arg(caller);
     pwi.uniqueid = uniqueid;
     pwi.number = number;
     pwi.my_number = my_number;
@@ -275,6 +275,7 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
     PopupWindow *popup = new PopupWindow(pwi);
     popup->receiveNumber(popup);
 	popup->show();
+    popup->ui->timeLabel->setText(tr("<font size = 1>%1</font>").arg(dateTime));
 	m_PopupWindows.append(popup);
 }
 
@@ -430,7 +431,8 @@ void PopupWindow::onSaveNote()
     query.addBindValue(author);
     query.exec();
 
-    popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-radius: 5px;");
+    popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-right-color: transparent;");
+    popup->ui->saveNoteButton->setStyleSheet("border: 2px solid lightgreen; background-color: #ffb64f; border-left-color: transparent;");
 }
 
 void PopupWindow::onOpenAccess()
@@ -495,17 +497,15 @@ void PopupWindow::receiveData(bool update)
 
         if (query.next())
         {
-            popup->ui->label->hide();
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
             popup->ui->addPhoneNumberButton->hide();
             popup->ui->showCardButton->show();
-            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>%1 (%2)</b>").arg(query.value(1).toString()).arg(popup->m_pwi.number));
+            popup->ui->lblText->setText(tr("%1%2").arg(popup->m_pwi.number).arg(query.value(1).toString()));
         }
         else
         {
             popup->ui->showCardButton->hide();
-            popup->ui->label->show();
             popup->ui->addPersonButton->show();
             popup->ui->addOrgButton->show();
             popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>Неизвестный (%1)</b>").arg(popup->m_pwi.number));
@@ -520,7 +520,8 @@ void PopupWindow::onTextChanged()
     popup = (PopupWindow*)qv_popup.value<void *>();
     popup->m_pwi.stopTimer = true;
 
-    popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a; border-radius: 5px;");
+    popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a;");
+    popup->ui->saveNoteButton->setStyleSheet("background-color: #ffb64f; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
 }
 
 void PopupWindow::timerStop(QString uniqueid)
@@ -586,7 +587,6 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     if (isInnerPhone(&popup->m_pwi.number))
     {
-        popup->ui->label->hide();
         popup->ui->addPersonButton->hide();
         popup->ui->addOrgButton->hide();
         popup->ui->showCardButton->hide();
@@ -601,7 +601,6 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
         if (query.next())
         {
-            popup->ui->label->hide();
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
             popup->ui->addPhoneNumberButton->hide();
