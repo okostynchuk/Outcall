@@ -1,6 +1,8 @@
 #ifndef EDITREMINDERDIALOG_H
 #define EDITREMINDERDIALOG_H
 
+#include <AsteriskManager.h>
+
 #include <QDialog>
 #include <QDateTime>
 
@@ -18,7 +20,7 @@ signals:
 public:
     explicit EditReminderDialog(QWidget *parent = 0);
     ~EditReminderDialog();
-    void setValuesReminders(QString, QString, QDateTime, QString);
+    void setValuesReminders(QString, QString, QString, QDateTime, QString);
 
 protected slots:
     void onSave();
@@ -28,6 +30,7 @@ protected slots:
 private:
     Ui::EditReminderDialog *ui;
     QString my_number;
+    QString selectedNumber;
     QString id;
     QDateTime oldDateTime;
     QString oldNote;

@@ -24,6 +24,7 @@ private:
         QString text;
         RemindersDialog* remindersDialog;
         QString my_number;
+        QString selectedNumber;
         QString id;
         QDateTime dateTime;
         QString note;
@@ -41,7 +42,7 @@ public slots:
 public:
     PopupReminder(PopupReminderInfo& pri, QWidget *parent = 0);
     ~PopupReminder();
-    static void showReminder(RemindersDialog*, QString, QString, QDateTime, QString);
+    static void showReminder(RemindersDialog*, QString, QString, QString, QDateTime, QString);
     static void closeAll();
 
 private slots:

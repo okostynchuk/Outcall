@@ -56,6 +56,8 @@ public:
     void setAutoSignIn(bool ok);
 
     void setState(AsteriskState state);
+    void getExtensionNumbers();
+    QMap<QString, QString> extensionNumbers;
 
 protected:
     void getEventValues(QString eventData, QMap<QString, QString> &map);
@@ -100,6 +102,7 @@ private:
     AsteriskVersion m_currentVersion;
 
     QMap<QString, Call*> m_calls;
+    QList<QString> endpoints;
 };
 
 extern AsteriskManager *g_pAsteriskManager;

@@ -46,6 +46,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->calendarWidget->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
@@ -61,7 +62,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS TRUE");
     query.exec();
     while (query.next())
     {
@@ -95,6 +96,10 @@ void RemindersDialog::showEvent(QShowEvent *event)
     ui->calendarWidget->setMinimumDate(QDate::currentDate());
     ui->calendarWidget->setSelectedDate(QDate::currentDate());
     ui->timeEdit->setTime(QTime::currentTime());
+
+    ui->comboBox->clear();
+    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(my_number));
+    ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     onUpdate();
 }
@@ -150,7 +155,7 @@ void RemindersDialog::sendNewValues()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS TRUE");
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS TRUE");
     query.exec();
     while (query.next())
     {
@@ -185,33 +190,34 @@ void RemindersDialog::loadActualReminders()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ?");
+    query.prepare("UPDATE reminders SET active = false WHERE phone_to = '" + my_number + "' AND datetime < ?");
     query.addBindValue(QDateTime::currentDateTime());
     query.exec();
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
 
-    query1->insertColumn(1);
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Дата и время"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Содержание"));
+    query1->insertColumn(2);
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));
+    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Содержание"));
 
     ui->tableView->setModel(query1);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
-        ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBox(row_index));
+        ui->tableView->setIndexWidget(query1->index(row_index, 2), addCheckBox(row_index));
 
     ui->tableView->setColumnHidden(0, true);
+    ui->tableView->setColumnHidden(1, true);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());   
     ui->tableView->setWordWrap(true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     queriesActual.append(query1);
@@ -226,33 +232,34 @@ void RemindersDialog::loadPastReminders()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("UPDATE reminders SET active = false WHERE phone = '" + my_number + "' AND datetime < ?");
+    query.prepare("UPDATE reminders SET active = false WHERE phone_to = '" + my_number + "' AND datetime < ?");
     query.addBindValue(QDateTime::currentDateTime());
     query.exec();
 
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, datetime, content FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
 
-    query1->insertColumn(1);
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Дата и время"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Содержание"));
+    query1->insertColumn(2);
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));
+    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Содержание"));
 
     ui->tableView_2->setModel(query1);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
-        ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addCheckBox(row_index));
+        ui->tableView_2->setIndexWidget(query1->index(row_index, 2), addCheckBox(row_index));
 
     ui->tableView_2->setColumnHidden(0, true);
+    ui->tableView_2->setColumnHidden(1, true);
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->setWordWrap(true);
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView_2->resizeColumnsToContents();
-    ui->tableView_2->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     queriesPast.append(query1);
@@ -262,11 +269,12 @@ void RemindersDialog::loadPastReminders()
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
-    QDateTime dateTime = query1->data(query1->index(index.row(), 2)).toDateTime();
-    QString note = query1->data(query1->index(index.row(), 3)).toString();
+    QString phone_to = query1->data(query1->index(index.row(), 1)).toString();
+    QDateTime dateTime = query1->data(query1->index(index.row(), 3)).toDateTime();
+    QString note = query1->data(query1->index(index.row(), 4)).toString();
 
     editReminderDialog = new EditReminderDialog;
-    editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
+    editReminderDialog->setValuesReminders(my_number, phone_to, id, dateTime, note);
     connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     editReminderDialog->show();
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -293,7 +301,7 @@ void RemindersDialog::changeState()
         {
             checkBox->setChecked(false);
 
-            query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone = '" + my_number + "' AND active IS TRUE");
+            query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone_to = '" + my_number + "' AND active IS TRUE");
             query.addBindValue(id);
             query.exec();
         }
@@ -301,7 +309,7 @@ void RemindersDialog::changeState()
         {
             checkBox->setChecked(true);
 
-            query.prepare("UPDATE reminders SET active = true WHERE id = ? AND phone = '" + my_number + "' AND active IS FALSE");
+            query.prepare("UPDATE reminders SET active = true WHERE id = ? AND phone_to = '" + my_number + "' AND active IS FALSE");
             query.addBindValue(id);
             query.exec();
         }
@@ -342,7 +350,7 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
     }
 
     QString id = query1->data(query1->index(row_index, 0)).toString();
-    QDateTime dateTime = query1->data(query1->index(row_index, 2)).toDateTime();
+    QDateTime dateTime = query1->data(query1->index(row_index, 3)).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
     checkBox->setProperty("checkBox", qVariantFromValue(checkBox));
@@ -362,7 +370,21 @@ void RemindersDialog::onUpdate()
 
 void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
 {
-    PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT phone_to FROM reminders WHERE id = ? AND phone_from = ?");
+    query.addBindValue(reminderId);
+    query.addBindValue(my_number);
+    query.exec();
+
+    QString reminderSelectedNumber;
+    if (query.next())
+        reminderSelectedNumber = query.value(0).toString();
+    else
+        reminderSelectedNumber = my_number;
+
+    PopupReminder::showReminder(this, my_number, reminderSelectedNumber, reminderId, reminderDateTime, reminderNote);
 
     onUpdate();
 }
@@ -389,8 +411,12 @@ void RemindersDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("INSERT INTO reminders (phone, datetime, content, active) VALUES(?, ?, ?, ?)");
+    QRegExp reg("([0-9]+)(.+)");
+    reg.indexIn(ui->comboBox->currentText());
+
+    query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
     query.addBindValue(my_number);
+    query.addBindValue(reg.cap(1));
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(true);

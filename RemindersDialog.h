@@ -4,6 +4,7 @@
 #include "SettingsDialog.h"
 #include "RemindersThread.h"
 #include "EditReminderDialog.h"
+#include "AsteriskManager.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
