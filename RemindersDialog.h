@@ -34,6 +34,7 @@ protected:
     void showEvent(QShowEvent *event);
 
 protected slots:
+    void onTimer();
     void onEditReminder(const QModelIndex &);
     void onTextChanged();
     void deleteObjects();
@@ -44,6 +45,7 @@ protected slots:
 
 private:
     Ui::RemindersDialog *ui;
+    QTimer timer;
     QString my_number;
     SettingsDialog *settingsDialog;
     QSqlQueryModel *query1;

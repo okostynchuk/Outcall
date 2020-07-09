@@ -511,6 +511,140 @@ void AsteriskManager::parseEvent(const QString &eventData)
     }
 }
 
+void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &map)
+{
+    QStringList list = eventData.split("\r\n");
+    list.removeLast();
+    foreach (QString values, list)
+    {
+        QStringList c = values.split(": ");
+        map.insert(c.at(0), c.at(1));
+    }
+}
+
+void AsteriskManager::getExtensionNumbers()
+{
+    extensionNumbers.clear();
+
+    QString command;
+    command = "Action: PJSIPShowEndpoints\r\n";
+
+    m_tcpSocket->write(command.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
+void AsteriskManager::login()
+{
+    QString login;
+    login =  "Action: Login\r\n";
+    login += "Username: "        + m_username      + "\r\n";
+    login += "Secret: "          + m_secret        + "\r\n";
+
+    m_tcpSocket->write(login.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+
+    getExtensionNumbers();
+}
+
+void AsteriskManager::originateCall(QString from, QString exten, QString protocol, QString callerID)
+{
+    const QString channel = protocol + "/" + from;
+
+    QString result;
+    result =  "Action: Originate\r\n";
+    result += "Channel: "       + channel       + "\r\n";
+    result += "Exten: "         + exten         + "\r\n";
+    result += "Context: DLPN_DialPlan" + from + "\r\n";
+    result += "Priority: 1\r\n";
+    result += "CallerID: "      + callerID      + "\r\n";
+
+    m_tcpSocket->write(result.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
+void AsteriskManager::formatNumber(QString &number)
+{
+    QString formatted_number = number;
+    QString international = global::getSettingsValue("international", "dial_rules").toString();
+
+    QVariantList list = global::getSettingsValue("replacement_rules", "dial_rules").toList();
+
+    for (int i = 0; i < list.size(); ++i)
+    {
+        QMap<QString, QVariant> rules = list[i].toMap();
+
+        int isRegEx         = rules.value("regex").toInt();
+        QString replacement = rules.value("replacement").toString();
+        QString text        = rules.value("text").toString();
+
+        if (isRegEx)
+        {
+            formatted_number.replace(QRegExp(text), replacement);
+        }
+        else
+        {
+            formatted_number.replace(text, replacement);
+        }
+    }
+
+    number.clear();
+
+    char ch;
+    for (int i = 0; i < formatted_number.length(); ++i)
+    {
+        ch = formatted_number.at(i).toLatin1();
+        if (ch=='+')
+            number.append(international);
+        else if ((ch>='0' && ch<='9') || ch=='*' || ch=='#')
+            number.append(QChar(ch));
+        else if (ch=='a' || ch=='b' || ch=='c' || ch=='A' || ch=='B' || ch=='C')
+            number.append(QChar('2'));
+        else if (ch=='d' || ch=='e' || ch=='f' || ch=='D' || ch=='E' || ch=='F')
+            number.append(QChar('3'));
+        else if (ch=='g' || ch=='h' || ch=='i' || ch=='G' || ch=='H' || ch=='I')
+            number.append(QChar('4'));
+        else if (ch=='j' || ch=='k' || ch=='l' || ch=='J' || ch=='K' || ch=='L')
+            number.append(QChar('5'));
+        else if (ch=='m' || ch=='n' || ch=='o' || ch=='M' || ch=='N' || ch=='O')
+            number.append(QChar('6'));
+        else if (ch=='p' || ch=='q' || ch=='r' || ch=='s' || ch=='P' || ch=='Q' || ch=='R' || ch=='S')
+            number.append(QChar('7'));
+        else if (ch=='v' || ch=='u' || ch=='t' || ch=='V' || ch=='U' || ch=='T')
+            number.append(QChar('8'));
+        else if (ch=='w' || ch=='x' || ch=='y' || ch=='z' || ch=='W' || ch=='X' || ch=='Y' || ch=='Z')
+            number.append(QChar('9'));
+    }
+}
+
+void AsteriskManager::onSettingsChange()
+{
+    QString server            = global::getSettingsValue("servername", "settings").toString();
+    quint16 port              = global::getSettingsValue("port",       "settings").toUInt();
+    QString username          = global::getSettingsValue("username",   "settings").toString();
+    QByteArray secretInByte   = global::getSettingsValue("password",   "settings").toByteArray();
+    QString secret            = QString(QByteArray::fromBase64(secretInByte));
+
+    if(server != m_server || port != m_port ||
+            username != m_username || secret != m_secret)
+    {
+        m_server    = server;
+        m_port      = port;
+        m_username  = username;
+        m_secret    = secret;
+
+        signOut();
+        signIn(m_server, m_port);
+    }
+}
+
+bool AsteriskManager::isSignedIn() const
+{
+    return m_isSignedIn;
+}
+
 void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
 {
     if (eventData.contains("Event: Newchannel"))
@@ -713,156 +847,4 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
         delete call;
         m_calls.remove(uniqueid);
     }
-}
-
-void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &map)
-{
-    QStringList list = eventData.split("\r\n");
-    list.removeLast();
-    foreach (QString values, list)
-    {
-        QStringList c = values.split(": ");
-        map.insert(c.at(0), c.at(1));
-    }
-}
-
-void AsteriskManager::getExtensionNumbers()
-{
-    extensionNumbers.clear();
-
-    QString command;
-    command = "Action: PJSIPShowEndpoints\r\n";
-
-    m_tcpSocket->write(command.toLatin1().data());
-    m_tcpSocket->write("\r\n");
-    m_tcpSocket->flush();
-}
-
-void AsteriskManager::login()
-{
-    QString login;
-    login =  "Action: Login\r\n";
-    login += "Username: "        + m_username      + "\r\n";
-    login += "Secret: "          + m_secret        + "\r\n";
-
-    m_tcpSocket->write(login.toLatin1().data());
-    m_tcpSocket->write("\r\n");
-    m_tcpSocket->flush();
-
-    getExtensionNumbers();
-}
-
-void AsteriskManager::originateCall(QString from, QString exten, QString protocol,
-                            QString callerID, QString context)
-{
-//    QStringList speedDialList = global::getSettingKeys("speed_dial");
-//    if(speedDialList.contains(exten))
-//    {
-//        exten = global::getSettingsValue(exten, "speed_dial").toString();
-//    }
-
-//    formatNumber(exten);
-
-//    context = global::getSettingsValue("context", "dial_rules").toString();
-//    if (context.isEmpty())
-//        context = "default";
-
-//    QString prefix = global::getSettingsValue("prefix", "dial_rules").toString();
-
-//    exten = prefix + exten;
-
-    const QString channel = protocol + "/" + from;
-
-    QString result;
-    result =  "Action: Originate\r\n";
-    result += "Channel: "       + channel       + "\r\n";
-    result += "Exten: "         + exten         + "\r\n";
-    //result += "Context: "       + context       + "\r\n";
-    result += "Context: DLPN_DialPlan" + from + "\r\n";
-    result += "Priority: 1\r\n";
-    result += "CallerID: "      + callerID      + "\r\n";
-
-    m_tcpSocket->write(result.toLatin1().data());
-    m_tcpSocket->write("\r\n");
-    m_tcpSocket->flush();
-}
-
-void AsteriskManager::formatNumber(QString &number)
-{
-    QString formatted_number = number;
-    QString international = global::getSettingsValue("international", "dial_rules").toString();
-
-    QVariantList list = global::getSettingsValue("replacement_rules", "dial_rules").toList();
-
-    for (int i = 0; i < list.size(); ++i)
-    {
-        QMap<QString, QVariant> rules = list[i].toMap();
-
-        int isRegEx         = rules.value("regex").toInt();
-        QString replacement = rules.value("replacement").toString();
-        QString text        = rules.value("text").toString();
-
-        if (isRegEx)
-        {
-            formatted_number.replace(QRegExp(text), replacement);
-        }
-        else
-        {
-            formatted_number.replace(text, replacement);
-        }
-    }
-
-    number.clear();
-
-    char ch;
-    for (int i = 0; i < formatted_number.length(); ++i)
-    {
-        ch = formatted_number.at(i).toLatin1();
-        if (ch=='+')
-            number.append(international);
-        else if ((ch>='0' && ch<='9') || ch=='*' || ch=='#')
-            number.append(QChar(ch));
-        else if (ch=='a' || ch=='b' || ch=='c' || ch=='A' || ch=='B' || ch=='C')
-            number.append(QChar('2'));
-        else if (ch=='d' || ch=='e' || ch=='f' || ch=='D' || ch=='E' || ch=='F')
-            number.append(QChar('3'));
-        else if (ch=='g' || ch=='h' || ch=='i' || ch=='G' || ch=='H' || ch=='I')
-            number.append(QChar('4'));
-        else if (ch=='j' || ch=='k' || ch=='l' || ch=='J' || ch=='K' || ch=='L')
-            number.append(QChar('5'));
-        else if (ch=='m' || ch=='n' || ch=='o' || ch=='M' || ch=='N' || ch=='O')
-            number.append(QChar('6'));
-        else if (ch=='p' || ch=='q' || ch=='r' || ch=='s' || ch=='P' || ch=='Q' || ch=='R' || ch=='S')
-            number.append(QChar('7'));
-        else if (ch=='v' || ch=='u' || ch=='t' || ch=='V' || ch=='U' || ch=='T')
-            number.append(QChar('8'));
-        else if (ch=='w' || ch=='x' || ch=='y' || ch=='z' || ch=='W' || ch=='X' || ch=='Y' || ch=='Z')
-            number.append(QChar('9'));
-    }
-}
-
-void AsteriskManager::onSettingsChange()
-{
-    QString server            = global::getSettingsValue("servername", "settings").toString();
-    quint16 port              = global::getSettingsValue("port",       "settings").toUInt();
-    QString username          = global::getSettingsValue("username",   "settings").toString();
-    QByteArray secretInByte   = global::getSettingsValue("password",   "settings").toByteArray();
-    QString secret            = QString(QByteArray::fromBase64(secretInByte));
-
-    if(server != m_server || port != m_port ||
-            username != m_username || secret != m_secret)
-    {
-        m_server    = server;
-        m_port      = port;
-        m_username  = username;
-        m_secret    = secret;
-
-        signOut();
-        signIn(m_server, m_port);
-    }
-}
-
-bool AsteriskManager::isSignedIn() const
-{
-    return m_isSignedIn;
 }

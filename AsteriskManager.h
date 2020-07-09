@@ -46,8 +46,7 @@ public:
         QString destUniqueid;
     };
 
-    void originateCall(QString from, QString to,  QString protocol,
-                        QString callerID, QString Context = "default");
+    void originateCall(QString from, QString to,  QString protocol, QString callerID);
 
     bool isSignedIn() const;
     void signIn(const QString &serverName, const quint16 &port);

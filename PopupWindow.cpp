@@ -22,8 +22,8 @@ QList<PopupWindow*> PopupWindow::m_PopupWindows;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 //msec
-#define TIME_TO_LIVE	60000 //msec
+#define TIME_TO_SHOW	800 // msec
+#define TIME_TO_LIVE	60000 // msec
 
 PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
     QDialog(parent),

@@ -50,17 +50,22 @@ void EditReminderDialog::onSave()
     QRegExp reg("([0-9]+)(.+)");
     reg.indexIn(ui->comboBox->currentText());
 
-    query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ? AND phone_from = ?");
+    query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ?");
+    query.addBindValue(my_number);
     query.addBindValue(reg.cap(1));
     query.addBindValue(dateTime);
     query.addBindValue(note);
-    query.addBindValue(id);
-    query.addBindValue(my_number);
+    query.addBindValue(id);;
     query.exec();
 
     emit sendData(true);
     close();
-    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Напоминание успешно изменено!"), QMessageBox::Ok);
+
+    if (reg.cap(1) != my_number)
+        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Напоминание успешно отправлено!"), QMessageBox::Ok);
+    else
+        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Напоминание успешно изменено!"), QMessageBox::Ok);
+
     destroy(true);
 }
 

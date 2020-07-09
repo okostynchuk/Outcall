@@ -9,6 +9,8 @@
 #include <QKeyEvent>
 #include <QSqlQuery>
 
+#define TIME_TO_UPDATE 10000 // msec
+
 RemindersDialog::RemindersDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RemindersDialog)
@@ -42,6 +44,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
+    connect(&timer, &QTimer::timeout, this, &RemindersDialog::onTimer);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &RemindersDialog::onSave);
 
     ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
@@ -80,6 +83,9 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     connect(remindersThreadManager, SIGNAL(finished()), remindersThreadManager, SLOT(deleteLater()));
     connect(remindersThread, SIGNAL(finished()), remindersThread, SLOT(deleteLater()));
     remindersThread->start();
+
+    timer.setInterval(TIME_TO_UPDATE);
+    timer.start();
 }
 
 RemindersDialog::~RemindersDialog()
@@ -102,6 +108,13 @@ void RemindersDialog::showEvent(QShowEvent *event)
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     onUpdate();
+    sendNewValues();
+}
+
+void RemindersDialog::onTimer()
+{
+    onUpdate();
+    sendNewValues();
 }
 
 void RemindersDialog::deleteObjects()
@@ -424,6 +437,9 @@ void RemindersDialog::onSave()
 
     onUpdate();
     sendNewValues();
+
+    if (reg.cap(1) != my_number)
+        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Напоминание успешно отправлено!"), QMessageBox::Ok);
 }
 
 bool RemindersDialog::eventFilter(QObject *object, QEvent *event)

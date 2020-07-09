@@ -14,8 +14,8 @@ int PopupHelloWindow::m_nLastWindowPosition = 0;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 //msec
-#define TIME_TO_LIVE	4000 //msec
+#define TIME_TO_SHOW	800 // msec
+#define TIME_TO_LIVE	4000 // msec
 
 PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     QDialog(parent),
@@ -30,7 +30,8 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->lblText->setText(pwi.text);
 
-    if (!pwi.avatar.isNull()) {
+    if (!pwi.avatar.isNull())
+    {
         ui->lblAvatar->setScaledContents(true);
         ui->lblAvatar->setPixmap(pwi.avatar);
     }
@@ -55,9 +56,9 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     nScreenWidth=rcScreen.width();
     nScreenHeight=rcScreen.height();
 
-    bool bTaskbarOnRight=nDesktopWidth<nScreenWidth && rcDesktop.left()==0;
-    bool bTaskbarOnLeft=nDesktopWidth<nScreenWidth && rcDesktop.left()!=0;
-    bool bTaskBarOnTop=nDesktopHeight<nScreenHeight && rcDesktop.top()!=0;
+    bool bTaskbarOnRight = nDesktopWidth<nScreenWidth && rcDesktop.left() == 0;
+    bool bTaskbarOnLeft = nDesktopWidth<nScreenWidth && rcDesktop.left() != 0;
+    bool bTaskBarOnTop = nDesktopHeight<nScreenHeight && rcDesktop.top() != 0;
 
     int nTimeToShow = TIME_TO_SHOW;
     int nTimerDelay;
@@ -66,35 +67,35 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     if (bTaskbarOnRight)
     {
-        m_nStartPosX=(rcDesktop.right()-m_nLastWindowPosition*width());
-        m_nStartPosY=rcDesktop.bottom()-height();
-        m_nTaskbarPlacement=TASKBAR_ON_RIGHT;
-        nTimerDelay = nTimeToShow/(width()/m_nIncrement);
+        m_nStartPosX = (rcDesktop.right() - m_nLastWindowPosition * width());
+        m_nStartPosY = rcDesktop.bottom() - height();
+        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
+        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
     }
     else if (bTaskbarOnLeft)
     {
-        m_nStartPosX=(rcDesktop.left()-width()+m_nLastWindowPosition*width());
-        m_nStartPosY=rcDesktop.bottom()-height();
-        m_nTaskbarPlacement=TASKBAR_ON_LEFT;
-        nTimerDelay=nTimeToShow/(width()/m_nIncrement);
+        m_nStartPosX = (rcDesktop.left() - width() + m_nLastWindowPosition * width());
+        m_nStartPosY = rcDesktop.bottom() - height();
+        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
+        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
     }
     else if (bTaskBarOnTop)
     {
-        m_nStartPosX=rcDesktop.right()-width();
-        m_nStartPosY=(rcDesktop.top()-height()+m_nLastWindowPosition*height());
-        m_nTaskbarPlacement=TASKBAR_ON_TOP;
-        nTimerDelay=nTimeToShow/(height()/m_nIncrement);
+        m_nStartPosX = rcDesktop.right() - width();
+        m_nStartPosY = (rcDesktop.top() - height() + m_nLastWindowPosition * height());
+        m_nTaskbarPlacement = TASKBAR_ON_TOP;
+        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
     }
     else
     {
-        m_nStartPosX=rcDesktop.right()-width();
-        m_nStartPosY=(rcDesktop.bottom()-m_nLastWindowPosition*height());
-        m_nTaskbarPlacement=TASKBAR_ON_BOTTOM;
-        nTimerDelay=nTimeToShow/(height()/m_nIncrement);
+        m_nStartPosX = rcDesktop.right() - width();
+        m_nStartPosY = (rcDesktop.bottom() - m_nLastWindowPosition * height());
+        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
+        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
     }
 
-    m_nCurrentPosX=m_nStartPosX;
-    m_nCurrentPosY=m_nStartPosY;
+    m_nCurrentPosX = m_nStartPosX;
+    m_nCurrentPosY = m_nStartPosY + 100;
 
     move(m_nCurrentPosX, m_nCurrentPosY);
 
