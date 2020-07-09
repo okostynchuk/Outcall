@@ -432,7 +432,7 @@ void PopupWindow::onSaveNote()
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-right-color: transparent;");
-    popup->ui->saveNoteButton->setStyleSheet("border: 2px solid lightgreen; background-color: #ffb64f; border-left-color: transparent;");
+    popup->ui->saveNoteButton->setStyleSheet("border: 2px solid lightgreen; background-color: #e1e1e1; border-left-color: transparent;");
 }
 
 void PopupWindow::onOpenAccess()
@@ -521,7 +521,7 @@ void PopupWindow::onTextChanged()
     popup->m_pwi.stopTimer = true;
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a;");
-    popup->ui->saveNoteButton->setStyleSheet("background-color: #ffb64f; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
+    popup->ui->saveNoteButton->setStyleSheet("background-color: #e1e1e1; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
 }
 
 void PopupWindow::timerStop(QString uniqueid)

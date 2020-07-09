@@ -113,14 +113,14 @@
            <widget class="QPushButton" name="searchButton">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>27</width>
               <height>27</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>65</width>
-              <height>16777215</height>
+              <width>27</width>
+              <height>27</height>
              </size>
             </property>
             <property name="font">
@@ -129,10 +129,23 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::TabFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Поиск по таблице</string>
             </property>
             <property name="text">
-             <string>Поиск</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -169,7 +182,10 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Перейти в начало</string>
             </property>
             <property name="text">
              <string>◄◄</string>
@@ -198,7 +214,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
              <string>◄</string>
@@ -225,7 +241,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -264,7 +280,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
              <string>►</string>
@@ -291,7 +307,10 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Перейти в конец</string>
             </property>
             <property name="text">
              <string>►►</string>
@@ -309,6 +328,9 @@
             <property name="focusPolicy">
              <enum>Qt::WheelFocus</enum>
             </property>
+            <property name="toolTip">
+             <string>Количество контактов на странице</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -318,7 +340,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>35</width>
+              <width>350</width>
               <height>20</height>
              </size>
             </property>
@@ -328,7 +350,13 @@
            <widget class="QPushButton" name="updateButton">
             <property name="minimumSize">
              <size>
-              <width>125</width>
+              <width>27</width>
+              <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>27</width>
               <height>27</height>
              </size>
             </property>
@@ -338,10 +366,23 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Обновить таблицу</string>
             </property>
             <property name="text">
-             <string>Обновить</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -349,7 +390,13 @@
            <widget class="QPushButton" name="addPersonButton">
             <property name="minimumSize">
              <size>
-              <width>129</width>
+              <width>27</width>
+              <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>27</width>
               <height>27</height>
              </size>
             </property>
@@ -359,10 +406,23 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Добавить физ. лицо</string>
             </property>
             <property name="text">
-             <string>Добавить физ. лицо</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>31</width>
+              <height>31</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -370,7 +430,13 @@
            <widget class="QPushButton" name="addOrgButton">
             <property name="minimumSize">
              <size>
-              <width>147</width>
+              <width>27</width>
+              <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>27</width>
               <height>27</height>
              </size>
             </property>
@@ -380,10 +446,23 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Добавить организацию</string>
             </property>
             <property name="text">
-             <string>Добавить организацию</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
             </property>
            </widget>
           </item>
