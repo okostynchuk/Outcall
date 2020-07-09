@@ -748,7 +748,7 @@
     </message>
     <message>
         <source>Обновить</source>
-        <translation>Оновити</translation>
+        <translation type="vanished">Оновити</translation>
     </message>
     <message>
         <source>Добавить физ. лицо</source>
@@ -801,6 +801,22 @@
     <message>
         <source>Выберите одну запись!</source>
         <translation type="vanished">Оберіть один запис!</translation>
+    </message>
+    <message>
+        <source>Перейти в начало</source>
+        <translation>Перейти на початок</translation>
+    </message>
+    <message>
+        <source>Перейти в конец</source>
+        <translation>Перейти на кінець</translation>
+    </message>
+    <message>
+        <source>Количество контактов на странице</source>
+        <translation>Кількість контактів на сторінці</translation>
+    </message>
+    <message>
+        <source>Обновить таблицу</source>
+        <translation>Оновити таблицю</translation>
     </message>
 </context>
 <context>
@@ -1213,6 +1229,10 @@
         <source>Напоминание успешно изменено!</source>
         <translation>Нагадування успішно змінено!</translation>
     </message>
+    <message>
+        <source>Напоминание успешно отправлено!</source>
+        <translation>Нагадування успішно відправлено!</translation>
+    </message>
 </context>
 <context>
     <name>NotesDialog</name>
@@ -1505,7 +1525,7 @@ p, li { white-space: pre-wrap; }
     <name>PopupWindow</name>
     <message>
         <source>Chat History</source>
-        <translation>Chat History</translation>
+        <translation type="vanished">Chat History</translation>
     </message>
     <message>
         <source>Х</source>
@@ -1513,11 +1533,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Входящий звонок от: &lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вхідний дзвінок від: &lt;span style=&quot; font-weight:600;&quot;&gt;Ben Franklin (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вхідний дзвінок від: &lt;span style=&quot; font-weight:600;&quot;&gt;Ben Franklin (1031)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Добавить:</source>
-        <translation>Додати:</translation>
+        <translation type="vanished">Додати:</translation>
     </message>
     <message>
         <source>Открыть карточку</source>
@@ -1525,16 +1545,16 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Физ. лицо</source>
-        <translation>Фіз.особу</translation>
+        <translation type="vanished">Фіз.особу</translation>
     </message>
     <message>
         <source>Организацию</source>
         <oldsource>Редактировать</oldsource>
-        <translation>Організацію</translation>
+        <translation type="vanished">Організацію</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
-        <translation>Введення коментарю</translation>
+        <translation type="vanished">Введення коментарю</translation>
     </message>
     <message>
         <source>Сохранить заметку</source>
@@ -1542,7 +1562,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>💾</source>
-        <translation>💾</translation>
+        <translation type="vanished">💾</translation>
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</source>
@@ -1554,7 +1574,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</source>
-        <translation>Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</translation>
+        <translation type="vanished">Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
@@ -1562,11 +1582,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>К существующему</source>
-        <translation>До існуючого</translation>
+        <translation type="vanished">До існуючого</translation>
     </message>
     <message>
         <source>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Входящий звонок от:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
-        <translation>&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;font size = 1&gt;%1&lt;/font&gt;&lt;br&gt;Вхідний дзвінок від:&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Уведомление</source>
@@ -1587,6 +1607,50 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
         <translation>Відсутнє підключення до бази Access!</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;1031&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;1031&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Время звонка</source>
+        <translation>Час дзвінка</translation>
+    </message>
+    <message>
+        <source>Время</source>
+        <translation>Час</translation>
+    </message>
+    <message>
+        <source>Добавить напоминание</source>
+        <translation>Додати нагадування</translation>
+    </message>
+    <message>
+        <source>Комментарий к звонку</source>
+        <translation>Коментар до дзвінка</translation>
+    </message>
+    <message>
+        <source>Добавить физ. лицо</source>
+        <translation>Додати фіз. особу</translation>
+    </message>
+    <message>
+        <source>Добавить организацию</source>
+        <translation>Додати організацію</translation>
+    </message>
+    <message>
+        <source>Добавить к существующему</source>
+        <translation>Додати до існуючого</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>&lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
+        <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <source>%1%2</source>
+        <translation>%1%2</translation>
     </message>
 </context>
 <context>
@@ -1687,6 +1751,10 @@ p, li { white-space: pre-wrap; }
         <source>История звонков по номеру:</source>
         <translation>Історія дзвінків за номером:</translation>
     </message>
+    <message>
+        <source>Неизвестный</source>
+        <translation>Невідомий</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1729,6 +1797,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
         <translation>Зміст нагадування не може бути пустим!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно отправлено!</source>
+        <translation>Нагадування успішно відправлено!</translation>
     </message>
 </context>
 <context>
