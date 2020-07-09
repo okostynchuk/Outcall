@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>714</width>
-    <height>500</height>
+    <height>504</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -159,46 +159,172 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="1">
          <widget class="QPushButton" name="callButton">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
           </property>
-          <property name="text">
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
            <string>Позвонить</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="updateButton">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
           <property name="text">
-           <string>Обновить</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="addContactButton">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text">
-           <string>Добавить / изменить физ. лицо</string>
-          </property>
-         </widget>
-        </item>
-        <item>
+        <item row="0" column="4">
          <widget class="QPushButton" name="addOrgContactButton">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
           </property>
-          <property name="text">
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
            <string>Добавить / изменить организацию</string>
           </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
          </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="addContactButton">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Добавить / изменить физ. лицо</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="updateButton">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Обновить</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>

@@ -13,5 +13,8 @@
         <file>images/openCard_R.png</file>
         <file>images/orders_R.png</file>
         <file>images/addOrg_R.png</file>
+        <file>images/refresh_R.png</file>
+        <file>images/search_R.png</file>
+        <file>images/makeCall_R.png</file>
     </qresource>
 </RCC>
