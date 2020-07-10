@@ -26,6 +26,33 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     setAttribute(Qt::WA_TranslucentBackground);
 
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT call_id FROM reminders WHERE id = ?");
+    query.addBindValue(m_pri.id);
+    query.exec();
+    query.next();
+
+    if (query.value(0).toString() != NULL)
+    {
+        m_pri.call_id = query.value(0).toString();
+
+        QSqlDatabase db = QSqlDatabase::database("Second");
+        QSqlQuery query(db);
+
+        query.prepare("SELECT src FROM cdr WHERE uniqueid = ?");
+        query.addBindValue(m_pri.call_id);
+        query.exec();
+        query.next();
+
+        m_pri.number = query.value(0).toString();
+
+        ui->callButton->setText(" " + ui->callButton->text() + " " + m_pri.number + " ");
+    }
+    else
+        ui->callButton->hide();
+
     ui->lblText->setText(m_pri.text);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -37,8 +64,19 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     ui->comboBox->addItem(tr("Через 1 час"));
     ui->comboBox->addItem(tr("Через 24 часа"));
 
+    QString languages = global::getSettingsValue("language", "settings").toString();
+    if (languages == "Русский (по умолчанию)")
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 20px;} ::drop-down{border: 0px;}");
+    else if (languages == "Українська")
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 25px;} ::drop-down{border: 0px;}");
+    else if (languages == "English")
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 45px;} ::drop-down{border: 0px;}");
+
     qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
     this->installEventFilter(this);
+
+    if (!ui->callButton->isHidden())
+        connect(ui->callButton, &QAbstractButton::clicked, this, &PopupReminder::onCall);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
@@ -231,6 +269,12 @@ void PopupReminder::receiveData(bool updating)
     }
 }
 
+void PopupReminder::onCall()
+{
+    const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
+    g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.number, protocol, m_pri.my_number);
+}
+
 void PopupReminder::onSelectTime()
 {
     QSqlDatabase db;
@@ -240,7 +284,7 @@ void PopupReminder::onSelectTime()
     {
     case 1:
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.my_number, m_pri.selectedNumber, m_pri.id, m_pri.dateTime, m_pri.note);
+        editReminderDialog->setValuesReminders(m_pri.my_number, m_pri.id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -311,13 +355,12 @@ void PopupReminder::closeAll()
     m_PopupReminders.clear();
 }
 
-void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedSelectedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {
     PopupReminderInfo pri;
 
     pri.remindersDialog = receivedRemindersDialog;
     pri.my_number = receivedNumber;
-    pri.selectedNumber = receivedSelectedNumber;
     pri.id = receivedId;
     pri.dateTime = receivedDateTime;
     pri.note = receivedNote;

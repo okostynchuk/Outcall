@@ -9,7 +9,7 @@
 #include <QKeyEvent>
 #include <QSqlQuery>
 
-#define TIME_TO_UPDATE 10000 // msec
+#define TIME_TO_UPDATE 5000 // msec
 
 RemindersDialog::RemindersDialog(QWidget *parent) :
     QDialog(parent),
@@ -25,7 +25,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_2->verticalHeader()->setSectionsClickable(false);
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
 
-    QString languages = global::getSettingsValue("language", "settings").toString();
+    languages = global::getSettingsValue("language", "settings").toString();
     if (languages == "Русский (по умолчанию)")
         ui->calendarWidget->setLocale(QLocale::Russian);
     else if (languages == "Українська")
@@ -108,7 +108,6 @@ void RemindersDialog::showEvent(QShowEvent *event)
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     onUpdate();
-    sendNewValues();
 }
 
 void RemindersDialog::onTimer()
@@ -282,12 +281,11 @@ void RemindersDialog::loadPastReminders()
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
-    QString phone_to = query1->data(query1->index(index.row(), 1)).toString();
     QDateTime dateTime = query1->data(query1->index(index.row(), 3)).toDateTime();
     QString note = query1->data(query1->index(index.row(), 4)).toString();
 
     editReminderDialog = new EditReminderDialog;
-    editReminderDialog->setValuesReminders(my_number, phone_to, id, dateTime, note);
+    editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
     connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     editReminderDialog->show();
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -345,7 +343,12 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
     else
         checkBox->setChecked(false);
 
-    layout->setContentsMargins(25, 0, 0, 0);
+    if (languages == "Русский (по умолчанию)")
+        layout->setContentsMargins(25, 0, 0, 0);
+    else if (languages == "Українська")
+        layout->setContentsMargins(22, 0, 0, 0);
+    else if (languages == "English")
+        layout->setContentsMargins(15, 0, 0, 0);
 
     wgt->setLayout(layout);
 
@@ -383,21 +386,7 @@ void RemindersDialog::onUpdate()
 
 void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
 {
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("SELECT phone_to FROM reminders WHERE id = ? AND phone_from = ?");
-    query.addBindValue(reminderId);
-    query.addBindValue(my_number);
-    query.exec();
-
-    QString reminderSelectedNumber;
-    if (query.next())
-        reminderSelectedNumber = query.value(0).toString();
-    else
-        reminderSelectedNumber = my_number;
-
-    PopupReminder::showReminder(this, my_number, reminderSelectedNumber, reminderId, reminderDateTime, reminderNote);
+    PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 
     onUpdate();
 }

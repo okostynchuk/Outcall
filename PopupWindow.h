@@ -52,7 +52,6 @@ private:
         PWType type;
         QString text;
         QPixmap avatar;
-        QString extension;
         QString uniqueid;
         QString number;
         QString my_number;

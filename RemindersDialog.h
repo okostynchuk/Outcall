@@ -41,11 +41,12 @@ protected slots:
     void changeState();
     void onSave();
     bool eventFilter(QObject *object, QEvent *event);
-    void onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote);
+    void onNotify(QString, QDateTime, QString);
 
 private:
     Ui::RemindersDialog *ui;
     QTimer timer;
+    QString languages;
     QString my_number;
     SettingsDialog *settingsDialog;
     QSqlQueryModel *query1;

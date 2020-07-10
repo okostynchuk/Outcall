@@ -3,6 +3,8 @@
 
 #include "RemindersDialog.h"
 #include "EditReminderDialog.h"
+#include "AsteriskManager.h"
+#include "Global.h"
 
 #include <QDialog>
 #include <QDateTime>
@@ -24,10 +26,11 @@ private:
         QString text;
         RemindersDialog* remindersDialog;
         QString my_number;
-        QString selectedNumber;
+        QString number;
         QString id;
         QDateTime dateTime;
         QString note;
+        QString call_id;
         bool active;
     };
 
@@ -42,10 +45,11 @@ public slots:
 public:
     PopupReminder(PopupReminderInfo& pri, QWidget *parent = 0);
     ~PopupReminder();
-    static void showReminder(RemindersDialog*, QString, QString, QString, QDateTime, QString);
+    static void showReminder(RemindersDialog*, QString, QString, QDateTime, QString);
     static void closeAll();
 
 private slots:
+    void onCall();
     void onTimer();
     void onClosePopup();
     void onSelectTime();

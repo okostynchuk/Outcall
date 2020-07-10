@@ -263,7 +263,7 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
 {
 	PWInformation pwi;
 	pwi.type = PWPhoneCall;
-    pwi.text = tr("<b>%2</b>").arg(caller);
+    pwi.text = caller;
     pwi.uniqueid = uniqueid;
     pwi.number = number;
     pwi.my_number = my_number;
@@ -393,11 +393,17 @@ void PopupWindow::onShowCard()
 
 void PopupWindow::onAddReminder()
 {
-//    editReminderDialog = new EditReminderDialog;
-//    editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
-//    connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-//    editReminderDialog->show();
-//    editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    QVariant qv_popup = sender()->property("qv_popup");
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+    popup->m_pwi.stopTimer = true;
+
+    editReminderDialog = new EditReminderDialog;
+    editReminderDialog->setValuesPopupWindow(popup->m_pwi.my_number, popup->m_pwi.uniqueid);
+    connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    editReminderDialog->setProperty("qv_popup", qv_popup);
+    editReminderDialog->show();
+    editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void PopupWindow::onSaveNote()
@@ -490,26 +496,46 @@ void PopupWindow::receiveData(bool update)
 
     if (update)
     {
-        QSqlDatabase db;
-        QSqlQuery query(db);
-        query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
-        query.exec();
-
-        if (query.next())
+        if (isInnerPhone(&popup->m_pwi.number))
         {
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
+            popup->ui->showCardButton->hide();
             popup->ui->addPhoneNumberButton->hide();
-            popup->ui->showCardButton->show();
-            popup->ui->lblText->setText(tr("%1%2").arg(popup->m_pwi.number).arg(query.value(1).toString()));
+            popup->ui->openAccess->hide();
         }
         else
         {
-            popup->ui->showCardButton->hide();
-            popup->ui->addPersonButton->show();
-            popup->ui->addOrgButton->show();
-            popup->ui->lblText->setText(tr("Входящий звонок от:<br><b>Неизвестный (%1)</b>").arg(popup->m_pwi.number));
+            QSqlDatabase db;
+            QSqlQuery query(db);
+            query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+            query.exec();
+
+            if (query.next())
+            {
+                popup->ui->addPersonButton->hide();
+                popup->ui->addOrgButton->hide();
+                popup->ui->addPhoneNumberButton->hide();
+                popup->ui->showCardButton->show();
+                popup->ui->openAccess->show();
+                popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
+                popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
+            }
+            else
+            {
+                popup->ui->openAccess->hide();
+                popup->ui->showCardButton->hide();
+                popup->ui->addPersonButton->show();
+                popup->ui->addOrgButton->show();
+                popup->ui->addPhoneNumberButton->show();
+                popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + tr("Неизвестный") + "</b>");
+                popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + tr("Неизвестный") + "</b>");
+            }
         }
+
+
+        if (!MSSQLopened)
+            popup->ui->openAccess->setVisible(false);
     }
 }
 
@@ -591,6 +617,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
         popup->ui->addOrgButton->hide();
         popup->ui->showCardButton->hide();
         popup->ui->addPhoneNumberButton->hide();
+        popup->ui->openAccess->hide();
     }
     else
     {
@@ -606,8 +633,15 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
             popup->ui->addPhoneNumberButton->hide();
         }
         else
+        {
+            popup->ui->openAccess->hide();
             popup->ui->showCardButton->hide();
+        }
     }
+
+
+    if (!MSSQLopened)
+        ui->openAccess->setVisible(false);
 
     popup->ui->textEdit->installEventFilter(this);
 
@@ -631,7 +665,4 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->openAccess->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
     popup->ui->addReminderButton->setProperty("qv_popup", qv_popup);
-
-    if (!MSSQLopened)
-        ui->openAccess->setVisible(false);
 }
