@@ -136,6 +136,10 @@
         <source>Введены существующие номера!</source>
         <translation>Entered existing numbers!</translation>
     </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -329,6 +333,10 @@
         <source>Введены существующие номера!</source>
         <translation>Entered existing numbers!</translation>
     </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
 </context>
 <context>
     <name>AddOrgToPerson</name>
@@ -391,6 +399,14 @@
     <message>
         <source>из </source>
         <translation>from </translation>
+    </message>
+    <message>
+        <source>Перейти в начало</source>
+        <translation>Go to the beginning</translation>
+    </message>
+    <message>
+        <source>Перейти в конец</source>
+        <translation>Go to the end</translation>
     </message>
 </context>
 <context>
@@ -466,6 +482,14 @@
     <message>
         <source>Поиск по заметке</source>
         <translation>Search by the note</translation>
+    </message>
+    <message>
+        <source>Перейти в начало</source>
+        <translation>Go to the beginning</translation>
+    </message>
+    <message>
+        <source>Перейти в конец</source>
+        <translation>Go to the end</translation>
     </message>
 </context>
 <context>
@@ -565,6 +589,14 @@
     <message>
         <source>Поиск по заметке</source>
         <translation>Search by the note</translation>
+    </message>
+    <message>
+        <source>Перейти в начало</source>
+        <translation>Go to the beginning</translation>
+    </message>
+    <message>
+        <source>Перейти в конец</source>
+        <translation>Go to the end</translation>
     </message>
 </context>
 <context>
@@ -715,6 +747,10 @@
     <message>
         <source>&quot;</source>
         <translation>&quot;</translation>
+    </message>
+    <message>
+        <source>Выберите номер</source>
+        <translation>Choose the number</translation>
     </message>
 </context>
 <context>
@@ -1048,11 +1084,11 @@
     </message>
     <message>
         <source>Отвязать</source>
-        <translation>Unbind</translation>
+        <translation type="vanished">Unbind</translation>
     </message>
     <message>
         <source>Привязать</source>
-        <translation>Bind</translation>
+        <translation type="vanished">Bind</translation>
     </message>
     <message>
         <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
@@ -1077,6 +1113,22 @@
     <message>
         <source>Введены существующие номера!</source>
         <translation>Entered existing numbers!</translation>
+    </message>
+    <message>
+        <source>Отвязать организацию</source>
+        <translation>Unbind the organization</translation>
+    </message>
+    <message>
+        <source>Организацию</source>
+        <translation>Organization</translation>
+    </message>
+    <message>
+        <source>Привязать организацию</source>
+        <translation>Bind the organization</translation>
+    </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
     </message>
 </context>
 <context>
@@ -1214,6 +1266,10 @@
         <source>Введены существующие номера!</source>
         <translation>Entered existing numbers!</translation>
     </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
 </context>
 <context>
     <name>EditReminderDialog</name>
@@ -1249,6 +1305,10 @@
         <source>Напоминание успешно отправлено!</source>
         <translation>Reminder sent successfully!</translation>
     </message>
+    <message>
+        <source>Напоминание успешно добавлено!</source>
+        <translation>Reminder added successfully!</translation>
+    </message>
 </context>
 <context>
     <name>NotesDialog</name>
@@ -1274,7 +1334,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Сохранить</source>
-        <translation>Save</translation>
+        <translation type="vanished">Save</translation>
     </message>
     <message>
         <source>Обновить</source>
@@ -1307,6 +1367,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заметка успешно добавлена!</source>
         <translation>Note was added successfully!</translation>
+    </message>
+    <message>
+        <source>Ввод заметки</source>
+        <translation>Enter the note</translation>
+    </message>
+    <message>
+        <source>Сохранить заметку</source>
+        <translation>Save the note</translation>
     </message>
 </context>
 <context>
@@ -1466,6 +1534,14 @@ p, li { white-space: pre-wrap; }
         <source>&quot;</source>
         <translation>&quot;</translation>
     </message>
+    <message>
+        <source>Поиск по таблице</source>
+        <translation>Table search</translation>
+    </message>
+    <message>
+        <source>Ввод номера</source>
+        <translation>Enter the number</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
@@ -1536,6 +1612,10 @@ p, li { white-space: pre-wrap; }
         <source>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
         <translation>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source> Позвонить </source>
+        <translation>Call</translation>
+    </message>
 </context>
 <context>
     <name>PopupWindow</name>
@@ -1585,7 +1665,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;Неизвестный (%1)&lt;/b&gt;</source>
-        <translation>Incoming call from:&lt;br&gt;&lt;b&gt;Unknown (%1)&lt;/b&gt;</translation>
+        <translation type="vanished">Incoming call from:&lt;br&gt;&lt;b&gt;Unknown (%1)&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
@@ -1661,7 +1741,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt;%2&lt;/b&gt;</source>
-        <translation>&lt;b&gt;%2&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
@@ -1669,7 +1749,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>%1%2</source>
-        <translation>%1%2</translation>
+        <translation type="vanished">%1%2</translation>
+    </message>
+    <message>
+        <source>Неизвестный</source>
+        <translation>Unknown</translation>
     </message>
 </context>
 <context>
@@ -1774,6 +1858,10 @@ p, li { white-space: pre-wrap; }
         <source>Неизвестный</source>
         <translation>Unknown</translation>
     </message>
+    <message>
+        <source>Приложение уже запущено!</source>
+        <translation>The app is already running!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -1824,6 +1912,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Напоминание успешно отправлено!</source>
         <translation>Reminder sent successfully!</translation>
+    </message>
+    <message>
+        <source>Кому:</source>
+        <translation>To:</translation>
     </message>
 </context>
 <context>
@@ -2125,7 +2217,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
         <source> дней</source>
@@ -2166,6 +2258,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
         <translation>There is no access to the Access database!</translation>
+    </message>
+    <message>
+        <source>Редактировать контакт</source>
+        <translation>Edit the contact</translation>
     </message>
 </context>
 <context>
@@ -2260,7 +2356,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Редактировать</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
         <source> дней</source>
@@ -2284,7 +2380,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Позвонить</source>
-        <translation>Call</translation>
+        <translation type="vanished">Call</translation>
     </message>
     <message>
         <source>Поиск по ФИО</source>
@@ -2313,6 +2409,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
         <translation>There is no access to the Access database!</translation>
+    </message>
+    <message>
+        <source>Редактировать контакт</source>
+        <translation>Edit the contact</translation>
     </message>
 </context>
 </TS>
