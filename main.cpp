@@ -5,6 +5,7 @@
 #include "DatabasesConnectDialog.h"
 
 #include <QApplication>
+#include <QLockFile>
 #include <QProcess>
 #include <QLocalSocket>
 #include <QDir>
@@ -28,6 +29,18 @@ int main(int argc, char *argv[])
     QCoreApplication::setLibraryPaths(paths);
 
     QApplication app(argc, argv);
+
+    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
+
+    if(!lockFile.tryLock(100))
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(QObject::tr("Приложение уже запущено!"));
+        msgBox.exec();
+        return 1;
+    }
+
     g_LanguagesPath = QApplication::applicationDirPath() + "/translations";
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
