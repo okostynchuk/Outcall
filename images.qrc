@@ -16,5 +16,8 @@
         <file>images/search_R.png</file>
         <file>images/makeCall_R.png</file>
         <file>images/orders_RR.png</file>
+        <file>images/edit_R.png</file>
+        <file>images/bind_R.png</file>
+        <file>images/unbind_R.png</file>
     </qresource>
 </RCC>

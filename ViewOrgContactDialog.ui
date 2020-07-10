@@ -50,11 +50,36 @@
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="3">
            <widget class="QPushButton" name="editButton">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
+            <property name="toolTip">
+             <string>Редактировать контакт</string>
+            </property>
             <property name="text">
-             <string>Редактировать</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/edit_R.png</normaloff>:/images/edit_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>27</width>
+              <height>27</height>
+             </size>
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -63,8 +88,33 @@
           </item>
           <item row="0" column="1">
            <widget class="QPushButton" name="openAccess">
-            <property name="text">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
              <string>Заказы</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>27</width>
+              <height>27</height>
+             </size>
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -73,11 +123,33 @@
           </item>
           <item row="0" column="2">
            <widget class="QPushButton" name="callButton">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
             <property name="text">
-             <string>Позвонить</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>27</width>
+              <height>27</height>
+             </size>
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -522,14 +594,14 @@ background-color: #fffff0;
                  <widget class="QPushButton" name="pushButton">
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
+                    <width>27</width>
                     <height>27</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>65</width>
-                    <height>16777215</height>
+                    <width>27</width>
+                    <height>27</height>
                    </size>
                   </property>
                   <property name="font">
@@ -538,25 +610,63 @@ background-color: #fffff0;
                    </font>
                   </property>
                   <property name="focusPolicy">
-                   <enum>Qt::StrongFocus</enum>
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="toolTip">
+                   <string>Поиск</string>
                   </property>
                   <property name="text">
-                   <string>Поиск</string>
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="images.qrc">
+                    <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="addPersonToOrg">
+                  <property name="minimumSize">
+                   <size>
+                    <width>27</width>
+                    <height>27</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>27</width>
+                    <height>27</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="focusPolicy">
-                   <enum>Qt::StrongFocus</enum>
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="toolTip">
+                   <string>Добавить сотрудника</string>
                   </property>
                   <property name="text">
-                   <string>Добавить сотрудника</string>
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="images.qrc">
+                    <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
                   </property>
                  </widget>
                 </item>

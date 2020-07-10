@@ -103,14 +103,14 @@
            <widget class="QPushButton" name="searchButton">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>27</width>
               <height>27</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>65</width>
-              <height>16777215</height>
+              <width>27</width>
+              <height>27</height>
              </size>
             </property>
             <property name="font">
@@ -122,7 +122,17 @@
              <enum>Qt::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Поиск</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -160,6 +170,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Перейти в начало</string>
             </property>
             <property name="text">
              <string>◄◄</string>
@@ -283,6 +296,9 @@
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
+            <property name="toolTip">
+             <string>Перейти в конец</string>
+            </property>
             <property name="text">
              <string>►►</string>
             </property>
@@ -353,6 +369,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

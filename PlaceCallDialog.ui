@@ -70,6 +70,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLineEdit" name="lineEdit">
+           <property name="toolTip">
+            <string>Поиск по таблице</string>
+           </property>
            <property name="placeholderText">
             <string>Поиск</string>
            </property>
@@ -84,6 +87,9 @@
         <widget class="QLineEdit" name="phoneLine">
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Ввод номера</string>
          </property>
         </widget>
        </item>
