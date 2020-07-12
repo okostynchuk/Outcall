@@ -1,5 +1,5 @@
 #include "DebugInfoDialog.h"
-#include "ui_debuginfodialog.h"
+#include "ui_DebugInfoDialog.h"
 #include "Global.h"
 
 #include <QDesktopServices>

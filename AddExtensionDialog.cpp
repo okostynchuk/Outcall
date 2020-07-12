@@ -1,7 +1,6 @@
 #include "AddExtensionDialog.h"
 #include "Global.h"
-#include "ui_addextensiondialog.h"
-
+#include "ui_AddExtensionDialog.h"
 
 AddExtensionDialog::AddExtensionDialog(QWidget *parent) :
     QDialog(parent),
