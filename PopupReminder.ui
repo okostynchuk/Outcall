@@ -148,7 +148,6 @@ text-align: center;
 background-color: #ffb64f;
 border: 1.5px solid #a53501;
 color: black;
-padding-left: 20px;
 }
 
 ::drop-down
@@ -166,13 +165,13 @@ border: 0px;
     <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>270</y>
      <width>371</width>
-     <height>25</height>
+     <height>28</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -180,14 +179,17 @@ border: 0px;
      <widget class="QPushButton" name="callButton">
       <property name="minimumSize">
        <size>
-        <width>0</width>
-        <height>23</height>
+        <width>26</width>
+        <height>26</height>
        </size>
       </property>
       <property name="font">
        <font>
         <pointsize>11</pointsize>
        </font>
+      </property>
+      <property name="toolTip">
+       <string>Позвонить</string>
       </property>
       <property name="styleSheet">
        <string notr="true">*{
@@ -197,10 +199,53 @@ color: black;
 }</string>
       </property>
       <property name="text">
-       <string> Позвонить </string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="autoDefault">
        <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>Заказы</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">*{
+background-color: #ffb64f;
+border: 1.5px solid #a53501;
+color: black;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
      </widget>
     </item>
@@ -222,7 +267,7 @@ color: black;
       <property name="minimumSize">
        <size>
         <width>70</width>
-        <height>23</height>
+        <height>26</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -257,6 +302,8 @@ color: black;
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
