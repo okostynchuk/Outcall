@@ -366,10 +366,12 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     pri.note = receivedNote;
     pri.active = true;
 
-    pri.text = tr("%1<br><br><b>%2</b>").arg(pri.dateTime.toString("dd.MM.yy hh:mm")).arg(pri.note);
+    pri.text = tr("<b>%1</b>").arg(pri.note);
 
     PopupReminder *reminder = new PopupReminder(pri);
     reminder->show();
+    reminder->ui->labelTime->setText(tr("<font size = 1>%1</font>").arg(pri.dateTime.toString("dd.MM.yy hh:mm")));
+    reminder->ui->labelTime->setStyleSheet("*{color: white; font-weight:bold}");
     m_PopupReminders.append(reminder);
 }
 
