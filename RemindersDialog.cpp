@@ -301,7 +301,7 @@ void RemindersDialog::changeState()
     {
         checkBox->setChecked(false);
 
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Указано прошедшее время!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
     }
     else
     {
@@ -400,13 +400,13 @@ void RemindersDialog::onSave()
 
     if (dateTime < QDateTime::currentDateTime())
     {
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Указано прошедшее время!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
         return;
     }
 
     if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
         return;
     }
 
@@ -428,7 +428,7 @@ void RemindersDialog::onSave()
     sendNewValues();
 
     if (reg.cap(1) != my_number)
-        QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Напоминание успешно отправлено!"), QMessageBox::Ok);
+        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
 }
 
 bool RemindersDialog::eventFilter(QObject *object, QEvent *event)

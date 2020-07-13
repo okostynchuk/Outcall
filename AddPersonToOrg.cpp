@@ -79,7 +79,7 @@ void AddPersonToOrg::getPersonID(const QModelIndex &index)
     QString id = query1->data(query1->index(index.row(), 0)).toString();
     emit sendPersonID(id);
     onUpdate();
-    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Сотрудник успешно добавлен!"), QMessageBox::Ok);
+    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
 }
 
 void AddPersonToOrg::onUpdate()
