@@ -104,9 +104,9 @@ void PlaceCallDialog::onUpdate()
 
 void PlaceCallDialog::onComboBoxSelected()
 {
-    ui->comboBox->addItem(trUtf8("Поиск по ФИО / названию"));
-    ui->comboBox->addItem(trUtf8("Поиск по номеру телефона"));
-    ui->comboBox->addItem(trUtf8("Поиск сотрудников по организации"));
+    ui->comboBox->addItem(QObject::tr("Поиск по ФИО / названию"));
+    ui->comboBox->addItem(QObject::tr("Поиск по номеру телефона"));
+    ui->comboBox->addItem(QObject::tr("Поиск сотрудников по организации"));
 }
 
 void PlaceCallDialog::on_lineEdit_returnPressed()

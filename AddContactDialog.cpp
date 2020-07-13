@@ -125,7 +125,7 @@ void AddContactDialog::onSave()
 
         if (count_invalid_num != 0)
         {
-            QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Введены существующие номера!"), QMessageBox::Ok);
+            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
         }
         else
         {
@@ -144,7 +144,7 @@ void AddContactDialog::onSave()
                 else
                 {
                     ui->VyborID->setStyleSheet("border: 1px solid red");
-                    QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("VyborID не соответствует формату!"), QMessageBox::Ok);
+                    QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("VyborID не соответствует формату!"), QMessageBox::Ok);
                     return;
                 }
             }
@@ -201,7 +201,7 @@ void AddContactDialog::onSave()
             }         
 
             if (!validPhones)
-                QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Номер не соответствует формату!"), QMessageBox::Ok);
+                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
             else
             {
                 query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
@@ -269,7 +269,7 @@ void AddContactDialog::onSave()
 
                 emit sendData(true);
                 close();
-                QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Запись успешно добавлена!"), QMessageBox::Ok);
+                QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно добавлена!"), QMessageBox::Ok);
                 destroy(true);
             }
         }
@@ -319,7 +319,7 @@ void AddContactDialog::on_addOrgButton_clicked()
 
 void AddContactDialog::on_deleteOrgButton_clicked()
 {
-    ui->label_org->setText(trUtf8("Нет"));
+    ui->label_org->setText(QObject::tr("Нет"));
 }
 
 void AddContactDialog::setValuesCallHistory(QString &number)

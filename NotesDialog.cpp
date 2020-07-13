@@ -84,7 +84,7 @@ void NotesDialog::onSave()
 
     if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
         return;
     }
 
@@ -114,7 +114,7 @@ void NotesDialog::onSave()
         emit sendDataToPlaced();
 
     close();
-    QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Заметка успешно добавлена!"), QMessageBox::Ok);
+    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
     destroy(true);
 }
 

@@ -114,7 +114,7 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
                 emit sendData(true);
                 close();
                 msgBox.close();
-                QMessageBox::information(this, trUtf8("Уведомление"), trUtf8("Номер успешно добавлен!"), QMessageBox::Ok);
+                QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Номер успешно добавлен!"), QMessageBox::Ok);
                 destroy(true);
                 break;
             case QMessageBox::No:
@@ -125,7 +125,7 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
         }
     }
     else
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
 }
 
 void AddPhoneNumberToContactDialog::onUpdate()

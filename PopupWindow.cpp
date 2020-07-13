@@ -484,7 +484,7 @@ void PopupWindow::onOpenAccess()
     else
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
-        QMessageBox::critical(this, trUtf8("Ошибка"), trUtf8("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
     }
 }
 
