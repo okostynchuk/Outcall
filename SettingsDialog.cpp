@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
+#include "RunGuard.h"
 
 #include <QAbstractButton>
 #include <QAbstractSocket>
@@ -196,6 +197,10 @@ void SettingsDialog::show()
 void SettingsDialog::on_applyButton_clicked()
 {
     QMessageBox msgBox;
+    //RunGuard *runGuard = new RunGuard;
+    //runGuard = new RunGuard;
+    //RunGuard *runGuard = new RunGuard;
+    //RunGuard obj;
     msgBox.setText(tr("Применение настроек"));
     msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -208,7 +213,11 @@ void SettingsDialog::on_applyButton_clicked()
             saveSettings();
             applySettings();
             qApp->quit();
+            //qApp->exit(1337);
+            //runGuard->release();
+            //RunGuard::release();
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+            //reboot();
             break;
         case QMessageBox::No:
             msgBox.close();
@@ -233,6 +242,11 @@ void SettingsDialog::applySettings()
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
     g_Notifier->emitSettingsChanged();
 }
+
+//void SettingsDialog::reboot()
+//{
+ //   qApp->exit(REBOOT_CODE);
+//}
 
 void SettingsDialog::loadLanguages()
 {

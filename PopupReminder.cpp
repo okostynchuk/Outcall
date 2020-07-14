@@ -66,11 +66,11 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     if (languages == "Русский (по умолчанию)")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 10px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 20px;} ::drop-down{border: 0px;}");
     else if (languages == "Українська")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 10px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 25px;} ::drop-down{border: 0px;}");
     else if (languages == "English")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f;border: 1.5px solid #a53501;color: black;padding-left: 10px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 45px;} ::drop-down{border: 0px;}");
 
     qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
     this->installEventFilter(this);
