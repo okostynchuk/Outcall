@@ -49,8 +49,6 @@ int main(int argc, char *argv[])
     //if(!app.lock())
       //      return -42;
 
-
-
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
 

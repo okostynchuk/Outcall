@@ -10,6 +10,12 @@
     <height>575</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Напоминания</string>
   </property>
@@ -69,9 +75,15 @@
        </item>
        <item row="0" column="0" colspan="2">
         <widget class="QTimeEdit" name="timeEdit">
+         <property name="minimumSize">
+          <size>
+           <width>105</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>120</width>
+           <width>125</width>
            <height>16777215</height>
           </size>
          </property>
