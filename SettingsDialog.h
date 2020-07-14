@@ -57,7 +57,6 @@ private:
     //RunGuard *runGuard;
     //void reboot();
     //const int REBOOT_CODE = 1000;
-    QFile f = nullptr;
     QFile f;
     QString userName;
     QString path;
