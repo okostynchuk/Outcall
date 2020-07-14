@@ -25,6 +25,10 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
+    QRegExp RegExp("^[0-9]*$");
+    validator = new QRegExpValidator(RegExp, this);
+    ui->lineEdit_page->setValidator(validator);
+
     settingsDialog = new SettingsDialog();
     my_number = settingsDialog->getExtension();
     my_group = settingsDialog->getGroupExtension();
@@ -62,6 +66,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
+    go="default";
     days = ui->comboBox_2->currentText();
     loadAllCalls();
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
@@ -327,11 +332,73 @@ void CallHistoryDialog::loadAllCalls()
         deleteReceivedStatusObjects();
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlDatabase db;
-    QSqlQuery query(db);
+    QSqlQuery query(dbAsterisk);
+    query.prepare("SELECT count(*) FROM cdr "
+                  "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
+                  " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                  "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
+                  "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                  "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
+                  "OR src = '"+my_number+"')");
+    query.exec();
+    query.first();
+    count = query.value(0).toInt();
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default")
+        page = "1";
 
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
     query4 = new QSqlQueryModel;
-    query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' OR src = '"+my_number+"') ORDER BY datetime DESC", dbAsterisk);
+    if (ui->lineEdit_page->text() == "1")
+    {
+        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr "
+                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
+                        " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
+                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
+                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT 0,"
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+
+    }
+    else
+    {
+        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr "
+                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
+                        " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
+                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
+                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT "
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+    }
+
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query4->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -792,3 +859,35 @@ void CallHistoryDialog::deleteObjects()
     deleteBusyStatusObjects();
     deleteNameObjects();
 }
+
+
+void CallHistoryDialog::on_previousButton_clicked()
+{
+    go = "previous";
+    onUpdate();
+}
+
+void CallHistoryDialog::on_nextButton_clicked()
+{
+    go = "next";
+    onUpdate();
+}
+
+void CallHistoryDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+    onUpdate();
+}
+
+void CallHistoryDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
+    onUpdate();;
+}
+
+void CallHistoryDialog::on_lineEdit_page_returnPressed()
+{
+    go = "enter";
+    onUpdate();
+}
+
