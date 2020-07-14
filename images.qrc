@@ -19,5 +19,6 @@
         <file>images/edit_R.png</file>
         <file>images/bind_R.png</file>
         <file>images/unbind_R.png</file>
+        <file>images/notification_R.png</file>
     </qresource>
 </RCC>

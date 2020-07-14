@@ -29,7 +29,7 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
     connect(m_tcpSocket, sig,                         this, &AsteriskManager::onError);
     connect(&m_timer,    &QTimer::timeout,            this, &AsteriskManager::reconnect);
 
-    connect(g_Notifier,  &Notifier::settingsChanged,  this, &AsteriskManager::onSettingsChange);
+    //connect(g_Notifier,  &Notifier::settingsChanged,  this, &AsteriskManager::onSettingsChange);
     m_currentState = DISCONNECTED;
 }
 

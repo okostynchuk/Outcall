@@ -11,7 +11,6 @@
 #include <QDebug>
 #include <QApplication>
 
-extern QString g_LanguagesPath = "";
 extern QString g_AppDirPath = "";
 extern QString g_AppSettingsFolderPath = "";
 extern bool opened = false;
