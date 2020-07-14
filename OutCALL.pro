@@ -19,6 +19,7 @@ TARGET = OutCALL
 TEMPLATE = app
 
 SOURCES += main.cpp\
+    AddReminderDialog.cpp \
     DebugInfoDialog.cpp \
     AddExtensionDialog.cpp \
     AsteriskManager.cpp \
@@ -50,6 +51,7 @@ SOURCES += main.cpp\
     PopupReminder.cpp
 
 HEADERS  += \
+    AddReminderDialog.h \
     DebugInfoDialog.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
@@ -82,6 +84,7 @@ HEADERS  += \
 
 FORMS    += \
     AddExtensionDialog.ui \
+    AddReminderDialog.ui \
     CallHistoryDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \

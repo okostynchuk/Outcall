@@ -20,7 +20,7 @@
    <string>История звонков</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -254,7 +254,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -286,6 +286,9 @@
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -340,7 +343,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -402,7 +405,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -455,7 +458,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -493,6 +496,8 @@
   <tabstop>addContactButton</tabstop>
   <tabstop>addOrgContactButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
