@@ -35,7 +35,20 @@
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="2">
+           <item row="0" column="0">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="3">
             <widget class="QPushButton" name="callButton">
              <property name="minimumSize">
               <size>
@@ -73,7 +86,45 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="3">
+           <item row="0" column="2">
+            <widget class="QPushButton" name="openAccess">
+             <property name="minimumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Заказы</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>27</width>
+               <height>27</height>
+              </size>
+             </property>
+             <property name="autoDefault">
+              <bool>false</bool>
+             </property>
+             <property name="default">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
             <widget class="QPushButton" name="editButton">
              <property name="minimumSize">
               <size>
@@ -115,7 +166,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QPushButton" name="openAccess">
+            <widget class="QPushButton" name="pushButton">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -128,15 +179,15 @@
                <height>30</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>Заказы</string>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="images.qrc">
-               <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+               <normaloff>:/images/reminders_R.png</normaloff>:/images/reminders_R.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -144,26 +195,7 @@
                <height>27</height>
               </size>
              </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
             </widget>
-           </item>
-           <item row="0" column="0">
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>

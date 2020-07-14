@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
+#include <QSharedMemory>
 
 int main(int argc, char *argv[])
 {
@@ -41,7 +42,13 @@ int main(int argc, char *argv[])
 //        return 1;
 //    }
 
-    g_LanguagesPath = QApplication::applicationDirPath() + "/translations";
+    //RunGuard guard( "some_random_key" );
+      //  if ( !guard.tryToRun() )
+        //    return 0;
+
+    //if(!app.lock())
+      //      return -42;
+
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
 
@@ -144,8 +151,6 @@ int main(int argc, char *argv[])
     app.setOrganizationName(ORGANIZATION_NAME);
 
     bool bCallRequest = false;
-
-    g_AppDirPath = QApplication::applicationDirPath();
 
     if (argc==2 && QString(argv[1]) == "installer")
     {
