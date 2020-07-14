@@ -26,6 +26,7 @@ SOURCES += main.cpp\
     Global.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
+    RunGuard.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
     Notifier.cpp \
@@ -56,6 +57,7 @@ HEADERS  += \
     OutCALL.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
+    RunGuard.h \
     SettingsDialog.h \
     PopupWindow.h \
     Notifier.h \
