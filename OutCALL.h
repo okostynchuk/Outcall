@@ -49,6 +49,7 @@ protected slots:
     void close();
     void changeIcon();
     void disableActions();
+    void enableActions();
 
 private:
     QMenu *m_menu;
@@ -57,7 +58,7 @@ private:
     QAction *contactsAction;
     QAction *callHistoryAction;
     QAction *remindersAction;
-    QSystemTrayIcon *m_systemTryIcon;
+    QSystemTrayIcon *m_systemTrayIcon;
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;
     ContactsDialog *m_contactsDialog;

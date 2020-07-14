@@ -262,7 +262,7 @@ void AddOrgToPerson::searchFunction()
     entry_name = nullptr;
     entry_city = nullptr;
 
-    if (ui->comboBox->currentText() == "Поиск по названию" || ui->comboBox->currentText() == "Search by the name" || ui->comboBox->currentText() == "Пошук за назвою")
+    if (ui->comboBox->currentText() == tr("Поиск по названию"))
     {
         entry_name = ui->lineEdit->text();
 
@@ -289,7 +289,7 @@ void AddOrgToPerson::searchFunction()
         query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по городу" || ui->comboBox->currentText() == "Search by the city" || ui->comboBox->currentText() == "Пошук за містом")
+    else if (ui->comboBox->currentText() == tr("Поиск по городу"))
     {
         entry_city = ui->lineEdit->text();
 

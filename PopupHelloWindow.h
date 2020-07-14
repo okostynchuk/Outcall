@@ -38,9 +38,7 @@ public:
     PopupHelloWindow(const PWInformation& pwi, QWidget *parent = 0);
     ~PopupHelloWindow();
 
-    static void showCallNotification(QString caller);
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
-
     static void closeAll();
 
 protected:
@@ -60,14 +58,13 @@ private:
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;
-    int m_nIncrement; // px
+    int m_nIncrement;
     bool m_bAppearing;
 
     QTimer m_timer;
     PWInformation m_pwi;
 
     static QList<PopupHelloWindow*> m_PopupHelloWindows;
-    static int m_nLastWindowPosition;
 };
 
 #endif // POPUPWINDOW_H

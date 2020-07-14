@@ -128,7 +128,7 @@ void EditReminderDialog::setValuesPopupWindow(QString receivedNumber, QString re
     my_number = receivedNumber;
     callId = receivedCallId;
 
-    ui->dateTimeEdit->setDateTime(QDateTime::QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0)));
+    ui->dateTimeEdit->setDateTime(QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0)));
 
     ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(my_number));
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
