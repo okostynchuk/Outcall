@@ -22,14 +22,14 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
     g_pAsteriskManager = this;
 
     m_tcpSocket = new QTcpSocket(this);
-    void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::error;
+    void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::errorOccurred;
 
     connect(m_tcpSocket, &QIODevice::readyRead,       this, &AsteriskManager::read);
     connect(m_tcpSocket, &QAbstractSocket::connected, this, &AsteriskManager::login);
     connect(m_tcpSocket, sig,                         this, &AsteriskManager::onError);
     connect(&m_timer,    &QTimer::timeout,            this, &AsteriskManager::reconnect);
 
-    connect(g_Notifier,  &Notifier::settingsChanged,  this, &AsteriskManager::onSettingsChange);
+    //connect(g_Notifier,  &Notifier::settingsChanged,  this, &AsteriskManager::onSettingsChange);
     m_currentState = DISCONNECTED;
 }
 
@@ -189,7 +189,7 @@ void AsteriskManager::read()
                 m_eventData.clear();
             }
         }
-        emit messageReceived(message.trimmed());
+        //emit messageReceived(message.trimmed());
     }
 }
 

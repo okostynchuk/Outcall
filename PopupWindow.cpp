@@ -609,7 +609,7 @@ bool PopupWindow::eventFilter(QObject *object, QEvent *event)
 
 void PopupWindow::receiveNumber(PopupWindow *popup)
 {
-    QVariant qv_popup = qVariantFromValue((void *)popup);
+    QVariant qv_popup = QVariant::fromValue((void *)popup);
 
     if (isInnerPhone(&popup->m_pwi.number))
     {

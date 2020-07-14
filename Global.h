@@ -12,7 +12,6 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 
-extern QString g_LanguagesPath;
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
 extern bool opened;
@@ -36,7 +35,7 @@ namespace global {
 
     QVariant getSettingsValue(const QString key, const QString group = "", const QVariant value = QVariant());
 
-    void removeSettinsKey(const QString key, const QString group = "");
+    void removeSettingsKey(const QString key, const QString group = "");
 
     bool containsSettingsKey(const QString key, const QString group = "");
 

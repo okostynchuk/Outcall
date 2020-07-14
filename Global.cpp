@@ -11,11 +11,10 @@
 #include <QDebug>
 #include <QApplication>
 
-extern QString g_LanguagesPath = "";
-extern QString g_AppDirPath = "";
-extern QString g_AppSettingsFolderPath = "";
-extern bool opened = false;
-extern bool MSSQLopened = false;
+QString g_AppDirPath = "";
+QString g_AppSettingsFolderPath = "";
+bool opened = false;
+bool MSSQLopened = false;
 
 QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent,
         QMessageBox::StandardButton defaultButton) {
@@ -48,7 +47,7 @@ QVariant global::getSettingsValue(const QString key, const QString group, const 
     return settings.value(key, defaultValue);
 }
 
-void global::removeSettinsKey(const QString key, const QString group)
+void global::removeSettingsKey(const QString key, const QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
     if (!group.isEmpty())

@@ -66,7 +66,7 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("port", ui->port->text(),    "settings");
 
     // Save extensions
-    global::removeSettinsKey("extensions");
+    global::removeSettingsKey("extensions");
     int nRow = ui->treeWidget->topLevelItemCount();
     for (int i = 0; i < nRow; ++i)
     {
@@ -77,7 +77,7 @@ void SettingsDialog::saveSettings()
     }
 
     // Save group extensions
-    global::removeSettinsKey("group_extensions");
+    global::removeSettingsKey("group_extensions");
     int nRow2 = ui->treeWidget_2->topLevelItemCount();
     for (int i = 0; i < nRow2; ++i)
     {

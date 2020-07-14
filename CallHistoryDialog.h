@@ -76,7 +76,7 @@ protected slots:
     void tabSelected();
 
 protected:
-   void CallHistoryDialog::showEvent(QShowEvent *);
+   void showEvent(QShowEvent *);
 
 private:
     Ui::CallHistoryDialog *ui;

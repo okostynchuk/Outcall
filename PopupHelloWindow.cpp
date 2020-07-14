@@ -7,7 +7,6 @@
 #include <QMouseEvent>
 
 QList<PopupHelloWindow*> PopupHelloWindow::m_PopupHelloWindows;
-int PopupHelloWindow::m_nLastWindowPosition = 0;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -56,9 +55,9 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     nScreenWidth=rcScreen.width();
     nScreenHeight=rcScreen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth<nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth<nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight<nScreenHeight && rcDesktop.top() != 0;
+    bool bTaskbarOnRight = nDesktopWidth < nScreenWidth && rcDesktop.left() == 0;
+    bool bTaskbarOnLeft = nDesktopWidth < nScreenWidth && rcDesktop.left() != 0;
+    bool bTaskBarOnTop = nDesktopHeight < nScreenHeight && rcDesktop.top() != 0;
 
     int nTimeToShow = TIME_TO_SHOW;
     int nTimerDelay;
@@ -67,14 +66,14 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     if (bTaskbarOnRight)
     {
-        m_nStartPosX = (rcDesktop.right() - m_nLastWindowPosition * width());
+        m_nStartPosX = rcDesktop.right();
         m_nStartPosY = rcDesktop.bottom() - height();
         m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
         nTimerDelay = nTimeToShow / (width() / m_nIncrement);
     }
     else if (bTaskbarOnLeft)
     {
-        m_nStartPosX = (rcDesktop.left() - width() + m_nLastWindowPosition * width());
+        m_nStartPosX = rcDesktop.left() - width();
         m_nStartPosY = rcDesktop.bottom() - height();
         m_nTaskbarPlacement = TASKBAR_ON_LEFT;
         nTimerDelay = nTimeToShow / (width() / m_nIncrement);
@@ -82,24 +81,22 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     else if (bTaskBarOnTop)
     {
         m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = (rcDesktop.top() - height() + m_nLastWindowPosition * height());
+        m_nStartPosY = rcDesktop.top() - height();
         m_nTaskbarPlacement = TASKBAR_ON_TOP;
         nTimerDelay = nTimeToShow / (height() / m_nIncrement);
     }
     else
     {
         m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = (rcDesktop.bottom() - m_nLastWindowPosition * height());
+        m_nStartPosY = rcDesktop.bottom();
         m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
         nTimerDelay = nTimeToShow / (height() / m_nIncrement);
     }
 
     m_nCurrentPosX = m_nStartPosX;
-    m_nCurrentPosY = m_nStartPosY + 100;
+    m_nCurrentPosY = m_nStartPosY;
 
     move(m_nCurrentPosX, m_nCurrentPosY);
-
-    m_nLastWindowPosition++;
 
     m_bAppearing = true;
     m_timer.setInterval(nTimerDelay);
@@ -144,9 +141,6 @@ void PopupHelloWindow::startPopupWaitingTimer()
 
 void PopupHelloWindow::closeAndDestroy()
 {
-    if (m_PopupHelloWindows.last() == this)
-        m_nLastWindowPosition = m_PopupHelloWindows.count() - 1;
-
     hide();
     m_timer.stop();
     m_PopupHelloWindows.removeOne(this);
@@ -228,22 +222,6 @@ void PopupHelloWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
-void PopupHelloWindow::showCallNotification(QString caller)
-{
-
-    PWInformation pwi;
-    pwi.type = PWPhoneCall;
-    pwi.text = tr("Входящий звонок от:<br><b>%1</b>").arg(caller);
-    QPixmap avatar;
-
-    if (avatar.isNull())
-        avatar = QPixmap(":/images/outcall-logo.png");
-
-    PopupHelloWindow *popup = new PopupHelloWindow(pwi);
-    popup->show();
-    m_PopupHelloWindows.append(popup);
-}
-
 void PopupHelloWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
     PWInformation pwi;
@@ -267,7 +245,6 @@ void PopupHelloWindow::closeAll()
 {
     qDeleteAll(m_PopupHelloWindows);
     m_PopupHelloWindows.clear();
-    m_nLastWindowPosition = 0;
 }
 
 void PopupHelloWindow::mousePressEvent(QMouseEvent *)

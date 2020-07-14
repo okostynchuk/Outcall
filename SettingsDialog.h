@@ -52,7 +52,7 @@ private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
-    QFile f = nullptr;
+    QFile f;
     QString userName;
     QString path;
     QString exten;

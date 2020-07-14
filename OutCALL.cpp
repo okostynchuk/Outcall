@@ -25,7 +25,7 @@
 OutCall::OutCall() :
     QWidget()
 {
-    m_systemTryIcon       = new QSystemTrayIcon(this);
+    m_systemTrayIcon      = new QSystemTrayIcon(this);
     m_menu                = new QMenu(this);
     m_settingsDialog      = new SettingsDialog;
     m_contactsDialog      = new ContactsDialog;
@@ -34,7 +34,7 @@ OutCall::OutCall() :
     m_placeCallDialog     = new PlaceCallDialog;
     m_remindersDialog     = new RemindersDialog;
 
-    connect(m_systemTryIcon,    &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
+    connect(m_systemTrayIcon,   &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
 
     connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &OutCall::onMessageReceived);
     connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &OutCall::onCallReceived);
@@ -46,10 +46,10 @@ OutCall::OutCall() :
 
     createContextMenu();
 
-    m_systemTryIcon->setContextMenu(m_menu);
+    m_systemTrayIcon->setContextMenu(m_menu);
 
     QString path(":/images/disconnected.png");
-    m_systemTryIcon->setIcon(QIcon(path));
+    m_systemTrayIcon->setIcon(QIcon(path));
 
     automaticlySignIn();
 }
@@ -112,7 +112,7 @@ void OutCall::createContextMenu()
     m_menu->addSeparator();
 
     m_menu->addAction(settingsAction);
-    m_menu->addAction(debugInfoAction);
+    //m_menu->addAction(debugInfoAction);
     m_menu->addSeparator();
 
     m_menu->addAction(m_signIn);
@@ -130,7 +130,7 @@ void OutCall::automaticlySignIn()
 
 void OutCall::signInOut()
 {
-    if (m_signIn->text() == "Выйти из аккаунта")
+    if (m_signIn->text() == tr("Выйти из аккаунта") || m_signIn->text() == tr("Отменить вход"))
     {
         g_pAsteriskManager->signOut();
         return;
@@ -195,12 +195,12 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
     if (state == AsteriskManager::CONNECTED)
     {
         QString path(":/images/connected.png");
-        m_systemTryIcon->setIcon(QIcon(path));
+        m_systemTrayIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
         PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Вы успешно вошли"));
-        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вы успешно вошли"));
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы успешно вошли"));
 
         m_timer.stop();
 
@@ -209,34 +209,37 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
             qApp->quit();
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
         }
+        else
+            enableActions();
     }
     else if (state == AsteriskManager::CONNECTING)
     {
         m_signIn->setText(tr("Отменить вход"));
-        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вход в аккаунт"));
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вход в аккаунт"));
+
+        disableActions();
 
         m_timer.start(500);
     }
     else if (state == AsteriskManager::DISCONNECTED)
     {
         QString path(":/images/disconnected.png");
-        m_systemTryIcon->setIcon(QIcon(path));
+        m_systemTrayIcon->setIcon(QIcon(path));
 
         m_signIn->setText(tr("&Войти в аккаунт"));
-        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
 
         disableActions();
-        opened = false;
 
         m_timer.stop();
     }
     else if (state == AsteriskManager::AUTHENTICATION_FAILED)
     {
         QString path(":/images/started.png");
-        m_systemTryIcon->setIcon(QIcon(path));
+        m_systemTrayIcon->setIcon(QIcon(path));
 
         PopupHelloWindow::showInformationMessage(tr(""), tr("Ошибка аутентификации"));
-        m_systemTryIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
         m_signIn->setText(tr("&Войти в аккаунт"));
 
         disableActions();
@@ -261,18 +264,26 @@ void OutCall::disableActions()
     remindersAction->setEnabled(false);
 }
 
+void OutCall::enableActions()
+{
+    m_placeCall->setEnabled(true);
+    callHistoryAction->setEnabled(true);
+    contactsAction->setEnabled(true);
+    remindersAction->setEnabled(true);
+}
+
 void OutCall::changeIcon()
 {
     if (m_switch)
     {
         QString path(":/images/connected.png");
-        m_systemTryIcon->setIcon(QIcon(path));
+        m_systemTrayIcon->setIcon(QIcon(path));
         m_switch = false;
     }
     else
     {
         QString path(":/images/disconnected.png");
-        m_systemTryIcon->setIcon(QIcon(path));
+        m_systemTrayIcon->setIcon(QIcon(path));
         m_switch = true;
     }
 }
@@ -339,5 +350,5 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
 
 void OutCall::show()
 {
-    m_systemTryIcon->show();
+    m_systemTrayIcon->show();
 }
