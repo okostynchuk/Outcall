@@ -55,11 +55,11 @@ int main(int argc, char *argv[])
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
     if (languages == "Русский (по умолчанию)")
-       qtTranslator.load(":/russian.qm");
+       qtTranslator.load(":/translations/russian.qm");
     else if (languages == "Українська")
-       qtTranslator.load(":/ukrainian.qm");
+       qtTranslator.load(":/translations/ukrainian.qm");
     else if (languages == "English")
-       qtTranslator.load(":/english.qm");
+       qtTranslator.load(":/translations/english.qm");
     app.installTranslator(&qtTranslator);
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();

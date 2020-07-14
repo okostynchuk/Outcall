@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>english.qm</file>
-        <file>russian.qm</file>
-        <file>ukrainian.qm</file>
+        <file>translations/english.ts</file>
+        <file>translations/russian.ts</file>
+        <file>translations/ukrainian.ts</file>
+        <file>translations/english.qm</file>
+        <file>translations/russian.qm</file>
+        <file>translations/ukrainian.qm</file>
     </qresource>
 </RCC>
