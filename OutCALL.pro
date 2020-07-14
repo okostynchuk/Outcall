@@ -112,6 +112,4 @@ RESOURCES += \
     images.qrc \
     translations.qrc \
 
-TRANSLATIONS = ukrainian.ts russian.ts english.ts
-
 win32: RC_ICONS = $$PWD/images/outcall-logo.ico
