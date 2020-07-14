@@ -190,7 +190,6 @@ void RemindersDialog::receiveData(bool updating)
     if (updating)
     {
         onUpdate();
-        sendNewValues();
     }
 }
 
@@ -251,8 +250,8 @@ void RemindersDialog::loadPastReminders()
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC LIMIT 0,100");
+    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC LIMIT 0,100");
 
     query1->insertColumn(2);
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));
@@ -326,7 +325,6 @@ void RemindersDialog::changeState()
         }
 
         onUpdate();
-        sendNewValues();
     }
 }
 
@@ -369,9 +367,9 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
     QDateTime dateTime = query1->data(query1->index(row_index, 3)).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
-    checkBox->setProperty("checkBox", qVariantFromValue(checkBox));
-    checkBox->setProperty("id", qVariantFromValue(id));
-    checkBox->setProperty("dateTime", qVariantFromValue(dateTime));
+    checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
+    checkBox->setProperty("id", QVariant::fromValue(id));
+    checkBox->setProperty("dateTime", QVariant::fromValue(dateTime));
 
     return wgt;
 }
@@ -395,7 +393,7 @@ void RemindersDialog::onSave()
 {
     QDate date = ui->calendarWidget->selectedDate();
     QTime time(ui->timeEdit->time().hour(), ui->timeEdit->time().minute(), 0);
-    QDateTime dateTime = QDateTime::QDateTime(date, time);
+    QDateTime dateTime = QDateTime(date, time);
     QString note = ui->textEdit->toPlainText().simplified();
 
     if (dateTime < QDateTime::currentDateTime())
@@ -425,7 +423,6 @@ void RemindersDialog::onSave()
     query.exec();
 
     onUpdate();
-    sendNewValues();
 
     if (reg.cap(1) != my_number)
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);

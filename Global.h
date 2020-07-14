@@ -35,7 +35,7 @@ namespace global {
 
     QVariant getSettingsValue(const QString key, const QString group = "", const QVariant value = QVariant());
 
-    void removeSettinsKey(const QString key, const QString group = "");
+    void removeSettingsKey(const QString key, const QString group = "");
 
     bool containsSettingsKey(const QString key, const QString group = "");
 

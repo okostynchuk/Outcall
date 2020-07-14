@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QStringList>
+
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddContactDialog)

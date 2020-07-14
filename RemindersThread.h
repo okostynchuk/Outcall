@@ -1,9 +1,13 @@
 #ifndef REMINDERSTHREAD_H
 #define REMINDERSTHREAD_H
 
+#include "Global.h"
+
 #include <QObject>
 #include <QTime>
 #include <QDate>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 class RemindersThread : public QObject
 {
@@ -22,6 +26,8 @@ signals:
     void finished();
 
 private:
+    QSqlDatabase dbReminders;
+    QSqlQuery query;
     QString my_number;
     QList<QString> ids;
     QList<QDateTime> dateTimes;

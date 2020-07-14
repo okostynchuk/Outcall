@@ -53,10 +53,12 @@ private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
+
     //RunGuard *runGuard;
     //void reboot();
     //const int REBOOT_CODE = 1000;
     QFile f = nullptr;
+    QFile f;
     QString userName;
     QString path;
     QString exten;

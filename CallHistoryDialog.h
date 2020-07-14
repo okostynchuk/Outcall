@@ -76,20 +76,33 @@ protected slots:
     void tabSelected();
 
 protected:
-   void CallHistoryDialog::showEvent(QShowEvent *);
+   void showEvent(QShowEvent *);
+
+private slots:
+    void on_previousButton_clicked();
+    void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
+    void on_lineEdit_page_returnPressed();
 
 private:
     Ui::CallHistoryDialog *ui;
+    QSqlQuery query;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
+    QValidator *validator;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     SettingsDialog *settingsDialog;
     NotesDialog *notesDialog;
+    QString state_call;
+    QString page;
+    QString pages;
+    QString go;
     QString days;
     QString number;
     QString my_number;
@@ -99,8 +112,9 @@ private:
     QString uniqueid;
     QString dialogStatus;
     QString callerNum;
+    int count;
+    int remainder;
     int missed_count = 0;
-    QString state_call;
     QWidget* loadMissedStatus();
     QWidget* loadBusyStatus();
     QWidget* loadCancelStatus();

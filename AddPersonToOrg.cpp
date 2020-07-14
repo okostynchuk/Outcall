@@ -303,7 +303,7 @@ void AddPersonToOrg::searchFunction()
     entry_phone = nullptr;
     entry_comment = nullptr;
 
-    if (ui->comboBox->currentText() == "Поиск по ФИО" || ui->comboBox->currentText() == "Пошук по ПІБ" || ui->comboBox->currentText() == "Search by full name")
+    if (ui->comboBox->currentText() == tr("Поиск по ФИО"))
     {
         entry_name = ui->lineEdit->text();
 
@@ -330,7 +330,7 @@ void AddPersonToOrg::searchFunction()
         query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Search by phone number" || ui->comboBox->currentText() == "Пошук за номером телефона")
+    else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
     {
         entry_phone = ui->lineEdit->text();
 
@@ -357,7 +357,7 @@ void AddPersonToOrg::searchFunction()
         query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по заметке" || ui->comboBox->currentText() == "Search by the note" || ui->comboBox->currentText() == "Пошук за коментарем")
+    else if (ui->comboBox->currentText() == tr("Поиск по заметке"))
     {
         entry_comment = ui->lineEdit->text();
 

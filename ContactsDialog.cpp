@@ -439,7 +439,7 @@ void ContactsDialog::searchFunction()
     entry_phone = nullptr;
     entry_comment = nullptr;
 
-    if (ui->comboBox->currentText() == "Поиск по ФИО / названию" || ui->comboBox->currentText() == "Пошук по ПІБ / назві" || ui->comboBox->currentText() == "Search by full name / name")
+    if (ui->comboBox->currentText() == tr("Поиск по ФИО / названию"))
     {
         entry_name = ui->lineEdit->text();
 
@@ -468,7 +468,7 @@ void ContactsDialog::searchFunction()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по номеру телефона" || ui->comboBox->currentText() == "Search by phone number" || ui->comboBox->currentText() == "Пошук за номером телефона")
+    else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
     {
         entry_phone = ui->lineEdit->text();
 
@@ -497,7 +497,7 @@ void ContactsDialog::searchFunction()
         query2->setQuery("SELECT entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         onUpdate();
     }
-    else if (ui->comboBox->currentText() == "Поиск по заметке" || ui->comboBox->currentText() == "Search by the note" || ui->comboBox->currentText() == "Пошук за коментарем")
+    else if (ui->comboBox->currentText() == tr("Поиск по заметке"))
     {
         entry_comment = ui->lineEdit->text();
 

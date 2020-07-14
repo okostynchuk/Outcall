@@ -14,8 +14,6 @@ DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-   // QDesktopServices::openUrl(QUrl("file:///C:/vybor/view.ade", QUrl::TolerantMode));
-
     connect(ui->exit,  &QAbstractButton::clicked, this, &DebugInfoDialog::onExit);
     connect(ui->clear, &QAbstractButton::clicked, this, &DebugInfoDialog::onClear);
 }
