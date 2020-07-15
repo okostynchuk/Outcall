@@ -32,7 +32,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     my_number = settingsDialog->getExtension();
 
     if (!MSSQLopened)
-        ui->openAccess->setVisible(false);
+        ui->openAccess->hide();
 }
 
 ViewContactDialog::~ViewContactDialog()
@@ -67,7 +67,9 @@ void ViewContactDialog::onOpenAccess() {
         query.addBindValue(userID);
         query.addBindValue(ui->VyborID->text().toInt());
         query.exec();
+
         ui->openAccess->setDisabled(true);
+
         dbMSSQL.close();
     }
     else

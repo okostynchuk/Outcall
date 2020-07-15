@@ -182,7 +182,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     QString from            = call.value("from").toString();
     QString callerIDName    = call.value("callerIDName").toString();
     QString uniqueid        = call.value("uniqueid").toString();
-    QString my_number        = call.value("to").toString();
+    QString my_number       = call.value("to").toString();
 
     if (from == callerIDName)
         callerIDName = QObject::tr("Неизвестный");
@@ -327,6 +327,7 @@ void OutCall::onRemindersDialog()
 void OutCall::close()
 {
     g_pAsteriskManager->signOut();
+    m_systemTrayIcon->hide();
     QApplication::quit();
 }
 

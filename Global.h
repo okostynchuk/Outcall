@@ -40,6 +40,8 @@ namespace global {
     bool containsSettingsKey(const QString key, const QString group = "");
 
     QStringList getSettingKeys(const QString group);
+
+    QString getExtensionNumber(const QString group);
 }
 
 #endif // GLOBAL_H

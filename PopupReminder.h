@@ -49,6 +49,7 @@ public:
     static void closeAll();
 
 private slots:
+    void onOpenAccess();
     void onCall();
     void onTimer();
     void onClosePopup();

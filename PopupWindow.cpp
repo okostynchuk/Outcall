@@ -478,7 +478,9 @@ void PopupWindow::onOpenAccess()
         query1.addBindValue(userID);
         query1.addBindValue(vyborID);
         query1.exec();
-        popup->ui->openAccess->hide();
+
+        popup->ui->openAccess->setDisabled(true);
+
         dbMSSQL.close();
     }
     else
@@ -533,9 +535,8 @@ void PopupWindow::receiveData(bool update)
             }
         }
 
-
         if (!MSSQLopened)
-            popup->ui->openAccess->setVisible(false);
+            popup->ui->openAccess->hide();
     }
 }
 
@@ -639,9 +640,8 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
         }
     }
 
-
     if (!MSSQLopened)
-        ui->openAccess->setVisible(false);
+        popup->ui->openAccess->hide();
 
     popup->ui->textEdit->installEventFilter(this);
 

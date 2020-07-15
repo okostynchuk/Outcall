@@ -73,3 +73,11 @@ QStringList global::getSettingKeys(const QString group)
         settings.beginGroup(group);
     return settings.childKeys();
 }
+
+QString global::getExtensionNumber(const QString group)
+{
+    QSettings settings(ORGANIZATION_NAME, APP_NAME);
+    if (!group.isEmpty())
+        settings.beginGroup(group);
+    return settings.childKeys().first();
+}

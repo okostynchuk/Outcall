@@ -1,8 +1,8 @@
 #ifndef REMINDERSDIALOG_H
 #define REMINDERSDIALOG_H
 
-#include "SettingsDialog.h"
 #include "RemindersThread.h"
+#include "AddReminderDialog.h"
 #include "EditReminderDialog.h"
 #include "AsteriskManager.h"
 
@@ -35,12 +35,10 @@ protected:
 
 protected slots:
     void onTimer();
+    void onAddReminder();
     void onEditReminder(const QModelIndex &);
-    void onTextChanged();
     void deleteObjects();
     void changeState();
-    void onSave();
-    bool eventFilter(QObject *object, QEvent *event);
     void onNotify(QString, QDateTime, QString);
 
 private:
@@ -48,13 +46,13 @@ private:
     QTimer timer;
     QString languages;
     QString my_number;
-    SettingsDialog *settingsDialog;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
+    AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
     QWidget* addCheckBox(int);
     QList<QSqlQueryModel*> queriesActual;

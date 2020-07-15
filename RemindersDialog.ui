@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addReminderButton">
        <property name="minimumSize">
         <size>
          <width>30</width>

@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <QThread>
 #include <QMessageBox>
-#include <QKeyEvent>
 #include <QSqlQuery>
 
 #define TIME_TO_UPDATE 5000 // msec
@@ -25,36 +24,20 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_2->verticalHeader()->setSectionsClickable(false);
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
 
-    languages = global::getSettingsValue("language", "settings").toString();
-    if (languages == "Русский (по умолчанию)")
-        ui->calendarWidget->setLocale(QLocale::Russian);
-    else if (languages == "Українська")
-        ui->calendarWidget->setLocale(QLocale::Ukrainian);
-    else if (languages == "English")
-        ui->calendarWidget->setLocale(QLocale::English);
-
-    ui->calendarWidget->setGridVisible(true);
-    ui->calendarWidget->setMinimumDate(QDate::currentDate());
-    ui->calendarWidget->setSelectedDate(QDate::currentDate());
-    ui->timeEdit->setTime(QTime::currentTime());
-    ui->textEdit->installEventFilter(this);
-
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdate()));
-    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
-    connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
+    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &RemindersDialog::onAddReminder);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(&timer, &QTimer::timeout, this, &RemindersDialog::onTimer);
-    connect(ui->saveButton, &QAbstractButton::clicked, this, &RemindersDialog::onSave);
 
     ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->calendarWidget->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
+    my_number = global::getExtensionNumber("extensions");
 
     ui->tabWidget->setCurrentIndex(0);
+
+    languages = global::getSettingsValue("language", "settings").toString();
 
     loadActualReminders();
 
@@ -91,21 +74,12 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 RemindersDialog::~RemindersDialog()
 {
     remindersThread->requestInterruption();
-    delete settingsDialog;
     delete ui;
 }
 
 void RemindersDialog::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
-
-    ui->calendarWidget->setMinimumDate(QDate::currentDate());
-    ui->calendarWidget->setSelectedDate(QDate::currentDate());
-    ui->timeEdit->setTime(QTime::currentTime());
-
-    ui->comboBox->clear();
-    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(my_number));
-    ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     onUpdate();
 }
@@ -179,18 +153,10 @@ void RemindersDialog::sendNewValues()
     remindersThreadManager->receiveNewValues(ids, dateTimes, notes);
 }
 
-void RemindersDialog::onTextChanged()
-{
-    if(ui->textEdit->toPlainText().simplified().length() > 255)
-        ui->textEdit->textCursor().deletePreviousChar();
-}
-
 void RemindersDialog::receiveData(bool updating)
 {
     if (updating)
-    {
         onUpdate();
-    }
 }
 
 void RemindersDialog::loadActualReminders()
@@ -275,6 +241,14 @@ void RemindersDialog::loadPastReminders()
 
     queriesPast.append(query1);
     queriesPast.append(query2);
+}
+
+void RemindersDialog::onAddReminder()
+{
+    addReminderDialog = new AddReminderDialog;
+    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addReminderDialog->show();
+    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void RemindersDialog::onEditReminder(const QModelIndex &index)
@@ -387,72 +361,4 @@ void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, Q
     PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 
     onUpdate();
-}
-
-void RemindersDialog::onSave()
-{
-    QDate date = ui->calendarWidget->selectedDate();
-    QTime time(ui->timeEdit->time().hour(), ui->timeEdit->time().minute(), 0);
-    QDateTime dateTime = QDateTime(date, time);
-    QString note = ui->textEdit->toPlainText().simplified();
-
-    if (dateTime < QDateTime::currentDateTime())
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
-        return;
-    }
-
-    if (ui->textEdit->toPlainText().simplified().isEmpty())
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
-        return;
-    }
-
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    QRegExp reg("([0-9]+)(.+)");
-    reg.indexIn(ui->comboBox->currentText());
-
-    query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
-    query.addBindValue(my_number);
-    query.addBindValue(reg.cap(1));
-    query.addBindValue(dateTime);
-    query.addBindValue(note);
-    query.addBindValue(true);
-    query.exec();
-
-    onUpdate();
-
-    if (reg.cap(1) != my_number)
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
-}
-
-bool RemindersDialog::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "textEdit")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit2");
-                return true;
-            }
-        }
-    }
-    else if (object->objectName() == "textEdit2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit");
-                return true;
-            }
-        }
-    }
-    return false;
 }

@@ -370,6 +370,53 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     m_PopupReminders.append(reminder);
 }
 
+void PopupReminder::onOpenAccess()
+{
+//    QSqlDatabase db;
+//    QSqlQuery query(db);
+
+//    query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" +  + "')");
+//    query.exec();
+//    query.first();
+
+//    QString vyborID = query.value(0).toString();
+
+//    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+//    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+//    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+//    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+//    QString password_3 = QString(QByteArray::fromBase64(password3));
+//    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+//    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+//    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+//                            "Server="+hostName_3+","+port_3+";"
+//                            "Database="+databaseName_3+";"
+//                            "Uid="+userName_3+";"
+//                            "Pwd="+password_3);
+//    bool ok = dbMSSQL.open();
+
+//    QSqlQuery query1(dbMSSQL);
+
+//    if (ok)
+//    {
+//        query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
+//                   "VALUES (user_id(?), ?)");
+//        query1.addBindValue(userID);
+//        query1.addBindValue(vyborID);
+//        query1.exec();
+
+//        ui->openAccess->setDisabled(true);
+
+//        dbMSSQL.close();
+//    }
+//    else
+//    {
+//        setStyleSheet("QMessageBox{ color: #000000; }");
+//        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+//    }
+}
+
 void PopupReminder::keyPressEvent(QKeyEvent* event)
 {
     if(event->key() == Qt::Key_Escape)
