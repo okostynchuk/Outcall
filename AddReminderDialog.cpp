@@ -70,13 +70,27 @@ void AddReminderDialog::onSave()
     QRegExp reg("([0-9]+)(.+)");
     reg.indexIn(ui->comboBox->currentText());
 
-    query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
-    query.addBindValue(my_number);
-    query.addBindValue(reg.cap(1));
-    query.addBindValue(dateTime);
-    query.addBindValue(note);
-    query.addBindValue(true);
-    query.exec();
+    if (callId.isEmpty())
+    {
+        query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
+        query.addBindValue(my_number);
+        query.addBindValue(reg.cap(1));
+        query.addBindValue(dateTime);
+        query.addBindValue(note);
+        query.addBindValue(true);
+        query.exec();
+    }
+    else
+    {
+        query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active, call_id) VALUES(?, ?, ?, ?, ?, ?)");
+        query.addBindValue(my_number);
+        query.addBindValue(reg.cap(1));
+        query.addBindValue(dateTime);
+        query.addBindValue(note);
+        query.addBindValue(true);
+        query.addBindValue(callId);
+        query.exec();
+    }
 
     emit sendData(true);
     close();
@@ -87,6 +101,11 @@ void AddReminderDialog::onSave()
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
 
     destroy(true);
+}
+
+void AddReminderDialog::setValuesPopupWindow(QString receivedCallId)
+{
+    callId = receivedCallId;
 }
 
 void AddReminderDialog::onTextChanged()

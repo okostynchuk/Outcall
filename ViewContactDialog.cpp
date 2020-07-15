@@ -20,7 +20,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    connect(ui->openAccess, &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
+    connect(ui->openAccessButton, &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
     connect(ui->comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
@@ -28,17 +28,15 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewRecievedNotes(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewPlacedNotes(const QModelIndex &)));
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
+    my_number = global::getExtensionNumber("extensions");
 
     if (!MSSQLopened)
-        ui->openAccess->hide();
+        ui->openAccessButton->hide();
 }
 
 ViewContactDialog::~ViewContactDialog()
 {
     deleteObjects();
-    delete settingsDialog;
     delete ui;
 }
 
@@ -68,7 +66,7 @@ void ViewContactDialog::onOpenAccess() {
         query.addBindValue(ui->VyborID->text().toInt());
         query.exec();
 
-        ui->openAccess->setDisabled(true);
+        ui->openAccessButton->setDisabled(true);
 
         dbMSSQL.close();
     }

@@ -54,7 +54,6 @@ private:
     QString number;
     ChooseNumber *chooseNumber;
     PlaceCallDialog *placeCallDialog;
-    SettingsDialog *settingsDialog;
     QString my_number;
 };
 

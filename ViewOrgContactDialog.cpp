@@ -21,7 +21,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     m_horiz_header = ui->tableView->horizontalHeader();
 
-    connect(ui->openAccess, &QPushButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
+    connect(ui->openAccessButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
@@ -33,17 +33,15 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     onComboBoxSelected();
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
+    my_number = global::getExtensionNumber("extensions");
 
     if (!MSSQLopened)
-        ui->openAccess->hide();
+        ui->openAccessButton->hide();
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
 {
     deleteObjects();
-    delete settingsDialog;
     delete ui;
 }
 
@@ -73,7 +71,7 @@ void ViewOrgContactDialog::onOpenAccess() {
         query.addBindValue(ui->VyborID->text().toInt());
         query.exec();
 
-        ui->openAccess->setDisabled(true);
+        ui->openAccessButton->setDisabled(true);
 
         dbMSSQL.close();
     }

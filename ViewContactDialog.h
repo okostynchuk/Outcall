@@ -57,7 +57,6 @@ protected slots:
 
 private:
     Ui::ViewContactDialog *ui;
-    SettingsDialog *settingsDialog;
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
     NotesDialog *notesDialog;
