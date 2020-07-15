@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <AddExtensionDialog.h>
+#include <RunGuard.h>
 
 #include <QDialog>
 #include <QFile>
@@ -52,6 +53,10 @@ private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
+
+    //RunGuard *runGuard;
+    //void reboot();
+    //const int REBOOT_CODE = 1000;
     QFile f;
     QString userName;
     QString path;

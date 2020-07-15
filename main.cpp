@@ -3,6 +3,7 @@
 #include "Notifier.h"
 #include "Windows.h"
 #include "DatabasesConnectDialog.h"
+#include "RunGuard.h"
 
 #include <QApplication>
 #include <QLockFile>
@@ -42,12 +43,41 @@ int main(int argc, char *argv[])
 //        return 1;
 //    }
 
-    //RunGuard guard( "some_random_key" );
-      //  if ( !guard.tryToRun() )
-        //    return 0;
-
     //if(!app.lock())
       //      return -42;
+
+//    RunGuard guard( "some_random_key" );
+//    if ( !guard.tryToRun() )
+//        return 0;
+
+//    int result = 0;
+//        do
+//        {
+//            QCoreApplication coreapp(argc, argv);
+//            result = coreapp.exec();
+//        } while( result == 1337 );
+//        return result;
+
+//    int result = 0;
+//    SettingsDialog *settingsDialog = new SettingsDialog;
+//    settingsDialog->on_applyButton_clicked(-12);
+//    result = app.exec();
+//    return result;
+
+    //const int result = app.exec();
+    //const int REBOOT_CODE = 1000;
+
+      //  if (result == REBOOT_CODE)
+       // {
+       //     const QString program = QApplication::applicationFilePath();
+       //     const QStringList arguments = QApplication::arguments();
+       //     const QString appDirectory = QDir::currentPath();
+       //     QProcess::startDetached(program, arguments, appDirectory);
+
+         //   return 0;
+       // }
+
+        //return result;
 
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
@@ -55,11 +85,11 @@ int main(int argc, char *argv[])
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
     if (languages == "Русский (по умолчанию)")
-       qtTranslator.load(":/russian.qm");
+       qtTranslator.load(":/translations/russian.qm");
     else if (languages == "Українська")
-       qtTranslator.load(":/ukrainian.qm");
+       qtTranslator.load(":/translations/ukrainian.qm");
     else if (languages == "English")
-       qtTranslator.load(":/english.qm");
+       qtTranslator.load(":/translations/english.qm");
     app.installTranslator(&qtTranslator);
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();

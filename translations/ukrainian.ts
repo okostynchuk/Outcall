@@ -100,7 +100,7 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Введены существующие номера!
@@ -109,23 +109,23 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation type="vanished">Запис успішно доданий!</translation>
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID не відповідає формату!</translation>
+        <translation type="vanished">VyborID не відповідає формату!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>
-        <translation>Номер не відповідає формату!</translation>
+        <translation type="vanished">Номер не відповідає формату!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
-        <translation>Введені існуючі номера!</translation>
+        <translation type="vanished">Введені існуючі номера!</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
@@ -297,7 +297,7 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Введены существующие номера!
@@ -306,23 +306,23 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
-        <translation>Запис успішно доданий!</translation>
+        <translation type="vanished">Запис успішно доданий!</translation>
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID не відповідає формату!</translation>
+        <translation type="vanished">VyborID не відповідає формату!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>
-        <translation>Номер не відповідає формату!</translation>
+        <translation type="vanished">Номер не відповідає формату!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
-        <translation>Введені наявні номера!</translation>
+        <translation type="vanished">Введені наявні номера!</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
@@ -440,11 +440,11 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Сотрудник успешно добавлен!</source>
-        <translation>Співробітник успішно доданий!</translation>
+        <translation type="vanished">Співробітник успішно доданий!</translation>
     </message>
     <message>
         <source>20</source>
@@ -539,19 +539,19 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Номер успешно добавлен!</source>
-        <translation>Номер успішно доданий!</translation>
+        <translation type="vanished">Номер успішно доданий!</translation>
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Контакту не может быть присвоено больше 5 номеров!</source>
-        <translation>Контакт не може мати більше ніж 5 номерів!</translation>
+        <translation type="vanished">Контакт не може мати більше ніж 5 номерів!</translation>
     </message>
     <message>
         <source>20</source>
@@ -654,19 +654,19 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Выберите одну запись!</source>
-        <translation>Виберіть один запис!</translation>
+        <translation type="vanished">Виберіть один запис!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation>Обраний контакт належить організації!</translation>
+        <translation type="vanished">Обраний контакт належить організації!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
-        <translation>Обраний контакт належить фіз.особі!</translation>
+        <translation type="vanished">Обраний контакт належить фіз.особі!</translation>
     </message>
     <message>
         <source>Заметки</source>
@@ -1067,7 +1067,7 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Введены существующие номера!
@@ -1076,11 +1076,11 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно змінений!</translation>
+        <translation type="vanished">Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Нет</source>
@@ -1088,15 +1088,15 @@
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID не відповідає формату!</translation>
+        <translation type="vanished">VyborID не відповідає формату!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>
-        <translation>Номер не відповідає формату!</translation>
+        <translation type="vanished">Номер не відповідає формату!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
-        <translation>Введені існуючі номери!</translation>
+        <translation type="vanished">Введені існуючі номери!</translation>
     </message>
     <message>
         <source>Отвязать организацию</source>
@@ -1215,7 +1215,7 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Введены существующие номера!
@@ -1224,11 +1224,11 @@
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно изменена!</source>
-        <translation>Запис успішно змінений!</translation>
+        <translation type="vanished">Запис успішно змінений!</translation>
     </message>
     <message>
         <source>Редактирование</source>
@@ -1240,15 +1240,15 @@
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID не відповідає формату!</translation>
+        <translation type="vanished">VyborID не відповідає формату!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>
-        <translation>Номер не відповідає формату!</translation>
+        <translation type="vanished">Номер не відповідає формату!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
-        <translation>Введені існуючі номери!</translation>
+        <translation type="vanished">Введені існуючі номери!</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
@@ -1267,31 +1267,31 @@
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Указано прошедшее время!</source>
-        <translation>Вказано минулий час!</translation>
+        <translation type="vanished">Вказано минулий час!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
-        <translation>Зміст нагадування не може бути пустим!</translation>
+        <translation type="vanished">Зміст нагадування не може бути пустим!</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Напоминание успешно изменено!</source>
-        <translation>Нагадування успішно змінено!</translation>
+        <translation type="vanished">Нагадування успішно змінено!</translation>
     </message>
     <message>
         <source>Напоминание успешно отправлено!</source>
-        <translation>Нагадування успішно відправлено!</translation>
+        <translation type="vanished">Нагадування успішно відправлено!</translation>
     </message>
     <message>
         <source>Напоминание успешно добавлено!</source>
-        <translation>Нагадування успішно додано!</translation>
+        <translation type="vanished">Нагадування успішно додано!</translation>
     </message>
 </context>
 <context>
@@ -1338,19 +1338,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Содержание заметки не может быть пустым!</source>
-        <translation>Зміст коментаря не може бути пустим!</translation>
+        <translation type="vanished">Зміст коментаря не може бути пустим!</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
-        <translation>Коментар успішно доданий!</translation>
+        <translation type="vanished">Коментар успішно доданий!</translation>
     </message>
     <message>
         <source>Ввод заметки</source>
@@ -1365,7 +1365,7 @@ p, li { white-space: pre-wrap; }
     <name>OutCall</name>
     <message>
         <source>Выход</source>
-        <translation>Вихід</translation>
+        <translation type="vanished">Вихід</translation>
     </message>
     <message>
         <source>Войти в аккаунт</source>
@@ -1500,15 +1500,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Поиск по ФИО / названию</source>
-        <translation>Пошук по ПІБ / назві</translation>
+        <translation type="vanished">Пошук по ПІБ / назві</translation>
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation>Пошук по номеру телефона</translation>
+        <translation type="vanished">Пошук по номеру телефона</translation>
     </message>
     <message>
         <source>Поиск сотрудников по организации</source>
-        <translation>Пошук за співробітниками організації</translation>
+        <translation type="vanished">Пошук за співробітниками організації</translation>
     </message>
     <message>
         <source>Сотрудники организации &quot;</source>
@@ -1598,7 +1598,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source> Позвонить </source>
+        <translation type="vanished">Зателефонувати</translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
         <translation>Зателефонувати</translation>
+    </message>
+    <message>
+        <source>Заказы</source>
+        <translation>Замовлення</translation>
     </message>
 </context>
 <context>
@@ -1682,11 +1690,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
-        <translation>Відсутнє підключення до бази Access!</translation>
+        <translation type="vanished">Відсутнє підключення до бази Access!</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;1031&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1841,7 +1849,107 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Приложение уже запущено!</source>
-        <translation>Додаток уже запущений!</translation>
+        <translation type="vanished">Додаток уже запущений!</translation>
+    </message>
+    <message>
+        <source>Введены существующие номера!</source>
+        <translation>Введено існуючі номери!</translation>
+    </message>
+    <message>
+        <source>VyborID не соответствует формату!</source>
+        <translation>VyborID не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Номер не відповідає формату!</translation>
+    </message>
+    <message>
+        <source>Уведомление</source>
+        <translation>Сповіщення</translation>
+    </message>
+    <message>
+        <source>Запись успешно добавлена!</source>
+        <translation>Запис успішно доданий!</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Немає</translation>
+    </message>
+    <message>
+        <source>Сотрудник успешно добавлен!</source>
+        <translation>Співробітник успішно доданий!</translation>
+    </message>
+    <message>
+        <source>Номер успешно добавлен!</source>
+        <translation>Номер успішно доданий!</translation>
+    </message>
+    <message>
+        <source>Контакту не может быть присвоено больше 5 номеров!</source>
+        <translation>Контакт не може мати більше ніж 5 номерів!</translation>
+    </message>
+    <message>
+        <source>Выберите одну запись!</source>
+        <translation>Виберіть один запис!</translation>
+    </message>
+    <message>
+        <source>Данный контакт принадлежит организации!</source>
+        <translation>Обраний контакт належить організації!</translation>
+    </message>
+    <message>
+        <source>Данный контакт принадлежит физ. лицу!</source>
+        <translation>Обраний контакт належить фіз.особі!</translation>
+    </message>
+    <message>
+        <source>Запись успешно изменена!</source>
+        <translation>Запис успішно змінений!</translation>
+    </message>
+    <message>
+        <source>Указано прошедшее время!</source>
+        <translation>Вказано минулий час!</translation>
+    </message>
+    <message>
+        <source>Содержание напоминания не может быть пустым!</source>
+        <translation>Зміст нагадування не може бути пустим!</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно отправлено!</source>
+        <translation>Нагадування успішно відправлено!</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно изменено!</source>
+        <translation>Нагадування успішно змінено!</translation>
+    </message>
+    <message>
+        <source>Напоминание успешно добавлено!</source>
+        <translation>Нагадування успішно додано!</translation>
+    </message>
+    <message>
+        <source>Содержание заметки не может быть пустым!</source>
+        <translation>Зміст коментаря не може бути пустим!</translation>
+    </message>
+    <message>
+        <source>Заметка успешно добавлена!</source>
+        <translation>Коментар успішно доданий!</translation>
+    </message>
+    <message>
+        <source>Выход</source>
+        <translation>Вихід</translation>
+    </message>
+    <message>
+        <source>Поиск по ФИО / названию</source>
+        <translation>Пошук по ПІБ / назві</translation>
+    </message>
+    <message>
+        <source>Поиск по номеру телефона</source>
+        <translation>Пошук за номером телефона</translation>
+    </message>
+    <message>
+        <source>Поиск сотрудников по организации</source>
+        <translation>Пошук за співробітниками організації</translation>
+    </message>
+    <message>
+        <source>Отсутствует подлючение к базе Access!</source>
+        <translation>Відсутнє підключення до бази Access!</translation>
     </message>
 </context>
 <context>
@@ -1876,23 +1984,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Указано прошедшее время!</source>
-        <translation>Вказано минулий час!</translation>
+        <translation type="vanished">Вказано минулий час!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
-        <translation>Зміст нагадування не може бути пустим!</translation>
+        <translation type="vanished">Зміст нагадування не може бути пустим!</translation>
     </message>
     <message>
         <source>Уведомление</source>
-        <translation>Сповіщення</translation>
+        <translation type="vanished">Сповіщення</translation>
     </message>
     <message>
         <source>Напоминание успешно отправлено!</source>
-        <translation>Нагадування успішно відправлено!</translation>
+        <translation type="vanished">Нагадування успішно відправлено!</translation>
     </message>
     <message>
         <source>Кому:</source>
@@ -2226,11 +2334,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
-        <translation>Відсутнє підключення до бази Access!</translation>
+        <translation type="vanished">Відсутнє підключення до бази Access!</translation>
     </message>
     <message>
         <source>Редактировать контакт</source>
@@ -2293,7 +2401,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Позвонить</source>
-        <translation type="vanished">Подзвонити</translation>
+        <translation>Подзвонити</translation>
     </message>
     <message>
         <source>Заметка:</source>
@@ -2377,11 +2485,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ошибка</source>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
-        <translation>Відсутнє підключення до бази Access!</translation>
+        <translation type="vanished">Відсутнє підключення до бази Access!</translation>
     </message>
     <message>
         <source>Редактировать контакт</source>

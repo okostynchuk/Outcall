@@ -19,6 +19,7 @@ TARGET = OutCALL
 TEMPLATE = app
 
 SOURCES += main.cpp\
+    AddReminderDialog.cpp \
     DebugInfoDialog.cpp \
     AddExtensionDialog.cpp \
     AsteriskManager.cpp \
@@ -26,6 +27,7 @@ SOURCES += main.cpp\
     Global.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
+    RunGuard.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
     Notifier.cpp \
@@ -49,6 +51,7 @@ SOURCES += main.cpp\
     PopupReminder.cpp
 
 HEADERS  += \
+    AddReminderDialog.h \
     DebugInfoDialog.h \
     AsteriskManager.h \
     CallHistoryDialog.h \
@@ -56,6 +59,7 @@ HEADERS  += \
     OutCALL.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
+    RunGuard.h \
     SettingsDialog.h \
     PopupWindow.h \
     Notifier.h \
@@ -80,6 +84,7 @@ HEADERS  += \
 
 FORMS    += \
     AddExtensionDialog.ui \
+    AddReminderDialog.ui \
     CallHistoryDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
@@ -106,7 +111,5 @@ FORMS    += \
 RESOURCES += \
     images.qrc \
     translations.qrc \
-
-TRANSLATIONS = ukrainian.ts russian.ts english.ts
 
 win32: RC_ICONS = $$PWD/images/outcall-logo.ico
