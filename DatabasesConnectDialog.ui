@@ -14,7 +14,7 @@
    <string>Подключение к базам данных</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="images.qrc">
+   <iconset>
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
@@ -249,17 +249,15 @@
   <tabstop>userName_1</tabstop>
   <tabstop>password_1</tabstop>
   <tabstop>port_1</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>closeButton</tabstop>
   <tabstop>tabWidget_2</tabstop>
   <tabstop>hostName_2</tabstop>
   <tabstop>databaseName_2</tabstop>
   <tabstop>userName_2</tabstop>
   <tabstop>password_2</tabstop>
   <tabstop>port_2</tabstop>
-  <tabstop>saveButton</tabstop>
-  <tabstop>closeButton</tabstop>
  </tabstops>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

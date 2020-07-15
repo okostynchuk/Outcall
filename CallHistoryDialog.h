@@ -77,6 +77,7 @@ protected slots:
 
 protected:
    void showEvent(QShowEvent *);
+   void closeEvent(QCloseEvent *);
 
 private slots:
     void on_previousButton_clicked();
@@ -87,7 +88,6 @@ private slots:
 
 private:
     Ui::CallHistoryDialog *ui;
-    QSqlQuery query;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
@@ -113,6 +113,7 @@ private:
     QString dialogStatus;
     QString callerNum;
     int count;
+    int i=0;
     int remainder;
     int missed_count = 0;
     QWidget* loadMissedStatus();
