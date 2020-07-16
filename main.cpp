@@ -3,7 +3,6 @@
 #include "Notifier.h"
 #include "Windows.h"
 #include "DatabasesConnectDialog.h"
-#include "RunGuard.h"
 
 #include <QApplication>
 #include <QLockFile>
@@ -19,8 +18,6 @@
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
-#include <QSharedMemory>
-#include <QSystemSemaphore>
 #include <QLockFile>
 
 int main(int argc, char *argv[])
@@ -34,28 +31,12 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-//    QMessageBox mbx;
-//    RunGuard* guard;
-//    guard = new RunGuard("some_random_key");
-
-//    if ( !guard->tryToRun() )
-//    {
-//      qDebug() << "I hate duplicates!";
-//      mbx.setText("No duplicates!");
-//      mbx.exec();
-//      return 0;
-//    }
-//    qDebug() << "normal launch";
-
-
-
-//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock")); /*!!!!!*/
+//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
 
 //        if(!lockFile.tryLock(100)){
 //            QMessageBox msgBox;
 //            msgBox.setIcon(QMessageBox::Warning);
-//            msgBox.setText("Приложение уже запущено.\n"
-//                           "Разрешено запускать только один экземпляр приложения.");
+//            msgBox.setText("Приложение уже запущено!");
 //            msgBox.exec();
 //            return 1;
 //        }

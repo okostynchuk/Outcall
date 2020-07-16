@@ -4,7 +4,6 @@
 #include "Global.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
-#include "RunGuard.h"
 
 #include <QAbstractButton>
 #include <QAbstractSocket>
@@ -209,6 +208,7 @@ void SettingsDialog::on_applyButton_clicked()
     int reply = msgBox.exec();
 
     //QFile file(QDir::temp().absoluteFilePath("lurity.lock"));
+//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
 
     switch (reply)
     {
@@ -216,12 +216,18 @@ void SettingsDialog::on_applyButton_clicked()
             saveSettings();
             applySettings();
             qApp->quit();
-            //guard->release();
-
+//            qApp->setQuitOnLastWindowClosed(true);
+//            qApp->closeAllWindows();
+//            qApp->quitOnLastWindowClosed();
+//            qApp->lastWindowClosed();
+            //qDebug()<<qApp->sessionId();
             //file.close();
-
             //file.remove();
-            //qDebug()<<"remove"<<file.remove();
+            //qDebug()<<"Removing is successful: "<<file.remove();
+
+            //lockFile.unlock();
+
+
 
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 
@@ -249,11 +255,6 @@ void SettingsDialog::applySettings()
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
     g_Notifier->emitSettingsChanged();
 }
-
-//void SettingsDialog::reboot()
-//{
- //   qApp->exit(REBOOT_CODE);
-//}
 
 void SettingsDialog::loadLanguages()
 {

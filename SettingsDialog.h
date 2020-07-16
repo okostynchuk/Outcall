@@ -2,7 +2,6 @@
 #define SETTINGSDIALOG_H
 
 #include <AddExtensionDialog.h>
-#include <RunGuard.h>
 
 #include <QDialog>
 #include <QFile>
