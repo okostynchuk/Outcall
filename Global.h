@@ -42,6 +42,8 @@ namespace global {
     QStringList getSettingKeys(const QString group);
 
     QString getExtensionNumber(const QString group);
+
+    QString getGroupExtensionNumber(const QString group);
 }
 
 #endif // GLOBAL_H

@@ -29,9 +29,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     validator = new QRegExpValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
-    my_group = settingsDialog->getGroupExtension();
+    my_number = global::getExtensionNumber("extensions");
+    my_group = global::getGroupExtensionNumber("group_extensions");
     setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
 
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
@@ -293,7 +292,6 @@ void CallHistoryDialog::receiveDataToPlaced()
 
 CallHistoryDialog::~CallHistoryDialog()
 {
-    delete settingsDialog;
     deleteObjects();
     delete ui;
 }

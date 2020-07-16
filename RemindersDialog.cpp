@@ -174,8 +174,8 @@ void RemindersDialog::loadActualReminders()
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
-    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC");
+    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime ASC");
+    query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime ASC");
 
     query1->insertColumn(2);
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));

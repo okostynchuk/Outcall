@@ -72,7 +72,6 @@ private slots:
 
 private:
     Ui::ViewOrgContactDialog *ui;
-    SettingsDialog *settingsDialog;
     NotesDialog *notesDialog;
     QSqlQuery *query;
     QValidator *validator;

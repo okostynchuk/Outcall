@@ -398,12 +398,12 @@ void PopupWindow::onAddReminder()
     popup = (PopupWindow*)qv_popup.value<void *>();
     popup->m_pwi.stopTimer = true;
 
-    editReminderDialog = new EditReminderDialog;
-    editReminderDialog->setValuesPopupWindow(popup->m_pwi.my_number, popup->m_pwi.uniqueid);
-    connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    editReminderDialog->setProperty("qv_popup", qv_popup);
-    editReminderDialog->show();
-    editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    addReminderDialog = new AddReminderDialog;
+    addReminderDialog->setValuesPopupWindow(popup->m_pwi.uniqueid);
+    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addReminderDialog->setProperty("qv_popup", qv_popup);
+    addReminderDialog->show();
+    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void PopupWindow::onSaveNote()
@@ -479,7 +479,7 @@ void PopupWindow::onOpenAccess()
         query1.addBindValue(vyborID);
         query1.exec();
 
-        popup->ui->openAccess->setDisabled(true);
+        popup->ui->openAccessButton->setDisabled(true);
 
         dbMSSQL.close();
     }
@@ -504,7 +504,7 @@ void PopupWindow::receiveData(bool update)
             popup->ui->addOrgButton->hide();
             popup->ui->showCardButton->hide();
             popup->ui->addPhoneNumberButton->hide();
-            popup->ui->openAccess->hide();
+            popup->ui->openAccessButton->hide();
         }
         else
         {
@@ -519,13 +519,13 @@ void PopupWindow::receiveData(bool update)
                 popup->ui->addOrgButton->hide();
                 popup->ui->addPhoneNumberButton->hide();
                 popup->ui->showCardButton->show();
-                popup->ui->openAccess->show();
+                popup->ui->openAccessButton->show();
                 popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
                 popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
             }
             else
             {
-                popup->ui->openAccess->hide();
+                popup->ui->openAccessButton->hide();
                 popup->ui->showCardButton->hide();
                 popup->ui->addPersonButton->show();
                 popup->ui->addOrgButton->show();
@@ -536,7 +536,7 @@ void PopupWindow::receiveData(bool update)
         }
 
         if (!MSSQLopened)
-            popup->ui->openAccess->hide();
+            popup->ui->openAccessButton->hide();
     }
 }
 
@@ -618,7 +618,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
         popup->ui->addOrgButton->hide();
         popup->ui->showCardButton->hide();
         popup->ui->addPhoneNumberButton->hide();
-        popup->ui->openAccess->hide();
+        popup->ui->openAccessButton->hide();
     }
     else
     {
@@ -635,13 +635,13 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
         }
         else
         {
-            popup->ui->openAccess->hide();
+            popup->ui->openAccessButton->hide();
             popup->ui->showCardButton->hide();
         }
     }
 
     if (!MSSQLopened)
-        popup->ui->openAccess->hide();
+        popup->ui->openAccessButton->hide();
 
     popup->ui->textEdit->installEventFilter(this);
 
@@ -661,8 +661,8 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
-    connect(popup->ui->openAccess, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
-    popup->ui->openAccess->setProperty("qv_popup", qv_popup);
+    connect(popup->ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
+    popup->ui->openAccessButton->setProperty("qv_popup", qv_popup);
     connect(popup->ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
     popup->ui->addReminderButton->setProperty("qv_popup", qv_popup);
 }

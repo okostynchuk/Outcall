@@ -11,7 +11,7 @@
 #include "ViewContactDialog.h"
 #include "ViewOrgContactDialog.h"
 #include "SettingsDialog.h"
-#include "EditReminderDialog.h"
+#include "AddReminderDialog.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -96,7 +96,6 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
 
     QPoint position;
-    SettingsDialog *settingsDialog;
     QTextEdit *note;
     QSqlQuery *query;
     QString userID;
@@ -112,7 +111,7 @@ private:
     AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
-    EditReminderDialog *editReminderDialog;
+    AddReminderDialog *addReminderDialog;
 };
 
 #endif // POPUPWINDOW_H

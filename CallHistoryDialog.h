@@ -97,7 +97,6 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
-    SettingsDialog *settingsDialog;
     NotesDialog *notesDialog;
     QString state_call;
     QString page;

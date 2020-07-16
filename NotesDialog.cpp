@@ -17,8 +17,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->textEdit->installEventFilter(this);
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
+    my_number = global::getExtensionNumber("extensions");
 
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
@@ -34,9 +33,8 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
 NotesDialog::~NotesDialog()
 {
-    delete ui;
-    delete settingsDialog;
     deleteObjects();
+    delete ui;
 }
 
 void NotesDialog::setCallId(QString &uniqueid, QString &state_call)

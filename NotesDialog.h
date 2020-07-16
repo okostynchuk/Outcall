@@ -36,7 +36,6 @@ private:
     QString state;
     QString my_number;
     QSqlQueryModel *query;
-    SettingsDialog *settingsDialog;
 
 private slots:
     void onSave();

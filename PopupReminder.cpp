@@ -14,7 +14,7 @@ QList<PopupReminder*> PopupReminder::m_PopupReminders;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 //msec
+#define TIME_TO_SHOW	800 // msec
 
 PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     QDialog(parent),
@@ -41,17 +41,43 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         QSqlDatabase db = QSqlDatabase::database("Second");
         QSqlQuery query(db);
 
-        query.prepare("SELECT src FROM cdr WHERE uniqueid = ?");
+        query.prepare("SELECT src, extfield1 FROM cdr WHERE uniqueid = ?");
         query.addBindValue(m_pri.call_id);
         query.exec();
         query.next();
 
         m_pri.number = query.value(0).toString();
+        m_pri.name = query.value(1).toString();
 
-        ui->callButton->setText(" " + ui->callButton->text() + " " + m_pri.number + " ");
+        if (isInnerPhone(&m_pri.number))
+        {
+            ui->callButton->setText(m_pri.name);
+            ui->openAccessButton->hide();
+        }
+        else
+        {
+            QSqlDatabase db;
+            QSqlQuery query(db);
+
+            query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = ?");
+            query.addBindValue(m_pri.number);
+            query.exec();
+
+            if (query.next())
+                ui->callButton->setText(query.value(0).toString());
+            else
+            {
+                ui->callButton->setText(m_pri.number);
+                ui->openAccessButton->hide();
+            }
+        }
     }
     else
+    {
+        m_pri.number = m_pri.my_number;
         ui->callButton->hide();
+        ui->openAccessButton->hide();
+    }
 
     ui->lblText->setText(m_pri.text);
 
@@ -66,11 +92,11 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     if (languages == "Русский (по умолчанию)")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 20px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 16px;} ::drop-down{border: 0px;}");
     else if (languages == "Українська")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 25px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 21px;} ::drop-down{border: 0px;}");
     else if (languages == "English")
-        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 45px;} ::drop-down{border: 0px;}");
+        ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 40px;} ::drop-down{border: 0px;}");
 
     qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
     this->installEventFilter(this);
@@ -80,7 +106,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
+    connect(ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectTime()));
+
     ui->okButton->installEventFilter(this);
     ui->comboBox->installEventFilter(this);
 
@@ -186,6 +214,16 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
             position = event->globalPos();
         }
     }
+}
+
+bool PopupReminder::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+    if(validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+    return false;
 }
 
 void PopupReminder::onTimer()
@@ -338,6 +376,54 @@ void PopupReminder::onSelectTime()
     }
 }
 
+void PopupReminder::onOpenAccess()
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pri.number + "')");
+    query.exec();
+    query.first();
+
+    QString vyborID = query.value(0).toString();
+    QString userID = global::getSettingsValue("user_login", "settings").toString();
+
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
+    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                            "Server="+hostName_3+","+port_3+";"
+                            "Database="+databaseName_3+";"
+                            "Uid="+userName_3+";"
+                            "Pwd="+password_3);
+    bool ok = dbMSSQL.open();
+
+    QSqlQuery query1(dbMSSQL);
+
+    if (ok)
+    {
+        query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
+                   "VALUES (user_id(?), ?)");
+        query1.addBindValue(userID);
+        query1.addBindValue(vyborID);
+        query1.exec();
+
+        ui->openAccessButton->setDisabled(true);
+
+        dbMSSQL.close();
+    }
+    else
+    {
+        setStyleSheet("QMessageBox{ color: #000000; }");
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+    }
+}
+
 void PopupReminder::onClosePopup()
 {
     if (isVisible())
@@ -370,57 +456,10 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     m_PopupReminders.append(reminder);
 }
 
-void PopupReminder::onOpenAccess()
-{
-//    QSqlDatabase db;
-//    QSqlQuery query(db);
-
-//    query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" +  + "')");
-//    query.exec();
-//    query.first();
-
-//    QString vyborID = query.value(0).toString();
-
-//    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
-//    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
-//    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
-//    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
-//    QString password_3 = QString(QByteArray::fromBase64(password3));
-//    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
-
-//    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
-//    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
-//                            "Server="+hostName_3+","+port_3+";"
-//                            "Database="+databaseName_3+";"
-//                            "Uid="+userName_3+";"
-//                            "Pwd="+password_3);
-//    bool ok = dbMSSQL.open();
-
-//    QSqlQuery query1(dbMSSQL);
-
-//    if (ok)
-//    {
-//        query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
-//                   "VALUES (user_id(?), ?)");
-//        query1.addBindValue(userID);
-//        query1.addBindValue(vyborID);
-//        query1.exec();
-
-//        ui->openAccess->setDisabled(true);
-
-//        dbMSSQL.close();
-//    }
-//    else
-//    {
-//        setStyleSheet("QMessageBox{ color: #000000; }");
-//        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
-//    }
-}
-
 void PopupReminder::keyPressEvent(QKeyEvent* event)
 {
     if(event->key() == Qt::Key_Escape)
-         onClosePopup();
+        onClosePopup();
     else
         QWidget::keyPressEvent(event);
 }

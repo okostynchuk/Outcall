@@ -38,8 +38,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     onComboBoxSelected();
 
-    settingsDialog = new SettingsDialog();
-    my_number = settingsDialog->getExtension();
+    my_number = global::getExtensionNumber("extensions");
     ui->my_Number->setText(my_number);
 }
 

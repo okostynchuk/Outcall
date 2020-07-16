@@ -26,6 +26,7 @@ private:
         QString text;
         RemindersDialog* remindersDialog;
         QString my_number;
+        QString name;
         QString number;
         QString id;
         QDateTime dateTime;
@@ -49,6 +50,7 @@ public:
     static void closeAll();
 
 private slots:
+    bool isInnerPhone(QString *str);
     void onOpenAccess();
     void onCall();
     void onTimer();

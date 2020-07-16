@@ -87,7 +87,7 @@
             </widget>
            </item>
            <item row="0" column="2">
-            <widget class="QPushButton" name="openAccess">
+            <widget class="QPushButton" name="openAccessButton">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -737,7 +737,7 @@ background-color: #fffff0;
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>openAccess</tabstop>
+  <tabstop>openAccessButton</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>editButton</tabstop>
   <tabstop>LastName</tabstop>

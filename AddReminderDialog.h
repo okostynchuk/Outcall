@@ -20,6 +20,7 @@ signals:
 public:
     explicit AddReminderDialog(QWidget *parent = nullptr);
     ~AddReminderDialog();
+    void setValuesPopupWindow(QString);
 
 protected slots:
     void onSave();
@@ -29,6 +30,7 @@ protected slots:
 private:
     Ui::AddReminderDialog *ui;
     QString my_number;
+    QString callId;
 };
 
 #endif // ADDREMINDERDIALOG_H

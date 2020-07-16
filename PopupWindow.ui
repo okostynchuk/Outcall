@@ -2912,7 +2912,7 @@ QToolTip {
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="openAccess">
+     <widget class="QPushButton" name="openAccessButton">
       <property name="minimumSize">
        <size>
         <width>35</width>
@@ -3850,7 +3850,7 @@ QToolTip {
   <tabstop>textEdit</tabstop>
   <tabstop>saveNoteButton</tabstop>
   <tabstop>addReminderButton</tabstop>
-  <tabstop>openAccess</tabstop>
+  <tabstop>openAccessButton</tabstop>
   <tabstop>showCardButton</tabstop>
   <tabstop>addPersonButton</tabstop>
   <tabstop>addOrgButton</tabstop>
