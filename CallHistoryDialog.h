@@ -41,16 +41,15 @@ protected slots:
     void onCallClicked();
     bool checkNumber(QString &);
     void onUpdate();
+    void onUpdateClick();
+    void updateCount();
     void deleteObjects();
     void deleteNameObjects();
     void deleteObjectsOfAllCalls();
     void deleteMissedObjects();
     void deleteReceivedObjects();
     void deletePlacedObjects();
-    void deleteMissedStatusObjects();
-    void deleteBusyStatusObjects();
-    void deleteCancelStatusObjects();
-    void deleteReceivedStatusObjects();
+    void deleteStatusObjects();
     void editContact(QString &);
     void editOrgContact(QString &);
     QString getUpdateId(QString &);
@@ -58,6 +57,7 @@ protected slots:
     void addNoteToMissed(const QModelIndex &);
     void addNoteToReceived(const QModelIndex &);
     void addNoteToPlaced(const QModelIndex &);
+    void loadAllCalls();
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
@@ -65,8 +65,8 @@ protected slots:
     void getNumberMissed(const QModelIndex &index);
     void getNumberReceived(const QModelIndex &index);
     void getNumberPlaced(const QModelIndex &index);
-    void loadAllCalls();
     void tabSelected();
+    void daysChanged();
 
 protected:
    void showEvent(QShowEvent *);
@@ -108,24 +108,15 @@ private:
     int i=0;
     int remainder;
     int missed_count = 0;
-    QWidget* loadMissedStatus();
-    QWidget* loadBusyStatus();
-    QWidget* loadCancelStatus();
-    QWidget* loadReceivedStatus();
+    QWidget* loadStatus(QString &);
     QWidget* loadAllNotes();
     QWidget* loadMissedNote();
     QWidget* loadReceivedNote();
     QWidget* loadPlacedNote();
     QWidget* loadName();
     QList<QHBoxLayout*> layoutsName;
-    QList<QHBoxLayout*> layoutsMissedStatus;
-    QList<QHBoxLayout*> layoutsBusyStatus;
-    QList<QHBoxLayout*> layoutsCancelStatus;
-    QList<QHBoxLayout*> layoutsReceivedStatus;
-    QList<QWidget*> widgetsMissedStatus;
-    QList<QWidget*> widgetsBusyStatus;
-    QList<QWidget*> widgetsCancelStatus;
-    QList<QWidget*> widgetsReceivedStatus;
+    QList<QHBoxLayout*> layoutsStatus;
+    QList<QWidget*> widgetsStatus;
     QList<QWidget*> widgets;
     QList<QWidget*> widgetsName;
     QList<QWidget*> widgetsMissed;
@@ -134,10 +125,7 @@ private:
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
     QList<QLabel*> labelsName;
-    QList<QLabel*> labelsMissedStatus;
-    QList<QLabel*> labelsBusyStatus;
-    QList<QLabel*> labelsCancelStatus;
-    QList<QLabel*> labelsReceivedStatus;
+    QList<QLabel*> labelsStatus;
     QList<QLabel*> notes;
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
