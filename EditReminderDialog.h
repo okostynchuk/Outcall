@@ -27,6 +27,12 @@ protected slots:
     void onTextChanged();
     bool eventFilter(QObject *object, QEvent *event);
 
+private slots:
+    void on_add5MinButton_clicked();
+    void on_add10MinButton_clicked();
+    void on_add30MinButton_clicked();
+    void on_add60MinButton_clicked();
+
 private:
     Ui::EditReminderDialog *ui;
     QString my_number;

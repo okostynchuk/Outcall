@@ -399,7 +399,7 @@ void PopupWindow::onAddReminder()
     popup->m_pwi.stopTimer = true;
 
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setValuesPopupWindow(popup->m_pwi.uniqueid);
+    addReminderDialog->setCallId(popup->m_pwi.uniqueid);
     connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addReminderDialog->setProperty("qv_popup", qv_popup);
     addReminderDialog->show();

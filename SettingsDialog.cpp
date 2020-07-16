@@ -13,6 +13,10 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QProcess>
+#include <QDebug>
+#include <QSystemTrayIcon>
+#include <QLockFile>
+#include <QApplication>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -197,27 +201,30 @@ void SettingsDialog::show()
 void SettingsDialog::on_applyButton_clicked()
 {
     QMessageBox msgBox;
-    //RunGuard *runGuard = new RunGuard;
-    //runGuard = new RunGuard;
-    //RunGuard *runGuard = new RunGuard;
-    //RunGuard obj;
     msgBox.setText(tr("Применение настроек"));
     msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
     msgBox.setButtonText(QMessageBox::No, tr("Нет"));
     int reply = msgBox.exec();
+
+    //QFile file(QDir::temp().absoluteFilePath("lurity.lock"));
+
     switch (reply)
     {
         case QMessageBox::Yes:
             saveSettings();
             applySettings();
             qApp->quit();
-            //qApp->exit(1337);
-            //runGuard->release();
-            //RunGuard::release();
+            //guard->release();
+
+            //file.close();
+
+            //file.remove();
+            //qDebug()<<"remove"<<file.remove();
+
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-            //reboot();
+
             break;
         case QMessageBox::No:
             msgBox.close();

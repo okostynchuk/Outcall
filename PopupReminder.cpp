@@ -44,32 +44,50 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         query.prepare("SELECT src, extfield1 FROM cdr WHERE uniqueid = ?");
         query.addBindValue(m_pri.call_id);
         query.exec();
-        query.next();
 
-        m_pri.number = query.value(0).toString();
-        m_pri.name = query.value(1).toString();
-
-        if (isInnerPhone(&m_pri.number))
+        if (query.next())
         {
-            ui->callButton->setText(m_pri.name);
-            ui->openAccessButton->hide();
+            m_pri.number = query.value(0).toString();
+            m_pri.name = query.value(1).toString();
+
+            if (isInnerPhone(&m_pri.number))
+            {
+                ui->callButton->setText(m_pri.name);
+                ui->openAccessButton->hide();
+            }
+            else
+            {
+                QSqlDatabase db;
+                QSqlQuery query(db);
+
+                query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = ?");
+                query.addBindValue(m_pri.number);
+                query.exec();
+
+                if (query.next())
+                    ui->callButton->setText(query.value(0).toString());
+                else
+                {
+                    ui->callButton->setText(m_pri.number);
+                    ui->openAccessButton->hide();
+                }
+            }
         }
         else
         {
             QSqlDatabase db;
             QSqlQuery query(db);
-
-            query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = ?");
-            query.addBindValue(m_pri.number);
+            query.prepare("SELECT entry_name, entry_phone FROM entry_phone WHERE entry_id = ?");
+            query.addBindValue(m_pri.call_id);
             query.exec();
 
-            if (query.next())
-                ui->callButton->setText(query.value(0).toString());
-            else
+            while (query.next())
             {
-                ui->callButton->setText(m_pri.number);
-                ui->openAccessButton->hide();
+                m_pri.name = query.value(0).toString();
+                m_pri.numbers.append(query.value(1).toString());
             }
+
+            ui->callButton->setText(m_pri.name);
         }
     }
     else
@@ -306,10 +324,35 @@ void PopupReminder::receiveData(bool updating)
     }
 }
 
-void PopupReminder::onCall()
+void PopupReminder::receiveNumber(QString &number)
 {
     const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
-    g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.number, protocol, m_pri.my_number);
+    g_pAsteriskManager->originateCall(m_pri.my_number, number, protocol, m_pri.my_number);
+}
+
+void PopupReminder::onCall()
+{
+    if (!m_pri.numbers.isEmpty())
+    {
+        if (m_pri.numbers.length() > 1)
+        {
+            chooseNumber = new ChooseNumber;
+            chooseNumber->setValuesNumber(m_pri.call_id);
+            connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+            chooseNumber->show();
+            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        }
+        else
+        {
+            const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
+            g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.numbers.at(0), protocol, m_pri.my_number);
+        }
+    }
+    else
+    {
+        const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
+        g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.number, protocol, m_pri.my_number);
+    }
 }
 
 void PopupReminder::onSelectTime()

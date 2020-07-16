@@ -5,6 +5,7 @@
 #include "EditReminderDialog.h"
 #include "AsteriskManager.h"
 #include "Global.h"
+#include "ChooseNumber.h"
 
 #include <QDialog>
 #include <QDateTime>
@@ -28,6 +29,7 @@ private:
         QString my_number;
         QString name;
         QString number;
+        QStringList numbers;
         QString id;
         QDateTime dateTime;
         QString note;
@@ -42,6 +44,7 @@ private:
 
 public slots:
     void receiveData(bool);
+    void receiveNumber(QString &);
 
 public:
     PopupReminder(PopupReminderInfo& pri, QWidget *parent = 0);
@@ -62,6 +65,7 @@ private:
     Ui::PopupReminder *ui;
 
     EditReminderDialog *editReminderDialog;
+    ChooseNumber *chooseNumber;
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;

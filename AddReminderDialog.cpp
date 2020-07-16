@@ -103,7 +103,7 @@ void AddReminderDialog::onSave()
     destroy(true);
 }
 
-void AddReminderDialog::setValuesPopupWindow(QString receivedCallId)
+void AddReminderDialog::setCallId(QString receivedCallId)
 {
     callId = receivedCallId;
 }
@@ -141,4 +141,24 @@ bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
         }
     }
     return false;
+}
+
+void AddReminderDialog::on_add5MinButton_clicked()
+{
+    ui->timeEdit->setTime(ui->timeEdit->time().addSecs(300));
+}
+
+void AddReminderDialog::on_add10MinButton_clicked()
+{
+    ui->timeEdit->setTime(ui->timeEdit->time().addSecs(600));
+}
+
+void AddReminderDialog::on_add30MinButton_clicked()
+{
+    ui->timeEdit->setTime(ui->timeEdit->time().addSecs(1800));
+}
+
+void AddReminderDialog::on_add60MinButton_clicked()
+{
+    ui->timeEdit->setTime(ui->timeEdit->time().addSecs(3600));
 }

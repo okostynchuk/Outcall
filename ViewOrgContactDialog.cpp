@@ -24,6 +24,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->openAccessButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onAddReminder);
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
     connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
@@ -43,6 +44,15 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
 {
     deleteObjects();
     delete ui;
+}
+
+void ViewOrgContactDialog::onAddReminder()
+{
+    addReminderDialog = new AddReminderDialog;
+    addReminderDialog->setCallId(updateID);
+    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addReminderDialog->show();
+    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::onOpenAccess() {

@@ -329,7 +329,7 @@ background-color: #fffff8;
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="addReminderButton">
             <property name="minimumSize">
              <size>
               <width>30</width>
