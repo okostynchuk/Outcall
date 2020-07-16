@@ -344,8 +344,11 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
-        m_placeCallDialog->show();
-        m_placeCallDialog->activateWindow();
+        if (opened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
+        {
+            m_placeCallDialog->show();
+            m_placeCallDialog->activateWindow();
+        }
     }
 }
 

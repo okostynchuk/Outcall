@@ -174,12 +174,6 @@ void PlaceCallDialog::clearEditText()
 
 void PlaceCallDialog::show()
 {
-    if (!opened)
-    {
-        ui->lineEdit->setReadOnly(true);
-        ui->phoneLine->setReadOnly(true);
-    }
-
     QDialog::show();    
     ui->phoneLine->clear();
     modelNull();

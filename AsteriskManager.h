@@ -57,6 +57,7 @@ public:
     void setState(AsteriskState state);
     void getExtensionNumbers();
     QMap<QString, QString> extensionNumbers;
+    AsteriskState m_currentState;
 
 protected:
     void getEventValues(QString eventData, QMap<QString, QString> &map);
@@ -96,7 +97,6 @@ private:
     QString m_server;
     quint16 m_port;
     QTimer m_timer;
-    AsteriskState m_currentState;
     bool m_autoSignIn;
     AsteriskVersion m_currentVersion;
 
