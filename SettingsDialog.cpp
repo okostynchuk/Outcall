@@ -208,7 +208,7 @@ void SettingsDialog::on_applyButton_clicked()
     int reply = msgBox.exec();
 
     //QFile file(QDir::temp().absoluteFilePath("lurity.lock"));
-    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
+    //QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
 
     switch (reply)
     {
