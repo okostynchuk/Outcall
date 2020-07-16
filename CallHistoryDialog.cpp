@@ -33,6 +33,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     my_group = global::getGroupExtensionNumber("group_extensions");
     setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
 
+    ui->comboBox_list->setVisible(false);
+
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
@@ -378,11 +380,11 @@ QString CallHistoryDialog::getUpdateId(QString &number)
 
 void CallHistoryDialog::loadAllCalls()
 {
-    if(!widgets.isEmpty())
+    if (!widgets.isEmpty())
         deleteObjectsOfAllCalls();
-    if(!widgetsName.isEmpty())
+    if (!widgetsAllName.isEmpty())
         deleteNameObjects();
-    if(!widgetsStatus.isEmpty())
+    if (!widgetsStatus.isEmpty())
         deleteStatusObjects();
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -463,7 +465,7 @@ void CallHistoryDialog::loadAllCalls()
         uniqueid = query4->data(query4->index(row_index, 7)).toString();
         dialogStatus = query4->data(query4->index(row_index, 3)).toString();
 
-        ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadStatus(dialogStatus));
+        ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadStatus());
 
         if (extfield1.isEmpty())
             ui->tableView_4->setIndexWidget(query4->index(row_index, 0), loadName());
@@ -493,92 +495,113 @@ QWidget* CallHistoryDialog::loadName()
     nameLayout->setContentsMargins(3, 0, 0, 0);
     nameWgt->setLayout(nameLayout);
 
-    layoutsName.append(nameLayout);
-    widgetsName.append(nameWgt);
-    labelsName.append(nameLabel);
+    if (ui->tabWidget->currentIndex() == 0)
+    {
+        layoutsAllName.append(nameLayout);
+        widgetsAllName.append(nameWgt);
+        labelsAllName.append(nameLabel);
+    }
+    if (ui->tabWidget->currentIndex() == 1)
+    {
+        layoutsMissedName.append(nameLayout);
+        widgetsMissedName.append(nameWgt);
+        labelsMissedName.append(nameLabel);
+    }
+    if (ui->tabWidget->currentIndex() == 2)
+    {
+        layoutsReceivedName.append(nameLayout);
+        widgetsReceivedName.append(nameWgt);
+        labelsReceivedName.append(nameLabel);
+    }
+    if (ui->tabWidget->currentIndex() == 3)
+    {
+        layoutsPlacedName.append(nameLayout);
+        widgetsPlacedName.append(nameWgt);
+        labelsPlacedName.append(nameLabel);
+    }
+
     return nameWgt;
 }
 
 void CallHistoryDialog::deleteNameObjects()
 {
-    for (int i = 0; i < layoutsName.size(); ++i)
-        layoutsName[i]->deleteLater();
+    if (ui->tabWidget->currentIndex() == 0)
+    {
+        for (int i = 0; i < layoutsAllName.size(); ++i)
+            layoutsAllName[i]->deleteLater();
 
-    for (int i = 0; i < widgetsName.size(); ++i)
-        widgetsName[i]->deleteLater();
+        for (int i = 0; i < widgetsAllName.size(); ++i)
+            widgetsAllName[i]->deleteLater();
 
-    qDeleteAll(labelsName);
-    layoutsName.clear();
-    widgetsName.clear();
-    labelsName.clear();
+        qDeleteAll(labelsAllName);
+        layoutsAllName.clear();
+        widgetsAllName.clear();
+        labelsAllName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 1)
+    {
+        for (int i = 0; i < layoutsMissedName.size(); ++i)
+            layoutsMissedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsMissedName.size(); ++i)
+            widgetsMissedName[i]->deleteLater();
+
+        qDeleteAll(labelsMissedName);
+        layoutsMissedName.clear();
+        widgetsMissedName.clear();
+        labelsMissedName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 2)
+    {
+        for (int i = 0; i < layoutsReceivedName.size(); ++i)
+            layoutsReceivedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsReceivedName.size(); ++i)
+            widgetsReceivedName[i]->deleteLater();
+
+        qDeleteAll(labelsReceivedName);
+        layoutsReceivedName.clear();
+        widgetsReceivedName.clear();
+        labelsReceivedName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 3)
+    {
+        for (int i = 0; i < layoutsPlacedName.size(); ++i)
+            layoutsPlacedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsPlacedName.size(); ++i)
+            widgetsPlacedName[i]->deleteLater();
+
+        qDeleteAll(labelsPlacedName);
+        layoutsPlacedName.clear();
+        widgetsPlacedName.clear();
+        labelsPlacedName.clear();
+    }
 }
 
-QWidget* CallHistoryDialog::loadStatus(QString &dialogStatus)
+QWidget* CallHistoryDialog::loadStatus()
 {
-    if(dialogStatus == "NO ANSWER")
-    {
-        QHBoxLayout* statusLayout = new QHBoxLayout;
-        QWidget* statusWgt = new QWidget;
-        QLabel* statusLabel = new QLabel(statusWgt);
+    QHBoxLayout* statusLayout = new QHBoxLayout;
+    QWidget* statusWgt = new QWidget;
+    QLabel* statusLabel = new QLabel(statusWgt);
+
+    if (dialogStatus == "NO ANSWER")
         statusLabel->setText(tr("Пропущенный"));
-
-        statusLayout->addWidget(statusLabel);
-        statusLayout->setContentsMargins(3, 0, 0, 0);
-        statusWgt->setLayout(statusLayout);
-
-        layoutsStatus.append(statusLayout);
-        widgetsStatus.append(statusWgt);
-        labelsStatus.append(statusLabel);
-        return statusWgt;
-    }
-    if(dialogStatus == "BUSY")
-    {
-        QHBoxLayout* statusLayout = new QHBoxLayout;
-        QWidget* statusWgt = new QWidget;
-        QLabel* statusLabel = new QLabel(statusWgt);
+    else if (dialogStatus == "BUSY")
         statusLabel->setText(tr("Занято"));
-
-        statusLayout->addWidget(statusLabel);
-        statusLayout->setContentsMargins(3, 0, 0, 0);
-        statusWgt->setLayout(statusLayout);
-
-        layoutsStatus.append(statusLayout);
-        widgetsStatus.append(statusWgt);
-        labelsStatus.append(statusLabel);
-        return statusWgt;
-    }
-    if(dialogStatus == "CANCEL")
-    {
-        QHBoxLayout* statusLayout = new QHBoxLayout;
-        QWidget* statusWgt = new QWidget;
-        QLabel* statusLabel = new QLabel(statusWgt);
+    else if (dialogStatus == "CANCEL")
         statusLabel->setText(tr("Отколено"));
-
-        statusLayout->addWidget(statusLabel);
-        statusLayout->setContentsMargins(3, 0, 0, 0);
-        statusWgt->setLayout(statusLayout);
-
-        layoutsStatus.append(statusLayout);
-        widgetsStatus.append(statusWgt);
-        labelsStatus.append(statusLabel);
-        return statusWgt;
-    }
-    if(dialogStatus == "ANSWERED")
-    {
-        QHBoxLayout* statusLayout = new QHBoxLayout;
-        QWidget* statusWgt = new QWidget;
-        QLabel* statusLabel = new QLabel(statusWgt);
+    else if (dialogStatus == "ANSWERED")
         statusLabel->setText(tr("Принятый"));
 
-        statusLayout->addWidget(statusLabel);
-        statusLayout->setContentsMargins(3, 0, 0, 0);
-        statusWgt->setLayout(statusLayout);
+    statusLayout->addWidget(statusLabel);
+    statusLayout->setContentsMargins(3, 0, 0, 0);
+    statusWgt->setLayout(statusLayout);
 
-        layoutsStatus.append(statusLayout);
-        widgetsStatus.append(statusWgt);
-        labelsStatus.append(statusLabel);
-        return statusWgt;
-    }
+    layoutsStatus.append(statusLayout);
+    widgetsStatus.append(statusWgt);
+    labelsStatus.append(statusLabel);
+    return statusWgt;
 }
 
 void CallHistoryDialog::deleteStatusObjects()
@@ -597,8 +620,10 @@ void CallHistoryDialog::deleteStatusObjects()
 
 void CallHistoryDialog::loadMissedCalls()
 {
-    if(!widgetsMissed.isEmpty())
+    if (!widgetsMissed.isEmpty())
         deleteMissedObjects();
+    if (!widgetsMissedName.isEmpty())
+        deleteNameObjects();
 
     query1 = new QSqlQueryModel;
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -681,12 +706,16 @@ void CallHistoryDialog::loadMissedCalls()
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
+        extfield1 = query1->data(query1->index(row_index, 0)).toString();
+        if (extfield1.isEmpty())
+            ui->tableView->setIndexWidget(query1->index(row_index, 0), loadName());
+
         QSqlDatabase db;
         QSqlQuery query(db);
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
-        if(query.value(0).toInt() != 0)
+        if (query.value(0).toInt() != 0)
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadMissedNote());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -696,8 +725,10 @@ void CallHistoryDialog::loadMissedCalls()
 
 void CallHistoryDialog::loadReceivedCalls()
 {
-    if(!widgetsReceived.isEmpty())
+    if (!widgetsReceived.isEmpty())
         deleteReceivedObjects();
+    if (!widgetsReceivedName.isEmpty())
+        deleteNameObjects();
 
     query2 = new QSqlQueryModel;
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -769,18 +800,22 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_2->setModel(query2);
     ui->tableView_2->setColumnHidden(5, true);
-    if(my_group.isEmpty())
+    if (my_group.isEmpty())
         ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
+        extfield1 = query2->data(query2->index(row_index, 0)).toString();
+        if (extfield1.isEmpty())
+            ui->tableView_2->setIndexWidget(query2->index(row_index, 0), loadName());
+
         QSqlDatabase db;
         QSqlQuery query(db);
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
-        if(query.value(0).toInt() != 0)
+        if (query.value(0).toInt() != 0)
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadReceivedNote());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -790,8 +825,10 @@ void CallHistoryDialog::loadReceivedCalls()
 
 void CallHistoryDialog::loadPlacedCalls()
 {
-    if(!widgetsPlaced.isEmpty())
+    if (!widgetsPlaced.isEmpty())
         deletePlacedObjects();
+    if (!widgetsPlacedName.isEmpty())
+        deleteNameObjects();
 
     query3 = new QSqlQueryModel;
 
@@ -863,12 +900,16 @@ void CallHistoryDialog::loadPlacedCalls()
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
+        extfield1 = query3->data(query3->index(row_index, 0)).toString();
+        if (extfield1.isEmpty())
+           ui->tableView_3->setIndexWidget(query3->index(row_index, 0), loadName());
+
         QSqlDatabase db;
         QSqlQuery query(db);
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
-        if(query.value(0).toInt() != 0)
+        if (query.value(0).toInt() != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadPlacedNote());
     }
 
@@ -902,7 +943,7 @@ QWidget* CallHistoryDialog::loadAllNotes()
 
     QSqlDatabase db;
     QSqlQuery query(db);
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
     query.first();
     note->setText(query.value(0).toString());
@@ -932,7 +973,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
     query.first();
     missedNote->setText(query.value(0).toString());
@@ -962,7 +1003,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
     query.first();
     receivedNote->setText(query.value(0).toString());
@@ -993,7 +1034,7 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' order by datetime desc");
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
     query.first();
     placedNote->setText(query.value(0).toString());

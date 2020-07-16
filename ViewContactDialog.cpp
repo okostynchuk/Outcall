@@ -403,10 +403,11 @@ QWidget* ViewContactDialog::loadNote()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT note FROM calls WHERE uniqueid =" + uniqueid);
+    query.prepare("SELECT note FROM calls WHERE uniqueid =" + uniqueid + " ORDER BY datetime DESC");
     query.exec();
     query.first();
     note->setText(query.value(0).toString());
+    note->setWordWrap(true);
 
     widgets.append(wgt);
     notes.append(note);
