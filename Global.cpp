@@ -79,7 +79,10 @@ QString global::getExtensionNumber(const QString group)
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
     if (!group.isEmpty())
         settings.beginGroup(group);
-    return settings.childKeys().first();
+    if (!settings.childKeys().isEmpty())
+        return settings.childKeys().first();
+    else
+        return NULL;
 }
 
 QString global::getGroupExtensionNumber(const QString group)
@@ -87,5 +90,8 @@ QString global::getGroupExtensionNumber(const QString group)
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
     if (!group.isEmpty())
         settings.beginGroup(group);
-    return settings.childKeys().first();
+    if (!settings.childKeys().isEmpty())
+        return settings.childKeys().first();
+    else
+        return NULL;
 }

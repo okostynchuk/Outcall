@@ -20,6 +20,8 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QSharedMemory>
+#include <QSystemSemaphore>
+#include <QLockFile>
 
 int main(int argc, char *argv[])
 {
@@ -32,52 +34,31 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
+//    QMessageBox mbx;
+//    RunGuard* guard;
+//    guard = new RunGuard("some_random_key");
 
-//    if(!lockFile.tryLock(100))
+//    if ( !guard->tryToRun() )
 //    {
-//        QMessageBox msgBox;
-//        msgBox.setIcon(QMessageBox::Warning);
-//        msgBox.setText(QObject::tr("Приложение уже запущено!"));
-//        msgBox.exec();
-//        return 1;
+//      qDebug() << "I hate duplicates!";
+//      mbx.setText("No duplicates!");
+//      mbx.exec();
+//      return 0;
 //    }
+//    qDebug() << "normal launch";
 
-    //if(!app.lock())
-      //      return -42;
 
-//    RunGuard guard( "some_random_key" );
-//    if ( !guard.tryToRun() )
-//        return 0;
 
-//    int result = 0;
-//        do
-//        {
-//            QCoreApplication coreapp(argc, argv);
-//            result = coreapp.exec();
-//        } while( result == 1337 );
-//        return result;
+//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock")); /*!!!!!*/
 
-//    int result = 0;
-//    SettingsDialog *settingsDialog = new SettingsDialog;
-//    settingsDialog->on_applyButton_clicked(-12);
-//    result = app.exec();
-//    return result;
-
-    //const int result = app.exec();
-    //const int REBOOT_CODE = 1000;
-
-      //  if (result == REBOOT_CODE)
-       // {
-       //     const QString program = QApplication::applicationFilePath();
-       //     const QStringList arguments = QApplication::arguments();
-       //     const QString appDirectory = QDir::currentPath();
-       //     QProcess::startDetached(program, arguments, appDirectory);
-
-         //   return 0;
-       // }
-
-        //return result;
+//        if(!lockFile.tryLock(100)){
+//            QMessageBox msgBox;
+//            msgBox.setIcon(QMessageBox::Warning);
+//            msgBox.setText("Приложение уже запущено.\n"
+//                           "Разрешено запускать только один экземпляр приложения.");
+//            msgBox.exec();
+//            return 1;
+//        }
 
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
