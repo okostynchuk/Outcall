@@ -675,6 +675,7 @@ QWidget* ViewOrgContactDialog::loadNote()
     query2.exec();
     query2.first();
     note->setText(query2.value(0).toString());
+    note->setWordWrap(true);
 
     widgets.append(wgt);
     notes.append(note);
