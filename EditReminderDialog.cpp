@@ -131,3 +131,23 @@ bool EditReminderDialog::eventFilter(QObject *object, QEvent *event)
     }
     return false;
 }
+
+void EditReminderDialog::on_add5MinButton_clicked()
+{
+    ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(300));
+}
+
+void EditReminderDialog::on_add10MinButton_clicked()
+{
+     ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(600));
+}
+
+void EditReminderDialog::on_add30MinButton_clicked()
+{
+     ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(1800));
+}
+
+void EditReminderDialog::on_add60MinButton_clicked()
+{
+     ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(3600));
+}
