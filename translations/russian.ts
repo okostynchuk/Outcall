@@ -593,6 +593,61 @@
     </message>
 </context>
 <context>
+    <name>AddReminderDialog</name>
+    <message>
+        <source>Добавление напоминания</source>
+        <translation>Добавление напоминания</translation>
+    </message>
+    <message>
+        <source>Содержание</source>
+        <translation>Содержание</translation>
+    </message>
+    <message>
+        <source>+5 минут</source>
+        <translation>+5 минут</translation>
+    </message>
+    <message>
+        <source>+5</source>
+        <translation>+5</translation>
+    </message>
+    <message>
+        <source>+10 минут</source>
+        <translation>+10 минут</translation>
+    </message>
+    <message>
+        <source>+10</source>
+        <translation>+10</translation>
+    </message>
+    <message>
+        <source>+30 минут</source>
+        <translation>+30 минут</translation>
+    </message>
+    <message>
+        <source>+30</source>
+        <translation>+30</translation>
+    </message>
+    <message>
+        <source>+60 минут</source>
+        <translation>+60 минут</translation>
+    </message>
+    <message>
+        <source>+60</source>
+        <translation>+60</translation>
+    </message>
+    <message>
+        <source>HH:mm</source>
+        <translation>HH:mm</translation>
+    </message>
+    <message>
+        <source>Кому:</source>
+        <translation>Кому:</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Сохранить</translation>
+    </message>
+</context>
+<context>
     <name>CallHistoryDialog</name>
     <message>
         <source>История звонков</source>
@@ -604,7 +659,7 @@
     </message>
     <message>
         <source> дней</source>
-        <translation>дней</translation>
+        <translation> дней</translation>
     </message>
     <message>
         <source>Показать звонки за последние:</source>
@@ -692,11 +747,39 @@
     </message>
     <message>
         <source>Отклонено</source>
-        <translation>Отклонено</translation>
+        <translation type="vanished">Отклонено</translation>
     </message>
     <message>
         <source>Принятый</source>
         <translation>Принятый</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>из </translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Отколено</translation>
     </message>
 </context>
 <context>
@@ -881,7 +964,7 @@
     </message>
     <message>
         <source> Имя хоста: </source>
-        <translation>Название хоста:</translation>
+        <translation> Название хоста: </translation>
     </message>
     <message>
         <source> Имя базы данных:</source>
@@ -898,7 +981,7 @@
     </message>
     <message>
         <source> Порт:</source>
-        <translation>Порт:</translation>
+        <translation> Порт:</translation>
     </message>
     <message>
         <source>Имя базы данных:</source>
@@ -1017,11 +1100,11 @@
     </message>
     <message>
         <source>Отвязать</source>
-        <translation type="vanished">Отвязать</translation>
+        <translation>Отвязать</translation>
     </message>
     <message>
         <source>Привязать</source>
-        <translation type="vanished">Привязать</translation>
+        <translation>Привязать</translation>
     </message>
     <message>
         <source>2</source>
@@ -1107,7 +1190,7 @@
     </message>
     <message>
         <source>Организацию</source>
-        <translation>Организацию</translation>
+        <translation type="vanished">Организацию</translation>
     </message>
     <message>
         <source>Привязать организацию</source>
@@ -1296,6 +1379,26 @@
     <message>
         <source>Напоминание успешно добавлено!</source>
         <translation type="vanished">Напоминание успешно добавлено!</translation>
+    </message>
+    <message>
+        <source>+5</source>
+        <translation>+5</translation>
+    </message>
+    <message>
+        <source>+10</source>
+        <translation>+10</translation>
+    </message>
+    <message>
+        <source>+30</source>
+        <translation>+30</translation>
+    </message>
+    <message>
+        <source>+60</source>
+        <translation>+60</translation>
+    </message>
+    <message>
+        <source>Кому:</source>
+        <translation>Кому:</translation>
     </message>
 </context>
 <context>
@@ -1504,15 +1607,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Поиск по ФИО / названию</source>
-        <translation type="vanished">Поиск по ФИО / названию</translation>
+        <translation>Поиск по ФИО / названию</translation>
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation type="vanished">Поиск по номеру телефона</translation>
+        <translation>Поиск по номеру телефона</translation>
     </message>
     <message>
         <source>Поиск сотрудников по организации</source>
-        <translation type="vanished">Поиск сотрудников по организации</translation>
+        <translation>Поиск сотрудников по организации</translation>
     </message>
     <message>
         <source>Сотрудники организации &quot;</source>
@@ -1547,7 +1650,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">Входящий звонок от:&lt;br&gt;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
@@ -1562,7 +1665,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;01.02.2020 08:30&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>ОК</source>
@@ -1598,7 +1701,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
+        <translation type="vanished">%1&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source> Позвонить </source>
@@ -1611,6 +1714,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заказы</source>
         <translation>Заказы</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;01.02.2020 08:30&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;01.02.2020 08:30&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
+        <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1964,19 +2083,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>HH:mm</source>
-        <translation>HH:mm</translation>
+        <translation type="vanished">HH:mm</translation>
     </message>
     <message>
         <source>Сохранить</source>
-        <translation>Сохранить</translation>
+        <translation type="vanished">Сохранить</translation>
     </message>
     <message>
         <source>Содержание</source>
-        <translation>Содержание</translation>
+        <translation type="vanished">Содержание</translation>
     </message>
     <message>
         <source>Список напоминаний</source>
-        <translation>Список напоминаний</translation>
+        <translation type="vanished">Список напоминаний</translation>
     </message>
     <message>
         <source>Актуальные</source>
@@ -2008,7 +2127,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Кому:</source>
-        <translation>Кому:</translation>
+        <translation type="vanished">Кому:</translation>
+    </message>
+    <message>
+        <source>Добавить напоминание</source>
+        <translation>Добавить напоминание</translation>
     </message>
 </context>
 <context>
@@ -2097,7 +2220,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Имя хоста: </source>
-        <translation>Имя хоста:</translation>
+        <translation>Имя хоста: </translation>
     </message>
     <message>
         <source>Имя базы данных:</source>
@@ -2300,7 +2423,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source> дней</source>
-        <translation>дней</translation>
+        <translation> дней</translation>
     </message>
     <message>
         <source>Показать звонки за последние:</source>
@@ -2447,7 +2570,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source> дней</source>
-        <translation>дней</translation>
+        <translation> дней</translation>
     </message>
     <message>
         <source>Показать звонки за последние:</source>

@@ -73,6 +73,9 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>+5 минут</string>
+           </property>
            <property name="text">
             <string>+5</string>
            </property>
@@ -88,6 +91,9 @@
              <width>41</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>+10 минут</string>
            </property>
            <property name="text">
             <string>+10</string>
@@ -105,6 +111,9 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>+30 минут</string>
+           </property>
            <property name="text">
             <string>+30</string>
            </property>
@@ -120,6 +129,9 @@
              <width>41</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>+60 минут</string>
            </property>
            <property name="text">
             <string>+60</string>
