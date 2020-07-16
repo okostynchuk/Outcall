@@ -28,13 +28,6 @@ class CallHistoryDialog : public QDialog
 public:
     explicit CallHistoryDialog(QWidget *parent = 0);
     ~CallHistoryDialog();
-    enum Calls
-    {
-        MISSED = 0,
-        RECIEVED = 1,
-        PLACED = 2
-    };
-    void addCall(const QMap<QString, QVariant> &, Calls);
 
 public slots:
     void receiveDataToAllCalls();

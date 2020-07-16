@@ -6,6 +6,7 @@
 #include "EditContactDialog.h"
 #include "ChooseNumber.h"
 #include "NotesDialog.h"
+#include "AddReminderDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -25,13 +26,6 @@ public:
     explicit ViewContactDialog(QWidget *parent = 0);
     void setValuesContacts(QString &);
     void setValuesCallHistory(QString &);
-    enum Calls
-    {
-        MISSED = 0,
-        RECIEVED = 1,
-        PLACED = 2
-    };
-    void addCall(const QMap<QString, QVariant> &call, Calls calls);
     ~ViewContactDialog();
 
 signals:
@@ -43,6 +37,7 @@ public slots:
     void receiveNumber(QString &);
 
 protected slots:
+    void onAddReminder();
     void onOpenAccess();
     void onCall();
     void onEdit();
@@ -57,6 +52,7 @@ protected slots:
 
 private:
     Ui::ViewContactDialog *ui;
+    AddReminderDialog *addReminderDialog;
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
     NotesDialog *notesDialog;

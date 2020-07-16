@@ -8,6 +8,7 @@
 #include "Global.h"
 #include "AddPersonToOrg.h"
 #include "NotesDialog.h"
+#include "AddReminderDialog.h"
 
 #include <QHeaderView>
 #include <QSqlQueryModel>
@@ -28,13 +29,6 @@ public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
     void setOrgValuesContacts(QString &);
     void setOrgValuesCallHistory(QString &);
-    enum Calls
-    {
-        MISSED = 0,
-        RECIEVED = 1,
-        PLACED = 2
-    };
-    void addCall(const QMap<QString, QVariant> &call, Calls calls);
     ~ViewOrgContactDialog();
 
 signals:
@@ -47,6 +41,7 @@ public slots:
     void receivePersonID(QString &);
 
 protected slots:
+    void onAddReminder();
     void onOpenAccess();
     void onUpdate();
     void onCall();
@@ -67,11 +62,11 @@ protected slots:
 
 private slots:
     void on_pushButton_clicked();
-
     void on_addPersonToOrg_clicked();
 
 private:
     Ui::ViewOrgContactDialog *ui;
+    AddReminderDialog* addReminderDialog;
     NotesDialog *notesDialog;
     QSqlQuery *query;
     QValidator *validator;

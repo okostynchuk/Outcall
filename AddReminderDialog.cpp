@@ -103,7 +103,7 @@ void AddReminderDialog::onSave()
     destroy(true);
 }
 
-void AddReminderDialog::setValuesPopupWindow(QString receivedCallId)
+void AddReminderDialog::setCallId(QString receivedCallId)
 {
     callId = receivedCallId;
 }
