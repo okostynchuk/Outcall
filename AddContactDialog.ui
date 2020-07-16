@@ -154,11 +154,27 @@
        </item>
        <item>
         <widget class="QPushButton" name="deleteOrgButton">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="text">
           <string>Отвязать</string>
+         </property>
+         <property name="icon">
+          <iconset resource="images.qrc">
+           <normaloff>:/images/unbind_R.png</normaloff>:/images/unbind_R.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>23</height>
+          </size>
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -167,11 +183,27 @@
        </item>
        <item>
         <widget class="QPushButton" name="addOrgButton">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="text">
           <string>Привязать</string>
+         </property>
+         <property name="icon">
+          <iconset resource="images.qrc">
+           <normaloff>:/images/bind_R.png</normaloff>:/images/bind_R.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>23</height>
+          </size>
          </property>
          <property name="autoDefault">
           <bool>false</bool>
