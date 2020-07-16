@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
+    <width>428</width>
     <height>176</height>
    </rect>
   </property>
@@ -218,10 +218,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>dateTimeEdit</tabstop>
   <tabstop>add5MinButton</tabstop>
+  <tabstop>add10MinButton</tabstop>
   <tabstop>add30MinButton</tabstop>
   <tabstop>add60MinButton</tabstop>
-  <tabstop>dateTimeEdit</tabstop>
   <tabstop>textEdit</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>saveButton</tabstop>
