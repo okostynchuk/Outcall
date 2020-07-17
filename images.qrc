@@ -20,5 +20,6 @@
         <file>images/bind_R.png</file>
         <file>images/unbind_R.png</file>
         <file>images/notification_R.png</file>
+        <file>images/new_reminder.png</file>
     </qresource>
 </RCC>
