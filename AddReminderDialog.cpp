@@ -72,24 +72,53 @@ void AddReminderDialog::onSave()
 
     if (callId.isEmpty())
     {
-        query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
-        query.addBindValue(my_number);
-        query.addBindValue(reg.cap(1));
-        query.addBindValue(dateTime);
-        query.addBindValue(note);
-        query.addBindValue(true);
-        query.exec();
+        if (reg.cap(1) != my_number)
+        {
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, seen, active) VALUES(?, ?, ?, ?, ?, ?)");
+            query.addBindValue(my_number);
+            query.addBindValue(reg.cap(1));
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(false);
+            query.addBindValue(true);
+            query.exec();
+        }
+        else
+        {
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
+            query.addBindValue(my_number);
+            query.addBindValue(reg.cap(1));
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(true);
+            query.exec();
+        }
     }
     else
     {
-        query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active, call_id) VALUES(?, ?, ?, ?, ?, ?)");
-        query.addBindValue(my_number);
-        query.addBindValue(reg.cap(1));
-        query.addBindValue(dateTime);
-        query.addBindValue(note);
-        query.addBindValue(true);
-        query.addBindValue(callId);
-        query.exec();
+        if (reg.cap(1) != my_number)
+        {
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, seen, active) VALUES(?, ?, ?, ?, ?, ?, ?)");
+            query.addBindValue(my_number);
+            query.addBindValue(reg.cap(1));
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(callId);
+            query.addBindValue(false);
+            query.addBindValue(true);
+            query.exec();
+        }
+        else
+        {
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, active) VALUES(?, ?, ?, ?, ?, ?)");
+            query.addBindValue(my_number);
+            query.addBindValue(reg.cap(1));
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(callId);
+            query.addBindValue(true);
+            query.exec();
+        }
     }
 
     emit sendData(true);

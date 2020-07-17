@@ -67,6 +67,8 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 void PlaceCallDialog::receiveNumber(QString &number)
 {
     ui->phoneLine->setText(number);
+
+    onCallButton();
 }
 
 void PlaceCallDialog::modelNull()

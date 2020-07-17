@@ -98,6 +98,9 @@
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
            <widget class="QTableView" name="tableView_4">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="tabKeyNavigation">
              <bool>false</bool>
             </property>
@@ -118,6 +121,9 @@
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
            <widget class="QTableView" name="tableView">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>
             </property>
@@ -135,6 +141,9 @@
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <widget class="QTableView" name="tableView_2">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>
             </property>
@@ -152,6 +161,9 @@
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
            <widget class="QTableView" name="tableView_3">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>
             </property>
@@ -517,14 +529,17 @@
  </widget>
  <tabstops>
   <tabstop>comboBox_2</tabstop>
-  <tabstop>tableView_4</tabstop>
-  <tabstop>tableView</tabstop>
-  <tabstop>tableView_2</tabstop>
-  <tabstop>tableView_3</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>previousStartButton</tabstop>
+  <tabstop>previousButton</tabstop>
+  <tabstop>lineEdit_page</tabstop>
+  <tabstop>nextButton</tabstop>
+  <tabstop>nextEndButton</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>addContactButton</tabstop>
   <tabstop>addOrgContactButton</tabstop>
+  <tabstop>updateButton</tabstop>
+  <tabstop>comboBox_list</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

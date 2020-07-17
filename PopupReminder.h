@@ -21,7 +21,6 @@ class PopupReminder : public QDialog
     Q_OBJECT
 
 private:
-
     struct PopupReminderInfo
     {
         QString text;

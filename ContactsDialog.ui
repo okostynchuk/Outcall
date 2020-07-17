@@ -17,7 +17,7 @@
    <string>Контакты</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="images.qrc">
+   <iconset>
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <property name="styleSheet">
@@ -138,7 +138,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -388,7 +388,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -428,7 +428,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -468,7 +468,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -512,6 +512,9 @@
         <property name="sortingEnabled">
          <bool>false</bool>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>false</bool>
         </attribute>
@@ -531,8 +534,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -50,13 +50,26 @@ void EditReminderDialog::onSave()
     QRegExp reg("([0-9]+)(.+)");
     reg.indexIn(ui->comboBox->currentText());
 
-    query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ?");
-    query.addBindValue(my_number);
-    query.addBindValue(reg.cap(1));
-    query.addBindValue(dateTime);
-    query.addBindValue(note);
-    query.addBindValue(id);;
-    query.exec();
+    if (reg.cap(1) != my_number)
+    {
+        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, seen = false, active = true WHERE id = ?");
+        query.addBindValue(my_number);
+        query.addBindValue(reg.cap(1));
+        query.addBindValue(dateTime);
+        query.addBindValue(note);
+        query.addBindValue(id);;
+        query.exec();
+    }
+    else
+    {
+        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ?");
+        query.addBindValue(my_number);
+        query.addBindValue(reg.cap(1));
+        query.addBindValue(dateTime);
+        query.addBindValue(note);
+        query.addBindValue(id);;
+        query.exec();
+    }
 
     emit sendData(true);
     close();

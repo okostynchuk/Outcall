@@ -19,6 +19,9 @@ class RemindersDialog : public QDialog
 {
     Q_OBJECT
 
+signals:
+    void reminder(bool);
+
 public:
     explicit RemindersDialog(QWidget *parent = 0);
     ~RemindersDialog();
@@ -46,6 +49,7 @@ private:
     QTimer timer;
     QString languages;
     QString my_number;
+    int oldReceivedReminders;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;

@@ -27,6 +27,7 @@ SOURCES += main.cpp\
     Global.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
+    PopupNotification.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
     Notifier.cpp \
@@ -58,6 +59,7 @@ HEADERS  += \
     OutCALL.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
+    PopupNotification.h \
     SettingsDialog.h \
     PopupWindow.h \
     Notifier.h \
@@ -86,6 +88,7 @@ FORMS    += \
     CallHistoryDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
+    PopupNotification.ui \
     SettingsDialog.ui \
     PopupWindow.ui \
     ContactsDialog.ui \

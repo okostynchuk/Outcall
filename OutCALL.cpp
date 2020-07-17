@@ -42,6 +42,8 @@ OutCall::OutCall() :
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
     connect(&m_timer,           &QTimer::timeout,                       this, &OutCall::changeIcon);
 
+    connect(m_remindersDialog, SIGNAL(reminder(bool)), this, SLOT(changeIconReminders(bool)));
+
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
     createContextMenu();
@@ -270,6 +272,20 @@ void OutCall::enableActions()
     callHistoryAction->setEnabled(true);
     contactsAction->setEnabled(true);
     remindersAction->setEnabled(true);
+}
+
+void OutCall::changeIconReminders(bool changing)
+{
+    if (changing)
+    {
+        QString path(":/images/new_reminder.png");
+        m_systemTrayIcon->setIcon(QIcon(path));
+    }
+    else
+    {
+        QString path(":/images/connected.png");
+        m_systemTrayIcon->setIcon(QIcon(path));
+    }
 }
 
 void OutCall::changeIcon()

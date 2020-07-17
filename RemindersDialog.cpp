@@ -1,6 +1,8 @@
 #include "RemindersDialog.h"
 #include "ui_RemindersDialog.h"
+
 #include "PopupReminder.h"
+#include "PopupNotification.h"
 #include "Global.h"
 
 #include <QDebug>
@@ -41,15 +43,24 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     loadActualReminders();
 
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC");
+    query.addBindValue(my_number);
+    query.addBindValue(my_number);
+    query.exec();
+
+    if (query.next())
+        oldReceivedReminders = query.value(0).toInt();
+
     QList<QString> ids;
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
     query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS TRUE");
     query.exec();
+
     while (query.next())
     {
         ids.append(query.value(0).value<QString>());
@@ -81,11 +92,42 @@ void RemindersDialog::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
 
+    emit reminder(false);
+
     onUpdate();
 }
 
 void RemindersDialog::onTimer()
 {
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC");
+    query.addBindValue(my_number);
+    query.addBindValue(my_number);
+    query.exec();
+
+    int newReceivedReminders = 0;
+
+    if (query.next())
+        newReceivedReminders = query.value(0).toInt();
+
+    if (newReceivedReminders > oldReceivedReminders)
+    {
+        emit reminder(true);
+
+        query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC LIMIT 0,?");
+        query.addBindValue(my_number);
+        query.addBindValue(my_number);
+        query.addBindValue(newReceivedReminders - oldReceivedReminders);
+        query.exec();
+
+        while (query.next())
+            PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
+
+        oldReceivedReminders = newReceivedReminders;
+    }
+
     onUpdate();
     sendNewValues();
 }
@@ -174,27 +216,28 @@ void RemindersDialog::loadActualReminders()
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime ASC");
+    query1->setQuery("SELECT id, phone_from, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime ASC");
     query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime ASC");
 
-    query1->insertColumn(2);
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
-    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Содержание"));
+    query1->insertColumn(1);
+    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("От"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Дата и время"));
+    query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Содержание"));
 
     ui->tableView->setModel(query1);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
-        ui->tableView->setIndexWidget(query1->index(row_index, 2), addCheckBox(row_index));
+        ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBox(row_index));
 
     ui->tableView->setColumnHidden(0, true);
-    ui->tableView->setColumnHidden(1, true);
+    ui->tableView->setColumnHidden(3, true);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());   
     ui->tableView->setWordWrap(true);
     ui->tableView->resizeRowsToContents();
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     queriesActual.append(query1);
@@ -216,27 +259,28 @@ void RemindersDialog::loadPastReminders()
     query1 = new QSqlQueryModel;
     query2 = new QSqlQueryModel;
 
-    query1->setQuery("SELECT id, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC LIMIT 0,100");
+    query1->setQuery("SELECT id, phone_from, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC LIMIT 0,100");
     query2->setQuery("SELECT active FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' ORDER BY datetime DESC LIMIT 0,100");
 
-    query1->insertColumn(2);
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Активное"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
-    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Содержание"));
+    query1->insertColumn(1);
+    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активное"));
+    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("От"));
+    query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Дата и время"));
+    query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Содержание"));
 
     ui->tableView_2->setModel(query1);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
-        ui->tableView_2->setIndexWidget(query1->index(row_index, 2), addCheckBox(row_index));
+        ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addCheckBox(row_index));
 
     ui->tableView_2->setColumnHidden(0, true);
-    ui->tableView_2->setColumnHidden(1, true);
+    ui->tableView_2->setColumnHidden(3, true);
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->setWordWrap(true);
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView_2->resizeColumnsToContents();
-    ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     queriesPast.append(query1);
@@ -254,8 +298,8 @@ void RemindersDialog::onAddReminder()
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
-    QDateTime dateTime = query1->data(query1->index(index.row(), 3)).toDateTime();
-    QString note = query1->data(query1->index(index.row(), 4)).toString();
+    QDateTime dateTime = query1->data(query1->index(index.row(), 4)).toDateTime();
+    QString note = query1->data(query1->index(index.row(), 5)).toString();
 
     editReminderDialog = new EditReminderDialog;
     editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
@@ -338,7 +382,7 @@ QWidget* RemindersDialog::addCheckBox(int row_index)
     }
 
     QString id = query1->data(query1->index(row_index, 0)).toString();
-    QDateTime dateTime = query1->data(query1->index(row_index, 3)).toDateTime();
+    QDateTime dateTime = query1->data(query1->index(row_index, 4)).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
