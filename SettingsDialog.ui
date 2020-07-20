@@ -349,7 +349,7 @@
          </widget>
          <widget class="QWidget" name="tab_4">
           <attribute name="title">
-           <string>Настройки базы MSSQL</string>
+           <string>Настройки базы клиентов</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="0" column="0">
