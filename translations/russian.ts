@@ -1400,6 +1400,22 @@
         <source>Кому:</source>
         <translation>Кому:</translation>
     </message>
+    <message>
+        <source>+5 минут</source>
+        <translation>+5 минут</translation>
+    </message>
+    <message>
+        <source>+10 минут</source>
+        <translation>+10 минут</translation>
+    </message>
+    <message>
+        <source>+30 минут</source>
+        <translation>+30 минут</translation>
+    </message>
+    <message>
+        <source>+60 минут</source>
+        <translation>+60 минут</translation>
+    </message>
 </context>
 <context>
     <name>NotesDialog</name>
@@ -1655,6 +1671,29 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</translation>
+    </message>
+</context>
+<context>
+    <name>PopupNotification</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Х</source>
+        <translation>Х</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Новое напоминание от Дениса Комадарика&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Новое напоминание от Дениса Комадарика&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Новое напоминание от </source>
+        <translation>Новое напоминание от </translation>
     </message>
 </context>
 <context>
@@ -1972,7 +2011,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Приложение уже запущено!</source>
-        <translation type="vanished">Приложение уже запущено!</translation>
+        <translation>Приложение уже запущено!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
@@ -2073,6 +2112,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
         <translation>Отсутствует подлючение к базе Access!</translation>
+    </message>
+    <message>
+        <source>От</source>
+        <translation>От</translation>
     </message>
 </context>
 <context>

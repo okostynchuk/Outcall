@@ -1412,6 +1412,22 @@
         <source>Кому:</source>
         <translation>To:</translation>
     </message>
+    <message>
+        <source>+5 минут</source>
+        <translation>+5 minutes</translation>
+    </message>
+    <message>
+        <source>+10 минут</source>
+        <translation>+10 minutes</translation>
+    </message>
+    <message>
+        <source>+30 минут</source>
+        <translation>+30 minutes</translation>
+    </message>
+    <message>
+        <source>+60 минут</source>
+        <translation>+60 minutes</translation>
+    </message>
 </context>
 <context>
     <name>NotesDialog</name>
@@ -1667,6 +1683,29 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>PopupNotification</name>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Х</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Новое напоминание от Дениса Комадарика&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Новое напоминание от Дениса Комадарика&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Новое напоминание от </source>
+        <translation>New reminder from </translation>
     </message>
 </context>
 <context>
@@ -1987,7 +2026,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Приложение уже запущено!</source>
-        <translation type="vanished">The app is already running!</translation>
+        <translation>The app is already running!</translation>
     </message>
     <message>
         <source>Введены существующие номера!</source>
@@ -2088,6 +2127,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
         <translation>There is no access to the Access database!</translation>
+    </message>
+    <message>
+        <source>От</source>
+        <translation>From</translation>
     </message>
 </context>
 <context>
