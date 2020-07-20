@@ -245,9 +245,21 @@ void SettingsDialog::applySettings()
 
 void SettingsDialog::loadLanguages()
 {
-    ui->languageList_2->addItem(tr("Русский (по умолчанию)"), "");
-    ui->languageList_2->addItem(tr("Українська"), "");
-    ui->languageList_2->addItem(tr("English"), "");
+    QString ruPath(":/images/ru.png");
+    QIcon ruIcon = (QIcon(ruPath));
+    QString ruLabel = (tr("Русский (по умолчанию)"));
+
+    QString uaPath(":/images/ua.png");
+    QIcon uaIcon = (QIcon(uaPath));
+    QString uaLabel = (tr("Українська"));
+
+    QString ukPath(":/images/uk.png");
+    QIcon ukIcon = (QIcon(ukPath));
+    QString ukLabel = (tr("English"));
+
+    ui->languageList_2->addItem(ruIcon, ruLabel);
+    ui->languageList_2->addItem(uaIcon, uaLabel);
+    ui->languageList_2->addItem(ukIcon, ukLabel);
 
     QString lang = global::getSettingsValue("language", "settings").toString();
     if(lang == "")

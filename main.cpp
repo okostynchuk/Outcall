@@ -5,7 +5,6 @@
 #include "DatabasesConnectDialog.h"
 
 #include <QApplication>
-#include <QLockFile>
 #include <QProcess>
 #include <QLocalSocket>
 #include <QDir>

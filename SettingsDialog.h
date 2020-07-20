@@ -53,7 +53,6 @@ private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
     AddExtensionDialog *m_addExtensionDialog;
-    //RunGuard *guard;
     QFile f;
     QString userName;
     QString path;
