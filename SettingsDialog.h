@@ -1,8 +1,6 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <AddExtensionDialog.h>
-
 #include <QDialog>
 #include <QFile>
 
@@ -18,6 +16,9 @@ class SettingsDialog;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
+
+signals:
+    void restart(bool);
 
 public:
     explicit SettingsDialog(QWidget *parent = 0);

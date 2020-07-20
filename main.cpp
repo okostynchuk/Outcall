@@ -18,7 +18,6 @@
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
-#include <QLockFile>
 
 int main(int argc, char *argv[])
 {
@@ -30,16 +29,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setLibraryPaths(paths);
 
     QApplication app(argc, argv);
-
-//    QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
-
-//        if(!lockFile.tryLock(100)){
-//            QMessageBox msgBox;
-//            msgBox.setIcon(QMessageBox::Warning);
-//            msgBox.setText("Приложение уже запущено!");
-//            msgBox.exec();
-//            return 1;
-//        }
 
     g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
     g_AppDirPath = QApplication::applicationDirPath();
@@ -53,6 +42,24 @@ int main(int argc, char *argv[])
     else if (languages == "English")
        qtTranslator.load(":/translations/english.qm");
     app.installTranslator(&qtTranslator);
+
+    QProcess tasklist;
+    tasklist.start(
+          "tasklist",
+          QStringList() << "/FO" << "CSV"
+                  << "/FI" << QString("IMAGENAME eq OutCALL.exe"));
+    tasklist.waitForFinished();
+    QString output = tasklist.readAllStandardOutput();
+
+    if (output.count("OutCALL.exe") != 1)
+        if (QCoreApplication::arguments().last() != "restart")
+        {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.setText(QObject::tr("Приложение уже запущено!"));
+            msgBox.exec();
+            return 1;
+        }
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -69,8 +76,8 @@ int main(int argc, char *argv[])
                                 "Database="+databaseName_3+";"
                                 "Uid="+userName_3+";"
                                 "Pwd="+password_3);
-        bool ok = dbMSSQL.open();
-        if (ok)
+        dbMSSQL.open();
+        if (dbMSSQL.isOpen())
             MSSQLopened = true;
         else
              QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе Access!"), QMessageBox::Ok);
@@ -145,10 +152,7 @@ int main(int argc, char *argv[])
     bool bCallRequest = false;
 
     if (argc==2 && QString(argv[1]) == "installer")
-    {
-        // Setup log file paths
         QDir().mkpath(g_AppSettingsFolderPath);
-    }
 
     if (argc == 2)
         bCallRequest = QString(argv[1]).contains("Dial#####");

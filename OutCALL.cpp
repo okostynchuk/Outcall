@@ -43,6 +43,7 @@ OutCall::OutCall() :
     connect(&m_timer,           &QTimer::timeout,                       this, &OutCall::changeIcon);
 
     connect(m_remindersDialog, SIGNAL(reminder(bool)), this, SLOT(changeIconReminders(bool)));
+    connect(m_settingsDialog, SIGNAL(restart(bool)), this, SLOT(hideTrayIcon(bool)));
 
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
@@ -208,8 +209,10 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         if (!opened)
         {
+            m_systemTrayIcon->hide();
+
             qApp->quit();
-            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+            QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
         }
         else
             enableActions();
@@ -274,6 +277,12 @@ void OutCall::enableActions()
     remindersAction->setEnabled(true);
 }
 
+void OutCall::hideTrayIcon(bool hide)
+{
+    if (hide)
+        m_systemTrayIcon->hide();
+}
+
 void OutCall::changeIconReminders(bool changing)
 {
     if (changing)
@@ -312,8 +321,10 @@ void OutCall::onCallHistory()
 
 void OutCall::onSettingsDialog()
 {
-    SettingsDialog dialog;
-    dialog.exec();
+//    SettingsDialog dialog;
+//    dialog.exec();
+    m_settingsDialog->showNormal();
+    m_settingsDialog->raise();
 }
 
 void OutCall::onDebugInfo()

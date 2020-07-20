@@ -33,6 +33,7 @@ protected:
     void createContextMenu();
 
 protected slots:
+    void hideTrayIcon(bool);
     void changeIconReminders(bool);
     void signInOut();
     void onSettingsDialog();

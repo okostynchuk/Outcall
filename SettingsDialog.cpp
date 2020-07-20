@@ -1,9 +1,11 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
+
 #include "AddExtensionDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
 #include "Notifier.h"
+#include "OutCALL.h"
 
 #include <QAbstractButton>
 #include <QAbstractSocket>
@@ -14,7 +16,6 @@
 #include <QProcess>
 #include <QDebug>
 #include <QSystemTrayIcon>
-#include <QLockFile>
 #include <QApplication>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -207,28 +208,16 @@ void SettingsDialog::on_applyButton_clicked()
     msgBox.setButtonText(QMessageBox::No, tr("Нет"));
     int reply = msgBox.exec();
 
-    //QFile file(QDir::temp().absoluteFilePath("lurity.lock"));
-    //QLockFile lockFile(QDir::temp().absoluteFilePath("lurity.lock"));
-
     switch (reply)
     {
         case QMessageBox::Yes:
             saveSettings();
             applySettings();
+
+            emit restart(true);
+
             qApp->quit();
-//            qApp->setQuitOnLastWindowClosed(true);
-//            qApp->closeAllWindows();
-//            qApp->quitOnLastWindowClosed();
-//            qApp->lastWindowClosed();
-            //qDebug()<<qApp->sessionId();
-            //file.close();
-            //file.remove();
-            //qDebug()<<"Removing is successful: "<<file.remove();
-
-            //lockFile.unlock();
-
-            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-
+            QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
             break;
         case QMessageBox::No:
             msgBox.close();
