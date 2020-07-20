@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
         if (dbMSSQL.isOpen())
             MSSQLopened = true;
         else
-             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе Access!"), QMessageBox::Ok);
+             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");

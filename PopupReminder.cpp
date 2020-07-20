@@ -463,7 +463,7 @@ void PopupReminder::onOpenAccess()
     else
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе Access!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе клиентов!"), QMessageBox::Ok);
     }
 }
 
