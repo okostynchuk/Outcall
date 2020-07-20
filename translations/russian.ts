@@ -2470,7 +2470,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Журнал вызовов</source>
-        <translation>Журнал вызовов</translation>
+        <translation type="vanished">Журнал вызовов</translation>
     </message>
     <message>
         <source> дней</source>
@@ -2523,6 +2523,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Редактировать контакт</source>
         <translation>Редактировать контакт</translation>
+    </message>
+    <message>
+        <source>Журнал звонков</source>
+        <translation>Журнал звонков</translation>
     </message>
 </context>
 <context>

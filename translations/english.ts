@@ -2479,7 +2479,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Журнал вызовов</source>
-        <translation>Call log</translation>
+        <translation type="vanished">Call log</translation>
     </message>
     <message>
         <source>Пропущенные</source>
@@ -2544,6 +2544,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Редактировать контакт</source>
         <translation>Edit the contact</translation>
+    </message>
+    <message>
+        <source>Журнал звонков</source>
+        <translation>Call log</translation>
     </message>
 </context>
 <context>
