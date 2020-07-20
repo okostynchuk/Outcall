@@ -87,7 +87,7 @@ void ViewOrgContactDialog::onOpenAccess() {
     }
     else
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подлючение к базе клиентов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
     }
 }
 

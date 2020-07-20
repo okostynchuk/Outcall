@@ -1987,7 +1987,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Отсутствует подключение к базе Access!</source>
-        <translation>Отсутствует подключение к базе Access!</translation>
+        <translation type="vanished">Отсутствует подключение к базе Access!</translation>
     </message>
     <message>
         <source>Отсутствует подключение к базам данных!</source>
@@ -2111,11 +2111,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
-        <translation>Отсутствует подлючение к базе Access!</translation>
+        <translation type="vanished">Отсутствует подлючение к базе Access!</translation>
     </message>
     <message>
         <source>От</source>
         <translation>От</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе клиентов!</source>
+        <translation>Отсутствует подключение к базе клиентов!</translation>
     </message>
 </context>
 <context>
@@ -2359,7 +2363,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Настройки базы MSSQL</source>
-        <translation>Настройки базы MSSQL</translation>
+        <translation type="vanished">Настройки базы MSSQL</translation>
     </message>
     <message>
         <source>Логин пользователя:</source>
@@ -2384,6 +2388,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Протокол</source>
         <translation>Протокол</translation>
+    </message>
+    <message>
+        <source>Настройки базы клиентов</source>
+        <translation>Настройки базы клиентов</translation>
     </message>
 </context>
 <context>
