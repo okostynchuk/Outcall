@@ -617,7 +617,7 @@ background-color: #fffff0;
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Журнал вызовов</string>
+       <string>Журнал звонков</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_9">
        <item row="0" column="0">
