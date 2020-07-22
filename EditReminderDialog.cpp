@@ -50,10 +50,10 @@ void EditReminderDialog::onSave()
     QRegExp reg("([0-9]+)(.+)");
     reg.indexIn(ui->comboBox->currentText());
 
-    if (reg.cap(1) != my_number)
+    if (reg.cap(1) != phone_from)
     {
         query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
-        query.addBindValue(my_number);
+        query.addBindValue(phone_from);
         query.addBindValue(reg.cap(1));
         query.addBindValue(dateTime);
         query.addBindValue(note);
@@ -62,8 +62,8 @@ void EditReminderDialog::onSave()
     }
     else
     {
-        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true WHERE id = ?");
-        query.addBindValue(my_number);
+        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true, completed = false WHERE id = ?");
+        query.addBindValue(phone_from);
         query.addBindValue(reg.cap(1));
         query.addBindValue(dateTime);
         query.addBindValue(note);
@@ -74,17 +74,13 @@ void EditReminderDialog::onSave()
     emit sendData(true);
     close();
 
-    if (reg.cap(1) != my_number)
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
-    else
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
+    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
 
     destroy(true);
 }
 
-void EditReminderDialog::setValuesReminders(QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {
-    my_number = receivedNumber;
     id = receivedId;
     oldDateTime = receivedDateTime;
     oldNote = receivedNote;
@@ -99,17 +95,18 @@ void EditReminderDialog::setValuesReminders(QString receivedNumber, QString rece
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT phone_to FROM reminders WHERE id = ?");
+    query.prepare("SELECT phone_from, phone_to FROM reminders WHERE id = ?");
     query.addBindValue(id);
     query.exec();
     query.first();
 
-    selectedNumber = query.value(0).toString();
+    phone_from = query.value(0).toString();
+    phone_to = query.value(1).toString();
 
-    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(selectedNumber));
+    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(phone_to));
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
-    if (my_number != selectedNumber)
+    if (phone_from != phone_to)
         ui->textEdit->setDisabled(true);
 }
 
@@ -146,6 +143,25 @@ bool EditReminderDialog::eventFilter(QObject *object, QEvent *event)
         }
     }
     return false;
+}
+
+void EditReminderDialog::closeEvent(QCloseEvent *event)
+{
+    QDialog::closeEvent(event);
+
+    emit sendData(false);
+}
+
+void EditReminderDialog::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        emit sendData(false);
+
+        QDialog::close();
+    }
+    else
+        QWidget::keyPressEvent(event);
 }
 
 void EditReminderDialog::on_add5MinButton_clicked()

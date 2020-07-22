@@ -29,7 +29,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT call_id FROM reminders WHERE id = ?");
+    query.prepare("SELECT call_id, phone_from FROM reminders WHERE id = ?");
     query.addBindValue(m_pri.id);
     query.exec();
     query.next();
@@ -90,9 +90,15 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
             ui->callButton->setText(m_pri.name);
         }
     }
-    else
+    else if (query.value(0).toString() == NULL && query.value(1).toString() == m_pri.my_number)
     {
         m_pri.number = m_pri.my_number;
+        ui->callButton->hide();
+        ui->openAccessButton->hide();
+    }
+    else
+    {
+        m_pri.number = query.value(1).toString();
         ui->callButton->hide();
         ui->openAccessButton->hide();
     }
@@ -318,10 +324,14 @@ void PopupReminder::receiveData(bool updating)
 {
     if (updating)
     {
+        m_pri.remindersDialog->resizeColumns = false;
+
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
     }
+    else
+        onClosePopup();
 }
 
 void PopupReminder::receiveNumber(QString &number)
@@ -364,51 +374,59 @@ void PopupReminder::onSelectTime()
     {
     case 1:
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.my_number, m_pri.id, m_pri.dateTime, m_pri.note);
+        editReminderDialog->setValuesReminders(m_pri.id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
         hide();
         break;
     case 2:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true, completed = false WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(600)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
         query.exec();
+
+        m_pri.remindersDialog->resizeColumns = false;
 
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
         break;
     case 3:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true, completed = false WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(1800)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
         query.exec();
+
+        m_pri.remindersDialog->resizeColumns = false;
 
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
         break;
     case 4:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true, completed = false WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime(QDate::currentDate(), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0).addSecs(3600)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
         query.exec();
+
+        m_pri.remindersDialog->resizeColumns = false;
 
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
         break;
     case 5:
-        query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
+        query.prepare("UPDATE reminders SET datetime = ?, active = true, completed = false WHERE id = ? AND phone_to = ?");
         query.addBindValue(QDateTime(QDate::currentDate().addDays(1), QTime(QTime::currentTime().hour(), QTime::currentTime().minute(), 0)));
         query.addBindValue(m_pri.id);
         query.addBindValue(m_pri.my_number);
         query.exec();
+
+        m_pri.remindersDialog->resizeColumns = false;
 
         m_pri.remindersDialog->onUpdate();
 
@@ -480,10 +498,12 @@ void PopupReminder::onClosePopup()
     }
     else
     {
-        query.prepare("UPDATE reminders SET active = false, completed = true WHERE id = ?");
+        query.prepare("UPDATE reminders SET active = false, viewed = true, completed = true WHERE id = ?");
         query.addBindValue(m_pri.id);
         query.exec();
     }
+
+    m_pri.remindersDialog->resizeColumns = false;
 
     m_pri.remindersDialog->onUpdate();
 

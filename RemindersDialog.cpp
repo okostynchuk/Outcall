@@ -239,12 +239,16 @@ void RemindersDialog::loadActualReminders()
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
-
         if (query1->data(query1->index(row_index, 2)).toString() != query1->data(query1->index(row_index, 3)).toString())
+        {
+            ui->tableView->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
+        }
         else
+        {
+            ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
+        }
     }
 
     ui->tableView->setColumnHidden(0, true);
@@ -289,12 +293,16 @@ void RemindersDialog::loadPastReminders()
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
-        ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
-
         if (query1->data(query1->index(row_index, 2)).toString() != query1->data(query1->index(row_index, 3)).toString())
+        {
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
             ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
+        }
         else
-            ui->tableView->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
+        {
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
+        }
     }
 
     ui->tableView_2->setColumnHidden(0, true);
@@ -331,7 +339,7 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
     QString note = query1->data(query1->index(index.row(), 5)).toString();
 
     editReminderDialog = new EditReminderDialog;
-    editReminderDialog->setValuesReminders(my_number, id, dateTime, note);
+    editReminderDialog->setValuesReminders(id, dateTime, note);
     connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     editReminderDialog->show();
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -374,8 +382,6 @@ void RemindersDialog::changeState()
         else if (checkBox->isChecked() && column == "completed")
         {
             checkBox->setChecked(true);
-
-            return;
         }
         else if (!checkBox->isChecked() && column == "completed")
         {
@@ -390,6 +396,18 @@ void RemindersDialog::changeState()
 
         onUpdate();
     }
+}
+
+QWidget* RemindersDialog::addWidgetActive()
+{
+    QWidget* wgt = new QWidget;
+
+    if (ui->tabWidget->currentIndex() == 0)
+        widgetsActual.append(wgt);
+    if (ui->tabWidget->currentIndex() == 1)
+        widgetsPast.append(wgt);
+
+    return wgt;
 }
 
 QWidget* RemindersDialog::addWidgetCompleted()
@@ -418,9 +436,9 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
         checkBox->setChecked(false);
 
     if (languages == "Русский (по умолчанию)")
-        layout->setContentsMargins(25, 0, 0, 0);
+        layout->setContentsMargins(29, 0, 0, 0);
     else if (languages == "Українська")
-        layout->setContentsMargins(22, 0, 0, 0);
+        layout->setContentsMargins(25, 0, 0, 0);
     else if (languages == "English")
         layout->setContentsMargins(15, 0, 0, 0);
 
@@ -466,9 +484,9 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
         checkBox->setChecked(false);
 
     if (languages == "Русский (по умолчанию)")
-        layout->setContentsMargins(25, 0, 0, 0);
+        layout->setContentsMargins(21, 0, 0, 0);
     else if (languages == "Українська")
-        layout->setContentsMargins(22, 0, 0, 0);
+        layout->setContentsMargins(21, 0, 0, 0);
     else if (languages == "English")
         layout->setContentsMargins(15, 0, 0, 0);
 

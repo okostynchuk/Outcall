@@ -25,6 +25,7 @@ signals:
 public:
     explicit RemindersDialog(QWidget *parent = 0);
     ~RemindersDialog();
+     bool resizeColumns;
 
 public slots:
     void onUpdate();
@@ -50,7 +51,6 @@ private:
     QString languages;
     QString my_number;
     int oldReceivedReminders;
-    bool resizeColumns;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
@@ -59,6 +59,7 @@ private:
     RemindersThread* remindersThreadManager;
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
+    QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
     QWidget* addCheckBoxCompleted(int);
     QWidget* addCheckBoxActive(int);
