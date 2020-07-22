@@ -20,9 +20,9 @@
         <file>images/bind_R.png</file>
         <file>images/unbind_R.png</file>
         <file>images/notification_R.png</file>
-        <file>images/new_reminder.png</file>
-        <file>images/ru.png</file>
         <file>images/uk.png</file>
         <file>images/ua.png</file>
+        <file>images/ru.png</file>
+        <file>images/connectedTray.png</file>
     </qresource>
 </RCC>

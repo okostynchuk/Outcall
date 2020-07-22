@@ -21,6 +21,8 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QProcess>
+#include <QPainter>
+#include <QPixmap>
 
 OutCall::OutCall() :
     QWidget()
@@ -287,8 +289,27 @@ void OutCall::changeIconReminders(bool changing)
 {
     if (changing)
     {
-        QString path(":/images/new_reminder.png");
-        m_systemTrayIcon->setIcon(QIcon(path));
+
+        QString figure= "99";
+
+        QPixmap pixmap(22, 22);
+        pixmap.fill(Qt::transparent);
+        QPainter painter(&pixmap);
+        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
+        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
+        painter.setBrush(QBrush(Qt::red));
+        painter.drawEllipse(4, 4, 18, 18);
+        QFont font("MS Shell Dlg 2", 8);
+        font.setBold(true);
+        painter.setFont(font);
+        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, figure);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter.end();
+
+        m_systemTrayIcon->setIcon(QIcon(pixmap));
+
+        //QString path(":/images/new_reminder.png");
+        //m_systemTrayIcon->setIcon(QIcon(path));
     }
     else
     {
