@@ -46,7 +46,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="images.qrc">
+        <iconset>
          <normaloff>:/images/reminders_R.png</normaloff>:/images/reminders_R.png</iconset>
        </property>
        <property name="iconSize">
@@ -139,10 +139,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>addReminderButton</tabstop>
   <tabstop>tabWidget</tabstop>
  </tabstops>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
