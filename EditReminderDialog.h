@@ -2,6 +2,7 @@
 #define EDITREMINDERDIALOG_H
 
 #include <AsteriskManager.h>
+#include <Global.h>
 
 #include <QDialog>
 #include <QDateTime>

@@ -17,6 +17,8 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
+    my_number = global::getExtensionNumber("extensions");
+
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditReminderDialog::onSave);
@@ -106,7 +108,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(phone_to));
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
-    if (phone_from != phone_to)
+    if (phone_from != phone_to && phone_from != my_number)
         ui->textEdit->setDisabled(true);
 }
 

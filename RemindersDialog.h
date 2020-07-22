@@ -33,8 +33,9 @@ public slots:
     void receiveData(bool);
 
 protected:
-    void loadActualReminders();
-    void loadPastReminders();
+    void loadRelevantReminders();
+    void loadIrrelevantReminders();
+    void loadDelegatedReminders();
     void showEvent(QShowEvent *event);
 
 protected slots:
@@ -47,30 +48,43 @@ protected slots:
 
 private:
     Ui::RemindersDialog *ui;
+
     QTimer timer;
     QString languages;
     QString my_number;
+
     int oldReceivedReminders;
+
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
+
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
+
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
+    QWidget* addCheckBoxViewed(int);
     QWidget* addCheckBoxCompleted(int);
     QWidget* addCheckBoxActive(int);
-    QList<QSqlQueryModel*> queriesActual;
-    QList<QSqlQueryModel*> queriesPast;
-    QList<QWidget*> widgetsActual;
-    QList<QHBoxLayout*> layoutsActual;
-    QList<QCheckBox*> boxesActual;
-    QList<QWidget*> widgetsPast;
-    QList<QHBoxLayout*> layoutsPast;
-    QList<QCheckBox*> boxesPast;
+
+    QList<QSqlQueryModel*> queriesRelevant;
+    QList<QWidget*> widgetsRelevant;
+    QList<QHBoxLayout*> layoutsRelevant;
+    QList<QCheckBox*> boxesRelevant;
+
+    QList<QSqlQueryModel*> queriesIrrelevant;
+    QList<QWidget*> widgetsIrrelevant;
+    QList<QHBoxLayout*> layoutsIrrelevant;
+    QList<QCheckBox*> boxesIrrelevant;
+
+    QList<QSqlQueryModel*> queriesDelegated;
+    QList<QWidget*> widgetsDelegated;
+    QList<QHBoxLayout*> layoutsDelegated;
+    QList<QCheckBox*> boxesDelegated;
 };
 
 #endif // REMINDERSDIALOG_H
