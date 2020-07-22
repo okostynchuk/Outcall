@@ -50,6 +50,7 @@ private:
     QString languages;
     QString my_number;
     int oldReceivedReminders;
+    bool resizeColumns;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
@@ -58,7 +59,9 @@ private:
     RemindersThread* remindersThreadManager;
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
-    QWidget* addCheckBox(int);
+    QWidget* addWidgetCompleted();
+    QWidget* addCheckBoxCompleted(int);
+    QWidget* addCheckBoxActive(int);
     QList<QSqlQueryModel*> queriesActual;
     QList<QSqlQueryModel*> queriesPast;
     QList<QWidget*> widgetsActual;

@@ -320,7 +320,7 @@ void PopupReminder::receiveData(bool updating)
     {
         m_pri.remindersDialog->onUpdate();
 
-        onClosePopup();
+        closeAndDestroy();
     }
 }
 
@@ -379,7 +379,7 @@ void PopupReminder::onSelectTime()
 
         m_pri.remindersDialog->onUpdate();
 
-        onClosePopup();
+        closeAndDestroy();
         break;
     case 3:
         query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
@@ -390,7 +390,7 @@ void PopupReminder::onSelectTime()
 
         m_pri.remindersDialog->onUpdate();
 
-        onClosePopup();
+        closeAndDestroy();
         break;
     case 4:
         query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
@@ -401,7 +401,7 @@ void PopupReminder::onSelectTime()
 
         m_pri.remindersDialog->onUpdate();
 
-        onClosePopup();
+        closeAndDestroy();
         break;
     case 5:
         query.prepare("UPDATE reminders SET datetime = ?, active = true WHERE id = ? AND phone_to = ?");
@@ -412,7 +412,7 @@ void PopupReminder::onSelectTime()
 
         m_pri.remindersDialog->onUpdate();
 
-        onClosePopup();
+        closeAndDestroy();
         break;
     default:
         break;
@@ -469,6 +469,24 @@ void PopupReminder::onOpenAccess()
 
 void PopupReminder::onClosePopup()
 {
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    if (m_pri.my_number == m_pri.number)
+    {
+        query.prepare("UPDATE reminders SET active = false WHERE id = ?");
+        query.addBindValue(m_pri.id);
+        query.exec();
+    }
+    else
+    {
+        query.prepare("UPDATE reminders SET active = false, completed = true WHERE id = ?");
+        query.addBindValue(m_pri.id);
+        query.exec();
+    }
+
+    m_pri.remindersDialog->onUpdate();
+
     if (isVisible())
         m_timer.start();
 }

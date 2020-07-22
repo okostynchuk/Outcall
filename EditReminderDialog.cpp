@@ -52,7 +52,7 @@ void EditReminderDialog::onSave()
 
     if (reg.cap(1) != my_number)
     {
-        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, seen = false, active = true WHERE id = ?");
+        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
         query.addBindValue(my_number);
         query.addBindValue(reg.cap(1));
         query.addBindValue(dateTime);
@@ -108,6 +108,9 @@ void EditReminderDialog::setValuesReminders(QString receivedNumber, QString rece
 
     ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(selectedNumber));
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
+
+    if (my_number != selectedNumber)
+        ui->textEdit->setDisabled(true);
 }
 
 void EditReminderDialog::onTextChanged()
