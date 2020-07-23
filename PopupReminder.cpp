@@ -324,8 +324,8 @@ void PopupReminder::receiveData(bool updating)
 {
     if (updating)
     {
+        m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
-
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
@@ -387,8 +387,8 @@ void PopupReminder::onSelectTime()
         query.addBindValue(m_pri.my_number);
         query.exec();
 
+        m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
-
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
@@ -400,8 +400,8 @@ void PopupReminder::onSelectTime()
         query.addBindValue(m_pri.my_number);
         query.exec();
 
+        m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
-
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
@@ -413,8 +413,8 @@ void PopupReminder::onSelectTime()
         query.addBindValue(m_pri.my_number);
         query.exec();
 
+        m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
-
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
@@ -426,8 +426,8 @@ void PopupReminder::onSelectTime()
         query.addBindValue(m_pri.my_number);
         query.exec();
 
+        m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
-
         m_pri.remindersDialog->onUpdate();
 
         closeAndDestroy();
@@ -503,8 +503,8 @@ void PopupReminder::onClosePopup()
         query.exec();
     }
 
+    m_pri.remindersDialog->reminders(false);
     m_pri.remindersDialog->resizeColumns = false;
-
     m_pri.remindersDialog->onUpdate();
 
     if (isVisible())

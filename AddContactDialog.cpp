@@ -215,14 +215,15 @@ void AddContactDialog::onSave()
                 else { query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic); }
 
                 QString orgName = ui->label_org->text();
-                if (orgName != "Нет" || orgName != "Any" || orgName != "Відсутня")
+                if (orgName != tr("Нет"))
                 {
                     QSqlQuery queryOrg(db);
                     QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
                     queryOrg.prepare(sqlOrg);
                     queryOrg.exec();
-                    queryOrg.next();
-                    query.addBindValue(queryOrg.value(0).toString());
+
+                    if (query.next())
+                        query.addBindValue(queryOrg.value(0).toString());
                 }
                 else
                     query.addBindValue(NULL);

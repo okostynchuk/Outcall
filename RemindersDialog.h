@@ -20,7 +20,7 @@ class RemindersDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void reminder(bool);
+    void reminders(bool);
 
 public:
     explicit RemindersDialog(QWidget *parent = 0);
