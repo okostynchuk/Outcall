@@ -120,56 +120,6 @@ void RemindersDialog::showEvent(QShowEvent *event)
 
 void RemindersDialog::onTimer()
 {
-//    if (my_number.isEmpty())
-//    {
-//        my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
-//        QSqlDatabase db;
-//        QSqlQuery query(db);
-
-//        query.prepare("UPDATE reminders SET completed = true WHERE phone_from <> ? AND phone_to = ? AND active = false");
-//        query.addBindValue(my_number);
-//        query.addBindValue(my_number);
-//        query.exec();
-
-//        query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC");
-//        query.addBindValue(my_number);
-//        query.addBindValue(my_number);
-//        query.exec();
-
-//        if (query.next())
-//            oldReceivedReminders = query.value(0).toInt();
-
-//        QList<QString> ids;
-//        QList<QDateTime> dateTimes;
-//        QList<QString> notes;
-
-//        query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
-//        query.exec();
-
-//        while (query.next())
-//        {
-//            ids.append(query.value(0).value<QString>());
-//            dateTimes.append(query.value(1).value<QDateTime>());
-//            notes.append(query.value(2).value<QString>());
-//        }
-
-//        if (remindersThread == nullptr && !my_number.isEmpty())
-//        {
-//            remindersThread = new QThread;
-//            remindersThreadManager = new RemindersThread(my_number, ids, dateTimes, notes);
-//            remindersThreadManager->moveToThread(remindersThread);
-//            connect(remindersThread, SIGNAL(started()), remindersThreadManager, SLOT(process()));
-//            connect(remindersThreadManager, SIGNAL(notify(QString, QDateTime, QString)), this, SLOT(onNotify(QString, QDateTime, QString)));
-//            connect(remindersThreadManager, SIGNAL(finished()), remindersThread, SLOT(quit()));
-//            connect(remindersThreadManager, SIGNAL(finished()), remindersThreadManager, SLOT(deleteLater()));
-//            connect(remindersThread, SIGNAL(finished()), remindersThread, SLOT(deleteLater()));
-//            remindersThread->start();
-//        }
-
-//        return;
-//    }
-
     QSqlDatabase db;
     QSqlQuery query(db);
 
