@@ -336,12 +336,16 @@ void PopupReminder::receiveData(bool updating)
 
 void PopupReminder::receiveNumber(QString &number)
 {
-    const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
-    g_pAsteriskManager->originateCall(m_pri.my_number, number, protocol, m_pri.my_number);
+    QString my_number = m_pri.my_number.remove(QRegExp(" [A-Za-zА-Яа-я]+"));
+
+    const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+    g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
 void PopupReminder::onCall()
 {
+    QString my_number = m_pri.my_number.remove(QRegExp(" [A-Za-zА-Яа-я]+"));
+
     if (!m_pri.numbers.isEmpty())
     {
         if (m_pri.numbers.length() > 1)
@@ -354,14 +358,14 @@ void PopupReminder::onCall()
         }
         else
         {
-            const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
-            g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.numbers.at(0), protocol, m_pri.my_number);
+            const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+            g_pAsteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
         }
     }
     else
     {
-        const QString protocol = global::getSettingsValue(m_pri.my_number, "extensions").toString();
-        g_pAsteriskManager->originateCall(m_pri.my_number, m_pri.number, protocol, m_pri.my_number);
+        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        g_pAsteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
     }
 }
 

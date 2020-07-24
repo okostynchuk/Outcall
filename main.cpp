@@ -1,6 +1,5 @@
 #include "OutCALL.h"
 #include "Global.h"
-#include "Notifier.h"
 #include "Windows.h"
 #include "DatabasesConnectDialog.h"
 
@@ -165,8 +164,6 @@ int main(int argc, char *argv[])
 
         return 0;
     }
-
-    Notifier notifier;
 
     QString username  = global::getSettingsValue("username", "settings").toString();
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();

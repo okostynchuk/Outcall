@@ -2,7 +2,6 @@
 #include "ui_PlaceCallDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
-#include "Notifier.h"
 
 #include <QHeaderView>
 #include <QTableView>

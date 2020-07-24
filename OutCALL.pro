@@ -30,7 +30,6 @@ SOURCES += main.cpp\
     PopupNotification.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
-    Notifier.cpp \
     ContactsDialog.cpp \
     AddContactDialog.cpp \
     PopupHelloWindow.cpp \
@@ -62,7 +61,6 @@ HEADERS  += \
     PopupNotification.h \
     SettingsDialog.h \
     PopupWindow.h \
-    Notifier.h \
     ContactsDialog.h \
     AddContactDialog.h \
     PopupHelloWindow.h \

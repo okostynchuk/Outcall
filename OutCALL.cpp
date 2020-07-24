@@ -1,4 +1,5 @@
 #include "OutCALL.h"
+
 #include "DebugInfoDialog.h"
 #include "SettingsDialog.h"
 #include "ContactsDialog.h"
@@ -6,7 +7,6 @@
 #include "Global.h"
 #include "PlaceCallDialog.h"
 #include "AsteriskManager.h"
-#include "Notifier.h"
 #include "PopupWindow.h"
 #include "PopupHelloWindow.h"
 #include "RemindersDialog.h"
@@ -49,7 +49,7 @@ OutCall::OutCall() :
 
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
-    my_number = global::getExtensionNumber("extensions");
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     createContextMenu();
 

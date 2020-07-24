@@ -17,7 +17,7 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    my_number = global::getExtensionNumber("extensions");
+    my_number = g_pAsteriskManager->extensionNumbers.value(global::getExtensionNumber("extensions"));
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
@@ -49,14 +49,11 @@ void EditReminderDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QRegExp reg("([0-9]+)(.+)");
-    reg.indexIn(ui->comboBox->currentText());
-
-    if (reg.cap(1) != phone_from)
+    if (ui->comboBox->currentText() != phone_from)
     {
         query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
         query.addBindValue(phone_from);
-        query.addBindValue(reg.cap(1));
+        query.addBindValue(ui->comboBox->currentText());
         query.addBindValue(dateTime);
         query.addBindValue(note);
         query.addBindValue(id);;
@@ -66,7 +63,7 @@ void EditReminderDialog::onSave()
     {
         query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true, completed = false WHERE id = ?");
         query.addBindValue(phone_from);
-        query.addBindValue(reg.cap(1));
+        query.addBindValue(ui->comboBox->currentText());
         query.addBindValue(dateTime);
         query.addBindValue(note);
         query.addBindValue(id);;
@@ -105,7 +102,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     phone_from = query.value(0).toString();
     phone_to = query.value(1).toString();
 
-    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(phone_to));
+    ui->comboBox->addItem(phone_to);
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     if (phone_from != phone_to && phone_from != my_number)
