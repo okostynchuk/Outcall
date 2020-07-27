@@ -5,6 +5,7 @@
 #include "AddReminderDialog.h"
 #include "EditReminderDialog.h"
 #include "AsteriskManager.h"
+#include "QSqlQueryModelReminders.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -55,10 +56,8 @@ private:
 
     int oldReceivedReminders;
 
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
-    QSqlQueryModel *query4;
+    QSqlQueryModelReminders *query1;
+    QSqlQueryModelReminders *query2;
 
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;

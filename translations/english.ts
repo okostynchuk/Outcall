@@ -1990,7 +1990,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Активное</source>
-        <translation>Active</translation>
+        <translation type="vanished">Active</translation>
     </message>
     <message>
         <source>Содержание</source>
@@ -2136,6 +2136,18 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе клиентов!</source>
         <translation>There is no connection to the customer database!</translation>
     </message>
+    <message>
+        <source>Активно</source>
+        <translation>Active</translation>
+    </message>
+    <message>
+        <source>Выполнено</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <source>Просмотрено</source>
+        <translation>Viewed</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2161,11 +2173,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Актуальные</source>
-        <translation>Actual</translation>
+        <translation>Relevant</translation>
     </message>
     <message>
         <source>Прошедшие</source>
-        <translation>Past</translation>
+        <translation type="vanished">Past</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -2194,6 +2206,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Add reminder</translation>
+    </message>
+    <message>
+        <source>Неактуальные</source>
+        <translation>Irrelevant</translation>
+    </message>
+    <message>
+        <source>Делегированные</source>
+        <translation>Delegated</translation>
     </message>
 </context>
 <context>

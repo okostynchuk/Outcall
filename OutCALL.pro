@@ -28,6 +28,7 @@ SOURCES += main.cpp\
     OutCALL.cpp \
     PlaceCallDialog.cpp \
     PopupNotification.cpp \
+    QSqlQueryModelReminders.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
     Notifier.cpp \
@@ -60,6 +61,7 @@ HEADERS  += \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
     PopupNotification.h \
+    QSqlQueryModelReminders.h \
     SettingsDialog.h \
     PopupWindow.h \
     Notifier.h \
