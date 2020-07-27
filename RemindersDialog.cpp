@@ -427,7 +427,7 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
     QDateTime dateTime = query1->data(query1->index(index.row(), 4), Qt::DisplayRole).toDateTime();
     QString note = query1->data(query1->index(index.row(), 5), Qt::DisplayRole).toString();
 
-    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::DisplayRole).toString() != query1->data(query1->index(index.row(), 3)).toString())
+    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::DisplayRole).toString() != query1->data(query1->index(index.row(), 3), Qt::DisplayRole).toString())
         return;
 
     editReminderDialog = new EditReminderDialog;
