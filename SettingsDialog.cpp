@@ -4,7 +4,6 @@
 #include "AddExtensionDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"
-#include "Notifier.h"
 #include "OutCALL.h"
 
 #include <QAbstractButton>
@@ -24,7 +23,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     m_addExtensionDialog(nullptr)
 {
     ui->setupUi(this);
+
     ui->autoSignIn->hide();
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -35,6 +36,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(ui->addButton_2,    &QPushButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
     connect(ui->removeButton_2, &QPushButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
     connect(ui->editButton_2,   &QPushButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
+
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
@@ -62,7 +64,7 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
 
-    // Save Extension SettingsDialog
+    // Save Server SettingsDialog
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
     global::setSettingsValue("username",   ui->userName->text(),   "settings");
     QByteArray ba;
@@ -72,6 +74,7 @@ void SettingsDialog::saveSettings()
 
     // Save extensions
     global::removeSettingsKey("extensions");
+    global::removeSettingsKey("extensions_name");
     int nRow = ui->treeWidget->topLevelItemCount();
     for (int i = 0; i < nRow; ++i)
     {
@@ -79,6 +82,7 @@ void SettingsDialog::saveSettings()
         QString extension = item->text(0);
         QString protocol = item->text(1);
         global::setSettingsValue(extension, protocol, "extensions");
+        global::setSettingsValue(extension, g_pAsteriskManager->extensionNumbers.value(extension), "extensions_name");
     }
 
     // Save group extensions
@@ -125,6 +129,7 @@ void SettingsDialog::saveSettings()
 
 void SettingsDialog::loadSettings()
 {
+    // Load Server
     ui->serverName->setText(global::getSettingsValue("servername", "settings").toString());
     ui->userName->setText(global::getSettingsValue("username", "settings").toString());
     QByteArray password((global::getSettingsValue("password", "settings").toByteArray()));
@@ -235,12 +240,11 @@ void SettingsDialog::on_cancelButton_clicked()
 void SettingsDialog::applySettings()
 {
     if(ui->autoStartBox->isChecked())
-       f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/OutCALL.lnk");
+        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/OutCALL.lnk");
     else
         f.remove("C:/Users/" + userName + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/OutCALL.lnk");
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
-    g_Notifier->emitSettingsChanged();
 }
 
 void SettingsDialog::loadLanguages()
@@ -262,7 +266,7 @@ void SettingsDialog::loadLanguages()
     ui->languageList_2->addItem(ukIcon, ukLabel);
 
     QString lang = global::getSettingsValue("language", "settings").toString();
-    if(lang == "")
+    if (lang == "")
         ui->languageList_2->setCurrentIndex(0);
     else
         ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
@@ -296,7 +300,8 @@ void SettingsDialog::onAddButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
     m_addExtensionDialog->setWindowTitle(tr("Добавление"));
-    if(m_addExtensionDialog->exec())
+
+    if (m_addExtensionDialog->exec())
     {
         ui->addButton->setEnabled(false);
         QString extension = m_addExtensionDialog->getExtension();
@@ -309,6 +314,7 @@ void SettingsDialog::onAddButtonClicked()
 
         ui->treeWidget->addTopLevelItem(extensionItem);
     }
+
     m_addExtensionDialog->deleteLater();
 }
 
@@ -316,7 +322,8 @@ void SettingsDialog::onAddGroupButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
     m_addExtensionDialog->setWindowTitle(tr("Добавление"));
-    if(m_addExtensionDialog->exec())
+
+    if (m_addExtensionDialog->exec())
     {
         ui->addButton_2->setEnabled(false);
         QString group_extension = m_addExtensionDialog->getExtension();
@@ -329,6 +336,7 @@ void SettingsDialog::onAddGroupButtonClicked()
 
         ui->treeWidget_2->addTopLevelItem(group_extensionItem);
     }
+
     m_addExtensionDialog->deleteLater();
 }
 
@@ -345,6 +353,7 @@ void SettingsDialog::onRemoveButtonClicked()
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
         int reply = msgBox.exec();
+
         switch(reply)
         {
             case QMessageBox::Yes:
@@ -379,6 +388,7 @@ void SettingsDialog::onRemoveGroupButtonClicked()
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
         int reply = msgBox.exec();
+
         switch(reply)
         {
             case QMessageBox::Yes:
@@ -415,7 +425,7 @@ void SettingsDialog::onEditButtonClicked()
         editExtensionDialog.setExtension(extension);
         editExtensionDialog.setProtocol(protocol);
 
-        if(editExtensionDialog.exec())
+        if (editExtensionDialog.exec())
         {
             const QString newExtension = editExtensionDialog.getExtension();
             const QString newProtocol = editExtensionDialog.getProtocol();
@@ -455,21 +465,19 @@ void SettingsDialog::onEditGroupButtonClicked()
 void SettingsDialog::checkExten()
 {
     exten = getExtension();
-    if(exten!=0)
+
+    if (exten != 0)
         ui->addButton->setEnabled(false);
     else
-    {
         ui->addButton->setEnabled(true);
-    }
 }
 
 void SettingsDialog::checkGroupExten()
 {
     group_exten = getGroupExtension();
-    if(group_exten!=0)
+
+    if (group_exten != 0)
         ui->addButton_2->setEnabled(false);
     else
-    {
         ui->addButton_2->setEnabled(true);
-    }
 }

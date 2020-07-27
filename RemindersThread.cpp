@@ -55,20 +55,13 @@ void RemindersThread::process()
             {
                 emit notify(ids.at(i), dateTimes.at(i), notes.at(i));
 
-//                QSqlQuery query(dbReminders);
-
-//                query.prepare("UPDATE reminders SET active = false WHERE id = ? AND phone_to = ?");
-//                query.addBindValue(ids.at(i));
-//                query.addBindValue(my_number);
-//                query.exec();
-
                 ids.removeAt(i);
                 dateTimes.removeAt(i);
                 notes.removeAt(i);
             }
-
-            QThread::currentThread()->msleep(100);
         }
+
+        QThread::currentThread()->msleep(100);
     }
 }
 

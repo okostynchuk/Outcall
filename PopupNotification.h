@@ -15,7 +15,7 @@ class PopupNotification : public QDialog
     Q_OBJECT
 
 signals:
-    void reminder(bool);
+    void reminders(bool);
 
 private:
     struct PopupNotificationInfo

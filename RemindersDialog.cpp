@@ -11,7 +11,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 
-#define TIME_TO_UPDATE 5000 // msec
+#define TIME_TO_UPDATE 2000 // msec
 
 RemindersDialog::RemindersDialog(QWidget *parent) :
     QDialog(parent),
@@ -40,7 +40,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
-    my_number = global::getExtensionNumber("extensions");
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -104,7 +104,15 @@ void RemindersDialog::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
 
-    emit reminder(false);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
+    query.addBindValue(my_number);
+    query.addBindValue(my_number);
+    query.exec();
+
+    emit reminders(false);
 
     resizeColumns = false;
 
@@ -128,7 +136,7 @@ void RemindersDialog::onTimer()
 
     if (newReceivedReminders > oldReceivedReminders)
     {
-        emit reminder(true);
+        emit reminders(true);
 
         query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC LIMIT 0,?");
         query.addBindValue(my_number);
@@ -234,6 +242,8 @@ void RemindersDialog::receiveData(bool updating)
 {
     if (updating)
     {
+        emit reminders(false);
+
         resizeColumns = false;
 
         onUpdate();
@@ -417,6 +427,9 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
     QDateTime dateTime = query1->data(query1->index(index.row(), 4), Qt::DisplayRole).toDateTime();
     QString note = query1->data(query1->index(index.row(), 5), Qt::DisplayRole).toString();
 
+    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::DisplayRole).toString() != query1->data(query1->index(index.row(), 3)).toString())
+        return;
+
     editReminderDialog = new EditReminderDialog;
     editReminderDialog->setValuesReminders(id, dateTime, note);
     connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
@@ -449,6 +462,8 @@ void RemindersDialog::changeState()
             query.prepare("UPDATE reminders SET active = false WHERE id = ?");
             query.addBindValue(id);
             query.exec();
+
+            emit reminders(false);
         }
         else if (!checkBox->isChecked() && ui->tabWidget->currentIndex() == 1 && column == "active")
         {
@@ -457,6 +472,8 @@ void RemindersDialog::changeState()
             query.prepare("UPDATE reminders SET active = true WHERE id = ?");
             query.addBindValue(id);
             query.exec();
+
+            emit reminders(false);
         }
         else if (!checkBox->isChecked() && ui->tabWidget->currentIndex() == 2 && column == "active")
         {
@@ -485,6 +502,8 @@ void RemindersDialog::changeState()
             query.prepare("UPDATE reminders SET active = false, viewed = true, completed = true WHERE id = ?");
             query.addBindValue(id);
             query.exec();
+
+            emit reminders(false);
         }
         else if (checkBox->isChecked() && ui->tabWidget->currentIndex() == 2 && column == "completed")
         {

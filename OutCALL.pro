@@ -31,7 +31,6 @@ SOURCES += main.cpp\
     QSqlQueryModelReminders.cpp \
     SettingsDialog.cpp \
     PopupWindow.cpp \
-    Notifier.cpp \
     ContactsDialog.cpp \
     AddContactDialog.cpp \
     PopupHelloWindow.cpp \
@@ -64,7 +63,6 @@ HEADERS  += \
     QSqlQueryModelReminders.h \
     SettingsDialog.h \
     PopupWindow.h \
-    Notifier.h \
     ContactsDialog.h \
     AddContactDialog.h \
     PopupHelloWindow.h \

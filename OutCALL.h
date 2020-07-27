@@ -69,6 +69,8 @@ private:
     RemindersDialog *m_remindersDialog;
     QTimer m_timer;
     bool m_switch;
+    QString my_number;
+    int oldReceivedReminders;
 };
 
 #endif // OUTCALL_H

@@ -27,7 +27,7 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     setAttribute(Qt::WA_TranslucentBackground);
 
-    ui->label->setText(tr("Новое напоминание от ") + g_pAsteriskManager->extensionNumbers.value(m_pni.number));
+    ui->label->setText(tr("Новое напоминание от ") + m_pni.number);
 
     ui->lblText->setText(m_pni.text);
 
@@ -225,7 +225,7 @@ void PopupNotification::closeAndDestroy()
     m_timer.stop();
 
     if (m_PopupNotifications.length() == 1)
-        m_pni.remindersDialog->reminder(false);
+        m_pni.remindersDialog->reminders(false);
 
     m_PopupNotifications.removeOne(this);
     delete this;

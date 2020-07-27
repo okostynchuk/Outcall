@@ -1,4 +1,5 @@
 #include "OutCALL.h"
+
 #include "DebugInfoDialog.h"
 #include "SettingsDialog.h"
 #include "ContactsDialog.h"
@@ -6,7 +7,6 @@
 #include "Global.h"
 #include "PlaceCallDialog.h"
 #include "AsteriskManager.h"
-#include "Notifier.h"
 #include "PopupWindow.h"
 #include "PopupHelloWindow.h"
 #include "RemindersDialog.h"
@@ -44,10 +44,12 @@ OutCall::OutCall() :
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
     connect(&m_timer,           &QTimer::timeout,                       this, &OutCall::changeIcon);
 
-    connect(m_remindersDialog, SIGNAL(reminder(bool)), this, SLOT(changeIconReminders(bool)));
+    connect(m_remindersDialog, SIGNAL(reminders(bool)), this, SLOT(changeIconReminders(bool)));
     connect(m_settingsDialog, SIGNAL(restart(bool)), this, SLOT(hideTrayIcon(bool)));
 
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
+
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     createContextMenu();
 
@@ -199,8 +201,23 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
     {
-        QString path(":/images/connected.png");
-        m_systemTrayIcon->setIcon(QIcon(path));
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
+        query.addBindValue(my_number);
+        query.addBindValue(my_number);
+        query.exec();
+
+        query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
+        query.addBindValue(my_number);
+        query.addBindValue(my_number);
+        query.exec();
+        query.first();
+
+        oldReceivedReminders = query.value(0).toInt();
+
+        changeIconReminders(false);
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
@@ -287,11 +304,26 @@ void OutCall::hideTrayIcon(bool hide)
 
 void OutCall::changeIconReminders(bool changing)
 {
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
+    query.addBindValue(my_number);
+    query.addBindValue(my_number);
+    query.exec();
+    query.first();
+
+    int newReceivedReminders = query.value(0).toInt();
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
+    query.addBindValue(my_number);
+    query.exec();
+    query.first();
+
+    int activeReminders = query.value(0).toInt();
+
     if (changing)
     {
-
-        QString figure= "99";
-
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);
         QPainter painter(&pixmap);
@@ -302,18 +334,54 @@ void OutCall::changeIconReminders(bool changing)
         QFont font("MS Shell Dlg 2", 8);
         font.setBold(true);
         painter.setFont(font);
-        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, figure);
+        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter.end();
+
+        m_systemTrayIcon->setIcon(QIcon(pixmap));
+    }
+    else if (!changing && activeReminders > 0 && newReceivedReminders != oldReceivedReminders)
+    {
+        QPixmap pixmap(22, 22);
+        pixmap.fill(Qt::transparent);
+        QPainter painter(&pixmap);
+        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
+        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
+        painter.setBrush(QBrush(Qt::red));
+        painter.drawEllipse(4, 4, 18, 18);
+        QFont font("MS Shell Dlg 2", 8);
+        font.setBold(true);
+        painter.setFont(font);
+        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter.end();
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
 
-        //QString path(":/images/new_reminder.png");
-        //m_systemTrayIcon->setIcon(QIcon(path));
+        oldReceivedReminders = newReceivedReminders;
     }
-    else
+    else if (!changing && activeReminders > 0 && newReceivedReminders == oldReceivedReminders)
+    {
+        QPixmap pixmap(22, 22);
+        pixmap.fill(Qt::transparent);
+        QPainter painter(&pixmap);
+        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
+        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
+        painter.setBrush(QBrush(Qt::lightGray));
+        painter.drawEllipse(4, 4, 18, 18);
+        QFont font("MS Shell Dlg 2", 8);
+        font.setBold(true);
+        painter.setFont(font);
+        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter.end();
+
+        m_systemTrayIcon->setIcon(QIcon(pixmap));
+    }
+    else if (!changing && activeReminders == 0)
     {
         QString path(":/images/connected.png");
+
         m_systemTrayIcon->setIcon(QIcon(path));
     }
 }
