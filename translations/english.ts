@@ -2148,6 +2148,10 @@ p, li { white-space: pre-wrap; }
         <source>Просмотрено</source>
         <translation>Viewed</translation>
     </message>
+    <message>
+        <source>Добавление внутренних номеров запрещено!</source>
+        <translation>Adding inner numbers is prohibited!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
