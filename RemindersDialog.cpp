@@ -252,7 +252,7 @@ void RemindersDialog::receiveData(bool updating)
 
 void RemindersDialog::loadRelevantReminders()
 {
-    if (!widgetsRelevant.isEmpty())
+    if (!queriesRelevant.isEmpty())
         deleteObjects();
 
     query1 = new QSqlQueryModelReminders;
@@ -274,11 +274,11 @@ void RemindersDialog::loadRelevantReminders()
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        if (query1->data(query1->index(row_index, 2), Qt::DisplayRole).toString() != query1->data(query1->index(row_index, 3), Qt::DisplayRole).toString())
+        if (query1->data(query1->index(row_index, 2), Qt::EditRole).toString() != query1->data(query1->index(row_index, 3), Qt::EditRole).toString())
         {
             ui->tableView->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
-        }
+          }
         else
         {
             ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
@@ -288,9 +288,9 @@ void RemindersDialog::loadRelevantReminders()
 
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->setColumnHidden(3, true);
-    ui->tableView->resizeRowsToContents();
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->setWordWrap(true);
+    ui->tableView->resizeRowsToContents();
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     if (resizeColumns)
@@ -308,7 +308,7 @@ void RemindersDialog::loadRelevantReminders()
 
 void RemindersDialog::loadIrrelevantReminders()
 {
-    if (!widgetsIrrelevant.isEmpty())
+    if (!queriesIrrelevant.isEmpty())
         deleteObjects();
 
     query1 = new QSqlQueryModelReminders;
@@ -329,8 +329,8 @@ void RemindersDialog::loadIrrelevantReminders()
     query1->setParentTable(ui->tableView_2);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
-    {
-        if (query1->data(query1->index(row_index, 2), Qt::DisplayRole).toString() != query1->data(query1->index(row_index, 3), Qt::DisplayRole).toString())
+    {        
+        if (query1->data(query1->index(row_index, 2), Qt::EditRole).toString() != query1->data(query1->index(row_index, 3), Qt::EditRole).toString())
         {
             ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
             ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
@@ -364,7 +364,7 @@ void RemindersDialog::loadIrrelevantReminders()
 
 void RemindersDialog::loadDelegatedReminders()
 {
-    if (!widgetsDelegated.isEmpty())
+    if (!queriesDelegated.isEmpty())
         deleteObjects();
 
     query1 = new QSqlQueryModelReminders;
@@ -423,11 +423,11 @@ void RemindersDialog::onAddReminder()
 
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
-    QString id = query1->data(query1->index(index.row(), 0), Qt::DisplayRole).toString();
-    QDateTime dateTime = query1->data(query1->index(index.row(), 4), Qt::DisplayRole).toDateTime();
-    QString note = query1->data(query1->index(index.row(), 5), Qt::DisplayRole).toString();
+    QString id = query1->data(query1->index(index.row(), 0), Qt::EditRole).toString();
+    QDateTime dateTime = query1->data(query1->index(index.row(), 4), Qt::EditRole).toDateTime();
+    QString note = query1->data(query1->index(index.row(), 5), Qt::EditRole).toString();
 
-    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::DisplayRole).toString() != query1->data(query1->index(index.row(), 3), Qt::DisplayRole).toString())
+    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::EditRole).toString() != query1->data(query1->index(index.row(), 3), Qt::EditRole).toString())
         return;
 
     editReminderDialog = new EditReminderDialog;
@@ -552,7 +552,7 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
 
     layout->addWidget(checkBox);
 
-    if (query2->data(query2->index(row_index, 1), Qt::DisplayRole) == true)
+    if (query2->data(query2->index(row_index, 1), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
@@ -570,9 +570,9 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
     layoutsDelegated.append(layout);
     boxesDelegated.append(checkBox);
 
-    QString id = query1->data(query1->index(row_index, 0), Qt::DisplayRole).toString();
+    QString id = query1->data(query1->index(row_index, 0), Qt::EditRole).toString();
     QString column = "viewed";
-    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::DisplayRole).toDateTime();
+    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::EditRole).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
@@ -591,7 +591,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
 
     layout->addWidget(checkBox);
 
-    if (query2->data(query2->index(row_index, 2), Qt::DisplayRole) == true)
+    if (query2->data(query2->index(row_index, 2), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
@@ -618,9 +618,9 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
         boxesIrrelevant.append(checkBox);
     }
 
-    QString id = query1->data(query1->index(row_index, 0), Qt::DisplayRole).toString();
+    QString id = query1->data(query1->index(row_index, 0), Qt::EditRole).toString();
     QString column = "completed";
-    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::DisplayRole).toDateTime();
+    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::EditRole).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
@@ -639,7 +639,7 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
 
     layout->addWidget(checkBox);
 
-    if (query2->data(query2->index(row_index, 0), Qt::DisplayRole) == true)
+    if (query2->data(query2->index(row_index, 0), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
@@ -666,9 +666,9 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
         boxesIrrelevant.append(checkBox);
     }
 
-    QString id = query1->data(query1->index(row_index, 0), Qt::DisplayRole).toString();
+    QString id = query1->data(query1->index(row_index, 0), Qt::EditRole).toString();
     QString column = "active";
-    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::DisplayRole).toDateTime();
+    QDateTime dateTime = query1->data(query1->index(row_index, 4), Qt::EditRole).toDateTime();
 
     connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
