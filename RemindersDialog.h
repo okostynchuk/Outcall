@@ -5,6 +5,7 @@
 #include "AddReminderDialog.h"
 #include "EditReminderDialog.h"
 #include "AsteriskManager.h"
+#include "QSqlQueryModelReminders.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -55,8 +56,8 @@ private:
 
     int oldReceivedReminders;
 
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
+    QSqlQueryModelReminders *query1;
+    QSqlQueryModelReminders *query2;
 
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
@@ -69,17 +70,17 @@ private:
     QWidget* addCheckBoxCompleted(int);
     QWidget* addCheckBoxActive(int);
 
-    QList<QSqlQueryModel*> queriesRelevant;
+    QList<QSqlQueryModelReminders*> queriesRelevant;
     QList<QWidget*> widgetsRelevant;
     QList<QHBoxLayout*> layoutsRelevant;
     QList<QCheckBox*> boxesRelevant;
 
-    QList<QSqlQueryModel*> queriesIrrelevant;
+    QList<QSqlQueryModelReminders*> queriesIrrelevant;
     QList<QWidget*> widgetsIrrelevant;
     QList<QHBoxLayout*> layoutsIrrelevant;
     QList<QCheckBox*> boxesIrrelevant;
 
-    QList<QSqlQueryModel*> queriesDelegated;
+    QList<QSqlQueryModelReminders*> queriesDelegated;
     QList<QWidget*> widgetsDelegated;
     QList<QHBoxLayout*> layoutsDelegated;
     QList<QCheckBox*> boxesDelegated;
