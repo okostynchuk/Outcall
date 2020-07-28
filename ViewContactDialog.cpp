@@ -1,5 +1,6 @@
 #include "ViewContactDialog.h"
 #include "ui_ViewContactDialog.h"
+
 #include "AsteriskManager.h"
 #include "Global.h"
 

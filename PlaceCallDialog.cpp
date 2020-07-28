@@ -1,5 +1,6 @@
 #include "PlaceCallDialog.h"
 #include "ui_PlaceCallDialog.h"
+
 #include "Global.h"
 #include "AsteriskManager.h"
 

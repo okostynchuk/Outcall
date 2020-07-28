@@ -70,7 +70,6 @@ private:
     QTimer m_timer;
     bool m_switch;
     QString my_number;
-    int oldReceivedReminders;
 };
 
 #endif // OUTCALL_H

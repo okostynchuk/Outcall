@@ -1,5 +1,6 @@
 #include "CallHistoryDialog.h"
 #include "ui_CallHistoryDialog.h"
+
 #include "SettingsDialog.h"
 #include "Global.h"
 #include "AsteriskManager.h"

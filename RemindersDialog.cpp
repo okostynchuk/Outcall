@@ -418,6 +418,17 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
     if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2)).toString() != query1->data(query1->index(index.row(), 3)).toString())
         return;
+    else if (ui->tabWidget->currentIndex() == 0 && query1->data(query1->index(index.row(), 2)).toString() != query1->data(query1->index(index.row(), 3)).toString())
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("UPDATE reminders SET viewed = true WHERE id = ?");
+        query.addBindValue(query1->data(query1->index(index.row(), 0)).toString());
+        query.exec();
+
+        emit reminders(false);
+    }
 
     QString id = query1->data(query1->index(index.row(), 0)).toString();
     QDateTime dateTime = query1->data(query1->index(index.row(), 4)).toDateTime();
@@ -437,7 +448,7 @@ void RemindersDialog::changeState()
     QString column = sender()->property("column").value<QString>();
     QDateTime dateTime = sender()->property("dateTime").value<QDateTime>();
 
-    if (dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
+    if (!checkBox->isChecked() && dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
     {
         checkBox->setChecked(false);
 

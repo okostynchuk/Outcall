@@ -201,22 +201,6 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
     {
-        QSqlDatabase db;
-        QSqlQuery query(db);
-
-        query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
-        query.addBindValue(my_number);
-        query.addBindValue(my_number);
-        query.exec();
-
-        query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
-        query.addBindValue(my_number);
-        query.addBindValue(my_number);
-        query.exec();
-        query.first();
-
-        oldReceivedReminders = query.value(0).toInt();
-
         changeIconReminders(false);
 
         m_signIn->setText(tr("Выйти из аккаунта"));
@@ -313,7 +297,7 @@ void OutCall::changeIconReminders(bool changing)
     query.exec();
     query.first();
 
-    int newReceivedReminders = query.value(0).toInt();
+    int receivedReminders = query.value(0).toInt();
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
     query.addBindValue(my_number);
@@ -340,7 +324,7 @@ void OutCall::changeIconReminders(bool changing)
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
     }
-    else if (!changing && activeReminders > 0 && newReceivedReminders != oldReceivedReminders)
+    else if (!changing && activeReminders > 0 && receivedReminders > 0)
     {
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);
@@ -357,10 +341,8 @@ void OutCall::changeIconReminders(bool changing)
         painter.end();
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
-
-        oldReceivedReminders = newReceivedReminders;
     }
-    else if (!changing && activeReminders > 0 && newReceivedReminders == oldReceivedReminders)
+    else if (!changing && activeReminders > 0 && receivedReminders == 0)
     {
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);

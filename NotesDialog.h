@@ -1,11 +1,11 @@
 #ifndef NOTESDIALOG_H
 #define NOTESDIALOG_H
 
+#include "SettingsDialog.h"
+
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QTableView>
-
-#include "SettingsDialog.h"
 
 namespace Ui {
 class NotesDialog;

@@ -63,7 +63,7 @@ private slots:
 private:
     Ui::PopupReminder *ui;
 
-    EditReminderDialog *editReminderDialog;
+    EditReminderDialog *editReminderDialog = nullptr;
     ChooseNumber *chooseNumber;
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;

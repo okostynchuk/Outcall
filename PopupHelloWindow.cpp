@@ -1,7 +1,8 @@
 #include "PopupHelloWindow.h"
+#include "ui_PopupHelloWindow.h"
+
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
-#include "ui_PopupHelloWindow.h"
 
 #include <QDesktopWidget>
 #include <QMouseEvent>
