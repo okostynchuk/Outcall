@@ -296,7 +296,6 @@ void RemindersDialog::loadRelevantReminders()
     if (resizeColumns)
         ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -352,7 +351,6 @@ void RemindersDialog::loadIrrelevantReminders()
     if (resizeColumns)
         ui->tableView_2->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -403,7 +401,6 @@ void RemindersDialog::loadDelegatedReminders()
     if (resizeColumns)
         ui->tableView_3->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_3->setSelectionBehavior(QAbstractItemView::SelectRows);
 
