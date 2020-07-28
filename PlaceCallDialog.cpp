@@ -119,6 +119,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     {
         ui->lineEdit_2->clear();
         ui->lineEdit_2->hide();
+        modelNull();
         return;
     }
     else if(ui->comboBox->currentText() == tr("Поиск по ФИО / названию"))
@@ -190,8 +191,6 @@ void PlaceCallDialog::onCallButton()
         const QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_pAsteriskManager->originateCall(from, number, protocol, from);
-
-        QDialog::close();
     }
 }
 
