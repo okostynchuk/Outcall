@@ -46,9 +46,14 @@ protected slots:
     void deleteObjects();
     void changeState();
     void onNotify(QString, QDateTime, QString);
+    void onUpdateTab();
 
 private:
     Ui::RemindersDialog *ui;
+
+    QModelIndexList selectionRelevant;
+    QModelIndexList selectionIrrelevant;
+    QModelIndexList selectionDelegated;
 
     QTimer timer;
     QString languages;

@@ -1,5 +1,6 @@
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
+
 #include "Global.h"
 
 #include <QDesktopWidget>

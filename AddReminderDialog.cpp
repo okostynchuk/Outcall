@@ -67,31 +67,24 @@ void AddReminderDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-//    QRegExp reg("([0-9]+)(.+)");
-//    reg.indexIn(ui->comboBox->currentText());
-
     if (callId.isEmpty())
     {
         if (ui->comboBox->currentText() != my_number)
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, ?)");
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
             query.addBindValue(ui->comboBox->currentText());
             query.addBindValue(dateTime);
             query.addBindValue(note);
-            query.addBindValue(false);
-            query.addBindValue(false);
-            query.addBindValue(true);
             query.exec();
         }
         else
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, ?)");
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, true)");
             query.addBindValue(my_number);
             query.addBindValue(ui->comboBox->currentText());
             query.addBindValue(dateTime);
             query.addBindValue(note);
-            query.addBindValue(true);
             query.exec();
         }
     }
@@ -99,26 +92,22 @@ void AddReminderDialog::onSave()
     {
         if (ui->comboBox->currentText() != my_number)
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
             query.addBindValue(ui->comboBox->currentText());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.addBindValue(callId);
-            query.addBindValue(false);
-            query.addBindValue(false);
-            query.addBindValue(true);
             query.exec();
         }
         else
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, active) VALUES(?, ?, ?, ?, ?, ?)");
+            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, active) VALUES(?, ?, ?, ?, ?, true)");
             query.addBindValue(my_number);
             query.addBindValue(ui->comboBox->currentText());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.addBindValue(callId);
-            query.addBindValue(true);
             query.exec();
         }
     }

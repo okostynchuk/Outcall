@@ -1,5 +1,6 @@
 #include "NotesDialog.h"
 #include "ui_NotesDialog.h"
+
 #include "CallHistoryDialog.h"
 
 #include <QSqlDatabase>

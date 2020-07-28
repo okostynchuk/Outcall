@@ -78,6 +78,7 @@ private slots:
     void on_nextEndButton_clicked();
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
+    bool isInnerPhone(QString *str);
 
 private:
     Ui::CallHistoryDialog *ui;

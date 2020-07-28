@@ -49,25 +49,33 @@ void EditReminderDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    if (ui->comboBox->currentText() != phone_from)
+    if (!ui->comboBox->isEnabled())
     {
-        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
-        query.addBindValue(phone_from);
-        query.addBindValue(ui->comboBox->currentText());
+        query.prepare("UPDATE reminders SET datetime = ?, completed = false, active = true WHERE id = ?");
         query.addBindValue(dateTime);
-        query.addBindValue(note);
-        query.addBindValue(id);;
+        query.addBindValue(id);
         query.exec();
     }
     else
     {
-        query.prepare("UPDATE reminders SET phone_from = ?, phone_to = ?, datetime = ?, content = ?, active = true, completed = false WHERE id = ?");
-        query.addBindValue(phone_from);
-        query.addBindValue(ui->comboBox->currentText());
-        query.addBindValue(dateTime);
-        query.addBindValue(note);
-        query.addBindValue(id);;
-        query.exec();
+        if (ui->comboBox->currentText() != my_number)
+        {
+            query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
+            query.addBindValue(ui->comboBox->currentText());
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(id);
+            query.exec();
+        }
+        else
+        {
+            query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, completed = false, active = true WHERE id = ?");
+            query.addBindValue(my_number);
+            query.addBindValue(dateTime);
+            query.addBindValue(note);
+            query.addBindValue(id);
+            query.exec();
+        }
     }
 
     emit sendData(true);
@@ -106,7 +114,10 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     if (phone_from != phone_to && phone_from != my_number)
+    {
+        ui->comboBox->setDisabled(true);
         ui->textEdit->setDisabled(true);
+    }
 }
 
 void EditReminderDialog::onTextChanged()

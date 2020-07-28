@@ -328,10 +328,12 @@ void PopupReminder::receiveData(bool updating)
         m_pri.remindersDialog->resizeColumns = false;
         m_pri.remindersDialog->onUpdate();
 
+        editReminderDialog->close();
+
         closeAndDestroy();
     }
     else
-        onClosePopup();
+        editReminderDialog = nullptr;
 }
 
 void PopupReminder::receiveNumber(QString &number)
@@ -377,12 +379,16 @@ void PopupReminder::onSelectTime()
     switch (ui->comboBox->currentIndex())
     {
     case 1:
+        if (editReminderDialog != nullptr)
+            editReminderDialog->close();
+
         editReminderDialog = new EditReminderDialog;
         editReminderDialog->setValuesReminders(m_pri.id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
-        hide();
+
+        ui->comboBox->setCurrentIndex(0);
         break;
     case 2:
         query.prepare("UPDATE reminders SET datetime = ?, active = true, viewed = true, completed = false WHERE id = ? AND phone_to = ?");
@@ -394,6 +400,9 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
         m_pri.remindersDialog->onUpdate();
+
+        if (editReminderDialog != nullptr)
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -408,6 +417,9 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeColumns = false;
         m_pri.remindersDialog->onUpdate();
 
+        if (editReminderDialog != nullptr)
+            editReminderDialog->close();
+
         closeAndDestroy();
         break;
     case 4:
@@ -421,6 +433,9 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeColumns = false;
         m_pri.remindersDialog->onUpdate();
 
+        if (editReminderDialog != nullptr)
+            editReminderDialog->close();
+
         closeAndDestroy();
         break;
     case 5:
@@ -433,6 +448,9 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeColumns = false;
         m_pri.remindersDialog->onUpdate();
+
+        if (editReminderDialog != nullptr)
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -510,6 +528,9 @@ void PopupReminder::onClosePopup()
     m_pri.remindersDialog->reminders(false);
     m_pri.remindersDialog->resizeColumns = false;
     m_pri.remindersDialog->onUpdate();
+
+    if (editReminderDialog != nullptr)
+        editReminderDialog->close();
 
     if (isVisible())
         m_timer.start();

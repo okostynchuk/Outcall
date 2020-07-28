@@ -1,8 +1,8 @@
 #ifndef EDITREMINDERDIALOG_H
 #define EDITREMINDERDIALOG_H
 
-#include <AsteriskManager.h>
-#include <Global.h>
+#include "AsteriskManager.h"
+#include "Global.h"
 
 #include <QDialog>
 #include <QDateTime>

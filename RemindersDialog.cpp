@@ -30,7 +30,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_3->verticalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdate()));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdateTab()));
     connect(ui->addReminderButton, &QAbstractButton::clicked, this, &RemindersDialog::onAddReminder);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
@@ -117,7 +117,11 @@ void RemindersDialog::showEvent(QShowEvent *event)
 
     resizeColumns = false;
 
-    onUpdate();
+    selectionRelevant.clear();
+    selectionIrrelevant.clear();
+    selectionDelegated.clear();
+
+    onUpdateTab();
 }
 
 void RemindersDialog::onTimer()
@@ -161,6 +165,8 @@ void RemindersDialog::deleteObjects()
 {
     if (ui->tabWidget->currentIndex() == 0)
     {
+        selectionRelevant = ui->tableView->selectionModel()->selectedRows();
+
         for (int i = 0; i < widgetsRelevant.size(); ++i)
             widgetsRelevant[i]->deleteLater();
 
@@ -180,6 +186,8 @@ void RemindersDialog::deleteObjects()
     }
     if (ui->tabWidget->currentIndex() == 1)
     {
+        selectionIrrelevant = ui->tableView_2->selectionModel()->selectedRows();
+
         for (int i = 0; i < widgetsIrrelevant.size(); ++i)
             widgetsIrrelevant[i]->deleteLater();
 
@@ -199,6 +207,8 @@ void RemindersDialog::deleteObjects()
     }
     if (ui->tabWidget->currentIndex() == 2)
     {
+        selectionDelegated = ui->tableView_3->selectionModel()->selectedRows();
+
         for (int i = 0; i < widgetsDelegated.size(); ++i)
             widgetsDelegated[i]->deleteLater();
 
@@ -247,7 +257,11 @@ void RemindersDialog::receiveData(bool updating)
 
         resizeColumns = false;
 
-        onUpdate();
+        selectionRelevant.clear();
+        selectionIrrelevant.clear();
+        selectionDelegated.clear();
+
+        onUpdateTab();
     }
 }
 
@@ -299,6 +313,13 @@ void RemindersDialog::loadRelevantReminders()
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    if (!selectionRelevant.isEmpty())
+        for (int i = 0; i < selectionRelevant.length(); ++i)
+        {
+            QModelIndex index = selectionRelevant.at(i);
+            ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
 
     queriesRelevant.append(query1);
     queriesRelevant.append(query2);
@@ -355,6 +376,13 @@ void RemindersDialog::loadIrrelevantReminders()
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    if (!selectionIrrelevant.isEmpty())
+        for (int i = 0; i < selectionIrrelevant.length(); ++i)
+        {
+            QModelIndex index = selectionIrrelevant.at(i);
+            ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
     queriesIrrelevant.append(query1);
     queriesIrrelevant.append(query2);
 
@@ -405,6 +433,13 @@ void RemindersDialog::loadDelegatedReminders()
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_3->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    if (!selectionDelegated.isEmpty())
+        for (int i = 0; i < selectionDelegated.length(); ++i)
+        {
+            QModelIndex index = selectionDelegated.at(i);
+            ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
     queriesDelegated.append(query1);
     queriesDelegated.append(query2);
 
@@ -421,12 +456,23 @@ void RemindersDialog::onAddReminder()
 
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
+    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::EditRole).toString() != query1->data(query1->index(index.row(), 3), Qt::EditRole).toString())
+        return;
+    else if (ui->tabWidget->currentIndex() == 0 && query1->data(query1->index(index.row(), 2), Qt::EditRole).toString() != query1->data(query1->index(index.row(), 3), Qt::EditRole).toString())
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("UPDATE reminders SET viewed = true WHERE id = ?");
+        query.addBindValue(query1->data(query1->index(index.row(), 0), Qt::EditRole).toString());
+        query.exec();
+
+        emit reminders(false);
+    }
+
     QString id = query1->data(query1->index(index.row(), 0), Qt::EditRole).toString();
     QDateTime dateTime = query1->data(query1->index(index.row(), 4), Qt::EditRole).toDateTime();
     QString note = query1->data(query1->index(index.row(), 5), Qt::EditRole).toString();
-
-    if (ui->tabWidget->currentIndex() == 1 && query1->data(query1->index(index.row(), 2), Qt::EditRole).toString() != query1->data(query1->index(index.row(), 3), Qt::EditRole).toString())
-        return;
 
     editReminderDialog = new EditReminderDialog;
     editReminderDialog->setValuesReminders(id, dateTime, note);
@@ -442,7 +488,7 @@ void RemindersDialog::changeState()
     QString column = sender()->property("column").value<QString>();
     QDateTime dateTime = sender()->property("dateTime").value<QDateTime>();
 
-    if (dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
+    if (!checkBox->isChecked() && dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
     {
         checkBox->setChecked(false);
 
@@ -663,6 +709,24 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
     checkBox->setProperty("dateTime", QVariant::fromValue(dateTime));
 
     return wgt;
+}
+
+void RemindersDialog::onUpdateTab()
+{
+    selectionRelevant.clear();
+    selectionIrrelevant.clear();
+    selectionDelegated.clear();
+
+    ui->tableView->clearSelection();
+    ui->tableView_2->clearSelection();
+    ui->tableView_3->clearSelection();
+
+    if (ui->tabWidget->currentIndex() == 0)
+        loadRelevantReminders();
+    if (ui->tabWidget->currentIndex() == 1)
+        loadIrrelevantReminders();
+    if (ui->tabWidget->currentIndex() == 2)
+        loadDelegatedReminders();
 }
 
 void RemindersDialog::onUpdate()
