@@ -184,6 +184,16 @@ void CallHistoryDialog::getNumberPlaced(const QModelIndex &index)
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 }
 
+bool CallHistoryDialog::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+    if(validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+    return false;
+}
+
 void CallHistoryDialog::onAddContact()
 {
     if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
@@ -192,9 +202,15 @@ void CallHistoryDialog::onAddContact()
         return;
     }
 
+    if (isInnerPhone(&number))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
+        return;
+    }
+
     addContactDialog = new AddContactDialog;
-    bool a = checkNumber(number);
-    if (a)
+
+    if (checkNumber(number))
     {
         addContactDialog->setValuesCallHistory(number);
         addContactDialog->show();
@@ -212,10 +228,15 @@ void CallHistoryDialog::onAddOrgContact()
         return;
     }
 
+    if (isInnerPhone(&number))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
+        return;
+    }
+
     addOrgContactDialog = new AddOrgContactDialog;
 
-    bool a = checkNumber(number);
-    if (a)
+    if (checkNumber(number))
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
         addOrgContactDialog->show();
