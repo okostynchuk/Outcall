@@ -1975,7 +1975,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Активное</source>
-        <translation>Активное</translation>
+        <translation type="vanished">Активное</translation>
     </message>
     <message>
         <source>Содержание</source>
@@ -2121,6 +2121,18 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе клиентов!</source>
         <translation>Отсутствует подключение к базе клиентов!</translation>
     </message>
+    <message>
+        <source>Активно</source>
+        <translation>Активно</translation>
+    </message>
+    <message>
+        <source>Выполнено</source>
+        <translation>Выполнено</translation>
+    </message>
+    <message>
+        <source>Просмотрено</source>
+        <translation>Просмотрено</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2150,7 +2162,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Прошедшие</source>
-        <translation>Прошедшие</translation>
+        <translation type="vanished">Прошедшие</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -2179,6 +2191,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Добавить напоминание</translation>
+    </message>
+    <message>
+        <source>Неактуальные</source>
+        <translation>Неактуальные</translation>
+    </message>
+    <message>
+        <source>Делегированные</source>
+        <translation>Делегированные</translation>
     </message>
 </context>
 <context>

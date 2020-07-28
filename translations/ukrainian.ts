@@ -1971,7 +1971,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Активное</source>
-        <translation>Активне</translation>
+        <translation type="vanished">Активне</translation>
     </message>
     <message>
         <source>Содержание</source>
@@ -2117,6 +2117,18 @@ p, li { white-space: pre-wrap; }
         <source>Отсутствует подключение к базе клиентов!</source>
         <translation>Відсутнє підключення до бази клієнтів!</translation>
     </message>
+    <message>
+        <source>Активно</source>
+        <translation>Активне</translation>
+    </message>
+    <message>
+        <source>Выполнено</source>
+        <translation>Виконане</translation>
+    </message>
+    <message>
+        <source>Просмотрено</source>
+        <translation>Переглянуте</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2146,7 +2158,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Прошедшие</source>
-        <translation>Минулі</translation>
+        <translation type="vanished">Минулі</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -2175,6 +2187,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Додати нагадування</translation>
+    </message>
+    <message>
+        <source>Неактуальные</source>
+        <translation>Неактуальні</translation>
+    </message>
+    <message>
+        <source>Делегированные</source>
+        <translation>Делеговані</translation>
     </message>
 </context>
 <context>
