@@ -10,6 +10,7 @@
 #include <QThread>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <QLabel>
 
 #define TIME_TO_UPDATE 2000 // msec
 
@@ -276,7 +277,7 @@ void RemindersDialog::loadRelevantReminders()
     {
         if (query1->data(query1->index(row_index, 2), Qt::EditRole).toString() != query1->data(query1->index(row_index, 3), Qt::EditRole).toString())
         {
-            ui->tableView->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
+            ui->tableView->setIndexWidget(query1->index(row_index, 1), addWidgetLabelActive());
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
           }
         else
@@ -296,7 +297,6 @@ void RemindersDialog::loadRelevantReminders()
     if (resizeColumns)
         ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -332,7 +332,7 @@ void RemindersDialog::loadIrrelevantReminders()
     {        
         if (query1->data(query1->index(row_index, 2), Qt::EditRole).toString() != query1->data(query1->index(row_index, 3), Qt::EditRole).toString())
         {
-            ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addWidgetActive());
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 1), addWidgetLabelActive());
             ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
         }
         else
@@ -352,7 +352,6 @@ void RemindersDialog::loadIrrelevantReminders()
     if (resizeColumns)
         ui->tableView_2->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -403,7 +402,6 @@ void RemindersDialog::loadDelegatedReminders()
     if (resizeColumns)
         ui->tableView_3->resizeColumnsToContents();
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->tableView_3->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -520,14 +518,23 @@ void RemindersDialog::changeState()
     }
 }
 
-QWidget* RemindersDialog::addWidgetActive()
+QWidget* RemindersDialog::addWidgetLabelActive()
 {
     QWidget* wgt = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel *imageLabel = new QLabel(wgt);
 
-    if (ui->tabWidget->currentIndex() == 0)
+    layout->addWidget(imageLabel, 0, Qt::AlignCenter);
+
+    if (ui->tabWidget->currentIndex() == 0){
         widgetsRelevant.append(wgt);
+    }
     if (ui->tabWidget->currentIndex() == 1)
         widgetsIrrelevant.append(wgt);
+
+    imageLabel->setPixmap(QPixmap(":/images/incomingNotification.png").scaled(15, 15, Qt::IgnoreAspectRatio));
+
+    wgt->setLayout(layout);
 
     return wgt;
 }
@@ -550,19 +557,12 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
     QHBoxLayout* layout = new QHBoxLayout;
     QCheckBox* checkBox = new QCheckBox(wgt);
 
-    layout->addWidget(checkBox);
+    layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
     if (query2->data(query2->index(row_index, 1), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
-
-    if (languages == "Русский (по умолчанию)")
-        layout->setContentsMargins(29, 0, 0, 0);
-    else if (languages == "Українська")
-        layout->setContentsMargins(25, 0, 0, 0);
-    else if (languages == "English")
-        layout->setContentsMargins(15, 0, 0, 0);
 
     wgt->setLayout(layout);
 
@@ -589,19 +589,12 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
     QHBoxLayout* layout = new QHBoxLayout;
     QCheckBox* checkBox = new QCheckBox(wgt);
 
-    layout->addWidget(checkBox);
+    layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
     if (query2->data(query2->index(row_index, 2), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
-
-    if (languages == "Русский (по умолчанию)")
-        layout->setContentsMargins(29, 0, 0, 0);
-    else if (languages == "Українська")
-        layout->setContentsMargins(25, 0, 0, 0);
-    else if (languages == "English")
-        layout->setContentsMargins(15, 0, 0, 0);
 
     wgt->setLayout(layout);
 
@@ -637,19 +630,12 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
     QHBoxLayout* layout = new QHBoxLayout;
     QCheckBox* checkBox = new QCheckBox(wgt);
 
-    layout->addWidget(checkBox);
+    layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
     if (query2->data(query2->index(row_index, 0), Qt::EditRole) == true)
         checkBox->setChecked(true);
     else
         checkBox->setChecked(false);
-
-    if (languages == "Русский (по умолчанию)")
-        layout->setContentsMargins(21, 0, 0, 0);
-    else if (languages == "Українська")
-        layout->setContentsMargins(21, 0, 0, 0);
-    else if (languages == "English")
-        layout->setContentsMargins(15, 0, 0, 0);
 
     wgt->setLayout(layout);
 

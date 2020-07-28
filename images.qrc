@@ -24,5 +24,6 @@
         <file>images/ua.png</file>
         <file>images/ru.png</file>
         <file>images/connectedTray.png</file>
+        <file>images/incomingNotification.png</file>
     </qresource>
 </RCC>

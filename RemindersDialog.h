@@ -64,7 +64,7 @@ private:
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
 
-    QWidget* addWidgetActive();
+    QWidget* addWidgetLabelActive();
     QWidget* addWidgetCompleted();
     QWidget* addCheckBoxViewed(int);
     QWidget* addCheckBoxCompleted(int);
@@ -74,6 +74,7 @@ private:
     QList<QWidget*> widgetsRelevant;
     QList<QHBoxLayout*> layoutsRelevant;
     QList<QCheckBox*> boxesRelevant;
+    QList<QLabel*> labels;
 
     QList<QSqlQueryModelReminders*> queriesIrrelevant;
     QList<QWidget*> widgetsIrrelevant;
@@ -84,6 +85,7 @@ private:
     QList<QWidget*> widgetsDelegated;
     QList<QHBoxLayout*> layoutsDelegated;
     QList<QCheckBox*> boxesDelegated;
+
 };
 
 #endif // REMINDERSDIALOG_H
