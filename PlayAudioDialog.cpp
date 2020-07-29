@@ -29,7 +29,7 @@ PlayAudioDialog::~PlayAudioDialog()
     delete ui;
 }
 
-void PlayAudioDialog::setValuesCallHistory(QString &recordpath)
+void PlayAudioDialog::setValuesCallHistory(QString recordpath)
 {
     recordpath.remove(0, 16);
 

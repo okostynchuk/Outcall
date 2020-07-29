@@ -22,7 +22,7 @@ signals:
 public:
     explicit PlayAudioDialog(QWidget *parent = nullptr);
     ~PlayAudioDialog();
-    void setValuesCallHistory(QString &);
+    void setValuesCallHistory(QString);
     void openMedia(const QString &mediaUrl);
 
 protected slots:
