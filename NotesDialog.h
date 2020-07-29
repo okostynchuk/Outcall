@@ -17,7 +17,7 @@ class NotesDialog : public QDialog
 
 public:
     explicit NotesDialog(QWidget *parent = 0);
-    void setCallId(QString &uniqueid, QString &state_call);
+    void setCallId(QString uniqueid, QString state_call);
     ~NotesDialog();
 
 protected:

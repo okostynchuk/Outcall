@@ -38,7 +38,7 @@ NotesDialog::~NotesDialog()
     delete ui;
 }
 
-void NotesDialog::setCallId(QString &uniqueid, QString &state_call)
+void NotesDialog::setCallId(QString uniqueid, QString state_call)
 {
     callId = uniqueid;
     state = state_call;
@@ -119,7 +119,7 @@ void NotesDialog::onSave()
 
 void NotesDialog::onTextChanged()
 {
-    if(ui->textEdit->toPlainText().simplified().length() > 255)
+    if (ui->textEdit->toPlainText().simplified().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 

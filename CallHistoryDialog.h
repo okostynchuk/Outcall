@@ -65,11 +65,10 @@ protected slots:
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
-    void getRecordpath(const QModelIndex &index);
-    void getNumber(const QModelIndex &index);
-    void getNumberMissed(const QModelIndex &index);
-    void getNumberReceived(const QModelIndex &index);
-    void getNumberPlaced(const QModelIndex &index);
+    void getDataAll(const QModelIndex &index);
+    void getDataMissed(const QModelIndex &index);
+    void getDataReceived(const QModelIndex &index);
+    void getDataPlaced(const QModelIndex &index);
     void tabSelected();
     void daysChanged();
 
