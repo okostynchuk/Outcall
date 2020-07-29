@@ -79,6 +79,12 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
 void CallHistoryDialog::onPlayAudioClick()
 {
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
     if (!recordpath.isEmpty())
     {
         if (playAudioDialog != nullptr)
