@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>358</height>
+    <width>670</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -46,7 +46,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="images.qrc">
          <normaloff>:/images/reminders_R.png</normaloff>:/images/reminders_R.png</iconset>
        </property>
        <property name="iconSize">
@@ -142,6 +142,8 @@
   <tabstop>addReminderButton</tabstop>
   <tabstop>tabWidget</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

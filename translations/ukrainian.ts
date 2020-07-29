@@ -2119,15 +2119,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Активно</source>
-        <translation>Активне</translation>
+        <translation>Активно</translation>
     </message>
     <message>
         <source>Выполнено</source>
-        <translation>Виконане</translation>
+        <translation>Виконано</translation>
     </message>
     <message>
         <source>Просмотрено</source>
-        <translation>Переглянуте</translation>
+        <translation>Переглянуто</translation>
+    </message>
+    <message>
+        <source>Добавление внутренних номеров запрещено!</source>
+        <translation>Додавання внутрішніх номерів заборонено!</translation>
     </message>
 </context>
 <context>
