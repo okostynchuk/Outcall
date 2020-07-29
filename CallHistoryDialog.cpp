@@ -558,7 +558,6 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
-    ui->tableView_4->setColumnWidth(4, 90);
 }
 
 QWidget* CallHistoryDialog::loadName()
@@ -663,13 +662,13 @@ QWidget* CallHistoryDialog::loadStatus()
     QLabel* statusLabel = new QLabel(statusWgt);
 
     if (dialogStatus == "NO ANSWER")
-        statusLabel->setText(tr("Пропущенный"));
+        statusLabel->setText(tr("Пропущенный "));
     else if (dialogStatus == "BUSY")
-        statusLabel->setText(tr("Занято"));
+        statusLabel->setText(tr("Занято "));
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено"));
+        statusLabel->setText(tr("Отколено "));
     else if (dialogStatus == "ANSWERED")
-        statusLabel->setText(tr("Принятый"));
+        statusLabel->setText(tr("Принятый "));
 
     statusLayout->addWidget(statusLabel);
     statusLayout->setContentsMargins(3, 0, 0, 0);
