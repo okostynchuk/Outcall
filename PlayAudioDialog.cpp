@@ -1,21 +1,13 @@
 #include "PlayAudioDialog.h"
 #include "ui_PlayAudioDialog.h"
 
-#include <QBuffer>
-#include <QAudioFormat>
-#include <QAudioDeviceInfo>
-#include <QAudioOutput>
-#include <QDebug>
-#include <QMediaPlayer>
-#include <QOperatingSystemVersion>
-#include <QtWin>
-#include <QMessageBox>
+#include <QKeyEvent>
+#include <QMainWindow>
 #include <QDesktopWidget>
 #include <QVariant>
 #include <QSettings>
 #include <QFileDialog>
 #include <QCommandLineParser>
-#include <QKeyEvent>
 
 PlayAudioDialog::PlayAudioDialog(QWidget *parent) :
     QDialog(parent),
@@ -43,21 +35,62 @@ void PlayAudioDialog::playAudio(QString &recordpath)
 
 void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
 {
-    static const QHash<int, const char *> stateMapping {
-        {1,  "Stopped"},
-        {2,  "Paused"},
-        {3,  "Playing"},
-        {4,  "Scanning Forwards"},
-        {5,  "Scanning Backwards"},
-        {6,  "Buffering"},
-        {7,  "Waiting"},
-        {8,  "Media Ended"},
-        {9,  "Transitioning"},
-        {10, "Ready"},
-        {11, "Reconnecting"},
-    };
-    const char *stateStr = stateMapping.value(newState, "");
-    updateWindowTitle(tr(stateStr));
+    QString languages = global::getSettingsValue("language", "settings").toString();
+
+    if (languages == "Русский (по умолчанию)")
+    {
+        static const QHash<int, const char *> stateMapping {
+            {1,  "Остановленно"},
+            {2,  "Пауза"},
+            {3,  "Воспроизведение"},
+            {4,  "Перемотка вперед"},
+            {5,  "Перемотка назад"},
+            {6,  "Буферизация"},
+            {7,  "Ожидание"},
+            {8,  "Конец файла"},
+            {9,  "Переход"},
+            {10, "Готов"},
+            {11, "Переподключение"},
+        };
+        const char *stateStr = stateMapping.value(newState, "");
+        updateWindowTitle(stateStr);
+    }
+    else if (languages == "English")
+    {
+        static const QHash<int, const char *> stateMapping {
+            {1,  "Stopped"},
+            {2,  "Paused"},
+            {3,  "Playing"},
+            {4,  "Scanning Forwards"},
+            {5,  "Scanning Backwards"},
+            {6,  "Buffering"},
+            {7,  "Waiting"},
+            {8,  "Media Ended"},
+            {9,  "Transitioning"},
+            {10, "Ready"},
+            {11, "Reconnecting"},
+        };
+        const char *stateStr = stateMapping.value(newState, "");
+        updateWindowTitle(stateStr);
+    }
+    else if (languages == "Українська")
+    {
+        static const QHash<int, const char *> stateMapping {
+            {1,  "Перепідключення"},
+            {2,  "Пауза"},
+            {3,  "Відтворення"},
+            {4,  "Промотування вперед"},
+            {5,  "Промотування назад"},
+            {6,  "Буферизація"},
+            {7,  "Очікування"},
+            {8,  "Кінець файлу"},
+            {9,  "Перехід"},
+            {10, "Готовий"},
+            {11, "Перепідключення"},
+        };
+        const char *stateStr = stateMapping.value(newState, "");
+        updateWindowTitle(stateStr);
+    }
 }
 
 void PlayAudioDialog::openMedia(const QString &mediaUrl)

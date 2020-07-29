@@ -1,10 +1,11 @@
 #ifndef PLAYAUDIODIALOG_H
 #define PLAYAUDIODIALOG_H
 
+#include "ui_PlayAudioDialog.h"
+#include "Global.h"
+
 #include <QDialog>
 #include <QMediaPlayer>
-
-#include "ui_PlayAudioDialog.h"
 
 namespace Ui {
 class PlayAudioDialog;

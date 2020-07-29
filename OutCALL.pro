@@ -86,8 +86,7 @@ HEADERS  += \
     RemindersThread.h \
     NotesDialog.h \
     EditReminderDialog.h \
-    PopupReminder.h \
-    mediaaxwidget.h
+    PopupReminder.h
 
 FORMS    += \
     AddExtensionDialog.ui \
