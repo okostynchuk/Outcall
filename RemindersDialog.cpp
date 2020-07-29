@@ -255,7 +255,10 @@ void RemindersDialog::receiveData(bool updating)
     {
         emit reminders(false);
 
-        resizeColumns = false;
+        if (ui->tableView->model()->rowCount() == 0)
+            resizeColumns = true;
+        else
+            resizeColumns = false;
 
         selectionRelevant.clear();
         selectionIrrelevant.clear();
