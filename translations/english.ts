@@ -788,6 +788,14 @@
         <source>Отколено</source>
         <translation>Canceled</translation>
     </message>
+    <message>
+        <source>Прослушать запись звонка</source>
+        <translation>Listen to call recording</translation>
+    </message>
+    <message>
+        <source>Прослушать запись звонка на телефоне</source>
+        <translation>Listen to the call recording on the phone</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -1663,6 +1671,17 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>PlayAudioDialog</name>
+    <message>
+        <source>Запись разговора</source>
+        <translation>Conversation record</translation>
+    </message>
+    <message>
+        <source>{6bf52a52-394a-11d3-b153-00c04f79faa6}</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>PopupHelloWindow</name>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Вы успешно вошли&lt;br/&gt;в OutCall&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2151,6 +2170,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавление внутренних номеров запрещено!</source>
         <translation>Adding inner numbers is prohibited!</translation>
+    </message>
+    <message>
+        <source>Внимание</source>
+        <translation>Attention</translation>
+    </message>
+    <message>
+        <source>Данный вызов не имеет записи!</source>
+        <translation>This call has no record!</translation>
     </message>
 </context>
 <context>
