@@ -7,6 +7,7 @@
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
 #include "SettingsDialog.h"
+#include "PlayAudioDialog.h"
 #include "NotesDialog.h"
 #include "OutCALL.h"
 #include "Global.h"
@@ -30,12 +31,14 @@ public:
     ~CallHistoryDialog();
 
 public slots:
+    void playerClosed(bool);
     void receiveDataToAllCalls();
     void receiveDataToMissed();
     void receiveDataToReceived();
     void receiveDataToPlaced();
 
 protected slots:
+    void onPlayAudioClick();
     void onAddContact();
     void onAddOrgContact();
     void onCallClicked();
@@ -61,6 +64,7 @@ protected slots:
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
+    void getRecordpath(const QModelIndex &index);
     void getNumber(const QModelIndex &index);
     void getNumberMissed(const QModelIndex &index);
     void getNumberReceived(const QModelIndex &index);
@@ -86,11 +90,13 @@ private:
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
     QValidator *validator;
+    PlayAudioDialog *playAudioDialog = nullptr;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     NotesDialog *notesDialog;
+    QString recordpath;
     QString state_call;
     QString page;
     QString pages;

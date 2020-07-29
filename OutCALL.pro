@@ -8,6 +8,10 @@ QT       += core gui
 QT       += network
 QT       += sql
 QT       += widgets
+QT       += multimedia
+QT       += winextras
+QT       += axcontainer
+
 
 win32:{
     VERSION = 1.0.0
@@ -27,6 +31,7 @@ SOURCES += main.cpp\
     Global.cpp \
     OutCALL.cpp \
     PlaceCallDialog.cpp \
+    PlayAudioDialog.cpp \
     PopupNotification.cpp \
     QSqlQueryModelReminders.cpp \
     SettingsDialog.cpp \
@@ -59,6 +64,7 @@ HEADERS  += \
     OutCALL.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
+    PlayAudioDialog.h \
     PopupNotification.h \
     QSqlQueryModelReminders.h \
     SettingsDialog.h \
@@ -80,7 +86,8 @@ HEADERS  += \
     RemindersThread.h \
     NotesDialog.h \
     EditReminderDialog.h \
-    PopupReminder.h
+    PopupReminder.h \
+    mediaaxwidget.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -88,6 +95,7 @@ FORMS    += \
     CallHistoryDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
+    PlayAudioDialog.ui \
     PopupNotification.ui \
     SettingsDialog.ui \
     PopupWindow.ui \

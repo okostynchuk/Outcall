@@ -36,6 +36,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
+    connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioClick);
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
@@ -52,6 +53,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberReceived(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumberPlaced(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getNumber(const QModelIndex &)));
+    connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getRecordpath(const QModelIndex &)));
 
     ui->tabWidget->setCurrentIndex(0);
     ui->tableView->  verticalHeader()->setSectionsClickable(false);
@@ -73,6 +75,29 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     days = ui->comboBox_2->currentText();
     loadAllCalls();
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
+}
+
+void CallHistoryDialog::onPlayAudioClick()
+{
+    if (!recordpath.isEmpty())
+    {
+        if (playAudioDialog != nullptr)
+            playAudioDialog->close();
+
+        playAudioDialog = new PlayAudioDialog;
+        playAudioDialog->setValuesCallHistory(recordpath);
+        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
+        playAudioDialog->show();
+        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
+    else
+         QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
+}
+
+void CallHistoryDialog::playerClosed(bool closed)
+{
+    if (closed)
+        playAudioDialog = nullptr;
 }
 
 void CallHistoryDialog::closeEvent(QCloseEvent *event)
@@ -153,6 +178,12 @@ void CallHistoryDialog::updateCount() {
         count = query.value(0).toInt();
         loadPlacedCalls();
     }
+}
+
+void CallHistoryDialog::getRecordpath(const QModelIndex &index)
+{
+    recordpath = query4->data(query4->index(index.row(), 8)).toString();
+    recordpath.remove(0,16);
 }
 
 void CallHistoryDialog::getNumber(const QModelIndex &index)
@@ -424,7 +455,7 @@ void CallHistoryDialog::loadAllCalls()
     query4 = new QSqlQueryModel;
     if (ui->lineEdit_page->text() == "1")
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr "
+        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                         "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                         " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                         "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
@@ -436,7 +467,7 @@ void CallHistoryDialog::loadAllCalls()
     }
     else
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid FROM cdr "
+        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                         "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
                         "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                         "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
@@ -458,6 +489,7 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView_4->setModel(query4);
     ui->tableView_4->setColumnHidden(3,true);
     ui->tableView_4->setColumnHidden(7, true);
+    ui->tableView_4->setColumnHidden(8, true);
 
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
