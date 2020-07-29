@@ -17,7 +17,6 @@
 #include <QCommandLineParser>
 #include <QKeyEvent>
 
-
 PlayAudioDialog::PlayAudioDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PlayAudioDialog)
@@ -77,14 +76,14 @@ void PlayAudioDialog::closeEvent(QCloseEvent *event)
 {
     QDialog::closeEvent(event);
 
-    emit isClosed(false);
+    emit isClosed(true);
 }
 
 void PlayAudioDialog::keyPressEvent(QKeyEvent* event)
 {
     if(event->key() == Qt::Key_Escape)
     {
-        emit isClosed(false);
+        emit isClosed(true);
 
         QDialog::close();
     }

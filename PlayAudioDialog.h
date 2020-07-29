@@ -30,7 +30,6 @@ protected slots:
 
 public slots:
     void on_mediaPlayer_PlayStateChange(int newState);
-    //void on_actionExit_triggered();
 
 private slots:
     void closeEvent(QCloseEvent *event);
