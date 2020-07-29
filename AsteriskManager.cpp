@@ -564,6 +564,24 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
     m_tcpSocket->flush();
 }
 
+void AsteriskManager::originateAudio(QString number, QString protocol, QString recordpath)
+{
+    const QString channel = protocol + "/" + number;
+
+    recordpath.remove(recordpath.length() - 4, recordpath.length());
+
+    QString result;
+    result =  "Action: Originate\r\n";
+    result += "Channel: " + channel + "\r\n";
+    result += "CallerID: " + number + "\r\n";
+    result += "Application: Playback\r\n";
+    result += "Data: " + recordpath + "\r\n";
+
+    m_tcpSocket->write(result.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
 void AsteriskManager::formatNumber(QString &number)
 {
     QString formatted_number = number;

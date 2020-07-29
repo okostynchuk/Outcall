@@ -20,7 +20,7 @@
    <string>История звонков</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="images.qrc">
+   <iconset>
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -251,7 +251,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -289,7 +289,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -362,7 +362,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/listeningToCallRecording.png</normaloff>:/images/listeningToCallRecording.png</iconset>
           </property>
           <property name="iconSize">
@@ -403,7 +403,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -549,7 +549,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -564,7 +564,7 @@
          </widget>
         </item>
         <item row="0" column="15">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="playAudioPhone">
           <property name="minimumSize">
            <size>
             <width>27</width>
@@ -584,7 +584,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="images.qrc">
+           <iconset>
             <normaloff>:/images/listeningToCallOnPhone.png</normaloff>:/images/listeningToCallOnPhone.png</iconset>
           </property>
           <property name="iconSize">
@@ -619,8 +619,6 @@
   <tabstop>updateButton</tabstop>
   <tabstop>comboBox_list</tabstop>
  </tabstops>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

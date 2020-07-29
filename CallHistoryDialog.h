@@ -38,7 +38,8 @@ public slots:
     void receiveDataToPlaced();
 
 protected slots:
-    void onPlayAudioClick();
+    void onPlayAudio();
+    void onPlayAudioPhone();
     void onAddContact();
     void onAddOrgContact();
     void onCallClicked();

@@ -47,6 +47,7 @@ public:
     };
 
     void originateCall(QString from, QString to,  QString protocol, QString callerID);
+    void originateAudio(QString number, QString protocol, QString recordpath);
 
     bool isSignedIn() const;
     void signIn(const QString &serverName, const quint16 &port);

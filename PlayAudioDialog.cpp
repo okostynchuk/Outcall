@@ -31,6 +31,8 @@ PlayAudioDialog::~PlayAudioDialog()
 
 void PlayAudioDialog::setValuesCallHistory(QString &recordpath)
 {
+    recordpath.remove(0, 16);
+
     playAudio(recordpath);
 }
 

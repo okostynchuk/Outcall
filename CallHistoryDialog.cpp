@@ -36,7 +36,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioClick);
+    connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
+    connect(ui->playAudioPhone,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
@@ -77,7 +78,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 }
 
-void CallHistoryDialog::onPlayAudioClick()
+void CallHistoryDialog::onPlayAudio()
 {
     if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
@@ -97,7 +98,24 @@ void CallHistoryDialog::onPlayAudioClick()
         playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-         QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
+        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
+}
+
+void CallHistoryDialog::onPlayAudioPhone()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (!recordpath.isEmpty())
+    {
+        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
+    }
+    else
+        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::playerClosed(bool closed)
@@ -188,8 +206,7 @@ void CallHistoryDialog::updateCount() {
 
 void CallHistoryDialog::getRecordpath(const QModelIndex &index)
 {
-    recordpath = query4->data(query4->index(index.row(), 8)).toString();
-    recordpath.remove(0,16);
+    recordpath = query4->data(query4->index(index.row(), 8)).toString(); 
 }
 
 void CallHistoryDialog::getNumber(const QModelIndex &index)
