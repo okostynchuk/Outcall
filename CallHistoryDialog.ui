@@ -333,6 +333,49 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="14">
+         <widget class="QPushButton" name="playAudio">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="toolTip">
+           <string>Прослушать запись звонка</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/listeningToCallRecording.png</normaloff>:/images/listeningToCallRecording.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>21</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="10">
          <widget class="QPushButton" name="callButton">
           <property name="minimumSize">
@@ -482,7 +525,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="15">
+        <item row="0" column="16">
          <widget class="QPushButton" name="updateButton">
           <property name="minimumSize">
            <size>
@@ -520,8 +563,8 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="14">
-         <widget class="QPushButton" name="playAudio">
+        <item row="0" column="15">
+         <widget class="QPushButton" name="pushButton">
           <property name="minimumSize">
            <size>
             <width>27</width>
@@ -534,28 +577,20 @@
             <height>27</height>
            </size>
           </property>
-          <property name="font">
-           <font>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::DefaultContextMenu</enum>
-          </property>
           <property name="toolTip">
-           <string>Прослушать запись звонка</string>
+           <string>Прослушать запись звонка на телефоне</string>
           </property>
           <property name="text">
            <string/>
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/listeningToCallRecording.png</normaloff>:/images/listeningToCallRecording.png</iconset>
+            <normaloff>:/images/listeningToCallOnPhone.png</normaloff>:/images/listeningToCallOnPhone.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>21</width>
-            <height>21</height>
+            <width>23</width>
+            <height>23</height>
            </size>
           </property>
           <property name="autoDefault">

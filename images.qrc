@@ -26,5 +26,6 @@
         <file>images/connectedTray.png</file>
         <file>images/incomingNotification.png</file>
         <file>images/listeningToCallRecording.png</file>
+        <file>images/listeningToCallOnPhone.png</file>
     </qresource>
 </RCC>
