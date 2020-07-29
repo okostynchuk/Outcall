@@ -739,11 +739,11 @@
     </message>
     <message>
         <source>Пропущенный</source>
-        <translation>Пропущенный</translation>
+        <translation type="vanished">Пропущенный</translation>
     </message>
     <message>
         <source>Занято</source>
-        <translation>Занято</translation>
+        <translation type="vanished">Занято</translation>
     </message>
     <message>
         <source>Отклонено</source>
@@ -751,7 +751,7 @@
     </message>
     <message>
         <source>Принятый</source>
-        <translation>Принятый</translation>
+        <translation type="vanished">Принятый</translation>
     </message>
     <message>
         <source>◄</source>
@@ -779,7 +779,7 @@
     </message>
     <message>
         <source>Отколено</source>
-        <translation>Отколено</translation>
+        <translation type="vanished">Отколено</translation>
     </message>
     <message>
         <source>Прослушать запись звонка</source>
@@ -788,6 +788,22 @@
     <message>
         <source>Прослушать запись звонка на телефоне</source>
         <translation>Прослушать запись звонка на телефоне</translation>
+    </message>
+    <message>
+        <source>Пропущенный </source>
+        <translation>Пропущенный </translation>
+    </message>
+    <message>
+        <source>Занято </source>
+        <translation>Занято </translation>
+    </message>
+    <message>
+        <source>Отколено </source>
+        <translation>Отколено </translation>
+    </message>
+    <message>
+        <source>Принятый </source>
+        <translation>Принятый </translation>
     </message>
 </context>
 <context>
