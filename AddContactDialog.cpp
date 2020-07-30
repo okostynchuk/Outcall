@@ -25,7 +25,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
     ui->label_org->setText(tr("Нет"));
 
-    connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
+    connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
 }
 
 AddContactDialog::~AddContactDialog()

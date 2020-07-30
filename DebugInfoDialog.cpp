@@ -15,8 +15,8 @@ DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    connect(ui->exit,  &QAbstractButton::clicked, this, &DebugInfoDialog::onExit);
-    connect(ui->clear, &QAbstractButton::clicked, this, &DebugInfoDialog::onClear);
+    connect(ui->exit,  &QPushButton::clicked, this, &DebugInfoDialog::onExit);
+    connect(ui->clear, &QPushButton::clicked, this, &DebugInfoDialog::onClear);
 }
 
 DebugInfoDialog::~DebugInfoDialog()

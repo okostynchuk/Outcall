@@ -58,6 +58,12 @@
        <property name="autoDefault">
         <bool>false</bool>
        </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="1" column="0" colspan="3">
@@ -81,6 +87,9 @@
            <property name="tabKeyNavigation">
             <bool>false</bool>
            </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
           </widget>
          </item>
         </layout>
@@ -98,6 +107,9 @@
            <property name="tabKeyNavigation">
             <bool>false</bool>
            </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
           </widget>
          </item>
         </layout>
@@ -114,6 +126,9 @@
            </property>
            <property name="tabKeyNavigation">
             <bool>false</bool>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
            </property>
           </widget>
          </item>

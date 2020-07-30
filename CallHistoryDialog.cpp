@@ -36,8 +36,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
+
     connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
-    connect(ui->playAudioPhone,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
+    connect(ui->playAudioPhone,      &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
     connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
     connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
@@ -193,6 +196,9 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void CallHistoryDialog::loadMissedCalls()
@@ -302,6 +308,9 @@ void CallHistoryDialog::loadMissedCalls()
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void CallHistoryDialog::loadReceivedCalls()
@@ -409,6 +418,9 @@ void CallHistoryDialog::loadReceivedCalls()
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void CallHistoryDialog::loadPlacedCalls()
@@ -508,6 +520,9 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void CallHistoryDialog::onPlayAudio()
@@ -653,12 +668,24 @@ void CallHistoryDialog::updateCount()
 void CallHistoryDialog::getDataAll(const QModelIndex &index)
 {
     number = query4->data(query4->index(index.row(), 1)).toString();
-    recordpath = query4->data(query4->index(index.row(), 8)).toString();
 
     if (number == my_number)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
         number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
+    }
+
+    recordpath = query4->data(query4->index(index.row(), 8)).toString();
+
+    if (!recordpath.isEmpty())
+    {
+        ui->playAudio->setDisabled(false);
+        ui->playAudioPhone->setDisabled(false);
+    }
+    else
+    {
+        ui->playAudio->setDisabled(true);
+        ui->playAudioPhone->setDisabled(true);
     }
 }
 
@@ -668,6 +695,9 @@ void CallHistoryDialog::getDataMissed(const QModelIndex &index)
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 
     recordpath = "";
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void CallHistoryDialog::getDataReceived(const QModelIndex &index)
@@ -676,6 +706,17 @@ void CallHistoryDialog::getDataReceived(const QModelIndex &index)
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 
     recordpath = query2->data(query2->index(index.row(), 6)).toString();
+
+    if (!recordpath.isEmpty())
+    {
+        ui->playAudio->setDisabled(false);
+        ui->playAudioPhone->setDisabled(false);
+    }
+    else
+    {
+        ui->playAudio->setDisabled(true);
+        ui->playAudioPhone->setDisabled(true);
+    }
 }
 
 void CallHistoryDialog::getDataPlaced(const QModelIndex &index)
@@ -684,6 +725,17 @@ void CallHistoryDialog::getDataPlaced(const QModelIndex &index)
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 
     recordpath = query3->data(query3->index(index.row(), 6)).toString();
+
+    if (!recordpath.isEmpty())
+    {
+        ui->playAudio->setDisabled(false);
+        ui->playAudioPhone->setDisabled(false);
+    }
+    else
+    {
+        ui->playAudio->setDisabled(true);
+        ui->playAudioPhone->setDisabled(true);
+    }
 }
 
 bool CallHistoryDialog::isInnerPhone(QString *str)

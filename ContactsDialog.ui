@@ -17,7 +17,7 @@
    <string>Контакты</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <property name="styleSheet">
@@ -129,7 +129,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="toolTip">
              <string>Поиск по таблице</string>
@@ -138,7 +138,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -146,6 +146,9 @@
               <width>23</width>
               <height>23</height>
              </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -190,6 +193,9 @@
             <property name="text">
              <string>◄◄</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -218,6 +224,9 @@
             </property>
             <property name="text">
              <string>◄</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -285,6 +294,9 @@
             <property name="text">
              <string>►</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -314,6 +326,9 @@
             </property>
             <property name="text">
              <string>►►</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -388,7 +403,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -396,6 +411,9 @@
               <width>23</width>
               <height>23</height>
              </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -428,7 +446,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -436,6 +454,9 @@
               <width>31</width>
               <height>31</height>
              </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -468,7 +489,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
             </property>
             <property name="iconSize">
@@ -476,6 +497,9 @@
               <width>23</width>
               <height>23</height>
              </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -534,6 +558,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

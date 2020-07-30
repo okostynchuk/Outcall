@@ -32,9 +32,9 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->openAccessButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
     connect(m_horiz_header, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onAddReminder);
-    connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
-    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
+    connect(ui->addReminderButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onAddReminder);
+    connect(ui->callButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onCall);
+    connect(ui->editButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onEdit);
     connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewMissedNotes(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewRecievedNotes(const QModelIndex &)));
