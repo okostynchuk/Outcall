@@ -1663,7 +1663,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation>Search by telephone</translation>
+        <translation>Search by phone number</translation>
     </message>
     <message>
         <source>Поиск сотрудников по организации</source>
