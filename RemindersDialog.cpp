@@ -31,7 +31,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdateTab()));
-    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &RemindersDialog::onAddReminder);
+    connect(ui->addReminderButton, &QPushButton::clicked, this, &RemindersDialog::onAddReminder);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
@@ -83,12 +83,15 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     remindersThread = new QThread;
     remindersThreadManager = new RemindersThread(my_number, ids, dateTimes, notes);
+
     remindersThreadManager->moveToThread(remindersThread);
+
     connect(remindersThread, SIGNAL(started()), remindersThreadManager, SLOT(process()));
     connect(remindersThreadManager, SIGNAL(notify(QString, QDateTime, QString)), this, SLOT(onNotify(QString, QDateTime, QString)));
     connect(remindersThreadManager, SIGNAL(finished()), remindersThread, SLOT(quit()));
     connect(remindersThreadManager, SIGNAL(finished()), remindersThreadManager, SLOT(deleteLater()));
     connect(remindersThread, SIGNAL(finished()), remindersThread, SLOT(deleteLater()));
+
     remindersThread->start();
 
     timer.setInterval(TIME_TO_UPDATE);
@@ -98,6 +101,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 RemindersDialog::~RemindersDialog()
 {
     remindersThread->requestInterruption();
+
     delete ui;
 }
 
@@ -154,8 +158,8 @@ void RemindersDialog::onTimer()
 
         oldReceivedReminders = newReceivedReminders;
     }
-
-    resizeColumns = false;
+    else
+        resizeColumns = false;
 
     onUpdate();
     sendNewValues();
@@ -255,11 +259,6 @@ void RemindersDialog::receiveData(bool updating)
     {
         emit reminders(false);
 
-        if (ui->tableView->model()->rowCount() == 0)
-            resizeColumns = true;
-        else
-            resizeColumns = false;
-
         selectionRelevant.clear();
         selectionIrrelevant.clear();
         selectionDelegated.clear();
@@ -276,6 +275,9 @@ void RemindersDialog::loadRelevantReminders()
     query1 = new QSqlQueryModelReminders;
     query2 = new QSqlQueryModelReminders;
 
+    queriesRelevant.append(query1);
+    queriesRelevant.append(query2);
+
     query1->setQuery("SELECT id, phone_from, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active = true ORDER BY datetime ASC");
     query2->setQuery("SELECT active, viewed, completed FROM reminders WHERE phone_to = '" + my_number + "' AND active = true ORDER BY datetime ASC");
 
@@ -288,6 +290,7 @@ void RemindersDialog::loadRelevantReminders()
     query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Выполнено"));
 
     ui->tableView->setModel(query1);
+
     query1->setParentTable(ui->tableView);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
@@ -296,7 +299,7 @@ void RemindersDialog::loadRelevantReminders()
         {
             ui->tableView->setIndexWidget(query1->index(row_index, 1), addWidgetLabelActive());
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addCheckBoxCompleted(row_index));
-          }
+        }
         else
         {
             ui->tableView->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
@@ -306,16 +309,15 @@ void RemindersDialog::loadRelevantReminders()
 
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->setColumnHidden(3, true);
+
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->setWordWrap(true);
+
     ui->tableView->resizeRowsToContents();
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     if (resizeColumns)
         ui->tableView->resizeColumnsToContents();
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     if (!selectionRelevant.isEmpty())
         for (int i = 0; i < selectionRelevant.length(); ++i)
@@ -323,9 +325,6 @@ void RemindersDialog::loadRelevantReminders()
             QModelIndex index = selectionRelevant.at(i);
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    queriesRelevant.append(query1);
-    queriesRelevant.append(query2);
 
     resizeColumns = true;
 }
@@ -337,6 +336,9 @@ void RemindersDialog::loadIrrelevantReminders()
 
     query1 = new QSqlQueryModelReminders;
     query2 = new QSqlQueryModelReminders;
+
+    queriesIrrelevant.append(query1);
+    queriesIrrelevant.append(query2);
 
     query1->setQuery("SELECT id, phone_from, phone_to, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC LIMIT 0,100");
     query2->setQuery("SELECT active, viewed, completed FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC LIMIT 0,100");
@@ -350,6 +352,7 @@ void RemindersDialog::loadIrrelevantReminders()
     query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Выполнено"));
 
     ui->tableView_2->setModel(query1);
+
     query1->setParentTable(ui->tableView_2);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
@@ -368,16 +371,15 @@ void RemindersDialog::loadIrrelevantReminders()
 
     ui->tableView_2->setColumnHidden(0, true);
     ui->tableView_2->setColumnHidden(3, true);
+
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_2->setWordWrap(true);
+
     ui->tableView_2->resizeRowsToContents();
-    ui->tableView_2->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     if (resizeColumns)
         ui->tableView_2->resizeColumnsToContents();
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-    ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     if (!selectionIrrelevant.isEmpty())
         for (int i = 0; i < selectionIrrelevant.length(); ++i)
@@ -385,9 +387,6 @@ void RemindersDialog::loadIrrelevantReminders()
             QModelIndex index = selectionIrrelevant.at(i);
             ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    queriesIrrelevant.append(query1);
-    queriesIrrelevant.append(query2);
 
     resizeColumns = true;
 }
@@ -399,6 +398,9 @@ void RemindersDialog::loadDelegatedReminders()
 
     query1 = new QSqlQueryModelReminders;
     query2 = new QSqlQueryModelReminders;
+
+    queriesDelegated.append(query1);
+    queriesDelegated.append(query2);
 
     query1->setQuery("SELECT id, phone_from, phone_to, datetime, content FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC");
     query2->setQuery("SELECT active, viewed, completed FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC");
@@ -414,6 +416,7 @@ void RemindersDialog::loadDelegatedReminders()
     query1->setHeaderData(7, Qt::Horizontal, QObject::tr("Выполнено"));
 
     ui->tableView_3->setModel(query1);
+
     query1->setParentTable(ui->tableView_3);
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
@@ -425,16 +428,15 @@ void RemindersDialog::loadDelegatedReminders()
 
     ui->tableView_3->setColumnHidden(0, true);
     ui->tableView_3->setColumnHidden(2, true);
+
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_3->setWordWrap(true);
+
     ui->tableView_3->resizeRowsToContents();
-    ui->tableView_3->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     if (resizeColumns)
         ui->tableView_3->resizeColumnsToContents();
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-    ui->tableView_3->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     if (!selectionDelegated.isEmpty())
         for (int i = 0; i < selectionDelegated.length(); ++i)
@@ -442,9 +444,6 @@ void RemindersDialog::loadDelegatedReminders()
             QModelIndex index = selectionDelegated.at(i);
             ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    queriesDelegated.append(query1);
-    queriesDelegated.append(query2);
 
     resizeColumns = true;
 }
@@ -594,7 +593,7 @@ QWidget* RemindersDialog::addWidgetCompleted()
 
     if (ui->tabWidget->currentIndex() == 0)
         widgetsRelevant.append(wgt);
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
         widgetsIrrelevant.append(wgt);
 
     return wgt;
@@ -653,7 +652,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
         layoutsRelevant.append(layout);
         boxesRelevant.append(checkBox);
     }
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
     {
         widgetsIrrelevant.append(wgt);
         layoutsIrrelevant.append(layout);
@@ -694,7 +693,7 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
         layoutsRelevant.append(layout);
         boxesRelevant.append(checkBox);
     }
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
     {
         widgetsIrrelevant.append(wgt);
         layoutsIrrelevant.append(layout);
@@ -726,9 +725,9 @@ void RemindersDialog::onUpdateTab()
 
     if (ui->tabWidget->currentIndex() == 0)
         loadRelevantReminders();
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
         loadIrrelevantReminders();
-    if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->tabWidget->currentIndex() == 2)
         loadDelegatedReminders();
 }
 
@@ -736,9 +735,9 @@ void RemindersDialog::onUpdate()
 {
     if (ui->tabWidget->currentIndex() == 0)
         loadRelevantReminders();
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
         loadIrrelevantReminders();
-    if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->tabWidget->currentIndex() == 2)
         loadDelegatedReminders();
 }
 

@@ -21,7 +21,7 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
-    connect(ui->saveButton, &QAbstractButton::clicked, this, &EditReminderDialog::onSave);
+    connect(ui->saveButton, &QPushButton::clicked, this, &EditReminderDialog::onSave);
 }
 
 EditReminderDialog::~EditReminderDialog()

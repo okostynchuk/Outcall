@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QFile>
 
-class QAbstractButton;
 class QTcpSocket;
 class AddExtensionDialog;
 class QTreeWidgetItem;

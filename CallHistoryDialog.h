@@ -112,9 +112,7 @@ private:
     QString dialogStatus;
     QString callerNum;
     int count;
-    int i=0;
     int remainder;
-    int missed_count = 0;
     QWidget* loadStatus();
     QWidget* loadAllNotes();
     QWidget* loadMissedNote();

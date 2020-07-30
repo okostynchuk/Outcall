@@ -126,10 +126,10 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     this->installEventFilter(this);
 
     if (!ui->callButton->isHidden())
-        connect(ui->callButton, &QAbstractButton::clicked, this, &PopupReminder::onCall);
+        connect(ui->callButton, &QPushButton::clicked, this, &PopupReminder::onCall);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
-    connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
+    connect(ui->okButton, &QPushButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectTime()));
 

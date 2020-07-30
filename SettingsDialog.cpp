@@ -6,7 +6,6 @@
 #include "AsteriskManager.h"
 #include "OutCALL.h"
 
-#include <QAbstractButton>
 #include <QAbstractSocket>
 #include <QSettings>
 #include <QKeyEvent>
