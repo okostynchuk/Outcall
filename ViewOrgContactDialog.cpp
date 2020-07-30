@@ -499,6 +499,7 @@ void ViewOrgContactDialog::loadMissedCalls()
     QString number3 = QString(ui->ThirdNumber->text());
     QString number4 = QString(ui->FourthNumber->text());
     QString number5 = QString(ui->FifthNumber->text());
+    QStringList numbersList = (QStringList() << number1 << number2 << number3 << number4 << number5);
 
     query1 = new QSqlQueryModel;
     QSqlDatabase db;
@@ -507,22 +508,17 @@ void ViewOrgContactDialog::loadMissedCalls()
     {
         query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
     }
-    if(count2 == 2)
+    if(count2 > 1)
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"'";
+        for (int i = 1; i < count2; i++)
+        {
+            queryString.append(",'"+numbersList[i]+"'");
+        }
+        queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC");
+        query1->setQuery(queryString, dbAsterisk);
     }
-    if(count2 == 3)
-    {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"','"+number2+"','"+number3+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 4)
-    {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 5)
-    {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
+
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
