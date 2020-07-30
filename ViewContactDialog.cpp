@@ -29,11 +29,13 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->tableView_3->verticalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
+    connect(ui->comboBox,  SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
+    connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
+
     connect(ui->openAccessButton, &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
     connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewContactDialog::onAddReminder);
     connect(ui->editButton, &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
     connect(ui->callButton, &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
-    connect(ui->comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(updateCalls()));
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewMissedNotes(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewRecievedNotes(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewPlacedNotes(const QModelIndex &)));
@@ -47,7 +49,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
 ViewContactDialog::~ViewContactDialog()
 {
-    deleteObjects();
+    deleteNotesObjects();
     delete ui;
 }
 
@@ -131,28 +133,14 @@ void ViewContactDialog::onEdit()
 void ViewContactDialog::updateCalls()
 {
     days = ui->comboBox->currentText();
-    deleteObjects();
+    deleteNotesObjects();
     loadAllCalls();
     loadMissedCalls();
     loadReceivedCalls();
     loadPlacedCalls();
 }
 
-void ViewContactDialog::deleteObjects()
-{
-    for (int i = 0; i < widgets.size(); ++i)
-    {
-        widgets[i]->deleteLater();
-    }
-    for (int i = 0; i < queries.size(); ++i)
-    {
-        queries[i]->deleteLater();
-    }
-    qDeleteAll(notes);
-    widgets.clear();
-    queries.clear();
-    notes.clear();
-}
+
 
 void ViewContactDialog::setValuesContacts(QString &i)
 {
@@ -236,24 +224,18 @@ void ViewContactDialog::setValuesContacts(QString &i)
                    << ui->FourthNumber->text()
                    << ui->FifthNumber->text());
     days = ui->comboBox->currentText();
-    loadAllCalls();
-    loadMissedCalls();
-    loadReceivedCalls();
-    loadPlacedCalls();
+    page="1";
+    updateCount();
 }
-
-
-
-
 
 void ViewContactDialog::loadAllCalls()
 {
-//    if (!widgets.isEmpty())
-//        deleteObjectsOfAllCalls();
-//    if (!widgetsAllName.isEmpty())
-//        deleteNameObjects();
-//    if (!widgetsStatus.isEmpty())
-//        deleteStatusObjects();
+    if (!widgets.isEmpty())
+        deleteNotesObjects();
+    if (!widgetsAllName.isEmpty())
+        deleteNameObjects();
+    if (!widgetsStatus.isEmpty())
+        deleteStatusObjects();
 
     query4 = new QSqlQueryModel;
 
@@ -291,28 +273,30 @@ void ViewContactDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages_2->setText(tr("из ") + pages);
 
+    QString queryString = "SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+                          "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
+                          " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                          "'"+ days +"' DAY) AND (";
+    for (int i = 0; i < countNumbers; i++)
+    {
+        if(i == 0)
+            queryString.append(" src = '"+numbersList[i]+"' OR dst = '"+numbersList[i]+"'");
+        else
+            queryString.append(" OR src = '"+numbersList[i]+"' OR dst = '"+numbersList[i]+"'");
+    }
+
     if (ui->lineEdit_page->text() == "1")
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
-                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
-                        " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT 0,"
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+        queryString.append(") ORDER BY datetime DESC LIMIT 0,"
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     }
     else
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
-                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
-                        "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT "
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+       queryString.append(") ORDER BY datetime DESC LIMIT "
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
     }
+
+    query4->setQuery(queryString, dbAsterisk);
 
     query4->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query4->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -355,6 +339,7 @@ void ViewContactDialog::loadAllCalls()
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    queries.append(query4);
 }
 
 QWidget* ViewContactDialog::loadStatus()
@@ -382,6 +367,19 @@ QWidget* ViewContactDialog::loadStatus()
     return statusWgt;
 }
 
+void ViewContactDialog::deleteStatusObjects()
+{
+    for (int i = 0; i < layoutsStatus.size(); ++i)
+        layoutsStatus[i]->deleteLater();
+
+    for (int i = 0; i < widgetsStatus.size(); ++i)
+        widgetsStatus[i]->deleteLater();
+
+    qDeleteAll(labelsStatus);
+    layoutsStatus.clear();
+    widgetsStatus.clear();
+    labelsStatus.clear();
+}
 
 QWidget* ViewContactDialog::loadName()
 {
@@ -422,6 +420,78 @@ QWidget* ViewContactDialog::loadName()
     return nameWgt;
 }
 
+void ViewContactDialog::deleteNameObjects()
+{
+    if (ui->tabWidget->currentIndex() == 0)
+    {
+        for (int i = 0; i < layoutsAllName.size(); ++i)
+            layoutsAllName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsAllName.size(); ++i)
+            widgetsAllName[i]->deleteLater();
+
+        qDeleteAll(labelsAllName);
+        layoutsAllName.clear();
+        widgetsAllName.clear();
+        labelsAllName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 1)
+    {
+        for (int i = 0; i < layoutsMissedName.size(); ++i)
+            layoutsMissedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsMissedName.size(); ++i)
+            widgetsMissedName[i]->deleteLater();
+
+        qDeleteAll(labelsMissedName);
+        layoutsMissedName.clear();
+        widgetsMissedName.clear();
+        labelsMissedName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 2)
+    {
+        for (int i = 0; i < layoutsReceivedName.size(); ++i)
+            layoutsReceivedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsReceivedName.size(); ++i)
+            widgetsReceivedName[i]->deleteLater();
+
+        qDeleteAll(labelsReceivedName);
+        layoutsReceivedName.clear();
+        widgetsReceivedName.clear();
+        labelsReceivedName.clear();
+    }
+    if (ui->tabWidget->currentIndex() == 3)
+    {
+        for (int i = 0; i < layoutsPlacedName.size(); ++i)
+            layoutsPlacedName[i]->deleteLater();
+
+        for (int i = 0; i < widgetsPlacedName.size(); ++i)
+            widgetsPlacedName[i]->deleteLater();
+
+        qDeleteAll(labelsPlacedName);
+        layoutsPlacedName.clear();
+        widgetsPlacedName.clear();
+        labelsPlacedName.clear();
+    }
+}
+
+void ViewContactDialog::daysChanged()
+{
+     days = ui->comboBox->currentText();
+     go = "default";
+
+     updateCount();
+}
+
+void ViewContactDialog::tabSelected()
+{
+    go = "default";
+    page = "1";
+
+    updateCount();
+}
+
 void ViewContactDialog::updateCount()
 {
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -429,36 +499,34 @@ void ViewContactDialog::updateCount()
 
     if (ui->tabWidget_2->currentIndex() == 0)
     {
-        query.prepare("SELECT COUNT(*) FROM cdr "
-                      "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
-                      "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                      "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                      "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                      "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                      "OR src = '"+my_number+"')");
-        query.exec();
-        query.first();
-
-
         if(countNumbers == 1)
         {
-            query1->setQuery("SELECT COUNT(*) FROM cdr "
+            query.prepare("SELECT COUNT(*) FROM cdr "
                               "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
                               "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                              "'"+ days +"' DAY) AND dst = '""' dbAsterisk");
+                              "'"+ days +"' DAY) AND (dst = '"+numbersList[0]+"' OR src = '"+numbersList[0]+"')");
+            query.exec();
+            query.first();
+
         }
         if(countNumbers > 1)
         {
-            QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+number1+"'";
+            QString queryString = "SELECT COUNT(*) FROM cdr "
+                                  "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
+                                  "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                                  "'"+ days +"' DAY) AND ( dst = '"+numbersList[0]+"' OR src = '"+numbersList[0]+"'";
             for (int i = 1; i < countNumbers; i++)
             {
-                queryString.append(",'"+numbersList[i]+"'");
+                queryString.append(" OR dst = '"+numbersList[i]+"' OR src = '"+numbersList[i]+"'");
+                if (i == countNumbers-1)
+                     queryString.append(")");
             }
-            queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC");
-            query1->setQuery(queryString, dbAsterisk);
-        }
-        count = query.value(0).toInt();
+            query.prepare(queryString);
+            query.exec();
+            query.first();
 
+            count = query.value(0).toInt();
+        }
         loadAllCalls();
     }
     else if (ui->tabWidget_2->currentIndex() == 1)
@@ -499,41 +567,76 @@ void ViewContactDialog::updateCount()
 
         loadPlacedCalls();
     }
-    }
 }
-
-
-
-
-
-
-
-
 
 void ViewContactDialog::loadMissedCalls()
 {
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    if (!widgetsMissed.isEmpty())
+        deleteNotesObjects();
+    if (!widgetsMissedName.isEmpty())
+        deleteNameObjects();
 
+    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
     query1 = new QSqlQueryModel;
 
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    if (countNumbers == 1)
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
     {
-        query1->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src = '"+numbersList[1]+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
-    if (countNumbers > 1)
-    {
-        QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') AND src IN ('"+numbersList[1]+"'";
-        for (int i = 1; i < countNumbers; i++)
-        {
-            queryString.append(",'"+numbersList[i]+"'");
-        }
-        queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC");
-        query1->setQuery(queryString, dbAsterisk);
-    }
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
 
+    ui->lineEdit_page->setText(page);
+    ui->label_pages_2->setText(tr("из ") + pages);
+
+    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE ("
+                          "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
+                          "OR disposition = 'CANCEL') AND (";
+    for (int i = 0; i < countNumbers; i++)
+    {
+            if(i == 0)
+                queryString.append(" src = '"+numbersList[i]+"'");
+            else
+                queryString.append(" OR src = '"+numbersList[i]+"'");
+    }
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+    if (ui->lineEdit_page->text() == "1")
+        queryString.append("DESC LIMIT 0,"
+                              + QString::number(ui->lineEdit_page->text().toInt() *
+                                                ui->comboBox_list->currentText().toInt()) + " ");
+    else
+        queryString.append("DESC LIMIT 0,"
+                           + QString::number(ui->lineEdit_page->text().toInt()
+                                             * ui->comboBox_list->currentText().toInt() -
+                                             ui->comboBox_list->currentText().toInt()) + " , " +
+                           QString::number(ui->comboBox_list->currentText().toInt()));
+
+    query1->setQuery(queryString, dbAsterisk);
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -546,12 +649,16 @@ void ViewContactDialog::loadMissedCalls()
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
+        extfield1 = query1->data(query1->index(row_index, 0)).toString();
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadNote());
+
+        if (extfield1.isEmpty())
+            ui->tableView_4->setIndexWidget(query1->index(row_index, 0), loadName());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView->resizeRowsToContents();
@@ -563,37 +670,70 @@ void ViewContactDialog::loadMissedCalls()
 
 void ViewContactDialog::loadReceivedCalls()
 {
+    if (!widgetsReceived.isEmpty())
+        deleteNotesObjects();
+    if (!widgetsReceivedName.isEmpty())
+        deleteNameObjects();
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-
-    QString number1 = QString(ui->FirstNumber->text());
-    QString number2 = QString(ui->SecondNumber->text());
-    QString number3 = QString(ui->ThirdNumber->text());
-    QString number4 = QString(ui->FourthNumber->text());
-    QString number5 = QString(ui->FifthNumber->text());
-
     query2 = new QSqlQueryModel;
+
     QSqlDatabase db;
     QSqlQuery query(db);
-    if(countNumbers == 1)
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
     {
-        query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
-    if(countNumbers == 2)
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages_2->setText(tr("из ") + pages);
+
+    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
+                          "disposition = 'ANSWER' AND (";
+    for (int i = 0; i < countNumbers; i++)
     {
-        query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        if (i == 0)
+            queryString.append(" src = '"+numbersList[i]+"'");
+        else
+            queryString.append(" OR src = '"+numbersList[i]+"'");
     }
-    if(count2 == 3)
-    {
-        query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 4)
-    {
-        query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 5)
-    {
-        query2->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE disposition = 'ANSWERED' AND src IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+    if (ui->lineEdit_page->text() == "1")
+        queryString.append("DESC LIMIT 0,"
+                              + QString::number(ui->lineEdit_page->text().toInt() *
+                                                ui->comboBox_list->currentText().toInt()) + " ");
+    else
+        queryString.append("DESC LIMIT 0,"
+                           + QString::number(ui->lineEdit_page->text().toInt()
+                                             * ui->comboBox_list->currentText().toInt() -
+                                             ui->comboBox_list->currentText().toInt()) + " , " +
+                           QString::number(ui->comboBox_list->currentText().toInt()));
+
     query2->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query2->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -606,12 +746,16 @@ void ViewContactDialog::loadReceivedCalls()
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
+        extfield1 = query2->data(query2->index(row_index, 0)).toString();
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadNote());
+
+        if (extfield1.isEmpty())
+            ui->tableView_4->setIndexWidget(query2->index(row_index, 0), loadName());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeRowsToContents();
@@ -623,37 +767,70 @@ void ViewContactDialog::loadReceivedCalls()
 
 void ViewContactDialog::loadPlacedCalls()
 {
+    if (!widgetsPlaced.isEmpty())
+        deleteNotesObjects();
+    if (!widgetsPlacedName.isEmpty())
+        deleteNameObjects();
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-
-    QString number1 = QString(ui->FirstNumber->text());
-    QString number2 = QString(ui->SecondNumber->text());
-    QString number3 = QString(ui->ThirdNumber->text());
-    QString number4 = QString(ui->FourthNumber->text());
-    QString number5 = QString(ui->FifthNumber->text());
-
     query3 = new QSqlQueryModel;
+
     QSqlDatabase db;
     QSqlQuery query(db);
-    if(count2 == 1)
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
     {
-        query3->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst = '"+number1+"' AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
-    if(count2 == 2)
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages_2->setText(tr("из ") + pages);
+
+
+    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
+                          "AND (";
+    for (int i = 0; i < countNumbers; i++)
     {
-        query3->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
+        if (i == 0)
+            queryString.append(" dst = '"+numbersList[i]+"'");
+        else
+            queryString.append(" OR dst = '"+numbersList[i]+"'");
     }
-    if(count2 == 3)
-    {
-        query3->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 4)
-    {
-        query3->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
-    if(count2 == 5)
-    {
-        query3->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE dst IN ('"+number1+"','"+number2+"','"+number3+"','"+number4+"','"+number5+"')  AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC", dbAsterisk);
-    }
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+    if (ui->lineEdit_page->text() == "1")
+        queryString.append("DESC LIMIT 0,"
+                              + QString::number(ui->lineEdit_page->text().toInt() *
+                                                ui->comboBox_list->currentText().toInt()) + " ");
+    else
+        queryString.append("DESC LIMIT 0,"
+                           + QString::number(ui->lineEdit_page->text().toInt()
+                                             * ui->comboBox_list->currentText().toInt() -
+                                             ui->comboBox_list->currentText().toInt()) + " , " +
+                           QString::number(ui->comboBox_list->currentText().toInt()));
 
     query3->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query3->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -667,12 +844,16 @@ void ViewContactDialog::loadPlacedCalls()
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
+        extfield1 = query3->data(query3->index(row_index, 0)).toString();
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
         if(query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadNote());
+
+        if (extfield1.isEmpty())
+            ui->tableView_4->setIndexWidget(query3->index(row_index, 0), loadName());
     }
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_3->resizeRowsToContents();
@@ -696,9 +877,67 @@ QWidget* ViewContactDialog::loadNote()
     note->setText(query.value(0).toString());
     note->setWordWrap(true);
 
-    widgets.append(wgt);
-    notes.append(note);
+    if(ui->tabWidget_2->currentIndex() == 0)
+    {
+        widgets.append(wgt);
+        notes.append(note);
+    }
+    else if (ui->tabWidget_2->currentIndex() == 1)
+    {
+        widgetsMissed.append(wgt);
+        notesMissed.append(note);
+    }
+    else if (ui->tabWidget_2->currentIndex() == 1)
+    {
+        widgetsReceived.append(wgt);
+        notesReceived.append(note);
+    }
+    else if (ui->tabWidget_2->currentIndex() == 1)
+    {
+        widgetsReceived.append(wgt);
+        notesReceived.append(note);
+    }
     return wgt;
+}
+
+void ViewContactDialog::deleteNotesObjects()
+{
+    if(ui->tabWidget_2->currentIndex() == 0)
+    {
+        for (int i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
+        qDeleteAll(notes);
+        widgets.clear();
+        notes.clear();
+    }
+    if(ui->tabWidget_2->currentIndex() == 1)
+    {
+        for (int i = 0; i < widgetsMissed.size(); ++i)
+            widgetsMissed[i]->deleteLater();
+        qDeleteAll(notesMissed);
+        widgetsMissed.clear();
+        notesMissed.clear();
+    }
+    if(ui->tabWidget_2->currentIndex() == 2)
+    {
+        for (int i = 0; i < widgetsReceived.size(); ++i)
+            widgetsReceived[i]->deleteLater();
+        qDeleteAll(notesReceived);
+        widgetsReceived.clear();
+        notesReceived.clear();
+    }
+    if(ui->tabWidget_2->currentIndex() == 3)
+    {
+        for (int i = 0; i < widgetsPlaced.size(); ++i)
+            widgetsPlaced[i]->deleteLater();
+        qDeleteAll(notesPlaced);
+        widgetsPlaced.clear();
+        notesPlaced.clear();
+    }
+
+    for (int i = 0; i < queries.size(); ++i)
+        queries[i]->deleteLater();
+    queries.clear();
 }
 
 void ViewContactDialog::viewMissedNotes(const QModelIndex &index) {
@@ -726,4 +965,46 @@ void ViewContactDialog::viewPlacedNotes(const QModelIndex &index) {
     notesDialog->setCallId(uniqueid, state_call);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void ViewContactDialog::onUpdate()
+{
+    if(ui->tabWidget_2->currentIndex() == 0)
+        loadAllCalls();
+    if(ui->tabWidget_2->currentIndex() == 1)
+        loadMissedCalls();
+    if(ui->tabWidget_2->currentIndex() == 2)
+        loadReceivedCalls();
+    if(ui->tabWidget_2->currentIndex() == 3)
+        loadPlacedCalls();
+}
+
+void ViewContactDialog::on_previousButton_clicked()
+{
+    go = "previous";
+    onUpdate();
+}
+
+void ViewContactDialog::on_nextButton_clicked()
+{
+    go = "next";
+    onUpdate();
+}
+
+void ViewContactDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+    onUpdate();
+}
+
+void ViewContactDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
+    onUpdate();;
+}
+
+void ViewContactDialog::on_lineEdit_page_returnPressed()
+{
+    go = "enter";
+    onUpdate();
 }

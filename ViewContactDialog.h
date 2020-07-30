@@ -41,16 +41,28 @@ protected slots:
     void onOpenAccess();
     void onCall();
     void onEdit();
+    void onUpdate();
     void loadAllCalls();
     void loadMissedCalls();
     void loadReceivedCalls();
     void loadPlacedCalls();
     void updateCount();
-    void deleteObjects();
+    void deleteNotesObjects();
+    void deleteStatusObjects();
+    void deleteNameObjects();
     void updateCalls();
     void viewMissedNotes(const QModelIndex &index);
     void viewRecievedNotes(const QModelIndex &index);
     void viewPlacedNotes(const QModelIndex &index);
+    void tabSelected();
+    void daysChanged();
+
+private slots:
+    void on_previousButton_clicked();
+    void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
+    void on_lineEdit_page_returnPressed();
 
 private:
     Ui::ViewContactDialog *ui;
@@ -101,12 +113,18 @@ private:
     QList<QWidget*> widgetsPlacedName;
     QList<QWidget*> widgetsStatus;
     QList<QWidget*> widgets;
+    QList<QWidget*> widgetsMissed;
+    QList<QWidget*> widgetsReceived;
+    QList<QWidget*> widgetsPlaced;
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;
     QList<QLabel*> labelsPlacedName;
-    QList<QLabel*> notes;
     QList<QLabel*> labelsStatus;
+    QList<QLabel*> notes;
+    QList<QLabel*> notesMissed;
+    QList<QLabel*> notesReceived;
+    QList<QLabel*> notesPlaced;
     QList<QSqlQueryModel*> queries;
 };
 
