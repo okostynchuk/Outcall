@@ -1647,7 +1647,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation>Пошук по номеру телефона</translation>
+        <translation>Пошук за номером телефона</translation>
     </message>
     <message>
         <source>Поиск сотрудников по организации</source>

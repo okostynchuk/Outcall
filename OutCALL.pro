@@ -22,6 +22,8 @@ win32:{
 TARGET = OutCALL
 TEMPLATE = app
 
+CONFIG += c++11
+
 SOURCES += main.cpp\
     AddReminderDialog.cpp \
     DebugInfoDialog.cpp \

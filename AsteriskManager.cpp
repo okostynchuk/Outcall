@@ -22,7 +22,7 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
     g_pAsteriskManager = this;
 
     m_tcpSocket = new QTcpSocket(this);
-    void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::errorOccurred;
+    void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::error;
 
     connect(m_tcpSocket, &QIODevice::readyRead,       this, &AsteriskManager::read);
     connect(m_tcpSocket, &QAbstractSocket::connected, this, &AsteriskManager::login);
