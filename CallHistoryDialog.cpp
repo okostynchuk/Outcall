@@ -544,8 +544,6 @@ void CallHistoryDialog::onPlayAudio()
         playAudioDialog->show();
         playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else
-        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::onPlayAudioPhone()
@@ -560,9 +558,7 @@ void CallHistoryDialog::onPlayAudioPhone()
     {
         const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
         g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
-    }
-    else
-        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
+    } 
 }
 
 void CallHistoryDialog::playerClosed(bool closed)

@@ -131,6 +131,14 @@
         <source>Ввод заметки</source>
         <translation>Введення коментарю</translation>
     </message>
+    <message>
+        <source>Отвязать организацию</source>
+        <translation>Відв&apos;язати організацію</translation>
+    </message>
+    <message>
+        <source>Привязать организацию</source>
+        <translation>Прив&apos;язати організацію</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -2170,11 +2178,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Внимание</source>
-        <translation>Увага</translation>
+        <translation type="vanished">Увага</translation>
     </message>
     <message>
         <source>Данный вызов не имеет записи!</source>
-        <translation>Даний виклик не має запису!</translation>
+        <translation type="vanished">Даний виклик не має запису!</translation>
     </message>
 </context>
 <context>
@@ -2589,6 +2597,58 @@ p, li { white-space: pre-wrap; }
         <source>Журнал звонков</source>
         <translation>Журнал викликів</translation>
     </message>
+    <message>
+        <source>Все звонки</source>
+        <translation>Усі дзвінки</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>Прослушать запись звонка</source>
+        <translation>Прослухати запис дзвінка</translation>
+    </message>
+    <message>
+        <source>Прослушать запись звонка на телефоне</source>
+        <translation>Прослухати запис дзвінка на телефоні</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
+    </message>
+    <message>
+        <source>Пропущенный </source>
+        <translation>Пропущений </translation>
+    </message>
+    <message>
+        <source>Занято </source>
+        <translation>Зайнято </translation>
+    </message>
+    <message>
+        <source>Отклонено </source>
+        <translation>Відхилено </translation>
+    </message>
+    <message>
+        <source>Принятый </source>
+        <translation>Прийнятий </translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -2739,6 +2799,58 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Редактировать контакт</source>
         <translation>Редагувати контакт</translation>
+    </message>
+    <message>
+        <source>Все звонки</source>
+        <translation>Усі дзвінки</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>Прослушать запись звонка</source>
+        <translation>Прослухати запис дзвінка</translation>
+    </message>
+    <message>
+        <source>Прослушать запись звонка на телефоне</source>
+        <translation>Прослухати запис дзвінка на телефоні</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
+    </message>
+    <message>
+        <source>Пропущенный </source>
+        <translation>Пропущений </translation>
+    </message>
+    <message>
+        <source>Занято </source>
+        <translation>Зайнято </translation>
+    </message>
+    <message>
+        <source>Отклонено </source>
+        <translation>Відхилено </translation>
+    </message>
+    <message>
+        <source>Принятый </source>
+        <translation>Прийнятий </translation>
     </message>
 </context>
 </TS>

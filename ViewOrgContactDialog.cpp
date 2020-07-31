@@ -609,7 +609,7 @@ QWidget* ViewOrgContactDialog::loadStatus()
     else if (dialogStatus == "BUSY")
         statusLabel->setText(tr("Занято "));
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено "));
+        statusLabel->setText(tr("Отклонено "));
     else if (dialogStatus == "ANSWERED")
         statusLabel->setText(tr("Принятый "));
 
@@ -1379,8 +1379,6 @@ void ViewOrgContactDialog::onPlayAudio()
         playAudioDialog->show();
         playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else
-        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
 }
 
 void ViewOrgContactDialog::onPlayAudioPhone()
