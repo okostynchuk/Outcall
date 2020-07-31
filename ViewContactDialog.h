@@ -7,6 +7,7 @@
 #include "ChooseNumber.h"
 #include "NotesDialog.h"
 #include "AddReminderDialog.h"
+#include "PlayAudioDialog.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -35,10 +36,13 @@ signals:
 public slots:
     void receiveData(bool);
     void receiveNumber(QString &);
+    void playerClosed(bool);
 
 protected slots:
     void onAddReminder();
     void onOpenAccess();
+    void onPlayAudio();
+    void onPlayAudioPhone();
     void onCall();
     void onEdit();
     void onUpdate();
@@ -50,10 +54,14 @@ protected slots:
     void deleteNotesObjects();
     void deleteStatusObjects();
     void deleteNameObjects();
-    void updateCalls();
     void viewMissedNotes(const QModelIndex &index);
     void viewRecievedNotes(const QModelIndex &index);
     void viewPlacedNotes(const QModelIndex &index);
+    void viewAllNotes(const QModelIndex &index);
+    void getDataAll(const QModelIndex &index);
+    void getDataMissed();
+    void getDataReceived(const QModelIndex &index);
+    void getDataPlaced(const QModelIndex &index);
     void tabSelected();
     void daysChanged();
 
@@ -70,11 +78,13 @@ private:
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
     NotesDialog *notesDialog;
+    PlayAudioDialog *playAudioDialog = nullptr;
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
     QValidator *validator;
+    QString recordpath;
     QString userID;
     QString updateID;
     QString uniqueid;
@@ -93,11 +103,6 @@ private:
     QString days;
     QString state_call;
     QString contact_number;
-    QString firstNumber;
-    QString secondNumber;
-    QString thirdNumber;
-    QString fourthNumber;
-    QString fifthNumber;
     QStringList numbersList;
     QWidget* loadNote();
     QWidget* loadStatus();
@@ -125,7 +130,6 @@ private:
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
     QList<QLabel*> notesPlaced;
-    QList<QSqlQueryModel*> queries;
 };
 
 #endif // VIEWCONTACTDIALOG_H

@@ -792,26 +792,23 @@ background-color: #fffff0;
           <attribute name="title">
            <string>Все звонки</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_17">
+          <layout class="QGridLayout" name="gridLayout_12">
            <item row="0" column="0">
-            <widget class="QTableView" name="tableView_5">
+            <widget class="QTableView" name="tableView_2">
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <property name="gridStyle">
-              <enum>Qt::SolidLine</enum>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_7">
+         <widget class="QWidget" name="tab_5">
           <attribute name="title">
            <string>Пропущенные</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="0" column="0">
-            <widget class="QTableView" name="tableView_2">
+            <widget class="QTableView" name="tableView_3">
              <property name="focusPolicy">
               <enum>Qt::ClickFocus</enum>
              </property>
@@ -822,13 +819,13 @@ background-color: #fffff0;
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_8">
+         <widget class="QWidget" name="tab_6">
           <attribute name="title">
            <string>Входящие</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
-            <widget class="QTableView" name="tableView_3">
+            <widget class="QTableView" name="tableView_4">
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
@@ -836,15 +833,18 @@ background-color: #fffff0;
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_9">
+         <widget class="QWidget" name="tab_7">
           <attribute name="title">
            <string>Исходящие</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_12">
+          <layout class="QGridLayout" name="gridLayout_17">
            <item row="0" column="0">
-            <widget class="QTableView" name="tableView_4">
+            <widget class="QTableView" name="tableView_5">
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <property name="gridStyle">
+              <enum>Qt::SolidLine</enum>
              </property>
             </widget>
            </item>
@@ -1146,8 +1146,8 @@ background-color: #fffff0;
   <tabstop>addPersonToOrg</tabstop>
   <tabstop>comboBox_2</tabstop>
   <tabstop>tabWidget_3</tabstop>
-  <tabstop>tableView_3</tabstop>
   <tabstop>tableView_4</tabstop>
+  <tabstop>tableView_2</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>
