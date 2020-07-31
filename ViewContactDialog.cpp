@@ -1036,8 +1036,6 @@ void ViewContactDialog::onPlayAudio()
         playAudioDialog->show();
         playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else
-        QMessageBox::information(this, QObject::tr("Внимание"), QObject::tr("Данный вызов не имеет записи!"), QMessageBox::Ok);
 }
 
 void ViewContactDialog::onPlayAudioPhone()
