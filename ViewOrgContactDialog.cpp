@@ -601,7 +601,7 @@ QWidget* ViewOrgContactDialog::loadStatus()
     else if (dialogStatus == "BUSY")
         statusLabel->setText(tr("Занято "));
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено "));
+        statusLabel->setText(tr("Отклонено "));
     else if (dialogStatus == "ANSWERED")
         statusLabel->setText(tr("Принятый "));
 
