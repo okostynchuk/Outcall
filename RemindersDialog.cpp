@@ -59,7 +59,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     loadRelevantReminders();
 
-    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC");
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false ORDER BY id DESC");
     query.addBindValue(my_number);
     query.addBindValue(my_number);
     query.exec();
@@ -133,7 +133,7 @@ void RemindersDialog::onTimer()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC");
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false ORDER BY id DESC");
     query.addBindValue(my_number);
     query.addBindValue(my_number);
     query.exec();
@@ -147,7 +147,7 @@ void RemindersDialog::onTimer()
     {
         emit reminders(true);
 
-        query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? ORDER BY id DESC LIMIT 0,?");
+        query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false ORDER BY id DESC LIMIT 0,?");
         query.addBindValue(my_number);
         query.addBindValue(my_number);
         query.addBindValue(newReceivedReminders - oldReceivedReminders);
@@ -155,11 +155,11 @@ void RemindersDialog::onTimer()
 
         while (query.next())
             PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
-
-        oldReceivedReminders = newReceivedReminders;
     }
     else
         resizeColumns = false;
+
+    oldReceivedReminders = newReceivedReminders;
 
     onUpdate();
     sendNewValues();

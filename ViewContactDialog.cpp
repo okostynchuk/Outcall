@@ -28,6 +28,8 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_3->verticalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->comboBox,  SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
     connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
@@ -57,6 +59,11 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
     if (!MSSQLopened)
         ui->openAccessButton->hide();
+
+    ui->comboBox_list->setVisible(false);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 ViewContactDialog::~ViewContactDialog()
@@ -323,6 +330,9 @@ void ViewContactDialog::loadAllCalls()
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 QWidget* ViewContactDialog::loadStatus()
@@ -666,6 +676,9 @@ void ViewContactDialog::loadMissedCalls()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void ViewContactDialog::loadReceivedCalls()
@@ -764,6 +777,9 @@ void ViewContactDialog::loadReceivedCalls()
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void ViewContactDialog::loadPlacedCalls()
@@ -862,6 +878,9 @@ void ViewContactDialog::loadPlacedCalls()
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 QWidget* ViewContactDialog::loadNote()

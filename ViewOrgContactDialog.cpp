@@ -59,6 +59,11 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     if (!MSSQLopened)
         ui->openAccessButton->hide();
+
+    ui->comboBox_list->setVisible(false);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -588,6 +593,9 @@ void ViewOrgContactDialog::loadAllCalls()
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 QWidget* ViewOrgContactDialog::loadStatus()
@@ -934,6 +942,9 @@ void ViewOrgContactDialog::loadMissedCalls()
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void ViewOrgContactDialog::loadReceivedCalls()
@@ -1033,6 +1044,9 @@ void ViewOrgContactDialog::loadReceivedCalls()
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 void ViewOrgContactDialog::loadPlacedCalls()
@@ -1133,6 +1147,9 @@ void ViewOrgContactDialog::loadPlacedCalls()
     ui->tableView_5->resizeColumnsToContents();
     ui->tableView_5->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_5->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
 }
 
 QWidget* ViewOrgContactDialog::loadNote()
