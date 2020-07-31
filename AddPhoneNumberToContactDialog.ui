@@ -119,7 +119,7 @@
              </font>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::TabFocus</enum>
+             <enum>Qt::StrongFocus</enum>
             </property>
             <property name="toolTip">
              <string>Поиск</string>
@@ -136,6 +136,9 @@
               <width>24</width>
               <height>24</height>
              </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -180,6 +183,9 @@
             <property name="text">
              <string>◄◄</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -208,6 +214,9 @@
             </property>
             <property name="text">
              <string>◄</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -275,6 +284,9 @@
             <property name="text">
              <string>►</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -304,6 +316,9 @@
             </property>
             <property name="text">
              <string>►►</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

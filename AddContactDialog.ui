@@ -163,6 +163,9 @@
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
+         <property name="toolTip">
+          <string>Отвязать организацию</string>
+         </property>
          <property name="text">
           <string>Отвязать</string>
          </property>
@@ -191,6 +194,9 @@
          </property>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Привязать организацию</string>
          </property>
          <property name="text">
           <string>Привязать</string>
