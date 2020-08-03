@@ -571,7 +571,14 @@ void CallHistoryDialog::closeEvent(QCloseEvent *event)
 {
     QDialog::closeEvent(event);
 
+    QDialog::clearFocus();
+
     ui->comboBox_2->setCurrentText("7");
+
+    ui->tabWidget->setCurrentIndex(0);
+
+    go = "default";
+    page = "1";
 }
 
 void CallHistoryDialog::daysChanged()

@@ -128,6 +128,15 @@ void RemindersDialog::showEvent(QShowEvent *event)
     onUpdateTab();
 }
 
+void RemindersDialog::closeEvent(QCloseEvent *event)
+{
+    QDialog::closeEvent(event);
+
+    QDialog::clearFocus();
+
+    ui->tabWidget->setCurrentIndex(0);
+}
+
 void RemindersDialog::onTimer()
 {
     QSqlDatabase db;

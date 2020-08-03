@@ -46,6 +46,7 @@ void RemindersThread::process()
         if (QThread::currentThread()->isInterruptionRequested())
         {
             emit finished();
+
             return;
         }
 

@@ -44,6 +44,8 @@ protected slots:
     void searchFunction();
 
 private slots:
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event);
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();

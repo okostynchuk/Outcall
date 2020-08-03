@@ -119,6 +119,30 @@ void ContactsDialog::receiveData(bool updating)
     }
 }
 
+void ContactsDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+    onUpdate();
+}
+
+void ContactsDialog::closeEvent(QCloseEvent *event)
+{
+    QDialog::closeEvent(event);
+
+    QDialog::clearFocus();
+
+    ui->lineEdit->clear();
+
+    ui->comboBox->setCurrentIndex(0);
+
+    ui->comboBox_list->setCurrentIndex(0);
+
+    go = "default";
+    filter = false;
+    page = "1";
+}
+
 void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
@@ -441,7 +465,7 @@ QWidget* ContactsDialog::addImageLabel(int &row_index)
     QBoxLayout* l = new QHBoxLayout;
     QLabel *imageLabel = new QLabel(wgt);
 
-    l->addWidget(imageLabel);
+    l->addWidget(imageLabel, 0, Qt::AlignCenter);
 
     if (query2->data(query2->index(row_index, 0)).toString() == "person")
         imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));

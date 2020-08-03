@@ -215,6 +215,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
             m_systemTrayIcon->hide();
 
             qApp->quit();
+
             QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
         }
         else

@@ -37,7 +37,6 @@ protected:
     void loadRelevantReminders();
     void loadIrrelevantReminders();
     void loadDelegatedReminders();
-    void showEvent(QShowEvent *event);
 
 protected slots:
     void onTimer();
@@ -47,6 +46,10 @@ protected slots:
     void changeState();
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
+
+private slots:
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::RemindersDialog *ui;

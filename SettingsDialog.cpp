@@ -56,6 +56,17 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
+void SettingsDialog::closeEvent(QCloseEvent *event)
+{
+    QDialog::closeEvent(event);
+
+    QDialog::clearFocus();
+
+    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget_2->setCurrentIndex(0);
+    ui->tabWidget_3->setCurrentIndex(0);
+}
+
 void SettingsDialog::saveSettings()
 {
     // General SettingsDialog
@@ -221,6 +232,7 @@ void SettingsDialog::on_applyButton_clicked()
             emit restart(true);
 
             qApp->quit();
+
             QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
             break;
         case QMessageBox::No:

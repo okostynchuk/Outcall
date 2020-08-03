@@ -48,6 +48,9 @@ protected slots:
     void on_applyButton_clicked();
     void on_cancelButton_clicked();
 
+private slots:
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::SettingsDialog *ui;
     QTcpSocket *m_tcpSocket;
