@@ -118,7 +118,7 @@
     </message>
     <message>
         <source>Нет</source>
-        <translation>Any</translation>
+        <translation>None</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>

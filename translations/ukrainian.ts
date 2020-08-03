@@ -2074,7 +2074,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Нет</source>
-        <translation>Немає</translation>
+        <translation>Відсутня</translation>
     </message>
     <message>
         <source>Сотрудник успешно добавлен!</source>
