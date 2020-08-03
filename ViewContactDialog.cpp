@@ -35,9 +35,6 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 
     connect(ui->openAccessButton,  &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
-    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewContactDialog::onAddReminder);
-    connect(ui->editButton,        &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
-    connect(ui->callButton,        &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
     connect(ui->addReminderButton, &QPushButton::clicked, this, &ViewContactDialog::onAddReminder);
     connect(ui->editButton,        &QPushButton::clicked, this, &ViewContactDialog::onEdit);
     connect(ui->callButton,        &QPushButton::clicked, this, &ViewContactDialog::onCall);
