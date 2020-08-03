@@ -27,5 +27,6 @@
         <file>images/incomingNotification.png</file>
         <file>images/listeningToCallRecording.png</file>
         <file>images/listeningToCallOnPhone.png</file>
+        <file>images/arrowBack.png</file>
     </qresource>
 </RCC>
