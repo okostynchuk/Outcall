@@ -450,6 +450,9 @@ background-color: #fffff8;
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="toolTip">
+              <string>Добавить напоминание</string>
+             </property>
              <property name="text">
               <string/>
              </property>

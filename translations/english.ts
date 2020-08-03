@@ -2676,6 +2676,10 @@ p, li { white-space: pre-wrap; }
         <source>Принятый </source>
         <translation>Answered </translation>
     </message>
+    <message>
+        <source>Добавить напоминание</source>
+        <translation>Add reminder</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -2878,6 +2882,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Принятый </source>
         <translation>Answered </translation>
+    </message>
+    <message>
+        <source>Добавить напоминание</source>
+        <translation>Add reminder</translation>
     </message>
 </context>
 </TS>
