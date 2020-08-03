@@ -37,7 +37,8 @@ signals:
     void sendNumber(QString &);
 
 public slots:
-    void receiveData(bool);
+    void receiveDataPerson(bool);
+    void receiveDataOrg(bool);
     void receiveNumber(QString &);
     void receivePersonID(QString &);
     void playerClosed(bool);

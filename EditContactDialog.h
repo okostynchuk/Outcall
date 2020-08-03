@@ -42,6 +42,7 @@ private:
     QStringList numbers;
 
 private slots:
+    void onReturn();
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
     bool isPhone(QString *str);

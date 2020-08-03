@@ -66,6 +66,7 @@ protected slots:
     void daysChanged();
 
 private slots:
+    void showEvent(QShowEvent *event);
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();

@@ -116,19 +116,33 @@ void ViewOrgContactDialog::onOpenAccess() {
     }
 }
 
-void ViewOrgContactDialog::receiveData(bool updating)
+void ViewOrgContactDialog::receiveDataPerson(bool updating)
 {
     if (updating)
     {
         emit sendData(true);
+
         onUpdate();
     }
+}
+
+void ViewOrgContactDialog::receiveDataOrg(bool updating)
+{
+    if (updating)
+    {
+        emit sendData(true);
+
+        destroy(true);
+    }
+    else
+        show();
 }
 
 void ViewOrgContactDialog::receiveNumber(QString &to)
 {
     const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
+
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
@@ -142,21 +156,23 @@ void ViewOrgContactDialog::onCall()
 }
 
 void ViewOrgContactDialog::showCard(const QModelIndex &index)
-{
+{   
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
+
     viewContactDialog = new ViewContactDialog;
     viewContactDialog->setValuesContacts(id);
-    connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveDataPerson(bool)));
     viewContactDialog->show();
     viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::onEdit()
 {
-    destroy(true);
+    hide();
+
     editOrgContactDialog = new EditOrgContactDialog;
     editOrgContactDialog->setOrgValuesContacts(updateID);
-    connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveDataOrg(bool)));
     editOrgContactDialog->show();
     editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -177,22 +193,25 @@ void ViewOrgContactDialog::onUpdate()
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
 
     ui->tableView->setModel(query_model);
+
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
 }
 
 void ViewOrgContactDialog::onUpdateCalls()
 {
-    if(ui->tabWidget_3->currentIndex() == 0)
+    if (ui->tabWidget_3->currentIndex() == 0)
         loadAllCalls();
-    if(ui->tabWidget_3->currentIndex() == 1)
+    else if (ui->tabWidget_3->currentIndex() == 1)
         loadMissedCalls();
-    if(ui->tabWidget_3->currentIndex() == 2)
+    else if (ui->tabWidget_3->currentIndex() == 2)
         loadReceivedCalls();
-    if(ui->tabWidget_3->currentIndex() == 3)
+    else if (ui->tabWidget_3->currentIndex() == 3)
         loadPlacedCalls();
 }
 
@@ -402,17 +421,21 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
 void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 {
     updateID = i;
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM entry_phone WHERE entry_id = " + updateID);
     query.exec();
     query.first();
+
     countNumbers = query.value(0).toInt();
+
     query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + updateID);
     query.exec();
     query.next();
-    for(int i = 0; i < countNumbers; i++)
+
+    for (int i = 0; i < countNumbers; i++)
     {
         if (i == 0)
             ui->FirstNumber->setText(query.value(0).toString());
@@ -426,6 +449,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
             ui->FifthNumber->setText(query.value(0).toString());
         query.next();
     }
+
     numbersList = (QStringList()
                        << ui->FirstNumber->text()
                        << ui->SecondNumber->text()
@@ -443,6 +467,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     QString entryEmail = query.value(3).toString();
     QString entryVyborID = query.value(4).toString();
     QString entryComment = query.value(5).toString();
+
     ui->OrgName->setText(entryORGName);
     ui->City->setText(entryCity);
     ui->Address->setText(entryAddress);
@@ -453,26 +478,33 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     query_model = new QSqlQueryModel;
 
     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_name ASC");
+
     query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
     query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+
     ui->tableView->setModel(query_model);
 
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     update = "default";
     filter = false;
 
     days = ui->comboBox_2->currentText();
-    page="1";
+
+    page = "1";
+
     updateCount();
 }
 
@@ -1277,8 +1309,10 @@ void ViewOrgContactDialog::receivePersonID(QString &id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
+
     query.prepare("UPDATE entry SET entry_person_org_id = '" + updateID + "' WHERE id = " + id);
     query.exec();
+
     onUpdate();
 }
 
@@ -1290,37 +1324,48 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
     addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::viewMissedNotes(const QModelIndex &index) {
+void ViewOrgContactDialog::viewMissedNotes(const QModelIndex &index)
+{
     uniqueid = query1->data(query1->index(index.row(), 5)).toString();
 
     state_call = "save_disable";
+
     notesDialog = new NotesDialog;
     notesDialog->setCallId(uniqueid, state_call);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::viewRecievedNotes(const QModelIndex &index) {
+void ViewOrgContactDialog::viewRecievedNotes(const QModelIndex &index)
+{
     uniqueid = query2->data(query2->index(index.row(), 5)).toString();
+
     state_call = "save_disable";
+
     notesDialog = new NotesDialog;
     notesDialog->setCallId(uniqueid, state_call);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::viewPlacedNotes(const QModelIndex &index) {
+void ViewOrgContactDialog::viewPlacedNotes(const QModelIndex &index)
+{
     uniqueid = query3->data(query3->index(index.row(), 5)).toString();
+
     state_call = "save_disable";
+
     notesDialog = new NotesDialog;
     notesDialog->setCallId(uniqueid, state_call);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::viewAllNotes(const QModelIndex &index) {
+void ViewOrgContactDialog::viewAllNotes(const QModelIndex &index)
+{
     uniqueid = query4->data(query4->index(index.row(), 7)).toString();
+
     state_call = "save_disable";
+
     notesDialog = new NotesDialog;
     notesDialog->setCallId(uniqueid, state_call);
     notesDialog->show();
@@ -1330,30 +1375,35 @@ void ViewOrgContactDialog::viewAllNotes(const QModelIndex &index) {
 void ViewOrgContactDialog::on_previousButton_clicked()
 {
     go = "previous";
+
     onUpdateCalls();
 }
 
 void ViewOrgContactDialog::on_nextButton_clicked()
 {
     go = "next";
+
     onUpdateCalls();
 }
 
 void ViewOrgContactDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
+
     onUpdateCalls();
 }
 
 void ViewOrgContactDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
+
     onUpdateCalls();;
 }
 
 void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
+
     onUpdateCalls();
 }
 

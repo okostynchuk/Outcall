@@ -30,6 +30,9 @@ protected slots:
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
+private slots:
+    void onReturn();
+
 private:
     Ui::EditOrgContactDialog *ui;
     QValidator *validator;

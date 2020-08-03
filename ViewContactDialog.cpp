@@ -69,6 +69,28 @@ ViewContactDialog::~ViewContactDialog()
     delete ui;
 }
 
+void ViewContactDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
+    query.exec();
+
+    QString orgID = NULL;
+
+    if (query.next())
+        orgID = query.value(0).toString();
+
+    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
+    query.exec();
+
+    if (query.next())
+        ui->Organization->setText(query.value(0).toString());
+}
+
 void ViewContactDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
@@ -117,13 +139,20 @@ void ViewContactDialog::onOpenAccess() {
 void ViewContactDialog::receiveData(bool updating)
 {
     if (updating)
+    {
         emit sendData(true);
+
+        destroy(true);
+    }
+    else
+        show();
 }
 
 void ViewContactDialog::receiveNumber(QString &to)
 {
     const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
+
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
@@ -138,7 +167,8 @@ void ViewContactDialog::onCall()
 
 void ViewContactDialog::onEdit()
 {
-    destroy(true);
+    hide();
+
     editContactDialog = new EditContactDialog;
     editContactDialog->setValuesContacts(updateID);
     connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
@@ -149,17 +179,21 @@ void ViewContactDialog::onEdit()
 void ViewContactDialog::setValuesContacts(QString &i)
 {
     updateID = i;
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM entry_phone WHERE entry_id = " + updateID);
     query.exec();
     query.first();
+
     countNumbers = query.value(0).toInt();
+
     query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + updateID);
     query.exec();
     query.next();
-    for(int i = 0; i < countNumbers; i++)
+
+    for (int i = 0; i < countNumbers; i++)
     {
         if (i == 0)
             ui->FirstNumber->setText(query.value(0).toString());
@@ -171,8 +205,10 @@ void ViewContactDialog::setValuesContacts(QString &i)
             ui->FourthNumber->setText(query.value(0).toString());
         if (i == 4)
             ui->FifthNumber->setText(query.value(0).toString());
+
         query.next();
     }
+
     numbersList = (QStringList()
                        << ui->FirstNumber->text()
                        << ui->SecondNumber->text()
@@ -180,19 +216,24 @@ void ViewContactDialog::setValuesContacts(QString &i)
                        << ui->FourthNumber->text()
                        << ui->FifthNumber->text());
 
-    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
-    query.exec();
-    QString orgID = NULL;
-    while(query.next())
-        orgID = query.value(0).toString();
-    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
-    query.exec();
-    while(query.next())
-        ui->Organization->setText(query.value(0).toString());
+//    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
+//    query.exec();
+
+//    QString orgID = NULL;
+
+//    if (query.next())
+//        orgID = query.value(0).toString();
+
+//    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
+//    query.exec();
+
+//    if (query.next())
+//        ui->Organization->setText(query.value(0).toString());
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = "+updateID);
     query.exec();
     query.next();
+
     QString entryFName = query.value(0).toString();
     QString entryMName = query.value(1).toString();
     QString entryLName = query.value(2).toString();
@@ -212,7 +253,9 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->Comment->setText(entryComment);
 
     days = ui->comboBox->currentText();
+
     page="1";
+
     updateCount();
 }
 
