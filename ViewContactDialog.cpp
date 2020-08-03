@@ -672,7 +672,6 @@ void ViewContactDialog::loadMissedCalls()
             ui->tableView->setIndexWidget(query1->index(row_index, 0), loadName());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
@@ -773,7 +772,6 @@ void ViewContactDialog::loadReceivedCalls()
             ui->tableView_2->setIndexWidget(query2->index(row_index, 0), loadName());
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
@@ -874,7 +872,6 @@ void ViewContactDialog::loadPlacedCalls()
             ui->tableView_3->setIndexWidget(query3->index(row_index, 0), loadName());
     }
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView_3->resizeRowsToContents();
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
