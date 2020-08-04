@@ -75,12 +75,12 @@ void ViewOrgContactDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
     addReminderDialog->setCallId(updateID);
-    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::onOpenAccess() {
+void ViewOrgContactDialog::onOpenAccess()
+{
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
     QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
@@ -94,12 +94,12 @@ void ViewOrgContactDialog::onOpenAccess() {
                             "Database="+databaseName_3+";"
                             "Uid="+userName_3+";"
                             "Pwd="+password_3);
-    bool ok = dbMSSQL.open();
+    dbMSSQL.open();
 
-    QSqlQuery query(dbMSSQL);
-
-    if (ok)
+    if (dbMSSQL.isOpen())
     {
+        QSqlQuery query(dbMSSQL);
+
         query.prepare("INSERT INTO CallTable (UserID, ClientID)"
                     "VALUES (?, ?)");
         query.addBindValue(userID);
@@ -111,9 +111,7 @@ void ViewOrgContactDialog::onOpenAccess() {
         dbMSSQL.close();
     }
     else
-    {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
-    }
 }
 
 void ViewOrgContactDialog::receiveDataPerson(bool updating)
@@ -183,7 +181,9 @@ void ViewOrgContactDialog::onUpdate()
     if (update == "default" && filter == false)
     {
         query_model = new QSqlQueryModel;
+
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_name ASC");
+
         m_horiz_header->setSortIndicatorShown(false);
     }
 
@@ -238,85 +238,76 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
         }
         else if (update == "default")
             m_horiz_header->setSortIndicatorShown(false);
+
         return;
     }
     else if (logicalIndex == 0)
     {
         query_model = new QSqlQueryModel;
+
         if (sort == "name")
             update = "default";
+
         sort = "id";
+
         if (update == "default")
         {
             update = "sortIDASC";
+
             m_horiz_header->setSortIndicator(0, Qt::AscendingOrder);
             m_horiz_header->setSortIndicatorShown(true);
+
             if (filter == false)
-            {
                 query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_id");
-            }
             else
             {
                 if (entry_name != "NULL")
-                {
-                    query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                }
+                    query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");              
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id");
-                }
             }
+
             onUpdate();
         }
         else if (update == "sortIDASC")
         {
             update = "sortIDDESC";
+
             m_horiz_header->setSortIndicator(0, Qt::DescendingOrder);
             m_horiz_header->setSortIndicatorShown(true);
+
             if (filter == false)
-            {
                 query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_id DESC");
-            }
             else
             {
                 if (entry_name != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                }
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_id DESC");
-                }
             }
+
             onUpdate();
         }
         else if (update == "sortIDDESC")
         {
             update = "default";
+
             m_horiz_header->setSortIndicatorShown(false);
+
             if (filter == true)
             {
                 if (entry_name != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-                }
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-                }
             }
+
             onUpdate();
         }
     }
@@ -334,85 +325,76 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
         }
         else if (update == "default")
             m_horiz_header->setSortIndicatorShown(false);
+
         return;
     }
     else if (logicalIndex == 1)
     {
         query_model = new QSqlQueryModel;
+
         if (sort == "id")
             update = "default";
+
         sort = "name";
+
         if (update == "default")
         {
             update = "sortASC";
+
             m_horiz_header->setSortIndicator(1, Qt::AscendingOrder);
             m_horiz_header->setSortIndicatorShown(true);
+
             if (filter == false)
-            {
                 query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_name");
-            }
             else
             {
                 if (entry_name != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                }
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name");
-                }
             }
+
             onUpdate();
         }
         else if (update == "sortASC")
         {
             update = "sortDESC";
+
             m_horiz_header->setSortIndicator(1, Qt::DescendingOrder);
             m_horiz_header->setSortIndicatorShown(true);
+
             if (filter == false)
-            {
                 query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' GROUP BY ep.entry_id ORDER BY entry_name DESC");
-            }
             else
             {
                 if (entry_name != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                }
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY ep.entry_name DESC");
-                }
             }
+
             onUpdate();
         }
         else if (update == "sortDESC")
         {
             update = "default";
+
             m_horiz_header->setSortIndicatorShown(false);
+
             if (filter == true)
             {
                 if (entry_name != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id");
-                }
                 else if (entry_phone != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id");
-                }
                 else if (entry_comment != "NULL")
-                {
                     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id");
-                }
             }
+
             onUpdate();
         }
     }
@@ -447,6 +429,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
             ui->FourthNumber->setText(query.value(0).toString());
         if (i == 4)
             ui->FifthNumber->setText(query.value(0).toString());
+
         query.next();
     }
 
@@ -532,12 +515,15 @@ void ViewOrgContactDialog::loadAllCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -557,18 +543,20 @@ void ViewOrgContactDialog::loadAllCalls()
         page = "1";
 
     ui->lineEdit_page->setText(page);
+
     ui->label_pages_2->setText(tr("из ") + pages);
 
     QString queryString = "SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                           "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                           " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                          "'"+ days +"' DAY) AND (";
+                          "'" + days + "' DAY) AND (";
+
     for (int i = 0; i < countNumbers; i++)
     {
         if(i == 0)
-            queryString.append(" src = '"+numbersList[i]+"' OR dst = '"+numbersList[i]+"'");
+            queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
         else
-            queryString.append(" OR src = '"+numbersList[i]+"' OR dst = '"+numbersList[i]+"'");
+            queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
     }
 
     if (ui->lineEdit_page->text() == "1")
@@ -623,7 +611,9 @@ void ViewOrgContactDialog::loadAllCalls()
     }
 
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_2->resizeColumnsToContents();
+
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
@@ -652,6 +642,7 @@ QWidget* ViewOrgContactDialog::loadStatus()
     layoutsStatus.append(statusLayout);
     widgetsStatus.append(statusWgt);
     labelsStatus.append(statusLabel);
+
     return statusWgt;
 }
 
@@ -664,6 +655,7 @@ void ViewOrgContactDialog::deleteStatusObjects()
         widgetsStatus[i]->deleteLater();
 
     qDeleteAll(labelsStatus);
+
     layoutsStatus.clear();
     widgetsStatus.clear();
     labelsStatus.clear();
@@ -686,19 +678,19 @@ QWidget* ViewOrgContactDialog::loadName()
         widgetsAllName.append(nameWgt);
         labelsAllName.append(nameLabel);
     }
-    if (ui->tabWidget_3->currentIndex() == 1)
+    else if (ui->tabWidget_3->currentIndex() == 1)
     {
         layoutsMissedName.append(nameLayout);
         widgetsMissedName.append(nameWgt);
         labelsMissedName.append(nameLabel);
     }
-    if (ui->tabWidget_3->currentIndex() == 2)
+    else if (ui->tabWidget_3->currentIndex() == 2)
     {
         layoutsReceivedName.append(nameLayout);
         widgetsReceivedName.append(nameWgt);
         labelsReceivedName.append(nameLabel);
     }
-    if (ui->tabWidget_3->currentIndex() == 3)
+    else if (ui->tabWidget_3->currentIndex() == 3)
     {
         layoutsPlacedName.append(nameLayout);
         widgetsPlacedName.append(nameWgt);
@@ -719,11 +711,12 @@ void ViewOrgContactDialog::deleteNameObjects()
             widgetsAllName[i]->deleteLater();
 
         qDeleteAll(labelsAllName);
+
         layoutsAllName.clear();
         widgetsAllName.clear();
         labelsAllName.clear();
     }
-    if (ui->tabWidget_3->currentIndex() == 1)
+    else if (ui->tabWidget_3->currentIndex() == 1)
     {
         for (int i = 0; i < layoutsMissedName.size(); ++i)
             layoutsMissedName[i]->deleteLater();
@@ -732,11 +725,12 @@ void ViewOrgContactDialog::deleteNameObjects()
             widgetsMissedName[i]->deleteLater();
 
         qDeleteAll(labelsMissedName);
+
         layoutsMissedName.clear();
         widgetsMissedName.clear();
         labelsMissedName.clear();
     }
-    if (ui->tabWidget_3->currentIndex() == 2)
+    else if (ui->tabWidget_3->currentIndex() == 2)
     {
         for (int i = 0; i < layoutsReceivedName.size(); ++i)
             layoutsReceivedName[i]->deleteLater();
@@ -745,11 +739,12 @@ void ViewOrgContactDialog::deleteNameObjects()
             widgetsReceivedName[i]->deleteLater();
 
         qDeleteAll(labelsReceivedName);
+
         layoutsReceivedName.clear();
         widgetsReceivedName.clear();
         labelsReceivedName.clear();
     }
-    if (ui->tabWidget_3->currentIndex() == 3)
+    else if (ui->tabWidget_3->currentIndex() == 3)
     {
         for (int i = 0; i < layoutsPlacedName.size(); ++i)
             layoutsPlacedName[i]->deleteLater();
@@ -758,6 +753,7 @@ void ViewOrgContactDialog::deleteNameObjects()
             widgetsPlacedName[i]->deleteLater();
 
         qDeleteAll(labelsPlacedName);
+
         layoutsPlacedName.clear();
         widgetsPlacedName.clear();
         labelsPlacedName.clear();
@@ -767,14 +763,18 @@ void ViewOrgContactDialog::deleteNameObjects()
 void ViewOrgContactDialog::daysChanged()
 {
      days = ui->comboBox_2->currentText();
+
      go = "default";
+
      updateCount();
 }
 
 void ViewOrgContactDialog::tabSelected()
 {
     go = "default";
+
     page = "1";
+
     updateCount();
 }
 
@@ -785,20 +785,22 @@ void ViewOrgContactDialog::updateCount()
 
     if (ui->tabWidget_3->currentIndex() == 0)
     {
-
         QString queryString = "SELECT COUNT(*) FROM cdr "
                               "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
                               "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                              "'"+ days +"' DAY) AND ( ";
+                              "'" + days + "' DAY) AND ( ";
+
         for (int i = 0; i < countNumbers; i++)
         {
             if (i == 0)
-                queryString.append(" dst = '"+numbersList[i]+"' OR src = '"+numbersList[i]+"'");
+                queryString.append(" dst = '" + numbersList[i] + "' OR src = '" + numbersList[i] + "'");
             else
-                queryString.append(" OR dst = '"+numbersList[i]+"' OR src = '"+numbersList[i]+"'");
-            if (i == countNumbers-1)
+                queryString.append(" OR dst = '" + numbersList[i] + "' OR src = '"+numbersList[i] + "'");
+
+            if (i == countNumbers - 1)
                  queryString.append(")");
         }
+
         query.prepare(queryString);
         query.exec();
         query.first();
@@ -811,13 +813,15 @@ void ViewOrgContactDialog::updateCount()
     {
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE (disposition = 'NO ANSWER'"
                       " OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
-                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (");
+                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
+
         for (int i = 0; i < countNumbers; i++)
         {
             if (i == 0)
-                queryString.append(" src = '"+numbersList[i]+"'");
+                queryString.append(" src = '" + numbersList[i] + "'");
             else
-                queryString.append(" OR src = '"+numbersList[i]+"'");
+                queryString.append(" OR src = '" + numbersList[i] + "'");
+
             if (i == countNumbers-1)
                  queryString.append(")");
         }
@@ -833,16 +837,19 @@ void ViewOrgContactDialog::updateCount()
     else if (ui->tabWidget_3->currentIndex() == 2)
     {
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE disposition = 'ANSWERED' "
-                      "AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (");
+                      "AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
+
         for (int i = 0; i < countNumbers; i++)
         {
             if (i == 0)
-                queryString.append(" src = '"+numbersList[i]+"'");
+                queryString.append(" src = '" + numbersList[i] + "'");
             else
-                queryString.append(" OR src = '"+numbersList[i]+"'");
-            if (i == countNumbers-1)
+                queryString.append(" OR src = '" + numbersList[i] + "'");
+
+            if (i == countNumbers - 1)
                  queryString.append(")");
         }
+
         query.prepare(queryString);
         query.exec();
         query.first();
@@ -854,17 +861,19 @@ void ViewOrgContactDialog::updateCount()
     else if (ui->tabWidget_3->currentIndex() == 3)
     {
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE "
-                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND (");
+                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
         for (int i = 0; i < countNumbers; i++)
         {
             if (i == 0)
-                queryString.append(" dst = '"+numbersList[i]+"'");
+                queryString.append(" dst = '" + numbersList[i] + "'");
             else
-                queryString.append(" OR dst = '"+numbersList[i]+"'");
-            if (i == countNumbers-1)
+                queryString.append(" OR dst = '" + numbersList[i] + "'");
+
+            if (i == countNumbers - 1)
                  queryString.append(")");
         }
+
         query.prepare(queryString);
         query.exec();
         query.first();
@@ -883,6 +892,7 @@ void ViewOrgContactDialog::loadMissedCalls()
         deleteNameObjects();
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+
     query1 = new QSqlQueryModel;
 
     QSqlDatabase db;
@@ -893,12 +903,15 @@ void ViewOrgContactDialog::loadMissedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -918,19 +931,23 @@ void ViewOrgContactDialog::loadMissedCalls()
         page = "1";
 
     ui->lineEdit_page->setText(page);
+
     ui->label_pages_2->setText(tr("из ") + pages);
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE ("
                           "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
                           "OR disposition = 'CANCEL') AND (";
+
     for (int i = 0; i < countNumbers; i++)
     {
             if(i == 0)
-                queryString.append(" src = '"+numbersList[i]+"'");
+                queryString.append(" src = '" + numbersList[i] + "'");
             else
-                queryString.append(" OR src = '"+numbersList[i]+"'");
+                queryString.append(" OR src = '" + numbersList[i] + "'");
     }
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ORDER BY datetime ");
+
     if (ui->lineEdit_page->text() == "1")
         queryString.append("DESC LIMIT 0,"
                               + QString::number(ui->lineEdit_page->text().toInt() *
@@ -943,6 +960,7 @@ void ViewOrgContactDialog::loadMissedCalls()
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
     query1->setQuery(queryString, dbAsterisk);
+
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -951,6 +969,7 @@ void ViewOrgContactDialog::loadMissedCalls()
     query1->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
     ui->tableView_3->setModel(query1);
+
     ui->tableView_3->setColumnHidden(5, true);
     ui->tableView_3->setColumnHidden(6, true);
 
@@ -959,10 +978,12 @@ void ViewOrgContactDialog::loadMissedCalls()
 
         extfield1 = query1->data(query1->index(row_index, 0)).toString();
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
+
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
         query.first();
-        if(query.value(0) != 0)
+
+        if (query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote());
 
         if (extfield1.isEmpty())
@@ -970,8 +991,11 @@ void ViewOrgContactDialog::loadMissedCalls()
     }
 
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_3->resizeColumnsToContents();
+
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     ui->playAudio->setDisabled(true);
@@ -986,6 +1010,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
         deleteNameObjects();
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+
     query2 = new QSqlQueryModel;
 
     QSqlDatabase db;
@@ -996,12 +1021,15 @@ void ViewOrgContactDialog::loadReceivedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -1021,18 +1049,22 @@ void ViewOrgContactDialog::loadReceivedCalls()
         page = "1";
 
     ui->lineEdit_page->setText(page);
+
     ui->label_pages_2->setText(tr("из ") + pages);
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
                           "disposition = 'ANSWERED' AND (";
+
     for (int i = 0; i < countNumbers; i++)
     {
         if (i == 0)
-            queryString.append(" src = '"+numbersList[i]+"'");
+            queryString.append(" src = '" + numbersList[i] + "'");
         else
-            queryString.append(" OR src = '"+numbersList[i]+"'");
+            queryString.append(" OR src = '" + numbersList[i] + "'");
     }
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ORDER BY datetime ");
+
     if (ui->lineEdit_page->text() == "1")
         queryString.append("DESC LIMIT 0,"
                               + QString::number(ui->lineEdit_page->text().toInt() *
@@ -1045,6 +1077,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
                          QString::number(ui->comboBox_list->currentText().toInt()));
 
     query2->setQuery(queryString, dbAsterisk);
+
     query2->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query2->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query2->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -1053,6 +1086,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
     query2->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
     ui->tableView_4->setModel(query2);
+
     ui->tableView_4->setColumnHidden(5, true);
     ui->tableView_4->setColumnHidden(6, true);
 
@@ -1061,18 +1095,24 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
         extfield1 = query2->data(query2->index(row_index, 0)).toString();
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
+
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
-        if(query.value(0) != 0)
+
+        if (query.value(0) != 0)
             ui->tableView_4->setIndexWidget(query2->index(row_index, 4), loadNote());
 
         if (extfield1.isEmpty())
             ui->tableView_4->setIndexWidget(query2->index(row_index, 0), loadName());
     }
+
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_4->resizeColumnsToContents();
+
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
     ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     ui->playAudio->setDisabled(true);
@@ -1087,6 +1127,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
         deleteNameObjects();
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+
     query3 = new QSqlQueryModel;
 
     QSqlDatabase db;
@@ -1097,12 +1138,15 @@ void ViewOrgContactDialog::loadPlacedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -1122,17 +1166,21 @@ void ViewOrgContactDialog::loadPlacedCalls()
         page = "1";
 
     ui->lineEdit_page->setText(page);
+
     ui->label_pages_2->setText(tr("из ") + pages);
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE (";
+
     for (int i = 0; i < countNumbers; i++)
     {
         if (i == 0)
-            queryString.append(" dst = '"+numbersList[i]+"'");
+            queryString.append(" dst = '" + numbersList[i] + "'");
         else
-            queryString.append(" OR dst = '"+numbersList[i]+"'");
+            queryString.append(" OR dst = '"+numbersList[i] + "'");
     }
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ORDER BY datetime ");
+
     if (ui->lineEdit_page->text() == "1")
         queryString.append("DESC LIMIT 0,"
                               + QString::number(ui->lineEdit_page->text().toInt() *
@@ -1145,6 +1193,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
     query3->setQuery(queryString, dbAsterisk);
+
     query3->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     query3->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
     query3->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
@@ -1153,19 +1202,20 @@ void ViewOrgContactDialog::loadPlacedCalls()
     query3->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
 
     ui->tableView_5->setModel(query3);
+
     ui->tableView_5->setColumnHidden(5, true);
     ui->tableView_5->setColumnHidden(6, true);
 
     for (int row_index = 0; row_index < ui->tableView_5->model()->rowCount(); ++row_index)
     {
-
         extfield1 = query3->data(query3->index(row_index, 0)).toString();
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
         query.first();
-        if(query.value(0) != 0)
+
+        if (query.value(0) != 0)
             ui->tableView_5->setIndexWidget(query3->index(row_index, 4), loadNote());
 
         if (extfield1.isEmpty())
@@ -1173,8 +1223,11 @@ void ViewOrgContactDialog::loadPlacedCalls()
     }
 
     ui->tableView_5->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_5->resizeColumnsToContents();
+
     ui->tableView_5->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+
     ui->tableView_5->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     ui->playAudio->setDisabled(true);
@@ -1192,10 +1245,12 @@ QWidget* ViewOrgContactDialog::loadNote()
     query.prepare("SELECT note FROM calls WHERE uniqueid =" + uniqueid + " ORDER BY datetime DESC");
     query.exec();
     query.first();
+
     note->setText(query.value(0).toString());
+
     note->setWordWrap(true);
 
-    if(ui->tabWidget_3->currentIndex() == 0)
+    if (ui->tabWidget_3->currentIndex() == 0)
     {
         widgets.append(wgt);
         notes.append(note);
@@ -1215,6 +1270,7 @@ QWidget* ViewOrgContactDialog::loadNote()
         widgetsPlaced.append(wgt);
         notesPlaced.append(note);
     }
+
     return wgt;
 }
 
@@ -1224,7 +1280,9 @@ void ViewOrgContactDialog::deleteNotesObjects()
     {
         for (int i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
+
         qDeleteAll(notes);
+
         widgets.clear();
         notes.clear();
     }
@@ -1232,7 +1290,9 @@ void ViewOrgContactDialog::deleteNotesObjects()
     {
         for (int i = 0; i < widgetsMissed.size(); ++i)
             widgetsMissed[i]->deleteLater();
+
         qDeleteAll(notesMissed);
+
         widgetsMissed.clear();
         notesMissed.clear();
     }
@@ -1240,7 +1300,9 @@ void ViewOrgContactDialog::deleteNotesObjects()
     {
         for (int i = 0; i < widgetsReceived.size(); ++i)
             widgetsReceived[i]->deleteLater();
+
         qDeleteAll(notesReceived);
+
         widgetsReceived.clear();
         notesReceived.clear();
     }
@@ -1248,7 +1310,9 @@ void ViewOrgContactDialog::deleteNotesObjects()
     {
         for (int i = 0; i < widgetsPlaced.size(); ++i)
             widgetsPlaced[i]->deleteLater();
+
         qDeleteAll(notesPlaced);
+
         widgetsPlaced.clear();
         notesPlaced.clear();
     }
@@ -1260,12 +1324,15 @@ void ViewOrgContactDialog::searchFunction()
     {
         update = "default";
         filter = false;
+
         onUpdate();
+
         return;
     }
 
     update = "default";
     filter = true;
+
     m_horiz_header->setSortIndicatorShown(false);
 
     entry_name = "NULL";
@@ -1275,22 +1342,31 @@ void ViewOrgContactDialog::searchFunction()
     if (ui->comboBox->currentText() == tr("Поиск по ФИО"))
     {
         query_model = new QSqlQueryModel;
+
         entry_name = ui->lineEdit->text();
+
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_name LIKE '%" + entry_name + "%' GROUP BY ep.entry_id ORDER BY entry_name ASC");
+
         onUpdate();
     }
     else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
     {
         query_model = new QSqlQueryModel;
+
         entry_phone = ui->lineEdit->text();
+
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_phone LIKE '%" + entry_phone + "%' GROUP BY ep.entry_id ORDER BY entry_name ASC");
+
         onUpdate();
     }
     else if (ui->comboBox->currentText() == tr("Поиск по заметке"))
     {
         query_model = new QSqlQueryModel;
+
         entry_comment = ui->lineEdit->text();
+
         query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + updateID + "' AND ep.entry_comment LIKE '%" + entry_comment + "%' GROUP BY ep.entry_id ORDER BY entry_name ASC");
+
         onUpdate();
     }
 }
@@ -1412,6 +1488,7 @@ void ViewOrgContactDialog::onPlayAudio()
     if ((ui->tabWidget_3->currentIndex() == 0 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 1 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 2 && ui->tableView_4->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 3 && ui->tableView_5->selectionModel()->selectedRows().count() != 1))
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -1433,12 +1510,14 @@ void ViewOrgContactDialog::onPlayAudioPhone()
     if ((ui->tabWidget_3->currentIndex() == 0 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 1 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 2 && ui->tableView_4->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 3 && ui->tableView_5->selectionModel()->selectedRows().count() != 1))
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
     if (!recordpath.isEmpty())
     {
         const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
         g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
     }
 }

@@ -22,10 +22,6 @@ public:
     };
 
 private:
-
-    /**
-     * @brief The PWInformation struct / popup window information
-     */
     struct PWInformation
     {
         PWType type;
@@ -41,17 +37,14 @@ public:
     static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
 
-protected:
-    void changeEvent(QEvent *e);
-
 private slots:
-    void onTimer();
-    void onPopupTimeout();
-    virtual void mousePressEvent(QMouseEvent *evet);
-
-private:
     void startPopupWaitingTimer();
     void closeAndDestroy();
+    void onTimer();
+    void onPopupTimeout();
+
+    void changeEvent(QEvent *e);
+    void mousePressEvent(QMouseEvent *evet);
 
 private:
     Ui::PopupHelloWindow *ui;
@@ -60,8 +53,8 @@ private:
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
     bool m_bAppearing;
-
     QTimer m_timer;
+
     PWInformation m_pwi;
 
     static QList<PopupHelloWindow*> m_PopupHelloWindows;

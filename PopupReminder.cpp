@@ -93,12 +93,14 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     else if (query.value(0).toString() == NULL && query.value(1).toString() == m_pri.my_number)
     {
         m_pri.number = m_pri.my_number;
+
         ui->callButton->hide();
         ui->openAccessButton->hide();
     }
     else
     {
         m_pri.number = query.value(1).toString();
+
         ui->callButton->hide();
         ui->openAccessButton->hide();
     }
@@ -123,6 +125,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 40px;} ::drop-down{border: 0px;}");
 
     qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
+
     this->installEventFilter(this);
 
     if (!ui->callButton->isHidden())
@@ -196,6 +199,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
+
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
 }
@@ -208,8 +212,11 @@ PopupReminder::~PopupReminder()
 void PopupReminder::closeAndDestroy()
 {
     hide();
+
     m_timer.stop();
+
     m_PopupReminders.removeOne(this);
+
     delete this;
 }
 
@@ -229,6 +236,7 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
     if (!position.isNull())
     {
         QPoint delta = event->globalPos() - position;
+
         if (position.x() > this->x() + this->width() - 10
                 || position.y() > this->y() + this->height() - 10)
         {}
@@ -245,8 +253,10 @@ bool PopupReminder::isInnerPhone(QString *str)
     int pos = 0;
 
     QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
+
     return false;
 }
 
@@ -256,64 +266,68 @@ void PopupReminder::onTimer()
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
+            case TASKBAR_ON_BOTTOM:
+                if (m_nCurrentPosY>(m_nStartPosY-height()))
+                    m_nCurrentPosY-=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_TOP:
+                if ((m_nCurrentPosY-m_nStartPosY)<height())
+                    m_nCurrentPosY+=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_LEFT:
+                if ((m_nCurrentPosX-m_nStartPosX)<width())
+                    m_nCurrentPosX+=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_RIGHT:
+                if (m_nCurrentPosX>(m_nStartPosX-width()))
+                    m_nCurrentPosX-=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
         }
     }
     else // DISSAPPEARING
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_TOP:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_LEFT:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_RIGHT:
-            closeAndDestroy();
-            return;
-            break;
+            case TASKBAR_ON_BOTTOM:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_TOP:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_LEFT:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_RIGHT:
+                closeAndDestroy();
+                return;
+                break;
         }
     }
 
@@ -339,8 +353,8 @@ void PopupReminder::receiveData(bool updating)
 void PopupReminder::receiveNumber(QString &number)
 {
     QString my_number = m_pri.my_number.remove(QRegExp(" .+"));
-
     const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
@@ -361,12 +375,14 @@ void PopupReminder::onCall()
         else
         {
             const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
             g_pAsteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
         }
     }
     else
     {
         const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
         g_pAsteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
     }
 }
@@ -484,12 +500,12 @@ void PopupReminder::onOpenAccess()
                             "Database="+databaseName_3+";"
                             "Uid="+userName_3+";"
                             "Pwd="+password_3);
-    bool ok = dbMSSQL.open();
+    dbMSSQL.open();
 
-    QSqlQuery query1(dbMSSQL);
-
-    if (ok)
+    if (dbMSSQL.isOpen())
     {
+        QSqlQuery query1(dbMSSQL);
+
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (user_id(?), ?)");
         query1.addBindValue(userID);
@@ -503,6 +519,7 @@ void PopupReminder::onOpenAccess()
     else
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
+
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
     }
 }
@@ -556,9 +573,12 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     pri.text = tr("<b>%1</b>").arg(pri.note);
 
     PopupReminder *reminder = new PopupReminder(pri);
+
     reminder->show();
+
     reminder->ui->labelTime->setText(tr("<font size = 1>%1</font>").arg(pri.dateTime.toString("dd.MM.yy hh:mm")));
     reminder->ui->labelTime->setStyleSheet("*{color: white; font-weight:bold}");
+
     m_PopupReminders.append(reminder);
 }
 

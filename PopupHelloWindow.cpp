@@ -51,10 +51,10 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     QRect rcScreen = desktop.screenGeometry(this);
     QRect rcDesktop = desktop.availableGeometry(this);
 
-    nDesktopWidth=rcDesktop.width();
-    nDesktopHeight=rcDesktop.height();
-    nScreenWidth=rcScreen.width();
-    nScreenHeight=rcScreen.height();
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+    nScreenWidth = rcScreen.width();
+    nScreenHeight = rcScreen.height();
 
     bool bTaskbarOnRight = nDesktopWidth < nScreenWidth && rcDesktop.left() == 0;
     bool bTaskbarOnLeft = nDesktopWidth < nScreenWidth && rcDesktop.left() != 0;
@@ -100,6 +100,7 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
+
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
 }
@@ -112,12 +113,14 @@ PopupHelloWindow::~PopupHelloWindow()
 void PopupHelloWindow::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
+
+    switch (e->type())
+    {
+        case QEvent::LanguageChange:
+            ui->retranslateUi(this);
+            break;
+        default:
+            break;
     }
 }
 
@@ -130,6 +133,7 @@ void PopupHelloWindow::onPopupTimeout()
 void PopupHelloWindow::startPopupWaitingTimer()
 {
     m_bAppearing = false;
+
     m_timer.stop();
 
     int time2live = TIME_TO_LIVE;
@@ -143,8 +147,11 @@ void PopupHelloWindow::startPopupWaitingTimer()
 void PopupHelloWindow::closeAndDestroy()
 {
     hide();
+
     m_timer.stop();
+
     m_PopupHelloWindows.removeOne(this);
+
     delete this;
 }
 
@@ -154,30 +161,30 @@ void PopupHelloWindow::onTimer()
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
+            case TASKBAR_ON_BOTTOM:
+                if (m_nCurrentPosY>(m_nStartPosY-height()))
+                    m_nCurrentPosY-=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_TOP:
+                if ((m_nCurrentPosY-m_nStartPosY)<height())
+                    m_nCurrentPosY+=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_LEFT:
+                if ((m_nCurrentPosX-m_nStartPosX)<width())
+                    m_nCurrentPosX+=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_RIGHT:
+                if (m_nCurrentPosX>(m_nStartPosX-width()))
+                    m_nCurrentPosX-=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
         }
     }
 
@@ -185,38 +192,46 @@ void PopupHelloWindow::onTimer()
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY<m_nStartPosY) {
-                m_nCurrentPosY+=m_nIncrement;
-            } else {
-                closeAndDestroy();
-                return;
-            }
-            break;
-        case TASKBAR_ON_TOP:
-            if (m_nCurrentPosY>m_nStartPosY) {
-                m_nCurrentPosY-=m_nIncrement;
-            } else {
-                closeAndDestroy();
-                return;
-            }
-            break;
-        case TASKBAR_ON_LEFT:
-            if (m_nCurrentPosX>m_nStartPosX) {
-                m_nCurrentPosX-=m_nIncrement;
-            } else {
-                closeAndDestroy();
-                return;
-            }
-            break;
-        case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX<m_nStartPosX) {
-                m_nCurrentPosX+=m_nIncrement;
-            } else {
-                closeAndDestroy();
-                return;
-            }
-            break;
+            case TASKBAR_ON_BOTTOM:
+                if (m_nCurrentPosY<m_nStartPosY)
+                    m_nCurrentPosY+=m_nIncrement;
+                else
+                {
+                    closeAndDestroy();
+
+                    return;
+                }
+                break;
+            case TASKBAR_ON_TOP:
+                if (m_nCurrentPosY>m_nStartPosY)
+                    m_nCurrentPosY-=m_nIncrement;
+                else
+                {
+                    closeAndDestroy();
+
+                    return;
+                }
+                break;
+            case TASKBAR_ON_LEFT:
+                if (m_nCurrentPosX>m_nStartPosX)
+                    m_nCurrentPosX-=m_nIncrement;
+                else
+                {
+                    closeAndDestroy();
+
+                    return;
+                }
+                break;
+            case TASKBAR_ON_RIGHT:
+                if (m_nCurrentPosX<m_nStartPosX)
+                    m_nCurrentPosX+=m_nIncrement;
+                else
+                {
+                    closeAndDestroy();
+
+                    return;
+                }
+                break;
         }
     }
 
@@ -226,8 +241,10 @@ void PopupHelloWindow::onTimer()
 void PopupHelloWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
     PWInformation pwi;
+
     pwi.type = type;
-    if (caption!="")
+
+    if (caption != "")
         pwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
     else
         pwi.text = message;
@@ -238,7 +255,9 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
     pwi.avatar = avatar;
 
     PopupHelloWindow *popup = new PopupHelloWindow(pwi);
+
     popup->show();
+
     m_PopupHelloWindows.append(popup);
 }
 
@@ -251,5 +270,6 @@ void PopupHelloWindow::closeAll()
 void PopupHelloWindow::mousePressEvent(QMouseEvent *)
 {
     m_bAppearing = false;
+
     m_timer.start();
 }

@@ -18,7 +18,7 @@ public:
 
     void updateDebug(const QString &info);
 
-protected:
+private slots:
     void onClear() const;
     void onExit();
 

@@ -13,25 +13,26 @@ class RemindersThread : public QObject
 {
     Q_OBJECT
 
-public:
-    RemindersThread(QString receivedNumber, QList<QString> receivedIds, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes);
-    ~RemindersThread();
+signals:
+    void notify(QString, QDateTime, QString);
+    void finished();
 
 public slots:
     void process();
     void receiveNewValues(QList<QString> receivedIds, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes);
 
-signals:
-    void notify(QString, QDateTime, QString);
-    void finished();
+public:
+    RemindersThread(QString receivedNumber, QList<QString> receivedIds, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes);
+    ~RemindersThread();
 
 private:
-    QSqlDatabase dbReminders;
-    QSqlQuery query;
-    QString my_number;
     QList<QString> ids;
     QList<QDateTime> dateTimes;
     QList<QString> notes;
+
+    QSqlDatabase dbReminders;
+    QSqlQuery query;
+    QString my_number;
 };
 
 #endif // REMINDERSTHREAD_H

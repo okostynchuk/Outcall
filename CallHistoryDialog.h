@@ -26,10 +26,6 @@ class CallHistoryDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit CallHistoryDialog(QWidget *parent = 0);
-    ~CallHistoryDialog();
-
 public slots:
     void playerClosed(bool);
     void receiveDataToAllCalls();
@@ -37,16 +33,27 @@ public slots:
     void receiveDataToReceived();
     void receiveDataToPlaced();
 
-protected slots:
+public:
+    explicit CallHistoryDialog(QWidget *parent = 0);
+    ~CallHistoryDialog();
+
+private slots:
+    void loadAllCalls();
+    void loadMissedCalls();
+    void loadReceivedCalls();
+    void loadPlacedCalls();
+
     void onPlayAudio();
     void onPlayAudioPhone();
     void onAddContact();
     void onAddOrgContact();
     void onCallClicked();
-    bool checkNumber(QString &);
     void onUpdate();
     void onUpdateClick();
     void updateCount();
+    void tabSelected();
+    void daysChanged();
+
     void deleteObjects();
     void deleteNameObjects();
     void deleteObjectsOfAllCalls();
@@ -54,49 +61,51 @@ protected slots:
     void deleteReceivedObjects();
     void deletePlacedObjects();
     void deleteStatusObjects();
+
     void editContact(QString &);
     void editOrgContact(QString &);
+
     QString getUpdateId(QString &);
+
     void addNotes(const QModelIndex &);
     void addNoteToMissed(const QModelIndex &);
     void addNoteToReceived(const QModelIndex &);
     void addNoteToPlaced(const QModelIndex &);
-    void loadAllCalls();
-    void loadMissedCalls();
-    void loadReceivedCalls();
-    void loadPlacedCalls();
+
     void getDataAll(const QModelIndex &index);
     void getDataMissed(const QModelIndex &index);
     void getDataReceived(const QModelIndex &index);
     void getDataPlaced(const QModelIndex &index);
-    void tabSelected();
-    void daysChanged();
 
-protected:
-   void showEvent(QShowEvent *);
-   void closeEvent(QCloseEvent *);
-
-private slots:
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
+
     bool isInnerPhone(QString *str);
+    bool checkNumber(QString &);
+
+    void showEvent(QShowEvent *);
+    void closeEvent(QCloseEvent *);
 
 private:
     Ui::CallHistoryDialog *ui;
+
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
+
     QValidator *validator;
+
     PlayAudioDialog *playAudioDialog = nullptr;
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     NotesDialog *notesDialog;
+
     QString recordpath;
     QString state_call;
     QString page;
@@ -113,17 +122,20 @@ private:
     QString callerNum;
     int count;
     int remainder;
+
     QWidget* loadStatus();
     QWidget* loadAllNotes();
     QWidget* loadMissedNote();
     QWidget* loadReceivedNote();
     QWidget* loadPlacedNote();
     QWidget* loadName();
+
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
     QList<QHBoxLayout*> layoutsReceivedName;
     QList<QHBoxLayout*> layoutsPlacedName;
     QList<QHBoxLayout*> layoutsStatus;
+
     QList<QWidget*> widgetsStatus;
     QList<QWidget*> widgets;
     QList<QWidget*> widgetsAllName;
@@ -135,6 +147,7 @@ private:
     QList<QWidget*> widgetsCancel;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
+
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;

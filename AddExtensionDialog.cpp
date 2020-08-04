@@ -37,6 +37,7 @@ void AddExtensionDialog::setExtension(const QString &extension)
 void AddExtensionDialog::setProtocol(const QString &protocol)
 {
     int index = ui->protocol->findText(protocol);
+
     ui->protocol->setCurrentIndex(index);
 }
 
@@ -47,6 +48,7 @@ void AddExtensionDialog::on_applyButton_pressed()
     else
     {
          QDialog::accept();
+
          emit addExten();
     }
 }

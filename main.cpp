@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setText(QObject::tr("Приложение уже запущено!"));
             msgBox.exec();
+
             return 1;
         }
 
@@ -75,10 +76,11 @@ int main(int argc, char *argv[])
                                 "Uid="+userName_3+";"
                                 "Pwd="+password_3);
         dbMSSQL.open();
+
         if (dbMSSQL.isOpen())
             MSSQLopened = true;
         else
-             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
+            QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -111,29 +113,35 @@ int main(int argc, char *argv[])
     dbAsterisk.setPort(port_2.toUInt());
     dbAsterisk.open();
 
-    if(!db.isOpen() && !dbAsterisk.isOpen())
+    if (!db.isOpen() && !dbAsterisk.isOpen())
     {
         QString state = "twoDb";
+
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
+
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
-    else if(!db.isOpen())
+    else if (!db.isOpen())
     {
         QString state = "db";
+
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
+
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
 
     }
-    else if(!dbAsterisk.isOpen())
+    else if (!dbAsterisk.isOpen())
     {
         QString state = "dbAsterisk";
+
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
+
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbAsterisk, state);
         databasesConnectDialog->exec();

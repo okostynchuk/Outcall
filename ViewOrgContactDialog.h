@@ -26,12 +26,6 @@ class ViewOrgContactDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit ViewOrgContactDialog(QWidget *parent = 0);
-    void setOrgValuesContacts(QString &);
-    void setOrgValuesCallHistory(QString &);
-    ~ViewOrgContactDialog();
-
 signals:
     void sendData(bool);
     void sendNumber(QString &);
@@ -43,7 +37,22 @@ public slots:
     void receivePersonID(QString &);
     void playerClosed(bool);
 
+public:
+    explicit ViewOrgContactDialog(QWidget *parent = 0);
+    ~ViewOrgContactDialog();
+
+    void setOrgValuesContacts(QString &);
+    void setOrgValuesCallHistory(QString &);
+
 protected slots:
+
+
+private slots:
+    void loadAllCalls();
+    void loadMissedCalls();
+    void loadReceivedCalls();
+    void loadPlacedCalls();
+
     void onAddReminder();
     void onOpenAccess();
     void onUpdate();
@@ -53,30 +62,27 @@ protected slots:
     void onCall();
     void onEdit();
     void onComboBoxSelected();
-    void on_lineEdit_returnPressed();
     void showCard(const QModelIndex &index);
     void viewAllNotes(const QModelIndex &index);
     void viewMissedNotes(const QModelIndex &index);
     void viewRecievedNotes(const QModelIndex &index);
     void viewPlacedNotes(const QModelIndex &index);
     void onSectionClicked (int logicalIndex);
-    void loadAllCalls();
-    void loadMissedCalls();
-    void loadReceivedCalls();
-    void loadPlacedCalls();
     void updateCount();
-    void deleteNotesObjects();
-    void deleteStatusObjects();
-    void deleteNameObjects();
     void searchFunction();
     void tabSelected();
     void daysChanged();
+
+    void deleteNotesObjects();
+    void deleteStatusObjects();
+    void deleteNameObjects();
+
     void getDataAll(const QModelIndex &index);
     void getDataMissed();
     void getDataReceived(const QModelIndex &index);
     void getDataPlaced(const QModelIndex &index);
 
-private slots:
+    void on_lineEdit_returnPressed();
     void on_pushButton_clicked();
     void on_addPersonToOrg_clicked();
     void on_previousButton_clicked();
@@ -87,13 +93,25 @@ private slots:
 
 private:
     Ui::ViewOrgContactDialog *ui;
+
+    ViewContactDialog *viewContactDialog;
+    EditOrgContactDialog *editOrgContactDialog;
+    ChooseNumber *chooseNumber;
     AddReminderDialog* addReminderDialog;
     NotesDialog *notesDialog;
-    QSqlQuery *query;
-    QValidator *validator;
-    QHeaderView *m_horiz_header;
     AddPersonToOrg *addPersonToOrg;
     PlayAudioDialog *playAudioDialog = nullptr;
+
+    QSqlQueryModel *query_model;
+    QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+    QSqlQueryModel *query3;
+    QSqlQueryModel *query4;
+
+    QValidator *validator;
+
+    QHeaderView *m_horiz_header;
+
     QString recordpath;
     QString userID;
     QString updateID;
@@ -108,14 +126,6 @@ private:
     QString extfield1;
     QString src;
     QString dialogStatus;
-    QSqlQueryModel *query_model;
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
-    QSqlQueryModel *query4;
-    ViewContactDialog *viewContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
-    ChooseNumber *chooseNumber;
     QString update;
     QString id;
     QString days;
@@ -131,14 +141,17 @@ private:
     QString entry_comment;
     QString sort;
     QStringList numbersList;
+
     QWidget* loadNote();
     QWidget* loadStatus();
     QWidget* loadName();
+
     QList<QHBoxLayout*> layoutsStatus;
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
     QList<QHBoxLayout*> layoutsReceivedName;
     QList<QHBoxLayout*> layoutsPlacedName;
+
     QList<QWidget*> widgetsAllName;
     QList<QWidget*> widgetsMissedName;
     QList<QWidget*> widgetsReceivedName;
@@ -148,6 +161,7 @@ private:
     QList<QWidget*> widgetsMissed;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
+
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;

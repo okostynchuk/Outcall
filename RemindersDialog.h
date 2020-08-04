@@ -23,22 +23,22 @@ class RemindersDialog : public QDialog
 signals:
     void reminders(bool);
 
-public:
-    explicit RemindersDialog(QWidget *parent = 0);
-    ~RemindersDialog();
-     bool resizeColumns;
-
 public slots:
     void onUpdate();
     void sendNewValues();
     void receiveData(bool);
 
-protected:
+public:
+    explicit RemindersDialog(QWidget *parent = 0);
+    ~RemindersDialog();
+
+    bool resizeColumns;
+
+private slots:
     void loadRelevantReminders();
     void loadIrrelevantReminders();
     void loadDelegatedReminders();
 
-protected slots:
     void onTimer();
     void onAddReminder();
     void onEditReminder(const QModelIndex &);
@@ -47,12 +47,19 @@ protected slots:
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
 
-private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event);
 
 private:
     Ui::RemindersDialog *ui;
+
+    QThread* remindersThread;
+    RemindersThread* remindersThreadManager;
+    AddReminderDialog* addReminderDialog;
+    EditReminderDialog* editReminderDialog;
+
+    QSqlQueryModelReminders *query1;
+    QSqlQueryModelReminders *query2;
 
     QModelIndexList selectionRelevant;
     QModelIndexList selectionIrrelevant;
@@ -61,16 +68,7 @@ private:
     QTimer timer;
     QString languages;
     QString my_number;
-
     int oldReceivedReminders;
-
-    QSqlQueryModelReminders *query1;
-    QSqlQueryModelReminders *query2;
-
-    QThread* remindersThread;
-    RemindersThread* remindersThreadManager;
-    AddReminderDialog* addReminderDialog;
-    EditReminderDialog* editReminderDialog;
 
     QWidget* addWidgetLabelActive();
     QWidget* addWidgetCompleted();

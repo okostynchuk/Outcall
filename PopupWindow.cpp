@@ -38,20 +38,27 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     QSqlDatabase db;
     QSqlQuery query(db);
+
     QString note;
+
     query.prepare("SELECT note FROM calls WHERE uniqueid = " + pwi.uniqueid);
     query.exec();
-    while(query.next())
+
+    if (query.next())
         note = query.value(0).toString();
+
     QTextCursor cursor = ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->textEdit->setTextCursor(cursor);
+
     ui->textEdit->setText(note);
 
 	ui->lblText->setOpenExternalLinks(true);
+
 	setAttribute(Qt::WA_TranslucentBackground);
 
 	ui->lblText->setText(pwi.text);
+
     ui->lblText->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     if (!pwi.avatar.isNull())
@@ -126,6 +133,7 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
+
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
 }
@@ -155,6 +163,7 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
     if (!position.isNull())
     {
         QPoint delta = event->globalPos() - position;
+
         if (position.x() > this->x() + this->width() - 10
                 || position.y() > this->y() + this->height() - 10)
         {}
@@ -169,12 +178,14 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
 void PopupWindow::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
+
+    switch (e->type())
+    {
+        case QEvent::LanguageChange:
+            ui->retranslateUi(this);
+            break;
+        default:
+            break;
     }
 }
 
@@ -187,6 +198,7 @@ void PopupWindow::onPopupTimeout()
 void PopupWindow::startPopupWaitingTimer()
 {
     m_bAppearing = false;
+
     m_timer.stop();
 
     int time2live = TIME_TO_LIVE;
@@ -197,8 +209,11 @@ void PopupWindow::startPopupWaitingTimer()
 void PopupWindow::closeAndDestroy()
 {
     hide();
+
     m_timer.stop();
+
     m_PopupWindows.removeOne(this);
+
     delete this;
 }
 
@@ -208,52 +223,52 @@ void PopupWindow::onTimer()
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
-        case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
-            else
-                startPopupWaitingTimer();
-            break;
+            case TASKBAR_ON_BOTTOM:
+                if (m_nCurrentPosY>(m_nStartPosY-height()))
+                    m_nCurrentPosY-=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_TOP:
+                if ((m_nCurrentPosY-m_nStartPosY)<height())
+                    m_nCurrentPosY+=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_LEFT:
+                if ((m_nCurrentPosX-m_nStartPosX)<width())
+                    m_nCurrentPosX+=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
+            case TASKBAR_ON_RIGHT:
+                if (m_nCurrentPosX>(m_nStartPosX-width()))
+                    m_nCurrentPosX-=m_nIncrement;
+                else
+                    startPopupWaitingTimer();
+                break;
         }
     }
     else // DISSAPPEARING
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_TOP:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_LEFT:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_RIGHT:
-            closeAndDestroy();
-            return;
-            break;
+            case TASKBAR_ON_BOTTOM:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_TOP:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_LEFT:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_RIGHT:
+                closeAndDestroy();
+                return;
+                break;
         }
     }
 
@@ -263,27 +278,34 @@ void PopupWindow::onTimer()
 void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
 {
 	PWInformation pwi;
+
 	pwi.type = PWPhoneCall;
     pwi.text = caller;
     pwi.uniqueid = uniqueid;
     pwi.number = number;
     pwi.my_number = my_number;
+
     QPixmap avatar;
 
     if (avatar.isNull())
         avatar = QPixmap(":/images/outcall-logo.png");
 
     PopupWindow *popup = new PopupWindow(pwi);
+
     popup->receiveNumber(popup);
 	popup->show();
+
     popup->ui->timeLabel->setText(tr("<font size = 1>%1</font>").arg(dateTime));
+
 	m_PopupWindows.append(popup);
 }
 
 void PopupWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
 	PWInformation pwi;
+
 	pwi.type = type;
+
 	if (caption!="")
 		pwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
 	else
@@ -295,7 +317,9 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 	pwi.avatar = avatar;
 
     PopupWindow *popup = new PopupWindow(pwi);
+
 	popup->show();
+
 	m_PopupWindows.append(popup);
 }
 
@@ -308,16 +332,21 @@ void PopupWindow::closeAll()
 void PopupWindow::on_pushButton_close_clicked()
 {
     hide();
+
     m_timer.stop();
+
     m_PopupWindows.removeOne(this);
+
     delete this;
 }
 
 void PopupWindow::onAddPerson()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     addContactDialog = new AddContactDialog;
@@ -331,8 +360,10 @@ void PopupWindow::onAddPerson()
 void PopupWindow::onAddOrg()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     addOrgContactDialog = new AddOrgContactDialog;
@@ -346,8 +377,10 @@ void PopupWindow::onAddOrg()
 void PopupWindow::onAddPhoneNumberToContact()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
@@ -361,15 +394,19 @@ void PopupWindow::onAddPhoneNumberToContact()
 void PopupWindow::onShowCard()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     QSqlDatabase db;
     QSqlQuery query(db);
+
     query.prepare("SELECT id, entry_type, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
     query.first();
+
     QString updateID = query.value(0).toString();
 
     if (query.value(1).toString() == "person")
@@ -395,8 +432,10 @@ void PopupWindow::onShowCard()
 void PopupWindow::onAddReminder()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     addReminderDialog = new AddReminderDialog;
@@ -410,8 +449,10 @@ void PopupWindow::onAddReminder()
 void PopupWindow::onSaveNote()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     QSqlDatabase db;
@@ -426,6 +467,7 @@ void PopupWindow::onSaveNote()
 
     query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + popup->m_pwi.my_number);
     query.exec();
+
     if (query.next())
         author = query.value(0).toString();
     else
@@ -445,14 +487,17 @@ void PopupWindow::onSaveNote()
 void PopupWindow::onOpenAccess()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
 
     QSqlDatabase db;
     QSqlQuery query(db);
+
     query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
     query.exec();
     query.first();
+
     QString vyborID = query.value(0).toString();
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
@@ -468,12 +513,12 @@ void PopupWindow::onOpenAccess()
                             "Database="+databaseName_3+";"
                             "Uid="+userName_3+";"
                             "Pwd="+password_3);
-    bool ok = dbMSSQL.open();
+    dbMSSQL.open();
 
-    QSqlQuery query1(dbMSSQL);
-
-    if (ok)
+    if (dbMSSQL.isOpen())
     {
+        QSqlQuery query1(dbMSSQL);
+
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (user_id(?), ?)");
         query1.addBindValue(userID);
@@ -487,6 +532,7 @@ void PopupWindow::onOpenAccess()
     else
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
+
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
     }
 }
@@ -494,6 +540,7 @@ void PopupWindow::onOpenAccess()
 void PopupWindow::receiveData(bool update)
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
 
@@ -511,6 +558,7 @@ void PopupWindow::receiveData(bool update)
         {
             QSqlDatabase db;
             QSqlQuery query(db);
+
             query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
             query.exec();
 
@@ -521,6 +569,7 @@ void PopupWindow::receiveData(bool update)
                 popup->ui->addPhoneNumberButton->hide();
                 popup->ui->showCardButton->show();
                 popup->ui->openAccessButton->show();
+
                 popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
                 popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
             }
@@ -531,6 +580,7 @@ void PopupWindow::receiveData(bool update)
                 popup->ui->addPersonButton->show();
                 popup->ui->addOrgButton->show();
                 popup->ui->addPhoneNumberButton->show();
+
                 popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + tr("Неизвестный") + "</b>");
                 popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + tr("Неизвестный") + "</b>");
             }
@@ -544,8 +594,10 @@ void PopupWindow::receiveData(bool update)
 void PopupWindow::onTextChanged()
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
     popup->m_pwi.stopTimer = true;
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a;");
@@ -555,6 +607,7 @@ void PopupWindow::onTextChanged()
 void PopupWindow::timerStop(QString uniqueid)
 {
     QVariant qv_popup = sender()->property("qv_popup");
+
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
 
@@ -567,8 +620,10 @@ bool PopupWindow::isInnerPhone(QString *str)
     int pos = 0;
 
     QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
+
     return false;
 }
 
@@ -587,9 +642,11 @@ bool PopupWindow::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit2");
+
                 return true;
             }
         }
@@ -599,13 +656,16 @@ bool PopupWindow::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit");
+
                 return true;
             }
         }
     }
+
     return false;
 }
 
@@ -625,6 +685,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
     {
         QSqlDatabase db;
         QSqlQuery query(db);
+
         query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
         query.exec();
 
@@ -648,22 +709,31 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     connect(popup->ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSaveNote()));
     popup->ui->textEdit->setProperty("qv_popup", qv_popup);
+
     connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStop(QString)));
     g_pAsteriskManager->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     popup->ui->textEdit->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
     popup->ui->addPersonButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
     popup->ui->addOrgButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->addPhoneNumberButton, SIGNAL(clicked(bool)), this, SLOT(onAddPhoneNumberToContact()));
     popup->ui->addPhoneNumberButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
     popup->ui->showCardButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
     popup->ui->saveNoteButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
     popup->ui->openAccessButton->setProperty("qv_popup", qv_popup);
+
     connect(popup->ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
     popup->ui->addReminderButton->setProperty("qv_popup", qv_popup);
 }

@@ -28,10 +28,6 @@ public:
 
     void show();
 
-protected:
-    void automaticlySignIn();
-    void createContextMenu();
-
 protected slots:
     void hideTrayIcon(bool);
     void changeIconReminders(bool);
@@ -53,13 +49,19 @@ protected slots:
     void disableActions();
     void enableActions();
 
+protected:
+    void automaticlySignIn();
+    void createContextMenu();
+
 private:
     QMenu *m_menu;
+
     QAction *m_signIn;
     QAction *m_placeCall;
     QAction *contactsAction;
     QAction *callHistoryAction;
     QAction *remindersAction;
+
     QSystemTrayIcon *m_systemTrayIcon;
     DebugInfoDialog *m_debugInfoDialog;
     SettingsDialog *m_settingsDialog;
@@ -67,6 +69,7 @@ private:
     CallHistoryDialog *m_callHistoryDialog;
     PlaceCallDialog *m_placeCallDialog;
     RemindersDialog *m_remindersDialog;
+
     QTimer m_timer;
     bool m_switch;
     QString my_number;

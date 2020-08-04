@@ -24,6 +24,7 @@ RemindersThread::RemindersThread(QString receivedNumber, QList<QString> received
     dbReminders.setUserName(userName_1);
     dbReminders.setPassword(password_1);
     dbReminders.setPort(port_1.toUInt());
+
     dbReminders.open();
 }
 

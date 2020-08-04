@@ -12,26 +12,35 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->lineEdit_page->setValidator(validator);
 
     onComboBoxListSelected();
+
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
     query.exec();
     query.first();
+
     count = query.value(0).toInt();
+
     page = "1";
+
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     ui->lineEdit_page->setText(page);
+
     ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
+
     query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
@@ -39,11 +48,14 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Город"));
     query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Заметка"));
+
     ui->tableView->setModel(query1);
+
     queries.append(query1);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
@@ -51,8 +63,10 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
@@ -65,6 +79,7 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
 AddPhoneNumberToContactDialog::~AddPhoneNumberToContactDialog()
 {
     deleteObjects();
+
     delete validator;
     delete ui;
 }
@@ -83,25 +98,32 @@ void AddPhoneNumberToContactDialog::setPhoneNumberPopupWindow(QString &phoneNumb
 void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
+
     QSqlDatabase db;
     QSqlQuery query(db);
+
     QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(id);
+
     query.prepare(sql);
     query.exec();
 
     int count = 0;
+
     while (query.next())
         count++;
 
     if (count < 5)
     {
         QMessageBox msgBox;
+
         msgBox.setText(tr("Добавление номера"));
         msgBox.setInformativeText(tr("Вы действительно хотите добавить номер к выбранному контакту?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+
         int reply = msgBox.exec();
+
         switch (reply)
         {
             case QMessageBox::Yes:
@@ -112,9 +134,13 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
                 query.exec();
 
                 emit sendData(true);
+
                 close();
+
                 msgBox.close();
+
                 QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Номер успешно добавлен!"), QMessageBox::Ok);
+
                 destroy(true);
                 break;
             case QMessageBox::No:
@@ -135,18 +161,23 @@ void AddPhoneNumberToContactDialog::onUpdate()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         if (go == "previous" && page != "1")
             page = QString::number(page.toInt() - 1);
         else if (go == "previousStart" && page != "1")
@@ -162,10 +193,13 @@ void AddPhoneNumberToContactDialog::onUpdate()
         else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
         else if (go == "default" && page.toInt() >= pages.toInt())
             page = pages;
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         if (ui->lineEdit_page->text() == "1")
             query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         else
@@ -180,16 +214,20 @@ void AddPhoneNumberToContactDialog::onUpdate()
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%'");
             query.exec();
             query.first();
+
             count = query.value(0).toInt();
+
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
             {
                 remainder = count % ui->comboBox_list->currentText().toInt();
+
                 if (remainder)
                     remainder = 1;
                 else
                     remainder = 0;
+
                 pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
             }
             if (go == "previous" && page != "1")
@@ -207,10 +245,13 @@ void AddPhoneNumberToContactDialog::onUpdate()
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
+
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
+
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
@@ -221,18 +262,23 @@ void AddPhoneNumberToContactDialog::onUpdate()
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%'");
             query.exec();
             query.first();
+
             count = query.value(0).toInt();
+
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
             {
                 remainder = count % ui->comboBox_list->currentText().toInt();
+
                 if (remainder)
                     remainder = 1;
                 else
                     remainder = 0;
+
                 pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
             }
+
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
             else if (go == "previousStart" && page != "1")
@@ -248,10 +294,13 @@ void AddPhoneNumberToContactDialog::onUpdate()
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
+
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
+
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
@@ -262,18 +311,23 @@ void AddPhoneNumberToContactDialog::onUpdate()
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%'");
             query.exec();
             query.first();
+
             count = query.value(0).toInt();
+
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
             {
                 remainder = count % ui->comboBox_list->currentText().toInt();
+
                 if (remainder)
                     remainder = 1;
                 else
                     remainder = 0;
+
                 pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
             }
+
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
             else if (go == "previousStart" && page != "1")
@@ -289,10 +343,13 @@ void AddPhoneNumberToContactDialog::onUpdate()
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
+
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
+
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
@@ -309,12 +366,16 @@ void AddPhoneNumberToContactDialog::onUpdate()
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Город"));
     query1->setHeaderData(4, Qt::Horizontal, QObject::tr("Заметка"));
+
     ui->tableView->setModel(query1);
+
     queries.append(query1);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
@@ -339,7 +400,9 @@ void AddPhoneNumberToContactDialog::searchFunction()
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
+
         onUpdate();
+
         return;
     }
 
@@ -357,24 +420,33 @@ void AddPhoneNumberToContactDialog::searchFunction()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         page = "1";
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+
         onUpdate();
     }
     else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
@@ -384,24 +456,33 @@ void AddPhoneNumberToContactDialog::searchFunction()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         page = "1";
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+
         onUpdate();
     }
     else if (ui->comboBox->currentText() == tr("Поиск по заметке"))
@@ -411,24 +492,33 @@ void AddPhoneNumberToContactDialog::searchFunction()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         page = "1";
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+
         onUpdate();
     }
 }
@@ -436,30 +526,35 @@ void AddPhoneNumberToContactDialog::searchFunction()
 void AddPhoneNumberToContactDialog::on_previousButton_clicked()
 {
     go = "previous";
+
     onUpdate();
 }
 
 void AddPhoneNumberToContactDialog::on_nextButton_clicked()
 {
     go = "next";
+
     onUpdate();
 }
 
 void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
+
     onUpdate();
 }
 
 void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
+
     onUpdate();
 }
 
 void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
+
     onUpdate();
 }
 

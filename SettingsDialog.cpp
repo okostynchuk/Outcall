@@ -3,7 +3,6 @@
 
 #include "AddExtensionDialog.h"
 #include "Global.h"
-#include "AsteriskManager.h"
 #include "OutCALL.h"
 
 #include <QAbstractSocket>
@@ -27,6 +26,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    connect(g_pAsteriskManager, &AsteriskManager::stateChanged, this, &SettingsDialog::checkAsteriskState);
 
     // Extensions
     connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
@@ -56,6 +57,14 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
+void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
+{
+    if (state == AsteriskManager::CONNECTED)
+        ui->tabWidget->setTabEnabled(3, true);
+    else
+        ui->tabWidget->setTabEnabled(3, false);
+}
+
 void SettingsDialog::closeEvent(QCloseEvent *event)
 {
     QDialog::closeEvent(event);
@@ -69,45 +78,58 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
 
 void SettingsDialog::saveSettings()
 {
-    // General SettingsDialog
-    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(),   "general");
+    // General
+    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
     global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
 
-    // Save Server SettingsDialog
+    // Server
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
-    global::setSettingsValue("username",   ui->userName->text(),   "settings");
+    global::setSettingsValue("username",   ui->userName->text(), "settings");
     QByteArray ba;
     ba.append(ui->password->text());
-    global::setSettingsValue("password", ba.toBase64(),            "settings");
-    global::setSettingsValue("port", ui->port->text(),    "settings");
+    global::setSettingsValue("password", ba.toBase64(), "settings");
+    global::setSettingsValue("port", ui->port->text(), "settings");
 
-    // Save extensions
+    // Personal number
     global::removeSettingsKey("extensions");
-    global::removeSettingsKey("extensions_name");
+
     int nRow = ui->treeWidget->topLevelItemCount();
+
+    if (nRow == 0)
+        global::removeSettingsKey("extensions_name");
+
     for (int i = 0; i < nRow; ++i)
     {
         QTreeWidgetItem *item = ui->treeWidget->topLevelItem(i);
         QString extension = item->text(0);
         QString protocol = item->text(1);
+
         global::setSettingsValue(extension, protocol, "extensions");
-        global::setSettingsValue(extension, g_pAsteriskManager->extensionNumbers.value(extension), "extensions_name");
+
+        if (g_pAsteriskManager->isSignedIn())
+        {
+            global::removeSettingsKey("extensions_name");
+            global::setSettingsValue(extension, g_pAsteriskManager->extensionNumbers.value(extension), "extensions_name");
+        }
     }
 
-    // Save group extensions
+    // Group's number
     global::removeSettingsKey("group_extensions");
+
     int nRow2 = ui->treeWidget_2->topLevelItemCount();
+
     for (int i = 0; i < nRow2; ++i)
     {
         QTreeWidgetItem *group_item = ui->treeWidget_2->topLevelItem(i);
         QString group_extension = group_item->text(0);
         QString group_protocol = group_item->text(1);
+
         global::setSettingsValue(group_extension, group_protocol, "group_extensions");
     }
 
-    // Save Databases SettingsDialog
-        //Contact Base
+    // Databases
+        // Contact Base
     global::setSettingsValue("hostName_1", ui->hostName_1->text(),         "settings");
     global::setSettingsValue("databaseName_1", ui->databaseName_1->text(), "settings");
     global::setSettingsValue("userName_1", ui->userName_1->text(),         "settings");
@@ -116,7 +138,7 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("password_1", ba1.toBase64(), "settings");
     global::setSettingsValue("port_1", ui->port_1->text(), "settings");
 
-        //Calls Base
+        // Call Base
     global::setSettingsValue("hostName_2", ui->hostName_2->text(),         "settings");
     global::setSettingsValue("databaseName_2", ui->databaseName_2->text(), "settings");
     global::setSettingsValue("userName_2", ui->userName_2->text(),         "settings");
@@ -125,7 +147,7 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("password_2", ba2.toBase64(), "settings");
     global::setSettingsValue("port_2", ui->port_2->text(), "settings");
 
-        //MSSQL Base
+        // Client Base
     global::setSettingsValue("hostName_3", ui->hostName_3->text(), "settings");
     global::setSettingsValue("databaseName_3", ui->databaseName_3->text(), "settings");
     global::setSettingsValue("userName_3", ui->userName_3->text(), "settings");
@@ -139,15 +161,22 @@ void SettingsDialog::saveSettings()
 
 void SettingsDialog::loadSettings()
 {
-    // Load Server
+    // General
+    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
+    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
+    bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
+    ui->autoSignIn->setChecked(autoSignIn);
+    g_pAsteriskManager->setAutoSignIn(autoSignIn);
+
+    // Server
     ui->serverName->setText(global::getSettingsValue("servername", "settings").toString());
     ui->userName->setText(global::getSettingsValue("username", "settings").toString());
     QByteArray password((global::getSettingsValue("password", "settings").toByteArray()));
     QString ba(QByteArray::fromBase64(password));
     ui->password->setText(ba);
-    ui->port->setText(global::getSettingsValue("port", "settings", "5038").toString());
+    ui->port->setText(global::getSettingsValue("port", "settings").toString());
 
-    // Load Databases
+    // Databases
     ui->hostName_1->setText(global::getSettingsValue("hostName_1", "settings").toString());
     ui->databaseName_1->setText(global::getSettingsValue("databaseName_1", "settings").toString());
     ui->userName_1->setText(global::getSettingsValue("userName_1", "settings").toString());
@@ -173,16 +202,11 @@ void SettingsDialog::loadSettings()
     ui->user_login->setText(global::getSettingsValue("user_login", "settings").toString());
     ui->port_3->setText(global::getSettingsValue("port_3", "settings").toString());
 
-    // Load General SettingsDialog
-    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
-    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
-    bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
-    ui->autoSignIn->setChecked(autoSignIn);
-    g_pAsteriskManager->setAutoSignIn(autoSignIn);
-
-    // Load extensions
+    // Personal number
     QStringList extensions = global::getSettingKeys("extensions");
-    int nRows              = extensions.size();
+
+    int nRows = extensions.size();
+
     for (int i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
@@ -193,9 +217,11 @@ void SettingsDialog::loadSettings()
         extensionItem->setText(1, protocol);
     }
 
-    // Load group extensions
+    // Group's number
     QStringList group_extensions = global::getSettingKeys("group_extensions");
-    int nRows2              = group_extensions.size();
+
+    int nRows2 = group_extensions.size();
+
     for (int i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
@@ -210,12 +236,13 @@ void SettingsDialog::loadSettings()
 void SettingsDialog::show()
 {
     ui->tabWidget->setCurrentIndex(0);
+
     QDialog::show();
 }
 
 void SettingsDialog::on_applyButton_clicked()
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox;    
     msgBox.setText(tr("Применение настроек"));
     msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -286,24 +313,32 @@ void SettingsDialog::loadLanguages()
 QString SettingsDialog::getExtension()
 {
     QStringList extensions = global::getSettingKeys("extensions");
-    int nRows              = extensions.size();
+
+    int nRows = extensions.size();
+
     for (int i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
+
         return extension;
     }
+
     return NULL;
 }
 
 QString SettingsDialog::getGroupExtension()
 {
     QStringList group_extensions = global::getSettingKeys("group_extensions");
-    int nRows2              = group_extensions.size();
+
+    int nRows2 = group_extensions.size();
+
     for (int i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
+
         return group_extension;
     }
+
     return NULL;
 }
 
@@ -315,6 +350,7 @@ void SettingsDialog::onAddButtonClicked()
     if (m_addExtensionDialog->exec())
     {
         ui->addButton->setEnabled(false);
+
         QString extension = m_addExtensionDialog->getExtension();
         QString protocol = m_addExtensionDialog->getProtocol();
 
@@ -332,11 +368,13 @@ void SettingsDialog::onAddButtonClicked()
 void SettingsDialog::onAddGroupButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
+
     m_addExtensionDialog->setWindowTitle(tr("Добавление"));
 
     if (m_addExtensionDialog->exec())
     {
         ui->addButton_2->setEnabled(false);
+
         QString group_extension = m_addExtensionDialog->getExtension();
         QString group_protocol = m_addExtensionDialog->getProtocol();
 
@@ -357,12 +395,12 @@ void SettingsDialog::onRemoveButtonClicked()
 
     if (selectedItems.size() > 0)
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox;       
         msgBox.setText(tr("Удаление номера"));
         msgBox.setInformativeText(tr("Вы уверены, что хотите удалить выбранный номер?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
-        msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+        msgBox.setButtonText(QMessageBox::No, tr("Нет")); 
         int reply = msgBox.exec();
 
         switch(reply)
@@ -424,7 +462,9 @@ void SettingsDialog::onRemoveGroupButtonClicked()
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
+
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
+
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
 
     if (selectedItems.size())
@@ -450,7 +490,9 @@ void SettingsDialog::onEditButtonClicked()
 void SettingsDialog::onEditGroupButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
+
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
+
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
 
     if (selectedItems.size())

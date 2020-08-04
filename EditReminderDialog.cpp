@@ -37,12 +37,14 @@ void EditReminderDialog::onSave()
     if (dateTime < QDateTime::currentDateTime())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
+
         return;
     }
 
     if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -79,6 +81,7 @@ void EditReminderDialog::onSave()
     }
 
     emit sendData(true);
+
     close();
 
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
@@ -133,9 +136,11 @@ bool EditReminderDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit2");
+
                 return true;
             }
         }
@@ -145,13 +150,16 @@ bool EditReminderDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit");
+
                 return true;
             }
         }
     }
+
     return false;
 }
 

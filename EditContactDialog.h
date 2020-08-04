@@ -18,26 +18,46 @@ class EditContactDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit EditContactDialog(QWidget *parent = 0);
-    void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
-    void setValuesPopupWindow(QString &number);
-    //void setWPosN();
-    ~EditContactDialog();
+signals:
+    void sendData(bool);
 
 public slots:
     void receiveOrgID(QString &);
-    void setPos(int, int);
 
-protected slots:
+public:
+    explicit EditContactDialog(QWidget *parent = 0);
+    ~EditContactDialog();
+
+    void setValuesContacts(QString &);
+    void setValuesCallHistory(QString &);
+    void setValuesPopupWindow(QString &number);
+
+    //void setWPosN();
+
+public slots:
+    void receiveOrgID(QString &);
+
+
+private slots:
     void onSave();
+    void onReturn();
+
+    void on_addOrgButton_clicked();
+    void on_deleteOrgButton_clicked();
+
+    bool isPhone(QString *str);
+    bool isVyborID(QString *str);
+
+    void setPos(int, int);
 
 private:
     Ui::EditContactDialog *ui;
+
     AddOrgToPerson *addOrgToPerson;
     ViewContactDialog *viewContactDialog;
+
     QValidator *validator;
+
     QString updateID;
     QString firstNumber;
     QString secondNumber;
@@ -46,16 +66,6 @@ private:
     QString fifthNumber;
     QString number;
     QStringList numbers;
-
-private slots:
-    void onReturn();
-    void on_addOrgButton_clicked();
-    void on_deleteOrgButton_clicked();
-    bool isPhone(QString *str);
-    bool isVyborID(QString *str);
-
-signals:
-    void sendData(bool);
 };
 
 #endif // EDITCONTACTDIALOG_H

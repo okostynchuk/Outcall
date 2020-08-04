@@ -9,9 +9,9 @@
 class AsteriskManager : public QObject
 {
     Q_OBJECT
+
 public:
     explicit AsteriskManager(const QString username, const QString secret, QObject *parent = 0);
-
     ~AsteriskManager();
 
     enum CallState
@@ -54,28 +54,13 @@ public:
     void signOut();
     void reconnect();
     void setAutoSignIn(bool ok);
+    void onSettingsChange();
 
     void setState(AsteriskState state);
     void getExtensionNumbers();
+
     QMap<QString, QString> extensionNumbers;
     AsteriskState m_currentState;
-
-protected:
-    void getEventValues(QString eventData, QMap<QString, QString> &map);
-
-    void parseEvent(const QString &event);
-
-    void asterisk_11_eventHandler(const QString &eventData);
-
-    void formatNumber(QString &number);
-
-    void setAsteriskVersion(const QString &msg);
-
-protected slots:
-    void onError(QAbstractSocket::SocketError socketError);
-    void read();
-    void login();
-    void onSettingsChange();
 
 signals:
     void callStart(QString);
@@ -86,23 +71,36 @@ signals:
     void error(QAbstractSocket::SocketError socketError, const QString &msg);
     void stateChanged(AsteriskState state);
 
+protected slots:
+    void onError(QAbstractSocket::SocketError socketError);
+    void read();
+    void login();
+
+protected:
+    void getEventValues(QString eventData, QMap<QString, QString> &map);
+    void parseEvent(const QString &event);
+    void asterisk_11_eventHandler(const QString &eventData);
+    void formatNumber(QString &number);
+    void setAsteriskVersion(const QString &msg);
+
 private:
     QTcpSocket *m_tcpSocket;
+
+    AsteriskVersion m_currentVersion;
+
+    QMap<QString, Call*> m_calls;
+    QMap<QString, int> m_dialedNum;
+    QList<QString> endpoints;
+
     QString m_eventData;
     bool m_isSignedIn;
     bool m_autoConnectingOnError;
-    QMap<QString, int> m_dialedNum;
-
     QString m_username;
     QString m_secret;
     QString m_server;
     quint16 m_port;
     QTimer m_timer;
     bool m_autoSignIn;
-    AsteriskVersion m_currentVersion;
-
-    QMap<QString, Call*> m_calls;
-    QList<QString> endpoints;
 };
 
 extern AsteriskManager *g_pAsteriskManager;

@@ -45,19 +45,29 @@ void EditOrgContactDialog::onSave()
     if (QString(ui->OrgName->text()).isEmpty() == true)
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+
          ui->OrgName->setStyleSheet("border: 1px solid red");
     }
     else
-        ui->label_15->setText(tr(""));  ui->OrgName->setStyleSheet("border: 1px solid grey");
+    {
+        ui->label_15->setText(tr(""));
+
+        ui->OrgName->setStyleSheet("border: 1px solid grey");
+    }
 
     if (QString(ui->FirstNumber->text()).isEmpty() == true)
     {
         ui->label_14->show();
         ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
     }
     else
-        ui->label_14->setText(tr("")); ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+    {
+        ui->label_14->setText(tr(""));
+
+        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+    }
 
     if (QString(ui->OrgName->text()).isEmpty() == false && QString(ui->FirstNumber->text()).isEmpty() == false)
     {
@@ -85,6 +95,7 @@ void EditOrgContactDialog::onSave()
             if (query1.value(0) != 0)
             {
                 ui->FirstNumber->setStyleSheet("border: 1px solid red");
+
                 count_invalid_num++;
             }
         }
@@ -97,6 +108,7 @@ void EditOrgContactDialog::onSave()
             if (query1.value(0) != 0)
             {
                 ui->SecondNumber->setStyleSheet("border: 1px solid red");
+
                 count_invalid_num++;
             }
         }
@@ -109,6 +121,7 @@ void EditOrgContactDialog::onSave()
             if (query1.value(0) != 0)
             {
                 ui->ThirdNumber->setStyleSheet("border: 1px solid red");
+
                 count_invalid_num++;
             }
         }
@@ -121,6 +134,7 @@ void EditOrgContactDialog::onSave()
             if (query1.value(0) != 0)
             {
                 ui->FourthNumber->setStyleSheet("border: 1px solid red");
+
                 count_invalid_num++;
             }
         }
@@ -133,6 +147,7 @@ void EditOrgContactDialog::onSave()
             if (query1.value(0) != 0)
             {
                 ui->FifthNumber->setStyleSheet("border: 1px solid red");
+
                 count_invalid_num++;
             }
         }
@@ -182,6 +197,7 @@ void EditOrgContactDialog::onSave()
                 else
                 {
                     validPhones = false;
+
                     ui->FirstNumber->setStyleSheet("border: 1px solid red");
                 }
             }
@@ -192,6 +208,7 @@ void EditOrgContactDialog::onSave()
                 else
                 {
                     validPhones = false;
+
                     ui->SecondNumber->setStyleSheet("border: 1px solid red");
                 }
             }
@@ -202,6 +219,7 @@ void EditOrgContactDialog::onSave()
                 else
                 {
                     validPhones = false;
+
                     ui->ThirdNumber->setStyleSheet("border: 1px solid red");
                 }
             }
@@ -212,6 +230,7 @@ void EditOrgContactDialog::onSave()
                 else
                 {
                     validPhones = false;
+
                     ui->FourthNumber->setStyleSheet("border: 1px solid red");
                 }
             }
@@ -222,6 +241,7 @@ void EditOrgContactDialog::onSave()
                 else
                 {
                     validPhones = false;
+
                     ui->FifthNumber->setStyleSheet("border: 1px solid red");
                 }
             }

@@ -20,6 +20,10 @@ class PopupReminder : public QDialog
 {
     Q_OBJECT
 
+public slots:
+    void receiveData(bool);
+    void receiveNumber(QString &);
+
 private:
     struct PopupReminderInfo
     {
@@ -36,28 +40,26 @@ private:
         bool active;
     };
 
-    void closeAndDestroy();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-
-public slots:
-    void receiveData(bool);
-    void receiveNumber(QString &);
-
 public:
     PopupReminder(PopupReminderInfo& pri, QWidget *parent = 0);
     ~PopupReminder();
+
     static void showReminder(RemindersDialog*, QString, QString, QDateTime, QString);
     static void closeAll();
 
 private slots:
-    bool isInnerPhone(QString *str);
+    void closeAndDestroy();
     void onOpenAccess();
     void onCall();
     void onTimer();
     void onClosePopup();
     void onSelectTime();
+
+    bool isInnerPhone(QString *str);
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -70,10 +72,9 @@ private:
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
     bool m_bAppearing;
-
     QPoint position;
-
     QTimer m_timer;
+
     PopupReminderInfo m_pri;
 
     static QList<PopupReminder*> m_PopupReminders;

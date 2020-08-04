@@ -20,21 +20,23 @@ signals:
 public:
     explicit AddReminderDialog(QWidget *parent = nullptr);
     ~AddReminderDialog();
+
     void setCallId(QString);
 
-protected slots:
+private slots:
     void onSave();
-    bool eventFilter(QObject *object, QEvent *event);
     void onTextChanged();
 
-private slots:
     void on_add10MinButton_clicked();
     void on_add30MinButton_clicked();
     void on_add5MinButton_clicked();
     void on_add60MinButton_clicked();
 
+    bool eventFilter(QObject *object, QEvent *event);
+
 private:
     Ui::AddReminderDialog *ui;
+
     QString my_number;
     QString callId;
 };
