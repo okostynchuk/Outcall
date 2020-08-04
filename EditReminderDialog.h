@@ -21,23 +21,25 @@ signals:
 public:
     explicit EditReminderDialog(QWidget *parent = 0);
     ~EditReminderDialog();
+
     void setValuesReminders(QString, QDateTime, QString);
 
-protected slots:
+private slots:
     void onSave();
     void onTextChanged();
-    bool eventFilter(QObject *object, QEvent *event);
 
-private slots:
-    void keyPressEvent(QKeyEvent* event);
-    void closeEvent(QCloseEvent *event);
     void on_add5MinButton_clicked();
     void on_add10MinButton_clicked();
     void on_add30MinButton_clicked();
     void on_add60MinButton_clicked();
 
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
+
 private:
     Ui::EditReminderDialog *ui;
+
     QString my_number;
     QString phone_from;
     QString phone_to;

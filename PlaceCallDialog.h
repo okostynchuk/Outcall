@@ -21,18 +21,16 @@ class PlaceCallDialog : public QDialog
 {
     Q_OBJECT
 
+public slots:
+    void receiveNumber(QString &number);
+
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
-    void show();
     ~PlaceCallDialog();
 
-protected:
-     void clearCallTree();
+    void show();
 
-public slots:
-    void receiveNumber( QString &number);
-
-protected slots:
+private slots:
     void onCallButton();
     void onCancelButton();
     void onUpdate();
@@ -41,19 +39,21 @@ protected slots:
     void clearEditText();
     void showNumber(const QModelIndex &);
 
-
-private slots:
     void on_lineEdit_returnPressed();
 
 private:
     Ui::PlaceCallDialog *ui;
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QValidator *validator;
-    QString update;
-    QString number;
+
     ChooseNumber *chooseNumber;
     PlaceCallDialog *placeCallDialog;
+
+    QSqlQueryModel *query1;
+    QSqlQueryModel *query2;
+
+    QValidator *validator;
+
+    QString update;
+    QString number;
     QString my_number;
 };
 

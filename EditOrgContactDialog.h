@@ -15,28 +15,31 @@ class EditOrgContactDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit EditOrgContactDialog(QWidget *parent = 0);
-    void setOrgValuesContacts(QString &);
-    void setOrgValuesCallHistory(QString &);
-    void setOrgValuesPopupWindow(QString &);
-    ~EditOrgContactDialog();
-
 signals:
     void sendData(bool);
 
-protected slots:
+public:
+    explicit EditOrgContactDialog(QWidget *parent = 0);
+    ~EditOrgContactDialog();
+
+    void setOrgValuesContacts(QString &);
+    void setOrgValuesCallHistory(QString &);
+    void setOrgValuesPopupWindow(QString &);
+
+private slots:
     void onSave();
+    void onReturn();
+
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
-private slots:
-    void onReturn();
-
 private:
     Ui::EditOrgContactDialog *ui;
-    QValidator *validator;
+
     QSqlQuery *query1;
+
+    QValidator *validator;
+
     QString updateID;
     QString firstNumber;
     QString secondNumber;

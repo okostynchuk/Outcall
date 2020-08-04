@@ -20,26 +20,30 @@ class PlayAudioDialog : public QDialog
 signals:
     void isClosed(bool);
 
+public slots:
+    void on_mediaPlayer_PlayStateChange(int newState);
+
 public:
     explicit PlayAudioDialog(QWidget *parent = nullptr);
     ~PlayAudioDialog();
+
     void setValuesCallHistory(QString);
     void openMedia(const QString &mediaUrl);
 
 protected slots:
     void playAudio(QString &);
 
-public slots:
-    void on_mediaPlayer_PlayStateChange(int newState);
-
 private slots:
+    void updateWindowTitle(const QString &state);
+
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PlayAudioDialog *ui;
-    void updateWindowTitle(const QString &state);
+
     QMediaPlayer *player;
+
     QString recordpath;
 };
 

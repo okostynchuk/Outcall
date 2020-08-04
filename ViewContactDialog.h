@@ -23,12 +23,6 @@ class ViewContactDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit ViewContactDialog(QWidget *parent = 0);
-    void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
-    ~ViewContactDialog();
-
 signals:
     void sendData(bool);
     void sendNumber(QString &);
@@ -38,7 +32,19 @@ public slots:
     void receiveNumber(QString &);
     void playerClosed(bool);
 
-protected slots:
+public:
+    explicit ViewContactDialog(QWidget *parent = 0);
+    ~ViewContactDialog();
+
+    void setValuesContacts(QString &);
+    void setValuesCallHistory(QString &);
+
+private slots:
+    void loadAllCalls();
+    void loadMissedCalls();
+    void loadReceivedCalls();
+    void loadPlacedCalls();
+
     void onAddReminder();
     void onOpenAccess();
     void onPlayAudio();
@@ -46,45 +52,48 @@ protected slots:
     void onCall();
     void onEdit();
     void onUpdate();
-    void loadAllCalls();
-    void loadMissedCalls();
-    void loadReceivedCalls();
-    void loadPlacedCalls();
     void updateCount();
+    void tabSelected();
+    void daysChanged();
+
     void deleteNotesObjects();
     void deleteStatusObjects();
     void deleteNameObjects();
+
     void viewMissedNotes(const QModelIndex &index);
     void viewRecievedNotes(const QModelIndex &index);
     void viewPlacedNotes(const QModelIndex &index);
     void viewAllNotes(const QModelIndex &index);
+
     void getDataAll(const QModelIndex &index);
     void getDataMissed();
     void getDataReceived(const QModelIndex &index);
     void getDataPlaced(const QModelIndex &index);
-    void tabSelected();
-    void daysChanged();
 
-private slots:
-    void showEvent(QShowEvent *event);
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
+    void showEvent(QShowEvent *event);
+
 private:
     Ui::ViewContactDialog *ui;
+
     AddReminderDialog *addReminderDialog;
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;
     NotesDialog *notesDialog;
     PlayAudioDialog *playAudioDialog = nullptr;
+
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
     QSqlQueryModel *query3;
     QSqlQueryModel *query4;
+
     QValidator *validator;
+
     QString recordpath;
     QString userID;
     QString updateID;
@@ -105,14 +114,17 @@ private:
     QString state_call;
     QString contact_number;
     QStringList numbersList;
+
     QWidget* loadNote();
     QWidget* loadStatus();
     QWidget* loadName();
+
     QList<QHBoxLayout*> layoutsStatus;
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
     QList<QHBoxLayout*> layoutsReceivedName;
     QList<QHBoxLayout*> layoutsPlacedName;
+
     QList<QWidget*> widgetsAllName;
     QList<QWidget*> widgetsMissedName;
     QList<QWidget*> widgetsReceivedName;
@@ -122,6 +134,7 @@ private:
     QList<QWidget*> widgetsMissed;
     QList<QWidget*> widgetsReceived;
     QList<QWidget*> widgetsPlaced;
+
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;

@@ -18,14 +18,14 @@ class AddOrgToPerson : public QDialog
 {
     Q_OBJECT
 
+signals:
+    void sendOrgID(QString &);
+
 public:
     explicit AddOrgToPerson(QWidget *parent = 0);
     ~AddOrgToPerson();
 
-signals:
-    void sendOrgID(QString &);
-
-protected slots:
+private slots:
     void deleteObjects();
     void onUpdate();
     void onComboBoxListSelected();
@@ -34,7 +34,6 @@ protected slots:
     void on_searchButton_clicked();
     void searchFunction();
 
-private slots:
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
@@ -44,8 +43,13 @@ private slots:
 
 private:
     Ui::AddOrgToPerson *ui;
+
     QSqlQueryModel *query1;
+
     QValidator *validator;
+
+    QList<QSqlQueryModel*> queries;
+
     QString page;
     int count;
     int remainder;
@@ -56,7 +60,6 @@ private:
     QString entry_name;
     QString entry_city;
     bool filter;
-    QList<QSqlQueryModel*> queries;
 };
 
 #endif // ADDORGTOPERSON_H

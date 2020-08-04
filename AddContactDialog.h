@@ -16,32 +16,35 @@ class AddContactDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit AddContactDialog(QWidget *parent = 0);
-    void setValuesCallHistory(QString &);
-    void setValuesPopupWindow(QString &);
-    ~AddContactDialog();
+signals:
+    void sendData(bool);
 
 public slots:
     void receiveOrgID(QString &);
 
-protected slots:
-    void onSave();
+public:
+    explicit AddContactDialog(QWidget *parent = 0);
+    ~AddContactDialog();
 
-private:
-    Ui::AddContactDialog *ui;
-    AddOrgToPerson *addOrgToPerson;
-    QValidator *validator;
-    QStringList numbers;
+    void setValuesCallHistory(QString &);
+    void setValuesPopupWindow(QString &);
 
 private slots:
+    void onSave();
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
+
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
-signals:
-    void sendData(bool);
+private:
+    Ui::AddContactDialog *ui;
+
+    AddOrgToPerson *addOrgToPerson;
+
+    QValidator *validator;
+
+    QStringList numbers;
 };
 
 #endif // ADDCONTACTDIALOG_H

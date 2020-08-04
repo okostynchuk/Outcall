@@ -13,6 +13,9 @@ class AddExtensionDialog : public QDialog
 {
     Q_OBJECT
 
+signals:
+    void addExten();
+
 public:
     explicit AddExtensionDialog(QWidget *parent = 0);
     ~AddExtensionDialog();
@@ -23,15 +26,12 @@ public:
     void setExtension(const QString &extension);
     void setProtocol(const QString &protocol);
 
-protected slots:
+private slots:
     void on_applyButton_pressed();
     void on_cancelButton_pressed();
 
 private:
     Ui::AddExtensionDialog *ui;
-
-signals:
-    void addExten();
 };
 
 #endif // ADDEXTENSIONDIALOG_H

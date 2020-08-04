@@ -148,7 +148,7 @@ void OutCall::signInOut()
     if (g_pAsteriskManager->isSignedIn() == false)
     {
         QString server = global::getSettingsValue("servername", "settings").toString();
-        QString port = global::getSettingsValue("port", "settings", "5038").toString();
+        QString port = global::getSettingsValue("port", "settings").toString();
 
         g_pAsteriskManager->signIn(server, port.toUInt());
     }
