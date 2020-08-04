@@ -95,6 +95,7 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
     move(m_nCurrentPosX, m_nCurrentPosY);
 
     m_bAppearing = true;
+
     m_timer.setInterval(nTimerDelay);
     m_timer.start();
 }
@@ -112,6 +113,7 @@ void PopupNotification::mousePressEvent(QMouseEvent* event)
 void PopupNotification::mouseReleaseEvent(QMouseEvent *event)
 {
     (void) event;
+
     position = QPoint();
 }
 
@@ -120,6 +122,7 @@ void PopupNotification::mouseMoveEvent(QMouseEvent* event)
     if (!position.isNull())
     {
         QPoint delta = event->globalPos() - position;
+
         if (position.x() > this->x() + this->width() - 10
                 || position.y() > this->y() + this->height() - 10)
         {}
@@ -142,64 +145,68 @@ void PopupNotification::onTimer()
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
-        case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
-            else
-            {
-                m_bAppearing = false;
-                m_timer.stop();
-            }
-            break;
+            case TASKBAR_ON_BOTTOM:
+                if (m_nCurrentPosY>(m_nStartPosY-height()))
+                    m_nCurrentPosY-=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_TOP:
+                if ((m_nCurrentPosY-m_nStartPosY)<height())
+                    m_nCurrentPosY+=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_LEFT:
+                if ((m_nCurrentPosX-m_nStartPosX)<width())
+                    m_nCurrentPosX+=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
+            case TASKBAR_ON_RIGHT:
+                if (m_nCurrentPosX>(m_nStartPosX-width()))
+                    m_nCurrentPosX-=m_nIncrement;
+                else
+                {
+                    m_bAppearing = false;
+
+                    m_timer.stop();
+                }
+                break;
         }
     }
     else // DISSAPPEARING
     {
         switch(m_nTaskbarPlacement)
         {
-        case TASKBAR_ON_BOTTOM:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_TOP:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_LEFT:
-            closeAndDestroy();
-            return;
-            break;
-        case TASKBAR_ON_RIGHT:
-            closeAndDestroy();
-            return;
-            break;
+            case TASKBAR_ON_BOTTOM:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_TOP:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_LEFT:
+                closeAndDestroy();
+                return;
+                break;
+            case TASKBAR_ON_RIGHT:
+                closeAndDestroy();
+                return;
+                break;
         }
     }
 
@@ -222,12 +229,14 @@ void PopupNotification::onClosePopup()
 void PopupNotification::closeAndDestroy()
 {
     hide();
+
     m_timer.stop();
 
     if (m_PopupNotifications.length() == 1)
         m_pni.remindersDialog->reminders(false);
 
     m_PopupNotifications.removeOne(this);
+
     delete this;
 }
 

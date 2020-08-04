@@ -12,37 +12,49 @@ AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
     ui->lineEdit_page->setValidator(validator);
 
     onComboBoxListSelected();
+
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org'");
     query.exec();
     query.first();
+
     count = query.value(0).toInt();
+
     page = "1";
+
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     ui->lineEdit_page->setText(page);
+
     ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
+
     query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
     query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Название"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Город"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Адрес"));
+
     ui->tableView->setModel(query1);
+
     queries.append(query1);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
@@ -50,8 +62,10 @@ AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
     connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
@@ -65,6 +79,7 @@ AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
 AddOrgToPerson::~AddOrgToPerson()
 {
     deleteObjects();
+
     delete validator;
     delete ui;
 }
@@ -78,8 +93,11 @@ void AddOrgToPerson::deleteObjects()
 void AddOrgToPerson::getOrgID(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
+
     emit sendOrgID(id);
+
     close();
+
     destroy(true);
 }
 
@@ -90,18 +108,23 @@ void AddOrgToPerson::onUpdate()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         if (go == "previous" && page != "1")
             page = QString::number(page.toInt() - 1);
         else if (go == "previousStart" && page != "1")
@@ -117,10 +140,13 @@ void AddOrgToPerson::onUpdate()
         else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
         else if (go == "default" && page.toInt() >= pages.toInt())
             page = pages;
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         if (ui->lineEdit_page->text() == "1")
             query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         else
@@ -135,18 +161,23 @@ void AddOrgToPerson::onUpdate()
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%'");
             query.exec();
             query.first();
+
             count = query.value(0).toInt();
+
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
             {
                 remainder = count % ui->comboBox_list->currentText().toInt();
+
                 if (remainder)
                     remainder = 1;
                 else
                     remainder = 0;
+
                 pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
             }
+
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
             else if (go == "previousStart" && page != "1")
@@ -162,10 +193,13 @@ void AddOrgToPerson::onUpdate()
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
+
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
+
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
@@ -176,18 +210,23 @@ void AddOrgToPerson::onUpdate()
             query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org' AND entry_city LIKE '%" + entry_city + "%'");
             query.exec();
             query.first();
+
             count = query.value(0).toInt();
+
             if (count <= ui->comboBox_list->currentText().toInt())
                 pages = "1";
             else
             {
                 remainder = count % ui->comboBox_list->currentText().toInt();
+
                 if (remainder)
                     remainder = 1;
                 else
                     remainder = 0;
+
                 pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
             }
+
             if (go == "previous" && page != "1")
                 page = QString::number(page.toInt() - 1);
             else if (go == "previousStart" && page != "1")
@@ -203,10 +242,13 @@ void AddOrgToPerson::onUpdate()
             else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
             else if (go == "default" && page.toInt() >= pages.toInt())
                 page = pages;
+
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
+
             if (ui->lineEdit_page->text() == "1")
                 query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
@@ -222,12 +264,16 @@ void AddOrgToPerson::onUpdate()
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Название"));
     query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Город"));
     query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Адрес"));
+
     ui->tableView->setModel(query1);
+
     queries.append(query1);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
@@ -252,7 +298,9 @@ void AddOrgToPerson::searchFunction()
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
+
         onUpdate();
+
         return;
     }
 
@@ -269,24 +317,33 @@ void AddOrgToPerson::searchFunction()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         page = "1";
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+
         onUpdate();
     }
     else if (ui->comboBox->currentText() == tr("Поиск по городу"))
@@ -296,24 +353,33 @@ void AddOrgToPerson::searchFunction()
         query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone WHERE entry_type = 'org' AND entry_city LIKE '%" + entry_city + "%'");
         query.exec();
         query.first();
+
         count = query.value(0).toInt();
+
         if (count <= ui->comboBox_list->currentText().toInt())
             pages = "1";
         else
         {
             remainder = count % ui->comboBox_list->currentText().toInt();
+
             if (remainder)
                 remainder = 1;
             else
                 remainder = 0;
+
             pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
         }
+
         page = "1";
+
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
+
         query1->setQuery("SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' AND entry_city LIKE '%" + entry_city + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+
         onUpdate();
     }
 }
@@ -321,30 +387,35 @@ void AddOrgToPerson::searchFunction()
 void AddOrgToPerson::on_previousButton_clicked()
 {
     go = "previous";
+
     onUpdate();
 }
 
 void AddOrgToPerson::on_nextButton_clicked()
 {
     go = "next";
+
     onUpdate();
 }
 
 void AddOrgToPerson::on_previousStartButton_clicked()
 {
     go = "previousStart";
+
     onUpdate();
 }
 
 void AddOrgToPerson::on_nextEndButton_clicked()
 {
     go = "nextEnd";
+
     onUpdate();
 }
 
 void AddOrgToPerson::on_lineEdit_page_returnPressed()
 {
     go = "enter";
+
     onUpdate();
 }
 

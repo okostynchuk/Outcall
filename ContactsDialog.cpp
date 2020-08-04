@@ -44,6 +44,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     }
 
     ui->lineEdit_page->setText(page);
+
     ui->label_pages->setText(tr("из ") + pages);
 
     query1 = new QSqlQueryModel;
@@ -238,6 +239,7 @@ void ContactsDialog::onUpdate()
             page = pages;
 
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
@@ -297,6 +299,7 @@ void ContactsDialog::onUpdate()
                 page = pages;
 
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
@@ -351,6 +354,7 @@ void ContactsDialog::onUpdate()
                 page = pages;
 
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
@@ -406,6 +410,7 @@ void ContactsDialog::onUpdate()
                 page = pages;
 
             ui->lineEdit_page->setText(page);
+
             ui->label_pages->setText(tr("из ") + pages);
 
             query1 = new QSqlQueryModel;
@@ -541,6 +546,7 @@ void ContactsDialog::searchFunction()
         page = "1";
 
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
@@ -578,6 +584,7 @@ void ContactsDialog::searchFunction()
         page = "1";
 
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;
@@ -615,6 +622,7 @@ void ContactsDialog::searchFunction()
         page = "1";
 
         ui->lineEdit_page->setText(page);
+
         ui->label_pages->setText(tr("из ") + pages);
 
         query1 = new QSqlQueryModel;

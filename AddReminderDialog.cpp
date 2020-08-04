@@ -20,6 +20,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     QString languages = global::getSettingsValue("language", "settings").toString();
+
     if (languages == "Русский (по умолчанию)")
         ui->calendarWidget->setLocale(QLocale::Russian);
     else if (languages == "Українська")
@@ -30,7 +31,9 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
     ui->calendarWidget->setGridVisible(true);
     ui->calendarWidget->setMinimumDate(QDate::currentDate());
     ui->calendarWidget->setSelectedDate(QDate::currentDate());
+
     ui->timeEdit->setTime(QTime::currentTime());
+
     ui->textEdit->installEventFilter(this);
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
@@ -55,12 +58,14 @@ void AddReminderDialog::onSave()
     if (dateTime < QDateTime::currentDateTime())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
+
         return;
     }
 
     if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -113,6 +118,7 @@ void AddReminderDialog::onSave()
     }
 
     emit sendData(true);
+
     close();
 
     if (ui->comboBox->currentText() != my_number)
@@ -141,9 +147,11 @@ bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit2");
+
                 return true;
             }
         }
@@ -153,13 +161,16 @@ bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit");
+
                 return true;
             }
         }
     }
+
     return false;
 }
 

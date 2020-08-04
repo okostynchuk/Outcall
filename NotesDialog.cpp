@@ -42,6 +42,7 @@ void NotesDialog::setCallId(QString uniqueid, QString state_call)
 {
     callId = uniqueid;
     state = state_call;
+
     loadNotes();
 }
 
@@ -57,13 +58,12 @@ void NotesDialog::loadNotes()
 
     ui->tableView->setModel(query);
 
-    ui->tableView->setWordWrap(true);
-    ui->tableView->resizeColumnsToContents();
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->resizeColumnsToContents();
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
@@ -79,11 +79,13 @@ void NotesDialog::onSave()
 {
     QSqlDatabase db;
     QSqlQuery query(db);
+
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
     if (ui->textEdit->toPlainText().simplified().isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -91,6 +93,7 @@ void NotesDialog::onSave()
 
     query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + my_number);
     query.exec();
+
     if (query.next())
         author = query.value(0).toString();
     else
@@ -113,7 +116,9 @@ void NotesDialog::onSave()
         emit sendDataToPlaced();
 
     close();
+
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
+
     destroy(true);
 }
 
@@ -136,9 +141,11 @@ bool NotesDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit2");
+
                 return true;
             }
         }
@@ -148,13 +155,16 @@ bool NotesDialog::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
             if (keyEvent->key() == Qt::Key_Return)
             {
                 object->setObjectName("textEdit");
+
                 return true;
             }
         }
     }
+
     return false;
 }
 

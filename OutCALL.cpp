@@ -131,7 +131,8 @@ void OutCall::createContextMenu()
 void OutCall::automaticlySignIn()
 {
     bool autoSingIn = global::getSettingsValue("auto_sign_in", "general").toBool();
-    if(autoSingIn)
+
+    if (autoSingIn)
         signInOut();
 }
 
@@ -140,6 +141,7 @@ void OutCall::signInOut()
     if (m_signIn->text() == tr("Выйти из аккаунта") || m_signIn->text() == tr("Отменить вход"))
     {
         g_pAsteriskManager->signOut();
+
         return;
     }
 
@@ -147,33 +149,32 @@ void OutCall::signInOut()
     {
         QString server = global::getSettingsValue("servername", "settings").toString();
         QString port = global::getSettingsValue("port", "settings", "5038").toString();
+
         g_pAsteriskManager->signIn(server, port.toUInt());
     }
     else
-    {
         g_pAsteriskManager->signOut();
-    }
 }
 
 void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
 {
     switch (socketError)
     {
-    case QAbstractSocket::RemoteHostClosedError:
-        MsgBoxInformation(tr("Удаленный хост закрыл соединение"));
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        MsgBoxInformation(tr("Хост не был найден. Пожалуйста, проверьте имя хоста "
+        case QAbstractSocket::RemoteHostClosedError:
+            MsgBoxInformation(tr("Удаленный хост закрыл соединение"));
+            break;
+        case QAbstractSocket::HostNotFoundError:
+            MsgBoxInformation(tr("Хост не был найден. Пожалуйста, проверьте имя хоста "
                              "и настройки порта"));
-        break;
-    case QAbstractSocket::ConnectionRefusedError:
-        MsgBoxInformation(tr("Соединение было отклонено узлом. "
+            break;
+        case QAbstractSocket::ConnectionRefusedError:
+            MsgBoxInformation(tr("Соединение было отклонено узлом. "
                              "Убедитесь, что сервер работает, "
                              "и проверьте правильность имени хоста "
                              "и настроек порта"));
-        break;
-    default:
-        MsgBoxInformation(msg);
+            break;
+        default:
+            MsgBoxInformation(msg);
     }
 }
 
@@ -248,10 +249,12 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTrayIcon->setIcon(QIcon(path));
 
         PopupHelloWindow::showInformationMessage(tr(""), tr("Ошибка аутентификации"));
+
         m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
         m_signIn->setText(tr("&Войти в аккаунт"));
 
         disableActions();
+
         opened = false;
 
         m_timer.stop();
@@ -261,12 +264,14 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 void OutCall::disableActions()
 {
     QApplication::closeAllWindows();
+
     if (m_contactsDialog->isVisible())
         m_contactsDialog->close();
     if (m_callHistoryDialog->isVisible())
         m_callHistoryDialog->close();
     if (m_remindersDialog->isVisible())
         m_remindersDialog->close();
+
     m_placeCall->setEnabled(false);
     callHistoryAction->setEnabled(false);
     contactsAction->setEnabled(false);
@@ -364,7 +369,6 @@ void OutCall::changeIconReminders(bool changing)
     else if (!changing && activeReminders == 0)
     {
         QString path(":/images/connected.png");
-
         m_systemTrayIcon->setIcon(QIcon(path));
     }
 }
@@ -375,12 +379,14 @@ void OutCall::changeIcon()
     {
         QString path(":/images/connected.png");
         m_systemTrayIcon->setIcon(QIcon(path));
+
         m_switch = false;
     }
     else
     {
         QString path(":/images/disconnected.png");
         m_systemTrayIcon->setIcon(QIcon(path));
+
         m_switch = true;
     }
 }

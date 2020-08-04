@@ -85,24 +85,30 @@ void SettingsDialog::saveSettings()
     // Save extensions
     global::removeSettingsKey("extensions");
     global::removeSettingsKey("extensions_name");
+
     int nRow = ui->treeWidget->topLevelItemCount();
+
     for (int i = 0; i < nRow; ++i)
     {
         QTreeWidgetItem *item = ui->treeWidget->topLevelItem(i);
         QString extension = item->text(0);
         QString protocol = item->text(1);
+
         global::setSettingsValue(extension, protocol, "extensions");
         global::setSettingsValue(extension, g_pAsteriskManager->extensionNumbers.value(extension), "extensions_name");
     }
 
     // Save group extensions
     global::removeSettingsKey("group_extensions");
+
     int nRow2 = ui->treeWidget_2->topLevelItemCount();
+
     for (int i = 0; i < nRow2; ++i)
     {
         QTreeWidgetItem *group_item = ui->treeWidget_2->topLevelItem(i);
         QString group_extension = group_item->text(0);
         QString group_protocol = group_item->text(1);
+
         global::setSettingsValue(group_extension, group_protocol, "group_extensions");
     }
 
@@ -182,7 +188,9 @@ void SettingsDialog::loadSettings()
 
     // Load extensions
     QStringList extensions = global::getSettingKeys("extensions");
-    int nRows              = extensions.size();
+
+    int nRows = extensions.size();
+
     for (int i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
@@ -195,7 +203,9 @@ void SettingsDialog::loadSettings()
 
     // Load group extensions
     QStringList group_extensions = global::getSettingKeys("group_extensions");
-    int nRows2              = group_extensions.size();
+
+    int nRows2 = group_extensions.size();
+
     for (int i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
@@ -210,12 +220,13 @@ void SettingsDialog::loadSettings()
 void SettingsDialog::show()
 {
     ui->tabWidget->setCurrentIndex(0);
+
     QDialog::show();
 }
 
 void SettingsDialog::on_applyButton_clicked()
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox;    
     msgBox.setText(tr("Применение настроек"));
     msgBox.setInformativeText(tr("Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -286,24 +297,32 @@ void SettingsDialog::loadLanguages()
 QString SettingsDialog::getExtension()
 {
     QStringList extensions = global::getSettingKeys("extensions");
-    int nRows              = extensions.size();
+
+    int nRows = extensions.size();
+
     for (int i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
+
         return extension;
     }
+
     return NULL;
 }
 
 QString SettingsDialog::getGroupExtension()
 {
     QStringList group_extensions = global::getSettingKeys("group_extensions");
-    int nRows2              = group_extensions.size();
+
+    int nRows2 = group_extensions.size();
+
     for (int i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
+
         return group_extension;
     }
+
     return NULL;
 }
 
@@ -315,6 +334,7 @@ void SettingsDialog::onAddButtonClicked()
     if (m_addExtensionDialog->exec())
     {
         ui->addButton->setEnabled(false);
+
         QString extension = m_addExtensionDialog->getExtension();
         QString protocol = m_addExtensionDialog->getProtocol();
 
@@ -332,11 +352,13 @@ void SettingsDialog::onAddButtonClicked()
 void SettingsDialog::onAddGroupButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
+
     m_addExtensionDialog->setWindowTitle(tr("Добавление"));
 
     if (m_addExtensionDialog->exec())
     {
         ui->addButton_2->setEnabled(false);
+
         QString group_extension = m_addExtensionDialog->getExtension();
         QString group_protocol = m_addExtensionDialog->getProtocol();
 
@@ -357,12 +379,12 @@ void SettingsDialog::onRemoveButtonClicked()
 
     if (selectedItems.size() > 0)
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox;       
         msgBox.setText(tr("Удаление номера"));
         msgBox.setInformativeText(tr("Вы уверены, что хотите удалить выбранный номер?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
-        msgBox.setButtonText(QMessageBox::No, tr("Нет"));
+        msgBox.setButtonText(QMessageBox::No, tr("Нет")); 
         int reply = msgBox.exec();
 
         switch(reply)
@@ -424,7 +446,9 @@ void SettingsDialog::onRemoveGroupButtonClicked()
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
+
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
+
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
 
     if (selectedItems.size())
@@ -450,7 +474,9 @@ void SettingsDialog::onEditButtonClicked()
 void SettingsDialog::onEditGroupButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
+
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
+
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
 
     if (selectedItems.size())

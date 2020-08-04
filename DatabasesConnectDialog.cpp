@@ -16,6 +16,7 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     ui(new Ui::DatabasesConnectDialog)
 {
     ui->setupUi(this);
+
     setWindowFlags(windowFlags() ^ Qt::WindowCloseButtonHint);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -64,56 +65,69 @@ void DatabasesConnectDialog::onSave()
         checkDb();
         checkDbAsterisk();
 
-        if(!DB.isOpen() && !DbAsterisk.isOpen())
+        if (!DB.isOpen() && !DbAsterisk.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение не создано!"), QMessageBox::Ok);
-        else if(!DB.isOpen())
+        else if (!DB.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
+
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
+
             setSettingForSecondDb();
         }
-        else if(!DbAsterisk.isOpen())
+        else if (!DbAsterisk.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
+
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
+
             setSettingForFirstDb();
         }
-        else if(DB.isOpen() && DbAsterisk.isOpen())
+        else if (DB.isOpen() && DbAsterisk.isOpen())
         {
             setSettingForFirstDb();
             setSettingForSecondDb();
+
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+
             close();
+
             destroy(true);
         }
     }
-    else if(state_db == "db")
+    else if (state_db == "db")
     {
         checkDb();
 
-        if(!DB.isOpen())
+        if (!DB.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
         else
         {
             setSettingForFirstDb();
+
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+
             close();
+
             destroy(true);
         }
     }
-    else if(state_db == "dbAsterisk")
+    else if (state_db == "dbAsterisk")
     {
         checkDbAsterisk();
 
-        if(!DbAsterisk.isOpen())
+        if (!DbAsterisk.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
         else
         {
             setSettingForSecondDb();
+
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+
             close();
+
             destroy(true);
         }
     }
@@ -144,22 +158,25 @@ void DatabasesConnectDialog::setSettingForSecondDb()
 void DatabasesConnectDialog::onClose()
 {
      g_pAsteriskManager->signOut();
+
      qApp->quit();
 }
 
 void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbAsterisk, QString state)
 {
     state_db = state;
-    if(state_db == "db")
+
+    if (state_db == "db")
     {
         ui->tabWidget_2->setCurrentIndex(0);
         ui->tabWidget_2->setTabEnabled(1, false);
     }
-    else if(state_db == "dbAsterisk")
+    else if (state_db == "dbAsterisk")
     {
         ui->tabWidget_2->setCurrentIndex(1);
         ui->tabWidget_2->setTabEnabled(0, false);
     }
+
     DB = db;
     DbAsterisk = dbAsterisk;
 }

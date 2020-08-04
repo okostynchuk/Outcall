@@ -30,7 +30,7 @@ void PlayAudioDialog::setValuesCallHistory(QString recordpath)
 
 void PlayAudioDialog::playAudio(QString &recordpath)
 {
-    openMedia("ftp://support:Lvp^^ej0@192.168.0.8/ftp_media/usb/"+recordpath);
+    openMedia("ftp://support:Lvp^^ej0@192.168.0.8/ftp_media/usb/" + recordpath);
 }
 
 void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
@@ -39,7 +39,8 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
 
     if (languages == "Русский (по умолчанию)")
     {
-        static const QHash<int, const char *> stateMapping {
+        static const QHash<int, const char *> stateMapping
+        {
             {1,  "Остановленно"},
             {2,  "Пауза"},
             {3,  "Воспроизведение"},
@@ -52,12 +53,15 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {10, "Готов"},
             {11, "Переподключение"},
         };
+
         const char *stateStr = stateMapping.value(newState, "");
+
         updateWindowTitle(stateStr);
     }
     else if (languages == "English")
     {
-        static const QHash<int, const char *> stateMapping {
+        static const QHash<int, const char *> stateMapping
+        {
             {1,  "Stopped"},
             {2,  "Paused"},
             {3,  "Playing"},
@@ -70,12 +74,15 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {10, "Ready"},
             {11, "Reconnecting"},
         };
+
         const char *stateStr = stateMapping.value(newState, "");
+
         updateWindowTitle(stateStr);
     }
     else if (languages == "Українська")
     {
-        static const QHash<int, const char *> stateMapping {
+        static const QHash<int, const char *> stateMapping
+        {
             {1,  "Перепідключення"},
             {2,  "Пауза"},
             {3,  "Відтворення"},
@@ -88,7 +95,9 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {10, "Готовий"},
             {11, "Перепідключення"},
         };
+
         const char *stateStr = stateMapping.value(newState, "");
+
         updateWindowTitle(stateStr);
     }
 }
@@ -104,6 +113,7 @@ void PlayAudioDialog::updateWindowTitle(const QString &state)
     QString appName = QCoreApplication::applicationName();
     QString title = state.isEmpty() ? appName :
                     QString("%1 (%2)").arg(appName, state);
+
     setWindowTitle(title);
 }
 

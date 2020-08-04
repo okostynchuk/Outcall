@@ -22,6 +22,7 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
     g_pAsteriskManager = this;
 
     m_tcpSocket = new QTcpSocket(this);
+
     void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::error;
 
     connect(m_tcpSocket, &QIODevice::readyRead,       this, &AsteriskManager::read);
@@ -41,7 +42,9 @@ void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
     {
         m_server = serverName;
         m_port   = port;
+
         setState(CONNECTING);
+
         m_tcpSocket->connectToHost(serverName, port);
     }
 }
@@ -49,9 +52,12 @@ void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
 void AsteriskManager::signOut()
 {
     m_tcpSocket->abort();
+
     m_isSignedIn = false;
     m_autoConnectingOnError = false;
+
     m_timer.stop();
+
     setState(DISCONNECTED);
 }
 
@@ -60,17 +66,19 @@ void AsteriskManager::onError(QAbstractSocket::SocketError socketError)
     if (m_currentState == CONNECTING && !m_autoConnectingOnError)
     {
         QString msg = m_tcpSocket->errorString();
+
         emit error(socketError, msg);
+
         setState(DISCONNECTED);
     }
     else if (m_currentState == CONNECTED)
     {
         setState(DISCONNECTED);
+
         if (!m_timer.isActive() && m_autoSignIn)
-        {
             m_timer.start(10000); // 10 sec to reconnect
-        }
     }
+
     setState(ERROR_ON_CONNECTING);
 }
 
@@ -79,11 +87,14 @@ void AsteriskManager::reconnect()
     if (!m_autoSignIn)
     {
         m_timer.stop();
+
         m_autoConnectingOnError = false;
+
         return;
     }
 
     m_autoConnectingOnError = true;
+
     signIn(m_server, m_port);
 }
 
@@ -100,49 +111,50 @@ void AsteriskManager::setState(AsteriskState state)
     if (state == CONNECTED)
     {
         m_currentState = CONNECTED;
+
         emit stateChanged(CONNECTED);
     }
     else if (state == CONNECTING)
     {
         m_currentState = CONNECTING;
+
         emit stateChanged(CONNECTING);
     }
     else if (state == DISCONNECTED)
     {
         m_currentState = DISCONNECTED;
+
         m_isSignedIn = false;
+
         emit stateChanged(DISCONNECTED);
     }
     else if (state == AUTHENTICATION_FAILED)
     {
         m_currentState = DISCONNECTED;
+
         m_isSignedIn = false;
+
         emit stateChanged(AUTHENTICATION_FAILED);
     }
     else if (state == ERROR_ON_CONNECTING)
-    {
         m_currentState = ERROR_ON_CONNECTING;
-    }
 }
 
 void AsteriskManager::setAsteriskVersion(const QString &msg)
 {
     int index = msg.indexOf("/") + 1;
+
     QString ami = msg.mid(index);
 
     if (ami.at(0) == '1')
-    {
         m_currentVersion = VERSION_11;
-    }
     else if (ami.at(0) == '2')
-    {
         m_currentVersion = VERSION_13;
-    }
 }
 
 void AsteriskManager::read()
 {
-    while(m_tcpSocket->canReadLine())
+    while (m_tcpSocket->canReadLine())
     {
         QString message = QString::fromUtf8(m_tcpSocket->readLine());
 
@@ -157,37 +169,38 @@ void AsteriskManager::read()
             {
                 m_isSignedIn = true;
                 m_autoConnectingOnError = false;
+
                 m_timer.stop();
+
                 setState(CONNECTED);
             }
-            else if(msg == "Message: Authentication failed")
+            else if (msg == "Message: Authentication failed")
             {
                 m_timer.stop();
+
                 m_tcpSocket->abort();
+
                 m_isSignedIn = false;
                 m_autoConnectingOnError = false;
+
                 setState(AUTHENTICATION_FAILED);
             }
         }
         else
         {
             if (message != "\r\n")
-            {
                 m_eventData.append(message);
-            }
             else if (!m_eventData.isEmpty())
             {
                 if (m_currentVersion == VERSION_13)
-                {
                     parseEvent(m_eventData);
-                }
                 else if (m_currentVersion == VERSION_11)
-                {
                     asterisk_11_eventHandler(m_eventData);
-                }
+
                 m_eventData.clear();
             }
         }
+
         //emit messageReceived(message.trimmed());
     }
 }
@@ -270,6 +283,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
+
         const QString number         = eventValues.value("TransferTargetCallerIDNum");
         const QString uniqueid       = eventValues.value("TransfereeUniqueid");
         const QString callerIDName   = eventValues.value("TransfereeCallerIDName");
@@ -280,6 +294,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         if (global::containsSettingsKey(number, "extensions"))
         {
             QMap<QString, QVariant> received;
+
             received.insert("dateTime", dateTime);
             received.insert("from", callerIDNum);
             received.insert("to", number);
@@ -287,7 +302,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
             received.insert("uniqueid", uniqueid);
 
             int counter = m_dialedNum.value(uniqueid, 0);
+
             counter++;
+
             m_dialedNum.insert(uniqueid, counter);
 
             if (counter == 1)
@@ -298,6 +315,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
+
         QString exten       = eventValues.value("Exten");
         QString uniqueid    = eventValues.value("Uniqueid");
         QString state       = eventValues.value("ChannelStateDesc");
@@ -317,9 +335,11 @@ void AsteriskManager::parseEvent(const QString &eventData)
             QString dateTime = QDateTime::currentDateTime().toString();
 
             call->exten = exten;
+
             m_calls.insert(uniqueid, call);
 
             QMap<QString, QVariant> placed;
+
             placed.insert("from",       call->chExten);
             placed.insert("to",         call->exten);
             placed.insert("protocol",   call->chType);
@@ -331,6 +351,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 list.removeFirst();
 
             list.append(QVariant::fromValue(placed));
+
             global::setSettingsValue("placed", list, "calls");
 
             emit callDeteceted(placed, PLACED);
@@ -374,6 +395,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 if (recievedProtocol)
                 {
                     QMap<QString, QVariant> received;
+
                     received.insert("dateTime", dateTime);
                     received.insert("from", callerIDNum);
                     received.insert("to", destExten);
@@ -384,7 +406,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     received.insert("linkedid", linkedid);
 
                     int counter = m_dialedNum.value(uniqueid, 0);
+
                     counter++;
+
                     m_dialedNum.insert(uniqueid, counter);
 
                     if (counter == 1)
@@ -419,21 +443,20 @@ void AsteriskManager::parseEvent(const QString &eventData)
             QString protocol = global::getSettingsValue(exten, "extensions").toString();
 
             bool isProtocolOk = false;
+
             if (protocol == destProtocol)
-            {
                 isProtocolOk = true;
-            }
             else if (destProtocol == "PJSIP" && protocol == "SIP")
-            {
                 isProtocolOk = true;
-            }
 
             if (global::containsSettingsKey(exten, "extensions") && isProtocolOk)
             {
                 if (dialStatus == "ANSWER")
                 {
                     QString dateTime = QDateTime::currentDateTime().toString();
+
                     QMap<QString, QVariant> received;
+
                     received.insert("from",         callerIDNum);
                     received.insert("to",           exten);
                     received.insert("protocol",     destProtocol);
@@ -446,6 +469,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                         list.removeFirst();
 
                     list.append(QVariant::fromValue(received));
+
                     global::setSettingsValue("received", list, "calls");
 
                     m_dialedNum.remove(uniqueid);
@@ -457,26 +481,27 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
                 {
                     int counter = 0;
+
                     if (m_dialedNum.contains(uniqueid))
-                    {
                         counter = m_dialedNum.value(uniqueid, 0);
-                    }
                     else
-                    {
                         return;
-                    }
 
                     if (counter > 1)
                     {
                         counter--;
+
                         m_dialedNum.insert(uniqueid, counter);
+
                         return;
                     }
+
                     m_dialedNum.remove(uniqueid);
 
                     QString date = QDateTime::currentDateTime().toString();
 
                     QMap<QString, QVariant> missed;
+
                     missed.insert("from",           callerIDNum);
                     missed.insert("to",             exten);
                     missed.insert("protocol",       destProtocol);
@@ -489,7 +514,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
                         list.removeFirst();
 
                     list.append(QVariant::fromValue(missed));
+
                     global::setSettingsValue("missed", list, "calls");
+
                     emit callDeteceted(missed, MISSED);
                 }
             }
@@ -501,6 +528,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         const QString uniqueid = eventValues.value("Uniqueid");
+
         if (m_calls.contains(uniqueid))
         {
             Call *call = m_calls.value(uniqueid);
@@ -513,7 +541,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
 void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &map)
 {
     QStringList list = eventData.split("\r\n");
+
     list.removeLast();
+
     foreach (QString values, list)
     {
         QStringList c = values.split(": ");
@@ -644,7 +674,7 @@ void AsteriskManager::onSettingsChange()
     QByteArray secretInByte   = global::getSettingsValue("password",   "settings").toByteArray();
     QString secret            = QString(QByteArray::fromBase64(secretInByte));
 
-    if(server != m_server || port != m_port ||
+    if (server != m_server || port != m_port ||
             username != m_username || secret != m_secret)
     {
         m_server    = server;
@@ -730,6 +760,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             if (channelStateDesc == "Ringing")
             {
                 QMap<QString, QVariant> received;
+
                 received.insert("from", connectedLineNum);
                 received.insert("callerIDName", callerIDName);
 
@@ -744,6 +775,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             if (channelStateDesc == "Up")
             {
                 QMap<QString, QVariant> received;
+
                 received.insert("from",         connectedLineNum);
                 received.insert("to",           exten);
                 received.insert("protocol",     protocol);
@@ -775,6 +807,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 m_calls.insert(uniqueid, call);
 
                 QMap<QString, QVariant> placed;
+
                 placed.insert("from", exten);
                 placed.insert("to", to);
                 placed.insert("protocol", protocol);
@@ -786,6 +819,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                     list.removeFirst();
 
                 list.append(QVariant::fromValue(placed));
+
                 global::setSettingsValue("placed", list, "calls");
 
                 emit callDeteceted(placed, PLACED);
@@ -811,6 +845,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             QString dateTime = QDateTime::currentDateTime().toString();
 
             QMap<QString, QVariant> placed;
+
             placed.insert("from", call->chExten);
             placed.insert("to", call->exten);
             placed.insert("protocol", call->chType);
@@ -822,6 +857,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 list.removeFirst();
 
             list.append(QVariant::fromValue(placed));
+
             global::setSettingsValue("placed", list, "calls");
 
             emit callDeteceted(placed, PLACED);
@@ -858,10 +894,14 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 list.removeFirst();
 
             list.append(QVariant::fromValue(missed));
+
             global::setSettingsValue("missed", list, "calls");
+
             emit callDeteceted(missed, MISSED);
         }
+
         delete call;
+
         m_calls.remove(uniqueid);
     }
 }
