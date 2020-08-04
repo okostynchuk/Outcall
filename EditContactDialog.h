@@ -2,10 +2,13 @@
 #define EDITCONTACTDIALOG_H
 
 #include "AddOrgToPerson.h"
+//#include "ViewContactDialog.h"
 
 #include <QDialog>
 #include <QValidator>
 #include <QStringList>
+
+class ViewContactDialog;
 
 namespace Ui {
 class EditContactDialog;
@@ -20,10 +23,12 @@ public:
     void setValuesContacts(QString &);
     void setValuesCallHistory(QString &);
     void setValuesPopupWindow(QString &number);
+    //void setWPosN();
     ~EditContactDialog();
 
 public slots:
     void receiveOrgID(QString &);
+    void setPos(int, int);
 
 protected slots:
     void onSave();
@@ -31,6 +36,7 @@ protected slots:
 private:
     Ui::EditContactDialog *ui;
     AddOrgToPerson *addOrgToPerson;
+    ViewContactDialog *viewContactDialog;
     QValidator *validator;
     QString updateID;
     QString firstNumber;

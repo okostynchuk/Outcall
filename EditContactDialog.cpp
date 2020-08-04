@@ -1,6 +1,8 @@
 #include "EditContactDialog.h"
 #include "ui_EditContactDialog.h"
 
+#include "ViewContactDialog.h"
+
 #include <QVariantList>
 #include <QVariantMap>
 #include <QSqlDatabase>
@@ -16,6 +18,13 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui(new Ui::EditContactDialog)
 {
     ui->setupUi(this);
+
+    //move(reinterpret_cast<ViewContactDialog *>(this->parent())->pos());
+
+    viewContactDialog = new ViewContactDialog;
+    qDebug()<<connect(viewContactDialog, SIGNAL(getPos(int, int)), this, SLOT(setPos(int, int)));
+
+    //qDebug() << viewContactDialog->getPos();
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -38,6 +47,17 @@ void EditContactDialog::onReturn()
 
     destroy(true);
 }
+
+void EditContactDialog::setPos(int x, int y)
+{
+    this->move(x, y);
+    qDebug() << this->pos();
+}
+
+//void EditContactDialog::setWPosN(){
+
+//    qDebug() << "rerer";
+//}
 
 void EditContactDialog::onSave()
 {

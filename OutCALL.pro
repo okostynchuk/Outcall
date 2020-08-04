@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     RemindersThread.cpp \
     NotesDialog.cpp \
     EditReminderDialog.cpp \
-    PopupReminder.cpp
+    PopupReminder.cpp \
+    Widget.cpp
 
 HEADERS  += \
     AddReminderDialog.h \
@@ -88,7 +89,8 @@ HEADERS  += \
     RemindersThread.h \
     NotesDialog.h \
     EditReminderDialog.h \
-    PopupReminder.h
+    PopupReminder.h \
+    Widget.h
 
 FORMS    += \
     AddExtensionDialog.ui \
