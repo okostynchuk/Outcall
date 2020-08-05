@@ -75,7 +75,6 @@ void ViewOrgContactDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
     addReminderDialog->setCallId(updateID);
-    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

@@ -14,25 +14,30 @@ class AddOrgContactDialog : public QDialog
 {
     Q_OBJECT
 
+signals:
+    void sendData(bool);
+
 public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
-    void setOrgValuesCallHistory(QString &);
-    void setOrgValuesPopupWindow(QString &);
     ~AddOrgContactDialog();
 
-protected:
+    void setOrgValuesCallHistory(QString &);
+    void setOrgValuesPopupWindow(QString &);   
+
+private slots:
     void onSave();
+
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
 private:
     Ui::AddOrgContactDialog *ui;
-    QValidator *validator;
-    QSqlQuery *query1;
-    QStringList numbers;
 
-signals:
-    void sendData(bool);
+    QSqlQuery *query1;
+
+    QValidator *validator;
+
+    QStringList numbers;
 };
 
 #endif // ADDORGCONTACTDIALOG_H

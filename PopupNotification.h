@@ -27,21 +27,23 @@ private:
         QString text;
     };
 
-    void closeAndDestroy();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-
 public:
     PopupNotification(PopupNotificationInfo& pni, QWidget *parent = 0);
     ~PopupNotification();
+
     static void showNotification(RemindersDialog*, QString, QString, QString);
     static void closeAll();
 
 private slots:
-    void on_pushButton_close_clicked();
+    void closeAndDestroy();
     void onTimer();
     void onClosePopup();
+
+    void on_pushButton_close_clicked();
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -51,10 +53,9 @@ private:
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
     bool m_bAppearing;
-
     QPoint position;
-
     QTimer m_timer;
+
     PopupNotificationInfo m_pni;
 
     static QList<PopupNotification*> m_PopupNotifications;

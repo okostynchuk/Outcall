@@ -18,20 +18,25 @@ class ChooseNumber : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit ChooseNumber(QWidget *parent = 0);
-    void setValuesNumber(QString &);
-    ~ChooseNumber();
-
-public slots:
-    bool eventFilter(QObject*, QEvent*event);
-
 signals:
     void sendNumber(QString &);
 
+public:
+    explicit ChooseNumber(QWidget *parent = 0);
+    ~ChooseNumber();
+
+    void setValuesNumber(QString &);
+
+private slots:
+    bool eventFilter(QObject*, QEvent*event);
+
 private:
     Ui::ChooseNumber *ui;
+
+    PlaceCallDialog *placeCallDialog;
+
     QValidator *validator;
+
     QString updateID;
     QString firstPassNumber;
     QString secondPassNumber;
@@ -43,7 +48,6 @@ private:
     QString thirdNumber;
     QString fourthNumber;
     QString fifthNumber;
-    PlaceCallDialog *placeCallDialog;
 };
 
 #endif // CHOOSENUMBER_H

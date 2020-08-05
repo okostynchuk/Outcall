@@ -25,14 +25,14 @@ class ContactsDialog : public QDialog
 {
     Q_OBJECT
 
+public slots:
+    void receiveData(bool);
+
 public:
     explicit ContactsDialog(QWidget *parent = 0);
     ~ContactsDialog();
 
-public slots:
-    void receiveData(bool);
-
-protected slots:
+private slots:
     void deleteObjects();
     void onUpdate();
     void onAddPerson();
@@ -40,12 +40,9 @@ protected slots:
     void onComboBoxListSelected();
     void onComboBoxSelected();
     void showCard(const QModelIndex &);
-    void on_searchButton_clicked();
     void searchFunction();
 
-private slots:
-    void showEvent(QShowEvent *event);
-    void closeEvent(QCloseEvent *event);
+    void on_searchButton_clicked();
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
@@ -53,16 +50,29 @@ private slots:
     void on_lineEdit_page_returnPressed();
     void on_lineEdit_returnPressed();
 
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::ContactsDialog *ui;
+
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
+
     AddContactDialog *addContactDialog;
     AddOrgContactDialog *addOrgContactDialog;
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
+
     QValidator *validator;
+
     QWidget* addImageLabel(int &);
+
+    QList<QSqlQueryModel*> queries;
+    QList<QWidget*> widgets;
+    QList<QBoxLayout*> layouts;
+    QList<QLabel*> labels;
+
     QString page;
     int count;
     int remainder;
@@ -74,10 +84,6 @@ private:
     QString entry_phone;
     QString entry_comment;
     bool filter;
-    QList<QSqlQueryModel*> queries;
-    QList<QWidget*> widgets;
-    QList<QBoxLayout*> layouts;
-    QList<QLabel*> labels;
 };
 
 #endif // CONTACTSDIALOG_H
