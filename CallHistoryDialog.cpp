@@ -32,6 +32,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     my_number = global::getExtensionNumber("extensions");
     my_group = global::getGroupExtensionNumber("group_extensions");
+
     setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
 
     ui->comboBox_list->setVisible(false);
@@ -39,12 +40,13 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
-    connect(ui->playAudioPhone,      &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
-    connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
-    connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton,        &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->addPhoneNumberButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
+    connect(ui->playAudio,            &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
+    connect(ui->playAudioPhone,       &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
+    connect(ui->callButton,           &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->addContactButton,     &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
+    connect(ui->addOrgContactButton,  &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
+    connect(ui->updateButton,         &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
 
     connect(ui->comboBox_2,  SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
 
@@ -76,8 +78,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     go="default";
     page = "1";
+
     days = ui->comboBox_2->currentText();
+
     loadAllCalls();
+
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 }
 
@@ -523,6 +528,26 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
+}
+
+void CallHistoryDialog::onAddPhoneNumberToContact()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (isInnerPhone(&number))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
+        return;
+    }
+
+    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+    addPhoneNumberToContactDialog->setPhoneNumber(number);
+    addPhoneNumberToContactDialog->show();
+    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::onPlayAudio()

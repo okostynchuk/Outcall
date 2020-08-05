@@ -6,6 +6,7 @@
 #include "AddOrgContactDialog.h"
 #include "EditContactDialog.h"
 #include "EditOrgContactDialog.h"
+#include "AddPhoneNumberToContactDialog.h"
 #include "SettingsDialog.h"
 #include "PlayAudioDialog.h"
 #include "NotesDialog.h"
@@ -43,6 +44,7 @@ private slots:
     void loadReceivedCalls();
     void loadPlacedCalls();
 
+    void onAddPhoneNumberToContact();
     void onPlayAudio();
     void onPlayAudioPhone();
     void onAddContact();
@@ -104,6 +106,7 @@ private:
     AddOrgContactDialog *addOrgContactDialog;
     EditContactDialog *editContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
+    AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
     NotesDialog *notesDialog;
 
     QString recordpath;

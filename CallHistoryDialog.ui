@@ -20,7 +20,7 @@
    <string>История звонков</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -175,6 +175,57 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="8">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="12">
+         <widget class="QPushButton" name="addContactButton">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Добавить / изменить физ. лицо</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="2">
          <widget class="QLineEdit" name="lineEdit_page">
           <property name="enabled">
@@ -205,66 +256,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="8">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="6">
-         <widget class="QComboBox" name="comboBox_list">
-          <item>
-           <property name="text">
-            <string>10</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="0" column="12">
-         <widget class="QPushButton" name="addContactButton">
-          <property name="minimumSize">
-           <size>
-            <width>27</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>27</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="toolTip">
-           <string>Добавить / изменить физ. лицо</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>30</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="13">
          <widget class="QPushButton" name="addOrgContactButton">
           <property name="minimumSize">
@@ -289,7 +280,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -303,8 +294,17 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
-         <widget class="QPushButton" name="nextEndButton">
+        <item row="0" column="6">
+         <widget class="QComboBox" name="comboBox_list">
+          <item>
+           <property name="text">
+            <string>10</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="previousStartButton">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -326,50 +326,7 @@
            <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
-           <string>►►</string>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="14">
-         <widget class="QPushButton" name="playAudio">
-          <property name="minimumSize">
-           <size>
-            <width>27</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>27</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::DefaultContextMenu</enum>
-          </property>
-          <property name="toolTip">
-           <string>Прослушать запись звонка</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>:/images/listeningToCallRecording.png</normaloff>:/images/listeningToCallRecording.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>21</width>
-            <height>21</height>
-           </size>
+           <string>◄◄</string>
           </property>
           <property name="autoDefault">
            <bool>false</bool>
@@ -403,13 +360,56 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
           </property>
           <property name="iconSize">
            <size>
             <width>23</width>
             <height>23</height>
+           </size>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="15">
+         <widget class="QPushButton" name="playAudio">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="toolTip">
+           <string>Прослушать запись звонка</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/listeningToCallRecording.png</normaloff>:/images/listeningToCallRecording.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>21</width>
+            <height>21</height>
            </size>
           </property>
           <property name="autoDefault">
@@ -447,8 +447,8 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="previousStartButton">
+        <item row="0" column="5">
+         <widget class="QPushButton" name="nextEndButton">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -470,7 +470,7 @@
            <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text">
-           <string>◄◄</string>
+           <string>►►</string>
           </property>
           <property name="autoDefault">
            <bool>false</bool>
@@ -526,6 +526,41 @@
          </widget>
         </item>
         <item row="0" column="16">
+         <widget class="QPushButton" name="playAudioPhone">
+          <property name="minimumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Прослушать запись звонка на телефоне</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/listeningToCallOnPhone.png</normaloff>:/images/listeningToCallOnPhone.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="17">
          <widget class="QPushButton" name="updateButton">
           <property name="minimumSize">
            <size>
@@ -549,7 +584,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="images.qrc">
             <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
           </property>
           <property name="iconSize">
@@ -563,40 +598,43 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="15">
-         <widget class="QPushButton" name="playAudioPhone">
+        <item row="0" column="14">
+         <widget class="QPushButton" name="addPhoneNumberButton">
           <property name="minimumSize">
            <size>
-            <width>27</width>
+            <width>37</width>
             <height>27</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>27</width>
+            <width>37</width>
             <height>27</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>Прослушать запись звонка на телефоне</string>
+           <string>Добавить к существующему</string>
           </property>
           <property name="text">
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/images/listeningToCallOnPhone.png</normaloff>:/images/listeningToCallOnPhone.png</iconset>
+           <iconset resource="images.qrc">
+            <normaloff>:/images/addToExisting_R.png</normaloff>:/images/addToExisting_R.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>23</width>
-            <height>23</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
           <property name="autoDefault">
            <bool>false</bool>
           </property>
          </widget>
+        </item>
+        <item row="0" column="9">
+         <widget class="QWidget" name="widget" native="true"/>
         </item>
        </layout>
       </item>
@@ -619,6 +657,8 @@
   <tabstop>updateButton</tabstop>
   <tabstop>comboBox_list</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

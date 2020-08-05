@@ -26,14 +26,14 @@ public:
     explicit AddPhoneNumberToContactDialog(QWidget *parent = 0);
     ~AddPhoneNumberToContactDialog();
 
-    void setPhoneNumberPopupWindow(QString &);
+    void setPhoneNumber(QString);
 
 private slots:
     void deleteObjects();
     void onUpdate();
     void onComboBoxListSelected();
     void onComboBoxSelected();
-    void setPhoneNumber(const QModelIndex &index);
+    void addPhoneNumber(const QModelIndex &index);
     void on_searchButton_clicked();
     void searchFunction();
 

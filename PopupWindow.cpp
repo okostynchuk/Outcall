@@ -384,7 +384,7 @@ void PopupWindow::onAddPhoneNumberToContact()
     popup->m_pwi.stopTimer = true;
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-    addPhoneNumberToContactDialog->setPhoneNumberPopupWindow(popup->m_pwi.number);
+    addPhoneNumberToContactDialog->setPhoneNumber(popup->m_pwi.number);
     connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addPhoneNumberToContactDialog->setProperty("qv_popup", qv_popup);
     addPhoneNumberToContactDialog->show();
