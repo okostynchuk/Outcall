@@ -146,7 +146,7 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
     }
     else
     {
-        if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
         {
             x = 0;
             this->move(x, y);
@@ -157,20 +157,20 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
             y = nWidgetHeight;
             this->move(x, y);
         }
-        else if ((nDesktopWidth-x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
         {
-            x = nWidgetWidth*0.9;
+            x = nWidgetWidth * 0.9;
             this->move(x, y);
         }
-        else if ((nDesktopWidth-x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
         {
-            x = nWidgetWidth*0.9;
-            y = nWidgetHeight*0.9;
+            x = nWidgetWidth * 0.9;
+            y = nWidgetHeight * 0.9;
             this->move(x, y);
         }
         else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
         {
-            y = nWidgetHeight*0.9;
+            y = nWidgetHeight * 0.9;
             this->move(x, y);
         }
         else

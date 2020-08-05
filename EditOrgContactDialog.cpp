@@ -50,7 +50,7 @@ void EditOrgContactDialog::setPos(int x, int y)
     nDesktopWidth = rcDesktop.width();
     nDesktopHeight = rcDesktop.height();
 
-    if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)
+    if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
     {
         x = 0;
         this->move(x, y);
@@ -61,12 +61,12 @@ void EditOrgContactDialog::setPos(int x, int y)
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if ((nDesktopWidth-x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
     {
         x = nWidgetWidth;
         this->move(x, y);
     }
-    else if ((nDesktopWidth-x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+    else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
     {
         x = nWidgetWidth;
         y = nWidgetHeight;
