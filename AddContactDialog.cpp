@@ -318,8 +318,6 @@ void AddContactDialog::onSave()
                 close();
 
                 QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно добавлена!"), QMessageBox::Ok);
-
-                destroy(true);
             }
         }
     }

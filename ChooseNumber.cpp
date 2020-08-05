@@ -131,7 +131,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 
             emit sendNumber(numb);
 
-            destroy(true);
+            close();
 
             return true;
         }
@@ -147,7 +147,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 
             emit sendNumber(numb);
 
-            destroy(true);
+            close();
 
             return true;
         }
@@ -163,7 +163,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 
             emit sendNumber(numb);
 
-            destroy(true);
+            close();
 
             return true;
         }
@@ -179,7 +179,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 
             emit sendNumber(numb);
 
-            destroy(true);
+            close();
 
             return true;
         }
@@ -195,7 +195,7 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 
             emit sendNumber(numb);
 
-            destroy(true);
+            close();
 
             return true;
         }

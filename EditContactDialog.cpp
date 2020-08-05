@@ -430,8 +430,6 @@ void EditContactDialog::onSave()
                 close();
 
                 QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
-
-                destroy(true);
             }
         }
     }

@@ -93,8 +93,6 @@ void DatabasesConnectDialog::onSave()
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
             close();
-
-            destroy(true);
         }
     }
     else if (state_db == "db")
@@ -110,8 +108,6 @@ void DatabasesConnectDialog::onSave()
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
             close();
-
-            destroy(true);
         }
     }
     else if (state_db == "dbAsterisk")
@@ -127,8 +123,6 @@ void DatabasesConnectDialog::onSave()
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
             close();
-
-            destroy(true);
         }
     }
 }

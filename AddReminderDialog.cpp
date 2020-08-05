@@ -125,8 +125,6 @@ void AddReminderDialog::onSave()
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
     else
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
-
-    destroy(true);
 }
 
 void AddReminderDialog::setCallId(QString receivedCallId)

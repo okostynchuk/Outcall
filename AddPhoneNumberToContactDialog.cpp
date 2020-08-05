@@ -59,7 +59,7 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(setPhoneNumber(const QModelIndex &)));
+    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addPhoneNumber(const QModelIndex &)));
     connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -90,12 +90,12 @@ void AddPhoneNumberToContactDialog::deleteObjects()
     queries.clear();
 }
 
-void AddPhoneNumberToContactDialog::setPhoneNumberPopupWindow(QString &phoneNumberPopup)
+void AddPhoneNumberToContactDialog::setPhoneNumber(QString receivedPhoneNumber)
 {
-    phoneNumber = phoneNumberPopup;
+    phoneNumber = receivedPhoneNumber;
 }
 
-void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
+void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 {
     QString id = query1->data(query1->index(index.row(), 0)).toString();
 
@@ -115,13 +115,11 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
     if (count < 5)
     {
         QMessageBox msgBox;
-
         msgBox.setText(tr("Добавление номера"));
         msgBox.setInformativeText(tr("Вы действительно хотите добавить номер к выбранному контакту?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
-
         int reply = msgBox.exec();
 
         switch (reply)
@@ -140,8 +138,6 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(const QModelIndex &index)
                 msgBox.close();
 
                 QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Номер успешно добавлен!"), QMessageBox::Ok);
-
-                destroy(true);
                 break;
             case QMessageBox::No:
                 msgBox.close();

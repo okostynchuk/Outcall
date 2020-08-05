@@ -32,6 +32,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     my_number = global::getExtensionNumber("extensions");
     my_group = global::getGroupExtensionNumber("group_extensions");
+
     setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
 
     ui->comboBox_list->setVisible(false);
@@ -39,12 +40,13 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    connect(ui->playAudio,           &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
-    connect(ui->playAudioPhone,      &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
-    connect(ui->callButton,          &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->addContactButton,    &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
-    connect(ui->addOrgContactButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton,        &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->addPhoneNumberButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
+    connect(ui->playAudio,            &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
+    connect(ui->playAudioPhone,       &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
+    connect(ui->callButton,           &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->addContactButton,     &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
+    connect(ui->addOrgContactButton,  &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
+    connect(ui->updateButton,         &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
 
     connect(ui->comboBox_2,  SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
 
@@ -76,8 +78,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     go="default";
     page = "1";
+
     days = ui->comboBox_2->currentText();
+
     loadAllCalls();
+
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 }
 
@@ -523,6 +528,26 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
+}
+
+void CallHistoryDialog::onAddPhoneNumberToContact()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (isInnerPhone(&number))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
+        return;
+    }
+
+    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+    addPhoneNumberToContactDialog->setPhoneNumber(number);
+    addPhoneNumberToContactDialog->show();
+    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void CallHistoryDialog::onPlayAudio()
@@ -972,10 +997,13 @@ QWidget* CallHistoryDialog::loadName()
     QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
+
     nameLabel->setText(src);
 
     nameLayout->addWidget(nameLabel);
+
     nameLayout->setContentsMargins(3, 0, 0, 0);
+
     nameWgt->setLayout(nameLayout);
 
     if (ui->tabWidget->currentIndex() == 0)
@@ -984,19 +1012,19 @@ QWidget* CallHistoryDialog::loadName()
         widgetsAllName.append(nameWgt);
         labelsAllName.append(nameLabel);
     }
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
     {
         layoutsMissedName.append(nameLayout);
         widgetsMissedName.append(nameWgt);
         labelsMissedName.append(nameLabel);
     }
-    if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->tabWidget->currentIndex() == 2)
     {
         layoutsReceivedName.append(nameLayout);
         widgetsReceivedName.append(nameWgt);
         labelsReceivedName.append(nameLabel);
     }
-    if (ui->tabWidget->currentIndex() == 3)
+    else if (ui->tabWidget->currentIndex() == 3)
     {
         layoutsPlacedName.append(nameLayout);
         widgetsPlacedName.append(nameWgt);
@@ -1078,12 +1106,15 @@ QWidget* CallHistoryDialog::loadStatus()
         statusLabel->setText(tr("Принятый "));
 
     statusLayout->addWidget(statusLabel);
+
     statusLayout->setContentsMargins(3, 0, 0, 0);
+
     statusWgt->setLayout(statusLayout);
 
     layoutsStatus.append(statusLayout);
     widgetsStatus.append(statusWgt);
     labelsStatus.append(statusLabel);
+
     return statusWgt;
 }
 
@@ -1126,14 +1157,18 @@ QWidget* CallHistoryDialog::loadAllNotes()
 
     QSqlDatabase db;
     QSqlQuery query(db);
+
     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
     query.first();
+
     note->setText(query.value(0).toString());
+
     note->setWordWrap(true);
 
     widgets.append(wgt);
     notes.append(note);
+
     return wgt;
 }
 
@@ -1166,6 +1201,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
 
     widgetsMissed.append(missedWgt);
     notesMissed.append(missedNote);
+
     return missedWgt;
 }
 
@@ -1175,8 +1211,10 @@ void CallHistoryDialog::deleteMissedObjects()
         widgetsMissed[i]->deleteLater();
 
     qDeleteAll(notesMissed);
+
     widgetsMissed.clear();
     notesMissed.clear();
+
     delete query1;
 }
 
@@ -1198,6 +1236,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
 
     widgetsReceived.append(receivedWgt);
     notesReceived.append(receivedNote);
+
     return receivedWgt;
 }
 
@@ -1207,8 +1246,10 @@ void CallHistoryDialog::deleteReceivedObjects()
         widgetsReceived[i]->deleteLater();
 
     qDeleteAll(notesReceived);
+
     widgetsReceived.clear();
     notesReceived.clear();
+
     delete query2;
 }
 
@@ -1230,11 +1271,14 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     placedNote->setWordWrap(true);
 
     layout->addWidget(placedNote);
+
     layout->setContentsMargins(3, 0, 0, 0);
+
     placedWgt->setLayout(layout);
 
     widgetsPlaced.append(placedWgt);
     notesPlaced.append(placedNote);
+
     return placedWgt;
 }
 

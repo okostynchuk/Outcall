@@ -258,7 +258,9 @@ void PopupNotification::showNotification(RemindersDialog* receivedRemindersDialo
     pni.text = "<b>" + pni.note + "</b>";
 
     PopupNotification* notification = new PopupNotification(pni);
+
     notification->show();
+
     m_PopupNotifications.append(notification);
 }
 

@@ -25,11 +25,6 @@ void PlayAudioDialog::setValuesCallHistory(QString recordpath)
 {
     recordpath.remove(0, 16);
 
-    playAudio(recordpath);
-}
-
-void PlayAudioDialog::playAudio(QString &recordpath)
-{
     openMedia("ftp://support:Lvp^^ej0@192.168.0.8/ftp_media/usb/" + recordpath);
 }
 

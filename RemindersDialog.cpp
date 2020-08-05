@@ -583,10 +583,9 @@ QWidget* RemindersDialog::addWidgetLabelActive()
 
     layout->addWidget(imageLabel, 0, Qt::AlignCenter);
 
-    if (ui->tabWidget->currentIndex() == 0){
+    if (ui->tabWidget->currentIndex() == 0)
         widgetsRelevant.append(wgt);
-    }
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
         widgetsIrrelevant.append(wgt);
 
     imageLabel->setPixmap(QPixmap(":/images/incomingNotification.png").scaled(15, 15, Qt::IgnoreAspectRatio));
