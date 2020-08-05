@@ -12,6 +12,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <QStringList>
+#include <QDesktopWidget>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -43,35 +44,56 @@ void EditContactDialog::onReturn()
 
 void EditContactDialog::setPos(int x, int y)
 {
-    if (x < 0 && y < 700)
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
+    qDebug()<<"Desktop height: "<< nDesktopHeight << "Desktop width: " << nDesktopWidth;
+
+    qDebug()<<"window height: "<<nWidgetHeight << "window width:"<< nWidgetWidth;
+
+    if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)//1
     {
+        qDebug()<<__LINE__;
         x = 0;
         this->move(x, y);
     }
-    else if (x < 0 && y > 700)
+    else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))//2
     {
+        qDebug()<<__LINE__;
         x = 0;
-        y -= 400;
+        y = nWidgetHeight;
         this->move(x, y);
     }
-    else if (x > 1400 && y < 700)
+    else if ((nDesktopWidth-x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)//3
     {
-        x-=300;
+        qDebug()<<__LINE__;
+        x = nWidgetWidth;
         this->move(x, y);
     }
-    else if (x > 1400 && y > 700)
+    else if ((nDesktopWidth-x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))//4
     {
-        x -= 400;
-        y -= 400;
+        qDebug()<<__LINE__;
+        x = nWidgetWidth;
+        y = nWidgetHeight;
         this->move(x, y);
     }
-    else if (x > 0 && y > 700)
+    else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))//5
     {
-        y -= 400;
+        qDebug() <<__LINE__;
+        y = nWidgetHeight;
         this->move(x, y);
     }
-    else
+    else//6
     {
+        qDebug()<<__LINE__;
         this->move(x, y);
     }
 }

@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -126,6 +127,17 @@ void ViewOrgContactDialog::receiveDataPerson(bool updating)
 
 void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 {
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
     if (updating)
     {
         emit sendData(true);
@@ -134,31 +146,31 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
     }
     else
     {
-        if (x < 0 && y < 700)
+        if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)
         {
             x = 0;
             this->move(x, y);
         }
-        else if (x < 0 && y > 700)
+        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
         {
             x = 0;
-            y -= 400;
+            y = nWidgetHeight;
             this->move(x, y);
         }
-        else if (x > 1400 && y < 700)
+        else if ((nDesktopWidth-x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
         {
-            x -= 300;
+            x = nWidgetWidth*0.9;
             this->move(x, y);
         }
-        else if (x > 1400 && y > 700)
+        else if ((nDesktopWidth-x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
         {
-            x -= 400;
-            y -= 400;
+            x = nWidgetWidth*0.9;
+            y = nWidgetHeight*0.9;
             this->move(x, y);
         }
-        else if (x > 0 && y > 700)
+        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
         {
-            y -= 400;
+            y = nWidgetHeight*0.9;
             this->move(x, y);
         }
         else
