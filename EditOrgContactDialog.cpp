@@ -6,6 +6,7 @@
 #include <QSqlQueryModel>
 #include <QPlainTextEdit>
 #include <QMessageBox>
+#include <QDebug>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,9 +31,43 @@ EditOrgContactDialog::~EditOrgContactDialog()
 
 void EditOrgContactDialog::onReturn()
 {
-    emit sendData(false);
+    emit sendData(false, this->pos().x(), this->pos().y());
 
-    destroy(true);
+    close();
+}
+
+void EditOrgContactDialog::setPos(int x, int y)
+{
+    if (x < 0 && y < 700)
+    {
+        x = 0;
+        this->move(x, y);
+    }
+    else if (x < 0 && y > 700)
+    {
+        x = 0;
+        y -= 400;
+        this->move(x, y);
+    }
+    else if (x > 1400 && y < 700)
+    {
+        x -= 300;
+        this->move(x, y);
+    }
+    else if (x > 1400 && y > 700)
+    {
+        x -= 400;
+        y -= 400;
+        this->move(x, y);
+    }
+    else if (x > 0 && y > 700){
+        y -= 400;
+        this->move(x, y);
+    }
+    else
+    {
+        this->move(x, y);
+    }
 }
 
 void EditOrgContactDialog::onSave()
@@ -352,7 +387,7 @@ void EditOrgContactDialog::onSave()
                     query1.exec();
                 }
 
-                emit sendData(true);
+                emit sendData(true, this->pos().x(), this->pos().y());
 
                 close();
 

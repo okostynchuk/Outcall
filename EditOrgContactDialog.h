@@ -16,7 +16,7 @@ class EditOrgContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
+    void sendData(bool, int, int);
 
 public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
@@ -32,6 +32,8 @@ private slots:
 
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
+
+    void setPos(int, int);
 
 private:
     Ui::EditOrgContactDialog *ui;

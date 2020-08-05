@@ -19,13 +19,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //move(reinterpret_cast<ViewContactDialog *>(this->parent())->pos());
-
-    viewContactDialog = new ViewContactDialog;
-    qDebug()<<connect(viewContactDialog, SIGNAL(getPos(int, int)), this, SLOT(setPos(int, int)));
-
-    //qDebug() << viewContactDialog->getPos();
-
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -42,22 +35,46 @@ EditContactDialog::~EditContactDialog()
 }
 
 void EditContactDialog::onReturn()
-{
-    emit sendData(false);
+{    
+    emit sendData(false, this->pos().x(), this->pos().y());
 
-    destroy(true);
+    close();
 }
 
 void EditContactDialog::setPos(int x, int y)
 {
-    this->move(x, y);
-    qDebug() << this->pos();
+    if (x < 0 && y < 700)
+    {
+        x = 0;
+        this->move(x, y);
+    }
+    else if (x < 0 && y > 700)
+    {
+        x = 0;
+        y -= 400;
+        this->move(x, y);
+    }
+    else if (x > 1400 && y < 700)
+    {
+        x-=300;
+        this->move(x, y);
+    }
+    else if (x > 1400 && y > 700)
+    {
+        x -= 400;
+        y -= 400;
+        this->move(x, y);
+    }
+    else if (x > 0 && y > 700)
+    {
+        y -= 400;
+        this->move(x, y);
+    }
+    else
+    {
+        this->move(x, y);
+    }
 }
-
-//void EditContactDialog::setWPosN(){
-
-//    qDebug() << "rerer";
-//}
 
 void EditContactDialog::onSave()
 {
@@ -408,7 +425,7 @@ void EditContactDialog::onSave()
                     query1.exec();
                 }
 
-                emit sendData(true);
+                emit sendData(true, this->pos().x(), this->pos().y());
 
                 close();
 

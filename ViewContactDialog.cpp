@@ -134,16 +134,50 @@ void ViewContactDialog::onOpenAccess()
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
 }
 
-void ViewContactDialog::receiveData(bool updating)
+void ViewContactDialog::receiveData(bool updating, int x, int y)
 {
     if (updating)
     {
         emit sendData(true);
 
-        destroy(true);
+        close();
     }
     else
+    {
+        if (x < 0 && y < 700)
+        {
+            x = 0;
+            this->move(x, y);
+        }
+        else if (x < 0 && y > 700)
+        {
+            x = 0;
+            y -= 400;
+            this->move(x, y);
+        }
+        else if (x > 1400 && y < 700)
+        {
+            x -= 300;
+            this->move(x, y);
+        }
+        else if (x > 1400 && y > 700)
+        {
+            x -= 400;
+            y -= 400;
+            this->move(x, y);
+        }
+        else if (x > 0 && y > 700)
+        {
+            y -= 400;
+            this->move(x, y);
+        }
+        else
+        {
+            this->move(x, y);
+        }
+
         show();
+    }
 }
 
 void ViewContactDialog::receiveNumber(QString &to)
@@ -167,16 +201,15 @@ void ViewContactDialog::onEdit()
 {
     hide();
 
-    //editContactDialog = new EditContactDialog(this);
     editContactDialog = new EditContactDialog();
     editContactDialog->setValuesContacts(updateID);
-    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool, int, int)));
+
+    connect(this, SIGNAL(getPos(int, int)), editContactDialog, SLOT(setPos(int, int)));
+    emit getPos(this->pos().x(), this->pos().y());
+
     editContactDialog->show();
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-    //qDebug() << QWidget::pos();
-    emit getPos(this->pos().x(), this->pos().y());
-    qDebug() << "X =" << this->pos().x() << "Y =" << this->pos().y();
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)

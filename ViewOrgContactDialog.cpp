@@ -124,16 +124,50 @@ void ViewOrgContactDialog::receiveDataPerson(bool updating)
     }
 }
 
-void ViewOrgContactDialog::receiveDataOrg(bool updating)
+void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 {
     if (updating)
     {
         emit sendData(true);
 
-        destroy(true);
+        close();
     }
     else
+    {
+        if (x < 0 && y < 700)
+        {
+            x = 0;
+            this->move(x, y);
+        }
+        else if (x < 0 && y > 700)
+        {
+            x = 0;
+            y -= 400;
+            this->move(x, y);
+        }
+        else if (x > 1400 && y < 700)
+        {
+            x -= 300;
+            this->move(x, y);
+        }
+        else if (x > 1400 && y > 700)
+        {
+            x -= 400;
+            y -= 400;
+            this->move(x, y);
+        }
+        else if (x > 0 && y > 700)
+        {
+            y -= 400;
+            this->move(x, y);
+        }
+        else
+        {
+            this->move(x, y);
+        }
+
         show();
+    }
 }
 
 void ViewOrgContactDialog::receiveNumber(QString &to)
@@ -170,7 +204,11 @@ void ViewOrgContactDialog::onEdit()
 
     editOrgContactDialog = new EditOrgContactDialog;
     editOrgContactDialog->setOrgValuesContacts(updateID);
-    connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveDataOrg(bool)));
+    connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveDataOrg(bool, int, int)));
+
+    connect(this, SIGNAL(getPos(int, int)), editOrgContactDialog, SLOT(setPos(int, int)));
+    emit getPos(this->pos().x(), this->pos().y());
+
     editOrgContactDialog->show();
     editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

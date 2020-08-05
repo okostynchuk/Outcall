@@ -15,8 +15,6 @@
 #include <QList>
 #include <QWidget>
 
-class EditContactDialog;
-
 namespace Ui {
 class ViewContactDialog;
 }
@@ -31,7 +29,7 @@ signals:
     void getPos(int, int);
 
 public slots:
-    void receiveData(bool);
+    void receiveData(bool, int, int);
     void receiveNumber(QString &);
     void playerClosed(bool);
 

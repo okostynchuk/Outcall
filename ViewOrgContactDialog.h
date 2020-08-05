@@ -29,10 +29,11 @@ class ViewOrgContactDialog : public QDialog
 signals:
     void sendData(bool);
     void sendNumber(QString &);
+    void getPos(int, int);
 
 public slots:
     void receiveDataPerson(bool);
-    void receiveDataOrg(bool);
+    void receiveDataOrg(bool, int, int);
     void receiveNumber(QString &);
     void receivePersonID(QString &);
     void playerClosed(bool);
