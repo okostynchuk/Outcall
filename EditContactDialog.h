@@ -2,10 +2,13 @@
 #define EDITCONTACTDIALOG_H
 
 #include "AddOrgToPerson.h"
+//#include "ViewContactDialog.h" //1!!!!!
 
 #include <QDialog>
 #include <QValidator>
 #include <QStringList>
+
+class ViewContactDialog;
 
 namespace Ui {
 class EditContactDialog;
@@ -39,10 +42,13 @@ private slots:
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
+    void setPos(int, int);
+
 private:
     Ui::EditContactDialog *ui;
 
     AddOrgToPerson *addOrgToPerson;
+    ViewContactDialog *viewContactDialog;
 
     QValidator *validator;
 

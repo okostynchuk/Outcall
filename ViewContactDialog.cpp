@@ -167,11 +167,16 @@ void ViewContactDialog::onEdit()
 {
     hide();
 
-    editContactDialog = new EditContactDialog;
+    //editContactDialog = new EditContactDialog(this);
+    editContactDialog = new EditContactDialog();
     editContactDialog->setValuesContacts(updateID);
     connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     editContactDialog->show();
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+    //qDebug() << QWidget::pos();
+    emit getPos(this->pos().x(), this->pos().y());
+    qDebug() << "X =" << this->pos().x() << "Y =" << this->pos().y();
 }
 
 void ViewContactDialog::setValuesContacts(QString &i)

@@ -30,12 +30,8 @@ public:
     void setValuesCallHistory(QString);
     void openMedia(const QString &mediaUrl);
 
-protected slots:
-    void playAudio(QString &);
-
 private slots:
     void updateWindowTitle(const QString &state);
-
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent* event);
 

@@ -15,6 +15,8 @@
 #include <QList>
 #include <QWidget>
 
+class EditContactDialog;
+
 namespace Ui {
 class ViewContactDialog;
 }
@@ -26,6 +28,7 @@ class ViewContactDialog : public QDialog
 signals:
     void sendData(bool);
     void sendNumber(QString &);
+    void getPos(int, int);
 
 public slots:
     void receiveData(bool);
