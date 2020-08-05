@@ -2,7 +2,7 @@
 #define EDITCONTACTDIALOG_H
 
 #include "AddOrgToPerson.h"
-//#include "ViewContactDialog.h"
+//#include "ViewContactDialog.h" //1!!!!!
 
 #include <QDialog>
 #include <QValidator>
@@ -31,12 +31,6 @@ public:
     void setValuesContacts(QString &);
     void setValuesCallHistory(QString &);
     void setValuesPopupWindow(QString &number);
-
-    //void setWPosN();
-
-public slots:
-    void receiveOrgID(QString &);
-
 
 private slots:
     void onSave();
