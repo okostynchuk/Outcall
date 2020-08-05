@@ -26,9 +26,6 @@ public:
     void setValuesCallHistory(QString);
     void openMedia(const QString &mediaUrl);
 
-protected slots:
-    void playAudio(QString &);
-
 public slots:
     void on_mediaPlayer_PlayStateChange(int newState);
 
