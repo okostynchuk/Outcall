@@ -138,8 +138,6 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
                 msgBox.close();
 
                 QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Номер успешно добавлен!"), QMessageBox::Ok);
-
-                destroy(true);
                 break;
             case QMessageBox::No:
                 msgBox.close();

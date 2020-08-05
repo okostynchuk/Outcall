@@ -97,8 +97,6 @@ void AddOrgToPerson::getOrgID(const QModelIndex &index)
     emit sendOrgID(id);
 
     close();
-
-    destroy(true);
 }
 
 void AddOrgToPerson::onUpdate()

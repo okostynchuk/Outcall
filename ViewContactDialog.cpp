@@ -387,7 +387,9 @@ QWidget* ViewContactDialog::loadStatus()
         statusLabel->setText(tr("Принятый "));
 
     statusLayout->addWidget(statusLabel);
+
     statusLayout->setContentsMargins(3, 0, 0, 0);
+
     statusWgt->setLayout(statusLayout);
 
     layoutsStatus.append(statusLayout);
@@ -417,10 +419,13 @@ QWidget* ViewContactDialog::loadName()
     QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
+
     nameLabel->setText(src);
 
     nameLayout->addWidget(nameLabel);
+
     nameLayout->setContentsMargins(3, 0, 0, 0);
+
     nameWgt->setLayout(nameLayout);
 
     if (ui->tabWidget_2->currentIndex() == 0)

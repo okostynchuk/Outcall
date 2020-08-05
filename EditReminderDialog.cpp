@@ -85,8 +85,6 @@ void EditReminderDialog::onSave()
     close();
 
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
-
-    destroy(true);
 }
 
 void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receivedDateTime, QString receivedNote)

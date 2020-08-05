@@ -118,8 +118,6 @@ void NotesDialog::onSave()
     close();
 
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
-
-    destroy(true);
 }
 
 void NotesDialog::onTextChanged()
