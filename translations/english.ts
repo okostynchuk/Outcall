@@ -820,6 +820,10 @@
         <source>Принятый </source>
         <translation>Answered </translation>
     </message>
+    <message>
+        <source>Добавить к существующему</source>
+        <translation>Add to existing</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -1245,6 +1249,10 @@
         <source>Ввод заметки</source>
         <translation>Enter the note</translation>
     </message>
+    <message>
+        <source>Вернуться к резюме</source>
+        <translation>Back to summary</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1384,6 +1392,10 @@
     <message>
         <source>Ввод заметки</source>
         <translation>Enter the note</translation>
+    </message>
+    <message>
+        <source>Вернуться к резюме</source>
+        <translation>Back to summary</translation>
     </message>
 </context>
 <context>
@@ -2093,7 +2105,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Нет</source>
-        <translation>None</translation>
+        <translation type="vanished">None</translation>
     </message>
     <message>
         <source>Сотрудник успешно добавлен!</source>
@@ -2113,7 +2125,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation>This contact belongs to the organization!</translation>
+        <translation type="vanished">This contact belongs to the organization!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
@@ -2193,7 +2205,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Добавление внутренних номеров запрещено!</source>
-        <translation>Adding inner numbers is prohibited!</translation>
+        <translation type="vanished">Adding inner numbers is prohibited!</translation>
     </message>
     <message>
         <source>Внимание</source>
@@ -2202,6 +2214,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Данный вызов не имеет записи!</source>
         <translation type="vanished">This call has no record!</translation>
+    </message>
+    <message>
+        <source>Организации не существует или она была изменена!</source>
+        <translation>Organization does not exist or it was modified!</translation>
     </message>
 </context>
 <context>

@@ -811,6 +811,10 @@
         <source>Принятый </source>
         <translation>Прийнятий </translation>
     </message>
+    <message>
+        <source>Добавить к существующему</source>
+        <translation>Додати до існуючого</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>
@@ -1229,6 +1233,10 @@
         <source>Ввод заметки</source>
         <translation>Введення коментарю</translation>
     </message>
+    <message>
+        <source>Вернуться к резюме</source>
+        <translation>Повернутися до резюме</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1368,6 +1376,10 @@
     <message>
         <source>Ввод заметки</source>
         <translation>Введення коментарю</translation>
+    </message>
+    <message>
+        <source>Вернуться к резюме</source>
+        <translation>Повернутися до резюме</translation>
     </message>
 </context>
 <context>
@@ -2074,7 +2086,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Нет</source>
-        <translation>Відсутня</translation>
+        <translation type="vanished">Відсутня</translation>
     </message>
     <message>
         <source>Сотрудник успешно добавлен!</source>
@@ -2094,7 +2106,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation>Обраний контакт належить організації!</translation>
+        <translation type="vanished">Обраний контакт належить організації!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
@@ -2174,7 +2186,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Добавление внутренних номеров запрещено!</source>
-        <translation>Додавання внутрішніх номерів заборонено!</translation>
+        <translation type="vanished">Додавання внутрішніх номерів заборонено!</translation>
     </message>
     <message>
         <source>Внимание</source>
@@ -2183,6 +2195,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Данный вызов не имеет записи!</source>
         <translation type="vanished">Даний виклик не має запису!</translation>
+    </message>
+    <message>
+        <source>Организации не существует или она была изменена!</source>
+        <translation>Організація не існує або вона була змінена!</translation>
     </message>
 </context>
 <context>
