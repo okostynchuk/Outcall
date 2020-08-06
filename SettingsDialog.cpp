@@ -259,6 +259,7 @@ void SettingsDialog::on_applyButton_clicked()
 
             emit restart(true);
 
+            qApp->closeAllWindows();
             qApp->quit();
 
             QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
