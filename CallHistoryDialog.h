@@ -119,8 +119,9 @@ private:
     QString number;
     QString my_number;
     QString my_group;
-    QString extfield1;
+    QString extfield;
     QString src;
+    QString dst;
     QString uniqueid;
     QString dialogStatus;
     QString callerNum;

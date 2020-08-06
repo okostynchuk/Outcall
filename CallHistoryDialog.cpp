@@ -143,7 +143,7 @@ void CallHistoryDialog::loadAllCalls()
 
     if (ui->lineEdit_page->text() == "1")
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+        query4->setQuery("SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath, extfield2 FROM cdr "
                         "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                         " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                         "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
@@ -154,7 +154,7 @@ void CallHistoryDialog::loadAllCalls()
     }
     else
     {
-        query4->setQuery("SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+        query4->setQuery("SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath, extfield2 FROM cdr "
                         "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
                         "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                         "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
@@ -175,20 +175,22 @@ void CallHistoryDialog::loadAllCalls()
 
     ui->tableView_4->setModel(query4);
 
-    ui->tableView_4->setColumnHidden(3,true);
+    ui->tableView_4->setColumnHidden(3, true);
     ui->tableView_4->setColumnHidden(7, true);
     ui->tableView_4->setColumnHidden(8, true);
+    ui->tableView_4->setColumnHidden(9, true);
 
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
-        extfield1 = query4->data(query4->index(row_index, 0)).toString();
+        extfield = query4->data(query4->index(row_index, 0)).toString();
         src = query4->data(query4->index(row_index, 1)).toString();
+        dst = query4->data(query4->index(row_index, 2)).toString();
         uniqueid = query4->data(query4->index(row_index, 7)).toString();
         dialogStatus = query4->data(query4->index(row_index, 3)).toString();
 
         ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadStatus());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_4->setIndexWidget(query4->index(row_index, 0), loadName());
 
         QSqlDatabase db;
@@ -303,9 +305,9 @@ void CallHistoryDialog::loadMissedCalls()
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
-        extfield1 = query1->data(query1->index(row_index, 0)).toString();
+        extfield = query1->data(query1->index(row_index, 0)).toString();
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView->setIndexWidget(query1->index(row_index, 0), loadName());
 
         QSqlDatabase db;
@@ -416,9 +418,9 @@ void CallHistoryDialog::loadReceivedCalls()
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
-        extfield1 = query2->data(query2->index(row_index, 0)).toString();
+        extfield = query2->data(query2->index(row_index, 0)).toString();
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(query2->index(row_index, 0), loadName());
 
         QSqlDatabase db;
@@ -522,10 +524,12 @@ void CallHistoryDialog::loadPlacedCalls()
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
-        extfield1 = query3->data(query3->index(row_index, 0)).toString();
+        extfield = query3->data(query3->index(row_index, 0)).toString();
+        dst = query3->data(query3->index(row_index, 1)).toString();
+        src = query3->data(query3->index(row_index, 2)).toString();
 
-        if (extfield1.isEmpty())
-           ui->tableView_3->setIndexWidget(query3->index(row_index, 0), loadName());
+        if (extfield.isEmpty())
+            ui->tableView_3->setIndexWidget(query3->index(row_index, 0), loadName());
 
         QSqlDatabase db;
         QSqlQuery query(db);
@@ -1166,7 +1170,10 @@ QWidget* CallHistoryDialog::loadName()
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
 
-    nameLabel->setText(src);
+    if(src == my_number)
+        nameLabel->setText(dst);
+    else
+        nameLabel->setText(src);
 
     nameLayout->addWidget(nameLabel);
 
