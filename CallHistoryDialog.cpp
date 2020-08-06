@@ -37,6 +37,10 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
@@ -202,6 +206,10 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView_4->resizeColumnsToContents();
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -314,6 +322,10 @@ void CallHistoryDialog::loadMissedCalls()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -424,6 +436,10 @@ void CallHistoryDialog::loadReceivedCalls()
     ui->tableView_2->resizeColumnsToContents();
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -526,64 +542,12 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->tableView_3->resizeColumnsToContents();
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
-}
-
-void CallHistoryDialog::onAddPhoneNumberToContact()
-{
-    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
-        return;
-    }
-
-    if (isInnerPhone(&number))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
-        return;
-    }
-
-    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-    addPhoneNumberToContactDialog->setPhoneNumber(number);
-    addPhoneNumberToContactDialog->show();
-    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-}
-
-void CallHistoryDialog::onPlayAudio()
-{
-    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
-        return;
-    }
-
-    if (!recordpath.isEmpty())
-    {
-        if (playAudioDialog != nullptr)
-            playAudioDialog->close();
-
-        playAudioDialog = new PlayAudioDialog;
-        playAudioDialog->setValuesCallHistory(recordpath);
-        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
-        playAudioDialog->show();
-        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
-    }
-}
-
-void CallHistoryDialog::onPlayAudioPhone()
-{
-    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
-        return;
-    }
-
-    if (!recordpath.isEmpty())
-    {
-        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
-        g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
-    } 
 }
 
 void CallHistoryDialog::playerClosed(bool closed)
@@ -693,14 +657,66 @@ void CallHistoryDialog::updateCount()
     }
 }
 
+bool CallHistoryDialog::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator1(QRegExp("[0-9]{4}"));
+    QRegExpValidator validator2(QRegExp("[2][0-9]{2}"));
+
+    if (validator1.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    if (validator2.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
+}
+
 void CallHistoryDialog::getDataAll(const QModelIndex &index)
 {
     number = query4->data(query4->index(index.row(), 1)).toString();
+
+    ui->callButton->setDisabled(false);
 
     if (number == my_number)
     {
         number = query4->data(query4->index(index.row(), 2)).toString();
         number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
+    }
+
+    if (!isInnerPhone(&number))
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+        query.exec();
+        query.next();
+
+        if (query.value(0) == 0)
+        {
+            ui->addContactButton->setDisabled(false);
+            ui->addOrgContactButton->setDisabled(false);
+            ui->addPhoneNumberButton->setDisabled(false);
+        }
+        else
+        {
+            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + number);
+            query.exec();
+            query.next();
+
+            if (query.value(0).toString() == "person")
+                ui->addContactButton->setDisabled(false);
+            else
+                ui->addOrgContactButton->setDisabled(false);
+        }
+    }
+    else
+    {
+        ui->addContactButton->setDisabled(true);
+        ui->addOrgContactButton->setDisabled(true);
+        ui->addPhoneNumberButton->setDisabled(true);
     }
 
     recordpath = query4->data(query4->index(index.row(), 8)).toString();
@@ -722,6 +738,42 @@ void CallHistoryDialog::getDataMissed(const QModelIndex &index)
     number = query1->data(query1->index(index.row(), 1)).toString();
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 
+    ui->callButton->setDisabled(false);
+
+    if (!isInnerPhone(&number))
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+        query.exec();
+        query.next();
+
+        if (query.value(0) == 0)
+        {
+            ui->addContactButton->setDisabled(false);
+            ui->addOrgContactButton->setDisabled(false);
+            ui->addPhoneNumberButton->setDisabled(false);
+        }
+        else
+        {
+            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + number);
+            query.exec();
+            query.next();
+
+            if (query.value(0).toString() == "person")
+                ui->addContactButton->setDisabled(false);
+            else
+                ui->addOrgContactButton->setDisabled(false);
+        }
+    }
+    else
+    {
+        ui->addContactButton->setDisabled(true);
+        ui->addOrgContactButton->setDisabled(true);
+        ui->addPhoneNumberButton->setDisabled(true);
+    }
+
     recordpath = "";
 
     ui->playAudio->setDisabled(true);
@@ -732,6 +784,42 @@ void CallHistoryDialog::getDataReceived(const QModelIndex &index)
 {
     number = query2->data(query2->index(index.row(), 1)).toString();
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
+
+    ui->callButton->setDisabled(false);
+
+    if (!isInnerPhone(&number))
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+        query.exec();
+        query.next();
+
+        if (query.value(0) == 0)
+        {
+            ui->addContactButton->setDisabled(false);
+            ui->addOrgContactButton->setDisabled(false);
+            ui->addPhoneNumberButton->setDisabled(false);
+        }
+        else
+        {
+            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + number);
+            query.exec();
+            query.next();
+
+            if (query.value(0).toString() == "person")
+                ui->addContactButton->setDisabled(false);
+            else
+                ui->addOrgContactButton->setDisabled(false);
+        }
+    }
+    else
+    {
+        ui->addContactButton->setDisabled(true);
+        ui->addOrgContactButton->setDisabled(true);
+        ui->addPhoneNumberButton->setDisabled(true);
+    }
 
     recordpath = query2->data(query2->index(index.row(), 6)).toString();
 
@@ -752,6 +840,42 @@ void CallHistoryDialog::getDataPlaced(const QModelIndex &index)
     number = query3->data(query3->index(index.row(), 1)).toString();
     number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
 
+    ui->callButton->setDisabled(false);
+
+    if (!isInnerPhone(&number))
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+        query.exec();
+        query.next();
+
+        if (query.value(0) == 0)
+        {
+            ui->addContactButton->setDisabled(false);
+            ui->addOrgContactButton->setDisabled(false);
+            ui->addPhoneNumberButton->setDisabled(false);
+        }
+        else
+        {
+            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + number);
+            query.exec();
+            query.next();
+
+            if (query.value(0).toString() == "person")
+                ui->addContactButton->setDisabled(false);
+            else
+                ui->addOrgContactButton->setDisabled(false);
+        }
+    }
+    else
+    {
+        ui->addContactButton->setDisabled(true);
+        ui->addOrgContactButton->setDisabled(true);
+        ui->addPhoneNumberButton->setDisabled(true);
+    }
+
     recordpath = query3->data(query3->index(index.row(), 6)).toString();
 
     if (!recordpath.isEmpty())
@@ -766,14 +890,34 @@ void CallHistoryDialog::getDataPlaced(const QModelIndex &index)
     }
 }
 
-bool CallHistoryDialog::isInnerPhone(QString *str)
+void CallHistoryDialog::onCallClicked()
 {
-    int pos = 0;
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
 
-    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
-        return true;
-    return false;
+    const QString from = my_number;
+    QString to = number;
+    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+
+    g_pAsteriskManager->originateCall(from, to, protocol, from);
+}
+
+void CallHistoryDialog::receiveData(bool updating)
+{
+    if (updating)
+    {
+         ui->tableView_4->selectionModel()->clearSelection();
+
+         ui->callButton->setDisabled(true);
+         ui->addContactButton->setDisabled(true);
+         ui->addOrgContactButton->setDisabled(true);
+         ui->addPhoneNumberButton->setDisabled(true);
+         ui->playAudio->setDisabled(true);
+         ui->playAudioPhone->setDisabled(true);
+    }
 }
 
 void CallHistoryDialog::onAddContact()
@@ -784,17 +928,12 @@ void CallHistoryDialog::onAddContact()
         return;
     }
 
-    if (isInnerPhone(&number))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
-        return;
-    }
-
     addContactDialog = new AddContactDialog;
 
     if (checkNumber(number))
     {
         addContactDialog->setValuesCallHistory(number);
+        connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         addContactDialog->show();
         addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -810,22 +949,72 @@ void CallHistoryDialog::onAddOrgContact()
         return;
     }
 
-    if (isInnerPhone(&number))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Добавление внутренних номеров запрещено!"), QMessageBox::Ok);
-        return;
-    }
+    clearFocus();
 
     addOrgContactDialog = new AddOrgContactDialog;
 
     if (checkNumber(number))
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
+        connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         addOrgContactDialog->show();
         addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
         editOrgContact(number);
+}
+
+void CallHistoryDialog::onAddPhoneNumberToContact()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    clearFocus();
+
+    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+    addPhoneNumberToContactDialog->setPhoneNumber(number);
+    connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    addPhoneNumberToContactDialog->show();
+    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void CallHistoryDialog::onPlayAudio()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (!recordpath.isEmpty())
+    {
+        if (playAudioDialog != nullptr)
+            playAudioDialog->close();
+
+        playAudioDialog = new PlayAudioDialog;
+        playAudioDialog->setValuesCallHistory(recordpath);
+        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
+        playAudioDialog->show();
+        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
+}
+
+void CallHistoryDialog::onPlayAudioPhone()
+{
+    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        return;
+    }
+
+    if (!recordpath.isEmpty())
+    {
+        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
+    }
 }
 
 void CallHistoryDialog::addNotes(const QModelIndex &index)
@@ -904,21 +1093,6 @@ void CallHistoryDialog::receiveDataToPlaced()
     loadPlacedCalls();
 }
 
-void CallHistoryDialog::onCallClicked()
-{
-    if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
-    {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
-        return;
-    }
-
-    const QString from = my_number;
-    QString to = number;
-
-    const QString protocol = global::getSettingsValue(from, "extensions").toString();
-    g_pAsteriskManager->originateCall(from, to, protocol, from);
-}
-
 bool CallHistoryDialog::checkNumber(QString &number)
 {
     QSqlDatabase db;
@@ -941,19 +1115,12 @@ void CallHistoryDialog::editContact(QString &number)
 
     QString updateID = getUpdateId(number);
 
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
-    query.exec();
-    query.first();
+    editContactDialog = new EditContactDialog;
+    editContactDialog->setValuesContacts(updateID);
+    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    editContactDialog->show();
+    editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    if (query.value(0).toString() == "person")
-    {
-        editContactDialog = new EditContactDialog;
-        editContactDialog->setValuesContacts(updateID);
-        editContactDialog->show();
-        editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-    }
-    else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::editOrgContact(QString &number)
@@ -971,6 +1138,7 @@ void CallHistoryDialog::editOrgContact(QString &number)
     {
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editOrgContactDialog->show();
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -1045,6 +1213,7 @@ void CallHistoryDialog::deleteNameObjects()
             widgetsAllName[i]->deleteLater();
 
         qDeleteAll(labelsAllName);
+
         layoutsAllName.clear();
         widgetsAllName.clear();
         labelsAllName.clear();
@@ -1058,6 +1227,7 @@ void CallHistoryDialog::deleteNameObjects()
             widgetsMissedName[i]->deleteLater();
 
         qDeleteAll(labelsMissedName);
+
         layoutsMissedName.clear();
         widgetsMissedName.clear();
         labelsMissedName.clear();
@@ -1071,6 +1241,7 @@ void CallHistoryDialog::deleteNameObjects()
             widgetsReceivedName[i]->deleteLater();
 
         qDeleteAll(labelsReceivedName);
+
         layoutsReceivedName.clear();
         widgetsReceivedName.clear();
         labelsReceivedName.clear();
@@ -1084,6 +1255,7 @@ void CallHistoryDialog::deleteNameObjects()
             widgetsPlacedName[i]->deleteLater();
 
         qDeleteAll(labelsPlacedName);
+
         layoutsPlacedName.clear();
         widgetsPlacedName.clear();
         labelsPlacedName.clear();
@@ -1127,6 +1299,7 @@ void CallHistoryDialog::deleteStatusObjects()
         widgetsStatus[i]->deleteLater();
 
     qDeleteAll(labelsStatus);
+
     layoutsStatus.clear();
     widgetsStatus.clear();
     labelsStatus.clear();
@@ -1135,6 +1308,7 @@ void CallHistoryDialog::deleteStatusObjects()
 void CallHistoryDialog::onUpdateClick()
 {
     go = "default";
+
     updateCount();
 }
 
@@ -1178,8 +1352,10 @@ void CallHistoryDialog::deleteObjectsOfAllCalls()
         widgets[i]->deleteLater();
 
     qDeleteAll(notes);
+
     widgets.clear();
     notes.clear();
+
     delete query4;
 }
 
@@ -1288,8 +1464,10 @@ void CallHistoryDialog::deletePlacedObjects()
         widgetsPlaced[i]->deleteLater();
 
     qDeleteAll(notesPlaced);
+
     widgetsPlaced.clear();
     notesPlaced.clear();
+
     delete query3;
 }
 
@@ -1307,30 +1485,35 @@ void CallHistoryDialog::deleteObjects()
 void CallHistoryDialog::on_previousButton_clicked()
 {
     go = "previous";
+
     onUpdate();
 }
 
 void CallHistoryDialog::on_nextButton_clicked()
 {
     go = "next";
+
     onUpdate();
 }
 
 void CallHistoryDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
+
     onUpdate();
 }
 
 void CallHistoryDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
+
     onUpdate();;
 }
 
 void CallHistoryDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
+
     onUpdate();
 }
 

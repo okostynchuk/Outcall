@@ -27,6 +27,7 @@ public:
 private slots:
     void onSave();
 
+    bool isInnerPhone(QString *str);
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 

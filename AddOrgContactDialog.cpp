@@ -178,7 +178,7 @@ void AddOrgContactDialog::onSave()
 
             if (firstNum != 0)
             {
-                if (isPhone(&firstNum))
+                if (isPhone(&firstNum) && !isInnerPhone(&firstNum))
                     ui->FirstNumber->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -189,7 +189,7 @@ void AddOrgContactDialog::onSave()
             }
             if (secondNum != 0)
             {
-                if (isPhone(&secondNum))
+                if (isPhone(&secondNum) && !isInnerPhone(&secondNum))
                     ui->SecondNumber->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -200,7 +200,7 @@ void AddOrgContactDialog::onSave()
             }
             if (thirdNum != 0)
             {
-                if (isPhone(&thirdNum))
+                if (isPhone(&thirdNum) && !isInnerPhone(&thirdNum))
                     ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -211,7 +211,7 @@ void AddOrgContactDialog::onSave()
             }
             if (fourthNum != 0)
             {
-                if (isPhone(&fourthNum))
+                if (isPhone(&fourthNum) && !isInnerPhone(&fourthNum))
                     ui->FourthNumber->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -222,7 +222,7 @@ void AddOrgContactDialog::onSave()
             }
             if (fifthNum != 0)
             {
-                if (isPhone(&fifthNum))
+                if (isPhone(&fifthNum) && !isInnerPhone(&fifthNum))
                     ui->FifthNumber->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -288,6 +288,22 @@ void AddOrgContactDialog::onSave()
             }
         }
     }
+}
+
+bool AddOrgContactDialog::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegExpValidator validator1(QRegExp("[0-9]{4}"));
+    QRegExpValidator validator2(QRegExp("[2][0-9]{2}"));
+
+    if (validator1.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    if (validator2.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
 }
 
 bool AddOrgContactDialog::isPhone(QString *str)
