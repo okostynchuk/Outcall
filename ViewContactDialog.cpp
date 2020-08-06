@@ -219,7 +219,6 @@ void ViewContactDialog::onEdit()
 
     connect(this, SIGNAL(getPos(int, int)), editContactDialog, SLOT(setPos(int, int)));
     emit getPos(this->pos().x(), this->pos().y());
-    qDebug()<<"x = "<<this->pos().x() << "y =" << this->pos().y();
 
     editContactDialog->show();
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);

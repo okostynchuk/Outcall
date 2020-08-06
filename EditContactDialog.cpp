@@ -55,45 +55,35 @@ void EditContactDialog::setPos(int x, int y)
     nDesktopWidth = rcDesktop.width();
     nDesktopHeight = rcDesktop.height();
 
-    qDebug()<<"Desktop height: "<< nDesktopHeight << "Desktop width: " << nDesktopWidth;
-
-    qDebug()<<"window height: "<<nWidgetHeight << "window width:"<< nWidgetWidth;
-
-    if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)//1
+    if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
     {
-        qDebug()<<__LINE__;
         x = 0;
         this->move(x, y);
     }
-    else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))//2
+    else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
     {
-        qDebug()<<__LINE__;
         x = 0;
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)//3
+    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
     {
-        qDebug()<<__LINE__;
         x = nWidgetWidth;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))//4
+    else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
     {
-        qDebug()<<__LINE__;
         x = nWidgetWidth;
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))//5
+    else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
     {
-        qDebug() <<__LINE__;
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else//6
+    else
     {
-        qDebug()<<__LINE__;
         this->move(x, y);
     }
 }
