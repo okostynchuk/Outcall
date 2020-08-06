@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -124,16 +125,61 @@ void ViewOrgContactDialog::receiveDataPerson(bool updating)
     }
 }
 
-void ViewOrgContactDialog::receiveDataOrg(bool updating)
+void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 {
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
     if (updating)
     {
         emit sendData(true);
 
-        destroy(true);
+        close();
     }
     else
+    {
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = 0;
+            this->move(x, y);
+        }
+        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = 0;
+            y = nWidgetHeight;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = nWidgetWidth * 0.9;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = nWidgetWidth * 0.9;
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else
+        {
+            this->move(x, y);
+        }
+
         show();
+    }
 }
 
 void ViewOrgContactDialog::receiveNumber(QString &to)
@@ -170,7 +216,11 @@ void ViewOrgContactDialog::onEdit()
 
     editOrgContactDialog = new EditOrgContactDialog;
     editOrgContactDialog->setOrgValuesContacts(updateID);
-    connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveDataOrg(bool)));
+    connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveDataOrg(bool, int, int)));
+
+    connect(this, SIGNAL(getPos(int, int)), editOrgContactDialog, SLOT(setPos(int, int)));
+    emit getPos(this->pos().x(), this->pos().y());
+
     editOrgContactDialog->show();
     editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

@@ -6,6 +6,8 @@
 #include <QSqlQueryModel>
 #include <QPlainTextEdit>
 #include <QMessageBox>
+#include <QDebug>
+#include <QDesktopWidget>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,9 +32,55 @@ EditOrgContactDialog::~EditOrgContactDialog()
 
 void EditOrgContactDialog::onReturn()
 {
-    emit sendData(false);
+    emit sendData(false, this->pos().x(), this->pos().y());
 
-    destroy(true);
+    close();
+}
+
+void EditOrgContactDialog::setPos(int x, int y)
+{
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
+    if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+    {
+        x = 0;
+        this->move(x, y);
+    }
+    else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+    {
+        x = 0;
+        y = nWidgetHeight;
+        this->move(x, y);
+    }
+    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+    {
+        x = nWidgetWidth;
+        this->move(x, y);
+    }
+    else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+    {
+        x = nWidgetWidth;
+        y = nWidgetHeight;
+        this->move(x, y);
+    }
+    else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+    {
+        y = nWidgetHeight;
+        this->move(x, y);
+    }
+    else
+    {
+        this->move(x, y);
+    }
 }
 
 void EditOrgContactDialog::onSave()
@@ -352,7 +400,7 @@ void EditOrgContactDialog::onSave()
                     query1.exec();
                 }
 
-                emit sendData(true);
+                emit sendData(true, this->pos().x(), this->pos().y());
 
                 close();
 

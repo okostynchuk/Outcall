@@ -2,7 +2,6 @@
 #define EDITCONTACTDIALOG_H
 
 #include "AddOrgToPerson.h"
-//#include "ViewContactDialog.h" //1!!!!!
 
 #include <QDialog>
 #include <QValidator>
@@ -19,18 +18,10 @@ class EditContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
+    void sendData(bool, int, int);
 
 public slots:
     void receiveOrgID(QString &);
-
-public:
-    explicit EditContactDialog(QWidget *parent = 0);
-    ~EditContactDialog();
-
-    void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
-    void setValuesPopupWindow(QString &number);
 
 private slots:
     void onSave();
@@ -44,6 +35,14 @@ private slots:
     bool isVyborID(QString *str);
 
     void setPos(int, int);
+
+public:
+    explicit EditContactDialog(QWidget *parent = 0);
+    ~EditContactDialog();
+
+    void setValuesContacts(QString &);
+    void setValuesCallHistory(QString &);
+    void setValuesPopupWindow(QString &number);
 
 private:
     Ui::EditContactDialog *ui;
