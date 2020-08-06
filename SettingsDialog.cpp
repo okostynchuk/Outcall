@@ -40,8 +40,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
     // General
-    userName = qgetenv("USERNAME");
-    path = QString("C:\\Users\\%1\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup").arg(userName);
+    QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
+    settings.beginGroup("Shell Folders");
+    path = settings.value("Startup").toString();
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -277,10 +278,10 @@ void SettingsDialog::on_cancelButton_clicked()
 
 void SettingsDialog::applySettings()
 {
-    if(ui->autoStartBox->isChecked())
+    if (ui->autoStartBox->isChecked())
         f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/OutCALL.lnk");
     else
-        f.remove("C:/Users/" + userName + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/OutCALL.lnk");
+        f.remove(path.replace("/", "\\") + "/OutCALL.lnk");
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }

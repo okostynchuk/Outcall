@@ -28,6 +28,7 @@ class CallHistoryDialog : public QDialog
     Q_OBJECT
 
 public slots:
+    void receiveData(bool);
     void playerClosed(bool);
     void receiveDataToAllCalls();
     void receiveDataToMissed();
