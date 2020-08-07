@@ -280,9 +280,12 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->FirstName->setText(entryFName);
     ui->Patronymic->setText(entryMName);
     ui->LastName->setText(entryLName);
-    ui->City->setText(entryCity);
+    ui->City->setText(entryCity);    
+    ui->City->QWidget::setToolTip(entryCity);
     ui->Address->setText(entryAddress);
+    ui->Address->QWidget::setToolTip(entryAddress);
     ui->Email->setText(entryEmail);
+    ui->Email->QWidget::setToolTip(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 

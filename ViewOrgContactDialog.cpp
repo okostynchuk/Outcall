@@ -503,8 +503,11 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 
     ui->OrgName->setText(entryORGName);
     ui->City->setText(entryCity);
-    ui->Address->setText(entryAddress);
+    ui->City->QWidget::setToolTip(entryCity);
+    ui->Address->setText(entryAddress);    
+    ui->Address->QWidget::setToolTip(entryAddress);
     ui->Email->setText(entryEmail);
+    ui->Email->QWidget::setToolTip(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
