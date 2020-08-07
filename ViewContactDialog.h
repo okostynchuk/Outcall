@@ -105,8 +105,9 @@ private:
     QString page;
     QString pages;
     QString go;
-    QString extfield1;
+    QString extfield;
     QString src;
+    QString dst;
     QString dialogStatus;
     int count;
     int countNumbers = 1;
