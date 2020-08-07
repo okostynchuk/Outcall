@@ -306,6 +306,7 @@ void CallHistoryDialog::loadMissedCalls()
     {
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
         extfield = query1->data(query1->index(row_index, 0)).toString();
+        src = query1->data(query1->index(row_index, 1)).toString();
 
         if (extfield.isEmpty())
             ui->tableView->setIndexWidget(query1->index(row_index, 0), loadName());
@@ -419,6 +420,7 @@ void CallHistoryDialog::loadReceivedCalls()
     {
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
         extfield = query2->data(query2->index(row_index, 0)).toString();
+        src = query2->data(query2->index(row_index, 1)).toString();
 
         if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(query2->index(row_index, 0), loadName());

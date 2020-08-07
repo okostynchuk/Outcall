@@ -503,8 +503,11 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 
     ui->OrgName->setText(entryORGName);
     ui->City->setText(entryCity);
-    ui->Address->setText(entryAddress);
+    ui->City->QWidget::setToolTip(entryCity);
+    ui->Address->setText(entryAddress);    
+    ui->Address->QWidget::setToolTip(entryAddress);
     ui->Email->setText(entryEmail);
+    ui->Email->QWidget::setToolTip(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
@@ -590,10 +593,20 @@ void ViewOrgContactDialog::loadAllCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+    QString queryString = "SELECT if(";
+
+    for (int i = 0; i < countNumbers; i++)
+    {
+        if (i == 0)
+            queryString.append("src = '"+numbersList[i]+"'");
+        else
+            queryString.append(" || src = '"+numbersList[i]+"'");
+    }
+
+    queryString.append(", extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                           "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                           " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                          "'" + days + "' DAY) AND (";
+                          "'" + days + "' DAY) AND (");
 
     for (int i = 0; i < countNumbers; i++)
     {
@@ -633,14 +646,15 @@ void ViewOrgContactDialog::loadAllCalls()
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
-        extfield1 = query4->data(query4->index(row_index, 0)).toString();
+        extfield = query4->data(query4->index(row_index, 0)).toString();
         src = query4->data(query4->index(row_index, 1)).toString();
+        dst = query4->data(query4->index(row_index, 2)).toString();
         uniqueid = query4->data(query4->index(row_index, 7)).toString();
         dialogStatus = query4->data(query4->index(row_index, 3)).toString();
 
         ui->tableView_2->setIndexWidget(query4->index(row_index, 4), loadStatus());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(query4->index(row_index, 0), loadName());
 
         QSqlDatabase db;
@@ -713,7 +727,19 @@ QWidget* ViewOrgContactDialog::loadName()
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
 
-    nameLabel->setText(src);
+    int counter = 0;
+
+    for (int i = 0; i < countNumbers; i++)
+    {
+        if (src == numbersList[i])
+        {
+            nameLabel->setText(dst);
+            counter++;
+        }
+    }
+
+    if (counter == 0)
+        nameLabel->setText(src);
 
     nameLayout->addWidget(nameLabel);
 
@@ -983,7 +1009,7 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE ("
+    QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid FROM cdr WHERE ("
                           "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
                           "OR disposition = 'CANCEL') AND (";
 
@@ -1025,8 +1051,10 @@ void ViewOrgContactDialog::loadMissedCalls()
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
 
-        extfield1 = query1->data(query1->index(row_index, 0)).toString();
+        extfield = query1->data(query1->index(row_index, 0)).toString();
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
+        src = query1->data(query1->index(row_index, 1)).toString();
+        dst = query1->data(query1->index(row_index, 2)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
         query.exec();
@@ -1035,7 +1063,7 @@ void ViewOrgContactDialog::loadMissedCalls()
         if (query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query1->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_3->setIndexWidget(query1->index(row_index, 0), loadName());
     }
 
@@ -1101,7 +1129,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
+    QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
                           "disposition = 'ANSWERED' AND (";
 
     for (int i = 0; i < countNumbers; i++)
@@ -1142,8 +1170,10 @@ void ViewOrgContactDialog::loadReceivedCalls()
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
 
-        extfield1 = query2->data(query2->index(row_index, 0)).toString();
+        extfield = query2->data(query2->index(row_index, 0)).toString();
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
+        src = query2->data(query2->index(row_index, 1)).toString();
+        dst = query2->data(query2->index(row_index, 2)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
@@ -1152,7 +1182,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
         if (query.value(0) != 0)
             ui->tableView_4->setIndexWidget(query2->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_4->setIndexWidget(query2->index(row_index, 0), loadName());
     }
 
@@ -1257,8 +1287,10 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
     for (int row_index = 0; row_index < ui->tableView_5->model()->rowCount(); ++row_index)
     {
-        extfield1 = query3->data(query3->index(row_index, 0)).toString();
+        extfield = query3->data(query3->index(row_index, 0)).toString();
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
+        src = query3->data(query3->index(row_index, 1)).toString();
+        dst = query3->data(query3->index(row_index, 2)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
@@ -1267,7 +1299,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
         if (query.value(0) != 0)
             ui->tableView_5->setIndexWidget(query3->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_5->setIndexWidget(query3->index(row_index, 0), loadName());
     }
 

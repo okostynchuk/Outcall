@@ -280,9 +280,12 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->FirstName->setText(entryFName);
     ui->Patronymic->setText(entryMName);
     ui->LastName->setText(entryLName);
-    ui->City->setText(entryCity);
+    ui->City->setText(entryCity);    
+    ui->City->QWidget::setToolTip(entryCity);
     ui->Address->setText(entryAddress);
+    ui->Address->QWidget::setToolTip(entryAddress);
     ui->Email->setText(entryEmail);
+    ui->Email->QWidget::setToolTip(entryEmail);
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
@@ -342,10 +345,20 @@ void ViewContactDialog::loadAllCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+    QString queryString = "SELECT if(";
+
+    for (int i = 0; i < countNumbers; i++)
+    {
+        if (i == 0)
+            queryString.append("src = '"+numbersList[i]+"'");
+        else
+            queryString.append(" || src = '"+numbersList[i]+"'");
+    }
+
+    queryString.append(", extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                           "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                           " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                          "'" + days + "' DAY) AND (";
+                          "'" + days + "' DAY) AND (");
 
     for (int i = 0; i < countNumbers; i++)
     {
@@ -385,14 +398,16 @@ void ViewContactDialog::loadAllCalls()
 
     for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
     {
-        extfield1 = query4->data(query4->index(row_index, 0)).toString();
+        extfield = query4->data(query4->index(row_index, 0)).toString();
         src = query4->data(query4->index(row_index, 1)).toString();
-        uniqueid = query4->data(query4->index(row_index, 7)).toString();
+        dst = query4->data(query4->index(row_index, 2)).toString();
         dialogStatus = query4->data(query4->index(row_index, 3)).toString();
+        uniqueid = query4->data(query4->index(row_index, 7)).toString();
+
 
         ui->tableView_4->setIndexWidget(query4->index(row_index, 4), loadStatus());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_4->setIndexWidget(query4->index(row_index, 0), loadName());
 
         QSqlDatabase db;
@@ -465,7 +480,19 @@ QWidget* ViewContactDialog::loadName()
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
 
-    nameLabel->setText(src);
+    int counter = 0;
+
+    for (int i = 0; i < countNumbers; i++)
+    {
+        if (src == numbersList[i])
+        {
+            nameLabel->setText(dst);
+            counter++;
+        }
+    }
+
+    if (counter == 0)
+        nameLabel->setText(src);
 
     nameLayout->addWidget(nameLabel);
 
@@ -503,7 +530,7 @@ QWidget* ViewContactDialog::loadName()
 
 void ViewContactDialog::deleteNameObjects()
 {
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->tabWidget_2->currentIndex() == 0)
     {
         for (int i = 0; i < layoutsAllName.size(); ++i)
             layoutsAllName[i]->deleteLater();
@@ -517,7 +544,7 @@ void ViewContactDialog::deleteNameObjects()
         widgetsAllName.clear();
         labelsAllName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 1)
+    if (ui->tabWidget_2->currentIndex() == 1)
     {
         for (int i = 0; i < layoutsMissedName.size(); ++i)
             layoutsMissedName[i]->deleteLater();
@@ -531,7 +558,7 @@ void ViewContactDialog::deleteNameObjects()
         widgetsMissedName.clear();
         labelsMissedName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget_2->currentIndex() == 2)
     {
         for (int i = 0; i < layoutsReceivedName.size(); ++i)
             layoutsReceivedName[i]->deleteLater();
@@ -545,7 +572,7 @@ void ViewContactDialog::deleteNameObjects()
         widgetsReceivedName.clear();
         labelsReceivedName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 3)
+    if (ui->tabWidget_2->currentIndex() == 3)
     {
         for (int i = 0; i < layoutsPlacedName.size(); ++i)
             layoutsPlacedName[i]->deleteLater();
@@ -691,7 +718,6 @@ void ViewContactDialog::loadMissedCalls()
         deleteNotesObjects();
     if (!widgetsMissedName.isEmpty())
         deleteNameObjects();
-
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     query1 = new QSqlQueryModel;
@@ -735,7 +761,7 @@ void ViewContactDialog::loadMissedCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE ("
+    QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid FROM cdr WHERE ("
                           "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
                           "OR disposition = 'CANCEL') AND (";
 
@@ -775,7 +801,9 @@ void ViewContactDialog::loadMissedCalls()
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        extfield1 = query1->data(query1->index(row_index, 0)).toString();
+        extfield = query1->data(query1->index(row_index, 0)).toString();
+        src = query1->data(query1->index(row_index, 1)).toString();
+        dst = query1->data(query1->index(row_index, 2)).toString();
         uniqueid = query1->data(query1->index(row_index, 5)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
@@ -785,7 +813,7 @@ void ViewContactDialog::loadMissedCalls()
         if (query.value(0) != 0)
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView->setIndexWidget(query1->index(row_index, 0), loadName());
     }
 
@@ -851,7 +879,7 @@ void ViewContactDialog::loadReceivedCalls()
 
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
+    QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
                           "disposition = 'ANSWERED' AND (";
 
     for (int i = 0; i < countNumbers; i++)
@@ -891,8 +919,10 @@ void ViewContactDialog::loadReceivedCalls()
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
-        extfield1 = query2->data(query2->index(row_index, 0)).toString();
+        extfield = query2->data(query2->index(row_index, 0)).toString();
         uniqueid = query2->data(query2->index(row_index, 5)).toString();
+        src = query2->data(query2->index(row_index, 1)).toString();
+        dst = query2->data(query2->index(row_index, 2)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
@@ -901,7 +931,7 @@ void ViewContactDialog::loadReceivedCalls()
         if (query.value(0) != 0)
             ui->tableView_2->setIndexWidget(query2->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(query2->index(row_index, 0), loadName());
     }
 
@@ -1006,8 +1036,10 @@ void ViewContactDialog::loadPlacedCalls()
 
     for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
     {
-        extfield1 = query3->data(query3->index(row_index, 0)).toString();
+        extfield = query3->data(query3->index(row_index, 0)).toString();
         uniqueid = query3->data(query3->index(row_index, 5)).toString();
+        src = query3->data(query3->index(row_index, 1)).toString();
+        dst = query3->data(query3->index(row_index, 2)).toString();
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
         query.exec();
@@ -1016,7 +1048,7 @@ void ViewContactDialog::loadPlacedCalls()
         if (query.value(0) != 0)
             ui->tableView_3->setIndexWidget(query3->index(row_index, 4), loadNote());
 
-        if (extfield1.isEmpty())
+        if (extfield.isEmpty())
             ui->tableView_3->setIndexWidget(query3->index(row_index, 0), loadName());
     }
 
