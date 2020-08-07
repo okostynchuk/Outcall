@@ -541,12 +541,6 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     updateCount();
 }
 
-void ViewOrgContactDialog::setOrgValuesCallHistory(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
-
 void ViewOrgContactDialog::loadAllCalls()
 {
     if (!widgets.isEmpty())

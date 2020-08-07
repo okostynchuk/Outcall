@@ -43,7 +43,6 @@ public:
     ~ViewOrgContactDialog();
 
     void setOrgValuesContacts(QString &);
-    void setOrgValuesCallHistory(QString &);
 
 protected slots:
 
