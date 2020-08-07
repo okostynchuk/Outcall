@@ -934,6 +934,8 @@ void CallHistoryDialog::onAddContact()
         return;
     }
 
+    clearFocus();
+
     addContactDialog = new AddContactDialog;
 
     if (checkNumber(number))
@@ -955,7 +957,7 @@ void CallHistoryDialog::onAddOrgContact()
         return;
     }
 
-    clearFocus();
+    this->setFocus();//clearFocus();
 
     addOrgContactDialog = new AddOrgContactDialog;
 
@@ -978,7 +980,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         return;
     }
 
-    clearFocus();
+    this->setFocus();//clearFocus();
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
     addPhoneNumberToContactDialog->setPhoneNumber(number);
@@ -1120,10 +1122,10 @@ void CallHistoryDialog::editContact(QString &number)
     QSqlQuery query(db);
 
     QString updateID = getUpdateId(number);
-
+    this->clearFocus();
     editContactDialog = new EditContactDialog;
     editContactDialog->setValuesContacts(updateID);
-    connect(editContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
     editContactDialog->show();
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -1142,9 +1144,10 @@ void CallHistoryDialog::editOrgContact(QString &number)
 
     if (query.value(0).toString() == "org")
     {
+        this->clearFocus();
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(editOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
         editOrgContactDialog->show();
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
