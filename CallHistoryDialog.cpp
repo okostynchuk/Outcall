@@ -915,14 +915,21 @@ void CallHistoryDialog::receiveData(bool updating)
 {
     if (updating)
     {
-         ui->tableView_4->selectionModel()->clearSelection();
+        if (ui->tabWidget->currentIndex() == 0)
+            ui->tableView_4->selectionModel()->clearSelection();
+        else if (ui->tabWidget->currentIndex() == 1)
+            ui->tableView->selectionModel()->clearSelection();
+        else if (ui->tabWidget->currentIndex() == 2)
+            ui->tableView_2->selectionModel()->clearSelection();
+        else if (ui->tabWidget->currentIndex() == 3)
+            ui->tableView_3->selectionModel()->clearSelection();
 
-         ui->callButton->setDisabled(true);
-         ui->addContactButton->setDisabled(true);
-         ui->addOrgContactButton->setDisabled(true);
-         ui->addPhoneNumberButton->setDisabled(true);
-         ui->playAudio->setDisabled(true);
-         ui->playAudioPhone->setDisabled(true);
+        ui->callButton->setDisabled(true);
+        ui->addContactButton->setDisabled(true);
+        ui->addOrgContactButton->setDisabled(true);
+        ui->addPhoneNumberButton->setDisabled(true);
+        ui->playAudio->setDisabled(true);
+        ui->playAudioPhone->setDisabled(true);
     }
 }
 
@@ -957,7 +964,7 @@ void CallHistoryDialog::onAddOrgContact()
         return;
     }
 
-    this->setFocus();//clearFocus();
+    clearFocus();
 
     addOrgContactDialog = new AddOrgContactDialog;
 
@@ -980,7 +987,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         return;
     }
 
-    this->setFocus();//clearFocus();
+    clearFocus();
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
     addPhoneNumberToContactDialog->setPhoneNumber(number);
@@ -1122,7 +1129,7 @@ void CallHistoryDialog::editContact(QString &number)
     QSqlQuery query(db);
 
     QString updateID = getUpdateId(number);
-    this->clearFocus();
+
     editContactDialog = new EditContactDialog;
     editContactDialog->setValuesContacts(updateID);
     connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
@@ -1144,7 +1151,6 @@ void CallHistoryDialog::editOrgContact(QString &number)
 
     if (query.value(0).toString() == "org")
     {
-        this->clearFocus();
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setOrgValuesContacts(updateID);
         connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));

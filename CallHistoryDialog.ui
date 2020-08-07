@@ -520,6 +520,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::WheelFocus</enum>
+          </property>
           <property name="text">
            <string/>
           </property>
