@@ -165,7 +165,7 @@ void SettingsDialog::loadSettings()
     // General
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
     ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
-    bool autoSignIn = global::getSettingsValue("auto_sign_in",   "general", true).toBool();
+    bool autoSignIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
 
@@ -280,9 +280,9 @@ void SettingsDialog::on_cancelButton_clicked()
 void SettingsDialog::applySettings()
 {
     if (ui->autoStartBox->isChecked())
-        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/OutCALL.lnk");
+        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
     else
-        f.remove(path.replace("/", "\\") + "/OutCALL.lnk");
+        f.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 
     g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }

@@ -28,7 +28,12 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    g_AppSettingsFolderPath = QDir::homePath() + "/OutCALL";
+    app.setQuitOnLastWindowClosed(false);
+    app.setApplicationName(APP_NAME);
+    app.setApplicationVersion("3.0");
+    app.setOrganizationName(ORGANIZATION_NAME);
+
+    g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
 
     QString languages = global::getSettingsValue("language", "settings").toString();
@@ -45,11 +50,11 @@ int main(int argc, char *argv[])
     tasklist.start(
           "tasklist",
           QStringList() << "/FO" << "CSV"
-                  << "/FI" << QString("IMAGENAME eq OutCALL.exe"));
+                  << "/FI" << QString("IMAGENAME eq " + QString(APP_NAME) + ".exe"));
     tasklist.waitForFinished();
     QString output = tasklist.readAllStandardOutput();
 
-    if (output.count("OutCALL.exe") != 1)
+    if (output.count(QString(APP_NAME) + ".exe") != 1)
         if (QCoreApplication::arguments().last() != "restart")
         {
             QMessageBox msgBox;
@@ -149,11 +154,6 @@ int main(int argc, char *argv[])
     }
 
     opened = true;
-
-    app.setQuitOnLastWindowClosed(false);
-    app.setApplicationName(APP_NAME);
-    app.setApplicationVersion("2.0");
-    app.setOrganizationName(ORGANIZATION_NAME);
 
     bool bCallRequest = false;
 

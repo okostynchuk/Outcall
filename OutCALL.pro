@@ -14,7 +14,7 @@ QT       += axcontainer
 
 
 win32:{
-    VERSION = 1.0.0
+    VERSION = 3.0.0
     QMAKE_TARGET_COMPANY = Vybor
     QMAKE_TARGET_PRODUCT = OutCALL
 }

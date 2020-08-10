@@ -65,6 +65,12 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
+
+    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_5->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -531,8 +537,6 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     update = "default";
     filter = false;
@@ -1073,8 +1077,6 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -1192,8 +1194,6 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -1308,8 +1308,6 @@ void ViewOrgContactDialog::loadPlacedCalls()
     ui->tableView_5->resizeColumnsToContents();
 
     ui->tableView_5->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    ui->tableView_5->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);

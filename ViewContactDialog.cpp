@@ -62,6 +62,11 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
+
+    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 }
 
 ViewContactDialog::~ViewContactDialog()
@@ -823,8 +828,6 @@ void ViewContactDialog::loadMissedCalls()
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -941,8 +944,6 @@ void ViewContactDialog::loadReceivedCalls()
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -1057,8 +1058,6 @@ void ViewContactDialog::loadPlacedCalls()
     ui->tableView_3->resizeColumnsToContents();
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);

@@ -58,6 +58,8 @@ OutCall::OutCall() :
     QString path(":/images/disconnected.png");
     m_systemTrayIcon->setIcon(QIcon(path));
 
+    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
+
     automaticlySignIn();
 }
 
@@ -130,7 +132,7 @@ void OutCall::createContextMenu()
 
 void OutCall::automaticlySignIn()
 {
-    bool autoSingIn = global::getSettingsValue("auto_sign_in", "general").toBool();
+    bool autoSingIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
 
     if (autoSingIn)
         signInOut();
@@ -215,6 +217,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         {
             m_systemTrayIcon->hide();
 
+            qApp->closeAllWindows();
             qApp->quit();
 
             QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");

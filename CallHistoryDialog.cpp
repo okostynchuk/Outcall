@@ -205,7 +205,9 @@ void CallHistoryDialog::loadAllCalls()
     }
 
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_4->resizeColumnsToContents();
+
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
     ui->callButton->setDisabled(true);
@@ -322,7 +324,9 @@ void CallHistoryDialog::loadMissedCalls()
             ui->tableView->setIndexWidget(query1->index(row_index, 4), loadMissedNote());
     }
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView->resizeColumnsToContents();
+
     ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->callButton->setDisabled(true);
@@ -437,7 +441,9 @@ void CallHistoryDialog::loadReceivedCalls()
     }
 
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_2->resizeColumnsToContents();
+
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->callButton->setDisabled(true);
@@ -545,7 +551,9 @@ void CallHistoryDialog::loadPlacedCalls()
     }
 
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
     ui->tableView_3->resizeColumnsToContents();
+
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->callButton->setDisabled(true);
@@ -979,6 +987,69 @@ void CallHistoryDialog::onAddOrgContact()
         editOrgContact(number);
 }
 
+bool CallHistoryDialog::checkNumber(QString &number)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    QString number_internal = number;
+
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '"+number_internal+"')");
+    query.exec();
+    query.next();
+
+    if (query.value(0) != 0)
+        return false;
+    else
+        return true;
+}
+
+void CallHistoryDialog::editContact(QString &number)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    QString updateID = getUpdateId(number);
+
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
+    query.exec();
+    query.first();
+
+    if (query.value(0).toString() == "person")
+    {
+        editContactDialog = new EditContactDialog;
+        editContactDialog->setValuesContacts(updateID);
+        connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
+        editContactDialog->show();
+        editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
+    else
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
+}
+
+void CallHistoryDialog::editOrgContact(QString &number)
+{
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    QString updateID = getUpdateId(number);
+
+    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
+    query.exec();
+    query.first();
+
+    if (query.value(0).toString() == "org")
+    {
+        editOrgContactDialog = new EditOrgContactDialog;
+        editOrgContactDialog->setOrgValuesContacts(updateID);
+        connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
+        editOrgContactDialog->show();
+        editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
+    else
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
+}
+
 void CallHistoryDialog::onAddPhoneNumberToContact()
 {
     if ((ui->tabWidget->currentIndex() == 1 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 0 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
@@ -1106,59 +1177,6 @@ void CallHistoryDialog::receiveDataToPlaced()
 {
     deletePlacedObjects();
     loadPlacedCalls();
-}
-
-bool CallHistoryDialog::checkNumber(QString &number)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    QString number_internal = number;
-
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '"+number_internal+"')");
-    query.exec();
-    query.next();
-
-    if (query.value(0) != 0) return false;
-    else return true;
-}
-
-void CallHistoryDialog::editContact(QString &number)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    QString updateID = getUpdateId(number);
-
-    editContactDialog = new EditContactDialog;
-    editContactDialog->setValuesContacts(updateID);
-    connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
-    editContactDialog->show();
-    editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-}
-
-void CallHistoryDialog::editOrgContact(QString &number)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    QString updateID = getUpdateId(number);
-
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
-    query.exec();
-    query.first();
-
-    if (query.value(0).toString() == "org")
-    {
-        editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
-        editOrgContactDialog->show();
-        editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-    }
-    else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
 }
 
 QString CallHistoryDialog::getUpdateId(QString &number)

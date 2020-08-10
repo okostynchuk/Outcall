@@ -521,7 +521,7 @@
            </font>
           </property>
           <property name="focusPolicy">
-           <enum>Qt::WheelFocus</enum>
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="text">
            <string/>
