@@ -117,7 +117,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     if (phone_from != phone_to && phone_from != my_number)
     {
         ui->comboBox->setDisabled(true);
-        ui->textEdit->setDisabled(true);
+        ui->textEdit->setReadOnly(true);
     }
 }
 
