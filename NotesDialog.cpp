@@ -30,6 +30,8 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
+
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 }
 
 NotesDialog::~NotesDialog()
@@ -54,9 +56,15 @@ void NotesDialog::loadNotes()
 
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
+    query->insertColumn(2);
     query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(query);
+
+    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+        ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index));
+
+    ui->tableView->setColumnHidden(3, true);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -64,8 +72,6 @@ void NotesDialog::loadNotes()
     ui->tableView->resizeColumnsToContents();
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     if (state == "save_disable")
     {
@@ -81,13 +87,29 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    QString note = ui->textEdit->toPlainText().simplified();
 
-    if (ui->textEdit->toPlainText().simplified().isEmpty())
+    if (note.isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
 
         return;
     }
+
+    QRegularExpression hrefRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})");
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+    QStringList hrefs;
+
+    if (hrefIterator.hasNext())
+    {
+        QRegularExpressionMatch match = hrefIterator.next();
+        QString href = match.captured(1);
+
+        hrefs << href;
+    }
+
+    for (int i = 0; i < hrefs.length(); ++i)
+        note.replace(QRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>");
 
     QString author;
 
@@ -102,7 +124,7 @@ void NotesDialog::onSave()
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
-    query.addBindValue(ui->textEdit->toPlainText().simplified());
+    query.addBindValue(note);
     query.addBindValue(author);
     query.exec();
 
@@ -166,7 +188,42 @@ bool NotesDialog::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
+QWidget* NotesDialog::addWidgetNote(int row_index)
+{
+    QWidget* wgt = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel* noteLabel = new QLabel(wgt);
+
+    layout->addWidget(noteLabel, 0, Qt::AlignTop);
+
+    noteLabel->setText(query->data(query->index(row_index, 3)).toString());
+    noteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    noteLabel->setOpenExternalLinks(true);
+    noteLabel->setWordWrap(true);
+
+    wgt->setLayout(layout);
+
+    widgets.append(wgt);
+    layouts.append(layout);
+    labels.append(noteLabel);
+
+    return wgt;
+}
+
 void NotesDialog::deleteObjects()
 {
+    for (int i = 0; i < widgets.size(); ++i)
+        widgets[i]->deleteLater();
+
+    for (int i = 0; i < layouts.size(); ++i)
+        layouts[i]->deleteLater();
+
+    for (int i = 0; i < labels.size(); ++i)
+        labels[i]->deleteLater();
+
+    widgets.clear();
+    layouts.clear();
+    labels.clear();
+
     delete query;
 }

@@ -106,6 +106,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     }
 
     ui->lblText->setText(m_pri.text);
+    ui->lblText->setOpenExternalLinks(true);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
@@ -551,7 +552,9 @@ void PopupReminder::onClosePopup()
 
 void PopupReminder::closeAll()
 {
-    qDeleteAll(m_PopupReminders);
+    for (int i = 0; i < m_PopupReminders.size(); ++i)
+        m_PopupReminders[i]->deleteLater();
+
     m_PopupReminders.clear();
 }
 

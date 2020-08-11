@@ -53,13 +53,9 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     ui->textEdit->setText(note);
 
-	ui->lblText->setOpenExternalLinks(true);
-
 	setAttribute(Qt::WA_TranslucentBackground);
 
 	ui->lblText->setText(pwi.text);
-
-    ui->lblText->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     if (!pwi.avatar.isNull())
     {
@@ -325,7 +321,9 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 
 void PopupWindow::closeAll()
 {
-	qDeleteAll(m_PopupWindows);
+    for (int i = 0; i < m_PopupWindows.size(); ++i)
+        m_PopupWindows[i]->deleteLater();
+
     m_PopupWindows.clear();
 }
 

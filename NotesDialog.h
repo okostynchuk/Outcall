@@ -6,6 +6,8 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QTableView>
+#include <QLayout>
+#include <QLabel>
 
 namespace Ui {
 class NotesDialog;
@@ -40,6 +42,12 @@ private:
     Ui::NotesDialog *ui;
 
     QSqlQueryModel *query;
+
+    QWidget* addWidgetNote(int);
+
+    QList<QWidget*> widgets;
+    QList<QHBoxLayout*> layouts;
+    QList<QLabel*> labels;
 
     QString callId;
     QString state;

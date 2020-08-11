@@ -345,7 +345,7 @@ bool AddContactDialog::isPhone(QString *str)
 
     QRegExpValidator validator(QRegExp("[\\+]?[0-9]{1,12}"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;
@@ -357,7 +357,7 @@ bool AddContactDialog::isVyborID(QString *str)
 
     QRegExpValidator validator(QRegExp("[0-9]*"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;

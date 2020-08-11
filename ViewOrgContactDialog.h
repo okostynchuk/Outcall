@@ -73,7 +73,7 @@ private slots:
     void tabSelected();
     void daysChanged();
 
-    void deleteNotesObjects();
+    void deleteNoteObjects();
     void deleteStatusObjects();
     void deleteNameObjects();
 

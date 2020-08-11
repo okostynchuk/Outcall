@@ -85,7 +85,9 @@ AddPersonToOrg::~AddPersonToOrg()
 
 void AddPersonToOrg::deleteObjects()
 {
-    qDeleteAll(queries);
+    for (int i = 0; i < queries.size(); ++i)
+        queries[i]->deleteLater();
+
     queries.clear();
 }
 

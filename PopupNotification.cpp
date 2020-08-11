@@ -30,6 +30,7 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
     ui->label->setText(tr("Новое напоминание от ") + m_pni.number);
 
     ui->lblText->setText(m_pni.text);
+    ui->lblText->setOpenExternalLinks(true);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
@@ -242,7 +243,9 @@ void PopupNotification::closeAndDestroy()
 
 void PopupNotification::closeAll()
 {
-    qDeleteAll(m_PopupNotifications);
+    for (int i = 0; i < m_PopupNotifications.size(); ++i)
+        m_PopupNotifications[i]->deleteLater();
+
     m_PopupNotifications.clear();
 }
 

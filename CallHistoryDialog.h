@@ -135,6 +135,7 @@ private:
     QWidget* loadPlacedNote();
     QWidget* loadName();
 
+    QList<QHBoxLayout*> layouts;
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
     QList<QHBoxLayout*> layoutsReceivedName;

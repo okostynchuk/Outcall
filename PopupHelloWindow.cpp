@@ -263,7 +263,9 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
 
 void PopupHelloWindow::closeAll()
 {
-    qDeleteAll(m_PopupHelloWindows);
+    for (int i = 0; i < m_PopupHelloWindows.size(); ++i)
+        m_PopupHelloWindows[i]->deleteLater();
+
     m_PopupHelloWindows.clear();
 }
 

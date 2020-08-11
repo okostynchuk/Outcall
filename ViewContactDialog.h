@@ -57,12 +57,12 @@ private slots:
     void tabSelected();
     void daysChanged();
 
-    void deleteNotesObjects();
+    void deleteNoteObjects();
     void deleteStatusObjects();
     void deleteNameObjects();
 
     void viewMissedNotes(const QModelIndex &index);
-    void viewRecievedNotes(const QModelIndex &index);
+    void viewReceivedNotes(const QModelIndex &index);
     void viewPlacedNotes(const QModelIndex &index);
     void viewAllNotes(const QModelIndex &index);
 

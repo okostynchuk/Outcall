@@ -26,7 +26,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    QRegExp RegExp("^[0-9]+$");
+    QRegExp RegExp("^[0-9]*$");
     validator = new QRegExpValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
 
@@ -992,9 +992,7 @@ bool CallHistoryDialog::checkNumber(QString &number)
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QString number_internal = number;
-
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '"+number_internal+"')");
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
     query.exec();
     query.next();
 
@@ -1060,11 +1058,23 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
 
     clearFocus();
 
-    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-    addPhoneNumberToContactDialog->setPhoneNumber(number);
-    connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-    addPhoneNumberToContactDialog->show();
-    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
+    query.exec();
+    query.next();
+
+    if (query.value(0) == 0)
+    {
+        addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+        addPhoneNumberToContactDialog->setPhoneNumber(number);
+        connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        addPhoneNumberToContactDialog->show();
+        addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
+    else
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный номер уже принадлежит контакту!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::onPlayAudio()
@@ -1248,13 +1258,14 @@ void CallHistoryDialog::deleteNameObjects()
         for (int i = 0; i < widgetsAllName.size(); ++i)
             widgetsAllName[i]->deleteLater();
 
-        qDeleteAll(labelsAllName);
+        for (int i = 0; i < labelsAllName.size(); ++i)
+            labelsAllName[i]->deleteLater();
 
         layoutsAllName.clear();
         widgetsAllName.clear();
         labelsAllName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentIndex() == 1)
     {
         for (int i = 0; i < layoutsMissedName.size(); ++i)
             layoutsMissedName[i]->deleteLater();
@@ -1262,13 +1273,14 @@ void CallHistoryDialog::deleteNameObjects()
         for (int i = 0; i < widgetsMissedName.size(); ++i)
             widgetsMissedName[i]->deleteLater();
 
-        qDeleteAll(labelsMissedName);
+        for (int i = 0; i < labelsMissedName.size(); ++i)
+            labelsMissedName[i]->deleteLater();
 
         layoutsMissedName.clear();
         widgetsMissedName.clear();
         labelsMissedName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->tabWidget->currentIndex() == 2)
     {
         for (int i = 0; i < layoutsReceivedName.size(); ++i)
             layoutsReceivedName[i]->deleteLater();
@@ -1276,13 +1288,14 @@ void CallHistoryDialog::deleteNameObjects()
         for (int i = 0; i < widgetsReceivedName.size(); ++i)
             widgetsReceivedName[i]->deleteLater();
 
-        qDeleteAll(labelsReceivedName);
+        for (int i = 0; i < labelsReceivedName.size(); ++i)
+            labelsReceivedName[i]->deleteLater();
 
         layoutsReceivedName.clear();
         widgetsReceivedName.clear();
         labelsReceivedName.clear();
     }
-    if (ui->tabWidget->currentIndex() == 3)
+    else if (ui->tabWidget->currentIndex() == 3)
     {
         for (int i = 0; i < layoutsPlacedName.size(); ++i)
             layoutsPlacedName[i]->deleteLater();
@@ -1290,7 +1303,8 @@ void CallHistoryDialog::deleteNameObjects()
         for (int i = 0; i < widgetsPlacedName.size(); ++i)
             widgetsPlacedName[i]->deleteLater();
 
-        qDeleteAll(labelsPlacedName);
+        for (int i = 0; i < labelsPlacedName.size(); ++i)
+            labelsPlacedName[i]->deleteLater();
 
         layoutsPlacedName.clear();
         widgetsPlacedName.clear();
@@ -1334,7 +1348,8 @@ void CallHistoryDialog::deleteStatusObjects()
     for (int i = 0; i < widgetsStatus.size(); ++i)
         widgetsStatus[i]->deleteLater();
 
-    qDeleteAll(labelsStatus);
+    for (int i = 0; i < labelsStatus.size(); ++i)
+        labelsStatus[i]->deleteLater();
 
     layoutsStatus.clear();
     widgetsStatus.clear();
@@ -1363,7 +1378,10 @@ void CallHistoryDialog::onUpdate()
 QWidget* CallHistoryDialog::loadAllNotes()
 {
     QWidget* wgt = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
     QLabel* note = new QLabel(wgt);
+
+    layout->addWidget(note, 0, Qt::AlignTop);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1373,10 +1391,13 @@ QWidget* CallHistoryDialog::loadAllNotes()
     query.first();
 
     note->setText(query.value(0).toString());
-
+    note->setOpenExternalLinks(true);
     note->setWordWrap(true);
 
+    wgt->setLayout(layout);
+
     widgets.append(wgt);
+    layouts.append(layout);
     notes.append(note);
 
     return wgt;
@@ -1387,9 +1408,14 @@ void CallHistoryDialog::deleteObjectsOfAllCalls()
     for (int i = 0; i < widgets.size(); ++i)
         widgets[i]->deleteLater();
 
-    qDeleteAll(notes);
+    for (int i = 0; i < layouts.size(); ++i)
+        layouts[i]->deleteLater();
+
+    for (int i = 0; i < notes.size(); ++i)
+        notes[i]->deleteLater();
 
     widgets.clear();
+    layouts.clear();
     notes.clear();
 
     delete query4;
@@ -1398,7 +1424,7 @@ void CallHistoryDialog::deleteObjectsOfAllCalls()
 QWidget* CallHistoryDialog::loadMissedNote()
 {
     QWidget* missedWgt = new QWidget;
-    QLabel *missedNote = new QLabel(missedWgt);
+    QLabel* missedNote = new QLabel(missedWgt);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1408,7 +1434,7 @@ QWidget* CallHistoryDialog::loadMissedNote()
     query.first();
 
     missedNote->setText(query.value(0).toString());
-
+    missedNote->setOpenExternalLinks(true);
     missedNote->setWordWrap(true);
 
     widgetsMissed.append(missedWgt);
@@ -1422,7 +1448,8 @@ void CallHistoryDialog::deleteMissedObjects()
     for (int i = 0; i < widgetsMissed.size(); ++i)
         widgetsMissed[i]->deleteLater();
 
-    qDeleteAll(notesMissed);
+    for (int i = 0; i < notesMissed.size(); ++i)
+        notesMissed[i]->deleteLater();
 
     widgetsMissed.clear();
     notesMissed.clear();
@@ -1433,7 +1460,7 @@ void CallHistoryDialog::deleteMissedObjects()
 QWidget* CallHistoryDialog::loadReceivedNote()
 {
     QWidget* receivedWgt = new QWidget;
-    QLabel *receivedNote = new QLabel(receivedWgt);
+    QLabel* receivedNote = new QLabel(receivedWgt);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1443,7 +1470,7 @@ QWidget* CallHistoryDialog::loadReceivedNote()
     query.first();
 
     receivedNote->setText(query.value(0).toString());
-
+    receivedNote->setOpenExternalLinks(true);
     receivedNote->setWordWrap(true);
 
     widgetsReceived.append(receivedWgt);
@@ -1457,7 +1484,8 @@ void CallHistoryDialog::deleteReceivedObjects()
     for (int i = 0; i < widgetsReceived.size(); ++i)
         widgetsReceived[i]->deleteLater();
 
-    qDeleteAll(notesReceived);
+    for (int i = 0; i < notesReceived.size(); ++i)
+        notesReceived[i]->deleteLater();
 
     widgetsReceived.clear();
     notesReceived.clear();
@@ -1467,9 +1495,8 @@ void CallHistoryDialog::deleteReceivedObjects()
 
 QWidget* CallHistoryDialog::loadPlacedNote()
 {
-    QHBoxLayout* layout = new QHBoxLayout;
     QWidget* placedWgt = new QWidget;
-    QLabel *placedNote = new QLabel(placedWgt);
+    QLabel* placedNote = new QLabel(placedWgt);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1479,14 +1506,8 @@ QWidget* CallHistoryDialog::loadPlacedNote()
     query.first();
 
     placedNote->setText(query.value(0).toString());
-
+    placedNote->setOpenExternalLinks(true);
     placedNote->setWordWrap(true);
-
-    layout->addWidget(placedNote);
-
-    layout->setContentsMargins(3, 0, 0, 0);
-
-    placedWgt->setLayout(layout);
 
     widgetsPlaced.append(placedWgt);
     notesPlaced.append(placedNote);
@@ -1499,7 +1520,8 @@ void CallHistoryDialog::deletePlacedObjects()
     for (int i = 0; i < widgetsPlaced.size(); ++i)
         widgetsPlaced[i]->deleteLater();
 
-    qDeleteAll(notesPlaced);
+    for (int i = 0; i < notesPlaced.size(); ++i)
+        notesPlaced[i]->deleteLater();
 
     widgetsPlaced.clear();
     notesPlaced.clear();

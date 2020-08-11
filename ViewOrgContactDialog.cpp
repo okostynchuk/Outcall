@@ -551,7 +551,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
 void ViewOrgContactDialog::loadAllCalls()
 {
     if (!widgets.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsAllName.isEmpty())
         deleteNameObjects();
     if (!widgetsStatus.isEmpty())
@@ -718,7 +718,8 @@ void ViewOrgContactDialog::deleteStatusObjects()
     for (int i = 0; i < widgetsStatus.size(); ++i)
         widgetsStatus[i]->deleteLater();
 
-    qDeleteAll(labelsStatus);
+    for (int i = 0; i < labelsStatus.size(); ++i)
+        labelsStatus[i]->deleteLater();
 
     layoutsStatus.clear();
     widgetsStatus.clear();
@@ -789,7 +790,8 @@ void ViewOrgContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsAllName.size(); ++i)
             widgetsAllName[i]->deleteLater();
 
-        qDeleteAll(labelsAllName);
+        for (int i = 0; i < labelsAllName.size(); ++i)
+            labelsAllName[i]->deleteLater();
 
         layoutsAllName.clear();
         widgetsAllName.clear();
@@ -803,7 +805,8 @@ void ViewOrgContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsMissedName.size(); ++i)
             widgetsMissedName[i]->deleteLater();
 
-        qDeleteAll(labelsMissedName);
+        for (int i = 0; i < labelsMissedName.size(); ++i)
+            labelsMissedName[i]->deleteLater();
 
         layoutsMissedName.clear();
         widgetsMissedName.clear();
@@ -817,7 +820,8 @@ void ViewOrgContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsReceivedName.size(); ++i)
             widgetsReceivedName[i]->deleteLater();
 
-        qDeleteAll(labelsReceivedName);
+        for (int i = 0; i < labelsReceivedName.size(); ++i)
+            labelsReceivedName[i]->deleteLater();
 
         layoutsReceivedName.clear();
         widgetsReceivedName.clear();
@@ -831,7 +835,8 @@ void ViewOrgContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsPlacedName.size(); ++i)
             widgetsPlacedName[i]->deleteLater();
 
-        qDeleteAll(labelsPlacedName);
+        for (int i = 0; i < labelsPlacedName.size(); ++i)
+            labelsPlacedName[i]->deleteLater();
 
         layoutsPlacedName.clear();
         widgetsPlacedName.clear();
@@ -966,7 +971,7 @@ void ViewOrgContactDialog::updateCount()
 void ViewOrgContactDialog::loadMissedCalls()
 {
     if (!widgetsMissed.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsMissedName.isEmpty())
         deleteNameObjects();
 
@@ -1084,7 +1089,7 @@ void ViewOrgContactDialog::loadMissedCalls()
 void ViewOrgContactDialog::loadReceivedCalls()
 {
     if (!widgetsReceived.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsReceivedName.isEmpty())
         deleteNameObjects();
 
@@ -1201,7 +1206,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
 void ViewOrgContactDialog::loadPlacedCalls()
 {
     if (!widgetsPlaced.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsPlacedName.isEmpty())
         deleteNameObjects();
 
@@ -1353,14 +1358,15 @@ QWidget* ViewOrgContactDialog::loadNote()
     return wgt;
 }
 
-void ViewOrgContactDialog::deleteNotesObjects()
+void ViewOrgContactDialog::deleteNoteObjects()
 {
     if (ui->tabWidget_3->currentIndex() == 0)
     {
         for (int i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
 
-        qDeleteAll(notes);
+        for (int i = 0; i < notes.size(); ++i)
+            notes[i]->deleteLater();
 
         widgets.clear();
         notes.clear();
@@ -1370,7 +1376,8 @@ void ViewOrgContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsMissed.size(); ++i)
             widgetsMissed[i]->deleteLater();
 
-        qDeleteAll(notesMissed);
+        for (int i = 0; i < notesMissed.size(); ++i)
+            notesMissed[i]->deleteLater();
 
         widgetsMissed.clear();
         notesMissed.clear();
@@ -1380,7 +1387,8 @@ void ViewOrgContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsReceived.size(); ++i)
             widgetsReceived[i]->deleteLater();
 
-        qDeleteAll(notesReceived);
+        for (int i = 0; i < notesReceived.size(); ++i)
+            notesReceived[i]->deleteLater();
 
         widgetsReceived.clear();
         notesReceived.clear();
@@ -1390,7 +1398,8 @@ void ViewOrgContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsPlaced.size(); ++i)
             widgetsPlaced[i]->deleteLater();
 
-        qDeleteAll(notesPlaced);
+        for (int i = 0; i < notesPlaced.size(); ++i)
+            notesPlaced[i]->deleteLater();
 
         widgetsPlaced.clear();
         notesPlaced.clear();

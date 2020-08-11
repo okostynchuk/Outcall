@@ -70,8 +70,9 @@ private:
     QString my_number;
     int oldReceivedReminders;
 
-    QWidget* addWidgetLabelActive();
+    QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
+    QWidget* addWidgetContent(int);
     QWidget* addCheckBoxViewed(int);
     QWidget* addCheckBoxCompleted(int);
     QWidget* addCheckBoxActive(int);
@@ -80,18 +81,19 @@ private:
     QList<QWidget*> widgetsRelevant;
     QList<QHBoxLayout*> layoutsRelevant;
     QList<QCheckBox*> boxesRelevant;
-    QList<QLabel*> labels;
+    QList<QLabel*> labelsRelevant;
 
     QList<QSqlQueryModelReminders*> queriesIrrelevant;
     QList<QWidget*> widgetsIrrelevant;
     QList<QHBoxLayout*> layoutsIrrelevant;
     QList<QCheckBox*> boxesIrrelevant;
+    QList<QLabel*> labelsIrrelevant;
 
     QList<QSqlQueryModelReminders*> queriesDelegated;
     QList<QWidget*> widgetsDelegated;
     QList<QHBoxLayout*> layoutsDelegated;
     QList<QCheckBox*> boxesDelegated;
-
+    QList<QLabel*> labelsDelegated;
 };
 
 #endif // REMINDERSDIALOG_H

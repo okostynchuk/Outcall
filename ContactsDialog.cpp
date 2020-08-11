@@ -188,9 +188,14 @@ void ContactsDialog::deleteObjects()
     for (int i = 0; i < widgets.size(); ++i)
         widgets[i]->deleteLater();
 
-    qDeleteAll(layouts);
-    qDeleteAll(labels);
-    qDeleteAll(queries);
+    for (int i = 0; i < layouts.size(); ++i)
+        layouts[i]->deleteLater();
+
+    for (int i = 0; i < labels.size(); ++i)
+        labels[i]->deleteLater();
+
+    for (int i = 0; i < queries.size(); ++i)
+        queries[i]->deleteLater();
 
     widgets.clear();
     layouts.clear();

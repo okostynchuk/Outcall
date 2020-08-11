@@ -43,7 +43,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->playAudioPhone,    &QPushButton::clicked, this, &ViewContactDialog::onPlayAudioPhone);
 
     connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewMissedNotes(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewRecievedNotes(const QModelIndex &)));
+    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewReceivedNotes(const QModelIndex &)));
     connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewPlacedNotes(const QModelIndex &)));
     connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewAllNotes(const QModelIndex &)));
 
@@ -71,7 +71,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
 ViewContactDialog::~ViewContactDialog()
 {
-    deleteNotesObjects();
+    deleteNoteObjects();
     delete ui;
 }
 
@@ -304,7 +304,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
 void ViewContactDialog::loadAllCalls()
 {
     if (!widgets.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsAllName.isEmpty())
         deleteNameObjects();
     if (!widgetsStatus.isEmpty())
@@ -472,7 +472,8 @@ void ViewContactDialog::deleteStatusObjects()
     for (int i = 0; i < widgetsStatus.size(); ++i)
         widgetsStatus[i]->deleteLater();
 
-    qDeleteAll(labelsStatus);
+    for (int i = 0; i < labelsStatus.size(); ++i)
+        labelsStatus[i]->deleteLater();
 
     layoutsStatus.clear();
     widgetsStatus.clear();
@@ -543,13 +544,14 @@ void ViewContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsAllName.size(); ++i)
             widgetsAllName[i]->deleteLater();
 
-        qDeleteAll(labelsAllName);
+        for (int i = 0; i < labelsAllName.size(); ++i)
+            labelsAllName[i]->deleteLater();
 
         layoutsAllName.clear();
         widgetsAllName.clear();
         labelsAllName.clear();
     }
-    if (ui->tabWidget_2->currentIndex() == 1)
+    else if (ui->tabWidget_2->currentIndex() == 1)
     {
         for (int i = 0; i < layoutsMissedName.size(); ++i)
             layoutsMissedName[i]->deleteLater();
@@ -557,13 +559,14 @@ void ViewContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsMissedName.size(); ++i)
             widgetsMissedName[i]->deleteLater();
 
-        qDeleteAll(labelsMissedName);
+        for (int i = 0; i < labelsMissedName.size(); ++i)
+            labelsMissedName[i]->deleteLater();
 
         layoutsMissedName.clear();
         widgetsMissedName.clear();
         labelsMissedName.clear();
     }
-    if (ui->tabWidget_2->currentIndex() == 2)
+    else if (ui->tabWidget_2->currentIndex() == 2)
     {
         for (int i = 0; i < layoutsReceivedName.size(); ++i)
             layoutsReceivedName[i]->deleteLater();
@@ -571,13 +574,14 @@ void ViewContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsReceivedName.size(); ++i)
             widgetsReceivedName[i]->deleteLater();
 
-        qDeleteAll(labelsReceivedName);
+        for (int i = 0; i < labelsReceivedName.size(); ++i)
+            labelsReceivedName[i]->deleteLater();
 
         layoutsReceivedName.clear();
         widgetsReceivedName.clear();
         labelsReceivedName.clear();
     }
-    if (ui->tabWidget_2->currentIndex() == 3)
+    else if (ui->tabWidget_2->currentIndex() == 3)
     {
         for (int i = 0; i < layoutsPlacedName.size(); ++i)
             layoutsPlacedName[i]->deleteLater();
@@ -585,7 +589,8 @@ void ViewContactDialog::deleteNameObjects()
         for (int i = 0; i < widgetsPlacedName.size(); ++i)
             widgetsPlacedName[i]->deleteLater();
 
-        qDeleteAll(labelsPlacedName);
+        for (int i = 0; i < labelsPlacedName.size(); ++i)
+            labelsPlacedName[i]->deleteLater();
 
         layoutsPlacedName.clear();
         widgetsPlacedName.clear();
@@ -720,7 +725,7 @@ void ViewContactDialog::updateCount()
 void ViewContactDialog::loadMissedCalls()
 {
     if (!widgetsMissed.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsMissedName.isEmpty())
         deleteNameObjects();
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
@@ -835,7 +840,7 @@ void ViewContactDialog::loadMissedCalls()
 void ViewContactDialog::loadReceivedCalls()
 {
     if (!widgetsReceived.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsReceivedName.isEmpty())
         deleteNameObjects();
 
@@ -951,7 +956,7 @@ void ViewContactDialog::loadReceivedCalls()
 void ViewContactDialog::loadPlacedCalls()
 {
     if (!widgetsPlaced.isEmpty())
-        deleteNotesObjects();
+        deleteNoteObjects();
     if (!widgetsPlacedName.isEmpty())
         deleteNameObjects();
 
@@ -1103,14 +1108,15 @@ QWidget* ViewContactDialog::loadNote()
     return wgt;
 }
 
-void ViewContactDialog::deleteNotesObjects()
+void ViewContactDialog::deleteNoteObjects()
 {
     if (ui->tabWidget_2->currentIndex() == 0)
     {
         for (int i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
 
-        qDeleteAll(notes);
+        for (int i = 0; i < notes.size(); ++i)
+            notes[i]->deleteLater();
 
         widgets.clear();
         notes.clear();
@@ -1120,7 +1126,8 @@ void ViewContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsMissed.size(); ++i)
             widgetsMissed[i]->deleteLater();
 
-        qDeleteAll(notesMissed);
+        for (int i = 0; i < notesMissed.size(); ++i)
+            notesMissed[i]->deleteLater();
 
         widgetsMissed.clear();
         notesMissed.clear();
@@ -1130,7 +1137,8 @@ void ViewContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsReceived.size(); ++i)
             widgetsReceived[i]->deleteLater();
 
-        qDeleteAll(notesReceived);
+        for (int i = 0; i < notesReceived.size(); ++i)
+            notesReceived[i]->deleteLater();
 
         widgetsReceived.clear();
         notesReceived.clear();
@@ -1140,7 +1148,8 @@ void ViewContactDialog::deleteNotesObjects()
         for (int i = 0; i < widgetsPlaced.size(); ++i)
             widgetsPlaced[i]->deleteLater();
 
-        qDeleteAll(notesPlaced);
+        for (int i = 0; i < notesPlaced.size(); ++i)
+            notesPlaced[i]->deleteLater();
 
         widgetsPlaced.clear();
         notesPlaced.clear();
@@ -1159,7 +1168,7 @@ void ViewContactDialog::viewMissedNotes(const QModelIndex &index)
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewContactDialog::viewRecievedNotes(const QModelIndex &index)
+void ViewContactDialog::viewReceivedNotes(const QModelIndex &index)
 {
     uniqueid = query2->data(query2->index(index.row(), 5)).toString();
 
