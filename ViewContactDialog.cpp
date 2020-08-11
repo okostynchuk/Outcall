@@ -53,7 +53,6 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getDataAll(const QModelIndex &)));
 
     my_number = global::getExtensionNumber("extensions");
-    my_group = global::getGroupExtensionNumber("group_extensions");
 
     if (!MSSQLopened)
         ui->openAccessButton->hide();

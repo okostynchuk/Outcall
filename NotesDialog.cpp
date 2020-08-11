@@ -18,7 +18,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->textEdit->installEventFilter(this);
 
-    my_number = global::getExtensionNumber("extensions");
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &NotesDialog::onSave);
@@ -111,21 +111,11 @@ void NotesDialog::onSave()
     for (int i = 0; i < hrefs.length(); ++i)
         note.replace(QRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>");
 
-    QString author;
-
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + my_number);
-    query.exec();
-
-    if (query.next())
-        author = query.value(0).toString();
-    else
-        author = my_number;
-
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
     query.addBindValue(note);
-    query.addBindValue(author);
+    query.addBindValue(my_number);
     query.exec();
 
     if (state == "all")
@@ -197,7 +187,7 @@ QWidget* NotesDialog::addWidgetNote(int row_index)
     layout->addWidget(noteLabel, 0, Qt::AlignTop);
 
     noteLabel->setText(query->data(query->index(row_index, 3)).toString());
-    noteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    noteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::LinksAccessibleByMouse);
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 

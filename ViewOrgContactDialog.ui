@@ -658,6 +658,19 @@ background-color: #fffff0;
                  </widget>
                 </item>
                 <item>
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>35</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
                  <widget class="QPushButton" name="addPersonToOrg">
                   <property name="minimumSize">
                    <size>
@@ -696,19 +709,6 @@ background-color: #fffff0;
                    </size>
                   </property>
                  </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>35</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                </layout>
               </item>
@@ -1195,7 +1195,6 @@ background-color: #fffff0;
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
   <tabstop>pushButton</tabstop>
-  <tabstop>addPersonToOrg</tabstop>
   <tabstop>comboBox_2</tabstop>
   <tabstop>tabWidget_3</tabstop>
   <tabstop>tableView_4</tabstop>

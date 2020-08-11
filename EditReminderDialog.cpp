@@ -17,7 +17,7 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    my_number = g_pAsteriskManager->extensionNumbers.value(global::getExtensionNumber("extensions"));
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
