@@ -34,21 +34,6 @@ void EditReminderDialog::onSave()
     QDateTime dateTime = ui->dateTimeEdit->dateTime();
     QString note = ui->textEdit->toPlainText().simplified();
 
-    QRegularExpression hrefRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})");
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
-    QStringList hrefs;
-
-    if (hrefIterator.hasNext())
-    {
-        QRegularExpressionMatch match = hrefIterator.next();
-        QString href = match.captured(1);
-
-        hrefs << href;
-    }
-
-    for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>");
-
     if (dateTime < QDateTime::currentDateTime())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);

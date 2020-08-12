@@ -29,7 +29,25 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     ui->label->setText(tr("Новое напоминание от ") + m_pni.number);
 
-    ui->lblText->setText(m_pni.text);
+    QString content = m_pni.text;
+
+    QRegularExpression hrefRegExp("(https?\\S+)");
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
+    QStringList hrefs;
+
+    while (hrefIterator.hasNext())
+    {
+        QRegularExpressionMatch match = hrefIterator.next();
+        QString href = match.captured(1);
+
+        if (!hrefs.contains(href))
+            hrefs << href;
+    }
+
+    for (int i = 0; i < hrefs.length(); ++i)
+        content.replace(hrefs.at(i), QString("<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
+
+    ui->lblText->setText(content);
     ui->lblText->setOpenExternalLinks(true);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);

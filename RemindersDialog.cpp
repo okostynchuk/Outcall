@@ -328,7 +328,13 @@ void RemindersDialog::loadRelevantReminders()
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
         }
 
-        ui->tableView->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index));
+        QRegularExpression hrefRegExp("(https?\\S+)");
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, "URL"));
+        else
+            ui->tableView->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, ""));
     }
 
     ui->tableView->setColumnHidden(0, true);
@@ -393,7 +399,13 @@ void RemindersDialog::loadIrrelevantReminders()
             ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
         }
 
-        ui->tableView_2->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index));
+        QRegularExpression hrefRegExp("(https?\\S+)");
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, "URL"));
+        else
+            ui->tableView_2->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, ""));
     }
 
     ui->tableView_2->setColumnHidden(0, true);
@@ -452,7 +464,14 @@ void RemindersDialog::loadDelegatedReminders()
         ui->tableView_3->setIndexWidget(query1->index(row_index, 1), addCheckBoxActive(row_index));
         ui->tableView_3->setIndexWidget(query1->index(row_index, 6), addCheckBoxViewed(row_index));
         ui->tableView_3->setIndexWidget(query1->index(row_index, 7), addCheckBoxCompleted(row_index));
-        ui->tableView_3->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index));
+
+        QRegularExpression hrefRegExp("(https?\\S+)");
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView_3->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, "URL"));
+        else
+            ui->tableView_3->setIndexWidget(query1->index(row_index, 5), addWidgetContent(row_index, ""));
     }
 
     ui->tableView_3->setColumnHidden(0, true);
@@ -595,7 +614,7 @@ void RemindersDialog::changeState()
     }
 }
 
-QWidget* RemindersDialog::addWidgetContent(int row_index)
+QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -603,7 +622,28 @@ QWidget* RemindersDialog::addWidgetContent(int row_index)
 
     layout->addWidget(contentLabel, 0, Qt::AlignTop);
 
-    contentLabel->setText(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
+    QString content = query2->data(query2->index(row_index, 3), Qt::EditRole).toString();
+
+    if (url == "URL")
+    {
+        QRegularExpression hrefRegExp("(https?\\S+)");
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
+        QStringList hrefs;
+
+        while (hrefIterator.hasNext())
+        {
+            QRegularExpressionMatch match = hrefIterator.next();
+            QString href = match.captured(1);
+
+            if (!hrefs.contains(href))
+                hrefs << href;
+        }
+
+        for (int i = 0; i < hrefs.length(); ++i)
+            content.replace(hrefs.at(i), QString("<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
+    }
+
+    contentLabel->setText(content);
     contentLabel->setOpenExternalLinks(true);
     contentLabel->setWordWrap(true);
 
