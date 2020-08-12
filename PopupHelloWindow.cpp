@@ -25,7 +25,6 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->setupUi(this);
 
-    ui->lblText->setOpenExternalLinks(true);
     setAttribute(Qt::WA_TranslucentBackground);
 
     ui->lblText->setText(pwi.text);

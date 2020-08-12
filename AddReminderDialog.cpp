@@ -14,9 +14,9 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    my_number = g_pAsteriskManager->extensionNumbers.value(global::getExtensionNumber("extensions"));
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    ui->comboBox->addItem(g_pAsteriskManager->extensionNumbers.value(global::getExtensionNumber("extensions")));
+    ui->comboBox->addItem(my_number);
     ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
 
     QString languages = global::getSettingsValue("language", "settings").toString();
