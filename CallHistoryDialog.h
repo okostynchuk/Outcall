@@ -30,10 +30,7 @@ class CallHistoryDialog : public QDialog
 public slots:
     void receiveData(bool);
     void playerClosed(bool);
-    void receiveDataToAllCalls();
-    void receiveDataToMissed();
-    void receiveDataToReceived();
-    void receiveDataToPlaced();
+    void receiveDataFromNotes();
 
 public:
     explicit CallHistoryDialog(QWidget *parent = 0);
@@ -58,27 +55,15 @@ private slots:
     void daysChanged();
 
     void deleteObjects();
-    void deleteNameObjects();
-    void deleteObjectsOfAllCalls();
-    void deleteMissedObjects();
-    void deleteReceivedObjects();
-    void deletePlacedObjects();
-    void deleteStatusObjects();
 
     void editContact(QString &);
     void editOrgContact(QString &);
 
     QString getUpdateId(QString &);
 
-    void addNotes(const QModelIndex &);
-    void addNoteToMissed(const QModelIndex &);
-    void addNoteToReceived(const QModelIndex &);
-    void addNoteToPlaced(const QModelIndex &);
+    void addNote(const QModelIndex &);
 
-    void getDataAll(const QModelIndex &index);
-    void getDataMissed(const QModelIndex &index);
-    void getDataReceived(const QModelIndex &index);
-    void getDataPlaced(const QModelIndex &index);
+    void getData(const QModelIndex &index);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -95,10 +80,7 @@ private slots:
 private:
     Ui::CallHistoryDialog *ui;
 
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
-    QSqlQueryModel *query4;
+    QSqlQueryModel *queryModel;
 
     QValidator *validator;
 
@@ -129,13 +111,19 @@ private:
     int remainder;
 
     QWidget* loadStatus();
-    QWidget* loadAllNotes();
-    QWidget* loadMissedNote();
-    QWidget* loadReceivedNote();
-    QWidget* loadPlacedNote();
+    QWidget* loadNote();
     QWidget* loadName();
 
-    QList<QHBoxLayout*> layouts;
+    QList<QSqlQueryModel*> queriesAll;
+    QList<QSqlQueryModel*> queriesMissed;
+    QList<QSqlQueryModel*> queriesReceived;
+    QList<QSqlQueryModel*> queriesPlaced;
+
+    QList<QHBoxLayout*> layoutsAllNotes;
+    QList<QHBoxLayout*> layoutsMissedNotes;
+    QList<QHBoxLayout*> layoutsReceivedNotes;
+    QList<QHBoxLayout*> layoutsPlacedNotes;
+
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
     QList<QHBoxLayout*> layoutsReceivedName;
@@ -143,23 +131,27 @@ private:
     QList<QHBoxLayout*> layoutsStatus;
 
     QList<QWidget*> widgetsStatus;
-    QList<QWidget*> widgets;
+
+    QList<QWidget*> widgetsAllNotes;
+    QList<QWidget*> widgetsMissedNotes;
+    QList<QWidget*> widgetsReceivedNotes;
+    QList<QWidget*> widgetsPlacedNotes;
+
     QList<QWidget*> widgetsAllName;
     QList<QWidget*> widgetsMissedName;
     QList<QWidget*> widgetsReceivedName;
     QList<QWidget*> widgetsPlacedName;
-    QList<QWidget*> widgetsMissed;
+
     QList<QWidget*> widgetsBusy;
     QList<QWidget*> widgetsCancel;
-    QList<QWidget*> widgetsReceived;
-    QList<QWidget*> widgetsPlaced;
+
 
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;
     QList<QLabel*> labelsPlacedName;
     QList<QLabel*> labelsStatus;
-    QList<QLabel*> notes;
+    QList<QLabel*> notesAll;
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
     QList<QLabel*> notesPlaced;

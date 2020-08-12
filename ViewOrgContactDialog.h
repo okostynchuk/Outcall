@@ -63,24 +63,17 @@ private slots:
     void onEdit();
     void onComboBoxSelected();
     void showCard(const QModelIndex &index);
-    void viewAllNotes(const QModelIndex &index);
-    void viewMissedNotes(const QModelIndex &index);
-    void viewRecievedNotes(const QModelIndex &index);
-    void viewPlacedNotes(const QModelIndex &index);
+    void viewNotes(const QModelIndex &index);
     void onSectionClicked (int logicalIndex);
     void updateCount();
     void searchFunction();
     void tabSelected();
     void daysChanged();
 
-    void deleteNoteObjects();
-    void deleteStatusObjects();
-    void deleteNameObjects();
+    void deleteObjects();
 
-    void getDataAll(const QModelIndex &index);
-    void getDataMissed();
-    void getDataReceived(const QModelIndex &index);
-    void getDataPlaced(const QModelIndex &index);
+    void getData(const QModelIndex &index);
+
 
     void on_lineEdit_returnPressed();
     void on_pushButton_clicked();
@@ -103,10 +96,7 @@ private:
     PlayAudioDialog *playAudioDialog = nullptr;
 
     QSqlQueryModel *query_model;
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
-    QSqlQueryModel *query3;
-    QSqlQueryModel *query4;
+    QSqlQueryModel *queryModel;
 
     QValidator *validator;
 
@@ -147,6 +137,16 @@ private:
     QWidget* loadStatus();
     QWidget* loadName();
 
+    QList<QSqlQueryModel*> queriesAll;
+    QList<QSqlQueryModel*> queriesMissed;
+    QList<QSqlQueryModel*> queriesReceived;
+    QList<QSqlQueryModel*> queriesPlaced;
+
+    QList<QHBoxLayout*> layoutsAllNotes;
+    QList<QHBoxLayout*> layoutsMissedNotes;
+    QList<QHBoxLayout*> layoutsReceivedNotes;
+    QList<QHBoxLayout*> layoutsPlacedNotes;
+
     QList<QHBoxLayout*> layoutsStatus;
     QList<QHBoxLayout*> layoutsAllName;
     QList<QHBoxLayout*> layoutsMissedName;
@@ -157,18 +157,22 @@ private:
     QList<QWidget*> widgetsMissedName;
     QList<QWidget*> widgetsReceivedName;
     QList<QWidget*> widgetsPlacedName;
+
     QList<QWidget*> widgetsStatus;
-    QList<QWidget*> widgets;
-    QList<QWidget*> widgetsMissed;
-    QList<QWidget*> widgetsReceived;
-    QList<QWidget*> widgetsPlaced;
+
+    QList<QWidget*> widgetsAllNotes;
+    QList<QWidget*> widgetsMissedNotes;
+    QList<QWidget*> widgetsReceivedNotes;
+    QList<QWidget*> widgetsPlacedNotes;
 
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
     QList<QLabel*> labelsReceivedName;
     QList<QLabel*> labelsPlacedName;
+
     QList<QLabel*> labelsStatus;
-    QList<QLabel*> notes;
+
+    QList<QLabel*> notesAll;
     QList<QLabel*> notesMissed;
     QList<QLabel*> notesReceived;
     QList<QLabel*> notesPlaced;

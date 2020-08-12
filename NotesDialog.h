@@ -18,16 +18,14 @@ class NotesDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendDataToAllCalls();
-    void sendDataToMissed();
-    void sendDataToReceived();
-    void sendDataToPlaced();
+    void sendData();
 
 public:
     explicit NotesDialog(QWidget *parent = 0);
     ~NotesDialog();
 
-    void setCallId(QString uniqueid, QString state_call);
+    void setCallId(QString uniqueid);
+    void setSaveDisable();
 
 private slots:
     void onSave();

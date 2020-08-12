@@ -40,12 +40,17 @@ NotesDialog::~NotesDialog()
     delete ui;
 }
 
-void NotesDialog::setCallId(QString uniqueid, QString state_call)
+void NotesDialog::setCallId(QString uniqueid)
 {
     callId = uniqueid;
-    state = state_call;
 
     loadNotes();
+}
+
+void NotesDialog::setSaveDisable()
+{
+    ui->saveButton->setDisabled(true);
+    ui->textEdit->setDisabled(true);
 }
 
 void NotesDialog::loadNotes()
@@ -128,14 +133,7 @@ void NotesDialog::onSave()
     query.addBindValue(author);
     query.exec();
 
-    if (state == "all")
-        emit sendDataToAllCalls();
-    else if (state == "missed")
-       emit sendDataToMissed();
-    else if (state == "received")
-       emit sendDataToReceived();
-    else if (state == "placed")
-        emit sendDataToPlaced();
+    emit sendData();
 
     close();
 
