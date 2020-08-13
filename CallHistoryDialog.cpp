@@ -123,6 +123,8 @@ void CallHistoryDialog::loadAllCalls()
 
     queryModel = new QSqlQueryModel;
 
+    queriesAll.append(queryModel);
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -229,8 +231,6 @@ void CallHistoryDialog::loadAllCalls()
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    queriesAll.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -245,6 +245,8 @@ void CallHistoryDialog::loadMissedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesMissed.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -351,8 +353,6 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesMissed.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -367,6 +367,8 @@ void CallHistoryDialog::loadReceivedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesReceived.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -472,8 +474,6 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesReceived.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -488,6 +488,8 @@ void CallHistoryDialog::loadPlacedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesPlaced.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -590,8 +592,6 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->tableView_4->resizeColumnsToContents();
 
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    queriesPlaced.append(queryModel);
 
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);

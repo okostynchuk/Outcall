@@ -559,6 +559,8 @@ void ViewOrgContactDialog::loadAllCalls()
 
     queryModel = new QSqlQueryModel;
 
+    queriesAll.append(queryModel);
+
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -681,8 +683,6 @@ void ViewOrgContactDialog::loadAllCalls()
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    queriesAll.append(queryModel);
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -695,6 +695,8 @@ void ViewOrgContactDialog::loadMissedCalls()
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     queryModel = new QSqlQueryModel;
+
+    queriesMissed.append(queryModel);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -801,8 +803,6 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesMissed.append(queryModel);
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -815,6 +815,8 @@ void ViewOrgContactDialog::loadReceivedCalls()
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     queryModel = new QSqlQueryModel;
+
+    queriesReceived.append(queryModel);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -921,8 +923,6 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesReceived.append(queryModel);
-
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 }
@@ -935,6 +935,8 @@ void ViewOrgContactDialog::loadPlacedCalls()
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
     queryModel = new QSqlQueryModel;
+
+    queriesPlaced.append(queryModel);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1038,8 +1040,6 @@ void ViewOrgContactDialog::loadPlacedCalls()
     ui->tableView_5->resizeColumnsToContents();
 
     ui->tableView_5->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    queriesReceived.append(queryModel);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
