@@ -62,6 +62,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
     query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
     query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
+    query1->insertColumn(8);
     query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
 
     ui->tableView->setModel(query1);
@@ -82,7 +83,18 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    {
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
+
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query1->data(query1->index(row_index, 9)).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView->setIndexWidget(query1->index(row_index, 8), addWidgetNote(row_index, "URL"));
+        else
+            ui->tableView->setIndexWidget(query1->index(row_index, 8), addWidgetNote(row_index, ""));
+    }
+
+    ui->tableView->setColumnHidden(9, true);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -447,6 +459,7 @@ void ContactsDialog::onUpdate()
     query1->setHeaderData(5, Qt::Horizontal, QObject::tr("Адрес"));
     query1->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
     query1->setHeaderData(7, Qt::Horizontal, QObject::tr("VyborID"));
+    query1->insertColumn(8);
     query1->setHeaderData(8, Qt::Horizontal, QObject::tr("Заметка"));
 
     ui->tableView->setModel(query1);
@@ -455,7 +468,18 @@ void ContactsDialog::onUpdate()
     queries.append(query2);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    {
         ui->tableView->setIndexWidget(query1->index(row_index, 1), addImageLabel(row_index));
+
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query1->data(query1->index(row_index, 9)).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView->setIndexWidget(query1->index(row_index, 8), addWidgetNote(row_index, "URL"));
+        else
+            ui->tableView->setIndexWidget(query1->index(row_index, 8), addWidgetNote(row_index, ""));
+    }
+
+    ui->tableView->setColumnHidden(9, true);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -469,24 +493,65 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
 }
 
-QWidget* ContactsDialog::addImageLabel(int &row_index)
+QWidget* ContactsDialog::addImageLabel(int row_index)
 {
     QWidget* wgt = new QWidget;
-    QBoxLayout* l = new QHBoxLayout;
-    QLabel *imageLabel = new QLabel(wgt);
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel* imageLabel = new QLabel(wgt);
 
-    l->addWidget(imageLabel, 0, Qt::AlignCenter);
+    layout->addWidget(imageLabel, 0, Qt::AlignCenter);
 
     if (query2->data(query2->index(row_index, 0)).toString() == "person")
         imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
     else
         imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
 
-    wgt->setLayout(l);
+    wgt->setLayout(layout);
 
     widgets.append(wgt);
-    layouts.append(l);
+    layouts.append(layout);
     labels.append(imageLabel);
+
+    return wgt;
+}
+
+QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
+{
+    QWidget* wgt = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel* noteLabel = new QLabel(wgt);
+
+    layout->addWidget(noteLabel);
+
+    QString note = query1->data(query1->index(row_index, 9)).toString();
+
+    if (url == "URL")
+    {
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+        QStringList hrefs;
+
+        while (hrefIterator.hasNext())
+        {
+            QRegularExpressionMatch match = hrefIterator.next();
+            QString href = match.captured(1);
+
+            if (!hrefs.contains(href))
+                hrefs << href;
+        }
+
+        for (int i = 0; i < hrefs.length(); ++i)
+            note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+    }
+
+    noteLabel->setText(note);
+    noteLabel->setOpenExternalLinks(true);
+    noteLabel->setWordWrap(true);
+
+    wgt->setLayout(layout);
+
+    widgets.append(wgt);
+    layouts.append(layout);
+    labels.append(noteLabel);
 
     return wgt;
 }

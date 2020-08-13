@@ -53,6 +53,8 @@ private slots:
 private:
     Ui::RemindersDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
     AddReminderDialog* addReminderDialog;

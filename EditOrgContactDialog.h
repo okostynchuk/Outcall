@@ -29,12 +29,15 @@ public:
 private slots:
     void onSave();
     void onReturn();
+    void onTextChanged();
 
     bool isInnerPhone(QString *str);
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
 
     void setPos(int, int);
+
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     Ui::EditOrgContactDialog *ui;

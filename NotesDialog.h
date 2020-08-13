@@ -39,9 +39,11 @@ private slots:
 private:
     Ui::NotesDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     QSqlQueryModel *query;
 
-    QWidget* addWidgetNote(int);
+    QWidget* addWidgetNote(int, QString);
 
     QList<QWidget*> widgets;
     QList<QHBoxLayout*> layouts;

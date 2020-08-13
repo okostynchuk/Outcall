@@ -67,7 +67,14 @@ void NotesDialog::loadNotes()
     ui->tableView->setModel(query);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
-        ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index));
+    {
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query->data(query->index(row_index, 3)).toString());
+
+        if (hrefIterator.hasNext())
+            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, "URL"));
+        else
+            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, ""));
+    }
 
     ui->tableView->setColumnHidden(3, true);
 
@@ -100,21 +107,6 @@ void NotesDialog::onSave()
 
         return;
     }
-
-    QRegularExpression hrefRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})");
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
-    QStringList hrefs;
-
-    if (hrefIterator.hasNext())
-    {
-        QRegularExpressionMatch match = hrefIterator.next();
-        QString href = match.captured(1);
-
-        hrefs << href;
-    }
-
-    for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegExp("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>");
 
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
     query.addBindValue(callId);
@@ -176,15 +168,35 @@ bool NotesDialog::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-QWidget* NotesDialog::addWidgetNote(int row_index)
+QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
     QLabel* noteLabel = new QLabel(wgt);
 
-    layout->addWidget(noteLabel, 0, Qt::AlignTop);
+    layout->addWidget(noteLabel);
 
-    noteLabel->setText(query->data(query->index(row_index, 3)).toString());
+    QString note = query->data(query->index(row_index, 3)).toString();
+
+    if (url == "URL")
+    {
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+        QStringList hrefs;
+
+        while (hrefIterator.hasNext())
+        {
+            QRegularExpressionMatch match = hrefIterator.next();
+            QString href = match.captured(1);
+
+            if (!hrefs.contains(href))
+                hrefs << href;
+        }
+
+        for (int i = 0; i < hrefs.length(); ++i)
+            note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+    }
+
+    noteLabel->setText(note);
     noteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::LinksAccessibleByMouse);
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);

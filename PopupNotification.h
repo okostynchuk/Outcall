@@ -49,6 +49,8 @@ private slots:
 private:
     Ui::PopupNotification *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;

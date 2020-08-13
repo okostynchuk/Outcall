@@ -107,7 +107,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     QString content = m_pri.text;
 
-    QRegularExpression hrefRegExp("(https?\\S+)");
     QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
     QStringList hrefs;
 
@@ -121,10 +120,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
-        content.replace(hrefs.at(i), QString("<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
+        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
 
     ui->lblText->setText(content);
-    ui->lblText->setOpenExternalLinks(true);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 

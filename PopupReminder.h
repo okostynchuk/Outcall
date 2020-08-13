@@ -65,6 +65,8 @@ private slots:
 private:
     Ui::PopupReminder *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     EditReminderDialog *editReminderDialog = nullptr;
     ChooseNumber *chooseNumber;
 

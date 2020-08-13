@@ -56,6 +56,8 @@ private slots:
 private:
     Ui::ContactsDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     QSqlQueryModel *query1;
     QSqlQueryModel *query2;
 
@@ -66,11 +68,12 @@ private:
 
     QValidator *validator;
 
-    QWidget* addImageLabel(int &);
+    QWidget* addImageLabel(int);
+    QWidget* addWidgetNote(int, QString);
 
     QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;
-    QList<QBoxLayout*> layouts;
+    QList<QHBoxLayout*> layouts;
     QList<QLabel*> labels;
 
     QString page;

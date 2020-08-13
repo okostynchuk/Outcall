@@ -328,7 +328,6 @@ void RemindersDialog::loadRelevantReminders()
             ui->tableView->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
         }
 
-        QRegularExpression hrefRegExp("(https?\\S+)");
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
 
         if (hrefIterator.hasNext())
@@ -399,7 +398,6 @@ void RemindersDialog::loadIrrelevantReminders()
             ui->tableView_2->setIndexWidget(query1->index(row_index, 6), addWidgetCompleted());
         }
 
-        QRegularExpression hrefRegExp("(https?\\S+)");
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
 
         if (hrefIterator.hasNext())
@@ -465,7 +463,6 @@ void RemindersDialog::loadDelegatedReminders()
         ui->tableView_3->setIndexWidget(query1->index(row_index, 6), addCheckBoxViewed(row_index));
         ui->tableView_3->setIndexWidget(query1->index(row_index, 7), addCheckBoxCompleted(row_index));
 
-        QRegularExpression hrefRegExp("(https?\\S+)");
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query2->data(query2->index(row_index, 3), Qt::EditRole).toString());
 
         if (hrefIterator.hasNext())
@@ -620,13 +617,12 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
     QHBoxLayout* layout = new QHBoxLayout;
     QLabel* contentLabel = new QLabel(wgt);
 
-    layout->addWidget(contentLabel, 0, Qt::AlignTop);
+    layout->addWidget(contentLabel);
 
     QString content = query2->data(query2->index(row_index, 3), Qt::EditRole).toString();
 
     if (url == "URL")
     {
-        QRegularExpression hrefRegExp("(https?\\S+)");
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
         QStringList hrefs;
 
@@ -640,7 +636,7 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
         }
 
         for (int i = 0; i < hrefs.length(); ++i)
-            content.replace(hrefs.at(i), QString("<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
+            content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
     contentLabel->setText(content);

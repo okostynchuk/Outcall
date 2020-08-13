@@ -21,6 +21,10 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
+    ui->Comment->installEventFilter(this);
+
+    connect(ui->Comment, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
+    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->backButton, &QPushButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditOrgContactDialog::onSave);
 }
@@ -514,4 +518,44 @@ void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
 void EditOrgContactDialog::setOrgValuesPopupWindow(QString &number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void EditOrgContactDialog::onTextChanged()
+{
+    if (ui->Comment->toPlainText().simplified().length() > 255)
+        ui->Comment->textCursor().deletePreviousChar();
+}
+
+bool EditOrgContactDialog::eventFilter(QObject *object, QEvent *event)
+{
+    if (object->objectName() == "Comment")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("Comment2");
+
+                return true;
+            }
+        }
+    }
+    else if (object->objectName() == "Comment2")
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+            if (keyEvent->key() == Qt::Key_Return)
+            {
+                object->setObjectName("Comment");
+
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

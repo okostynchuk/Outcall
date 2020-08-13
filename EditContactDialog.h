@@ -26,6 +26,7 @@ public slots:
 private slots:
     void onSave();
     void onReturn();
+    void onTextChanged();
 
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
@@ -35,6 +36,8 @@ private slots:
     bool isVyborID(QString *str);
 
     void setPos(int, int);
+
+    bool eventFilter(QObject *object, QEvent *event);
 
 public:
     explicit EditContactDialog(QWidget *parent = 0);
