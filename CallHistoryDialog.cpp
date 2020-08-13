@@ -157,28 +157,25 @@ void CallHistoryDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
+    QString queryString = "SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+                                                      "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
+                                                      " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
+                                                      "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
+                                                      "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                      "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
+                                                      "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT ";
+
     if (ui->lineEdit_page->text() == "1")
     {
-        queryModel->setQuery("SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
-                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
-                        " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT 0,"
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+        queryString.append("0, "
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     }
     else
     {
-        queryModel->setQuery("SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
-                        "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
-                        "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                        "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                        "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                        "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                        "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT "
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
     }
+
+    queryModel->setQuery(queryString, dbAsterisk);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -216,7 +213,10 @@ void CallHistoryDialog::loadAllCalls()
         query.first();
 
         if (query.value(0).toInt() != 0)
+        {
             ui->tableView->setIndexWidget(queryModel->index(row_index, 6), loadNote());
+            ui->tableView->resizeRowToContents(row_index);
+        }
     }
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -276,34 +276,30 @@ void CallHistoryDialog::loadMissedCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
+    QString queryString =  "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
+                                                 "(disposition = 'NO ANSWER' "
+                                                 "OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
+                                                 "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
+                                                 "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
+                                                 "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' "
+                                                 "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' "
+                                                 "OR dst = '"+my_group+"') ORDER BY datetime DESC LIMIT ";
+
     if (ui->lineEdit_page->text() == "1")
     {
-        queryModel->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
-                          "(disposition = 'NO ANSWER' "
-                          "OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
-                          "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                          "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                          "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' "
-                          "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' "
-                          "OR dst = '"+my_group+"') ORDER BY datetime DESC LIMIT 0,"
+        queryString.append("0, "
                           + QString::number(ui->lineEdit_page->text().toInt() *
-                                            ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+                                            ui->comboBox_list->currentText().toInt()) + " ");
     }
     else
     {
-        queryModel->setQuery("SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
-                          "(disposition = 'NO ANSWER' "
-                          "OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
-                          "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                          "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                          "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' "
-                          "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' "
-                          "OR dst = '"+my_group+"') ORDER BY datetime DESC LIMIT "
-                          + QString::number(ui->lineEdit_page->text().toInt()
+        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt()
                                             * ui->comboBox_list->currentText().toInt() -
                                             ui->comboBox_list->currentText().toInt()) + " , " +
-                          QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+                          QString::number(ui->comboBox_list->currentText().toInt()));
     }
+
+    queryModel->setQuery(queryString, dbAsterisk);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -336,7 +332,10 @@ void CallHistoryDialog::loadMissedCalls()
         query.first();
 
         if (query.value(0).toInt() != 0)
+        {
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+            ui->tableView_2->resizeRowToContents(row_index);
+        }
     }
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -395,30 +394,27 @@ void CallHistoryDialog::loadReceivedCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
+    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE disposition = 'ANSWERED'"
+                                               " AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
+                                               "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
+                                               "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR "
+                                               "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') "
+                                               "ORDER BY datetime DESC LIMIT ";
+
     if (ui->lineEdit_page->text() == "1")
     {
-        queryModel->setQuery("SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE disposition = 'ANSWERED'"
-                         " AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                         "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                         "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR "
-                         "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') "
-                         "ORDER BY datetime DESC LIMIT 0,"
+        queryString.append("0, "
                          + QString::number(ui->lineEdit_page->text().toInt() *
-                                           ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+                                           ui->comboBox_list->currentText().toInt()) + " ");
     }
     else
     {
-        queryModel->setQuery("SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE disposition = 'ANSWERED'"
-                         " AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                         "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                         "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR "
-                         "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') "
-                         "ORDER BY datetime DESC LIMIT "
-                         + QString::number(ui->lineEdit_page->text().toInt()
-                                           * ui->comboBox_list->currentText().toInt() -
-                                           ui->comboBox_list->currentText().toInt()) + " , " +
-                         QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+       queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                               ui->comboBox_list->currentText().toInt()) + " , " +
+                         QString::number(ui->comboBox_list->currentText().toInt()));
     }
+
+    queryModel->setQuery(queryString, dbAsterisk);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -452,7 +448,10 @@ void CallHistoryDialog::loadReceivedCalls()
         query.first();
 
         if (query.value(0).toInt() != 0)
+        {
             ui->tableView_3->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+            ui->tableView_3->resizeRowToContents(row_index);
+        }
     }
 
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -512,24 +511,25 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
+    QString queryString = "SELECT extfield2, dst, src, datetime, uniqueid, recordpath FROM cdr WHERE "
+                     "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
+                     "src = '"+my_number+"' ORDER BY datetime DESC LIMIT ";
+
     if (ui->lineEdit_page->text() == "1")
     {
-        queryModel->setQuery("SELECT extfield2, dst, src, datetime, uniqueid, recordpath FROM cdr WHERE "
-                         "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                         "src = '"+my_number+"' ORDER BY datetime DESC LIMIT 0,"
+        queryString.append("0, "
                          + QString::number(ui->lineEdit_page->text().toInt() *
-                                           ui->comboBox_list->currentText().toInt()) + " ", dbAsterisk);
+                                           ui->comboBox_list->currentText().toInt()) + " ");
     }
     else
     {
-        queryModel->setQuery("SELECT extfield2, dst, src, datetime, uniqueid, recordpath FROM cdr WHERE "
-                         "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                         "src = '"+my_number+"' ORDER BY datetime DESC LIMIT "
-                         + QString::number(ui->lineEdit_page->text().toInt()
+        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt()
                                            * ui->comboBox_list->currentText().toInt() -
                                            ui->comboBox_list->currentText().toInt()) + " , " +
-                         QString::number(ui->comboBox_list->currentText().toInt()), dbAsterisk);
+                         QString::number(ui->comboBox_list->currentText().toInt()));
     }
+
+    queryModel->setQuery(queryString, dbAsterisk);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
@@ -562,7 +562,11 @@ void CallHistoryDialog::loadPlacedCalls()
         query.first();
 
         if (query.value(0).toInt() != 0)
+        {
             ui->tableView_4->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+            ui->tableView_4->resizeRowToContents(row_index);
+        }
+
     }
 
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
