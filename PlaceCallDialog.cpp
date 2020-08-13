@@ -17,8 +17,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QRegExp RegExp("^[\\+]?[0-9]*$");
-    validator = new QRegExpValidator(RegExp, this);
+    QRegularExpression RegExp("^[\\+]?[0-9]*$");
+    validator = new QRegularExpressionValidator(RegExp, this);
     ui->phoneLine->setValidator(validator);
 
     connect(ui->callButton,    &QPushButton::clicked,           this, &PlaceCallDialog::onCallButton);

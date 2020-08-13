@@ -455,8 +455,8 @@ bool EditContactDialog::isInnerPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator1(QRegExp("[0-9]{4}"));
-    QRegExpValidator validator2(QRegExp("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
+    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -471,7 +471,7 @@ bool EditContactDialog::isPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[\\+]?[0-9]{1,12}"));
+    QRegularExpressionValidator validator(QRegularExpression("[\\+]?[0-9]{1,12}"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -483,7 +483,7 @@ bool EditContactDialog::isVyborID(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[0-9]*"));
+    QRegularExpressionValidator validator(QRegularExpression("[0-9]*"));
 
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;

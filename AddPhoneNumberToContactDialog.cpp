@@ -7,8 +7,8 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QRegExp RegExp("^[0-9]*$");
-    validator = new QRegExpValidator(RegExp, this);
+    QRegularExpression RegExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     onComboBoxListSelected();

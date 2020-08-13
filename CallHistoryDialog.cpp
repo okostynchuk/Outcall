@@ -15,7 +15,7 @@
 #include <QLabel>
 #include <QTextBlock>
 #include <QItemSelectionModel>
-#include <QRegExp>
+#include <QRegularExpression>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,8 +26,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    QRegExp RegExp("^[0-9]*$");
-    validator = new QRegExpValidator(RegExp, this);
+    QRegularExpression RegExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(RegExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     my_number = global::getExtensionNumber("extensions");
@@ -691,8 +691,8 @@ bool CallHistoryDialog::isInnerPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator1(QRegExp("[0-9]{4}"));
-    QRegExpValidator validator2(QRegExp("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
+    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -712,7 +712,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
     if (number == my_number)
     {
         number = queryModel->data(queryModel->index(index.row(), 2)).toString();
-        number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
+        number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
     }
 
     if (!isInnerPhone(&number))
