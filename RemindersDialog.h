@@ -32,7 +32,7 @@ public:
     explicit RemindersDialog(QWidget *parent = 0);
     ~RemindersDialog();
 
-    bool resizeColumns;
+    bool resizeCells;
 
 private slots:
     void loadRelevantReminders();

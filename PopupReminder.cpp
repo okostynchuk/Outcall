@@ -356,7 +356,7 @@ void PopupReminder::receiveData(bool updating)
     if (updating)
     {
         m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeColumns = false;
+        m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
         editReminderDialog->close();
@@ -430,7 +430,7 @@ void PopupReminder::onSelectTime()
         query.exec();
 
         m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeColumns = false;
+        m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
         if (editReminderDialog != nullptr)
@@ -445,7 +445,7 @@ void PopupReminder::onSelectTime()
         query.exec();
 
         m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeColumns = false;
+        m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
         if (editReminderDialog != nullptr)
@@ -460,7 +460,7 @@ void PopupReminder::onSelectTime()
         query.exec();
 
         m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeColumns = false;
+        m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
         if (editReminderDialog != nullptr)
@@ -475,7 +475,7 @@ void PopupReminder::onSelectTime()
         query.exec();
 
         m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeColumns = false;
+        m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
         if (editReminderDialog != nullptr)
@@ -556,7 +556,7 @@ void PopupReminder::onClosePopup()
     }
 
     m_pri.remindersDialog->reminders(false);
-    m_pri.remindersDialog->resizeColumns = false;
+    m_pri.remindersDialog->resizeCells = false;
     m_pri.remindersDialog->onUpdate();
 
     if (editReminderDialog != nullptr)

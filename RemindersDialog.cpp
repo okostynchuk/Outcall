@@ -62,7 +62,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     query.addBindValue(my_number);
     query.exec();
 
-    resizeColumns = true;
+    resizeCells = true;
 
     go="default";
     page = "1";
@@ -129,7 +129,7 @@ void RemindersDialog::showEvent(QShowEvent *event)
 
     emit reminders(false);
 
-    resizeColumns = false;
+    resizeCells = false;
 
     selectionRelevant.clear();
     selectionIrrelevant.clear();
@@ -179,7 +179,7 @@ void RemindersDialog::onTimer()
             PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
     }
     else
-        resizeColumns = false;
+        resizeCells = false;
 
     oldReceivedReminders = newReceivedReminders;
 
@@ -420,10 +420,11 @@ void RemindersDialog::loadRelevantReminders()
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
-    ui->tableView->resizeRowsToContents();
-
-    if (resizeColumns)
+    if (resizeCells)
+    {
+        ui->tableView->resizeRowsToContents();
         ui->tableView->resizeColumnsToContents();
+    }
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
 
@@ -434,7 +435,7 @@ void RemindersDialog::loadRelevantReminders()
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    resizeColumns = true;
+    resizeCells = true;
 }
 
 void RemindersDialog::loadIrrelevantReminders()
@@ -549,10 +550,11 @@ void RemindersDialog::loadIrrelevantReminders()
 
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
-    ui->tableView_2->resizeRowsToContents();
-
-    if (resizeColumns)
+    if (resizeCells)
+    {
+        ui->tableView_2->resizeRowsToContents();
         ui->tableView_2->resizeColumnsToContents();
+    }
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
 
@@ -563,7 +565,7 @@ void RemindersDialog::loadIrrelevantReminders()
             ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    resizeColumns = true;
+    resizeCells = true;
 }
 
 void RemindersDialog::loadDelegatedReminders()
@@ -673,10 +675,11 @@ void RemindersDialog::loadDelegatedReminders()
 
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
-    ui->tableView_3->resizeRowsToContents();
-
-    if (resizeColumns)
+    if (resizeCells)
+    {
+        ui->tableView_3->resizeRowsToContents();
         ui->tableView_3->resizeColumnsToContents();
+    }
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
 
@@ -687,7 +690,7 @@ void RemindersDialog::loadDelegatedReminders()
             ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    resizeColumns = true;
+    resizeCells = true;
 }
 
 void RemindersDialog::onAddReminder()
@@ -802,7 +805,7 @@ void RemindersDialog::changeState()
             checkBox->setChecked(false);
         }
 
-        resizeColumns = false;
+        resizeCells = false;
 
         go = "default";
 
