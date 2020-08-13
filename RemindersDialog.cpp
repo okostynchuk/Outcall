@@ -11,7 +11,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QLabel>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #define TIME_TO_UPDATE 5000 // msec
 
@@ -24,8 +24,8 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    QRegExp RegExp("^[0-9]*$");
-    validator = new QRegExpValidator(RegExp, this);
+    QRegularExpression regExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);

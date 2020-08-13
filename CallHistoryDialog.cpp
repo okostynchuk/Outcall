@@ -15,7 +15,7 @@
 #include <QLabel>
 #include <QTextBlock>
 #include <QItemSelectionModel>
-#include <QRegExp>
+#include <QRegularExpression>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,8 +26,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    QRegExp RegExp("^[0-9]*$");
-    validator = new QRegExpValidator(RegExp, this);
+    QRegularExpression regExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     my_number = global::getExtensionNumber("extensions");
@@ -108,7 +108,7 @@ void CallHistoryDialog::closeEvent(QCloseEvent *event)
 
     QDialog::clearFocus();
 
-    ui->comboBox_2->setCurrentText("7");
+    ui->comboBox_2->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -122,6 +122,8 @@ void CallHistoryDialog::loadAllCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesAll.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -229,8 +231,6 @@ void CallHistoryDialog::loadAllCalls()
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    queriesAll.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -245,6 +245,8 @@ void CallHistoryDialog::loadMissedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesMissed.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -351,8 +353,6 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesMissed.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -367,6 +367,8 @@ void CallHistoryDialog::loadReceivedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesReceived.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -472,8 +474,6 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesReceived.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -488,6 +488,8 @@ void CallHistoryDialog::loadPlacedCalls()
         deleteObjects();
 
     queryModel = new QSqlQueryModel;
+
+    queriesPlaced.append(queryModel);
 
     QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
 
@@ -591,8 +593,6 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
-    queriesPlaced.append(queryModel);
-
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -691,8 +691,8 @@ bool CallHistoryDialog::isInnerPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator1(QRegExp("[0-9]{4}"));
-    QRegExpValidator validator2(QRegExp("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
+    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -712,7 +712,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
     if (number == my_number)
     {
         number = queryModel->data(queryModel->index(index.row(), 2)).toString();
-        number.remove(QRegExp("[(][a-z]+ [0-9]+[)]"));
+        number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
     }
 
     if (!isInnerPhone(&number))
