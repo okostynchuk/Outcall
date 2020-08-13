@@ -24,8 +24,8 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    QRegularExpression RegExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(RegExp, this);
+    QRegularExpression regExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);

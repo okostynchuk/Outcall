@@ -7,8 +7,8 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QRegularExpression RegExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(RegExp, this);
+    QRegularExpression regExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     onComboBoxListSelected();
