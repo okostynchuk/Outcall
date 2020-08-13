@@ -35,7 +35,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_3->verticalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdateTab()));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged()));
     connect(ui->addReminderButton, &QPushButton::clicked, this, &RemindersDialog::onAddReminder);
     connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
     connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
@@ -134,6 +134,8 @@ void RemindersDialog::showEvent(QShowEvent *event)
     selectionRelevant.clear();
     selectionIrrelevant.clear();
     selectionDelegated.clear();
+
+    onUpdate();
 }
 
 void RemindersDialog::closeEvent(QCloseEvent *event)
@@ -143,6 +145,9 @@ void RemindersDialog::closeEvent(QCloseEvent *event)
     QDialog::clearFocus();
 
     ui->tabWidget->setCurrentIndex(0);
+
+    go = "default";
+    page = "1";
 }
 
 void RemindersDialog::onTimer()
@@ -294,6 +299,8 @@ void RemindersDialog::receiveData(bool updating)
         selectionRelevant.clear();
         selectionIrrelevant.clear();
         selectionDelegated.clear();
+
+        go = "default";
 
         onUpdateTab();
     }
@@ -797,6 +804,8 @@ void RemindersDialog::changeState()
 
         resizeColumns = false;
 
+        go = "default";
+
         onUpdate();
     }
 }
@@ -1011,6 +1020,14 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
     return wgt;
 }
 
+void RemindersDialog::onTabChanged()
+{
+    go = "default";
+    page = "1";
+
+    onUpdateTab();
+}
+
 void RemindersDialog::onUpdateTab()
 {
     selectionRelevant.clear();
@@ -1020,9 +1037,6 @@ void RemindersDialog::onUpdateTab()
     ui->tableView->clearSelection();
     ui->tableView_2->clearSelection();
     ui->tableView_3->clearSelection();
-
-    go = "default";
-    page = "1";
 
     if (ui->tabWidget->currentIndex() == 0)
         loadRelevantReminders();
@@ -1051,35 +1065,35 @@ void RemindersDialog::on_previousButton_clicked()
 {
     go = "previous";
 
-    onUpdate();
+    onUpdateTab();
 }
 
 void RemindersDialog::on_nextButton_clicked()
 {
     go = "next";
 
-    onUpdate();
+    onUpdateTab();
 }
 
 void RemindersDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
 
-    onUpdate();
+    onUpdateTab();
 }
 
 void RemindersDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
 
-    onUpdate();;
+    onUpdateTab();;
 }
 
 void RemindersDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
 
-    onUpdate();
+    onUpdateTab();
 }
 
 

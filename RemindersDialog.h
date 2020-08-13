@@ -46,6 +46,7 @@ private slots:
     void changeState();
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
+    void onTabChanged();
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
