@@ -785,7 +785,7 @@ void ViewContactDialog::loadPlacedCalls()
 
     ui->tableView_4->resizeColumnsToContents();
 
-    ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);s
+    ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
