@@ -130,12 +130,15 @@ void CallHistoryDialog::loadAllCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -184,7 +187,7 @@ void CallHistoryDialog::loadAllCalls()
     queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Статус"));
     queryModel->setHeaderData(5, Qt::Horizontal, QObject::tr("Дата и время"));
     queryModel->insertColumn(6);
-    queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметки"));
+    queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(queryModel);
 
@@ -215,6 +218,7 @@ void CallHistoryDialog::loadAllCalls()
         if (query.value(0).toInt() != 0)
         {
             ui->tableView->setIndexWidget(queryModel->index(row_index, 6), loadNote());
+
             ui->tableView->resizeRowToContents(row_index);
         }
     }
@@ -249,12 +253,15 @@ void CallHistoryDialog::loadMissedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -306,7 +313,7 @@ void CallHistoryDialog::loadMissedCalls()
     queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
     queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView_2->setModel(queryModel);
 
@@ -334,6 +341,7 @@ void CallHistoryDialog::loadMissedCalls()
         if (query.value(0).toInt() != 0)
         {
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+
             ui->tableView_2->resizeRowToContents(row_index);
         }
     }
@@ -367,12 +375,15 @@ void CallHistoryDialog::loadReceivedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -421,7 +432,7 @@ void CallHistoryDialog::loadReceivedCalls()
     queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
     queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView_3->setModel(queryModel);
 
@@ -450,6 +461,7 @@ void CallHistoryDialog::loadReceivedCalls()
         if (query.value(0).toInt() != 0)
         {
             ui->tableView_3->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+
             ui->tableView_3->resizeRowToContents(row_index);
         }
     }
@@ -484,12 +496,15 @@ void CallHistoryDialog::loadPlacedCalls()
     else
     {
         remainder = count % ui->comboBox_list->currentText().toInt();
+
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
+
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
+
     if (go == "previous" && page != "1")
         page = QString::number(page.toInt() - 1);
     else if (go == "previousStart" && page != "1")
@@ -536,7 +551,7 @@ void CallHistoryDialog::loadPlacedCalls()
     queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Откуда"));
     queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметки"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView_4->setModel(queryModel);
 
@@ -564,6 +579,7 @@ void CallHistoryDialog::loadPlacedCalls()
         if (query.value(0).toInt() != 0)
         {
             ui->tableView_4->setIndexWidget(queryModel->index(row_index, 4), loadNote());
+
             ui->tableView_4->resizeRowToContents(row_index);
         }
 
@@ -1068,9 +1084,9 @@ QWidget* CallHistoryDialog::loadNote()
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* note = new QLabel(wgt);
+    QLabel* noteLabel = new QLabel(wgt);
 
-    layout->addWidget(note, 0, Qt::AlignTop);
+    layout->addWidget(noteLabel);
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1079,9 +1095,30 @@ QWidget* CallHistoryDialog::loadNote()
     query.exec();
     query.first();
 
-    note->setText(query.value(0).toString());
-    note->setOpenExternalLinks(true);
-    note->setWordWrap(true);
+    QString note = query.value(0).toString();
+
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+
+    if (hrefIterator.hasNext())
+    {
+        QStringList hrefs;
+
+        while (hrefIterator.hasNext())
+        {
+            QRegularExpressionMatch match = hrefIterator.next();
+            QString href = match.captured(1);
+
+            if (!hrefs.contains(href))
+                hrefs << href;
+        }
+
+        for (int i = 0; i < hrefs.length(); ++i)
+            note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+    }
+
+    noteLabel->setText(note);
+    noteLabel->setOpenExternalLinks(true);
+    noteLabel->setWordWrap(true);
 
     wgt->setLayout(layout);
 
@@ -1089,25 +1126,25 @@ QWidget* CallHistoryDialog::loadNote()
     {
         widgetsAllNotes.append(wgt);
         layoutsAllNotes.append(layout);
-        notesAll.append(note);
+        notesAll.append(noteLabel);
     }
     else if (ui->tabWidget->currentIndex() == 1)
     {
         widgetsMissedNotes.append(wgt);
         layoutsMissedNotes.append(layout);
-        notesMissed.append(note);
+        notesMissed.append(noteLabel);
     }
     else if (ui->tabWidget->currentIndex() == 2)
     {
         widgetsReceivedNotes.append(wgt);
         layoutsReceivedNotes.append(layout);
-        notesReceived.append(note);
+        notesReceived.append(noteLabel);
     }
     else if (ui->tabWidget->currentIndex() == 3)
     {
         widgetsPlacedNotes.append(wgt);
         layoutsPlacedNotes.append(layout);
-        notesPlaced.append(note);
+        notesPlaced.append(noteLabel);
     }
 
     return wgt;

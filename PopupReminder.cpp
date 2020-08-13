@@ -120,7 +120,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
-        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
     ui->lblText->setText(content);
 
