@@ -47,11 +47,19 @@ private slots:
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
 
+    void on_previousButton_clicked();
+    void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
+    void on_lineEdit_page_returnPressed();
+
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event);
 
 private:
     Ui::RemindersDialog *ui;
+
+    QValidator *validator;
 
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
@@ -68,6 +76,11 @@ private:
     QTimer timer;
     QString languages;
     QString my_number;
+    QString page;
+    QString pages;
+    QString go;
+    int count;
+    int remainder;
     int oldReceivedReminders;
 
     QWidget* addWidgetActive();

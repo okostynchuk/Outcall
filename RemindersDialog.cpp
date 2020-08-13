@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QLabel>
+#include <QRegExp>
 
 #define TIME_TO_UPDATE 5000 // msec
 
@@ -22,6 +23,10 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    QRegExp RegExp("^[0-9]*$");
+    validator = new QRegExpValidator(RegExp, this);
+    ui->lineEdit_page->setValidator(validator);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
@@ -41,6 +46,8 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
+    ui->comboBox_list->setVisible(false);
+
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     ui->tabWidget->setCurrentIndex(0);
@@ -56,6 +63,9 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     query.exec();
 
     resizeColumns = true;
+
+    go="default";
+    page = "1";
 
     loadRelevantReminders();
 
@@ -124,8 +134,6 @@ void RemindersDialog::showEvent(QShowEvent *event)
     selectionRelevant.clear();
     selectionIrrelevant.clear();
     selectionDelegated.clear();
-
-    onUpdateTab();
 }
 
 void RemindersDialog::closeEvent(QCloseEvent *event)
@@ -170,7 +178,10 @@ void RemindersDialog::onTimer()
 
     oldReceivedReminders = newReceivedReminders;
 
+    go = "default";
+
     onUpdate();
+
     sendNewValues();
 }
 
@@ -299,8 +310,69 @@ void RemindersDialog::loadRelevantReminders()
     queriesRelevant.append(query1);
     queriesRelevant.append(query2);
 
-    query1->setQuery("SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_to = '" + my_number + "' AND active = true ORDER BY datetime ASC");
-    query2->setQuery("SELECT active, viewed, completed, content FROM reminders WHERE phone_to = '" + my_number + "' AND active = true ORDER BY datetime ASC");
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = true");
+    query.exec();
+    query.first();
+
+    count = query.value(0).toInt();
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+
+    QString queryString1 = "SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_to = '" + my_number + "' "
+                                    "AND active = true ORDER BY datetime ASC LIMIT ";
+    QString queryString2 = "SELECT active, viewed, completed, content FROM reminders WHERE phone_to = '" + my_number + "' "
+                                    "AND active = true ORDER BY datetime ASC LIMIT ";
+
+    if (ui->lineEdit_page->text() == "1")
+    {
+        queryString1.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+        queryString2.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+    }
+    else
+    {
+        queryString1.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+        queryString2.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+    }
+
+    query1->setQuery(queryString1);
+    query2->setQuery(queryString2);
 
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
@@ -370,8 +442,67 @@ void RemindersDialog::loadIrrelevantReminders()
     queriesIrrelevant.append(query1);
     queriesIrrelevant.append(query2);
 
-    query1->setQuery("SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC LIMIT 0,100");
-    query2->setQuery("SELECT active, viewed, completed, content FROM reminders WHERE phone_to = '" + my_number + "' AND active IS FALSE ORDER BY datetime DESC LIMIT 0,100");
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = false");
+    query.exec();
+    query.first();
+
+    count = query.value(0).toInt();
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+
+    QString queryString1 = "SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_to = '" + my_number + "' AND active = false ORDER BY datetime DESC LIMIT ";
+    QString queryString2 = "SELECT active, viewed, completed, content FROM reminders WHERE phone_to = '" + my_number + "' AND active = false ORDER BY datetime DESC LIMIT ";
+
+    if (ui->lineEdit_page->text() == "1")
+    {
+        queryString1.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+        queryString2.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+    }
+    else
+    {
+        queryString1.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+        queryString2.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+    }
+
+    query1->setQuery(queryString1);
+    query2->setQuery(queryString2);
 
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
@@ -441,8 +572,67 @@ void RemindersDialog::loadDelegatedReminders()
     queriesDelegated.append(query1);
     queriesDelegated.append(query2);
 
-    query1->setQuery("SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC");
-    query2->setQuery("SELECT active, viewed, completed, content FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC");
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "'");
+    query.exec();
+    query.first();
+
+    count = query.value(0).toInt();
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+
+    QString queryString1 = "SELECT id, phone_from, phone_to, datetime FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC LIMIT ";
+    QString queryString2 = "SELECT active, viewed, completed, content FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' ORDER BY datetime DESC LIMIT ";
+
+    if (ui->lineEdit_page->text() == "1")
+    {
+        queryString1.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+        queryString2.append("0, " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+    }
+    else
+    {
+        queryString1.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+        queryString2.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                                 - ui->comboBox_list->currentText().toInt()) + " , "
+                            + QString::number(ui->comboBox_list->currentText().toInt()));
+    }
+
+    query1->setQuery(queryString1);
+    query2->setQuery(queryString2);
 
     query1->insertColumn(1);
     query1->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
@@ -835,6 +1025,9 @@ void RemindersDialog::onUpdateTab()
     ui->tableView_2->clearSelection();
     ui->tableView_3->clearSelection();
 
+    go = "default";
+    page = "1";
+
     if (ui->tabWidget->currentIndex() == 0)
         loadRelevantReminders();
     else if (ui->tabWidget->currentIndex() == 1)
@@ -857,3 +1050,40 @@ void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, Q
 {
     PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 }
+
+void RemindersDialog::on_previousButton_clicked()
+{
+    go = "previous";
+
+    onUpdate();
+}
+
+void RemindersDialog::on_nextButton_clicked()
+{
+    go = "next";
+
+    onUpdate();
+}
+
+void RemindersDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+
+    onUpdate();
+}
+
+void RemindersDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
+
+    onUpdate();;
+}
+
+void RemindersDialog::on_lineEdit_page_returnPressed()
+{
+    go = "enter";
+
+    onUpdate();
+}
+
+
