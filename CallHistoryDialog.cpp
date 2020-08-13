@@ -108,7 +108,7 @@ void CallHistoryDialog::closeEvent(QCloseEvent *event)
 
     QDialog::clearFocus();
 
-    ui->comboBox_2->setCurrentText("7");
+    ui->comboBox_2->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
 

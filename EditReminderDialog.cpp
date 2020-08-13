@@ -118,6 +118,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     {
         ui->comboBox->setDisabled(true);
         ui->textEdit->setReadOnly(true);
+        ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
     }
 }
 
