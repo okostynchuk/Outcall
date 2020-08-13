@@ -617,7 +617,7 @@ bool PopupWindow::isInnerPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+    QRegularExpressionValidator validator(QRegularExpression("[2][0-9]{2}"));
 
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;

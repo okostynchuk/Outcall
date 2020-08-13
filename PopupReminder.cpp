@@ -120,7 +120,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
-        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
     ui->lblText->setText(content);
 
@@ -269,7 +269,7 @@ bool PopupReminder::isInnerPhone(QString *str)
 {
     int pos = 0;
 
-    QRegExpValidator validator(QRegExp("[2][0-9]{2}"));
+    QRegularExpressionValidator validator(QRegularExpression("[2][0-9]{2}"));
 
     if(validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -369,7 +369,7 @@ void PopupReminder::receiveData(bool updating)
 
 void PopupReminder::receiveNumber(QString &number)
 {
-    QString my_number = m_pri.my_number.remove(QRegExp(" .+"));
+    QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
     const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
@@ -377,7 +377,7 @@ void PopupReminder::receiveNumber(QString &number)
 
 void PopupReminder::onCall()
 {
-    QString my_number = m_pri.my_number.remove(QRegExp(" .+"));
+    QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
 
     if (!m_pri.numbers.isEmpty())
     {

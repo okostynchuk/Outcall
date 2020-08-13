@@ -74,6 +74,8 @@ private slots:
 private:
     Ui::ViewContactDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     AddReminderDialog *addReminderDialog;
     ChooseNumber *chooseNumber;
     EditContactDialog *editContactDialog;

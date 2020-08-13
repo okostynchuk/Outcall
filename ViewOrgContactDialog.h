@@ -87,6 +87,8 @@ private slots:
 private:
     Ui::ViewOrgContactDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     ViewContactDialog *viewContactDialog;
     EditOrgContactDialog *editOrgContactDialog;
     ChooseNumber *chooseNumber;

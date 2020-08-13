@@ -80,6 +80,8 @@ private slots:
 private:
     Ui::CallHistoryDialog *ui;
 
+    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
     QSqlQueryModel *queryModel;
 
     QValidator *validator;
@@ -144,7 +146,6 @@ private:
 
     QList<QWidget*> widgetsBusy;
     QList<QWidget*> widgetsCancel;
-
 
     QList<QLabel*> labelsAllName;
     QList<QLabel*> labelsMissedName;
