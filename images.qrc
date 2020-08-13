@@ -9,7 +9,6 @@
         <file>images/reminders_R.png</file>
         <file>images/save_R.png</file>
         <file>images/addToExisting_R.png</file>
-        <file>images/AddPerson_R.png</file>
         <file>images/orders_R.png</file>
         <file>images/addOrg_R.png</file>
         <file>images/refresh_R.png</file>
@@ -28,5 +27,6 @@
         <file>images/listeningToCallRecording.png</file>
         <file>images/listeningToCallOnPhone.png</file>
         <file>images/arrowBack.png</file>
+        <file>images/addPerson_R.png</file>
     </qresource>
 </RCC>

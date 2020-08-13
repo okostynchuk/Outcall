@@ -1962,7 +1962,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/AddPerson_R.png</normaloff>:/images/AddPerson_R.png</iconset>
+        <normaloff>:/images/addPerson_R.png</normaloff>:/images/addPerson_R.png</iconset>
       </property>
       <property name="iconSize">
        <size>
