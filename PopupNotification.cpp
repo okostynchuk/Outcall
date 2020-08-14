@@ -29,9 +29,9 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     ui->label->setText(tr("Новое напоминание от ") + m_pni.number);
 
-    QString content = m_pni.text;
+    QString note = m_pni.text;
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
     QStringList hrefs;
 
     while (hrefIterator.hasNext())
@@ -44,9 +44,9 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
-        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
-    ui->lblText->setText(content);
+    ui->lblText->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
