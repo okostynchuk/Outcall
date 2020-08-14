@@ -259,8 +259,8 @@ void AddContactDialog::onSave()
                     queryOrg.prepare(sqlOrg);
                     queryOrg.exec();
 
-                    if (query.next())
-                        query.addBindValue(queryOrg.value(0).toString());
+                    if (queryOrg.next())
+                        queryOrg.addBindValue(queryOrg.value(0).toString());
                     else
                     {
                         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
