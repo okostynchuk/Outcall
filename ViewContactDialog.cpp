@@ -1252,7 +1252,7 @@ void ViewContactDialog::viewNotes(const QModelIndex &index)
 
     notesDialog = new NotesDialog;
     notesDialog->setCallId(uniqueid);
-    notesDialog->setSaveDisable();
+    notesDialog->hideAddNote();
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

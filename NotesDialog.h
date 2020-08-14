@@ -25,7 +25,7 @@ public:
     ~NotesDialog();
 
     void setCallId(QString uniqueid);
-    void setSaveDisable();
+    void hideAddNote();
 
 private slots:
     void onSave();

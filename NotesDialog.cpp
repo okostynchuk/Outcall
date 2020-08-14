@@ -47,10 +47,11 @@ void NotesDialog::setCallId(QString uniqueid)
     loadNotes();
 }
 
-void NotesDialog::setSaveDisable()
+void NotesDialog::hideAddNote()
 {
-    ui->saveButton->setDisabled(true);
-    ui->textEdit->setDisabled(true);
+    ui->saveButton->setVisible(false);
+    ui->textEdit->setVisible(false);
+    ui->label->setVisible(false);
 }
 
 void NotesDialog::loadNotes()
