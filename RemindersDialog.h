@@ -62,15 +62,14 @@ private:
 	
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 	
-    QValidator *validator;
+    QValidator* validator;
 
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
 
-    QSqlQueryModelReminders *query1;
-    QSqlQueryModelReminders *query2;
+    QSqlQueryModelReminders* queryModel;
 
     QModelIndexList selectionRelevant;
     QModelIndexList selectionIrrelevant;

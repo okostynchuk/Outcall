@@ -105,9 +105,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         ui->openAccessButton->hide();
     }
 
-    QString content = m_pri.text;
+    QString note = m_pri.text;
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(content);
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
     QStringList hrefs;
 
     while (hrefIterator.hasNext())
@@ -120,9 +120,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
-        content.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
-    ui->lblText->setText(content);
+    ui->lblText->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
