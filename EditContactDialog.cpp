@@ -485,7 +485,7 @@ bool EditContactDialog::isVyborID(QString *str)
 
     QRegularExpressionValidator validator(QRegularExpression("[0-9]*"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;

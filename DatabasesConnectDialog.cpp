@@ -60,7 +60,7 @@ void DatabasesConnectDialog::onSave()
     setSettingForFirstDb();
     setSettingForSecondDb();
 
-    if(state_db == "twoDb")
+    if (state_db == "twoDb")
     {
         checkDb();
         checkDbAsterisk();

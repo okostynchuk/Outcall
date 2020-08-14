@@ -357,7 +357,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
             emit callDeteceted(placed, PLACED);
         }
     }
-    else if(eventData.contains("Event: DialBegin"))
+    else if (eventData.contains("Event: DialBegin"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
@@ -522,7 +522,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
             }
         }
     }
-    else if(eventData.contains("Event: Hangup"))
+    else if (eventData.contains("Event: Hangup"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
@@ -863,7 +863,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             emit callDeteceted(placed, PLACED);
         }
     }
-    else if(eventData.contains("Event: Hangup"))
+    else if (eventData.contains("Event: Hangup"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
