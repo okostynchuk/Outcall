@@ -99,6 +99,8 @@ void CallHistoryDialog::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
 
+    go = "default";
+
     updateCount();
 }
 

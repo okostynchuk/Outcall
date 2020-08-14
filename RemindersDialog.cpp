@@ -135,6 +135,8 @@ void RemindersDialog::showEvent(QShowEvent *event)
     selectionIrrelevant.clear();
     selectionDelegated.clear();
 
+    go = "default";
+
     onUpdate();
 }
 
