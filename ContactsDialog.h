@@ -11,7 +11,7 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QHeaderView>
-#include <QBoxLayout>
+#include <QHBoxLayout>
 #include <QTableView>
 #include <QSqlQuery>
 #include <QSqlDatabase>
@@ -33,7 +33,6 @@ public:
     ~ContactsDialog();
 
 private slots:
-    void deleteObjects();
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
@@ -41,6 +40,8 @@ private slots:
     void onComboBoxSelected();
     void showCard(const QModelIndex &);
     void searchFunction();
+
+    void deleteObjects();
 
     void on_searchButton_clicked();
     void on_previousButton_clicked();
@@ -58,15 +59,14 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
+    QSqlQueryModel* queryModel;
 
-    AddContactDialog *addContactDialog;
-    AddOrgContactDialog *addOrgContactDialog;
-    ViewContactDialog *viewContactDialog;
-    ViewOrgContactDialog *viewOrgContactDialog;
+    AddContactDialog* addContactDialog;
+    AddOrgContactDialog* addOrgContactDialog;
+    ViewContactDialog* viewContactDialog;
+    ViewOrgContactDialog* viewOrgContactDialog;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QWidget* addImageLabel(int);
     QWidget* addWidgetNote(int, QString);

@@ -316,44 +316,6 @@ background-color: #fffff8;
              </property>
             </spacer>
            </item>
-           <item row="0" column="4">
-            <widget class="QPushButton" name="callButton">
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Позвонить</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="images.qrc">
-               <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>27</width>
-               <height>27</height>
-              </size>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="2">
             <widget class="QPushButton" name="openAccessButton">
              <property name="minimumSize">
@@ -465,6 +427,44 @@ background-color: #fffff8;
                <width>27</width>
                <height>27</height>
               </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="callButton">
+             <property name="minimumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="toolTip">
+              <string>Позвонить</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>27</width>
+               <height>27</height>
+              </size>
+             </property>
+             <property name="autoDefault">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -1075,7 +1075,6 @@ background-color: #fffff0;
  </widget>
  <tabstops>
   <tabstop>openAccessButton</tabstop>
-  <tabstop>callButton</tabstop>
   <tabstop>editButton</tabstop>
   <tabstop>LastName</tabstop>
   <tabstop>FirstName</tabstop>
