@@ -52,6 +52,7 @@ void NotesDialog::hideAddNote()
     ui->saveButton->setVisible(false);
     ui->textEdit->setVisible(false);
     ui->label->setVisible(false);
+    QWidget::resize(550, 275);
 }
 
 void NotesDialog::loadNotes()
