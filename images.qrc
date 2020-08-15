@@ -28,5 +28,6 @@
         <file>images/listeningToCallOnPhone.png</file>
         <file>images/arrowBack.png</file>
         <file>images/addPerson_R.png</file>
+        <file>images/viewNote.png</file>
     </qresource>
 </RCC>
