@@ -271,7 +271,7 @@ bool PopupReminder::isInnerPhone(QString *str)
 
     QRegularExpressionValidator validator(QRegularExpression("[2][0-9]{2}"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;
@@ -281,7 +281,7 @@ void PopupReminder::onTimer()
 {
     if (m_bAppearing) // APPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 if (m_nCurrentPosY>(m_nStartPosY-height()))
@@ -327,7 +327,7 @@ void PopupReminder::onTimer()
     }
     else // DISSAPPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 closeAndDestroy();
@@ -599,7 +599,7 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
 
 void PopupReminder::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         onClosePopup();
     else
         QWidget::keyPressEvent(event);

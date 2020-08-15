@@ -323,7 +323,7 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->setColumnHidden(5, true);
 
-    if(my_group.isEmpty())
+    if (my_group.isEmpty())
         ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)

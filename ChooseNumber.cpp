@@ -127,9 +127,9 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            QString numb = ui->FirstNumber->text();
+            QString number = ui->FirstNumber->text();
 
-            emit sendNumber(numb);
+            emit sendNumber(number);
 
             close();
 
@@ -143,9 +143,9 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            QString numb = ui->SecondNumber->text();
+            QString number = ui->SecondNumber->text();
 
-            emit sendNumber(numb);
+            emit sendNumber(number);
 
             close();
 
@@ -159,9 +159,9 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            QString numb = ui->ThirdNumber->text();
+            QString number = ui->ThirdNumber->text();
 
-            emit sendNumber(numb);
+            emit sendNumber(number);
 
             close();
 
@@ -175,9 +175,9 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            QString numb = ui->FourthNumber->text();
+            QString number = ui->FourthNumber->text();
 
-            emit sendNumber(numb);
+            emit sendNumber(number);
 
             close();
 
@@ -191,9 +191,9 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            QString numb = ui->FifthNumber->text();
+            QString number = ui->FifthNumber->text();
 
-            emit sendNumber(numb);
+            emit sendNumber(number);
 
             close();
 

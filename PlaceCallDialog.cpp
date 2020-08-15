@@ -131,7 +131,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         return;
     }
-    else if(ui->comboBox->currentText() == tr("Поиск по ФИО / названию"))
+    else if (ui->comboBox->currentText() == tr("Поиск по ФИО / названию"))
     {
         QString entry_name = ui->lineEdit->text();
 
@@ -140,7 +140,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    else if(ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
+    else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
     {
         QString entry_phone = ui->lineEdit->text();
 
@@ -149,7 +149,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 
         onUpdate();
     }
-    else if(ui->comboBox->currentText() == tr("Поиск сотрудников по организации"))
+    else if (ui->comboBox->currentText() == tr("Поиск сотрудников по организации"))
     {
         QString entry_org = ui->lineEdit->text();
 

@@ -490,7 +490,7 @@ void ViewContactDialog::loadMissedCalls()
 
     for (int i = 0; i < countNumbers; i++)
     {
-            if(i == 0)
+            if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
@@ -1247,7 +1247,7 @@ void ViewContactDialog::viewNotes(const QModelIndex &index)
 {
     QString phone;
 
-    if(ui->tabWidget_2->currentIndex() == 0)
+    if (ui->tabWidget_2->currentIndex() == 0)
         uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
     else
         uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();

@@ -506,7 +506,7 @@ void SettingsDialog::onEditGroupButtonClicked()
         editExtensionDialog.setExtension(group_extension);
         editExtensionDialog.setProtocol(group_protocol);
 
-        if(editExtensionDialog.exec())
+        if (editExtensionDialog.exec())
         {
             const QString newExtension = editExtensionDialog.getExtension();
             const QString newProtocol = editExtensionDialog.getProtocol();

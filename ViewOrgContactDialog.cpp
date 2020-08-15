@@ -615,7 +615,7 @@ void ViewOrgContactDialog::loadAllCalls()
 
     for (int i = 0; i < countNumbers; i++)
     {
-        if(i == 0)
+        if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
         else
             queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
@@ -742,7 +742,7 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     for (int i = 0; i < countNumbers; i++)
     {
-            if(i == 0)
+            if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
@@ -1583,7 +1583,7 @@ void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
 {
     QString phone;
 
-    if(ui->tabWidget_3->currentIndex() == 0)
+    if (ui->tabWidget_3->currentIndex() == 0)
         uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
     else
         uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();
