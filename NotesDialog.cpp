@@ -70,7 +70,7 @@ void NotesDialog::loadNotes()
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if(isInnerPhone(&phoneNumber))
+        if (isInnerPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "'");
         else
         {
