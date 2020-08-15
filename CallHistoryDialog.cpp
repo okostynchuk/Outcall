@@ -164,7 +164,7 @@ void CallHistoryDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+    QString queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                                                       "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                                                       " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                                                       "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""

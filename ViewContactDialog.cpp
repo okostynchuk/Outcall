@@ -346,7 +346,7 @@ void ViewContactDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT if(";
+    QString queryString = "SELECT IF(";
 
     for (int i = 0; i < countNumbers; i++)
     {

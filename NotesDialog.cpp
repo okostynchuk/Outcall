@@ -65,33 +65,39 @@ void NotesDialog::loadNotes()
     query = new QSqlQueryModel;
 
     QString queryString = "SELECT datetime, author, note FROM calls WHERE ";
+
     if (loadState == "byId")
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        QSqlDatabase db;
-        QSqlQuery query(db);
-
-        query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
-        query.exec();
-
-        while(query.next())
-            numbersList.append(query.value(0).toString());
-
-        if(numbersList.isEmpty())
+        if(isInnerPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "'");
         else
         {
-            for(int i = 0; i < numbersList.size(); i++)
+            qDebug() << "123";
+            QSqlDatabase db;
+            QSqlQuery query(db);
+
+            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
+            query.exec();
+
+            while(query.next())
+                numbersList.append(query.value(0).toString());
+
+            if(numbersList.isEmpty())
+                queryString.append("phone_number = '" + phoneNumber + "'");
+            else
             {
-                if (i == 0)
-                    queryString.append(" phone_number = '" + numbersList[i] + "'");
-                else
-                    queryString.append(" OR phone_number = '" + numbersList[i] + "'");
+                for(int i = 0; i < numbersList.size(); i++)
+                {
+                    if (i == 0)
+                        queryString.append(" phone_number = '" + numbersList[i] + "'");
+                    else
+                        queryString.append(" OR phone_number = '" + numbersList[i] + "'");
+                }
             }
         }
     }
-
 
     queryString.append(" ORDER BY datetime DESC");
 
@@ -265,4 +271,16 @@ void NotesDialog::deleteObjects()
     labels.clear();
 
     delete query;
+}
+
+bool NotesDialog::isInnerPhone(QString *str)
+{
+    int pos = 0;
+
+    QRegularExpressionValidator validator(QRegularExpression("[2][0-9]{2}"));
+
+    if(validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
 }
