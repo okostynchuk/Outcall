@@ -164,7 +164,7 @@ void AddOrgContactDialog::onSave()
 
             if (vyborId != 0)
             {
-                if(isVyborID(&vyborId) == true)
+                if (isVyborID(&vyborId) == true)
                     ui->VyborID->setStyleSheet("border: 1px solid grey");
                 else
                 {
@@ -312,7 +312,7 @@ bool AddOrgContactDialog::isPhone(QString *str)
 
     QRegularExpressionValidator validator(QRegularExpression("[\\+]?[0-9]{1,12}"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;
@@ -324,7 +324,7 @@ bool AddOrgContactDialog::isVyborID(QString *str)
 
     QRegularExpressionValidator validator(QRegularExpression("[0-9]*"));
 
-    if(validator.validate(*str, pos) == QValidator::Acceptable)
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;

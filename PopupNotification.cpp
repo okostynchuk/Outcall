@@ -160,7 +160,7 @@ void PopupNotification::onTimer()
 {
     if (m_bAppearing) // APPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 if (m_nCurrentPosY>(m_nStartPosY-height()))
@@ -206,7 +206,7 @@ void PopupNotification::onTimer()
     }
     else // DISSAPPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 closeAndDestroy();
@@ -285,7 +285,7 @@ void PopupNotification::showNotification(RemindersDialog* receivedRemindersDialo
 
 void PopupNotification::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         onClosePopup();
     else
         QWidget::keyPressEvent(event);

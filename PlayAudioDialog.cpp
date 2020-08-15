@@ -121,7 +121,7 @@ void PlayAudioDialog::closeEvent(QCloseEvent *event)
 
 void PlayAudioDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
     {
         emit isClosed(true);
 

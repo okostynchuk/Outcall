@@ -417,7 +417,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
             }
         }
     }
-    else if(eventData.contains("Event: DialEnd"))
+    else if (eventData.contains("Event: DialEnd"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
@@ -723,7 +723,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             m_calls.insert(uniqueid, call);
         }
     }
-    else if(eventData.contains("Event: Newstate"))
+    else if (eventData.contains("Event: Newstate"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
