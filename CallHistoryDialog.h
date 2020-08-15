@@ -108,7 +108,7 @@ private:
     QString dst;
     QString uniqueid;
     QString dialogStatus;
-    QString callerNum;
+    QString phone;
     int count;
     int remainder;
 

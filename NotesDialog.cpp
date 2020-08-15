@@ -9,6 +9,7 @@
 #include <QTime>
 #include <QSqlQuery>
 #include <QKeyEvent>
+#include <QList>
 
 NotesDialog::NotesDialog(QWidget *parent) :
     QDialog(parent),
@@ -40,9 +41,13 @@ NotesDialog::~NotesDialog()
     delete ui;
 }
 
-void NotesDialog::setCallId(QString uniqueid)
+void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState)
 {
     callId = uniqueid;
+
+    phoneNumber = phone;
+
+    this->loadState = loadState;
 
     loadNotes();
 }
@@ -59,7 +64,38 @@ void NotesDialog::loadNotes()
 {
     query = new QSqlQueryModel;
 
-    query->setQuery("SELECT datetime, author, note FROM calls WHERE uniqueid = '" + callId + "' ORDER BY datetime DESC");
+    QString queryString = "SELECT datetime, author, note FROM calls WHERE ";
+    if (loadState == "byId")
+        queryString.append("uniqueid = '" + callId + "' ");
+    else
+    {
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
+        query.exec();
+
+        while(query.next())
+            numbersList.append(query.value(0).toString());
+
+        if(numbersList.isEmpty())
+            queryString.append("phone_number = '" + phoneNumber + "'");
+        else
+        {
+            for(int i = 0; i < numbersList.size(); i++)
+            {
+                if (i == 0)
+                    queryString.append(" phone_number = '" + numbersList[i] + "'");
+                else
+                    queryString.append(" OR phone_number = '" + numbersList[i] + "'");
+            }
+        }
+    }
+
+
+    queryString.append(" ORDER BY datetime DESC");
+
+    query->setQuery(queryString);
 
     query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
@@ -110,11 +146,12 @@ void NotesDialog::onSave()
         return;
     }
 
-    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
+    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author, phone_number) VALUES(?, ?, ?, ?, ?)");
     query.addBindValue(callId);
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(my_number);
+    query.addBindValue(phoneNumber);
     query.exec();
 
     emit sendData();
