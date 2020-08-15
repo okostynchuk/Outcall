@@ -1581,13 +1581,15 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 
 void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
 {
+    QString phone;
+
     if(ui->tabWidget_3->currentIndex() == 0)
         uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
     else
         uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();
 
     notesDialog = new NotesDialog;
-    notesDialog->setCallId(uniqueid);
+    notesDialog->receiveData(uniqueid, phone, "byId");
     notesDialog->hideAddNote();
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);

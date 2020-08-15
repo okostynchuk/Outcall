@@ -36,6 +36,8 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     userID = global::getSettingsValue("user_login", "settings").toString();
 
+    author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
@@ -461,21 +463,12 @@ void PopupWindow::onSaveNote()
     if (ui->textEdit->toPlainText().simplified().isEmpty())
         return;
 
-    QString author;
-
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = " + popup->m_pwi.my_number);
-    query.exec();
-
-    if (query.next())
-        author = query.value(0).toString();
-    else
-        author = popup->m_pwi.my_number;
-
-    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author) VALUES(?, ?, ?, ?)");
+    query.prepare("INSERT INTO calls (uniqueid, datetime, note, author, phone_number) VALUES(?, ?, ?, ?, ?)");
     query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText().simplified());
     query.addBindValue(author);
+    query.addBindValue(popup->m_pwi.number);
     query.exec();
 
     popup->ui->textEdit->setStyleSheet("border: 2px solid lightgreen; background-color: #1a1a1a; border-right-color: transparent;");
@@ -667,6 +660,22 @@ bool PopupWindow::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
+void PopupWindow::onViewNotes()
+{
+    QVariant qv_popup = sender()->property("qv_popup");
+
+    PopupWindow *popup;
+    popup = (PopupWindow*)qv_popup.value<void *>();
+
+    QString loadState;
+
+    notesDialog = new NotesDialog;
+    notesDialog->receiveData(popup->m_pwi.uniqueid, popup->m_pwi.number, loadState);
+    notesDialog->hideAddNote();
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 void PopupWindow::receiveNumber(PopupWindow *popup)
 {
     QVariant qv_popup = QVariant::fromValue((void *)popup);
@@ -734,4 +743,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     connect(popup->ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
     popup->ui->addReminderButton->setProperty("qv_popup", qv_popup);
+
+    connect(popup->ui->viewNotesButton, SIGNAL(clicked(bool)), this, SLOT(onViewNotes()));
+    popup->ui->viewNotesButton->setProperty("qv_popup", qv_popup);
 }
