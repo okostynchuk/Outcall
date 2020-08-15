@@ -74,7 +74,6 @@ void NotesDialog::loadNotes()
             queryString.append("phone_number = '" + phoneNumber + "'");
         else
         {
-            qDebug() << "123";
             QSqlDatabase db;
             QSqlQuery query(db);
 

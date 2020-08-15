@@ -33,7 +33,7 @@ private slots:
     void onUpdate();
     void loadNotes();
     void deleteObjects();
-    void isInnerPhone(QString *str);
+    bool isInnerPhone(QString *str);
 
     bool eventFilter(QObject *object, QEvent *event);
 
