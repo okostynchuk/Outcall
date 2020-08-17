@@ -2182,7 +2182,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Отсутствует подключение к базе клиентов!</source>
-        <translation>Відсутнє підключення до бази клієнтів!</translation>
+        <translation type="vanished">Відсутнє підключення до бази клієнтів!</translation>
     </message>
     <message>
         <source>Активно</source>
@@ -2215,6 +2215,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Данный номер уже принадлежит контакту!</source>
         <translation>Цей номер вже належить контакту!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе заказов!</source>
+        <translation>Відсутнє підключення до бази замовлень!</translation>
     </message>
 </context>
 <context>
@@ -2516,7 +2520,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Настройки базы клиентов</source>
-        <translation>Налаштування бази клієнтів</translation>
+        <translation type="vanished">Налаштування бази клієнтів</translation>
+    </message>
+    <message>
+        <source>Настройки базы заказов</source>
+        <translation>Налаштування бази замовлень</translation>
     </message>
 </context>
 <context>

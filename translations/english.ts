@@ -2201,7 +2201,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Отсутствует подключение к базе клиентов!</source>
-        <translation>There is no connection to the customer database!</translation>
+        <translation type="vanished">There is no connection to the customer database!</translation>
     </message>
     <message>
         <source>Активно</source>
@@ -2234,6 +2234,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Данный номер уже принадлежит контакту!</source>
         <translation>This number already belongs to the contact!</translation>
+    </message>
+    <message>
+        <source>Отсутствует подключение к базе заказов!</source>
+        <translation>Connection to orders database not created!</translation>
     </message>
 </context>
 <context>
@@ -2543,7 +2547,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Настройки базы клиентов</source>
-        <translation>Client database settings</translation>
+        <translation type="vanished">Client database settings</translation>
+    </message>
+    <message>
+        <source>Настройки базы заказов</source>
+        <translation>Orders database settings</translation>
     </message>
 </context>
 <context>
