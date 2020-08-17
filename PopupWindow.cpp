@@ -482,6 +482,8 @@ void PopupWindow::onOpenAccess()
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
 
+    popup->m_pwi.stopTimer = true;
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
@@ -666,6 +668,8 @@ void PopupWindow::onViewNotes()
 
     PopupWindow *popup;
     popup = (PopupWindow*)qv_popup.value<void *>();
+
+    popup->m_pwi.stopTimer = true;
 
     QString loadState;
 

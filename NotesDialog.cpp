@@ -94,9 +94,9 @@ void NotesDialog::loadNotes()
                     else
                         queryString.append(" OR phone_number = '" + numbersList[i] + "'");
                 }
-
-                queryString.append(") AND author = '" + my_number + "'");
             }
+
+            queryString.append(") AND author = '" + my_number + "'");
         }
     }
 
