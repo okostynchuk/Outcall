@@ -675,6 +675,8 @@ void ViewOrgContactDialog::loadAllCalls()
 
             ui->tableView_2->resizeRowToContents(row_index);
         }
+        else
+            ui->tableView_2->setRowHeight(row_index, 34);
     }
 
     ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -795,6 +797,8 @@ void ViewOrgContactDialog::loadMissedCalls()
 
             ui->tableView_3->resizeRowToContents(row_index);
         }
+        else
+            ui->tableView_3->setRowHeight(row_index, 34);
     }
 
     ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -915,6 +919,8 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
             ui->tableView_4->resizeRowToContents(row_index);
         }
+        else
+            ui->tableView_4->setRowHeight(row_index, 34);
     }
 
     ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -1033,6 +1039,8 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
             ui->tableView_5->resizeRowToContents(row_index);
         }
+        else
+            ui->tableView_5->setRowHeight(row_index, 34);
     }
 
     ui->tableView_5->horizontalHeader()->setDefaultSectionSize(maximumWidth());
