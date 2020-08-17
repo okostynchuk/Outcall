@@ -536,3 +536,11 @@ void SettingsDialog::checkGroupExten()
     else
         ui->addButton_2->setEnabled(true);
 }
+
+void SettingsDialog::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else
+        QWidget::keyPressEvent(event);
+}

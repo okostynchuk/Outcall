@@ -8,9 +8,8 @@
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <QValidator>
+#include <QKeyEvent>
 
-class Contact;
-class QTreeWidgetItem;
 class ChooseNumber;
 
 namespace Ui {
@@ -28,27 +27,27 @@ public:
     explicit PlaceCallDialog(QWidget *parent = 0);
     ~PlaceCallDialog();
 
-    void show();
-
 private slots:
     void onCallButton();
     void onCancelButton();
+
     void onUpdate();
-    void modelNull();
     void onComboBoxSelected();
     void clearEditText();
+
     void showNumber(const QModelIndex &);
 
     void on_lineEdit_returnPressed();
+
+    void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PlaceCallDialog *ui;
 
     ChooseNumber *chooseNumber;
-    PlaceCallDialog *placeCallDialog;
 
-    QSqlQueryModel *query1;
-    QSqlQueryModel *query2;
+    QSqlQueryModel *queryModel;
 
     QValidator *validator;
 

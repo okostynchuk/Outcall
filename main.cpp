@@ -65,29 +65,6 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
-    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
-    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
-    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
-    QString password_3 = QString(QByteArray::fromBase64(password3));
-    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
-
-    if (!hostName_3.isEmpty() && !databaseName_3.isEmpty() && !userName_3.isEmpty() && !password3.isEmpty() && !port_3.isEmpty())
-    {
-        QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
-        dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
-                                "Server="+hostName_3+","+port_3+";"
-                                "Database="+databaseName_3+";"
-                                "Uid="+userName_3+";"
-                                "Pwd="+password_3);
-        dbMSSQL.open();
-
-        if (dbMSSQL.isOpen())
-            MSSQLopened = true;
-        else
-            QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
-    }
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
     QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
@@ -103,7 +80,7 @@ int main(int argc, char *argv[])
     db.setPort(port_1.toUInt());
     db.open();
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::addDatabase("QMYSQL","Second");
+    QSqlDatabase dbCalls = QSqlDatabase::addDatabase("QMYSQL", "Calls");
     QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
     QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
     QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
@@ -111,21 +88,21 @@ int main(int argc, char *argv[])
     QString password_2 = QString(QByteArray::fromBase64(password2));
     QString port_2 = global::getSettingsValue("port_2", "settings").toString();
 
-    dbAsterisk.setHostName(hostName_2);
-    dbAsterisk.setDatabaseName(databaseName_2);
-    dbAsterisk.setUserName(userName_2);
-    dbAsterisk.setPassword(password_2);
-    dbAsterisk.setPort(port_2.toUInt());
-    dbAsterisk.open();
+    dbCalls.setHostName(hostName_2);
+    dbCalls.setDatabaseName(databaseName_2);
+    dbCalls.setUserName(userName_2);
+    dbCalls.setPassword(password_2);
+    dbCalls.setPort(port_2.toUInt());
+    dbCalls.open();
 
-    if (!db.isOpen() && !dbAsterisk.isOpen())
+    if (!db.isOpen() && !dbCalls.isOpen())
     {
         QString state = "twoDb";
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
 
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
@@ -136,24 +113,47 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
 
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
 
     }
-    else if (!dbAsterisk.isOpen())
+    else if (!dbCalls.isOpen())
     {
-        QString state = "dbAsterisk";
+        QString state = "dbCalls";
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
 
         DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbAsterisk, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
 
     opened = true;
+
+    QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
+    QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
+    QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
+    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QString port_3 = global::getSettingsValue("port_3", "settings").toString();
+
+    if (!hostName_3.isEmpty() && !databaseName_3.isEmpty() && !userName_3.isEmpty() && !password_3.isEmpty() && !port_3.isEmpty())
+    {
+        QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+        dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+                                "Server="+hostName_3+","+port_3+";"
+                                "Database="+databaseName_3+";"
+                                "Uid="+userName_3+";"
+                                "Pwd="+password_3);
+        dbOrders.open();
+
+        if (dbOrders.isOpen())
+            MSSQLopened = true;
+        else
+            QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+    }
 
     bool bCallRequest = false;
 

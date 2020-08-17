@@ -16,7 +16,7 @@ public:
     explicit DatabasesConnectDialog(QWidget *parent = 0);
     ~DatabasesConnectDialog();
 
-    void setDatabases(QSqlDatabase db, QSqlDatabase dbAsterisk, QString state);
+    void setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state);
 
 private slots:
     void onSave();

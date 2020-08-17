@@ -505,17 +505,17 @@ void PopupWindow::onOpenAccess()
     QString password_3 = QString(QByteArray::fromBase64(password3));
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
-    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
-    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+    QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+    dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
                             "Server="+hostName_3+","+port_3+";"
                             "Database="+databaseName_3+";"
                             "Uid="+userName_3+";"
                             "Pwd="+password_3);
-    dbMSSQL.open();
+    dbOrders.open();
 
-    if (dbMSSQL.isOpen())
+    if (dbOrders.isOpen())
     {
-        QSqlQuery query1(dbMSSQL);
+        QSqlQuery query1(dbOrders);
 
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (user_id(?), ?)");
@@ -525,13 +525,13 @@ void PopupWindow::onOpenAccess()
 
         popup->ui->openAccessButton->setDisabled(true);
 
-        dbMSSQL.close();
+        dbOrders.close();
     }
     else
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
 
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
     }
 }
 

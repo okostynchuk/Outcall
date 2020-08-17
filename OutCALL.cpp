@@ -10,6 +10,8 @@
 #include "PopupWindow.h"
 #include "PopupHelloWindow.h"
 #include "RemindersDialog.h"
+#include "PopupReminder.h"
+#include "PopupNotification.h"
 
 #include <QMenu>
 #include <QTcpSocket>
@@ -46,6 +48,8 @@ OutCall::OutCall() :
 
     connect(m_remindersDialog, SIGNAL(reminders(bool)), this, SLOT(changeIconReminders(bool)));
     connect(m_settingsDialog, SIGNAL(restart(bool)), this, SLOT(hideTrayIcon(bool)));
+
+    connect(this, SIGNAL(showReminders(bool)), m_remindersDialog, SLOT(showReminders(bool)));
 
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
@@ -204,7 +208,11 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
     {
-        changeIconReminders(false);
+        QSqlDatabase::database().open();
+        QSqlDatabase::database("Calls").open();
+
+        if (!QSqlDatabase::database().isOpen() || !QSqlDatabase::database("Calls").isOpen())
+            opened = false;
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
@@ -223,7 +231,13 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
             QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
         }
         else
+        {
+            changeIconReminders(false);
+
             enableActions();
+
+            emit showReminders(true);
+        }
     }
     else if (state == AsteriskManager::CONNECTING)
     {
@@ -242,6 +256,15 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_signIn->setText(tr("&Войти в аккаунт"));
         m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
 
+        emit showReminders(false);
+
+        PopupHelloWindow::closeAll();
+        PopupWindow::closeAll();
+        PopupNotification::closeAll();
+        PopupReminder::closeAll();
+
+        QApplication::closeAllWindows();
+
         disableActions();
 
         m_timer.stop();
@@ -256,9 +279,16 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
         m_signIn->setText(tr("&Войти в аккаунт"));
 
-        disableActions();
+        emit showReminders(false);
 
-        opened = false;
+        PopupHelloWindow::closeAll();
+        PopupWindow::closeAll();
+        PopupNotification::closeAll();
+        PopupReminder::closeAll();
+
+        QApplication::closeAllWindows();
+
+        disableActions();
 
         m_timer.stop();
     }
@@ -266,15 +296,6 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
 void OutCall::disableActions()
 {
-    QApplication::closeAllWindows();
-
-    if (m_contactsDialog->isVisible())
-        m_contactsDialog->close();
-    if (m_callHistoryDialog->isVisible())
-        m_callHistoryDialog->close();
-    if (m_remindersDialog->isVisible())
-        m_remindersDialog->close();
-
     m_placeCall->setEnabled(false);
     callHistoryAction->setEnabled(false);
     contactsAction->setEnabled(false);
@@ -304,16 +325,20 @@ void OutCall::changeIconReminders(bool changing)
     query.addBindValue(my_number);
     query.addBindValue(my_number);
     query.exec();
-    query.first();
 
-    int receivedReminders = query.value(0).toInt();
+    int receivedReminders = 0;
+
+    if (query.next())
+        receivedReminders = query.value(0).toInt();
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
     query.addBindValue(my_number);
     query.exec();
-    query.first();
 
-    int activeReminders = query.value(0).toInt();
+    int activeReminders = 0;
+
+    if (query.next())
+        activeReminders = query.value(0).toInt();
 
     if (changing)
     {
@@ -430,12 +455,24 @@ void OutCall::onRemindersDialog()
 {
     m_remindersDialog->showNormal();
     m_remindersDialog->raise();
+
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ?");
+    query.addBindValue(my_number);
+    query.addBindValue(my_number);
+    query.exec();
+
+    m_remindersDialog->reminders(false);
 }
 
 void OutCall::close()
 {
     g_pAsteriskManager->signOut();
+
     m_systemTrayIcon->hide();
+
     QApplication::quit();
 }
 
@@ -454,7 +491,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
     {
         if (opened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
         {
-            m_placeCallDialog->show();
+            m_placeCallDialog->showNormal();
             m_placeCallDialog->activateWindow();
         }
     }

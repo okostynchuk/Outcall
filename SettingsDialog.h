@@ -50,6 +50,7 @@ private slots:
     void on_cancelButton_clicked();
 
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::SettingsDialog *ui;

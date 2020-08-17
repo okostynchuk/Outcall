@@ -53,6 +53,7 @@ private slots:
 
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::ContactsDialog *ui;

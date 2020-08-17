@@ -54,25 +54,20 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     languages = global::getSettingsValue("language", "settings").toString();
 
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("UPDATE reminders SET completed = true WHERE phone_from <> ? AND phone_to = ? AND active = false");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
-    query.exec();
-
     resizeCells = true;
 
-    go="default";
+    go = "default";
     page = "1";
 
-    loadRelevantReminders();
+    QSqlDatabase db;
+    QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false ORDER BY id DESC");
     query.addBindValue(my_number);
     query.addBindValue(my_number);
     query.exec();
+
+    oldReceivedReminders = 0;
 
     if (query.next())
         oldReceivedReminders = query.value(0).toInt();
@@ -105,7 +100,6 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     remindersThread->start();
 
     timer.setInterval(TIME_TO_UPDATE);
-    timer.start();
 }
 
 RemindersDialog::~RemindersDialog()
@@ -113,6 +107,24 @@ RemindersDialog::~RemindersDialog()
     remindersThread->requestInterruption();
 
     delete ui;
+}
+
+void RemindersDialog::showReminders(bool show)
+{
+    if (show)
+    {
+        showReminder = true;
+
+        loadRelevantReminders();
+
+        timer.start();
+    }
+    else
+    {
+        showReminder = false;
+
+        timer.stop();
+    }
 }
 
 void RemindersDialog::showEvent(QShowEvent *event)
@@ -146,6 +158,14 @@ void RemindersDialog::closeEvent(QCloseEvent *event)
 
     QDialog::clearFocus();
 
+    selectionRelevant.clear();
+    selectionIrrelevant.clear();
+    selectionDelegated.clear();
+
+    ui->tableView->clearSelection();
+    ui->tableView_2->clearSelection();
+    ui->tableView_3->clearSelection();
+
     ui->tabWidget->setCurrentIndex(0);
 
     go = "default";
@@ -169,16 +189,19 @@ void RemindersDialog::onTimer()
 
     if (newReceivedReminders > oldReceivedReminders)
     {
-        emit reminders(true);
-
         query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false ORDER BY id DESC LIMIT 0,?");
         query.addBindValue(my_number);
         query.addBindValue(my_number);
         query.addBindValue(newReceivedReminders - oldReceivedReminders);
         query.exec();
 
-        while (query.next())
-            PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
+        if (showReminder)
+        {
+            emit reminders(true);
+
+            while (query.next())
+                PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
+        }
     }
     else
         resizeCells = false;
@@ -282,6 +305,7 @@ void RemindersDialog::sendNewValues()
 
     query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
     query.exec();
+
     while (query.next())
     {
         ids.append(query.value(0).value<QString>());
@@ -426,7 +450,8 @@ void RemindersDialog::loadRelevantReminders()
         ui->tableView->resizeColumnsToContents();
     }
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+        ui->tableView->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
 
     if (!selectionRelevant.isEmpty())
         for (int i = 0; i < selectionRelevant.length(); ++i)
@@ -556,7 +581,8 @@ void RemindersDialog::loadIrrelevantReminders()
         ui->tableView_2->resizeColumnsToContents();
     }
 
-    ui->tableView_2->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
+    if (ui->tableView_2->model()->columnCount() != 0)
+        ui->tableView_2->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
 
     if (!selectionIrrelevant.isEmpty())
         for (int i = 0; i < selectionIrrelevant.length(); ++i)
@@ -681,7 +707,8 @@ void RemindersDialog::loadDelegatedReminders()
         ui->tableView_3->resizeColumnsToContents();
     }
 
-    ui->tableView_3->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
+    if (ui->tableView_3->model()->columnCount() != 0)
+        ui->tableView_3->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
 
     if (!selectionDelegated.isEmpty())
         for (int i = 0; i < selectionDelegated.length(); ++i)
@@ -829,7 +856,7 @@ void RemindersDialog::changeState()
 
         go = "default";
 
-        onUpdate();
+        onUpdateTab();
     }
 }
 
@@ -1062,7 +1089,19 @@ void RemindersDialog::onUpdateTab()
     ui->tableView_3->clearSelection();
 
     if (ui->tabWidget->currentIndex() == 0)
+    {
         loadRelevantReminders();
+
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ?");
+        query.addBindValue(my_number);
+        query.addBindValue(my_number);
+        query.exec();
+
+        emit reminders(false);
+    }
     else if (ui->tabWidget->currentIndex() == 1)
         loadIrrelevantReminders();
     else if (ui->tabWidget->currentIndex() == 2)
@@ -1081,7 +1120,8 @@ void RemindersDialog::onUpdate()
 
 void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
 {
-    PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
+    if (showReminder)
+        PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 }
 
 void RemindersDialog::on_previousButton_clicked()
@@ -1117,6 +1157,14 @@ void RemindersDialog::on_lineEdit_page_returnPressed()
     go = "enter";
 
     onUpdateTab();
+}
+
+void RemindersDialog::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else
+        QWidget::keyPressEvent(event);
 }
 
 
