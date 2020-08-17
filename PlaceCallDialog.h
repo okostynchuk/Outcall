@@ -38,7 +38,9 @@ private slots:
     void showNumber(const QModelIndex &);
 
     void on_lineEdit_returnPressed();
+    void on_phoneLine_returnPressed();
 
+    void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent* event);
 

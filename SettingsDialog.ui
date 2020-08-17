@@ -660,7 +660,7 @@
           <string>Применить</string>
          </property>
          <property name="autoDefault">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
