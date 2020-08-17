@@ -24,9 +24,11 @@ signals:
     void reminders(bool);
 
 public slots:
-    void onUpdate();
     void sendNewValues();
     void receiveData(bool);
+    void showReminders(bool);
+
+    void onUpdate();
 
 public:
     explicit RemindersDialog(QWidget *parent = 0);
@@ -56,6 +58,7 @@ private slots:
 
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::RemindersDialog *ui;
@@ -66,6 +69,7 @@ private:
 
     QThread* remindersThread;
     RemindersThread* remindersThreadManager;
+
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
 
@@ -75,6 +79,7 @@ private:
     QModelIndexList selectionIrrelevant;
     QModelIndexList selectionDelegated;
 
+    bool showReminder;
     QTimer timer;
     QString languages;
     QString my_number;

@@ -76,6 +76,7 @@ private slots:
 
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::CallHistoryDialog *ui;

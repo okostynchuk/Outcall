@@ -99,17 +99,17 @@ void ViewOrgContactDialog::onOpenAccess()
     QString password_3 = QString(QByteArray::fromBase64(password3));
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
-    QSqlDatabase dbMSSQL = QSqlDatabase::addDatabase("QODBC", "Third");
-    dbMSSQL.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
+    QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+    dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
                             "Server="+hostName_3+","+port_3+";"
                             "Database="+databaseName_3+";"
                             "Uid="+userName_3+";"
                             "Pwd="+password_3);
-    dbMSSQL.open();
+    dbOrders.open();
 
-    if (dbMSSQL.isOpen())
+    if (dbOrders.isOpen())
     {
-        QSqlQuery query(dbMSSQL);
+        QSqlQuery query(dbOrders);
 
         query.prepare("INSERT INTO CallTable (UserID, ClientID)"
                     "VALUES (?, ?)");
@@ -119,10 +119,10 @@ void ViewOrgContactDialog::onOpenAccess()
 
         ui->openAccessButton->setDisabled(true);
 
-        dbMSSQL.close();
+        dbOrders.close();
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе клиентов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
 void ViewOrgContactDialog::receiveDataPerson(bool updating)
@@ -561,7 +561,7 @@ void ViewOrgContactDialog::loadAllCalls()
 
     queriesAll.append(queryModel);
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -632,7 +632,7 @@ void ViewOrgContactDialog::loadAllCalls()
                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
     }
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -694,7 +694,7 @@ void ViewOrgContactDialog::loadMissedCalls()
     if (!queriesMissed.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     queryModel = new QSqlQueryModel;
 
@@ -763,7 +763,7 @@ void ViewOrgContactDialog::loadMissedCalls()
                                              ui->comboBox_list->currentText().toInt()) + " , " +
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -816,7 +816,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
     if (!queriesReceived.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     queryModel = new QSqlQueryModel;
 
@@ -884,7 +884,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
                                            ui->comboBox_list->currentText().toInt()) + " , " +
                          QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -938,7 +938,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
     if (!queriesPlaced.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     queryModel = new QSqlQueryModel;
 
@@ -1005,7 +1005,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
                                              ui->comboBox_list->currentText().toInt()) + " , " +
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -1401,8 +1401,8 @@ void ViewOrgContactDialog::tabSelected()
 
 void ViewOrgContactDialog::updateCount()
 {
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlQuery query(dbAsterisk);
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+    QSqlQuery query(dbCalls);
 
     if (ui->tabWidget_3->currentIndex() == 0)
     {

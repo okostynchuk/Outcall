@@ -30,8 +30,6 @@ private:
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
-    QSqlDatabase dbReminders;
-    QSqlQuery query;
     QString my_number;
 };
 

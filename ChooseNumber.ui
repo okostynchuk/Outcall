@@ -171,6 +171,13 @@ background-color: #fffff8;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>FirstNumber</tabstop>
+  <tabstop>SecondNumber</tabstop>
+  <tabstop>ThirdNumber</tabstop>
+  <tabstop>FourthNumber</tabstop>
+  <tabstop>FifthNumber</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

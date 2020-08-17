@@ -10,22 +10,6 @@ RemindersThread::RemindersThread(QString receivedNumber, QList<QString> received
     ids = receivedIds;
     dateTimes = receivedDateTimes;
     notes = receivedNotes;
-
-    dbReminders = QSqlDatabase::addDatabase("QMYSQL", "Reminders");
-    QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
-    QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
-    QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
-    QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
-    QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
-
-    dbReminders.setHostName(hostName_1);
-    dbReminders.setDatabaseName(databaseName_1);
-    dbReminders.setUserName(userName_1);
-    dbReminders.setPassword(password_1);
-    dbReminders.setPort(port_1.toUInt());
-
-    dbReminders.open();
 }
 
 RemindersThread::~RemindersThread()

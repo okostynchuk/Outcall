@@ -1,7 +1,7 @@
 #ifndef CHOOSENUMBER_H
 #define CHOOSENUMBER_H
 
-#include <PlaceCallDialog.h>
+#include "PlaceCallDialog.h"
 
 #include <QDialog>
 #include <QString>
@@ -28,7 +28,7 @@ public:
     void setValuesNumber(QString &);
 
 private slots:
-    bool eventFilter(QObject*, QEvent*event);
+    bool eventFilter(QObject*, QEvent *event);
 
 private:
     Ui::ChooseNumber *ui;

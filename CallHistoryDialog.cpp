@@ -127,7 +127,7 @@ void CallHistoryDialog::loadAllCalls()
 
     queriesAll.append(queryModel);
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -182,7 +182,7 @@ void CallHistoryDialog::loadAllCalls()
         queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
     }
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -252,7 +252,7 @@ void CallHistoryDialog::loadMissedCalls()
 
     queriesMissed.append(queryModel);
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -312,7 +312,7 @@ void CallHistoryDialog::loadMissedCalls()
                           QString::number(ui->comboBox_list->currentText().toInt()));
     }
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -376,7 +376,7 @@ void CallHistoryDialog::loadReceivedCalls()
 
     queriesReceived.append(queryModel);
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -433,7 +433,7 @@ void CallHistoryDialog::loadReceivedCalls()
                          QString::number(ui->comboBox_list->currentText().toInt()));
     }
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
@@ -499,7 +499,7 @@ void CallHistoryDialog::loadPlacedCalls()
 
     queriesPlaced.append(queryModel);
 
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -554,7 +554,7 @@ void CallHistoryDialog::loadPlacedCalls()
                          QString::number(ui->comboBox_list->currentText().toInt()));
     }
 
-    queryModel->setQuery(queryString, dbAsterisk);
+    queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
@@ -634,8 +634,8 @@ void CallHistoryDialog::tabSelected()
 
 void CallHistoryDialog::updateCount()
 {
-    QSqlDatabase dbAsterisk = QSqlDatabase::database("Second");
-    QSqlQuery query(dbAsterisk);
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+    QSqlQuery query(dbCalls);
 
     if (ui->tabWidget->currentIndex() == 0)
     {
@@ -1405,5 +1405,13 @@ void CallHistoryDialog::on_lineEdit_page_returnPressed()
     go = "enter";
 
     onUpdate();
+}
+
+void CallHistoryDialog::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else
+        QWidget::keyPressEvent(event);
 }
 

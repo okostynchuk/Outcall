@@ -4327,6 +4327,7 @@ QToolTip {
  <tabstops>
   <tabstop>textEdit</tabstop>
   <tabstop>saveNoteButton</tabstop>
+  <tabstop>viewNotesButton</tabstop>
   <tabstop>addReminderButton</tabstop>
   <tabstop>openAccessButton</tabstop>
   <tabstop>showCardButton</tabstop>

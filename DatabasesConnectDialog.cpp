@@ -110,7 +110,7 @@ void DatabasesConnectDialog::onSave()
             close();
         }
     }
-    else if (state_db == "dbAsterisk")
+    else if (state_db == "dbCalls")
     {
         checkDbAsterisk();
 
@@ -156,7 +156,7 @@ void DatabasesConnectDialog::onClose()
      qApp->quit();
 }
 
-void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbAsterisk, QString state)
+void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
 {
     state_db = state;
 
@@ -165,14 +165,14 @@ void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbAsteri
         ui->tabWidget_2->setCurrentIndex(0);
         ui->tabWidget_2->setTabEnabled(1, false);
     }
-    else if (state_db == "dbAsterisk")
+    else if (state_db == "dbCalls")
     {
         ui->tabWidget_2->setCurrentIndex(1);
         ui->tabWidget_2->setTabEnabled(0, false);
     }
 
     DB = db;
-    DbAsterisk = dbAsterisk;
+    DbAsterisk = dbCalls;
 }
 
 void DatabasesConnectDialog::checkDb()

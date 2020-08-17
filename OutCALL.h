@@ -22,6 +22,9 @@ class OutCall : public QWidget
 {
     Q_OBJECT
 
+signals:
+    void showReminders(bool);
+
 public:
     OutCall();
     ~OutCall();
