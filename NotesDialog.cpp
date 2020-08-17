@@ -80,14 +80,14 @@ void NotesDialog::loadNotes()
             query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
             query.exec();
 
-            while(query.next())
+            while (query.next())
                 numbersList.append(query.value(0).toString());
 
-            if(numbersList.isEmpty())
+            if (numbersList.isEmpty())
                 queryString.append("phone_number = '" + phoneNumber + "'");
             else
             {
-                for(int i = 0; i < numbersList.size(); i++)
+                for (int i = 0; i < numbersList.size(); i++)
                 {
                     if (i == 0)
                         queryString.append(" phone_number = '" + numbersList[i] + "'");
