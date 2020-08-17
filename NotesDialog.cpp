@@ -71,7 +71,7 @@ void NotesDialog::loadNotes()
     else
     {
         if (isInnerPhone(&phoneNumber))
-            queryString.append("phone_number = '" + phoneNumber + "'");
+            queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
             QSqlDatabase db;
@@ -84,16 +84,18 @@ void NotesDialog::loadNotes()
                 numbersList.append(query.value(0).toString());
 
             if (numbersList.isEmpty())
-                queryString.append("phone_number = '" + phoneNumber + "'");
+                queryString.append("( phone_number = '" + phoneNumber + "'");
             else
             {
                 for (int i = 0; i < numbersList.size(); i++)
                 {
                     if (i == 0)
-                        queryString.append(" phone_number = '" + numbersList[i] + "'");
+                        queryString.append("( phone_number = '" + numbersList[i] + "'");
                     else
                         queryString.append(" OR phone_number = '" + numbersList[i] + "'");
                 }
+
+                queryString.append(") AND author = '" + my_number + "'");
             }
         }
     }
