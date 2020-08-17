@@ -718,7 +718,7 @@
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Notes</translation>
+        <translation type="vanished">Notes</translation>
     </message>
     <message>
         <source>Имя</source>
@@ -823,6 +823,10 @@
     <message>
         <source>Добавить к существующему</source>
         <translation>Add to existing</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Note</translation>
     </message>
 </context>
 <context>
@@ -1831,11 +1835,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
         <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt;</source>
+        <translation>&lt;b&gt; %1 &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1975,6 +1983,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Неизвестный</source>
         <translation>Unknown</translation>
+    </message>
+    <message>
+        <source>Открыть заметки</source>
+        <translation>Open notes</translation>
     </message>
 </context>
 <context>
@@ -2125,7 +2137,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation type="vanished">This contact belongs to the organization!</translation>
+        <translation>This contact belongs to the organization!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
@@ -2219,6 +2231,10 @@ p, li { white-space: pre-wrap; }
         <source>Организации не существует или она была изменена!</source>
         <translation>Organization does not exist or it was modified!</translation>
     </message>
+    <message>
+        <source>Данный номер уже принадлежит контакту!</source>
+        <translation>This number already belongs to the contact!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2285,6 +2301,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Делегированные</source>
         <translation>Delegated</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
     </message>
 </context>
 <context>
@@ -2586,7 +2626,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Notes</translation>
+        <translation type="vanished">Notes</translation>
     </message>
     <message>
         <source>Редактировать</source>
@@ -2696,6 +2736,10 @@ p, li { white-space: pre-wrap; }
         <source>Добавить напоминание</source>
         <translation>Add reminder</translation>
     </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Note</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -2785,7 +2829,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Notes</translation>
+        <translation type="vanished">Notes</translation>
     </message>
     <message>
         <source>Редактировать</source>
@@ -2902,6 +2946,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Add reminder</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Note</translation>
     </message>
 </context>
 </TS>

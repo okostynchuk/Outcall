@@ -12,6 +12,7 @@
 #include "ViewOrgContactDialog.h"
 #include "SettingsDialog.h"
 #include "AddReminderDialog.h"
+#include "NotesDialog.h"
 
 #include <QDialog>
 #include <QTimer>
@@ -76,6 +77,7 @@ private slots:
     void onTextChanged();
     void onOpenAccess();
     void onAddReminder();
+    void onViewNotes();
 
     bool isInnerPhone(QString *str);
 
@@ -95,9 +97,11 @@ private:
     ViewContactDialog *viewContactDialog;
     ViewOrgContactDialog *viewOrgContactDialog;
     AddReminderDialog *addReminderDialog;
+    NotesDialog *notesDialog;
 
     QPoint position;
     QString userID;
+    QString author;
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;

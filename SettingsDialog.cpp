@@ -405,7 +405,7 @@ void SettingsDialog::onRemoveButtonClicked()
         msgBox.setButtonText(QMessageBox::No, tr("Нет")); 
         int reply = msgBox.exec();
 
-        switch(reply)
+        switch (reply)
         {
             case QMessageBox::Yes:
                 ui->addButton->setEnabled(true);
@@ -440,7 +440,7 @@ void SettingsDialog::onRemoveGroupButtonClicked()
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
         int reply = msgBox.exec();
 
-        switch(reply)
+        switch (reply)
         {
             case QMessageBox::Yes:
                 ui->addButton_2->setEnabled(true);
@@ -506,7 +506,7 @@ void SettingsDialog::onEditGroupButtonClicked()
         editExtensionDialog.setExtension(group_extension);
         editExtensionDialog.setProtocol(group_protocol);
 
-        if(editExtensionDialog.exec())
+        if (editExtensionDialog.exec())
         {
             const QString newExtension = editExtensionDialog.getExtension();
             const QString newProtocol = editExtensionDialog.getProtocol();

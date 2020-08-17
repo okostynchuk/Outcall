@@ -598,7 +598,7 @@ void ViewOrgContactDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages_2->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT if(";
+    QString queryString = "SELECT IF(";
 
     for (int i = 0; i < countNumbers; i++)
     {
@@ -615,7 +615,7 @@ void ViewOrgContactDialog::loadAllCalls()
 
     for (int i = 0; i < countNumbers; i++)
     {
-        if(i == 0)
+        if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
         else
             queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
@@ -742,7 +742,7 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     for (int i = 0; i < countNumbers; i++)
     {
-            if(i == 0)
+            if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
@@ -1581,14 +1581,16 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 
 void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
 {
-    if(ui->tabWidget_3->currentIndex() == 0)
+    QString phone;
+
+    if (ui->tabWidget_3->currentIndex() == 0)
         uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
     else
         uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();
 
     notesDialog = new NotesDialog;
-    notesDialog->setCallId(uniqueid);
-    notesDialog->setSaveDisable();
+    notesDialog->receiveData(uniqueid, phone, "byId");
+    notesDialog->hideAddNote();
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

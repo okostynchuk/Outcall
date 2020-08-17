@@ -124,7 +124,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
 
 void EditReminderDialog::onTextChanged()
 {
-    if(ui->textEdit->toPlainText().simplified().length() > 255)
+    if (ui->textEdit->toPlainText().simplified().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
@@ -171,7 +171,7 @@ void EditReminderDialog::closeEvent(QCloseEvent *event)
 
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
     {
         emit sendData(false);
 

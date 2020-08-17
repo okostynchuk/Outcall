@@ -158,7 +158,7 @@ void PopupHelloWindow::onTimer()
 {
     if (m_bAppearing) // APPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 if (m_nCurrentPosY>(m_nStartPosY-height()))
@@ -189,7 +189,7 @@ void PopupHelloWindow::onTimer()
 
     else // DISSAPPEARING
     {
-        switch(m_nTaskbarPlacement)
+        switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
                 if (m_nCurrentPosY<m_nStartPosY)

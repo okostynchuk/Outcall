@@ -164,7 +164,7 @@ void CallHistoryDialog::loadAllCalls()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
-    QString queryString = "SELECT if(src='"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
+    QString queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                                                       "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
                                                       " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                                                       "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
@@ -323,7 +323,7 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->setColumnHidden(5, true);
 
-    if(my_group.isEmpty())
+    if (my_group.isEmpty())
         ui->tableView_2->setColumnHidden(2, true);
 
     for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
@@ -986,12 +986,21 @@ void CallHistoryDialog::onPlayAudioPhone()
 void CallHistoryDialog::addNote(const QModelIndex &index)
 {
     if (ui->tabWidget->currentIndex() == 0)
+    {
         uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
+        phone =  queryModel->data(queryModel->index(index.row(), 1)).toString();
+        if(phone == my_number)
+            phone =  queryModel->data(queryModel->index(index.row(), 2)).toString();
+    }
     else
-        uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();\
+    {
+        uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();
+        phone = queryModel->data(queryModel->index(index.row(), 1)).toString();
+    }
 
+    QString state = "byId";
     notesDialog = new NotesDialog;
-    notesDialog->setCallId(uniqueid);
+    notesDialog->receiveData(uniqueid, phone, state);
     connect(notesDialog, SIGNAL(sendData()), this, SLOT(receiveDataFromNotes()));
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
