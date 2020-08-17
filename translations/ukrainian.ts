@@ -733,7 +733,7 @@
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Коментар</translation>
+        <translation type="vanished">Коментар</translation>
     </message>
     <message>
         <source>Имя</source>
@@ -814,6 +814,10 @@
     <message>
         <source>Добавить к существующему</source>
         <translation>Додати до існуючого</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Коментар</translation>
     </message>
 </context>
 <context>
@@ -1815,11 +1819,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
         <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt;</source>
+        <translation>&lt;b&gt; %1 &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1956,6 +1964,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Неизвестный</source>
         <translation>Невідомий</translation>
+    </message>
+    <message>
+        <source>Открыть заметки</source>
+        <translation>Відкрити коментарі</translation>
     </message>
 </context>
 <context>
@@ -2106,7 +2118,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation type="vanished">Обраний контакт належить організації!</translation>
+        <translation>Обраний контакт належить організації!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
@@ -2200,6 +2212,10 @@ p, li { white-space: pre-wrap; }
         <source>Организации не существует или она была изменена!</source>
         <translation>Організація не існує або вона була змінена!</translation>
     </message>
+    <message>
+        <source>Данный номер уже принадлежит контакту!</source>
+        <translation>Цей номер вже належить контакту!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2266,6 +2282,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Делегированные</source>
         <translation>Делеговані</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
     </message>
 </context>
 <context>
@@ -2591,7 +2631,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Коментарі</translation>
+        <translation type="vanished">Коментарі</translation>
     </message>
     <message>
         <source>Заказы</source>
@@ -2668,6 +2708,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Додати нагадування</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Коментар</translation>
     </message>
 </context>
 <context>
@@ -2798,7 +2842,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Коментарі</translation>
+        <translation type="vanished">Коментарі</translation>
     </message>
     <message>
         <source>Добавить сотрудника</source>
@@ -2875,6 +2919,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Додати нагадування</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Коментар</translation>
     </message>
 </context>
 </TS>

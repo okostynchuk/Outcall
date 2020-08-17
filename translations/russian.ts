@@ -735,7 +735,7 @@
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Заметки</translation>
+        <translation type="vanished">Заметки</translation>
     </message>
     <message>
         <source>Имя</source>
@@ -816,6 +816,10 @@
     <message>
         <source>Добавить к существующему</source>
         <translation>Добавить к существующему</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Заметка</translation>
     </message>
 </context>
 <context>
@@ -1819,11 +1823,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;font size = 1&gt;%1&lt;/font&gt;</source>
         <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt;</source>
+        <translation>&lt;b&gt; %1 &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1960,6 +1968,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Неизвестный</source>
         <translation>Неизвестный</translation>
+    </message>
+    <message>
+        <source>Открыть заметки</source>
+        <translation>Открыть заметки</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2122,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Данный контакт принадлежит организации!</source>
-        <translation type="vanished">Данный контакт принадлежит организации!</translation>
+        <translation>Данный контакт принадлежит организации!</translation>
     </message>
     <message>
         <source>Данный контакт принадлежит физ. лицу!</source>
@@ -2204,6 +2216,10 @@ p, li { white-space: pre-wrap; }
         <source>Организации не существует или она была изменена!</source>
         <translation>Организации не существует или она была изменена!</translation>
     </message>
+    <message>
+        <source>Данный номер уже принадлежит контакту!</source>
+        <translation>Данный номер уже принадлежит контакту!</translation>
+    </message>
 </context>
 <context>
     <name>RemindersDialog</name>
@@ -2270,6 +2286,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Делегированные</source>
         <translation>Делегированные</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>из </translation>
     </message>
 </context>
 <context>
@@ -2597,7 +2637,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Заметки</translation>
+        <translation type="vanished">Заметки</translation>
     </message>
     <message>
         <source>Заказы</source>
@@ -2674,6 +2714,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Добавить напоминание</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Заметка</translation>
     </message>
 </context>
 <context>
@@ -2804,7 +2848,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметки</source>
-        <translation>Заметки</translation>
+        <translation type="vanished">Заметки</translation>
     </message>
     <message>
         <source>Добавить сотрудника</source>
@@ -2881,6 +2925,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Добавить напоминание</source>
         <translation>Добавить напоминание</translation>
+    </message>
+    <message>
+        <source>Заметка</source>
+        <translation>Заметка</translation>
     </message>
 </context>
 </TS>
