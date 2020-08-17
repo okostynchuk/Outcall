@@ -181,11 +181,16 @@ void PlaceCallDialog::clearEditText()
     ui->lineEdit_2->hide();
 }
 
+void PlaceCallDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+    ui->lineEdit->setFocus();
+}
+
 void PlaceCallDialog::closeEvent(QCloseEvent *event)
 {
     QDialog::closeEvent(event);
-
-    QDialog::clearFocus();
 
     ui->comboBox->setCurrentIndex(0);
 
@@ -221,4 +226,9 @@ void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
         QDialog::close();
     else
         QWidget::keyPressEvent(event);
+}
+
+void PlaceCallDialog::on_phoneLine_returnPressed()
+{
+    onCallButton();
 }

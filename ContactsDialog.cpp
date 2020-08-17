@@ -132,14 +132,14 @@ void ContactsDialog::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
 
+    ui->lineEdit->setFocus();
+
     onUpdate();
 }
 
 void ContactsDialog::closeEvent(QCloseEvent *event)
 {
     QDialog::closeEvent(event);
-
-    QDialog::clearFocus();
 
     ui->lineEdit->clear();
 
