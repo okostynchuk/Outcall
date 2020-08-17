@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QStringList>
+#include <QDebug>
 
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -260,7 +261,7 @@ void AddContactDialog::onSave()
                     queryOrg.exec();
 
                     if (queryOrg.next())
-                        queryOrg.addBindValue(queryOrg.value(0).toString());
+                        query.addBindValue(queryOrg.value(0).toInt());
                     else
                     {
                         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
