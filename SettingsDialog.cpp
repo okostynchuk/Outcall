@@ -23,6 +23,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->autoSignIn->hide();
+    ui->autoStartBox->hide();
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -80,8 +81,8 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
 void SettingsDialog::saveSettings()
 {
     // General
-    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
-    global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
+//    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
+//    global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
 
     // Server
@@ -163,7 +164,7 @@ void SettingsDialog::saveSettings()
 void SettingsDialog::loadSettings()
 {
     // General
-    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", false).toBool());
+    ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", true).toBool());
     ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
     bool autoSignIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
@@ -279,12 +280,12 @@ void SettingsDialog::on_cancelButton_clicked()
 
 void SettingsDialog::applySettings()
 {
-    if (ui->autoStartBox->isChecked())
-        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
-    else
-        f.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+//    if (ui->autoStartBox->isChecked())
+//        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+//    else
+//        f.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 
-    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
+//    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }
 
 void SettingsDialog::loadLanguages()
@@ -539,8 +540,10 @@ void SettingsDialog::checkGroupExten()
 
 void SettingsDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         QDialog::close();
+    else if (event->key() == Qt::Key_Return)
+        ui->applyButton->click();
     else
         QWidget::keyPressEvent(event);
 }

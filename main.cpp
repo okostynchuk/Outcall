@@ -65,6 +65,14 @@ int main(int argc, char *argv[])
             return 1;
         }
 
+    global::setSettingsValue("auto_sign_in",  true, "general");
+    global::setSettingsValue("auto_startup",  true, "general");
+
+    QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
+    settings.beginGroup("Shell Folders");
+
+    QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
     QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
