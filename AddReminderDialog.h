@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "AsteriskManager.h"
+#include "ChooseEmployee.h"
 
 #include <QDialog>
 
@@ -17,6 +18,9 @@ class AddReminderDialog : public QDialog
 signals:
     void sendData(bool);
 
+public slots:
+    void receiveEmployee(QString);
+
 public:
     explicit AddReminderDialog(QWidget *parent = nullptr);
     ~AddReminderDialog();
@@ -24,6 +28,7 @@ public:
     void setCallId(QString);
 
 private slots:
+    void onChooseEmployee();
     void onSave();
     void onTextChanged();
 
@@ -36,6 +41,8 @@ private slots:
 
 private:
     Ui::AddReminderDialog *ui;
+
+    ChooseEmployee *chooseEmployee;
 
     QString my_number;
     QString callId;

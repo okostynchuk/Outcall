@@ -16,8 +16,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    ui->comboBox->addItem(my_number);
-    ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
+    ui->employee->setText(my_number);
 
     QString languages = global::getSettingsValue("language", "settings").toString();
 
@@ -39,6 +38,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &AddReminderDialog::onSave);
+    connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &AddReminderDialog::onChooseEmployee);
 
     ui->calendarWidget->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 }
@@ -46,6 +46,19 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 AddReminderDialog::~AddReminderDialog()
 {
     delete ui;
+}
+
+void AddReminderDialog::receiveEmployee(QString employee)
+{
+    ui->employee->setText(employee);
+}
+
+void AddReminderDialog::onChooseEmployee()
+{
+    chooseEmployee = new ChooseEmployee;
+    connect(chooseEmployee, SIGNAL(sendEmployee(QString)), this, SLOT(receiveEmployee(QString)));
+    chooseEmployee->show();
+    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void AddReminderDialog::onSave()
@@ -74,11 +87,11 @@ void AddReminderDialog::onSave()
 
     if (callId.isEmpty())
     {
-        if (ui->comboBox->currentText() != my_number)
+        if (ui->employee->text() != my_number)
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
-            query.addBindValue(ui->comboBox->currentText());
+            query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.exec();
@@ -87,7 +100,7 @@ void AddReminderDialog::onSave()
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, true)");
             query.addBindValue(my_number);
-            query.addBindValue(ui->comboBox->currentText());
+            query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.exec();
@@ -95,11 +108,11 @@ void AddReminderDialog::onSave()
     }
     else
     {
-        if (ui->comboBox->currentText() != my_number)
+        if (ui->employee->text() != my_number)
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
-            query.addBindValue(ui->comboBox->currentText());
+            query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.addBindValue(callId);
@@ -109,7 +122,7 @@ void AddReminderDialog::onSave()
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, active) VALUES(?, ?, ?, ?, ?, true)");
             query.addBindValue(my_number);
-            query.addBindValue(ui->comboBox->currentText());
+            query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.addBindValue(callId);
@@ -121,7 +134,7 @@ void AddReminderDialog::onSave()
 
     close();
 
-    if (ui->comboBox->currentText() != my_number)
+    if (ui->employee->text() != my_number)
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
     else
         QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
