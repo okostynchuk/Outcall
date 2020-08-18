@@ -615,7 +615,7 @@
     </message>
     <message>
         <source>Содержание</source>
-        <translation>Content</translation>
+        <translation type="vanished">Content</translation>
     </message>
     <message>
         <source>+5 минут</source>
@@ -660,6 +660,14 @@
     <message>
         <source>Сохранить</source>
         <translation>Save</translation>
+    </message>
+    <message>
+        <source>Содержание:</source>
+        <translation>Content:</translation>
+    </message>
+    <message>
+        <source>Ввод содержания</source>
+        <translation>Сontent input</translation>
     </message>
 </context>
 <context>
@@ -1542,6 +1550,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Сохранить заметку</source>
         <translation>Save the note</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>from </translation>
     </message>
 </context>
 <context>

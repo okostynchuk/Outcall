@@ -606,7 +606,7 @@
     </message>
     <message>
         <source>Содержание</source>
-        <translation>Зміст</translation>
+        <translation type="vanished">Зміст</translation>
     </message>
     <message>
         <source>+5 минут</source>
@@ -651,6 +651,14 @@
     <message>
         <source>Сохранить</source>
         <translation>Зберегти</translation>
+    </message>
+    <message>
+        <source>Содержание:</source>
+        <translation>Зміст:</translation>
+    </message>
+    <message>
+        <source>Ввод содержания</source>
+        <translation>Введення змісту</translation>
     </message>
 </context>
 <context>
@@ -1526,6 +1534,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Сохранить заметку</source>
         <translation>Зберегти коментар</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>з </translation>
     </message>
 </context>
 <context>
