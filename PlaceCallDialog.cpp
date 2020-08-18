@@ -52,16 +52,34 @@ PlaceCallDialog::~PlaceCallDialog()
 
 void PlaceCallDialog::showNumber(const QModelIndex &index)
 {
-    QString updateID = queryModel->data(queryModel->index(index.row(), 0)).toString();
+    QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
 
     if (queryModel->data(queryModel->index(row, 3)).toString() == "person" || queryModel->data(queryModel->index(row, 3)).toString() == "org")
     {
-         chooseNumber = new ChooseNumber;
-         chooseNumber->setValuesNumber(updateID);
-         connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
-         chooseNumber->show();
-         chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
+        query.addBindValue(id);
+        query.exec();
+
+        if (query.size() == 1)
+        {
+            query.next();
+
+            QString number = query.value(0).toString();
+
+            receiveNumber(number);
+        }
+        else
+        {
+            chooseNumber = new ChooseNumber;
+            chooseNumber->setValuesNumber(id);
+            connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+            chooseNumber->show();
+            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        }
     }
 }
 

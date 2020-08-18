@@ -106,7 +106,7 @@ private:
 
     QString recordpath;
     QString userID;
-    QString updateID;
+    QString contactId;
     QString number;
     QString my_number;
     QString uniqueid;
