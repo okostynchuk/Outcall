@@ -53,7 +53,7 @@
        <item row="1" column="0" colspan="3">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Содержание</string>
+          <string>Содержание:</string>
          </property>
         </widget>
        </item>
@@ -218,6 +218,9 @@
          </property>
          <property name="acceptRichText">
           <bool>false</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Ввод содержания</string>
          </property>
         </widget>
        </item>
