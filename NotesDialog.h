@@ -48,6 +48,8 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
+    QValidator *validator;
+
     QSqlQueryModel *query;
 
     QWidget* addWidgetNote(int, QString);

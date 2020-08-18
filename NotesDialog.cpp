@@ -17,9 +17,13 @@ NotesDialog::NotesDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->textEdit->installEventFilter(this);
+    QRegularExpression regExp("^[0-9]*$");
+    validator = new QRegularExpressionValidator(regExp, this);
+    ui->lineEdit_page->setValidator(validator);
 
     ui->comboBox_list->hide();
+
+    ui->textEdit->installEventFilter(this);
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
