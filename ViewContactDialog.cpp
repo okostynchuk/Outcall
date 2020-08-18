@@ -293,6 +293,9 @@ void ViewContactDialog::setValuesContacts(QString &i)
     ui->VyborID->setText(entryVyborID);
     ui->Comment->setText(entryComment);
 
+    if (ui->VyborID->text() == "0")
+        ui->openAccessButton->hide();
+
     days = ui->comboBox->currentText();
 
     page = "1";
