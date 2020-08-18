@@ -832,7 +832,7 @@ void CallHistoryDialog::onAddContact()
 
     if (checkNumber(number))
     {
-        addContactDialog->setValuesCallHistory(number);
+        addContactDialog->setValues(number);
         connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         addContactDialog->show();
         addContactDialog->setAttribute(Qt::WA_DeleteOnClose);

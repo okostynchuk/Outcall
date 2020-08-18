@@ -510,16 +510,6 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->Comment->setText(entryComment);
 }
 
-void EditOrgContactDialog::setOrgValuesCallHistory(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
-void EditOrgContactDialog::setOrgValuesPopupWindow(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
 void EditOrgContactDialog::onTextChanged()
 {
     if (ui->Comment->toPlainText().simplified().length() > 255)

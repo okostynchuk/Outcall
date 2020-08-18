@@ -392,12 +392,7 @@ void AddContactDialog::on_deleteOrgButton_clicked()
     ui->label_org->setText(tr("Нет"));
 }
 
-void AddContactDialog::setValuesCallHistory(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
-void AddContactDialog::setValuesPopupWindow(QString &number)
+void AddContactDialog::setValues(QString &number)
 {
     ui->FirstNumber->setText(number);
 }
