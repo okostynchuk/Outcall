@@ -23,8 +23,6 @@ public:
     ~EditOrgContactDialog();
 
     void setOrgValuesContacts(QString &);
-    void setOrgValuesCallHistory(QString &);
-    void setOrgValuesPopupWindow(QString &);
 
 private slots:
     void onSave();

@@ -26,8 +26,7 @@ public:
     explicit AddContactDialog(QWidget *parent = 0);
     ~AddContactDialog();
 
-    void setValuesCallHistory(QString &);
-    void setValuesPopupWindow(QString &);
+    void setValues(QString &);
 
 private slots:
     void onSave();
@@ -44,8 +43,6 @@ private:
     AddOrgToPerson *addOrgToPerson;
 
     QValidator *validator;
-
-    QStringList numbers;
 };
 
 #endif // ADDCONTACTDIALOG_H

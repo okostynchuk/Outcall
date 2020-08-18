@@ -600,24 +600,6 @@ void EditContactDialog::on_deleteOrgButton_clicked()
     ui->label_org->setText(tr("Нет"));
 }
 
-void EditContactDialog::setValuesCallHistory(QString &number)
-{
-    ui->FirstNumber->setText(number);
-}
-
-void EditContactDialog::setValuesPopupWindow(QString &number)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
-    query.exec();
-    query.next();
-
-    if (query.value(0) != 0)
-        ui->FirstNumber->setText(number);
-}
-
 void EditContactDialog::onTextChanged()
 {
     if (ui->Comment->toPlainText().simplified().length() > 255)

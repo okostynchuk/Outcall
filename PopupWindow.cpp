@@ -350,7 +350,7 @@ void PopupWindow::onAddPerson()
     popup->m_pwi.stopTimer = true;
 
     addContactDialog = new AddContactDialog;
-    addContactDialog->setValuesPopupWindow(popup->m_pwi.number);
+    addContactDialog->setValues(popup->m_pwi.number);
     connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
     addContactDialog->setProperty("qv_popup", qv_popup);
     addContactDialog->show();

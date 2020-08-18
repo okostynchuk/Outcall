@@ -44,8 +44,6 @@ public:
     ~EditContactDialog();
 
     void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
-    void setValuesPopupWindow(QString &number);
 
 private:
     Ui::EditContactDialog *ui;

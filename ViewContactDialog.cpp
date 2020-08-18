@@ -267,24 +267,19 @@ void ViewContactDialog::setValuesContacts(QString &i)
     {
         if (i == 0)
             ui->FirstNumber->setText(query.value(0).toString());
-        if (i == 1)
+        else if (i == 1)
             ui->SecondNumber->setText(query.value(0).toString());
-        if (i == 2)
+        else if (i == 2)
             ui->ThirdNumber->setText(query.value(0).toString());
-        if (i == 3)
+        else if (i == 3)
             ui->FourthNumber->setText(query.value(0).toString());
-        if (i == 4)
+        else if (i == 4)
             ui->FifthNumber->setText(query.value(0).toString());
+
+        numbersList.append(query.value(0).toString());
 
         query.next();
     }
-
-    numbersList = (QStringList()
-                       << ui->FirstNumber->text()
-                       << ui->SecondNumber->text()
-                       << ui->ThirdNumber->text()
-                       << ui->FourthNumber->text()
-                       << ui->FifthNumber->text());
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
     query.exec();
@@ -676,7 +671,7 @@ void ViewContactDialog::loadReceivedCalls()
         if (extfield.isEmpty())
             ui->tableView_3->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = " + uniqueid + ")");
         query.exec();
         query.first();
 
@@ -796,7 +791,7 @@ void ViewContactDialog::loadPlacedCalls()
         if (extfield.isEmpty())
             ui->tableView_4->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid =" + uniqueid + ")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = " + uniqueid + ")");
         query.exec();
         query.first();
 
