@@ -38,11 +38,6 @@ private:
     QValidator *validator;
 
     QString updateID;
-    QString firstPassNumber;
-    QString secondPassNumber;
-    QString thirdPassNumber;
-    QString fourthPassNumber;
-    QString fifthPassNumber;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;

@@ -81,7 +81,7 @@ void ViewContactDialog::showEvent(QShowEvent *event)
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
+    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + contactId);
     query.exec();
 
     QString orgID = NULL;
@@ -99,7 +99,7 @@ void ViewContactDialog::showEvent(QShowEvent *event)
 void ViewContactDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setCallId(updateID);
+    addReminderDialog->setCallId(contactId);
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -206,11 +206,29 @@ void ViewContactDialog::receiveNumber(QString &to)
 
 void ViewContactDialog::onCall()
 {
-    chooseNumber = new ChooseNumber;
-    chooseNumber->setValuesNumber(updateID);
-    connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
-    chooseNumber->show();
-    chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+    QSqlDatabase db;
+    QSqlQuery query(db);
+
+    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
+    query.addBindValue(contactId);
+    query.exec();
+
+    if (query.size() == 1)
+    {
+        query.next();
+
+        QString number = query.value(0).toString();
+
+        receiveNumber(number);
+    }
+    else
+    {
+        chooseNumber = new ChooseNumber;
+        chooseNumber->setValuesNumber(contactId);
+        connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+        chooseNumber->show();
+        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+    }
 }
 
 void ViewContactDialog::onEdit()
@@ -218,7 +236,7 @@ void ViewContactDialog::onEdit()
     hide();
 
     editContactDialog = new EditContactDialog();
-    editContactDialog->setValuesContacts(updateID);
+    editContactDialog->setValuesContacts(contactId);
     connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool, int, int)));
 
     connect(this, SIGNAL(getPos(int, int)), editContactDialog, SLOT(setPos(int, int)));
@@ -230,18 +248,18 @@ void ViewContactDialog::onEdit()
 
 void ViewContactDialog::setValuesContacts(QString &i)
 {
-    updateID = i;
+    contactId = i;
 
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT COUNT(*) FROM entry_phone WHERE entry_id = " + updateID);
+    query.prepare("SELECT COUNT(*) FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
     query.first();
 
     countNumbers = query.value(0).toInt();
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + updateID);
+    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
     query.next();
 
@@ -268,7 +286,7 @@ void ViewContactDialog::setValuesContacts(QString &i)
                        << ui->FourthNumber->text()
                        << ui->FifthNumber->text());
 
-    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + updateID);
+    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 

@@ -88,7 +88,7 @@ private:
 
     QString recordpath;
     QString userID;
-    QString updateID;
+    QString contactId;
     QString uniqueid;
     QString number;
     QString my_number;
