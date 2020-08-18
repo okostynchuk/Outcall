@@ -88,12 +88,6 @@ void ChooseNumber::setValuesNumber(QString &i)
 
 bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
 {
-    firstPassNumber = ui->FirstNumber->text();
-    secondPassNumber = ui->SecondNumber->text();
-    thirdPassNumber = ui->ThirdNumber->text();
-    fourthPassNumber = ui->FourthNumber->text();
-    fifthPassNumber = ui->FifthNumber->text();
-
     if (ui->SecondNumber->text().isEmpty())
     {
         ui->SecondNumber->hide(); ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
