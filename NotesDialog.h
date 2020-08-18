@@ -35,6 +35,12 @@ private slots:
     void deleteObjects();
     bool isInnerPhone(QString *str);
 
+    void on_previousButton_clicked();
+    void on_nextButton_clicked();
+    void on_nextEndButton_clicked();
+    void on_previousStartButton_clicked();
+    void on_lineEdit_page_returnPressed();
+
     bool eventFilter(QObject *object, QEvent *event);
 
 private:
@@ -56,6 +62,11 @@ private:
     QString my_number;
     QString phoneNumber;
     QString loadState;
+    QString page;
+    QString pages;
+    QString go;
+    int count;
+    int remainder;
 };
 
 #endif // NOTESDIALOG_H

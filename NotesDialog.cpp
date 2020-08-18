@@ -19,6 +19,8 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->textEdit->installEventFilter(this);
 
+    ui->comboBox_list->hide();
+
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
@@ -49,6 +51,9 @@ void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState
 
     this->loadState = loadState;
 
+    go = "default";
+    page = "1";
+
     loadNotes();
 }
 
@@ -62,9 +67,10 @@ void NotesDialog::hideAddNote()
 
 void NotesDialog::loadNotes()
 {
-    query = new QSqlQueryModel;
+    QSqlDatabase db;
+    QSqlQuery queryCount(db);
 
-    QString queryString = "SELECT datetime, author, note FROM calls WHERE ";
+    QString queryString = "SELECT COUNT(*) FROM calls WHERE ";
 
     if (loadState == "byId")
         queryString.append("uniqueid = '" + callId + "' ");
@@ -100,7 +106,97 @@ void NotesDialog::loadNotes()
         }
     }
 
-    queryString.append(" ORDER BY datetime DESC");
+    queryCount.prepare(queryString);
+    queryCount.exec();
+    queryCount.first();
+
+    count = queryCount.value(0).toInt();
+
+    query = new QSqlQueryModel;
+
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+
+    queryString = "SELECT datetime, author, note FROM calls WHERE ";
+
+    if (loadState == "byId")
+        queryString.append("uniqueid = '" + callId + "' ");
+    else
+    {
+        if (isInnerPhone(&phoneNumber))
+            queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
+        else
+        {
+            QSqlDatabase db;
+            QSqlQuery query(db);
+
+            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
+            query.exec();
+
+            while (query.next())
+                numbersList.append(query.value(0).toString());
+
+            if (numbersList.isEmpty())
+                queryString.append("( phone_number = '" + phoneNumber + "'");
+            else
+            {
+                for (int i = 0; i < numbersList.size(); i++)
+                {
+                    if (i == 0)
+                        queryString.append("( phone_number = '" + numbersList[i] + "'");
+                    else
+                        queryString.append(" OR phone_number = '" + numbersList[i] + "'");
+                }
+            }
+
+            queryString.append(") AND author = '" + my_number + "'");
+        }
+    }
+
+    queryString.append(" ORDER BY datetime DESC LIMIT ");
+
+    if (ui->lineEdit_page->text() == "1")
+    {
+        queryString.append("0, "
+                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
+    }
+    else
+    {
+        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+    }
+
 
     query->setQuery(queryString);
 
@@ -163,7 +259,9 @@ void NotesDialog::onSave()
 
     emit sendData();
 
-    close();
+    go = "default";
+
+    onUpdate();
 
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
 }
@@ -284,4 +382,39 @@ bool NotesDialog::isInnerPhone(QString *str)
         return true;
 
     return false;
+}
+
+void NotesDialog::on_previousButton_clicked()
+{
+    go = "previous";
+
+    onUpdate();
+}
+
+void NotesDialog::on_nextButton_clicked()
+{
+    go = "next";
+
+    onUpdate();
+}
+
+void NotesDialog::on_previousStartButton_clicked()
+{
+    go = "previousStart";
+
+    onUpdate();
+}
+
+void NotesDialog::on_nextEndButton_clicked()
+{
+    go = "nextEnd";
+
+    onUpdate();;
+}
+
+void NotesDialog::on_lineEdit_page_returnPressed()
+{
+    go = "enter";
+
+    onUpdate();
 }
