@@ -552,7 +552,7 @@ void PopupWindow::receiveData(bool update)
             QSqlDatabase db;
             QSqlQuery query(db);
 
-            query.prepare("SELECT id, entry_name FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+            query.prepare("SELECT id, entry_name, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
             query.exec();
 
             if (query.next())
@@ -560,8 +560,14 @@ void PopupWindow::receiveData(bool update)
                 popup->ui->addPersonButton->hide();
                 popup->ui->addOrgButton->hide();
                 popup->ui->addPhoneNumberButton->hide();
+
                 popup->ui->showCardButton->show();
                 popup->ui->openAccessButton->show();
+
+                if (query.value(2) == 0)
+                    popup->ui->openAccessButton->hide();
+                else
+                    popup->ui->openAccessButton->show();
 
                 popup->ui->lblText->setText("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
                 popup->m_pwi.text = ("<b style='color:white'>" + popup->m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
@@ -570,6 +576,7 @@ void PopupWindow::receiveData(bool update)
             {
                 popup->ui->openAccessButton->hide();
                 popup->ui->showCardButton->hide();
+
                 popup->ui->addPersonButton->show();
                 popup->ui->addOrgButton->show();
                 popup->ui->addPhoneNumberButton->show();
@@ -697,7 +704,7 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
         QSqlDatabase db;
         QSqlQuery query(db);
 
-        query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
+        query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + popup->m_pwi.number + "')");
         query.exec();
 
         if (query.next())
@@ -705,6 +712,9 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
             popup->ui->addPersonButton->hide();
             popup->ui->addOrgButton->hide();
             popup->ui->addPhoneNumberButton->hide();
+
+            if (query.value(1) == 0)
+                popup->ui->openAccessButton->hide();
         }
         else
         {

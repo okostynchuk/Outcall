@@ -60,12 +60,17 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
                 QSqlDatabase db;
                 QSqlQuery query(db);
 
-                query.prepare("SELECT entry_name FROM entry_phone WHERE entry_phone = ?");
+                query.prepare("SELECT entry_name, entry_vybor_id FROM entry_phone WHERE entry_phone = ?");
                 query.addBindValue(m_pri.number);
                 query.exec();
 
                 if (query.next())
+                {
                     ui->callButton->setText(query.value(0).toString());
+
+                    if (query.value(1) == 0)
+                        ui->openAccessButton->hide();
+                }
                 else
                 {
                     ui->callButton->setText(m_pri.number);
@@ -77,15 +82,22 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         {
             QSqlDatabase db;
             QSqlQuery query(db);
-            query.prepare("SELECT entry_name, entry_phone FROM entry_phone WHERE entry_id = ?");
+
+            query.prepare("SELECT entry_name, entry_phone, entry_vybor_id FROM entry_phone WHERE entry_id = ?");
             query.addBindValue(m_pri.call_id);
             query.exec();
 
-            while (query.next())
+            if (query.next())
             {
                 m_pri.name = query.value(0).toString();
                 m_pri.numbers.append(query.value(1).toString());
+
+                if (query.value(2) == 0)
+                    ui->openAccessButton->hide();
             }
+
+            while (query.next())
+                m_pri.numbers.append(query.value(1).toString());
 
             ui->callButton->setText(m_pri.name);
         }
@@ -104,6 +116,9 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         ui->callButton->hide();
         ui->openAccessButton->hide();
     }
+
+    if (!MSSQLopened)
+        ui->openAccessButton->hide();
 
     QString note = m_pri.text;
 
