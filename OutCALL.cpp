@@ -12,6 +12,7 @@
 #include "RemindersDialog.h"
 #include "PopupReminder.h"
 #include "PopupNotification.h"
+#include "InternalContactsDialog.h"
 
 #include <QMenu>
 #include <QTcpSocket>
@@ -29,14 +30,15 @@
 OutCall::OutCall() :
     QWidget()
 {
-    m_systemTrayIcon      = new QSystemTrayIcon(this);
-    m_menu                = new QMenu(this);
-    m_settingsDialog      = new SettingsDialog;
-    m_contactsDialog      = new ContactsDialog;
-    m_debugInfoDialog     = new DebugInfoDialog;
-    m_callHistoryDialog   = new CallHistoryDialog;
-    m_placeCallDialog     = new PlaceCallDialog;
-    m_remindersDialog     = new RemindersDialog;
+    m_systemTrayIcon         = new QSystemTrayIcon(this);
+    m_menu                   = new QMenu(this);
+    m_settingsDialog         = new SettingsDialog;
+    m_contactsDialog         = new ContactsDialog;
+    m_debugInfoDialog        = new DebugInfoDialog;
+    m_callHistoryDialog      = new CallHistoryDialog;
+    m_placeCallDialog        = new PlaceCallDialog;
+    m_remindersDialog        = new RemindersDialog;
+    m_internalContactsDialog = new InternalContactsDialog;
 
     connect(m_systemTrayIcon,   &QSystemTrayIcon::activated,            this, &OutCall::onActivated);
 
@@ -75,6 +77,7 @@ OutCall::~OutCall()
     delete m_callHistoryDialog;
     delete m_placeCallDialog;
     delete m_remindersDialog;
+    delete m_internalContactsDialog;
 }
 
 void OutCall::createContextMenu()
@@ -98,6 +101,10 @@ void OutCall::createContextMenu()
     contactsAction = new QAction(tr("Контакты"), m_menu);
     connect(contactsAction, &QAction::triggered, this, &OutCall::onContactsDialog);
 
+    // Internal Contacts
+    internalContactsAction = new QAction(tr("Внутренние"), m_menu);
+    connect(internalContactsAction, &QAction::triggered, this, &OutCall::onInternalContactsDialog);
+
     // Call History
     callHistoryAction = new QAction(tr("История звонков"), m_menu);
     connect(callHistoryAction, &QAction::triggered, this, &OutCall::onCallHistory);
@@ -119,6 +126,7 @@ void OutCall::createContextMenu()
     m_menu->addAction(m_placeCall);
     m_menu->addAction(callHistoryAction);
     m_menu->addAction(contactsAction);
+    m_menu->addAction(internalContactsAction);
     m_menu->addSeparator();
 
     m_menu->addAction(remindersAction);
@@ -449,6 +457,12 @@ void OutCall::onContactsDialog()
 {
     m_contactsDialog->showMaximized();
     m_contactsDialog->raise();
+}
+
+void OutCall::onInternalContactsDialog()
+{
+    m_internalContactsDialog->showNormal();
+    m_internalContactsDialog->raise();
 }
 
 void OutCall::onRemindersDialog()

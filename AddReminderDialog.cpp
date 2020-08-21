@@ -185,6 +185,11 @@ bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
+void AddReminderDialog::receiveName(QString name)
+{
+    ui->employee->setText(name);
+}
+
 void AddReminderDialog::on_add5MinButton_clicked()
 {
     ui->timeEdit->setTime(ui->timeEdit->time().addSecs(300));

@@ -26,6 +26,7 @@ public:
     ~AddReminderDialog();
 
     void setCallId(QString);
+    void receiveName(QString);
 
 private slots:
     void onChooseEmployee();
