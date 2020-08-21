@@ -2,18 +2,15 @@
 #define INTERNALCONTACTSDIALOG_H
 
 #include "AsteriskManager.h"
-#include "SettingsDialog.h"
 #include "Global.h"
-#include "AsteriskManager.h"
 #include "AddReminderDialog.h"
 
 #include <QDialog>
-#include <QTreeWidget>
 #include <QList>
-#include <QLabel>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QListWidget>
+#include <QLineEdit>
 
 class AddReminderDialog;
 
@@ -44,8 +41,6 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-
-
 private:
     Ui::InternalContactsDialog *ui;
 
@@ -53,6 +48,7 @@ private:
 
     QValidator *validator;
 
+    QString my_number;
     QString page;
     QString pages;
     QString go;
@@ -62,27 +58,20 @@ private:
     int l_from;
     int l_to;
 
-    QWidget* addWgt(QString, bool);
+    QWidget* addWgt(QString);
 
     QListWidget *list;
-
-    QList<QListWidgetItem *> items;
 
     QList<QListWidgetItem *> itemsSearch;
 
     QList<QPushButton*> buttons;
-    QList<QPushButton*> buttonsSearch;
 
     QList<QHBoxLayout*> layouts;
-    QList<QHBoxLayout*> layoutsSearch;
 
     QList<QWidget*> widgets;
-    QList<QWidget*> widgetsSearch;
 
     QStringList extensions;
     QStringList extensions_full;
-
-    QString my_number;
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

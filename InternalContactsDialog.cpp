@@ -1,11 +1,6 @@
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
-#include <QListWidget>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QList>
-
 InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InternalContactsDialog)
@@ -24,34 +19,28 @@ InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &InternalContactsDialog::onSearch);
-   // connect(ui->searchButton, &QPushButton::clicked, this, &InternalContactsDialog::onSearch);
 }
 
 InternalContactsDialog::~InternalContactsDialog()
 {
     delete ui;
+    deleteObjects();
 }
 
 void InternalContactsDialog::deleteObjects()
 {
-    for(int i = 0; i < layoutsSearch.length(); i++)
-    {
-        layoutsSearch[i]->deleteLater();
-    }
+    for (int i = 0; i < layouts.length(); i++)
+        layouts[i]->deleteLater();
 
-    for(int i = 0; i < widgetsSearch.length(); i++)
-    {
-        widgetsSearch[i]->deleteLater();
-    }
+    for (int i = 0; i < widgets.length(); i++)
+        widgets[i]->deleteLater();
 
-    for(int i = 0; i < buttonsSearch.length(); i++)
-    {
-        buttonsSearch[i]->deleteLater();
-    }
+    for (int i = 0; i < buttons.length(); i++)
+        buttons[i]->deleteLater();
 
-    layoutsSearch.clear();
-    widgetsSearch.clear();
-    buttonsSearch.clear();
+    layouts.clear();
+    widgets.clear();
+    buttons.clear();
 }
 
 void InternalContactsDialog::showEvent(QShowEvent *event)
@@ -151,41 +140,38 @@ void InternalContactsDialog::loadContacts()
         l_from = ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt();
 
         if (page == pages)
-        {
             l_to = l_from + (count - l_from);
-        }
         else
             l_to = l_from + ui->comboBox_list->currentText().toInt();
     }
 
     ui->listWidget->clear();
+
     for (int i = l_from; i < l_to; ++i)
         ui->listWidget->addItem(extensions[i]);
 
-    if(!widgetsSearch.isEmpty())
+    if (!widgets.isEmpty())
         deleteObjects();
 
     for (int i = 0; i < ui->listWidget->count(); ++i)
     {
-        ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt( ui->listWidget->item(i)->text(), true));
+        ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
 
-        ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text(), true)->sizeHint());
+        ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text())->sizeHint());
     }
 }
 
 void InternalContactsDialog::onSearch()
 {
-    if(!itemsSearch.isEmpty())
+    if (!itemsSearch.isEmpty())
         itemsSearch.clear();
+
     itemsSearch = list->findItems(ui->lineEdit->text(), Qt::MatchContains);
 
     extensions.clear();
 
-    for(int i = 0; i < itemsSearch.length(); i ++)
+    for (int i = 0; i < itemsSearch.length(); i ++)
         extensions.append(itemsSearch[i]->text());
-
-    if(!widgetsSearch.isEmpty())
-        deleteObjects();
 
     ui->listWidget->clear();
 
@@ -195,7 +181,7 @@ void InternalContactsDialog::onSearch()
     loadContacts();
 }
 
-QWidget* InternalContactsDialog::addWgt(QString name, bool search)
+QWidget* InternalContactsDialog::addWgt(QString name)
 {
     QHBoxLayout* layout = new QHBoxLayout;
     QWidget* wgt = new QWidget;
@@ -224,34 +210,21 @@ QWidget* InternalContactsDialog::addWgt(QString name, bool search)
     wgt->setContentsMargins(130, 2, 2, 2);
     layout->setContentsMargins(130, 2, 2, 2);
 
-    if (search)
-    {
-        layoutsSearch.append(layout);
-        widgetsSearch.append(wgt);
-        buttonsSearch.append(callButton);
-        buttonsSearch.append(addReminderButton);
-    }
-    else
-    {
-        layouts.append(layout);
-        widgets.append(wgt);
-        buttons.append(callButton);
-        buttons.append(addReminderButton);
-    }
+    layouts.append(layout);
+    widgets.append(wgt);
+    buttons.append(callButton);
+    buttons.append(addReminderButton);
 
     return wgt;
 }
 
 void InternalContactsDialog::onCallButtonClicked()
 {
-    QString name = sender()->property("callButton").value<QString>();
-
     QString from = global::getExtensionNumber("extensions");
     QString protocol = global::getSettingsValue(from, "extensions").toString();
-    QString to = name.remove(QRegularExpression(" .+"));
+    QString to = sender()->property("callButton").value<QString>().remove(QRegularExpression(" .+"));
 
     g_pAsteriskManager->originateCall(from, to, protocol, from);
-
 }
 
 void InternalContactsDialog::onAddReminder()
