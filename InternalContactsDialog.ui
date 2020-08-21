@@ -19,6 +19,9 @@
    </item>
    <item row="1" column="0" colspan="8">
     <widget class="QListWidget" name="listWidget">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
      </property>
@@ -222,6 +225,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>previousStartButton</tabstop>
+  <tabstop>previousButton</tabstop>
+  <tabstop>lineEdit_page</tabstop>
+  <tabstop>nextButton</tabstop>
+  <tabstop>nextEndButton</tabstop>
+  <tabstop>comboBox_list</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

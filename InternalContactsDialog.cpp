@@ -23,8 +23,8 @@ InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
 
 InternalContactsDialog::~InternalContactsDialog()
 {
-    delete ui;
     deleteObjects();
+    delete ui;
 }
 
 void InternalContactsDialog::deleteObjects()
@@ -188,6 +188,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
 
     QPushButton* callButton = new QPushButton();
     callButton->setAutoDefault(false);
+    callButton->setFocusPolicy(Qt::ClickFocus);
     callButton->setIcon(QIcon(":/images/makeCall_R.png"));
     callButton->setIconSize(QSize(25, 25));
     callButton->setFixedSize(30, 30);
@@ -196,6 +197,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
 
     QPushButton* addReminderButton = new QPushButton();
     addReminderButton->setAutoDefault(false);
+    addReminderButton->setFocusPolicy(Qt::ClickFocus);
     addReminderButton->setIcon(QIcon(":/images/reminders_R.png"));
     addReminderButton->setIconSize(QSize(25, 25));
     addReminderButton->setFixedSize(30, 30);
