@@ -38,7 +38,7 @@ private slots:
     void on_add5MinButton_clicked();
     void on_add60MinButton_clicked();
 
-    bool eventFilter(QObject *object, QEvent *event);
+    //bool eventFilter(QObject *object, QEvent *event);
 
 private:
     Ui::AddReminderDialog *ui;

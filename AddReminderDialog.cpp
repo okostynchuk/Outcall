@@ -33,7 +33,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     ui->timeEdit->setTime(QTime::currentTime());
 
-    ui->textEdit->installEventFilter(this);
+  //  ui->textEdit->installEventFilter(this);
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
@@ -151,39 +151,39 @@ void AddReminderDialog::onTextChanged()
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
-bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "textEdit")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+//bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
+//{
+//    if (object->objectName() == "textEdit")
+//    {
+//        if (event->type() == QEvent::KeyPress)
+//        {
+//            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit2");
+//            if (keyEvent->key() == Qt::Key_Return)
+//            {
+//                object->setObjectName("textEdit2");
 
-                return true;
-            }
-        }
-    }
-    else if (object->objectName() == "textEdit2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+//                return true;
+//            }
+//        }
+//    }
+//    else if (object->objectName() == "textEdit2")
+//    {
+//        if (event->type() == QEvent::KeyPress)
+//        {
+//            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit");
+//            if (keyEvent->key() == Qt::Key_Return)
+//            {
+//                object->setObjectName("textEdit");
 
-                return true;
-            }
-        }
-    }
+//                return true;
+//            }
+//        }
+//    }
 
-    return false;
-}
+//    return false;
+//}
 
 void AddReminderDialog::receiveName(QString name)
 {

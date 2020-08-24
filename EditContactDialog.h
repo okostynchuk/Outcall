@@ -6,6 +6,7 @@
 #include <QDialog>
 #include <QValidator>
 #include <QStringList>
+#include <QLineEdit>
 
 class ViewContactDialog;
 
@@ -51,16 +52,13 @@ private:
     AddOrgToPerson *addOrgToPerson;
     ViewContactDialog *viewContactDialog;
 
+    QList <QLineEdit *> phonesList;
+
     QValidator *validator;
 
     QString updateID;
-    QString firstNumber;
-    QString secondNumber;
-    QString thirdNumber;
-    QString fourthNumber;
-    QString fifthNumber;
     QString number;
-    QStringList numbers;
+    QStringList oldNumbers;
 };
 
 #endif // EDITCONTACTDIALOG_H

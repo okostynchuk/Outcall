@@ -1,16 +1,7 @@
 #include "AddOrgContactDialog.h"
 #include "ui_AddOrgContactDialog.h"
 
-#include <QVariantList>
-#include <QVariantMap>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlQueryModel>
-#include <QTableView>
-#include <QPlainTextEdit>
-#include <QString>
 #include <QMessageBox>
-#include <QStringList>
 
 AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -39,11 +30,15 @@ void AddOrgContactDialog::onSave()
 
     QString orgName = QString(ui->OrgName->text());
 
-    if (QString(ui->OrgName->text()).isEmpty() == true)
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+
+    if (QString(ui->OrgName->text()).isEmpty())
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
 
          ui->OrgName->setStyleSheet("border: 1px solid red");
+
+         return;
     }
     else
     {
@@ -52,243 +47,116 @@ void AddOrgContactDialog::onSave()
         ui->OrgName->setStyleSheet("border: 1px solid grey");
     }
 
-    if (QString(ui->FirstNumber->text()).isEmpty() == true)
+    if (phonesList.at(0)->text().isEmpty())
     {
         ui->label_14->show();
         ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
 
-        ui->FirstNumber->setStyleSheet("border: 1px solid red");
+        phonesList.at(0)->setStyleSheet("border: 1px solid red");
+
+        return;
     }
     else
     {
         ui->label_14->setText(tr(""));
 
-        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        phonesList.at(0)->setStyleSheet("border: 1px solid grey");
     }
 
-    if (QString(ui->OrgName->text()).isEmpty() == false && QString(ui->FirstNumber->text()).isEmpty() == false)
+    for (int i = 0; i < phonesList.length(); ++i)
+    {
+        if (!phonesList.at(i)->text().isEmpty())
+        {
+            QString phone = QString(phonesList.at(i)->text());
+
+            if (isPhone(&phone) && !isInnerPhone(&phone))
+                phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+            else
+            {
+                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+
+                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
+
+                return;
+            }
+        }
+    }
+
+    if (!QString(ui->OrgName->text()).isEmpty() && !QString(phonesList.at(0)->text()).isEmpty())
     {
         ui->label_15->setText(tr(""));
         ui->label_14->setText(tr(""));
 
         ui->OrgName->setStyleSheet("border: 1px solid grey");
-        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
-        ui->SecondNumber->setStyleSheet("border: 1px solid grey");
-        ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
-        ui->FourthNumber->setStyleSheet("border: 1px solid grey");
-        ui->FifthNumber->setStyleSheet("border: 1px solid grey");
-        ui->VyborID->setStyleSheet("border: 1px solid grey");
 
-        int count_invalid_num = 0;
 
-        QSqlQuery query1(db);
+        for(int i = 0; i < phonesList.length(); ++i)
+            phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+    }
 
-        if (!ui->FirstNumber->text().isEmpty())
+    for (int i = 0; i < phonesList.length(); ++i)
+        if (!phonesList.at(i)->text().isEmpty())
         {
-            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FirstNumber->text() + "')");
-            query1.exec();
-            query1.next();
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesList.at(i)->text() + "')");
+            query.exec();
+            query.next();
 
-            if (query1.value(0) != 0)
+            if (query.value(0) != 0)
             {
-                ui->FirstNumber->setStyleSheet("border: 1px solid red");
+                phonesList.at(i)->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
-            }
-        }
-        if (!ui->SecondNumber->text().isEmpty())
-        {
-            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->SecondNumber->text() + "')");
-            query1.exec();
-            query1.next();
+                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
 
-            if (query1.value(0) != 0)
-            {
-                ui->SecondNumber->setStyleSheet("border: 1px solid red");
-
-                count_invalid_num++;
-            }
-        }
-        if (!ui->ThirdNumber->text().isEmpty())
-        {
-            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->ThirdNumber->text() + "')");
-            query1.exec();
-            query1.next();
-
-            if (query1.value(0) != 0)
-            {
-                ui->ThirdNumber->setStyleSheet("border: 1px solid red");
-
-                count_invalid_num++;
-            }
-        }
-        if (!ui->FourthNumber->text().isEmpty())
-        {
-            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FourthNumber->text() + "')");
-            query1.exec();
-            query1.next();
-
-            if (query1.value(0) != 0)
-            {
-                ui->FourthNumber->setStyleSheet("border: 1px solid red");
-
-                count_invalid_num++;
-            }
-        }
-        if (!ui->FifthNumber->text().isEmpty())
-        {
-            query1.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + ui->FifthNumber->text() + "')");
-            query1.exec();
-            query1.next();
-
-            if (query1.value(0) != 0)
-            {
-                ui->FifthNumber->setStyleSheet("border: 1px solid red");
-
-                count_invalid_num++;
+                return;
             }
         }
 
-        if (count_invalid_num != 0)
-            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
+    QString vyborId = QString(ui->VyborID->text());
+
+    if (!vyborId.isEmpty())
+        if (isVyborID(&vyborId))
+            ui->VyborID->setStyleSheet("border: 1px solid grey");
         else
         {
-            QString firstNum = QString(ui->FirstNumber->text());
-            QString secondNum = QString(ui->SecondNumber->text());
-            QString thirdNum = QString(ui->ThirdNumber->text());
-            QString fourthNum = QString(ui->FourthNumber->text());
-            QString fifthNum = QString(ui->FifthNumber->text());
-            QString vyborId = QString(ui->VyborID->text());
+            ui->VyborID->setStyleSheet("border: 1px solid red");
 
-            bool validPhones = true;
+            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("VyborID не соответствует формату!"), QMessageBox::Ok);
 
-            if (vyborId != 0)
-            {
-                if (isVyborID(&vyborId) == true)
-                    ui->VyborID->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    ui->VyborID->setStyleSheet("border: 1px solid red");
-
-                    QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("VyborID не соответствует формату!"), QMessageBox::Ok);
-
-                    return;
-                }
-            }
-
-            if (firstNum != 0)
-            {
-                if (isPhone(&firstNum) && !isInnerPhone(&firstNum))
-                    ui->FirstNumber->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    validPhones = false;
-
-                    ui->FirstNumber->setStyleSheet("border: 1px solid red");
-                }
-            }
-            if (secondNum != 0)
-            {
-                if (isPhone(&secondNum) && !isInnerPhone(&secondNum))
-                    ui->SecondNumber->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    validPhones = false;
-
-                    ui->SecondNumber->setStyleSheet("border: 1px solid red");
-                }
-            }
-            if (thirdNum != 0)
-            {
-                if (isPhone(&thirdNum) && !isInnerPhone(&thirdNum))
-                    ui->ThirdNumber->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    validPhones = false;
-
-                    ui->ThirdNumber->setStyleSheet("border: 1px solid red");
-                }
-            }
-            if (fourthNum != 0)
-            {
-                if (isPhone(&fourthNum) && !isInnerPhone(&fourthNum))
-                    ui->FourthNumber->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    validPhones = false;
-
-                    ui->FourthNumber->setStyleSheet("border: 1px solid red");
-                }
-            }
-            if (fifthNum != 0)
-            {
-                if (isPhone(&fifthNum) && !isInnerPhone(&fifthNum))
-                    ui->FifthNumber->setStyleSheet("border: 1px solid grey");
-                else
-                {
-                    validPhones = false;
-
-                    ui->FifthNumber->setStyleSheet("border: 1px solid red");
-                }
-            }
-
-            if (!validPhones)
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
-            else
-            {
-                query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                              "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-                query.addBindValue("org");
-                query.addBindValue(orgName);
-                query.addBindValue(orgName);
-                query.addBindValue(ui->City->text());
-                query.addBindValue(ui->Address->text());
-                query.addBindValue(ui->Email->text());
-                query.addBindValue(ui->VyborID->text());
-                query.addBindValue(ui->Comment->toPlainText());
-                query.exec();
-
-                int id = query.lastInsertId().toInt();
-
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query1.addBindValue(id);
-                query1.addBindValue(ui->FirstNumber->text());
-                query1.exec();
-
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query1.addBindValue(id);
-                query1.addBindValue(ui->SecondNumber->text());
-                query1.exec();
-
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query1.addBindValue(id);
-                query1.addBindValue(ui->ThirdNumber->text());
-                query1.exec();
-
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query1.addBindValue(id);
-                query1.addBindValue(ui->FourthNumber->text());
-                query1.exec();
-
-                query1.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query1.addBindValue(id);
-                query1.addBindValue(ui->FifthNumber->text());
-                query1.exec();
-
-                emit sendData(true);
-
-                close();
-
-                QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно добавлена!"), QMessageBox::Ok);
-            }
+            return;
         }
-    }
+
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+    query.addBindValue("org");
+    query.addBindValue(orgName);
+    query.addBindValue(orgName);
+    query.addBindValue(ui->City->text());
+    query.addBindValue(ui->Address->text());
+    query.addBindValue(ui->Email->text());
+    query.addBindValue(ui->VyborID->text());
+    query.addBindValue(ui->Comment->toPlainText());
+    query.exec();
+
+    int id = query.lastInsertId().toInt();
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        if (!phonesList.at(i)->text().isEmpty())
+        {
+            query.prepare("INSERT INTO fones (entry_id, fone)"
+                           "VALUES(?, ?)");
+            query.addBindValue(id);
+            query.addBindValue(phonesList.at(i)->text());
+            query.exec();
+        }
+
+    emit sendData(true);
+
+    close();
+
+    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно добавлена!"), QMessageBox::Ok);
+
 }
+
 
 bool AddOrgContactDialog::isInnerPhone(QString *str)
 {

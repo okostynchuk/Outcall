@@ -5,8 +5,8 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QWidget>
-#include <QStringList>
+#include <QSqlQuery>
+#include <QLineEdit>
 
 namespace Ui {
 class AddContactDialog;
@@ -39,6 +39,8 @@ private slots:
 
 private:
     Ui::AddContactDialog *ui;
+
+    QList <QLineEdit *> phonesList;
 
     AddOrgToPerson *addOrgToPerson;
 

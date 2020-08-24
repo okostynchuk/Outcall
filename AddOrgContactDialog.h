@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QStringList>
 #include <QSqlQuery>
+#include <QLineEdit>
 
 namespace Ui {
 class AddOrgContactDialog;
@@ -35,6 +35,8 @@ private:
     Ui::AddOrgContactDialog *ui;
 
     QSqlQuery *query1;
+
+    QList <QLineEdit *> phonesList;
 
     QValidator *validator;
 

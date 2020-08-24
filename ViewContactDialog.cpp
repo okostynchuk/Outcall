@@ -4,12 +4,7 @@
 #include "AsteriskManager.h"
 #include "Global.h"
 
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QTableView>
 #include <QMessageBox>
-#include <QDebug>
-#include <QStringList>
 #include <QDesktopWidget>
 
 ViewContactDialog::ViewContactDialog(QWidget *parent) :
