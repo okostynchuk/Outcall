@@ -192,25 +192,6 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QComboBox" name="comboBox">
-     <property name="maximumSize">
-      <size>
-       <width>250</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-     <property name="modelColumn">
-      <number>0</number>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1" rowspan="4">
     <widget class="QTextEdit" name="textEdit">
      <property name="minimumSize">
@@ -230,6 +211,23 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="chooseEmployeeButton">
+     <property name="text">
+      <string>Выбрать сотрудника(-ов)</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="employee">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -239,7 +237,6 @@
   <tabstop>add30MinButton</tabstop>
   <tabstop>add60MinButton</tabstop>
   <tabstop>textEdit</tabstop>
-  <tabstop>comboBox</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources/>

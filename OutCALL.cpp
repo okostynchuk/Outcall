@@ -258,12 +258,6 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
     }
     else if (state == AsteriskManager::DISCONNECTED)
     {
-        QString path(":/images/disconnected.png");
-        m_systemTrayIcon->setIcon(QIcon(path));
-
-        m_signIn->setText(tr("&Войти в аккаунт"));
-        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
-
         emit showReminders(false);
 
         PopupHelloWindow::closeAll();
@@ -272,6 +266,12 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         PopupReminder::closeAll();
 
         QApplication::closeAllWindows();
+
+        QString path(":/images/disconnected.png");
+        m_systemTrayIcon->setIcon(QIcon(path));
+
+        m_signIn->setText(tr("&Войти в аккаунт"));
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы не вошли"));
 
         disableActions();
 
@@ -279,14 +279,6 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
     }
     else if (state == AsteriskManager::AUTHENTICATION_FAILED)
     {
-        QString path(":/images/started.png");
-        m_systemTrayIcon->setIcon(QIcon(path));
-
-        PopupHelloWindow::showInformationMessage(tr(""), tr("Ошибка аутентификации"));
-
-        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
-        m_signIn->setText(tr("&Войти в аккаунт"));
-
         emit showReminders(false);
 
         PopupHelloWindow::closeAll();
@@ -295,6 +287,14 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         PopupReminder::closeAll();
 
         QApplication::closeAllWindows();
+
+        QString path(":/images/started.png");
+        m_systemTrayIcon->setIcon(QIcon(path));
+
+        PopupHelloWindow::showInformationMessage(tr(""), tr("Ошибка аутентификации"));
+
+        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Не настроен"));
+        m_signIn->setText(tr("&Войти в аккаунт"));
 
         disableActions();
 
@@ -329,7 +329,7 @@ void OutCall::changeIconReminders(bool changing)
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND viewed = false");
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
     query.addBindValue(my_number);
     query.addBindValue(my_number);
     query.exec();

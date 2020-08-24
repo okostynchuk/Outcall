@@ -34,6 +34,7 @@ private:
         QString number;
         QStringList numbers;
         QString id;
+        QString group_id;
         QDateTime dateTime;
         QString note;
         QString call_id;

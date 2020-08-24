@@ -29,10 +29,12 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT call_id, phone_from FROM reminders WHERE id = ?");
+    query.prepare("SELECT call_id, phone_from, group_id FROM reminders WHERE id = ?");
     query.addBindValue(m_pri.id);
     query.exec();
     query.next();
+
+    m_pri.group_id = query.value(2).toString();
 
     if (query.value(0).toString() != NULL)
     {
@@ -130,8 +132,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         QRegularExpressionMatch match = hrefIterator.next();
         QString href = match.captured(1);
 
-        if (!hrefs.contains(href))
-            hrefs << href;
+        hrefs << href;
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
@@ -431,7 +432,7 @@ void PopupReminder::onSelectTime()
             editReminderDialog->close();
 
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.id, m_pri.dateTime, m_pri.note);
+        editReminderDialog->setValuesReminders(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -600,7 +601,7 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     pri.note = receivedNote;
     pri.active = true;
 
-    pri.text = tr("<b> %1 </b>").arg(pri.note);
+    pri.text = "<b> " + pri.note + " </b>";
 
     PopupReminder *reminder = new PopupReminder(pri);
 

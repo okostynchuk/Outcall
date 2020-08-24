@@ -19,7 +19,7 @@ signals:
     void sendData(bool);
 
 public slots:
-    void receiveEmployee(QString);
+    void receiveEmployee(QStringList);
 
 public:
     explicit AddReminderDialog(QWidget *parent = nullptr);
@@ -44,6 +44,8 @@ private:
     Ui::AddReminderDialog *ui;
 
     ChooseEmployee *chooseEmployee;
+
+    QStringList employee;
 
     QString my_number;
     QString callId;

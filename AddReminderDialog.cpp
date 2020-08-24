@@ -16,6 +16,8 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
+    employee.append(my_number);
+
     ui->employee->setText(my_number);
 
     QString languages = global::getSettingsValue("language", "settings").toString();
@@ -48,15 +50,21 @@ AddReminderDialog::~AddReminderDialog()
     delete ui;
 }
 
-void AddReminderDialog::receiveEmployee(QString employee)
+void AddReminderDialog::receiveEmployee(QStringList employee)
 {
-    ui->employee->setText(employee);
+    this->employee = employee;
+
+    if (employee.length() == 1)
+        ui->employee->setText(employee.first());
+    else
+        ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
 }
 
 void AddReminderDialog::onChooseEmployee()
 {
     chooseEmployee = new ChooseEmployee;
-    connect(chooseEmployee, SIGNAL(sendEmployee(QString)), this, SLOT(receiveEmployee(QString)));
+    chooseEmployee->setValuesReminders(employee);
+    connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
     chooseEmployee->show();
     chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -89,12 +97,42 @@ void AddReminderDialog::onSave()
     {
         if (ui->employee->text() != my_number)
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
-            query.addBindValue(my_number);
-            query.addBindValue(ui->employee->text());
-            query.addBindValue(dateTime);
-            query.addBindValue(note);
-            query.exec();
+            if (employee.length() == 1)
+            {
+                query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
+                query.addBindValue(my_number);
+                query.addBindValue(employee.first());
+                query.addBindValue(dateTime);
+                query.addBindValue(note);
+                query.exec();
+            }
+            else
+            {
+                query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
+                query.addBindValue(my_number);
+                query.addBindValue(employee.first());
+                query.addBindValue(dateTime);
+                query.addBindValue(note);
+                query.exec();
+
+                int id = query.lastInsertId().toInt();
+
+                query.prepare("UPDATE reminders SET group_id = ? WHERE id = ?");
+                query.addBindValue(id);
+                query.addBindValue(id);
+                query.exec();
+
+                for (int i = 1; i < employee.length(); ++i)
+                {
+                    query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
+                    query.addBindValue(id);
+                    query.addBindValue(my_number);
+                    query.addBindValue(employee.at(i));
+                    query.addBindValue(dateTime);
+                    query.addBindValue(note);
+                    query.exec();
+                }
+            }
         }
         else
         {
@@ -110,13 +148,45 @@ void AddReminderDialog::onSave()
     {
         if (ui->employee->text() != my_number)
         {
-            query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
-            query.addBindValue(my_number);
-            query.addBindValue(ui->employee->text());
-            query.addBindValue(dateTime);
-            query.addBindValue(note);
-            query.addBindValue(callId);
-            query.exec();
+            if (employee.length() == 1)
+            {
+                query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
+                query.addBindValue(my_number);
+                query.addBindValue(employee.first());
+                query.addBindValue(dateTime);
+                query.addBindValue(note);
+                query.addBindValue(callId);
+                query.exec();
+            }
+            else
+            {
+                query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
+                query.addBindValue(my_number);
+                query.addBindValue(employee.first());
+                query.addBindValue(dateTime);
+                query.addBindValue(note);
+                query.addBindValue(callId);
+                query.exec();
+
+                int id = query.lastInsertId().toInt();
+
+                query.prepare("UPDATE reminders SET group_id = ? WHERE id = ?");
+                query.addBindValue(id);
+                query.addBindValue(id);
+                query.exec();
+
+                for (int i = 1; i < employee.length(); ++i)
+                {
+                    query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, false, false, true)");
+                    query.addBindValue(id);
+                    query.addBindValue(my_number);
+                    query.addBindValue(employee.at(i));
+                    query.addBindValue(dateTime);
+                    query.addBindValue(note);
+                    query.addBindValue(callId);
+                    query.exec();
+                }
+            }
         }
         else
         {
