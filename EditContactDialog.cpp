@@ -185,6 +185,7 @@ void EditContactDialog::onSave()
     QString vyborId = QString(ui->VyborID->text());
 
     if (!vyborId.isEmpty())
+    {
         if (isVyborID(&vyborId))
             ui->VyborID->setStyleSheet("border: 1px solid grey");
         else
@@ -195,7 +196,7 @@ void EditContactDialog::onSave()
 
             return;
         }
-
+    }
 
         query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
         query.addBindValue("person");

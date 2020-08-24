@@ -114,6 +114,7 @@ void AddOrgContactDialog::onSave()
     QString vyborId = QString(ui->VyborID->text());
 
     if (!vyborId.isEmpty())
+    {
         if (isVyborID(&vyborId))
             ui->VyborID->setStyleSheet("border: 1px solid grey");
         else
@@ -124,6 +125,7 @@ void AddOrgContactDialog::onSave()
 
             return;
         }
+    }
 
     query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
