@@ -130,8 +130,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         QRegularExpressionMatch match = hrefIterator.next();
         QString href = match.captured(1);
 
-        if (!hrefs.contains(href))
-            hrefs << href;
+        hrefs << href;
     }
 
     for (int i = 0; i < hrefs.length(); ++i)
@@ -431,7 +430,7 @@ void PopupReminder::onSelectTime()
             editReminderDialog->close();
 
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.id, m_pri.dateTime, m_pri.note);
+        editReminderDialog->setValuesReminders(m_pri.id, "0", m_pri.dateTime, m_pri.note);
         connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
         editReminderDialog->show();
         editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);

@@ -12,21 +12,44 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->textEdit->installEventFilter(this);
-
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    ui->textEdit->installEventFilter(this);
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &EditReminderDialog::onSave);
+    connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &EditReminderDialog::onChooseEmployee);
 }
 
 EditReminderDialog::~EditReminderDialog()
 {
     delete ui;
+}
+
+void EditReminderDialog::receiveEmployee(QStringList employee)
+{
+    this->employee = employee;
+
+    if (employee.length() == 1)
+        ui->employee->setText(employee.first());
+    else
+        ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
+}
+
+void EditReminderDialog::onChooseEmployee()
+{
+    if (employee.isEmpty())
+        employee = employeeInitial;
+
+    chooseEmployee = new ChooseEmployee;
+    chooseEmployee->setValuesReminders(employee);
+    connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    chooseEmployee->show();
+    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void EditReminderDialog::onSave()
@@ -48,35 +71,171 @@ void EditReminderDialog::onSave()
         return;
     }
 
+    if (employee.isEmpty())
+        employee = employeeInitial;
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    if (!ui->comboBox->isEnabled())
+    if (!ui->chooseEmployeeButton->isEnabled())
     {
-        query.prepare("UPDATE reminders SET datetime = ?, completed = false, active = true WHERE id = ?");
-        query.addBindValue(dateTime);
-        query.addBindValue(id);
-        query.exec();
-    }
-    else
-    {
-        if (ui->comboBox->currentText() != my_number)
+        if (group_id == "0" || (group_id != "0" && dateTime == oldDateTime))
         {
-            query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
-            query.addBindValue(ui->comboBox->currentText());
+            query.prepare("UPDATE reminders SET datetime = ?, completed = false, active = true WHERE id = ?");
             query.addBindValue(dateTime);
-            query.addBindValue(note);
             query.addBindValue(id);
             query.exec();
         }
-        else
+        else if (group_id != "0" && dateTime != oldDateTime)
         {
-            query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, completed = false, active = true WHERE id = ?");
-            query.addBindValue(my_number);
+            query.prepare("UPDATE reminders SET group_id = NULL, datetime = ?, completed = false, active = true WHERE id = ?");
             query.addBindValue(dateTime);
-            query.addBindValue(note);
             query.addBindValue(id);
             query.exec();
+        }
+    }
+    else
+    {
+        if (employeeInitial.length() == 1 && employee.length() > 1)
+        {
+            query.prepare("UPDATE reminders SET group_id = ? WHERE id = ?");
+            query.addBindValue(id);
+            query.addBindValue(id);
+            query.exec();
+
+            query.prepare("SELECT group_id FROM reminders WHERE id = ?");
+            query.addBindValue(id);
+            query.exec();
+            query.first();
+
+            group_id = query.value(0).toString();
+        }
+
+        if (ui->employee->text() != my_number)
+        {
+            if (employee == employeeInitial)
+            {
+                if (employee.length() == 1)
+                {
+                    query.prepare("UPDATE reminders SET datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE id = ?");
+                    query.addBindValue(dateTime);
+                    query.addBindValue(note);
+                    query.addBindValue(id);
+                    query.exec();
+                }
+                else
+                {
+                    for (int i = 0; i < employee.length(); i++)
+                    {
+                        query.prepare("UPDATE reminders SET datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE phone_to = ? AND group_id = ?");
+                        query.addBindValue(dateTime);
+                        query.addBindValue(note);
+                        query.addBindValue(employee.at(i));
+                        query.addBindValue(group_id);
+                        query.exec();
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < employeeInitial.length(); ++i)
+                {
+                    if (employee.contains(employeeInitial.at(i)))
+                        continue;
+
+                    query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
+                    query.addBindValue(employeeInitial.at(i));
+                    query.addBindValue(group_id);
+                    query.exec();
+                }
+
+                if (employee.length() == 1)
+                {
+                    if (employeeInitial.contains(employee.first()))
+                    {
+                        query.prepare("UPDATE reminders SET group_id = NULL, phone_to = ?, datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE group_id = ?");
+                        query.addBindValue(employee.first());
+                        query.addBindValue(dateTime);
+                        query.addBindValue(note);
+                        query.addBindValue(group_id);
+                        query.exec();
+                    }
+                    else
+                    {
+                        query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
+                        query.addBindValue(my_number);
+                        query.addBindValue(employee.first());
+                        query.addBindValue(dateTime);
+                        query.addBindValue(note);
+                        query.exec();
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < employee.length(); ++i)
+                    {
+                        if (employeeInitial.contains(employee.at(i)))
+                        {
+                            query.prepare("UPDATE reminders SET datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE phone_to = ? AND group_id = ?");
+                            query.addBindValue(dateTime);
+                            query.addBindValue(note);
+                            query.addBindValue(employee.at(i));
+                            query.addBindValue(group_id);
+                            query.exec();
+                        }
+                        else
+                        {
+                            query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
+                            query.addBindValue(group_id);
+                            query.addBindValue(my_number);
+                            query.addBindValue(employee.at(i));
+                            query.addBindValue(dateTime);
+                            query.addBindValue(note);
+                            query.exec();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (employee == employeeInitial)
+            {
+                query.prepare("UPDATE reminders SET datetime = ?, content = ?, completed = false, active = true WHERE id = ?");
+                query.addBindValue(dateTime);
+                query.addBindValue(note);
+                query.addBindValue(id);
+                query.exec();
+            }
+            else
+            {
+                for (int i = 0; i < employeeInitial.length(); ++i)
+                {
+                    query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
+                    query.addBindValue(employeeInitial.at(i));
+                    query.addBindValue(group_id);
+                    query.exec();
+                }
+
+                if (employeeInitial.contains(employee.first()))
+                {
+                    query.prepare("UPDATE reminders SET phone_to = ?, datetime = ?, content = ?, completed = false, active = true WHERE id = ?");
+                    query.addBindValue(employee.first());
+                    query.addBindValue(dateTime);
+                    query.addBindValue(note);
+                    query.addBindValue(id);
+                    query.exec();
+                }
+                else
+                {
+                    query.prepare("INSERT INTO reminders (phone_to, datetime, content, completed, active) VALUES(?, ?, ?, false, true)");
+                    query.addBindValue(employee.first());
+                    query.addBindValue(dateTime);
+                    query.addBindValue(note);
+                    query.addBindValue(id);
+                    query.exec();
+                }
+            }
         }
     }
 
@@ -87,9 +246,10 @@ void EditReminderDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
 }
 
-void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void EditReminderDialog::setValuesReminders(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
 {
     id = receivedId;
+    group_id = receivedGroupId;
     oldDateTime = receivedDateTime;
     oldNote = receivedNote;
 
@@ -103,22 +263,38 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QDateTime receiv
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT phone_from, phone_to FROM reminders WHERE id = ?");
-    query.addBindValue(id);
-    query.exec();
-    query.first();
-
-    phone_from = query.value(0).toString();
-    phone_to = query.value(1).toString();
-
-    ui->comboBox->addItem(phone_to);
-    ui->comboBox->addItems(g_pAsteriskManager->extensionNumbers.values());
-
-    if (phone_from != phone_to && phone_from != my_number)
+    if (group_id == "0")
     {
-        ui->comboBox->setDisabled(true);
-        ui->textEdit->setReadOnly(true);
-        ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+        query.prepare("SELECT phone_from, phone_to FROM reminders WHERE id = ?");
+        query.addBindValue(id);
+        query.exec();
+        query.first();
+
+        QString phone_from = query.value(0).toString();
+        QString phone_to = query.value(1).toString();
+
+        employeeInitial.append(phone_to);
+
+        ui->employee->setText(phone_to);
+
+        if (phone_from != phone_to && phone_from != my_number)
+        {
+            ui->chooseEmployeeButton->setDisabled(true);
+
+            ui->textEdit->setReadOnly(true);
+            ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+        }
+    }
+    else
+    {
+        query.prepare("SELECT phone_to FROM reminders WHERE group_id = ?");
+        query.addBindValue(group_id);
+        query.exec();
+
+        while (query.next())
+            employeeInitial.append(query.value(0).toString());
+
+        ui->employee->setText(tr("Группа") + " (" + QString::number(employeeInitial.length()) + ")");
     }
 }
 

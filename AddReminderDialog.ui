@@ -272,7 +272,7 @@
        <item row="3" column="2">
         <widget class="QPushButton" name="chooseEmployeeButton">
          <property name="text">
-          <string>Выбрать сотрудника</string>
+          <string>Выбрать сотрудника(-ов)</string>
          </property>
          <property name="autoDefault">
           <bool>false</bool>

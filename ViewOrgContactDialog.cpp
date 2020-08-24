@@ -1097,8 +1097,7 @@ QWidget* ViewOrgContactDialog::loadNote()
             QRegularExpressionMatch match = hrefIterator.next();
             QString href = match.captured(1);
 
-            if (!hrefs.contains(href))
-                hrefs << href;
+            hrefs << href;
         }
 
         for (int i = 0; i < hrefs.length(); ++i)

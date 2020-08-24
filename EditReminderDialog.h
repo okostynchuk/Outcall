@@ -3,6 +3,7 @@
 
 #include "AsteriskManager.h"
 #include "Global.h"
+#include "ChooseEmployee.h"
 
 #include <QDialog>
 #include <QDateTime>
@@ -18,13 +19,17 @@ class EditReminderDialog : public QDialog
 signals:
     void sendData(bool);
 
+public slots:
+    void receiveEmployee(QStringList);
+
 public:
     explicit EditReminderDialog(QWidget *parent = 0);
     ~EditReminderDialog();
 
-    void setValuesReminders(QString, QDateTime, QString);
+    void setValuesReminders(QString, QString, QDateTime, QString);
 
 private slots:
+    void onChooseEmployee();
     void onSave();
     void onTextChanged();
 
@@ -40,11 +45,15 @@ private slots:
 private:
     Ui::EditReminderDialog *ui;
 
+    ChooseEmployee *chooseEmployee;
+
+    QStringList employeeInitial;
+    QStringList employee;
+
     QString my_number;
-    QString phone_from;
-    QString phone_to;
     QString callId;
     QString id;
+    QString group_id;
     QDateTime oldDateTime;
     QString oldNote;
 };
