@@ -384,7 +384,7 @@ void PopupReminder::receiveData(bool updating)
 void PopupReminder::receiveNumber(QString &number)
 {
     QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
-    const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+    QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }

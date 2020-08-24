@@ -83,7 +83,7 @@ void AddContactDialog::onSave()
         ui->FifthNumber->setStyleSheet("border: 1px solid grey");
         ui->VyborID->setStyleSheet("border: 1px solid grey");
 
-        int count_invalid_num = 0;
+        int count_valid_num = 0;
 
         QSqlQuery query1(db);
 
@@ -97,7 +97,7 @@ void AddContactDialog::onSave()
             {
                 ui->FirstNumber->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
+                count_valid_num++;
             }
         }
         if (!ui->SecondNumber->text().isEmpty())
@@ -110,7 +110,7 @@ void AddContactDialog::onSave()
             {
                 ui->SecondNumber->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
+                count_valid_num++;
             }
         }
         if (!ui->ThirdNumber->text().isEmpty())
@@ -123,7 +123,7 @@ void AddContactDialog::onSave()
             {
                 ui->ThirdNumber->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
+                count_valid_num++;
             }
         }
         if (!ui->FourthNumber->text().isEmpty())
@@ -136,7 +136,7 @@ void AddContactDialog::onSave()
             {
                 ui->FourthNumber->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
+                count_valid_num++;
             }
         }
         if (!ui->FifthNumber->text().isEmpty())
@@ -149,11 +149,11 @@ void AddContactDialog::onSave()
             {
                 ui->FifthNumber->setStyleSheet("border: 1px solid red");
 
-                count_invalid_num++;
+                count_valid_num++;
             }
         }
 
-        if (count_invalid_num != 0)
+        if (count_valid_num != 0)
             QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
         else
         {

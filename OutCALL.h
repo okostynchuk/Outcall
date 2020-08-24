@@ -17,6 +17,7 @@ class SettingsDialog;
 class ContactsDialog;
 class PlaceCallDialog;
 class RemindersDialog;
+class InternalContactsDialog;
 
 class OutCall : public QWidget
 {
@@ -42,6 +43,7 @@ protected slots:
     void onPlaceCall();
     void onCallHistory();
     void onRemindersDialog();
+    void onInternalContactsDialog();
     void onActivated(QSystemTrayIcon::ActivationReason reason);
     void displayError(QAbstractSocket::SocketError socketError, const QString &msg);
     void onStateChanged(AsteriskManager::AsteriskState state);
@@ -64,6 +66,7 @@ private:
     QAction *contactsAction;
     QAction *callHistoryAction;
     QAction *remindersAction;
+    QAction *internalContactsAction;
 
     QSystemTrayIcon *m_systemTrayIcon;
     DebugInfoDialog *m_debugInfoDialog;
@@ -72,6 +75,7 @@ private:
     CallHistoryDialog *m_callHistoryDialog;
     PlaceCallDialog *m_placeCallDialog;
     RemindersDialog *m_remindersDialog;
+    InternalContactsDialog *m_internalContactsDialog;
 
     QTimer m_timer;
     bool m_switch;
