@@ -294,7 +294,22 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
         while (query.next())
             employeeInitial.append(query.value(0).toString());
 
-        ui->employee->setText(tr("Группа") + " (" + QString::number(employeeInitial.length()) + ")");
+        query.prepare("SELECT phone_from FROM reminders WHERE id = ?");
+        query.addBindValue(group_id);
+        query.exec();
+        query.next();
+
+        if (query.value(0).toString() != my_number)
+        {
+            ui->chooseEmployeeButton->setDisabled(true);
+
+            ui->textEdit->setReadOnly(true);
+            ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+
+            ui->employee->setText(my_number);
+        }
+        else
+            ui->employee->setText(tr("Группа") + " (" + QString::number(employeeInitial.length()) + ")");
     }
 }
 
