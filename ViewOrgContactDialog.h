@@ -17,6 +17,7 @@
 #include <QTableView>
 #include <QList>
 #include <QWidget>
+#include <QLineEdit>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -96,6 +97,8 @@ private:
     NotesDialog *notesDialog;
     AddPersonToOrg *addPersonToOrg;
     PlayAudioDialog *playAudioDialog = nullptr;
+
+    QList <QLineEdit *> phonesList;
 
     QSqlQueryModel *query_model;
     QSqlQueryModel *queryModel;

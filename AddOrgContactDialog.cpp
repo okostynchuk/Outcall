@@ -16,6 +16,8 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
     connect(ui->saveButton, &QPushButton::clicked, this, &AddOrgContactDialog::onSave);
+
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }
 
 AddOrgContactDialog::~AddOrgContactDialog()
@@ -29,8 +31,6 @@ void AddOrgContactDialog::onSave()
     QSqlQuery query(db);
 
     QString orgName = QString(ui->OrgName->text());
-
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 
     if (QString(ui->OrgName->text()).isEmpty())
     {
@@ -47,12 +47,12 @@ void AddOrgContactDialog::onSave()
         ui->OrgName->setStyleSheet("border: 1px solid grey");
     }
 
-    if (phonesList.at(0)->text().isEmpty())
+    if (ui->FirstNumber->text().isEmpty())
     {
         ui->label_14->show();
         ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
 
-        phonesList.at(0)->setStyleSheet("border: 1px solid red");
+        ui->FirstNumber->setStyleSheet("border: 1px solid red");
 
         return;
     }
@@ -60,7 +60,7 @@ void AddOrgContactDialog::onSave()
     {
         ui->label_14->setText(tr(""));
 
-        phonesList.at(0)->setStyleSheet("border: 1px solid grey");
+        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
     }
 
     for (int i = 0; i < phonesList.length(); ++i)
@@ -82,7 +82,7 @@ void AddOrgContactDialog::onSave()
         }
     }
 
-    if (!QString(ui->OrgName->text()).isEmpty() && !QString(phonesList.at(0)->text()).isEmpty())
+    if (!QString(ui->OrgName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
     {
         ui->label_15->setText(tr(""));
         ui->label_14->setText(tr(""));
