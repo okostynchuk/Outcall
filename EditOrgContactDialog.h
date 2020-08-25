@@ -2,8 +2,8 @@
 #define EDITORGCONTACTDIALOG_H
 
 #include <QDialog>
-#include <QSqlQueryModel>
 #include <QSqlQuery>
+#include <QLineEdit>
 #include <QValidator>
 #include <QStringList>
 
@@ -41,6 +41,10 @@ private:
     Ui::EditOrgContactDialog *ui;
 
     QSqlQuery *query1;
+
+    QList <QLineEdit *> phonesList;
+
+    QStringList oldPhonesList;
 
     QValidator *validator;
 

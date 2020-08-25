@@ -14,6 +14,7 @@
 #include <QTableView>
 #include <QList>
 #include <QWidget>
+#include <QLineEdit>
 
 namespace Ui {
 class ViewContactDialog;
@@ -82,6 +83,10 @@ private:
     NotesDialog *notesDialog;
     PlayAudioDialog *playAudioDialog = nullptr;
 
+    QList <QLineEdit *> phonesList;
+
+    QStringList numbersList;
+
     QSqlQueryModel *queryModel;
 
     QValidator *validator;
@@ -105,7 +110,6 @@ private:
     QString days;
     QString state_call;
     QString contact_number;
-    QStringList numbersList;
 
     QWidget* loadNote();
     QWidget* loadStatus();

@@ -54,11 +54,12 @@ private:
 
     QList <QLineEdit *> phonesList;
 
+    QStringList oldPhonesList;
+
     QValidator *validator;
 
     QString updateID;
-    QString number;
-    QStringList oldNumbers;
+    QString number;  
 };
 
 #endif // EDITCONTACTDIALOG_H

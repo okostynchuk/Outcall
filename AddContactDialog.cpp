@@ -17,6 +17,15 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_org->setText(tr("Нет"));
 
     connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
+
+//    for(int i = 0; i < ui->phonesLayout->count(); ++i)
+//    {
+//        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(ui->phonesLayout->itemAt(i)->widget());
+//           if (lineEdit)
+//               phonesList.append(lineEdit);
+//    }
+
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }
 
 AddContactDialog::~AddContactDialog()
@@ -33,8 +42,6 @@ void AddContactDialog::onSave()
     QString firstName = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
 
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
-
     if (QString(ui->FirstName->text()).isEmpty())
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
@@ -50,12 +57,12 @@ void AddContactDialog::onSave()
         ui->FirstName->setStyleSheet("border: 1px solid grey");
     }
 
-    if (phonesList.at(0)->text().isEmpty())
+    if (ui->FirstNumber->text().isEmpty())
     {
         ui->label_14->show();
         ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
 
-        phonesList.at(0)->setStyleSheet("border: 1px solid red");
+        ui->FirstNumber->setStyleSheet("border: 1px solid red");
 
         return;
     }
@@ -63,7 +70,7 @@ void AddContactDialog::onSave()
     {
         ui->label_14->setText(tr(""));
 
-        phonesList.at(0)->setStyleSheet("border: 1px solid grey");
+        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
     }
 
     for (int i = 0; i < phonesList.length(); ++i)
@@ -85,7 +92,7 @@ void AddContactDialog::onSave()
         }
     }
 
-    if (!QString(ui->FirstName->text()).isEmpty() && !QString(phonesList.at(0)->text()).isEmpty())
+    if (!QString(ui->FirstName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
     {
         ui->label_15->setText(tr(""));
         ui->label_14->setText(tr(""));

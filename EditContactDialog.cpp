@@ -25,6 +25,8 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->backButton, &QPushButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditContactDialog::onSave);
+
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }
 
 EditContactDialog::~EditContactDialog()
@@ -94,15 +96,6 @@ void EditContactDialog::onSave()
     QString firstName = QString(ui->FirstName->text());
     QString patronymic = QString(ui->Patronymic->text());
 
-    query.prepare("SELECT COUNT(fone) FROM fones WHERE entry_id = " + updateID);
-    query.exec();
-    query.first();
-
-    int count = query.value(0).toInt();
-    qDebug() << count;
-
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
-
     if (QString(ui->FirstName->text()).isEmpty())
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
@@ -153,7 +146,7 @@ void EditContactDialog::onSave()
         }
     }
 
-    if (!QString(ui->FirstName->text()).isEmpty() && !QString(phonesList.at(0)->text()).isEmpty())
+    if (!QString(ui->FirstName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
     {
         ui->label_15->setText(tr(""));
         ui->label_14->setText(tr(""));
@@ -168,9 +161,10 @@ void EditContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesList.at(i)->text() + "')");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesList.at(i)->text() + "' AND NOT entry_id = " + updateID + ")");
             query.exec();
             query.next();
+
 
             if (query.value(0) != 0)
             {
@@ -198,77 +192,76 @@ void EditContactDialog::onSave()
         }
     }
 
-        query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
-        query.addBindValue("person");
+    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
+    query.addBindValue("person");
 
-        if (ui->LastName->text().isEmpty())
-            query.addBindValue(firstName + ' ' + patronymic);
+    if (ui->LastName->text().isEmpty())
+        query.addBindValue(firstName + ' ' + patronymic);
+    else
+        query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic);
+
+    QString orgName = ui->label_org->text();
+
+    if (orgName != tr("Нет"))
+    {
+        QSqlQuery queryOrg(db);
+
+        QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
+
+        queryOrg.prepare(sqlOrg);
+        queryOrg.exec();
+
+        if (queryOrg.next())
+            query.addBindValue(queryOrg.value(0).toInt());
         else
-            query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic);
-
-        QString orgName = ui->label_org->text();
-
-        if (orgName != tr("Нет"))
         {
-            QSqlQuery queryOrg(db);
+            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
 
-            QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
+            return;
+        }
+    }
+    else
+        query.addBindValue(QVariant(QVariant::Int));
 
-            queryOrg.prepare(sqlOrg);
-            queryOrg.exec();
+    query.addBindValue(lastName);
+    query.addBindValue(firstName);
+    query.addBindValue(patronymic);
+    query.addBindValue(ui->City->text());
+    query.addBindValue(ui->Address->text());
+    query.addBindValue(ui->Email->text());
+    query.addBindValue(ui->VyborID->text());
+    query.addBindValue(ui->Comment->toPlainText());
+    query.addBindValue(updateID);
+    query.exec();
 
-            if (queryOrg.next())
-                query.addBindValue(queryOrg.value(0).toInt());
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        if (!phonesList.at(i)->text().isEmpty())
+        {
+            if(i >= oldPhonesList.length())
+            {
+                query.prepare("INSERT INTO fones (entry_id, fone)"
+                               "VALUES(?, ?)");
+                query.addBindValue(updateID);
+                query.addBindValue(phonesList.at(i)->text());
+                query.exec();
+            }
             else
             {
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
+                query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
+                query.addBindValue(phonesList.at(i)->text());
+                query.addBindValue(updateID);
+                query.addBindValue(oldPhonesList.at(i));
+                query.exec();
 
-                return;
             }
         }
-        else
-            query.addBindValue(QVariant(QVariant::Int));
 
-        query.addBindValue(lastName);
-        query.addBindValue(firstName);
-        query.addBindValue(patronymic);
-        query.addBindValue(ui->City->text());
-        query.addBindValue(ui->Address->text());
-        query.addBindValue(ui->Email->text());
-        query.addBindValue(ui->VyborID->text());
-        query.addBindValue(ui->Comment->toPlainText());
-        query.addBindValue(updateID);
-        query.exec();
+    emit sendData(true, this->pos().x(), this->pos().y());
 
+    close();
 
-//        for (int i = 0; i < phonesList.length(); ++i)
-//            if (!phonesList.at(i)->text().isEmpty())
-//            {
-//                if(i < count)
-//                {
-//                    query.prepare("INSERT INTO fones (entry_id, fone)"
-//                                   "VALUES(?, ?)");
-//                    query.addBindValue(updateID);
-//                    query.addBindValue(phonesList.at(i)->text());
-//                    query.exec();
-//                }
-//                else
-//                {
-//                    query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
-//                    query.addBindValue(phonesList.at(i)->text());
-//                    query.addBindValue(updateID);
-//                    query.addBindValue(firstNumber);
-//                    query.exec();
-
-//                }
-//            }
-
-        emit sendData(true, this->pos().x(), this->pos().y());
-
-        close();
-
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
-
+    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
 bool EditContactDialog::isInnerPhone(QString *str)
@@ -314,7 +307,6 @@ bool EditContactDialog::isVyborID(QString *str)
 void EditContactDialog::setValuesContacts(QString &i)
 {
     updateID = i;
-    qDebug()  << updateID;
 
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -325,61 +317,32 @@ void EditContactDialog::setValuesContacts(QString &i)
     query.exec();
 
     while (query.next())
-    {
-        oldNumbers.append(query.value(0).toString());
-         qDebug() << query.value(1).toString();
-}
+        oldPhonesList.append(query.value(0).toString());
 
+    for (int i = 0; i < oldPhonesList.length(); ++i)
+        phonesList.at(i)->setText(oldPhonesList.at(i));
 
-
-    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
-                  " entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + updateID);
-    query.exec();
-    query.next();
-
-    QString entryFName = query.value(0).toString();
-    QString entryMName = query.value(1).toString();
-    QString entryLName = query.value(2).toString();
-    QString entryCity = query.value(3).toString();
-    QString entryAddress = query.value(4).toString();
-    QString entryEmail = query.value(5).toString();
-    QString entryVyborID = query.value(6).toString();
-    QString entryComment = query.value(7).toString();
-
-    query.prepare("SELECT entry_person_org_id FROM entry_phone WHERE entry_id = " + updateID);
-    query.exec();
-
-    QString orgID = NULL;
-
-    while (query.next())
-        orgID = query.value(0).toString();
-
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + orgID);
-    query.exec();
-
-    QString orgName = NULL;
-
-    while (query.next())
-        orgName = query.value(0).toString();
+    query.first();
+    QString orgName = query.value(1).toString();
 
     if (!orgName.isEmpty() && !orgName.isNull())
         ui->label_org->setText(orgName);
     else
         ui->label_org->setText(tr("Нет"));
 
-//    ui->FirstNumber->setText(firstNumber);
-//    ui->SecondNumber->setText(secondNumber);
-//    ui->ThirdNumber->setText(thirdNumber);
-//    ui->FourthNumber->setText(fourthNumber);
-//    ui->FifthNumber->setText(fifthNumber);
-    ui->FirstName->setText(entryFName);
-    ui->Patronymic->setText(entryMName);
-    ui->LastName->setText(entryLName);
-    ui->City->setText(entryCity);
-    ui->Address->setText(entryAddress);
-    ui->Email->setText(entryEmail);
-    ui->VyborID->setText(entryVyborID);
-    ui->Comment->setText(entryComment);
+    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
+                  " entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + updateID);
+    query.exec();
+    query.next();
+
+    ui->FirstName->setText(query.value(0).toString());
+    ui->Patronymic->setText(query.value(1).toString());
+    ui->LastName->setText(query.value(2).toString());
+    ui->City->setText(query.value(3).toString());
+    ui->Address->setText(query.value(4).toString());
+    ui->Email->setText(query.value(5).toString());
+    ui->VyborID->setText(query.value(6).toString());
+    ui->Comment->setText(query.value(7).toString());
 }
 
 void EditContactDialog::receiveOrgID(QString &id)

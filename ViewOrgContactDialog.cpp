@@ -74,6 +74,8 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
     ui->tableView_5->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -485,54 +487,28 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    query.prepare("SELECT COUNT(*) FROM entry_phone WHERE entry_id = " + contactId);
-    query.exec();
-    query.first();
-
-    countNumbers = query.value(0).toInt();
-
     query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
-    query.next();
 
-    for (int i = 0; i < countNumbers; i++)
-    {
-        if (i == 0)
-            ui->FirstNumber->setText(query.value(0).toString());
-        else if (i == 1)
-            ui->SecondNumber->setText(query.value(0).toString());
-        else if (i == 2)
-            ui->ThirdNumber->setText(query.value(0).toString());
-        else if (i == 3)
-            ui->FourthNumber->setText(query.value(0).toString());
-        else if (i == 4)
-            ui->FifthNumber->setText(query.value(0).toString());
+    while (query.next())
+         numbersList.append(query.value(0).toString());
 
-        numbersList.append(query.value(0).toString());
-
-        query.next();
-    }
+    for (int i = 0; i < numbersList.length(); ++i)
+        phonesList.at(i)->setText(numbersList.at(i));
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
-    QString entryORGName = query.value(0).toString();
-    QString entryCity = query.value(1).toString();
-    QString entryAddress = query.value(2).toString();
-    QString entryEmail = query.value(3).toString();
-    QString entryVyborID = query.value(4).toString();
-    QString entryComment = query.value(5).toString();
-
-    ui->OrgName->setText(entryORGName);
-    ui->City->setText(entryCity);
-    ui->City->QWidget::setToolTip(entryCity);
-    ui->Address->setText(entryAddress);    
-    ui->Address->QWidget::setToolTip(entryAddress);
-    ui->Email->setText(entryEmail);
-    ui->Email->QWidget::setToolTip(entryEmail);
-    ui->VyborID->setText(entryVyborID);
-    ui->Comment->setText(entryComment);
+    ui->OrgName->setText(query.value(0).toString());
+    ui->City->setText(query.value(1).toString());
+    ui->City->QWidget::setToolTip(query.value(1).toString());
+    ui->Address->setText(query.value(2).toString());
+    ui->Address->QWidget::setToolTip(query.value(2).toString());
+    ui->Email->setText(query.value(3).toString());
+    ui->Email->QWidget::setToolTip(query.value(3).toString());
+    ui->VyborID->setText(query.value(4).toString());
+    ui->Comment->setText(query.value(5).toString());
 
     if (ui->VyborID->text() == "0")
         ui->openAccessButton->hide();
@@ -559,6 +535,7 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
     ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
 
     update = "default";
+
     filter = false;
 
     days = ui->comboBox_2->currentText();
@@ -616,7 +593,7 @@ void ViewOrgContactDialog::loadAllCalls()
 
     QString queryString = "SELECT IF(";
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
         if (i == 0)
             queryString.append("src = '"+numbersList[i]+"'");
@@ -629,7 +606,7 @@ void ViewOrgContactDialog::loadAllCalls()
                           " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                           "'" + days + "' DAY) AND (");
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
         if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
@@ -758,7 +735,7 @@ void ViewOrgContactDialog::loadMissedCalls()
                           "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
                           "OR disposition = 'CANCEL') AND (";
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
@@ -879,7 +856,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
     QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
                           "disposition = 'ANSWERED' AND (";
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
         if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "'");
@@ -1000,7 +977,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE (";
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
         if (i == 0)
             queryString.append(" dst = '" + numbersList[i] + "'");
@@ -1174,7 +1151,7 @@ QWidget* ViewOrgContactDialog::loadName()
 
     int counter = 0;
 
-    for (int i = 0; i < countNumbers; i++)
+    for (int i = 0; i < numbersList.length(); i++)
     {
         if (src == numbersList[i])
         {
@@ -1426,14 +1403,14 @@ void ViewOrgContactDialog::updateCount()
                               "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                               "'" + days + "' DAY) AND ( ";
 
-        for (int i = 0; i < countNumbers; i++)
+        for (int i = 0; i < numbersList.length(); i++)
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "' OR src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR dst = '" + numbersList[i] + "' OR src = '"+numbersList[i] + "'");
 
-            if (i == countNumbers - 1)
+            if (i == numbersList.length() - 1)
                  queryString.append(")");
         }
 
@@ -1451,14 +1428,14 @@ void ViewOrgContactDialog::updateCount()
                       " OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
                       "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < countNumbers; i++)
+        for (int i = 0; i < numbersList.length(); i++)
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
 
-            if (i == countNumbers-1)
+            if (i == numbersList.length()-1)
                  queryString.append(")");
         }
 
@@ -1475,14 +1452,14 @@ void ViewOrgContactDialog::updateCount()
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE disposition = 'ANSWERED' "
                       "AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < countNumbers; i++)
+        for (int i = 0; i < numbersList.length(); i++)
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
 
-            if (i == countNumbers - 1)
+            if (i == numbersList.length() - 1)
                  queryString.append(")");
         }
 
@@ -1499,14 +1476,14 @@ void ViewOrgContactDialog::updateCount()
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE "
                       "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < countNumbers; i++)
+        for (int i = 0; i < numbersList.length(); i++)
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR dst = '" + numbersList[i] + "'");
 
-            if (i == countNumbers - 1)
+            if (i == numbersList.length() - 1)
                  queryString.append(")");
         }
 
