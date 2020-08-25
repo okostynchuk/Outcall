@@ -758,7 +758,11 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
         query.exec();
 
         emit reminders(false);
+
+        group_id = queryModel->data(queryModel->index(index.row(), 11), Qt::EditRole).toString();
     }
+    else if (ui->tabWidget->currentIndex() == 0 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() == queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
+        group_id = queryModel->data(queryModel->index(index.row(), 11), Qt::EditRole).toString();
     else if (ui->tabWidget->currentIndex() == 2 && queryModel->data(queryModel->index(index.row(), 12), Qt::EditRole).toString() != "0")
         group_id = queryModel->data(queryModel->index(index.row(), 12), Qt::EditRole).toString();
 

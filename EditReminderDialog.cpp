@@ -264,53 +264,53 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
     QSqlQuery query(db);
 
     if (group_id == "0")
+    {
+        query.prepare("SELECT phone_from, phone_to FROM reminders WHERE id = ?");
+        query.addBindValue(id);
+        query.exec();
+        query.first();
+
+        QString phone_from = query.value(0).toString();
+        QString phone_to = query.value(1).toString();
+
+        employeeInitial.append(phone_to);
+
+        ui->employee->setText(phone_to);
+
+        if (phone_from != phone_to && phone_from != my_number)
         {
-            query.prepare("SELECT phone_from, phone_to FROM reminders WHERE id = ?");
-            query.addBindValue(id);
-            query.exec();
-            query.first();
+            ui->chooseEmployeeButton->setDisabled(true);
 
-            QString phone_from = query.value(0).toString();
-            QString phone_to = query.value(1).toString();
+            ui->textEdit->setReadOnly(true);
+            ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+        }
+    }
+    else
+    {
+        query.prepare("SELECT phone_to FROM reminders WHERE group_id = ?");
+        query.addBindValue(group_id);
+        query.exec();
 
-            employeeInitial.append(phone_to);
+        while (query.next())
+            employeeInitial.append(query.value(0).toString());
 
-            ui->employee->setText(phone_to);
+        query.prepare("SELECT phone_from FROM reminders WHERE id = ?");
+        query.addBindValue(group_id);
+        query.exec();
+        query.next();
 
-            if (phone_from != phone_to && phone_from != my_number)
-            {
-                ui->chooseEmployeeButton->setDisabled(true);
+        if (query.value(0).toString() != my_number)
+        {
+            ui->chooseEmployeeButton->setDisabled(true);
 
-                ui->textEdit->setReadOnly(true);
-                ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
-            }
+            ui->textEdit->setReadOnly(true);
+            ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+
+            ui->employee->setText(my_number);
         }
         else
-        {
-            query.prepare("SELECT phone_to FROM reminders WHERE group_id = ?");
-            query.addBindValue(group_id);
-            query.exec();
-
-            while (query.next())
-                employeeInitial.append(query.value(0).toString());
-
-            query.prepare("SELECT phone_from FROM reminders WHERE id = ?");
-            query.addBindValue(group_id);
-            query.exec();
-            query.next();
-
-            if (query.value(0).toString() != my_number)
-            {
-                ui->chooseEmployeeButton->setDisabled(true);
-
-                ui->textEdit->setReadOnly(true);
-                ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
-
-                ui->employee->setText(my_number);
-            }
-            else
-                ui->employee->setText(tr("Группа") + " (" + QString::number(employeeInitial.length()) + ")");
-        }
+            ui->employee->setText(tr("Группа") + " (" + QString::number(employeeInitial.length()) + ")");
+    }
 }
 
 void EditReminderDialog::onTextChanged()

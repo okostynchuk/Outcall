@@ -13,6 +13,8 @@ ChooseEmployee::ChooseEmployee(QWidget *parent) :
 
     extensions = g_pAsteriskManager->extensionNumbers.values();
 
+    extensions.removeAll(my_number);
+
     ui->listWidget->addItems(extensions);
 
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &ChooseEmployee::onSearch);
@@ -120,6 +122,7 @@ void ChooseEmployee::onSearch()
 void ChooseEmployee::setValuesReminders(QStringList employee)
 {
     this->employee = employee;
+    this->employee.removeAll(my_number);
 
     ui->listWidget_2->addItems(this->employee);
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
