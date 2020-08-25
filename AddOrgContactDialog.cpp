@@ -136,7 +136,7 @@ void AddOrgContactDialog::onSave()
     query.addBindValue(ui->Address->text());
     query.addBindValue(ui->Email->text());
     query.addBindValue(ui->VyborID->text());
-    query.addBindValue(ui->Comment->toPlainText());
+    query.addBindValue(ui->Comment->toPlainText().trimmed());
     query.exec();
 
     int id = query.lastInsertId().toInt();
@@ -208,4 +208,23 @@ void AddOrgContactDialog::setOrgValuesCallHistory(QString &number)
 void AddOrgContactDialog::setOrgValuesPopupWindow(QString &number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void AddOrgContactDialog::onTextChanged()
+{
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
+        ui->Comment->textCursor().deletePreviousChar();
+}
+
+void AddOrgContactDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
 }

@@ -127,7 +127,7 @@ void RemindersDialog::showReminders(bool show)
     }
 }
 
-void RemindersDialog::showEvent(QShowEvent *event)
+void RemindersDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -154,7 +154,7 @@ void RemindersDialog::showEvent(QShowEvent *event)
     onUpdate();
 }
 
-void RemindersDialog::closeEvent(QCloseEvent *event)
+void RemindersDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
@@ -1320,10 +1320,8 @@ void RemindersDialog::on_lineEdit_page_returnPressed()
 
 void RemindersDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         QDialog::close();
     else
-        QWidget::keyPressEvent(event);
+        QDialog::keyPressEvent(event);
 }
-
-

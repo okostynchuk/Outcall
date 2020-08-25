@@ -460,13 +460,13 @@ void PopupWindow::onSaveNote()
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    if (ui->textEdit->toPlainText().simplified().isEmpty())
+    if (ui->textEdit->toPlainText().trimmed().isEmpty())
         return;
 
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author, phone_number) VALUES(?, ?, ?, ?, ?)");
     query.addBindValue(popup->m_pwi.uniqueid);
     query.addBindValue(dateTime);
-    query.addBindValue(ui->textEdit->toPlainText().simplified());
+    query.addBindValue(ui->textEdit->toPlainText().trimmed());
     query.addBindValue(author);
     query.addBindValue(popup->m_pwi.number);
     query.exec();
@@ -600,8 +600,30 @@ void PopupWindow::onTextChanged()
 
     popup->m_pwi.stopTimer = true;
 
+    if (popup->ui->textEdit->toPlainText().trimmed().length() > 255)
+    {
+        popup->ui->textEdit->textCursor().deletePreviousChar();
+
+        return;
+    }
+
     popup->ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a;");
     popup->ui->saveNoteButton->setStyleSheet("background-color: #e1e1e1; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
+}
+
+void PopupWindow::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape)
+         closeAndDestroy();
+    else if (event->key() == Qt::Key_Return)
+    {
+        if (ui->textEdit->hasFocus())
+            return;
+        else
+            ui->saveNoteButton->click();
+    }
+    else
+        QDialog::keyPressEvent(event);
 }
 
 void PopupWindow::timerStop(QString uniqueid)
@@ -623,48 +645,6 @@ bool PopupWindow::isInnerPhone(QString *str)
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
-
-    return false;
-}
-
-void PopupWindow::keyPressEvent(QKeyEvent* event)
-{
-    if (event->key() == Qt::Key_Escape)
-         closeAndDestroy();
-    else
-        QWidget::keyPressEvent(event);
-}
-
-bool PopupWindow::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "textEdit")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit2");
-
-                return true;
-            }
-        }
-    }
-    else if (object->objectName() == "textEdit2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit");
-
-                return true;
-            }
-        }
-    }
 
     return false;
 }
@@ -725,8 +705,6 @@ void PopupWindow::receiveNumber(PopupWindow *popup)
 
     if (!MSSQLopened)
         popup->ui->openAccessButton->hide();
-
-    popup->ui->textEdit->installEventFilter(this);
 
     connect(popup->ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSaveNote()));
     popup->ui->textEdit->setProperty("qv_popup", qv_popup);

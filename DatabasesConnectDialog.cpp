@@ -7,7 +7,6 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSettings>
-#include <QKeyEvent>
 #include <QTabWidget>
 #include <QProcess>
 
@@ -193,4 +192,12 @@ void DatabasesConnectDialog::checkDbAsterisk()
     DbAsterisk.setPassword( ui->password_2->text() );
     DbAsterisk.setPort( ui->port_2->text().toUInt() );
     DbAsterisk.open();
+}
+
+void DatabasesConnectDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+        onSave();
+    else
+        QDialog::keyPressEvent(event);
 }

@@ -39,3 +39,11 @@ void DebugInfoDialog::updateDebug(const QString &info)
 {
     ui->textEdit->appendPlainText(info);
 }
+
+void DebugInfoDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+        onClear();
+    else
+        QDialog::keyPressEvent(event);
+}

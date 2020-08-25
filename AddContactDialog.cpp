@@ -2,6 +2,7 @@
 #include "ui_AddContactDialog.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
     ui->label_org->setText(tr("Нет"));
 
+    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
 }
 
@@ -168,7 +170,7 @@ void AddContactDialog::onSave()
     query.addBindValue(ui->Address->text());
     query.addBindValue(ui->Email->text());
     query.addBindValue(ui->VyborID->text());
-    query.addBindValue(ui->Comment->toPlainText());
+    query.addBindValue(ui->Comment->toPlainText().trimmed());
     query.exec();
 
     int id = query.lastInsertId().toInt();
@@ -263,5 +265,24 @@ void AddContactDialog::on_deleteOrgButton_clicked()
 void AddContactDialog::setValues(QString &number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void AddContactDialog::onTextChanged()
+{
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
+        ui->Comment->textCursor().deletePreviousChar();
+}
+
+void AddContactDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
 }
 

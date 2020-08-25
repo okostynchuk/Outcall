@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSqlDatabase>
+#include <QKeyEvent>
 
 namespace Ui {
 class DatabasesConnectDialog;
@@ -25,6 +26,8 @@ private slots:
     void setSettingForSecondDb();
     void checkDb();
     void checkDbAsterisk();
+
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::DatabasesConnectDialog *ui;

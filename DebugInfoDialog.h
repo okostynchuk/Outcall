@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSqlQuery>
+#include <QKeyEvent>
 
 namespace Ui {
 class DebugInfoDialog;
@@ -21,6 +22,8 @@ public:
 private slots:
     void onClear() const;
     void onExit();
+
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::DebugInfoDialog *ui;

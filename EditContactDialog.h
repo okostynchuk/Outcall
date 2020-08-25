@@ -7,6 +7,7 @@
 #include <QValidator>
 #include <QStringList>
 #include <QLineEdit>
+#include <QKeyEvent>
 
 class ViewContactDialog;
 
@@ -38,7 +39,7 @@ private slots:
 
     void setPos(int, int);
 
-    bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 public:
     explicit EditContactDialog(QWidget *parent = 0);
