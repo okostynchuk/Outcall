@@ -81,8 +81,9 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
 void SettingsDialog::saveSettings()
 {
     // General
-//    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
-//    global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
+    //global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
+    //global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
+    global::setSettingsValue("show_call_popup",  ui->show_call_popup->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
 
     // Server
@@ -169,6 +170,7 @@ void SettingsDialog::loadSettings()
     bool autoSignIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
+    ui->show_call_popup->setChecked(global::getSettingsValue("show_call_popup", "general", true).toBool());
 
     // Server
     ui->serverName->setText(global::getSettingsValue("servername", "settings").toString());

@@ -78,7 +78,8 @@ private:
     InternalContactsDialog *m_internalContactsDialog;
 
     QTimer m_timer;
-    bool m_switch;
+    bool m_switch;    
+    bool show_call_popup;
     QString my_number;
 };
 

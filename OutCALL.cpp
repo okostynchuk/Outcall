@@ -57,6 +57,8 @@ OutCall::OutCall() :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
+    show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
+
     createContextMenu();
 
     m_systemTrayIcon->setContextMenu(m_menu);
@@ -209,7 +211,8 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     if (from == callerIDName)
         callerIDName = QObject::tr("Неизвестный");
 
-    PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIDName), my_number);
+    if (show_call_popup)
+        PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIDName), my_number);
 }
 
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
