@@ -65,19 +65,6 @@
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QCheckBox" name="show_call_popup">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Включить всплывающее окно входящего звокна</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
           <item row="3" column="0">
