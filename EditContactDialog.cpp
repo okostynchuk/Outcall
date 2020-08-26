@@ -19,9 +19,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
 
-    ui->Comment->installEventFilter(this);
-
-    connect(ui->Comment, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->backButton, &QPushButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditContactDialog::onSave);
@@ -375,40 +372,19 @@ void EditContactDialog::on_deleteOrgButton_clicked()
 
 void EditContactDialog::onTextChanged()
 {
-    if (ui->Comment->toPlainText().simplified().length() > 255)
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
         ui->Comment->textCursor().deletePreviousChar();
 }
 
-bool EditContactDialog::eventFilter(QObject *object, QEvent *event)
+void EditContactDialog::keyPressEvent(QKeyEvent* event)
 {
-    if (object->objectName() == "Comment")
+    if (event->key() == Qt::Key_Return)
     {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment2");
-
-                return true;
-            }
-        }
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
     }
-    else if (object->objectName() == "Comment2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment");
-
-                return true;
-            }
-        }
-    }
-
-    return false;
+    else
+        QDialog::keyPressEvent(event);
 }

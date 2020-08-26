@@ -14,7 +14,7 @@
    <string>Подключение к базам данных</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
@@ -26,6 +26,9 @@
      <property name="text">
       <string>Выйти из приложения</string>
      </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item row="1" column="0">
@@ -35,6 +38,9 @@
      </property>
      <property name="text">
       <string>Сохранить</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -258,6 +264,8 @@
   <tabstop>password_2</tabstop>
   <tabstop>port_2</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

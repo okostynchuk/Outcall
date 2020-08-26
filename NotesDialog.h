@@ -8,6 +8,7 @@
 #include <QTableView>
 #include <QLayout>
 #include <QLabel>
+#include <QKeyEvent>
 
 namespace Ui {
 class NotesDialog;
@@ -33,6 +34,7 @@ private slots:
     void onUpdate();
     void loadNotes();
     void deleteObjects();
+
     bool isInnerPhone(QString *str);
 
     void on_previousButton_clicked();
@@ -41,7 +43,7 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::NotesDialog *ui;

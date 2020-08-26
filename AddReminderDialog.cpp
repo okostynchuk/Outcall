@@ -1,7 +1,6 @@
 #include "AddReminderDialog.h"
 #include "ui_AddReminderDialog.h"
 
-#include <QKeyEvent>
 #include <QSqlQuery>
 #include <QDebug>
 
@@ -35,10 +34,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     ui->timeEdit->setTime(QTime::currentTime());
 
-  //  ui->textEdit->installEventFilter(this);
-
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
-    connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &AddReminderDialog::onSave);
     connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &AddReminderDialog::onChooseEmployee);
 
@@ -74,7 +70,7 @@ void AddReminderDialog::onSave()
     QDate date = ui->calendarWidget->selectedDate();
     QTime time(ui->timeEdit->time().hour(), ui->timeEdit->time().minute(), 0);
     QDateTime dateTime = QDateTime(date, time);
-    QString note = ui->textEdit->toPlainText().simplified();
+    QString note = ui->textEdit->toPlainText().trimmed();
 
     if (dateTime < QDateTime::currentDateTime())
     {
@@ -83,7 +79,7 @@ void AddReminderDialog::onSave()
         return;
     }
 
-    if (ui->textEdit->toPlainText().simplified().isEmpty())
+    if (note.isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
 
@@ -217,43 +213,22 @@ void AddReminderDialog::setCallId(QString receivedCallId)
 
 void AddReminderDialog::onTextChanged()
 {
-    if (ui->textEdit->toPlainText().simplified().length() > 255)
+    if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
-//bool AddReminderDialog::eventFilter(QObject *object, QEvent *event)
-//{
-//    if (object->objectName() == "textEdit")
-//    {
-//        if (event->type() == QEvent::KeyPress)
-//        {
-//            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-//            if (keyEvent->key() == Qt::Key_Return)
-//            {
-//                object->setObjectName("textEdit2");
-
-//                return true;
-//            }
-//        }
-//    }
-//    else if (object->objectName() == "textEdit2")
-//    {
-//        if (event->type() == QEvent::KeyPress)
-//        {
-//            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-//            if (keyEvent->key() == Qt::Key_Return)
-//            {
-//                object->setObjectName("textEdit");
-
-//                return true;
-//            }
-//        }
-//    }
-
-//    return false;
-//}
+void AddReminderDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->textEdit->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
+}
 
 void AddReminderDialog::receiveName(QString name)
 {

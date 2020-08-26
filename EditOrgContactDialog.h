@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QStringList>
+#include <QKeyEvent>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -35,7 +36,7 @@ private slots:
 
     void setPos(int, int);
 
-    bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::EditOrgContactDialog *ui;

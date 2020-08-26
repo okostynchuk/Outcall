@@ -540,5 +540,5 @@ void SettingsDialog::keyPressEvent(QKeyEvent* event)
     else if (event->key() == Qt::Key_Return)
         ui->applyButton->click();
     else
-        QWidget::keyPressEvent(event);
+        QDialog::keyPressEvent(event);
 }

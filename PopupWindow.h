@@ -85,7 +85,6 @@ private slots:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
     void keyPressEvent(QKeyEvent* event);
 
 private:

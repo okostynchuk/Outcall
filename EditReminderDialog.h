@@ -39,8 +39,7 @@ private slots:
     void on_add60MinButton_clicked();
 
     void keyPressEvent(QKeyEvent* event);
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
+    void closeEvent(QCloseEvent* event);
 
 private:
     Ui::EditReminderDialog *ui;

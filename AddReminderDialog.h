@@ -6,6 +6,7 @@
 #include "ChooseEmployee.h"
 
 #include <QDialog>
+#include <QKeyEvent>
 
 namespace Ui {
 class AddReminderDialog;
@@ -38,7 +39,7 @@ private slots:
     void on_add5MinButton_clicked();
     void on_add60MinButton_clicked();
 
-    //bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::AddReminderDialog *ui;

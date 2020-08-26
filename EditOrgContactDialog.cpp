@@ -21,9 +21,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
-    ui->Comment->installEventFilter(this);
-
-    connect(ui->Comment, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->backButton, &QPushButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditOrgContactDialog::onSave);
@@ -221,7 +218,6 @@ void EditOrgContactDialog::onSave()
                 query.addBindValue(updateID);
                 query.addBindValue(oldPhonesList.at(i));
                 query.exec();
-
             }
         }
 
@@ -303,40 +299,19 @@ void EditOrgContactDialog::setOrgValuesContacts(QString &i)
 
 void EditOrgContactDialog::onTextChanged()
 {
-    if (ui->Comment->toPlainText().simplified().length() > 255)
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
         ui->Comment->textCursor().deletePreviousChar();
 }
 
-bool EditOrgContactDialog::eventFilter(QObject *object, QEvent *event)
+void EditOrgContactDialog::keyPressEvent(QKeyEvent* event)
 {
-    if (object->objectName() == "Comment")
+    if (event->key() == Qt::Key_Return)
     {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment2");
-
-                return true;
-            }
-        }
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
     }
-    else if (object->objectName() == "Comment2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment");
-
-                return true;
-            }
-        }
-    }
-
-    return false;
+    else
+        QDialog::keyPressEvent(event);
 }

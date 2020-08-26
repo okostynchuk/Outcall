@@ -7,6 +7,7 @@
 #include <QValidator>
 #include <QSqlQuery>
 #include <QLineEdit>
+#include <QKeyEvent>
 
 namespace Ui {
 class AddContactDialog;
@@ -30,12 +31,16 @@ public:
 
 private slots:
     void onSave();
+    void onTextChanged();
+
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
     bool isInnerPhone(QString *str);
     bool isPhone(QString *str);
     bool isVyborID(QString *str);
+
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::AddContactDialog *ui;
