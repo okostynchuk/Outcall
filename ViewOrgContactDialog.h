@@ -29,21 +29,21 @@ class ViewOrgContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void sendNumber(QString &);
+    void sendNumber(QString);
     void getPos(int, int);
 
 public slots:
     void receiveDataPerson(bool);
     void receiveDataOrg(bool, int, int);
-    void receiveNumber(QString &);
-    void receivePersonID(QString &);
+    void receiveNumber(QString);
+    void receivePersonID(QString);
     void playerClosed(bool);
 
 public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
     ~ViewOrgContactDialog();
 
-    void setOrgValuesContacts(QString &);
+    void setOrgValuesContacts(QString);
 
 protected slots:
 
@@ -90,22 +90,22 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    ViewContactDialog *viewContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
-    ChooseNumber *chooseNumber;
+    ViewContactDialog* viewContactDialog;
+    EditOrgContactDialog* editOrgContactDialog;
+    ChooseNumber* chooseNumber;
     AddReminderDialog* addReminderDialog;
-    NotesDialog *notesDialog;
-    AddPersonToOrg *addPersonToOrg;
-    PlayAudioDialog *playAudioDialog = nullptr;
+    NotesDialog* notesDialog;
+    AddPersonToOrg* addPersonToOrg;
+    PlayAudioDialog* playAudioDialog = nullptr;
 
-    QList <QLineEdit *> phonesList;
+    QList<QLineEdit*> phonesList;
 
-    QSqlQueryModel *query_model;
-    QSqlQueryModel *queryModel;
+    QSqlQueryModel* query_model;
+    QSqlQueryModel* queryModel;
 
-    QValidator *validator;
+    QValidator* validator;
 
-    QHeaderView *m_horiz_header;
+    QHeaderView* m_horiz_header;
 
     QString recordpath;
     QString userID;

@@ -32,13 +32,14 @@ public:
 
 private slots:
     void updateWindowTitle(const QString &state);
-    void closeEvent(QCloseEvent *event);
+
+    void closeEvent(QCloseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PlayAudioDialog *ui;
 
-    QMediaPlayer *player;
+    QMediaPlayer* player;
 
     QString recordpath;
 };

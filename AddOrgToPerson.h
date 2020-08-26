@@ -19,7 +19,7 @@ class AddOrgToPerson : public QDialog
     Q_OBJECT
 
 signals:
-    void sendOrgID(QString &);
+    void sendOrgID(QString);
 
 public:
     explicit AddOrgToPerson(QWidget *parent = 0);
@@ -44,9 +44,9 @@ private slots:
 private:
     Ui::AddOrgToPerson *ui;
 
-    QSqlQueryModel *query1;
+    QSqlQueryModel* query1;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QList<QSqlQueryModel*> queries;
 

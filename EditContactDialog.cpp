@@ -261,7 +261,7 @@ void EditContactDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
-bool EditContactDialog::isInnerPhone(QString *str)
+bool EditContactDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -277,7 +277,7 @@ bool EditContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool EditContactDialog::isPhone(QString *str)
+bool EditContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -289,7 +289,7 @@ bool EditContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool EditContactDialog::isVyborID(QString *str)
+bool EditContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -301,7 +301,7 @@ bool EditContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void EditContactDialog::setValuesContacts(QString &i)
+void EditContactDialog::setValuesContacts(QString i)
 {
     updateID = i;
 
@@ -342,7 +342,7 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->Comment->setText(query.value(7).toString());
 }
 
-void EditContactDialog::receiveOrgID(QString &id)
+void EditContactDialog::receiveOrgID(QString id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -360,7 +360,7 @@ void EditContactDialog::receiveOrgID(QString &id)
 void EditContactDialog::on_addOrgButton_clicked()
 {
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
+    connect(addOrgToPerson, SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
     addOrgToPerson->show();
     addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
 }

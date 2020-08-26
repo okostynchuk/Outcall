@@ -7,6 +7,7 @@
 
 #include <QDialog>
 #include <QDateTime>
+#include <QPointer>
 
 namespace Ui {
 class EditReminderDialog;
@@ -44,7 +45,7 @@ private slots:
 private:
     Ui::EditReminderDialog *ui;
 
-    ChooseEmployee *chooseEmployee;
+    QPointer<ChooseEmployee> chooseEmployee;
 
     QStringList employeeInitial;
     QStringList employee;

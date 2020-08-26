@@ -27,8 +27,6 @@ public:
     ~InternalContactsDialog();
 
 private slots:
-    void showEvent(QShowEvent *event);
-    void closeEvent(QCloseEvent *);
     void onCallButtonClicked();
     void onAddReminder();
     void onSearch();
@@ -41,12 +39,15 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
+    void showEvent(QShowEvent* event);
+    void closeEvent(QCloseEvent* event);
+
 private:
     Ui::InternalContactsDialog *ui;
 
     AddReminderDialog* addReminderDialog;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QString my_number;
     QString page;
@@ -60,14 +61,11 @@ private:
 
     QWidget* addWgt(QString);
 
-    QListWidget *list;
+    QListWidget* list;
 
-    QList<QListWidgetItem *> itemsSearch;
-
+    QList<QListWidgetItem*> itemsSearch;
     QList<QPushButton*> buttons;
-
     QList<QHBoxLayout*> layouts;
-
     QList<QWidget*> widgets;
 
     QStringList extensions;

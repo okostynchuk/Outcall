@@ -351,7 +351,7 @@ void NotesDialog::deleteObjects()
     delete query;
 }
 
-bool NotesDialog::isInnerPhone(QString *str)
+bool NotesDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 

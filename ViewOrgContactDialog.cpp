@@ -194,7 +194,7 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
     }
 }
 
-void ViewOrgContactDialog::receiveNumber(QString &to)
+void ViewOrgContactDialog::receiveNumber(QString to)
 {
     const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
@@ -223,7 +223,7 @@ void ViewOrgContactDialog::onCall()
     {
         chooseNumber = new ChooseNumber;
         chooseNumber->setValuesNumber(contactId);
-        connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+        connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
         chooseNumber->show();
         chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -480,7 +480,7 @@ void ViewOrgContactDialog::onSectionClicked(int logicalIndex)
     }
 }
 
-void ViewOrgContactDialog::setOrgValuesContacts(QString &i)
+void ViewOrgContactDialog::setOrgValuesContacts(QString i)
 {
     contactId = i;
 
@@ -1560,7 +1560,7 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
     searchFunction();
 }
 
-void ViewOrgContactDialog::receivePersonID(QString &id)
+void ViewOrgContactDialog::receivePersonID(QString id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1574,7 +1574,7 @@ void ViewOrgContactDialog::receivePersonID(QString &id)
 void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 {
     addPersonToOrg = new AddPersonToOrg;
-    connect(addPersonToOrg, SIGNAL(sendPersonID(QString&)), this, SLOT(receivePersonID(QString&)));
+    connect(addPersonToOrg, SIGNAL(sendPersonID(QString)), this, SLOT(receivePersonID(QString)));
     addPersonToOrg->show();
     addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
 }

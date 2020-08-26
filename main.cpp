@@ -17,7 +17,7 @@
 #include <QtSql>
 #include <QSqlDatabase>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QStringList paths = QCoreApplication::libraryPaths();
     paths.append(".");
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();

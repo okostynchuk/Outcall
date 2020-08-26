@@ -35,7 +35,7 @@ private slots:
     void loadNotes();
     void deleteObjects();
 
-    bool isInnerPhone(QString *str);
+    bool isInnerPhone(QString* str);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -50,9 +50,9 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QValidator *validator;
+    QValidator* validator;
 
-    QSqlQueryModel *query;
+    QSqlQueryModel* query;
 
     QWidget* addWidgetNote(int, QString);
 

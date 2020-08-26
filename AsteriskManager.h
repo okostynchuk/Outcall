@@ -84,7 +84,7 @@ protected:
     void setAsteriskVersion(const QString &msg);
 
 private:
-    QTcpSocket *m_tcpSocket;
+    QTcpSocket* m_tcpSocket;
 
     AsteriskVersion m_currentVersion;
 
@@ -103,6 +103,6 @@ private:
     bool m_autoSignIn;
 };
 
-extern AsteriskManager *g_pAsteriskManager;
+extern AsteriskManager* g_pAsteriskManager;
 
 #endif // ASTERISKMANAGER_H

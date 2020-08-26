@@ -43,7 +43,7 @@ void InternalContactsDialog::deleteObjects()
     buttons.clear();
 }
 
-void InternalContactsDialog::showEvent(QShowEvent *event)
+void InternalContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -69,7 +69,7 @@ void InternalContactsDialog::showEvent(QShowEvent *event)
     loadContacts();
 }
 
-void InternalContactsDialog::closeEvent(QCloseEvent *event)
+void InternalContactsDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 

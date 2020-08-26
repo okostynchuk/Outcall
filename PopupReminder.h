@@ -22,7 +22,7 @@ class PopupReminder : public QDialog
 
 public slots:
     void receiveData(bool);
-    void receiveNumber(QString &);
+    void receiveNumber(QString);
 
 private:
     struct PopupReminderInfo
@@ -56,11 +56,11 @@ private slots:
     void onClosePopup();
     void onSelectTime();
 
-    bool isInnerPhone(QString *str);
+    bool isInnerPhone(QString* str);
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -68,8 +68,8 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    EditReminderDialog *editReminderDialog = nullptr;
-    ChooseNumber *chooseNumber;
+    EditReminderDialog* editReminderDialog = nullptr;
+    ChooseNumber* chooseNumber;
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;

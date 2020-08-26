@@ -79,24 +79,24 @@ private slots:
     void onAddReminder();
     void onViewNotes();
 
-    bool isInnerPhone(QString *str);
+    bool isInnerPhone(QString* str);
 
-    void changeEvent(QEvent *e);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void changeEvent(QEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PopupWindow *ui;
 
-    AddContactDialog *addContactDialog;
-    AddOrgContactDialog *addOrgContactDialog;
-    AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
-    ViewContactDialog *viewContactDialog;
-    ViewOrgContactDialog *viewOrgContactDialog;
-    AddReminderDialog *addReminderDialog;
-    NotesDialog *notesDialog;
+    AddContactDialog* addContactDialog;
+    AddOrgContactDialog* addOrgContactDialog;
+    AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
+    ViewContactDialog* viewContactDialog;
+    ViewOrgContactDialog* viewOrgContactDialog;
+    AddReminderDialog* addReminderDialog;
+    NotesDialog* notesDialog;
 
     QPoint position;
     QString userID;

@@ -42,6 +42,9 @@ void EditReminderDialog::onChooseEmployee()
     if (employee.isEmpty())
         employee = employeeInitial;
 
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+
     chooseEmployee = new ChooseEmployee;
     chooseEmployee->setValuesReminders(employee);
     connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
@@ -313,6 +316,9 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
 void EditReminderDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
+
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
 
     emit sendData(false);
 }

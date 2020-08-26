@@ -148,7 +148,7 @@ void PopupWindow::mousePressEvent(QMouseEvent* event)
     position = event->globalPos();
 }
 
-void PopupWindow::mouseReleaseEvent(QMouseEvent *event)
+void PopupWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
     position = QPoint();
@@ -173,11 +173,11 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-void PopupWindow::changeEvent(QEvent *e)
+void PopupWindow::changeEvent(QEvent* event)
 {
-    QDialog::changeEvent(e);
+    QDialog::changeEvent(event);
 
-    switch (e->type())
+    switch (event->type())
     {
         case QEvent::LanguageChange:
             ui->retranslateUi(this);
@@ -288,7 +288,7 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
     if (avatar.isNull())
         avatar = QPixmap(":/images/outcall-logo.png");
 
-    PopupWindow *popup = new PopupWindow(pwi);
+    PopupWindow* popup = new PopupWindow(pwi);
 
     popup->receiveNumber(popup);
 	popup->show();
@@ -314,7 +314,7 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 
 	pwi.avatar = avatar;
 
-    PopupWindow *popup = new PopupWindow(pwi);
+    PopupWindow* popup = new PopupWindow(pwi);
 
 	popup->show();
 
@@ -344,8 +344,8 @@ void PopupWindow::onAddPerson()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -361,8 +361,8 @@ void PopupWindow::onAddOrg()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -378,8 +378,8 @@ void PopupWindow::onAddPhoneNumberToContact()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -395,8 +395,8 @@ void PopupWindow::onShowCard()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -433,8 +433,8 @@ void PopupWindow::onAddReminder()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -450,8 +450,8 @@ void PopupWindow::onSaveNote()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -479,8 +479,8 @@ void PopupWindow::onOpenAccess()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -534,8 +534,8 @@ void PopupWindow::receiveData(bool update)
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     if (update)
     {
@@ -595,8 +595,8 @@ void PopupWindow::onTextChanged()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -630,14 +630,14 @@ void PopupWindow::timerStop(QString uniqueid)
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     if (popup->m_pwi.uniqueid == uniqueid)
         popup->m_pwi.stopTimer = true;
 }
 
-bool PopupWindow::isInnerPhone(QString *str)
+bool PopupWindow::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -653,8 +653,8 @@ void PopupWindow::onViewNotes()
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
-    PopupWindow *popup;
-    popup = (PopupWindow*)qv_popup.value<void *>();
+    PopupWindow* popup;
+    popup = (PopupWindow*)qv_popup.value<void*>();
 
     popup->m_pwi.stopTimer = true;
 
@@ -667,9 +667,9 @@ void PopupWindow::onViewNotes()
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void PopupWindow::receiveNumber(PopupWindow *popup)
+void PopupWindow::receiveNumber(PopupWindow* popup)
 {
-    QVariant qv_popup = QVariant::fromValue((void *)popup);
+    QVariant qv_popup = QVariant::fromValue((void*)popup);
 
     if (isInnerPhone(&popup->m_pwi.number))
     {

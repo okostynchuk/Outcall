@@ -228,7 +228,7 @@ void EditOrgContactDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
-bool EditOrgContactDialog::isInnerPhone(QString *str)
+bool EditOrgContactDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -244,7 +244,7 @@ bool EditOrgContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool EditOrgContactDialog::isPhone(QString *str)
+bool EditOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -256,7 +256,7 @@ bool EditOrgContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool EditOrgContactDialog::isVyborID(QString *str)
+bool EditOrgContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -268,7 +268,7 @@ bool EditOrgContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void EditOrgContactDialog::setOrgValuesContacts(QString &i)
+void EditOrgContactDialog::setOrgValuesContacts(QString i)
 {
     updateID = i;
 

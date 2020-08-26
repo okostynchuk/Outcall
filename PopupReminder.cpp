@@ -157,7 +157,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     else if (languages == "English")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 40px;} ::drop-down{border: 0px;}");
 
-    qobject_cast<QListView *>(ui->comboBox->view())->setRowHidden(0, true);
+    qobject_cast<QListView*>(ui->comboBox->view())->setRowHidden(0, true);
 
     this->installEventFilter(this);
 
@@ -258,7 +258,7 @@ void PopupReminder::mousePressEvent(QMouseEvent* event)
     position = event->globalPos();
 }
 
-void PopupReminder::mouseReleaseEvent(QMouseEvent *event)
+void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
     position = QPoint();
@@ -281,7 +281,7 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-bool PopupReminder::isInnerPhone(QString *str)
+bool PopupReminder::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -383,7 +383,7 @@ void PopupReminder::receiveData(bool updating)
         editReminderDialog = nullptr;
 }
 
-void PopupReminder::receiveNumber(QString &number)
+void PopupReminder::receiveNumber(QString number)
 {
     QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
     QString protocol = global::getSettingsValue(my_number, "extensions").toString();
@@ -401,7 +401,7 @@ void PopupReminder::onCall()
         {
             chooseNumber = new ChooseNumber;
             chooseNumber->setValuesNumber(m_pri.call_id);
-            connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+            connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
             chooseNumber->show();
             chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }
@@ -603,7 +603,7 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
 
     pri.text = "<b> " + pri.note + " </b>";
 
-    PopupReminder *reminder = new PopupReminder(pri);
+    PopupReminder* reminder = new PopupReminder(pri);
 
     reminder->show();
 

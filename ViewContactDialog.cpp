@@ -71,7 +71,7 @@ ViewContactDialog::~ViewContactDialog()
     delete ui;
 }
 
-void ViewContactDialog::showEvent(QShowEvent *event)
+void ViewContactDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -186,7 +186,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
     }
 }
 
-void ViewContactDialog::receiveNumber(QString &to)
+void ViewContactDialog::receiveNumber(QString to)
 {
     const QString from = my_number;
     const QString protocol = global::getSettingsValue(from, "extensions").toString();
@@ -215,7 +215,7 @@ void ViewContactDialog::onCall()
     {
         chooseNumber = new ChooseNumber;
         chooseNumber->setValuesNumber(contactId);
-        connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+        connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
         chooseNumber->show();
         chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -236,7 +236,7 @@ void ViewContactDialog::onEdit()
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewContactDialog::setValuesContacts(QString &i)
+void ViewContactDialog::setValuesContacts(QString i)
 {
     contactId = i;
 

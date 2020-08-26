@@ -160,7 +160,7 @@ void AddOrgContactDialog::onSave()
 }
 
 
-bool AddOrgContactDialog::isInnerPhone(QString *str)
+bool AddOrgContactDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -176,7 +176,7 @@ bool AddOrgContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool AddOrgContactDialog::isPhone(QString *str)
+bool AddOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -188,7 +188,7 @@ bool AddOrgContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool AddOrgContactDialog::isVyborID(QString *str)
+bool AddOrgContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -200,12 +200,12 @@ bool AddOrgContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void AddOrgContactDialog::setOrgValuesCallHistory(QString &number)
+void AddOrgContactDialog::setOrgValuesCallHistory(QString number)
 {
     ui->FirstNumber->setText(number);
 }
 
-void AddOrgContactDialog::setOrgValuesPopupWindow(QString &number)
+void AddOrgContactDialog::setOrgValuesPopupWindow(QString number)
 {
     ui->FirstNumber->setText(number);
 }

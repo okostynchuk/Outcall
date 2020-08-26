@@ -192,6 +192,9 @@ void AddContactDialog::onSave()
             query.exec();
         }
 
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     emit sendData(true);
 
     close();
@@ -201,7 +204,7 @@ void AddContactDialog::onSave()
 }
 
 
-bool AddContactDialog::isInnerPhone(QString *str)
+bool AddContactDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -217,7 +220,7 @@ bool AddContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool AddContactDialog::isPhone(QString *str)
+bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -229,7 +232,7 @@ bool AddContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool AddContactDialog::isVyborID(QString *str)
+bool AddContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -241,7 +244,7 @@ bool AddContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void AddContactDialog::receiveOrgID(QString &id)
+void AddContactDialog::receiveOrgID(QString id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -258,8 +261,11 @@ void AddContactDialog::receiveOrgID(QString &id)
 
 void AddContactDialog::on_addOrgButton_clicked()
 {
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
+    connect(addOrgToPerson, SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
     addOrgToPerson->show();
     addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -269,7 +275,7 @@ void AddContactDialog::on_deleteOrgButton_clicked()
     ui->label_org->setText(tr("Нет"));
 }
 
-void AddContactDialog::setValues(QString &number)
+void AddContactDialog::setValues(QString number)
 {
     ui->FirstNumber->setText(number);
 }
@@ -291,5 +297,13 @@ void AddContactDialog::keyPressEvent(QKeyEvent* event)
     }
     else
         QDialog::keyPressEvent(event);
+}
+
+void AddContactDialog::closeEvent(QCloseEvent* event)
+{
+    QDialog::closeEvent(event);
+
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
 }
 

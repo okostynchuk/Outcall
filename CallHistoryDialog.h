@@ -56,13 +56,12 @@ private slots:
 
     void deleteObjects();
 
-    void editContact(QString &);
-    void editOrgContact(QString &);
+    void editContact(QString);
+    void editOrgContact(QString);
 
-    QString getUpdateId(QString &);
+    QString getUpdateId(QString);
 
-    void addNote(const QModelIndex &);
-
+    void addNote(const QModelIndex &index);
     void getData(const QModelIndex &index);
 
     void on_previousButton_clicked();
@@ -71,11 +70,11 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    bool isInnerPhone(QString *str);
-    bool checkNumber(QString &);
+    bool isInnerPhone(QString* str);
+    bool checkNumber(QString);
 
-    void showEvent(QShowEvent *);
-    void closeEvent(QCloseEvent *);
+    void showEvent(QShowEvent* event);
+    void closeEvent(QCloseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -83,17 +82,17 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QSqlQueryModel *queryModel;
+    QSqlQueryModel* queryModel;
 
-    QValidator *validator;
+    QValidator* validator;
 
-    PlayAudioDialog *playAudioDialog = nullptr;
-    AddContactDialog *addContactDialog;
-    AddOrgContactDialog *addOrgContactDialog;
-    EditContactDialog *editContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
-    AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
-    NotesDialog *notesDialog;
+    PlayAudioDialog* playAudioDialog = nullptr;
+    AddContactDialog* addContactDialog;
+    AddOrgContactDialog* addOrgContactDialog;
+    EditContactDialog* editContactDialog;
+    EditOrgContactDialog* editOrgContactDialog;
+    AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
+    NotesDialog* notesDialog;
 
     QString recordpath;
     QString state_call;

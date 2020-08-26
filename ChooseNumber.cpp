@@ -29,7 +29,7 @@ ChooseNumber::~ChooseNumber()
     delete ui;
 }
 
-void ChooseNumber::setValuesNumber(QString &i)
+void ChooseNumber::setValuesNumber(QString i)
 {
     updateID = i;
 
@@ -86,7 +86,7 @@ void ChooseNumber::setValuesNumber(QString &i)
     }
 }
 
-bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
+bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
     if (ui->SecondNumber->text().isEmpty())
     {

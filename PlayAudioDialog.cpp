@@ -34,7 +34,7 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
 
     if (languages == "Русский (по умолчанию)")
     {
-        static const QHash<int, const char *> stateMapping
+        static const QHash<int, const char*> stateMapping
         {
             {1,  "Остановленно"},
             {2,  "Пауза"},
@@ -49,13 +49,13 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {11, "Переподключение"},
         };
 
-        const char *stateStr = stateMapping.value(newState, "");
+        const char* stateStr = stateMapping.value(newState, "");
 
         updateWindowTitle(stateStr);
     }
     else if (languages == "English")
     {
-        static const QHash<int, const char *> stateMapping
+        static const QHash<int, const char*> stateMapping
         {
             {1,  "Stopped"},
             {2,  "Paused"},
@@ -70,13 +70,13 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {11, "Reconnecting"},
         };
 
-        const char *stateStr = stateMapping.value(newState, "");
+        const char* stateStr = stateMapping.value(newState, "");
 
         updateWindowTitle(stateStr);
     }
     else if (languages == "Українська")
     {
-        static const QHash<int, const char *> stateMapping
+        static const QHash<int, const char*> stateMapping
         {
             {1,  "Перепідключення"},
             {2,  "Пауза"},
@@ -91,7 +91,7 @@ void PlayAudioDialog::on_mediaPlayer_PlayStateChange(int newState)
             {11, "Перепідключення"},
         };
 
-        const char *stateStr = stateMapping.value(newState, "");
+        const char* stateStr = stateMapping.value(newState, "");
 
         updateWindowTitle(stateStr);
     }
@@ -112,7 +112,7 @@ void PlayAudioDialog::updateWindowTitle(const QString &state)
     setWindowTitle(title);
 }
 
-void PlayAudioDialog::closeEvent(QCloseEvent *event)
+void PlayAudioDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 

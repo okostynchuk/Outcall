@@ -44,7 +44,7 @@ private slots:
 private:
     Ui::AddReminderDialog *ui;
 
-    ChooseEmployee *chooseEmployee;
+    ChooseEmployee* chooseEmployee;
 
     QStringList employee;
 

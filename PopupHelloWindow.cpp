@@ -109,11 +109,11 @@ PopupHelloWindow::~PopupHelloWindow()
     delete ui;
 }
 
-void PopupHelloWindow::changeEvent(QEvent *e)
+void PopupHelloWindow::changeEvent(QEvent* event)
 {
-    QDialog::changeEvent(e);
+    QDialog::changeEvent(event);
 
-    switch (e->type())
+    switch (event->type())
     {
         case QEvent::LanguageChange:
             ui->retranslateUi(this);
@@ -253,7 +253,7 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
 
     pwi.avatar = avatar;
 
-    PopupHelloWindow *popup = new PopupHelloWindow(pwi);
+    PopupHelloWindow* popup = new PopupHelloWindow(pwi);
 
     popup->show();
 
@@ -268,7 +268,7 @@ void PopupHelloWindow::closeAll()
     m_PopupHelloWindows.clear();
 }
 
-void PopupHelloWindow::mousePressEvent(QMouseEvent *)
+void PopupHelloWindow::mousePressEvent(QMouseEvent*)
 {
     m_bAppearing = false;
 

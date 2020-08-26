@@ -27,15 +27,15 @@ public:
     ~ChooseEmployee();
 
 private slots:
-    void onChoose(QListWidgetItem *item);
-    void onRemove(QListWidgetItem *item);
+    void onChoose(QListWidgetItem* item);
+    void onRemove(QListWidgetItem* item);
     void onSearch();
 
     void on_chooseAllButton_clicked();
     void on_removeAllButton_clicked();
     void on_applyButton_clicked();
 
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::ChooseEmployee *ui;

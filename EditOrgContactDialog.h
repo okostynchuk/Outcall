@@ -23,16 +23,16 @@ public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     ~EditOrgContactDialog();
 
-    void setOrgValuesContacts(QString &);
+    void setOrgValuesContacts(QString);
 
 private slots:
     void onSave();
     void onReturn();
     void onTextChanged();
 
-    bool isInnerPhone(QString *str);
-    bool isPhone(QString *str);
-    bool isVyborID(QString *str);
+    bool isInnerPhone(QString* str);
+    bool isPhone(QString* str);
+    bool isVyborID(QString* str);
 
     void setPos(int, int);
 
@@ -41,13 +41,11 @@ private slots:
 private:
     Ui::EditOrgContactDialog *ui;
 
-    QSqlQuery *query1;
-
-    QList <QLineEdit *> phonesList;
+    QList<QLineEdit*> phonesList;
 
     QStringList oldPhonesList;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QString updateID;
     QString firstNumber;

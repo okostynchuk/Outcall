@@ -76,14 +76,14 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
         {
             chooseNumber = new ChooseNumber;
             chooseNumber->setValuesNumber(id);
-            connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+            connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
             chooseNumber->show();
             chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }
     }
 }
 
-void PlaceCallDialog::receiveNumber(QString &number)
+void PlaceCallDialog::receiveNumber(QString number)
 {
     ui->phoneLine->setText(number);
 
@@ -199,14 +199,14 @@ void PlaceCallDialog::clearEditText()
     ui->lineEdit_2->hide();
 }
 
-void PlaceCallDialog::showEvent(QShowEvent *event)
+void PlaceCallDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
     ui->lineEdit->setFocus();
 }
 
-void PlaceCallDialog::closeEvent(QCloseEvent *event)
+void PlaceCallDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 

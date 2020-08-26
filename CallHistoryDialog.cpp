@@ -91,7 +91,7 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::showEvent(QShowEvent *event)
+void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -100,7 +100,7 @@ void CallHistoryDialog::showEvent(QShowEvent *event)
     updateCount();
 }
 
-void CallHistoryDialog::closeEvent(QCloseEvent *event)
+void CallHistoryDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
@@ -692,7 +692,7 @@ void CallHistoryDialog::updateCount()
     }
 }
 
-bool CallHistoryDialog::isInnerPhone(QString *str)
+bool CallHistoryDialog::isInnerPhone(QString* str)
 {
     int pos = 0;
 
@@ -860,7 +860,7 @@ void CallHistoryDialog::onAddOrgContact()
         editOrgContact(number);
 }
 
-bool CallHistoryDialog::checkNumber(QString &number)
+bool CallHistoryDialog::checkNumber(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -875,7 +875,7 @@ bool CallHistoryDialog::checkNumber(QString &number)
         return true;
 }
 
-void CallHistoryDialog::editContact(QString &number)
+void CallHistoryDialog::editContact(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -898,7 +898,7 @@ void CallHistoryDialog::editContact(QString &number)
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
 }
 
-void CallHistoryDialog::editOrgContact(QString &number)
+void CallHistoryDialog::editOrgContact(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -1016,7 +1016,7 @@ void CallHistoryDialog::receiveDataFromNotes()
     updateCount();
 }
 
-QString CallHistoryDialog::getUpdateId(QString &number)
+QString CallHistoryDialog::getUpdateId(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);

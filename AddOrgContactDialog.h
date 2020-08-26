@@ -22,27 +22,27 @@ public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
     ~AddOrgContactDialog();
 
-    void setOrgValuesCallHistory(QString &);
-    void setOrgValuesPopupWindow(QString &);   
+    void setOrgValuesCallHistory(QString);
+    void setOrgValuesPopupWindow(QString);
 
 private slots:
     void onSave();
     void onTextChanged();
 
-    bool isInnerPhone(QString *str);
-    bool isPhone(QString *str);
-    bool isVyborID(QString *str);
+    bool isInnerPhone(QString* str);
+    bool isPhone(QString* str);
+    bool isVyborID(QString* str);
 
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::AddOrgContactDialog *ui;
 
-    QSqlQuery *query1;
+    QSqlQuery* query1;
 
-    QList <QLineEdit *> phonesList;
+    QList <QLineEdit*> phonesList;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QStringList numbers;
 };
