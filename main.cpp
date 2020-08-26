@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
 
-    if(global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
+    if (global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
         global::setSettingsValue("show_call_popup", true, "general");
 
     QString languages = global::getSettingsValue("language", "settings").toString();
