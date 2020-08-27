@@ -12,7 +12,6 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QSqlError>
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
@@ -28,13 +27,27 @@ int main(int argc, char* argv[])
 
     QApplication app(argc, argv);
 
+    QString appVersion = "3.0";
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
-    app.setApplicationVersion("3.0");
+    app.setApplicationVersion(appVersion);
     app.setOrganizationName(ORGANIZATION_NAME);
 
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
+
+    QSettings sett("Microsoft\\Windows\\CurrentVersion", "Uninstall");
+    QStringList list = sett.childGroups();
+    for (int i = 0; i < list.length(); ++i)
+    {
+        QSettings sett2("Microsoft\\Windows\\CurrentVersion\\Uninstall" , list.at(i));
+        if(sett2.contains("DisplayName"))
+            if(sett2.value("DisplayName").toString() == "OutCALL" && sett2.value("DisplayVersion").toString() != appVersion)
+            {
+                QProcess *pro = new QProcess;
+                pro->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + list.at(i) + " /f");
+            }
+    }
 
     if(global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
         global::setSettingsValue("show_call_popup", true, "general");
