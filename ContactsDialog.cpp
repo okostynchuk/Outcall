@@ -106,6 +106,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     onComboBoxSelected();
 
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
     go = "default";
     filter = false;
 }

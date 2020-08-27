@@ -74,8 +74,11 @@ private:
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
+
     bool m_bAppearing;
+
     QPoint position;
+
     QTimer m_timer;
 
     PopupReminderInfo m_pri;
