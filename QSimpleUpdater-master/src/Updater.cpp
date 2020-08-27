@@ -442,6 +442,7 @@ void Updater::setUpdateAvailable (const bool available)
 
     else if (notifyOnFinish()) {
         box.setStandardButtons (QMessageBox::Close);
+        box.setButtonText(QMessageBox::Close, tr("Закрыть"));
         box.setInformativeText (tr ("На данный момент нет доступных обновлений"));
         box.setText ("<h3>"
                      + tr ("Вы используете последнюю версию "

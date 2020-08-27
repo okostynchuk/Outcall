@@ -39,8 +39,8 @@ Downloader::Downloader (QWidget* parent) : QWidget (parent)
     setWindowFlags (Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
     /* Configure the appearance and behavior of the buttons */
-    m_ui->openButton->setEnabled (false);
-    m_ui->openButton->setVisible (false);
+//    m_ui->openButton->setEnabled (false);
+//    m_ui->openButton->setVisible (false);
 
     m_ui->openButton->hide();
     m_ui->stopButton->hide();

@@ -2915,6 +2915,10 @@ p, li { white-space: pre-wrap; }
         <source>Вы используете последнюю версию %1</source>
         <translation>Вы используете последнюю версию %1</translation>
     </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Закрыть</translation>
+    </message>
 </context>
 <context>
     <name>ViewContactDialog</name>

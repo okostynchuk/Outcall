@@ -101,6 +101,9 @@
            </item>
            <item row="0" column="2">
             <widget class="QPushButton" name="openButton">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string>Открыть</string>
              </property>
