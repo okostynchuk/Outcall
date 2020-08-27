@@ -77,7 +77,7 @@ void NotesDialog::loadNotes()
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if (isInnerPhone(&phoneNumber))
+        if (isInternalPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
@@ -156,7 +156,7 @@ void NotesDialog::loadNotes()
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if (isInnerPhone(&phoneNumber))
+        if (isInternalPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
@@ -351,7 +351,7 @@ void NotesDialog::deleteObjects()
     delete query;
 }
 
-bool NotesDialog::isInnerPhone(QString* str)
+bool NotesDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 

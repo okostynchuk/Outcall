@@ -24,6 +24,7 @@ InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
 InternalContactsDialog::~InternalContactsDialog()
 {
     deleteObjects();
+
     delete ui;
 }
 
@@ -51,8 +52,8 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
     {
         extensions = g_pAsteriskManager->extensionNumbers.values();
 
-        for(int i = 0; i < extensions.count(); ++i)
-            if(extensions[i] == my_number)
+        for (int i = 0; i < extensions.count(); ++i)
+            if (extensions[i] == my_number)
                 extensions.removeAt(i);
 
         extensions_full = extensions;
@@ -192,7 +193,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     callButton->setIcon(QIcon(":/images/makeCall_R.png"));
     callButton->setIconSize(QSize(25, 25));
     callButton->setFixedSize(30, 30);
-    connect(callButton, SIGNAL( clicked() ), SLOT( onCallButtonClicked() ) );
+    connect(callButton, SIGNAL(clicked()), SLOT(onCall()));
     callButton->setProperty("callButton", QVariant::fromValue(name));
 
     QPushButton* addReminderButton = new QPushButton();
@@ -201,7 +202,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     addReminderButton->setIcon(QIcon(":/images/reminders_R.png"));
     addReminderButton->setIconSize(QSize(25, 25));
     addReminderButton->setFixedSize(30, 30);
-    connect(addReminderButton, SIGNAL( clicked() ), SLOT( onAddReminder() ) );
+    connect(addReminderButton, SIGNAL(clicked()), SLOT(onAddReminder()));
     addReminderButton->setProperty("addReminderButton", QVariant::fromValue(name));
 
     layout->addWidget(callButton);
@@ -220,7 +221,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     return wgt;
 }
 
-void InternalContactsDialog::onCallButtonClicked()
+void InternalContactsDialog::onCall()
 {
     QString from = global::getExtensionNumber("extensions");
     QString protocol = global::getSettingsValue(from, "extensions").toString();
@@ -232,7 +233,7 @@ void InternalContactsDialog::onCallButtonClicked()
 void InternalContactsDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog->receiveName(sender()->property("addReminderButton").value<QString>());
+    addReminderDialog->setEmployee(sender()->property("addReminderButton").value<QString>());
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

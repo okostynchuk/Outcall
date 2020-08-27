@@ -35,7 +35,7 @@ private slots:
     void loadNotes();
     void deleteObjects();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();

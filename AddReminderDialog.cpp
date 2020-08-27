@@ -58,11 +58,14 @@ void AddReminderDialog::receiveEmployee(QStringList employee)
 
 void AddReminderDialog::onChooseEmployee()
 {
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee->setValuesReminders(employee);
-    connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
-    chooseEmployee->show();
-    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
+    chooseEmployee.data()->setValuesReminders(employee);
+    connect(chooseEmployee.data(), SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    chooseEmployee.data()->show();
+    chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void AddReminderDialog::onSave()
@@ -196,6 +199,9 @@ void AddReminderDialog::onSave()
         }
     }
 
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+
     emit sendData(true);
 
     close();
@@ -230,9 +236,19 @@ void AddReminderDialog::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
-void AddReminderDialog::receiveName(QString name)
+void AddReminderDialog::closeEvent(QCloseEvent* event)
 {
-    ui->employee->setText(name);
+    QDialog::closeEvent(event);
+
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+}
+
+void AddReminderDialog::setEmployee(QString employee)
+{
+    ui->employee->setText(employee);
+
+    this->employee.append(employee);
 }
 
 void AddReminderDialog::on_add5MinButton_clicked()

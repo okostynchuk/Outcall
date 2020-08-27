@@ -86,10 +86,13 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
 
 void ViewOrgContactDialog::onAddReminder()
 {
+    if (!addReminderDialog.isNull())
+        addReminderDialog.data()->close();
+
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setCallId(contactId);
-    addReminderDialog->show();
-    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    addReminderDialog.data()->setCallId(contactId);
+    addReminderDialog.data()->show();
+    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::onOpenAccess()
@@ -194,14 +197,6 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
     }
 }
 
-void ViewOrgContactDialog::receiveNumber(QString to)
-{
-    const QString from = my_number;
-    const QString protocol = global::getSettingsValue(from, "extensions").toString();
-
-    g_pAsteriskManager->originateCall(from, to, protocol, from);
-}
-
 void ViewOrgContactDialog::onCall()
 {
     QSqlDatabase db;
@@ -216,16 +211,19 @@ void ViewOrgContactDialog::onCall()
         query.next();
 
         QString number = query.value(0).toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        receiveNumber(number);
+        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
     }
     else
     {
+        if (!chooseNumber.isNull())
+            chooseNumber.data()->close();
+
         chooseNumber = new ChooseNumber;
-        chooseNumber->setValuesNumber(contactId);
-        connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
-        chooseNumber->show();
-        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        chooseNumber.data()->setValuesNumber(contactId);
+        chooseNumber.data()->show();
+        chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -1550,7 +1548,7 @@ void ViewOrgContactDialog::searchFunction()
     }
 }
 
-void ViewOrgContactDialog::on_pushButton_clicked()
+void ViewOrgContactDialog::on_searchButton_clicked()
 {
     searchFunction();
 }
@@ -1560,23 +1558,16 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
     searchFunction();
 }
 
-void ViewOrgContactDialog::receivePersonID(QString id)
-{
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("UPDATE entry SET entry_person_org_id = '" + contactId + "' WHERE id = " + id);
-    query.exec();
-
-    onUpdate();
-}
-
 void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 {
+    if (!addPersonToOrg.isNull())
+        addPersonToOrg.data()->close();
+
     addPersonToOrg = new AddPersonToOrg;
-    connect(addPersonToOrg, SIGNAL(sendPersonID(QString)), this, SLOT(receivePersonID(QString)));
-    addPersonToOrg->show();
-    addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
+    addPersonToOrg.data()->setOrgId(contactId);
+    connect(addPersonToOrg.data(), SIGNAL(newPerson()), this, SLOT(onUpdate()));
+    addPersonToOrg.data()->show();
+    addPersonToOrg.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
@@ -1641,14 +1632,13 @@ void ViewOrgContactDialog::onPlayAudio()
 
     if (!recordpath.isEmpty())
     {
-        if (playAudioDialog != nullptr)
-            playAudioDialog->close();
+        if (!playAudioDialog.isNull())
+            playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog->setValuesCallHistory(recordpath);
-        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
-        playAudioDialog->show();
-        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->show();
+        playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -1663,16 +1653,10 @@ void ViewOrgContactDialog::onPlayAudioPhone()
 
     if (!recordpath.isEmpty())
     {
-        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
         g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
     }
-}
-
-void ViewOrgContactDialog::playerClosed(bool closed)
-{
-    if (closed)
-        playAudioDialog = nullptr;
 }
 
 void ViewOrgContactDialog::getData(const QModelIndex &index)

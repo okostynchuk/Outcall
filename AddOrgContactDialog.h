@@ -29,7 +29,7 @@ private slots:
     void onSave();
     void onTextChanged();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
@@ -38,9 +38,7 @@ private slots:
 private:
     Ui::AddOrgContactDialog *ui;
 
-    QSqlQuery* query1;
-
-    QList <QLineEdit*> phonesList;
+    QList<QLineEdit*> phonesList;
 
     QValidator* validator;
 

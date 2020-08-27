@@ -27,7 +27,7 @@ public:
     ~InternalContactsDialog();
 
 private slots:
-    void onCallButtonClicked();
+    void onCall();
     void onAddReminder();
     void onSearch();
     void deleteObjects();

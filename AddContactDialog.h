@@ -37,7 +37,7 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 

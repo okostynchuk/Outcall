@@ -1,7 +1,9 @@
 #ifndef CHOOSENUMBER_H
 #define CHOOSENUMBER_H
 
+#include "Global.h"
 #include "PlaceCallDialog.h"
+#include "AsteriskManager.h"
 
 #include <QDialog>
 #include <QString>
@@ -28,6 +30,8 @@ public:
     void setValuesNumber(QString);
 
 private slots:
+    void onCall(QString);
+
     bool eventFilter(QObject* target, QEvent* event);
 
 private:
@@ -37,6 +41,8 @@ private:
 
     QValidator* validator;
 
+    QString my_number;
+    QString protocol;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

@@ -15,6 +15,7 @@
 #include <QList>
 #include <QWidget>
 #include <QLineEdit>
+#include <QPointer>
 
 namespace Ui {
 class ViewContactDialog;
@@ -26,13 +27,10 @@ class ViewContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void sendNumber(QString);
     void getPos(int, int);
 
 public slots:
     void receiveData(bool, int, int);
-    void receiveNumber(QString);
-    void playerClosed(bool);
 
 public:
     explicit ViewContactDialog(QWidget *parent = 0);
@@ -77,11 +75,12 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    AddReminderDialog* addReminderDialog;
-    ChooseNumber* chooseNumber;
+    QPointer<AddReminderDialog> addReminderDialog;
+    QPointer<ChooseNumber> chooseNumber;
+    QPointer<PlayAudioDialog> playAudioDialog;
+
     EditContactDialog* editContactDialog;
     NotesDialog* notesDialog;
-    PlayAudioDialog* playAudioDialog = nullptr;
 
     QList<QLineEdit*> phonesList;
 

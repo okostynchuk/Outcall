@@ -88,6 +88,7 @@ private:
     QString go;
     int count;
     int remainder;
+    int oldActiveReminders;
     int oldReceivedReminders;
 
     QWidget* addWidgetActive();

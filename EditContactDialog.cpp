@@ -130,7 +130,7 @@ void EditContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -254,6 +254,9 @@ void EditContactDialog::onSave()
             }
         }
 
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     emit sendData(true, this->pos().x(), this->pos().y());
 
     close();
@@ -261,7 +264,7 @@ void EditContactDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
-bool EditContactDialog::isInnerPhone(QString* str)
+bool EditContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -359,10 +362,13 @@ void EditContactDialog::receiveOrgID(QString id)
 
 void EditContactDialog::on_addOrgButton_clicked()
 {
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
-    addOrgToPerson->show();
-    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
+    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    addOrgToPerson.data()->show();
+    addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void EditContactDialog::on_deleteOrgButton_clicked()
@@ -387,4 +393,12 @@ void EditContactDialog::keyPressEvent(QKeyEvent* event)
     }
     else
         QDialog::keyPressEvent(event);
+}
+
+void EditContactDialog::closeEvent(QCloseEvent* event)
+{
+    QDialog::closeEvent(event);
+
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
 }
