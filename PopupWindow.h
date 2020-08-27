@@ -35,7 +35,6 @@ signals:
 public slots:
     void receiveNumber(PopupWindow*);
     void receiveData(bool);
-    void timerStop(QString);
 
 public:
     enum PWType
@@ -78,6 +77,7 @@ private slots:
     void onOpenAccess();
     void onAddReminder();
     void onViewNotes();
+    void onCallStart(QString);
 
     void on_closeButton_clicked();
 

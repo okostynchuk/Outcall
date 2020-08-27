@@ -673,12 +673,14 @@ void PopupWindow::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
-void PopupWindow::timerStop(QString uniqueid)
+void PopupWindow::onCallStart(QString uniqueid)
 {
     QVariant qv_popup = sender()->property("qv_popup");
 
     PopupWindow* popup;
     popup = (PopupWindow*)qv_popup.value<void*>();
+
+    popup->ui->lblAvatar->setPixmap(QPixmap(":/images/connected.png"));
 
     if (popup->m_pwi.uniqueid == uniqueid)
         popup->m_pwi.stopTimer = true;
@@ -735,7 +737,7 @@ void PopupWindow::receiveNumber(PopupWindow* popup)
     if (!MSSQLopened)
         popup->ui->openAccessButton->hide();
 
-    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(timerStop(QString)));
+    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(onCallStart(QString)));
     g_pAsteriskManager->setProperty("qv_popup", qv_popup);
 
     connect(popup->ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
