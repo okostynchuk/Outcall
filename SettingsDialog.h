@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include "AsteriskManager.h"
+#include "UpdateDialog.h"
 
 #include <QDialog>
 #include <QFile>
@@ -54,12 +55,16 @@ private slots:
     void closeEvent(QCloseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
+    void on_pushUpdateButton_clicked();
+
 private:
     Ui::SettingsDialog *ui;
 
     QTcpSocket* m_tcpSocket;
 
     AddExtensionDialog* m_addExtensionDialog;
+
+    UpdateDialog *updateDialog;
 
     QFile f;
     QString userName;
