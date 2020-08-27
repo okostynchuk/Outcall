@@ -14,7 +14,7 @@ QT       += axcontainer
 
 
 win32:{
-    VERSION = 3.0.0
+    VERSION = 3.0.1
     QMAKE_TARGET_COMPANY = Vybor
     QMAKE_TARGET_PRODUCT = OutCALL
 }
@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     EditReminderDialog.cpp \
     PopupReminder.cpp \
     ChooseEmployee.cpp \
-    InternalContactsDialog.cpp
+    InternalContactsDialog.cpp \
+    UpdateDialog.cpp
 
 HEADERS  += \
     AddReminderDialog.h \
@@ -92,7 +93,8 @@ HEADERS  += \
     EditReminderDialog.h \
     PopupReminder.h \
     ChooseEmployee.h \
-    InternalContactsDialog.h
+    InternalContactsDialog.h \
+    UpdateDialog.h
 
 FORMS    += \
     AddExtensionDialog.ui \
@@ -122,10 +124,13 @@ FORMS    += \
     EditReminderDialog.ui \
     PopupReminder.ui \
     ChooseEmployee.ui \
-    InternalContactsDialog.ui
+    InternalContactsDialog.ui \
+    UpdateDialog.ui
 
 RESOURCES += \
     images.qrc \
     translations.qrc \
 
 win32: RC_ICONS = $$PWD/images/outcall-logo.ico
+
+include (QSimpleUpdater-master/QSimpleUpdater.pri)

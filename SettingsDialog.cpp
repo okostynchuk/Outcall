@@ -538,6 +538,14 @@ void SettingsDialog::checkGroupExten()
         ui->addButton_2->setEnabled(true);
 }
 
+void SettingsDialog::on_pushUpdateButton_clicked()
+{
+    updateDialog = new UpdateDialog();
+
+    updateDialog->show();
+    updateDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 void SettingsDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

@@ -16,6 +16,9 @@
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
+#include <QRegularExpressionValidator>
+
+static const QString PARTIAL_DOWN (".part");
 
 int main(int argc, char *argv[])
 {
@@ -30,11 +33,40 @@ int main(int argc, char *argv[])
 
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
-    app.setApplicationVersion("3.0");
+    app.setApplicationVersion("3.0.1");
     app.setOrganizationName(ORGANIZATION_NAME);
 
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
+
+    QDir dir("C:\\OutCALL");
+    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+    int fileAmount = dir.count();
+
+    QStringList namesOfDirectories;
+    namesOfDirectories = dir.entryList();
+
+    QDir oldAppDir("C:\\OutCALL\\");
+
+    QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
+    QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
+    int pos = 0;
+
+    if (oldAppDir.exists()){
+        for (int i = 0; i < fileAmount; i++)
+        {
+            QString str = namesOfDirectories.at(i);
+
+            if (fileValidator.validate(str, pos) == QValidator::Acceptable)
+                oldAppDir.remove(namesOfDirectories.at(i));
+
+            if (folderValidator.validate(str, pos) == QValidator::Acceptable)
+            {
+                QDir folder ("C:\\OutCALL\\" + namesOfDirectories.at(i));
+                folder.removeRecursively();
+            }
+        }
+    }
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
