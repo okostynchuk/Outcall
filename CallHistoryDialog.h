@@ -18,6 +18,7 @@
 #include <QTableView>
 #include <QTextEdit>
 #include <QList>
+#include <QPointer>
 
 namespace Ui {
 class CallHistoryDialog;
@@ -29,7 +30,6 @@ class CallHistoryDialog : public QDialog
 
 public slots:
     void receiveData(bool);
-    void playerClosed(bool);
     void receiveDataFromNotes();
 
 public:
@@ -70,7 +70,7 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
     bool checkNumber(QString);
 
     void showEvent(QShowEvent* event);
@@ -86,7 +86,8 @@ private:
 
     QValidator* validator;
 
-    PlayAudioDialog* playAudioDialog = nullptr;
+    QPointer<PlayAudioDialog> playAudioDialog;
+
     AddContactDialog* addContactDialog;
     AddOrgContactDialog* addOrgContactDialog;
     EditContactDialog* editContactDialog;

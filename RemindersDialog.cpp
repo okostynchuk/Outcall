@@ -62,6 +62,15 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     QSqlDatabase db;
     QSqlQuery query(db);
 
+    query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
+    query.addBindValue(my_number);
+    query.exec();
+
+    oldActiveReminders = 0;
+
+    if (query.next())
+        oldActiveReminders = query.value(0).toInt();
+
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false ORDER BY id DESC");
     query.addBindValue(my_number);
     query.addBindValue(my_number);
@@ -206,7 +215,23 @@ void RemindersDialog::onTimer()
         }
     }
     else
-        resizeCells = false;
+    {
+        query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
+        query.addBindValue(my_number);
+        query.exec();
+
+        int newActiveReminders = 0;
+
+        if (query.next())
+            newActiveReminders = query.value(0).toInt();
+
+        if (newActiveReminders > oldActiveReminders)
+            resizeCells = true;
+        else
+            resizeCells = false;
+
+        oldActiveReminders = newActiveReminders;
+    }
 
     oldReceivedReminders = newReceivedReminders;
 
@@ -327,6 +352,20 @@ void RemindersDialog::receiveData(bool updating)
         selectionRelevant.clear();
         selectionIrrelevant.clear();
         selectionDelegated.clear();
+
+        QSqlDatabase db;
+        QSqlQuery query(db);
+
+        query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
+        query.addBindValue(my_number);
+        query.exec();
+
+        int newActiveReminders = 0;
+
+        if (query.next())
+            newActiveReminders = query.value(0).toInt();
+
+        oldActiveReminders = newActiveReminders;
 
         go = "default";
 

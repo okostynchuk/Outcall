@@ -52,7 +52,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
             m_pri.number = query.value(0).toString();
             m_pri.name = query.value(1).toString();
 
-            if (isInnerPhone(&m_pri.number))
+            if (isInternalPhone(&m_pri.number))
             {
                 ui->callButton->setText(m_pri.name);
                 ui->openAccessButton->hide();
@@ -281,7 +281,7 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-bool PopupReminder::isInnerPhone(QString* str)
+bool PopupReminder::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -375,20 +375,8 @@ void PopupReminder::receiveData(bool updating)
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
-        editReminderDialog->close();
-
         closeAndDestroy();
     }
-    else
-        editReminderDialog = nullptr;
-}
-
-void PopupReminder::receiveNumber(QString number)
-{
-    QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
-    QString protocol = global::getSettingsValue(my_number, "extensions").toString();
-
-    g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
 void PopupReminder::onCall()
@@ -399,22 +387,24 @@ void PopupReminder::onCall()
     {
         if (m_pri.numbers.length() > 1)
         {
+            if (!chooseNumber.isNull())
+                chooseNumber.data()->close();
+
             chooseNumber = new ChooseNumber;
-            chooseNumber->setValuesNumber(m_pri.call_id);
-            connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
-            chooseNumber->show();
-            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+            chooseNumber.data()->setValuesNumber(m_pri.call_id);
+            chooseNumber.data()->show();
+            chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
         }
         else
         {
-            const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+            QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
             g_pAsteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
         }
     }
     else
     {
-        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
         g_pAsteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
     }
@@ -428,14 +418,14 @@ void PopupReminder::onSelectTime()
     switch (ui->comboBox->currentIndex())
     {
     case 1:
-        if (editReminderDialog != nullptr)
-            editReminderDialog->close();
+        if (!editReminderDialog.isNull())
+            editReminderDialog.data()->close();
 
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValuesReminders(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
-        connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
-        editReminderDialog->show();
-        editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+        editReminderDialog.data()->setValuesReminders(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
+        connect(editReminderDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        editReminderDialog.data()->show();
+        editReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 
         ui->comboBox->setCurrentIndex(0);
         break;
@@ -449,8 +439,8 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
-        if (editReminderDialog != nullptr)
-            editReminderDialog->close();
+        if (!editReminderDialog.isNull())
+            editReminderDialog.data()->close();
 
         closeAndDestroy();
         break;
@@ -464,8 +454,8 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
-        if (editReminderDialog != nullptr)
-            editReminderDialog->close();
+        if (!editReminderDialog.isNull())
+            editReminderDialog.data()->close();
 
         closeAndDestroy();
         break;
@@ -479,8 +469,8 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
-        if (editReminderDialog != nullptr)
-            editReminderDialog->close();
+        if (!editReminderDialog.isNull())
+            editReminderDialog.data()->close();
 
         closeAndDestroy();
         break;
@@ -494,8 +484,8 @@ void PopupReminder::onSelectTime()
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->onUpdate();
 
-        if (editReminderDialog != nullptr)
-            editReminderDialog->close();
+        if (!editReminderDialog.isNull())
+            editReminderDialog.data()->close();
 
         closeAndDestroy();
         break;
@@ -575,8 +565,8 @@ void PopupReminder::onClosePopup()
     m_pri.remindersDialog->resizeCells = false;
     m_pri.remindersDialog->onUpdate();
 
-    if (editReminderDialog != nullptr)
-        editReminderDialog->close();
+    if (!editReminderDialog.isNull())
+        editReminderDialog.data()->close();
 
     if (isVisible())
         m_timer.start();

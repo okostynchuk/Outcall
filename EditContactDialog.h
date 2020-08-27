@@ -8,6 +8,7 @@
 #include <QStringList>
 #include <QLineEdit>
 #include <QKeyEvent>
+#include <QPointer>
 
 class ViewContactDialog;
 
@@ -33,13 +34,14 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
     void setPos(int, int);
 
     void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
 public:
     explicit EditContactDialog(QWidget *parent = 0);
@@ -50,8 +52,7 @@ public:
 private:
     Ui::EditContactDialog *ui;
 
-    AddOrgToPerson* addOrgToPerson;
-    ViewContactDialog* viewContactDialog;
+    QPointer<AddOrgToPerson> addOrgToPerson;
 
     QList<QLineEdit*> phonesList;
 

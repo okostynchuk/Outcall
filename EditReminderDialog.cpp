@@ -46,10 +46,10 @@ void EditReminderDialog::onChooseEmployee()
         chooseEmployee.data()->close();
 
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee->setValuesReminders(employee);
-    connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
-    chooseEmployee->show();
-    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
+    chooseEmployee.data()->setValuesReminders(employee);
+    connect(chooseEmployee.data(), SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    chooseEmployee.data()->show();
+    chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void EditReminderDialog::onSave()
@@ -319,8 +319,6 @@ void EditReminderDialog::closeEvent(QCloseEvent* event)
 
     if (!chooseEmployee.isNull())
         chooseEmployee.data()->close();
-
-    emit sendData(false);
 }
 
 void EditReminderDialog::onTextChanged()
@@ -332,11 +330,7 @@ void EditReminderDialog::onTextChanged()
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
-    {
-        emit sendData(false);
-
         QDialog::close();
-    }
     else if (event->key() == Qt::Key_Return)
     {
         if (ui->textEdit->hasFocus())

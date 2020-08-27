@@ -10,6 +10,7 @@
 #include <QSqlDatabase>
 #include <QValidator>
 #include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class AddPersonToOrg;
@@ -20,11 +21,13 @@ class AddPersonToOrg : public QDialog
     Q_OBJECT
 
 signals:
-    void sendPersonID(QString);
+    void newPerson();
 
 public:
     explicit AddPersonToOrg(QWidget *parent = 0);
     ~AddPersonToOrg();
+
+    void setOrgId(QString);
 
 private slots:
     void deleteObjects();
@@ -32,9 +35,9 @@ private slots:
     void onComboBoxListSelected();
     void onComboBoxSelected();
     void getPersonID(const QModelIndex &index);
-    void on_searchButton_clicked();
     void searchFunction();
 
+    void on_searchButton_clicked();
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
@@ -45,12 +48,14 @@ private slots:
 private:
     Ui::AddPersonToOrg *ui;
 
-    QSqlQueryModel* query1;
+    QSqlQueryModel* queryModel;
 
     QValidator* validator;
 
     QList<QSqlQueryModel*> queries;
 
+    QString orgId;
+    QString orgName;
     QString page;
     int count;
     int remainder;

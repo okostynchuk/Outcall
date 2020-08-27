@@ -81,7 +81,7 @@ void AddContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -204,7 +204,7 @@ void AddContactDialog::onSave()
 }
 
 
-bool AddContactDialog::isInnerPhone(QString* str)
+bool AddContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -265,9 +265,9 @@ void AddContactDialog::on_addOrgButton_clicked()
         addOrgToPerson.data()->close();
 
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
-    addOrgToPerson->show();
-    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
+    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    addOrgToPerson.data()->show();
+    addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void AddContactDialog::on_deleteOrgButton_clicked()

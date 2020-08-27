@@ -88,10 +88,13 @@ void ViewContactDialog::showEvent(QShowEvent* event)
 
 void ViewContactDialog::onAddReminder()
 {
+    if (!addReminderDialog.isNull())
+        addReminderDialog.data()->close();
+
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setCallId(contactId);
-    addReminderDialog->show();
-    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    addReminderDialog.data()->setCallId(contactId);
+    addReminderDialog.data()->show();
+    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewContactDialog::onOpenAccess()
@@ -186,14 +189,6 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
     }
 }
 
-void ViewContactDialog::receiveNumber(QString to)
-{
-    const QString from = my_number;
-    const QString protocol = global::getSettingsValue(from, "extensions").toString();
-
-    g_pAsteriskManager->originateCall(from, to, protocol, from);
-}
-
 void ViewContactDialog::onCall()
 {
     QSqlDatabase db;
@@ -208,16 +203,19 @@ void ViewContactDialog::onCall()
         query.next();
 
         QString number = query.value(0).toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        receiveNumber(number);
+        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
     }
     else
     {
+        if (!chooseNumber.isNull())
+            chooseNumber.data()->close();
+
         chooseNumber = new ChooseNumber;
-        chooseNumber->setValuesNumber(contactId);
-        connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
-        chooseNumber->show();
-        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        chooseNumber.data()->setValuesNumber(contactId);
+        chooseNumber.data()->show();
+        chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -1303,14 +1301,13 @@ void ViewContactDialog::onPlayAudio()
 
     if (!recordpath.isEmpty())
     {
-        if (playAudioDialog != nullptr)
-            playAudioDialog->close();
+        if (!playAudioDialog.isNull())
+            playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog->setValuesCallHistory(recordpath);
-        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
-        playAudioDialog->show();
-        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->show();
+        playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -1325,16 +1322,10 @@ void ViewContactDialog::onPlayAudioPhone()
 
     if (!recordpath.isEmpty())
     {
-        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
         g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
     }
-}
-
-void ViewContactDialog::playerClosed(bool closed)
-{
-    if (closed)
-        playAudioDialog = nullptr;
 }
 
 void ViewContactDialog::getData(const QModelIndex &index)

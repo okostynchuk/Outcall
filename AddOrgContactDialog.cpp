@@ -69,7 +69,7 @@ void AddOrgContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -160,7 +160,7 @@ void AddOrgContactDialog::onSave()
 }
 
 
-bool AddOrgContactDialog::isInnerPhone(QString* str)
+bool AddOrgContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 

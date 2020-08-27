@@ -17,9 +17,6 @@ class PlayAudioDialog : public QDialog
 {
     Q_OBJECT
 
-signals:
-    void isClosed(bool);
-
 public slots:
     void on_mediaPlayer_PlayStateChange(int newState);
 
@@ -32,9 +29,6 @@ public:
 
 private slots:
     void updateWindowTitle(const QString &state);
-
-    void closeEvent(QCloseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PlayAudioDialog *ui;

@@ -19,6 +19,7 @@
 #include <QTextEdit>
 #include <QMap>
 #include <QSqlQuery>
+#include <QPointer>
 
 namespace Ui {
     class PopupWindow;
@@ -68,7 +69,6 @@ private slots:
     void closeAndDestroy();
     void onPopupTimeout();
     void onTimer();
-    void on_pushButton_close_clicked();
     void onAddPerson();
     void onAddOrg();
     void onAddPhoneNumberToContact();
@@ -79,7 +79,9 @@ private slots:
     void onAddReminder();
     void onViewNotes();
 
-    bool isInnerPhone(QString* str);
+    void on_closeButton_clicked();
+
+    bool isInternalPhone(QString* str);
 
     void changeEvent(QEvent* event);
     void mousePressEvent(QMouseEvent* event);
@@ -90,13 +92,13 @@ private slots:
 private:
     Ui::PopupWindow *ui;
 
-    AddContactDialog* addContactDialog;
-    AddOrgContactDialog* addOrgContactDialog;
-    AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
-    ViewContactDialog* viewContactDialog;
-    ViewOrgContactDialog* viewOrgContactDialog;
-    AddReminderDialog* addReminderDialog;
-    NotesDialog* notesDialog;
+    QPointer<AddContactDialog> addContactDialog;
+    QPointer<AddOrgContactDialog> addOrgContactDialog;
+    QPointer<AddPhoneNumberToContactDialog> addPhoneNumberToContactDialog;
+    QPointer<ViewContactDialog> viewContactDialog;
+    QPointer<ViewOrgContactDialog> viewOrgContactDialog;
+    QPointer<AddReminderDialog> addReminderDialog;
+    QPointer<NotesDialog> notesDialog;
 
     QPoint position;
     QString userID;

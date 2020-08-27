@@ -14,6 +14,8 @@ PlayAudioDialog::PlayAudioDialog(QWidget *parent) :
     ui(new Ui::PlayAudioDialog)
 {
     ui->setupUi(this);
+
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 PlayAudioDialog::~PlayAudioDialog()
@@ -110,23 +112,4 @@ void PlayAudioDialog::updateWindowTitle(const QString &state)
                     QString("%1 (%2)").arg(appName, state);
 
     setWindowTitle(title);
-}
-
-void PlayAudioDialog::closeEvent(QCloseEvent* event)
-{
-    QDialog::closeEvent(event);
-
-    emit isClosed(true);
-}
-
-void PlayAudioDialog::keyPressEvent(QKeyEvent* event)
-{
-    if (event->key() == Qt::Key_Escape)
-    {
-        emit isClosed(true);
-
-        QDialog::close();
-    }
-    else
-        QWidget::keyPressEvent(event);
 }

@@ -130,7 +130,7 @@ void EditOrgContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -228,7 +228,7 @@ void EditOrgContactDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
-bool EditOrgContactDialog::isInnerPhone(QString* str)
+bool EditOrgContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 

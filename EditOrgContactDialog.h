@@ -30,7 +30,7 @@ private slots:
     void onReturn();
     void onTextChanged();
 
-    bool isInnerPhone(QString* str);
+    bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
