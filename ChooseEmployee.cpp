@@ -27,7 +27,7 @@ ChooseEmployee::~ChooseEmployee()
     delete ui;
 }
 
-void ChooseEmployee::onChoose(QListWidgetItem *item)
+void ChooseEmployee::onChoose(QListWidgetItem* item)
 {
     ui->listWidget_2->addItem(ui->listWidget->takeItem(ui->listWidget->row(item)));
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
@@ -49,7 +49,7 @@ void ChooseEmployee::on_chooseAllButton_clicked()
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 }
 
-void ChooseEmployee::onRemove(QListWidgetItem *item)
+void ChooseEmployee::onRemove(QListWidgetItem* item)
 {
     if (ui->lineEdit->text().isEmpty())
         ui->listWidget->addItem(ui->listWidget_2->takeItem(ui->listWidget_2->row(item)));
@@ -146,7 +146,7 @@ void ChooseEmployee::on_applyButton_clicked()
     close();
 }
 
-void ChooseEmployee::keyPressEvent(QKeyEvent *event)
+void ChooseEmployee::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
     {

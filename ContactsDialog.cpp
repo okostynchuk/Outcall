@@ -128,7 +128,7 @@ void ContactsDialog::receiveData(bool updating)
     }
 }
 
-void ContactsDialog::showEvent(QShowEvent *event)
+void ContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -137,7 +137,7 @@ void ContactsDialog::showEvent(QShowEvent *event)
     onUpdate();
 }
 
-void ContactsDialog::closeEvent(QCloseEvent *event)
+void ContactsDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 

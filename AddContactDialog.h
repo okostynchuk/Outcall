@@ -7,6 +7,8 @@
 #include <QValidator>
 #include <QSqlQuery>
 #include <QLineEdit>
+#include <QKeyEvent>
+#include <QPointer>
 
 namespace Ui {
 class AddContactDialog;
@@ -20,31 +22,36 @@ signals:
     void sendData(bool);
 
 public slots:
-    void receiveOrgID(QString &);
+    void receiveOrgID(QString);
 
 public:
     explicit AddContactDialog(QWidget *parent = 0);
     ~AddContactDialog();
 
-    void setValues(QString &);
+    void setValues(QString);
 
 private slots:
     void onSave();
+    void onTextChanged();
+
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isInnerPhone(QString *str);
-    bool isPhone(QString *str);
-    bool isVyborID(QString *str);
+    bool isInternalPhone(QString* str);
+    bool isPhone(QString* str);
+    bool isVyborID(QString* str);
+
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
 private:
     Ui::AddContactDialog *ui;
 
-    QList <QLineEdit *> phonesList;
+    QPointer<AddOrgToPerson> addOrgToPerson;
 
-    AddOrgToPerson *addOrgToPerson;
+    QList<QLineEdit*> phonesList;
 
-    QValidator *validator;
+    QValidator* validator;
 };
 
 #endif // ADDCONTACTDIALOG_H

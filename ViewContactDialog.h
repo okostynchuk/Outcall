@@ -15,6 +15,7 @@
 #include <QList>
 #include <QWidget>
 #include <QLineEdit>
+#include <QPointer>
 
 namespace Ui {
 class ViewContactDialog;
@@ -26,20 +27,17 @@ class ViewContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void sendNumber(QString &);
     void getPos(int, int);
 
 public slots:
     void receiveData(bool, int, int);
-    void receiveNumber(QString &);
-    void playerClosed(bool);
 
 public:
     explicit ViewContactDialog(QWidget *parent = 0);
     ~ViewContactDialog();
 
-    void setValuesContacts(QString &);
-    void setValuesCallHistory(QString &);
+    void setValuesContacts(QString);
+    void setValuesCallHistory(QString);
 
 private slots:
     void loadAllCalls();
@@ -70,26 +68,27 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent* event);
 
 private:
     Ui::ViewContactDialog *ui;
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    AddReminderDialog *addReminderDialog;
-    ChooseNumber *chooseNumber;
-    EditContactDialog *editContactDialog;
-    NotesDialog *notesDialog;
-    PlayAudioDialog *playAudioDialog = nullptr;
+    QPointer<AddReminderDialog> addReminderDialog;
+    QPointer<ChooseNumber> chooseNumber;
+    QPointer<PlayAudioDialog> playAudioDialog;
 
-    QList <QLineEdit *> phonesList;
+    EditContactDialog* editContactDialog;
+    NotesDialog* notesDialog;
+
+    QList<QLineEdit*> phonesList;
 
     QStringList numbersList;
 
-    QSqlQueryModel *queryModel;
+    QSqlQueryModel* queryModel;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QString recordpath;
     QString userID;

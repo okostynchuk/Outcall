@@ -59,26 +59,27 @@ protected:
     void createContextMenu();
 
 private:
-    QMenu *m_menu;
+    QMenu* m_menu;
 
-    QAction *m_signIn;
-    QAction *m_placeCall;
-    QAction *contactsAction;
-    QAction *callHistoryAction;
-    QAction *remindersAction;
-    QAction *internalContactsAction;
+    QAction* m_signIn;
+    QAction* m_placeCall;
+    QAction* contactsAction;
+    QAction* callHistoryAction;
+    QAction* remindersAction;
+    QAction* internalContactsAction;
 
-    QSystemTrayIcon *m_systemTrayIcon;
-    DebugInfoDialog *m_debugInfoDialog;
-    SettingsDialog *m_settingsDialog;
-    ContactsDialog *m_contactsDialog;
-    CallHistoryDialog *m_callHistoryDialog;
-    PlaceCallDialog *m_placeCallDialog;
-    RemindersDialog *m_remindersDialog;
-    InternalContactsDialog *m_internalContactsDialog;
+    QSystemTrayIcon* m_systemTrayIcon;
+    DebugInfoDialog* m_debugInfoDialog;
+    SettingsDialog* m_settingsDialog;
+    ContactsDialog* m_contactsDialog;
+    CallHistoryDialog* m_callHistoryDialog;
+    PlaceCallDialog* m_placeCallDialog;
+    RemindersDialog* m_remindersDialog;
+    InternalContactsDialog* m_internalContactsDialog;
 
     QTimer m_timer;
-    bool m_switch;
+    bool m_switch;    
+    bool show_call_popup;
     QString my_number;
 };
 

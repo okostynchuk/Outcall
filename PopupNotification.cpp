@@ -126,7 +126,7 @@ void PopupNotification::mousePressEvent(QMouseEvent* event)
     position = event->globalPos();
 }
 
-void PopupNotification::mouseReleaseEvent(QMouseEvent *event)
+void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
 

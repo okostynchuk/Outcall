@@ -8,6 +8,7 @@
 #include <QTableView>
 #include <QLayout>
 #include <QLabel>
+#include <QKeyEvent>
 
 namespace Ui {
 class NotesDialog;
@@ -33,7 +34,8 @@ private slots:
     void onUpdate();
     void loadNotes();
     void deleteObjects();
-    bool isInnerPhone(QString *str);
+
+    bool isInternalPhone(QString* str);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -41,16 +43,16 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::NotesDialog *ui;
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QValidator *validator;
+    QValidator* validator;
 
-    QSqlQueryModel *query;
+    QSqlQueryModel* query;
 
     QWidget* addWidgetNote(int, QString);
 

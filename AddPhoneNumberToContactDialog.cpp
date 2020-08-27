@@ -99,14 +99,25 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(QString receivedPhoneNumber)
 
 void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 {
-    QString id = query1->data(query1->index(index.row(), 0)).toString();
-
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(id);
+    query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = ?)");
+    query.addBindValue(phoneNumber);
+    query.exec();
+    query.next();
 
-    query.prepare(sql);
+    if (query.value(0) != 0)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный номер уже привязан к контакту!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    QString id = query1->data(query1->index(index.row(), 0)).toString();
+
+    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = ?");
+    query.addBindValue(id);
     query.exec();
 
     int count = 0;

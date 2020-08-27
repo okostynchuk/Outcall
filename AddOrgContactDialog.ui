@@ -252,6 +252,9 @@
          <property name="text">
           <string>Сохранить данные</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
       </layout>

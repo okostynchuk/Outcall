@@ -1,7 +1,9 @@
 #ifndef CHOOSENUMBER_H
 #define CHOOSENUMBER_H
 
+#include "Global.h"
 #include "PlaceCallDialog.h"
+#include "AsteriskManager.h"
 
 #include <QDialog>
 #include <QString>
@@ -19,24 +21,28 @@ class ChooseNumber : public QDialog
     Q_OBJECT
 
 signals:
-    void sendNumber(QString &);
+    void sendNumber(QString);
 
 public:
     explicit ChooseNumber(QWidget *parent = 0);
     ~ChooseNumber();
 
-    void setValuesNumber(QString &);
+    void setValuesNumber(QString);
 
 private slots:
-    bool eventFilter(QObject*, QEvent *event);
+    void onCall(QString);
+
+    bool eventFilter(QObject* target, QEvent* event);
 
 private:
     Ui::ChooseNumber *ui;
 
-    PlaceCallDialog *placeCallDialog;
+    PlaceCallDialog* placeCallDialog;
 
-    QValidator *validator;
+    QValidator* validator;
 
+    QString my_number;
+    QString protocol;
     QString updateID;
     QString firstNumber;
     QString secondNumber;

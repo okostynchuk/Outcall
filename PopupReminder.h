@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QComboBox>
+#include <QPointer>
 
 namespace Ui {
 class PopupReminder;
@@ -22,7 +23,6 @@ class PopupReminder : public QDialog
 
 public slots:
     void receiveData(bool);
-    void receiveNumber(QString &);
 
 private:
     struct PopupReminderInfo
@@ -56,11 +56,11 @@ private slots:
     void onClosePopup();
     void onSelectTime();
 
-    bool isInnerPhone(QString *str);
+    bool isInternalPhone(QString* str);
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
@@ -68,8 +68,8 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    EditReminderDialog *editReminderDialog = nullptr;
-    ChooseNumber *chooseNumber;
+    QPointer<EditReminderDialog> editReminderDialog;
+    QPointer<ChooseNumber> chooseNumber;
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;

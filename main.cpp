@@ -12,7 +12,6 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QSqlError>
 #include <QDebug>
 #include <QtSql>
 #include <QSqlDatabase>
@@ -20,7 +19,7 @@
 
 static const QString PARTIAL_DOWN (".part");
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QStringList paths = QCoreApplication::libraryPaths();
     paths.append(".");
@@ -31,9 +30,10 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    QString appVersion = "3.0.1";
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
-    app.setApplicationVersion("3.0.1");
+    app.setApplicationVersion(appVersion);
     app.setOrganizationName(ORGANIZATION_NAME);
 
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
@@ -67,6 +67,22 @@ int main(int argc, char *argv[])
             }
         }
     }
+
+    QSettings sett("Microsoft\\Windows\\CurrentVersion", "Uninstall");
+    QStringList list = sett.childGroups();
+    for (int i = 0; i < list.length(); ++i)
+    {
+        QSettings sett2("Microsoft\\Windows\\CurrentVersion\\Uninstall" , list.at(i));
+        if(sett2.contains("DisplayName"))
+            if(sett2.value("DisplayName").toString() == "OutCALL" && sett2.value("DisplayVersion").toString() != appVersion)
+            {
+                QProcess *pro = new QProcess;
+                pro->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + list.at(i) + " /f");
+            }
+    }
+
+    if (global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
+        global::setSettingsValue("show_call_popup", true, "general");
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
@@ -141,7 +157,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
@@ -152,7 +168,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
@@ -164,7 +180,7 @@ int main(int argc, char *argv[])
 
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
 
-        DatabasesConnectDialog *databasesConnectDialog = new DatabasesConnectDialog;
+        DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, state);
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();

@@ -6,6 +6,8 @@
 #include "ChooseEmployee.h"
 
 #include <QDialog>
+#include <QKeyEvent>
+#include <QPointer>
 
 namespace Ui {
 class AddReminderDialog;
@@ -26,7 +28,7 @@ public:
     ~AddReminderDialog();
 
     void setCallId(QString);
-    void receiveName(QString);
+    void setEmployee(QString);
 
 private slots:
     void onChooseEmployee();
@@ -38,12 +40,13 @@ private slots:
     void on_add5MinButton_clicked();
     void on_add60MinButton_clicked();
 
-    //bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
 private:
     Ui::AddReminderDialog *ui;
 
-    ChooseEmployee *chooseEmployee;
+    QPointer<ChooseEmployee> chooseEmployee;
 
     QStringList employee;
 

@@ -18,6 +18,7 @@
 #include <QList>
 #include <QWidget>
 #include <QLineEdit>
+#include <QPointer>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -29,24 +30,17 @@ class ViewOrgContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void sendNumber(QString &);
     void getPos(int, int);
 
 public slots:
     void receiveDataPerson(bool);
     void receiveDataOrg(bool, int, int);
-    void receiveNumber(QString &);
-    void receivePersonID(QString &);
-    void playerClosed(bool);
 
 public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
     ~ViewOrgContactDialog();
 
-    void setOrgValuesContacts(QString &);
-
-protected slots:
-
+    void setOrgValuesContacts(QString);
 
 private slots:
     void loadAllCalls();
@@ -65,7 +59,7 @@ private slots:
     void onComboBoxSelected();
     void showCard(const QModelIndex &index);
     void viewNotes(const QModelIndex &index);
-    void onSectionClicked (int logicalIndex);
+    void onSectionClicked(int logicalIndex);
     void updateCount();
     void searchFunction();
     void tabSelected();
@@ -75,9 +69,8 @@ private slots:
 
     void getData(const QModelIndex &index);
 
-
     void on_lineEdit_returnPressed();
-    void on_pushButton_clicked();
+    void on_searchButton_clicked();
     void on_addPersonToOrg_clicked();
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -90,31 +83,29 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    ViewContactDialog *viewContactDialog;
-    EditOrgContactDialog *editOrgContactDialog;
-    ChooseNumber *chooseNumber;
-    AddReminderDialog* addReminderDialog;
-    NotesDialog *notesDialog;
-    AddPersonToOrg *addPersonToOrg;
-    PlayAudioDialog *playAudioDialog = nullptr;
+    QPointer<AddPersonToOrg> addPersonToOrg;
+    QPointer<PlayAudioDialog> playAudioDialog;
+    QPointer<ChooseNumber> chooseNumber;
+    QPointer<AddReminderDialog> addReminderDialog;
 
-    QList <QLineEdit *> phonesList;
+    ViewContactDialog* viewContactDialog;
+    NotesDialog* notesDialog;
+    EditOrgContactDialog* editOrgContactDialog;
 
-    QSqlQueryModel *query_model;
-    QSqlQueryModel *queryModel;
+    QList<QLineEdit*> phonesList;
 
-    QValidator *validator;
+    QSqlQueryModel* query_model;
+    QSqlQueryModel* queryModel;
 
-    QHeaderView *m_horiz_header;
+    QValidator* validator;
+
+    QHeaderView* m_horiz_header;
 
     QString recordpath;
     QString userID;
     QString contactId;
-    QString number;
     QString my_number;
     QString uniqueid;
-    int count2 = 1;
-    QString contact_number;
     QString page;
     QString pages;
     QString go;
@@ -123,15 +114,10 @@ private:
     QString dst;
     QString dialogStatus;
     QString update;
-    QString id;
     QString days;
     int count;
-    int countNumbers = 1;
     int remainder;
     bool filter;
-    int valueV;
-    int valueH;
-    QString state_call;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;

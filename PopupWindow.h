@@ -19,6 +19,7 @@
 #include <QTextEdit>
 #include <QMap>
 #include <QSqlQuery>
+#include <QPointer>
 
 namespace Ui {
     class PopupWindow;
@@ -34,7 +35,6 @@ signals:
 public slots:
     void receiveNumber(PopupWindow*);
     void receiveData(bool);
-    void timerStop(QString);
 
 public:
     enum PWType
@@ -68,7 +68,6 @@ private slots:
     void closeAndDestroy();
     void onPopupTimeout();
     void onTimer();
-    void on_pushButton_close_clicked();
     void onAddPerson();
     void onAddOrg();
     void onAddPhoneNumberToContact();
@@ -78,26 +77,28 @@ private slots:
     void onOpenAccess();
     void onAddReminder();
     void onViewNotes();
+    void onCallStart(QString);
 
-    bool isInnerPhone(QString *str);
+    void on_closeButton_clicked();
 
-    void changeEvent(QEvent *e);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
+    bool isInternalPhone(QString* str);
+
+    void changeEvent(QEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PopupWindow *ui;
 
-    AddContactDialog *addContactDialog;
-    AddOrgContactDialog *addOrgContactDialog;
-    AddPhoneNumberToContactDialog *addPhoneNumberToContactDialog;
-    ViewContactDialog *viewContactDialog;
-    ViewOrgContactDialog *viewOrgContactDialog;
-    AddReminderDialog *addReminderDialog;
-    NotesDialog *notesDialog;
+    QPointer<AddContactDialog> addContactDialog;
+    QPointer<AddOrgContactDialog> addOrgContactDialog;
+    QPointer<AddPhoneNumberToContactDialog> addPhoneNumberToContactDialog;
+    QPointer<ViewContactDialog> viewContactDialog;
+    QPointer<ViewOrgContactDialog> viewOrgContactDialog;
+    QPointer<AddReminderDialog> addReminderDialog;
+    QPointer<NotesDialog> notesDialog;
 
     QPoint position;
     QString userID;

@@ -5,15 +5,10 @@
 #include "Global.h"
 #include "OutCALL.h"
 
-#include <QAbstractSocket>
 #include <QSettings>
 #include <QKeyEvent>
 #include <QMessageBox>
-#include <QDir>
 #include <QProcess>
-#include <QDebug>
-#include <QSystemTrayIcon>
-#include <QApplication>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -28,17 +23,17 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
+    ui->port->setValidator(new QIntValidator(0, 65535, this));
+
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged, this, &SettingsDialog::checkAsteriskState);
 
     // Extensions
-    connect(ui->addButton,    &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
-    connect(ui->removeButton, &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
-    connect(ui->editButton,   &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
+    connect(ui->addButton,      &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
     connect(ui->addButton_2,    &QPushButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
-    connect(ui->removeButton_2, &QPushButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
+    connect(ui->editButton,     &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
     connect(ui->editButton_2,   &QPushButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
-
-    ui->port->setValidator(new QIntValidator(0, 65535, this));
+    connect(ui->removeButton,   &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
+    connect(ui->removeButton_2, &QPushButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
 
     // General
     QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
@@ -67,7 +62,7 @@ void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
         ui->tabWidget->setTabEnabled(3, false);
 }
 
-void SettingsDialog::closeEvent(QCloseEvent *event)
+void SettingsDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
@@ -81,8 +76,8 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
 void SettingsDialog::saveSettings()
 {
     // General
-//    global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
-//    global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
+    //global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
+    //global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
     global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
 
     // Server
@@ -103,7 +98,7 @@ void SettingsDialog::saveSettings()
 
     for (int i = 0; i < nRow; ++i)
     {
-        QTreeWidgetItem *item = ui->treeWidget->topLevelItem(i);
+        QTreeWidgetItem* item = ui->treeWidget->topLevelItem(i);
         QString extension = item->text(0);
         QString protocol = item->text(1);
 
@@ -123,7 +118,7 @@ void SettingsDialog::saveSettings()
 
     for (int i = 0; i < nRow2; ++i)
     {
-        QTreeWidgetItem *group_item = ui->treeWidget_2->topLevelItem(i);
+        QTreeWidgetItem* group_item = ui->treeWidget_2->topLevelItem(i);
         QString group_extension = group_item->text(0);
         QString group_protocol = group_item->text(1);
 
@@ -214,7 +209,7 @@ void SettingsDialog::loadSettings()
         const QString extension = extensions.at(i);
         const QString protocol  = global::getSettingsValue(extension, "extensions").toString();
 
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem(ui->treeWidget);
+        QTreeWidgetItem* extensionItem = new QTreeWidgetItem(ui->treeWidget);
         extensionItem->setText(0, extension);
         extensionItem->setText(1, protocol);
     }
@@ -229,7 +224,7 @@ void SettingsDialog::loadSettings()
         const QString group_extension = group_extensions.at(i);
         const QString group_protocol  = global::getSettingsValue(group_extension, "group_extensions").toString();
 
-        QTreeWidgetItem *group_extensionItem = new QTreeWidgetItem(ui->treeWidget_2);
+        QTreeWidgetItem* group_extensionItem = new QTreeWidgetItem(ui->treeWidget_2);
         group_extensionItem->setText(0, group_extension);
         group_extensionItem->setText(1, group_protocol);
     }
@@ -357,7 +352,7 @@ void SettingsDialog::onAddButtonClicked()
         QString extension = m_addExtensionDialog->getExtension();
         QString protocol = m_addExtensionDialog->getProtocol();
 
-        QTreeWidgetItem *extensionItem = new QTreeWidgetItem();
+        QTreeWidgetItem* extensionItem = new QTreeWidgetItem();
         extensionItem->setText(0, extension);
         extensionItem->setText(1, protocol);
         extensionItem->setData(0, Qt::CheckStateRole, QVariant());
@@ -472,7 +467,7 @@ void SettingsDialog::onEditButtonClicked()
 
     if (selectedItems.size())
     {
-        QTreeWidgetItem *item = selectedItems.at(0);
+        QTreeWidgetItem* item = selectedItems.at(0);
         const QString extension = item->text(0);
         const QString protocol = item->text(1);
 
@@ -500,7 +495,7 @@ void SettingsDialog::onEditGroupButtonClicked()
 
     if (selectedItems.size())
     {
-        QTreeWidgetItem *item = selectedItems.at(0);
+        QTreeWidgetItem* item = selectedItems.at(0);
         const QString group_extension = item->text(0);
         const QString group_protocol = item->text(1);
 
@@ -553,5 +548,5 @@ void SettingsDialog::keyPressEvent(QKeyEvent* event)
     else if (event->key() == Qt::Key_Return)
         ui->applyButton->click();
     else
-        QWidget::keyPressEvent(event);
+        QDialog::keyPressEvent(event);
 }

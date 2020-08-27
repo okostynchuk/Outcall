@@ -39,18 +39,18 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
 
     ui->label_pages->setText(tr("из ") + pages);
 
-    query1 = new QSqlQueryModel;
+    queryModel = new QSqlQueryModel;
 
-    query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+    queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
-    query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
+    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
+    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
 
-    ui->tableView->setModel(query1);
+    ui->tableView->setModel(queryModel);
 
-    queries.append(query1);
+    queries.append(queryModel);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -91,11 +91,42 @@ void AddPersonToOrg::deleteObjects()
     queries.clear();
 }
 
+void AddPersonToOrg::setOrgId(QString orgId)
+{
+    this->orgId = orgId;
+
+    query.prepare("SELECT entry_name FROM entry WHERE id = ?");
+    query.addBindValue(orgId);
+    query.exec();
+    query.next();
+
+    orgName = query.value(0).toString();
+
+    setWindowTitle(tr("Добавление сотрудников к организации") + " \"" + orgName + "\"");
+}
+
 void AddPersonToOrg::getPersonID(const QModelIndex &index)
 {
-    QString id = query1->data(query1->index(index.row(), 0)).toString();
+    QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
 
-    emit sendPersonID(id);
+    query.prepare("SELECT EXISTS (SELECT id FROM entry WHERE id = ?)");
+    query.addBindValue(orgId);
+    query.exec();
+    query.next();
+
+    if (query.value(0) == 0)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    query.prepare("UPDATE entry SET entry_person_org_id = ? WHERE id = ?");
+    query.addBindValue(orgId);
+    query.addBindValue(id);
+    query.exec();
+
+    emit newPerson();
 
     onUpdate();
 
@@ -146,12 +177,12 @@ void AddPersonToOrg::onUpdate()
 
         ui->label_pages->setText(tr("из ") + pages);
 
-        query1 = new QSqlQueryModel;
+        queryModel = new QSqlQueryModel;
 
         if (ui->lineEdit_page->text() == "1")
-            query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+            queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
         else
-            query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+            queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
 
         go = "default";
     }
@@ -199,12 +230,12 @@ void AddPersonToOrg::onUpdate()
 
             ui->label_pages->setText(tr("из ") + pages);
 
-            query1 = new QSqlQueryModel;
+            queryModel = new QSqlQueryModel;
 
             if (ui->lineEdit_page->text() == "1")
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
         else if (entry_phone != nullptr)
         {
@@ -248,12 +279,12 @@ void AddPersonToOrg::onUpdate()
 
             ui->label_pages->setText(tr("из ") + pages);
 
-            query1 = new QSqlQueryModel;
+            queryModel = new QSqlQueryModel;
 
             if (ui->lineEdit_page->text() == "1")
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
         else if (entry_comment != nullptr)
         {
@@ -297,12 +328,12 @@ void AddPersonToOrg::onUpdate()
 
             ui->label_pages->setText(tr("из ") + pages);
 
-            query1 = new QSqlQueryModel;
+            queryModel = new QSqlQueryModel;
 
             if (ui->lineEdit_page->text() == "1")
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
             else
-                query1->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
+                queryModel->setQuery("SELECT entry_id, entry_name, entry_phone, entry_comment FROM entry_phone WHERE entry_type = 'person' AND (entry_person_org_id = 0 OR entry_person_org_id is NULL) AND entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT " + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
         }
 
         go = "default";
@@ -310,14 +341,14 @@ void AddPersonToOrg::onUpdate()
 
     deleteObjects();
 
-    query1->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query1->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
-    query1->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    query1->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
+    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
+    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
 
-    ui->tableView->setModel(query1);
+    ui->tableView->setModel(queryModel);
 
-    queries.append(query1);
+    queries.append(queryModel);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -391,9 +422,9 @@ void AddPersonToOrg::searchFunction()
 
         ui->label_pages->setText(tr("из ") + pages);
 
-        query1 = new QSqlQueryModel;
+        queryModel = new QSqlQueryModel;
 
-        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
         onUpdate();
     }
@@ -427,9 +458,9 @@ void AddPersonToOrg::searchFunction()
 
         ui->label_pages->setText(tr("из ") + pages);
 
-        query1 = new QSqlQueryModel;
+        queryModel = new QSqlQueryModel;
 
-        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
         onUpdate();
     }
@@ -463,9 +494,9 @@ void AddPersonToOrg::searchFunction()
 
         ui->label_pages->setText(tr("из ") + pages);
 
-        query1 = new QSqlQueryModel;
+        queryModel = new QSqlQueryModel;
 
-        query1->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
+        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone WHERE entry_comment LIKE '%" + entry_comment + "%' GROUP BY entry_id ORDER BY entry_name ASC LIMIT 0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()));
 
         onUpdate();
     }

@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QStringList>
+#include <QKeyEvent>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -22,31 +23,29 @@ public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     ~EditOrgContactDialog();
 
-    void setOrgValuesContacts(QString &);
+    void setOrgValuesContacts(QString);
 
 private slots:
     void onSave();
     void onReturn();
     void onTextChanged();
 
-    bool isInnerPhone(QString *str);
-    bool isPhone(QString *str);
-    bool isVyborID(QString *str);
+    bool isInternalPhone(QString* str);
+    bool isPhone(QString* str);
+    bool isVyborID(QString* str);
 
     void setPos(int, int);
 
-    bool eventFilter(QObject *object, QEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::EditOrgContactDialog *ui;
 
-    QSqlQuery *query1;
-
-    QList <QLineEdit *> phonesList;
+    QList<QLineEdit*> phonesList;
 
     QStringList oldPhonesList;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QString updateID;
     QString firstNumber;

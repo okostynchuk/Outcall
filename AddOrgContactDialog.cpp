@@ -69,7 +69,7 @@ void AddOrgContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -136,7 +136,7 @@ void AddOrgContactDialog::onSave()
     query.addBindValue(ui->Address->text());
     query.addBindValue(ui->Email->text());
     query.addBindValue(ui->VyborID->text());
-    query.addBindValue(ui->Comment->toPlainText());
+    query.addBindValue(ui->Comment->toPlainText().trimmed());
     query.exec();
 
     int id = query.lastInsertId().toInt();
@@ -160,7 +160,7 @@ void AddOrgContactDialog::onSave()
 }
 
 
-bool AddOrgContactDialog::isInnerPhone(QString *str)
+bool AddOrgContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -176,7 +176,7 @@ bool AddOrgContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool AddOrgContactDialog::isPhone(QString *str)
+bool AddOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -188,7 +188,7 @@ bool AddOrgContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool AddOrgContactDialog::isVyborID(QString *str)
+bool AddOrgContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -200,12 +200,31 @@ bool AddOrgContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void AddOrgContactDialog::setOrgValuesCallHistory(QString &number)
+void AddOrgContactDialog::setOrgValuesCallHistory(QString number)
 {
     ui->FirstNumber->setText(number);
 }
 
-void AddOrgContactDialog::setOrgValuesPopupWindow(QString &number)
+void AddOrgContactDialog::setOrgValuesPopupWindow(QString number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void AddOrgContactDialog::onTextChanged()
+{
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
+        ui->Comment->textCursor().deletePreviousChar();
+}
+
+void AddOrgContactDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
 }

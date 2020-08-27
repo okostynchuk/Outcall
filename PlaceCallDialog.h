@@ -21,7 +21,7 @@ class PlaceCallDialog : public QDialog
     Q_OBJECT
 
 public slots:
-    void receiveNumber(QString &number);
+    void receiveNumber(QString);
 
 public:
     explicit PlaceCallDialog(QWidget *parent = 0);
@@ -40,18 +40,18 @@ private slots:
     void on_lineEdit_returnPressed();
     void on_phoneLine_returnPressed();
 
-    void showEvent(QShowEvent *event);
-    void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent* event);
+    void closeEvent(QCloseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::PlaceCallDialog *ui;
 
-    ChooseNumber *chooseNumber;
+    ChooseNumber* chooseNumber;
 
-    QSqlQueryModel *queryModel;
+    QSqlQueryModel* queryModel;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QString update;
     QString number;

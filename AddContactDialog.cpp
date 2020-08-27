@@ -2,6 +2,7 @@
 #include "ui_AddContactDialog.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
     ui->label_org->setText(tr("Нет"));
 
+    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
 
 //    for(int i = 0; i < ui->phonesLayout->count(); ++i)
@@ -79,7 +81,7 @@ void AddContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -175,7 +177,7 @@ void AddContactDialog::onSave()
     query.addBindValue(ui->Address->text());
     query.addBindValue(ui->Email->text());
     query.addBindValue(ui->VyborID->text());
-    query.addBindValue(ui->Comment->toPlainText());
+    query.addBindValue(ui->Comment->toPlainText().trimmed());
     query.exec();
 
     int id = query.lastInsertId().toInt();
@@ -190,6 +192,9 @@ void AddContactDialog::onSave()
             query.exec();
         }
 
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     emit sendData(true);
 
     close();
@@ -199,7 +204,7 @@ void AddContactDialog::onSave()
 }
 
 
-bool AddContactDialog::isInnerPhone(QString *str)
+bool AddContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -215,7 +220,7 @@ bool AddContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool AddContactDialog::isPhone(QString *str)
+bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -227,7 +232,7 @@ bool AddContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool AddContactDialog::isVyborID(QString *str)
+bool AddContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -239,7 +244,7 @@ bool AddContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void AddContactDialog::receiveOrgID(QString &id)
+void AddContactDialog::receiveOrgID(QString id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -256,10 +261,13 @@ void AddContactDialog::receiveOrgID(QString &id)
 
 void AddContactDialog::on_addOrgButton_clicked()
 {
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
-    addOrgToPerson->show();
-    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
+    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    addOrgToPerson.data()->show();
+    addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void AddContactDialog::on_deleteOrgButton_clicked()
@@ -267,8 +275,35 @@ void AddContactDialog::on_deleteOrgButton_clicked()
     ui->label_org->setText(tr("Нет"));
 }
 
-void AddContactDialog::setValues(QString &number)
+void AddContactDialog::setValues(QString number)
 {
     ui->FirstNumber->setText(number);
+}
+
+void AddContactDialog::onTextChanged()
+{
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
+        ui->Comment->textCursor().deletePreviousChar();
+}
+
+void AddContactDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
+}
+
+void AddContactDialog::closeEvent(QCloseEvent* event)
+{
+    QDialog::closeEvent(event);
+
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
 }
 

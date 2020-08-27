@@ -19,7 +19,7 @@ class AddOrgToPerson : public QDialog
     Q_OBJECT
 
 signals:
-    void sendOrgID(QString &);
+    void sendOrgID(QString);
 
 public:
     explicit AddOrgToPerson(QWidget *parent = 0);
@@ -31,9 +31,9 @@ private slots:
     void onComboBoxListSelected();
     void onComboBoxSelected();
     void getOrgID(const QModelIndex &index);
-    void on_searchButton_clicked();
     void searchFunction();
 
+    void on_searchButton_clicked();
     void on_previousButton_clicked();
     void on_nextButton_clicked();
     void on_nextEndButton_clicked();
@@ -44,9 +44,9 @@ private slots:
 private:
     Ui::AddOrgToPerson *ui;
 
-    QSqlQueryModel *query1;
+    QSqlQueryModel* queryModel;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QList<QSqlQueryModel*> queries;
 

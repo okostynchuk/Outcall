@@ -10,7 +10,7 @@
 #include <QtGlobal>
 #include <QDebug>
 
-AsteriskManager *g_pAsteriskManager = nullptr;
+AsteriskManager* g_pAsteriskManager = nullptr;
 
 AsteriskManager::AsteriskManager(const QString username, const QString secret, QObject *parent)
     : QObject(parent),
@@ -226,7 +226,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         QString type = global::getSettingsValue(chExten, "extensions").toString();
         if (type == chType)
         {
-            Call *call       = new Call;
+            Call* call       = new Call;
             call->callerName = callerIDName;
             call->chType     = chType;
             call->chExten    = chExten;
@@ -327,7 +327,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         if (appData == "(Outgoing Line)")
             return;
 
-        Call *call = m_calls.value(uniqueid);
+        Call* call = m_calls.value(uniqueid);
         call->state = state;
 
         if (call->exten.isEmpty())
@@ -531,7 +531,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
         if (m_calls.contains(uniqueid))
         {
-            Call *call = m_calls.value(uniqueid);
+            Call* call = m_calls.value(uniqueid);
             delete call;
             m_calls.remove(uniqueid);
         }
@@ -713,7 +713,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
 
         if (global::containsSettingsKey(exten, "extensions"))
         {
-            Call *call          = new Call;
+            Call* call          = new Call;
             call->chExten       = exten;
             call->exten         = calledNum;
             call->state         = state;
@@ -764,7 +764,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 received.insert("from", connectedLineNum);
                 received.insert("callerIDName", callerIDName);
 
-                Call *call = m_calls.value(uniqueid);
+                Call* call = m_calls.value(uniqueid);
                 call->state      = channelStateDesc;
                 call->exten         = connectedLineNum;
 
@@ -790,7 +790,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 list.append(QVariant::fromValue(received));
                 global::setSettingsValue("received", list, "calls");
 
-                Call *call = m_calls.value(uniqueid);
+                Call* call = m_calls.value(uniqueid);
                 call->state      = channelStateDesc;
 
                 m_calls.insert(uniqueid, call);
@@ -800,7 +800,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
 
             if (channelStateDesc == "Ring")
             {
-                Call *call = m_calls.value(uniqueid);
+                Call* call = m_calls.value(uniqueid);
                 call->state      = channelStateDesc;
                 QString to       = call->exten;
 
@@ -837,7 +837,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
         if (!m_calls.contains(uniqueid))
             return;
 
-        Call *call = m_calls.value(uniqueid);
+        Call* call = m_calls.value(uniqueid);
         QString to = call->exten;
         if (to.isEmpty())
         {
@@ -874,7 +874,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
         if (!m_calls.contains(uniqueid))
             return;
 
-        Call *call = m_calls.value(uniqueid);
+        Call* call = m_calls.value(uniqueid);
         QString state = call->state;
 
         if (state == "Ringing")

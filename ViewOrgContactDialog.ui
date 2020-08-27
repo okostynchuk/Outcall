@@ -611,7 +611,7 @@ background-color: #fffff0;
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="searchButton">
                   <property name="minimumSize">
                    <size>
                     <width>27</width>
@@ -1187,7 +1187,7 @@ background-color: #fffff0;
   <tabstop>Comment</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>searchButton</tabstop>
   <tabstop>comboBox_2</tabstop>
   <tabstop>tabWidget_3</tabstop>
   <tabstop>tableView_4</tabstop>

@@ -47,9 +47,9 @@ private slots:
 private:
     Ui::AddPhoneNumberToContactDialog *ui;
 
-    QSqlQueryModel *query1;
+    QSqlQueryModel* query1;
 
-    QValidator *validator;
+    QValidator* validator;
 
     QList<QSqlQueryModel*> queries;
 

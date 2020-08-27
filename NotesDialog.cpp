@@ -8,7 +8,6 @@
 #include <QDebug>
 #include <QTime>
 #include <QSqlQuery>
-#include <QKeyEvent>
 #include <QList>
 
 NotesDialog::NotesDialog(QWidget *parent) :
@@ -23,11 +22,8 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->comboBox_list->hide();
 
-    ui->textEdit->installEventFilter(this);
-
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QPushButton::clicked, this, &NotesDialog::onUpdate);
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
@@ -66,6 +62,7 @@ void NotesDialog::hideAddNote()
     ui->saveButton->setVisible(false);
     ui->textEdit->setVisible(false);
     ui->label->setVisible(false);
+
     QWidget::resize(550, 275);
 }
 
@@ -80,7 +77,7 @@ void NotesDialog::loadNotes()
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if (isInnerPhone(&phoneNumber))
+        if (isInternalPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
@@ -159,7 +156,7 @@ void NotesDialog::loadNotes()
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if (isInnerPhone(&phoneNumber))
+        if (isInternalPhone(&phoneNumber))
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
@@ -244,7 +241,7 @@ void NotesDialog::onSave()
     QSqlQuery query(db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    QString note = ui->textEdit->toPlainText().simplified();
+    QString note = ui->textEdit->toPlainText().trimmed();
 
     if (note.isEmpty())
     {
@@ -267,53 +264,32 @@ void NotesDialog::onSave()
 
     onUpdate();
 
-    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
+    //QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
 }
 
 void NotesDialog::onTextChanged()
 {
-    if (ui->textEdit->toPlainText().simplified().length() > 255)
+    if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
+}
+
+void NotesDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        if (ui->textEdit->hasFocus())
+            return;
+        else
+            onSave();
+    }
+    else
+        QDialog::keyPressEvent(event);
 }
 
 void NotesDialog::onUpdate()
 {
     deleteObjects();
     loadNotes();
-}
-
-bool NotesDialog::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "textEdit")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit2");
-
-                return true;
-            }
-        }
-    }
-    else if (object->objectName() == "textEdit2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit");
-
-                return true;
-            }
-        }
-    }
-
-    return false;
 }
 
 QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
@@ -375,7 +351,7 @@ void NotesDialog::deleteObjects()
     delete query;
 }
 
-bool NotesDialog::isInnerPhone(QString *str)
+bool NotesDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 

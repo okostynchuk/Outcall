@@ -69,25 +69,26 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
             query.next();
 
             QString number = query.value(0).toString();
+            QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-            receiveNumber(number);
+            g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
+
+            ui->phoneLine->setText(number);
         }
         else
         {
             chooseNumber = new ChooseNumber;
             chooseNumber->setValuesNumber(id);
-            connect(chooseNumber, SIGNAL(sendNumber(QString &)), this, SLOT(receiveNumber(QString &)));
+            connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
             chooseNumber->show();
             chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }
     }
 }
 
-void PlaceCallDialog::receiveNumber(QString &number)
+void PlaceCallDialog::receiveNumber(QString number)
 {
     ui->phoneLine->setText(number);
-
-    onCallButton();
 }
 
 void PlaceCallDialog::onUpdate()
@@ -179,7 +180,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
             queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone WHERE entry_type = 'person' AND entry_person_org_id = '" + orgID + "' GROUP BY entry_id ORDER BY entry_name ASC");
 
             ui->lineEdit_2->show();
-            ui->lineEdit_2->setText(tr("Сотрудники организации \"") + orgName + tr("\""));
+            ui->lineEdit_2->setText(tr("Сотрудники организации") + " \"" + orgName + "\"");
 
             onUpdate();
         }
@@ -199,14 +200,14 @@ void PlaceCallDialog::clearEditText()
     ui->lineEdit_2->hide();
 }
 
-void PlaceCallDialog::showEvent(QShowEvent *event)
+void PlaceCallDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
     ui->lineEdit->setFocus();
 }
 
-void PlaceCallDialog::closeEvent(QCloseEvent *event)
+void PlaceCallDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
@@ -225,11 +226,11 @@ void PlaceCallDialog::onCallButton()
 {
     if (!ui->phoneLine->text().isEmpty())
     {
-        const QString number   = ui->phoneLine->text();
-        const QString from     = my_number;
-        const QString protocol = global::getSettingsValue(from, "extensions").toString();
+        QString to   = ui->phoneLine->text();
+        QString from     = my_number;
+        QString protocol = global::getSettingsValue(from, "extensions").toString();
 
-        g_pAsteriskManager->originateCall(from, number, protocol, from);
+        g_pAsteriskManager->originateCall(from, to, protocol, from);
     }
 }
 

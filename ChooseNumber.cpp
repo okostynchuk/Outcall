@@ -15,6 +15,9 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
+    my_number = global::getExtensionNumber("extensions");
+    protocol = global::getSettingsValue(my_number, "extensions").toString();
+
     this->setWindowTitle(tr("Выбор номера"));
 
     ui->FirstNumber->installEventFilter(this);
@@ -29,7 +32,12 @@ ChooseNumber::~ChooseNumber()
     delete ui;
 }
 
-void ChooseNumber::setValuesNumber(QString &i)
+void ChooseNumber::onCall(QString number)
+{
+    g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
+}
+
+void ChooseNumber::setValuesNumber(QString i)
 {
     updateID = i;
 
@@ -82,11 +90,11 @@ void ChooseNumber::setValuesNumber(QString &i)
     if (orgID != NULL)
     {
         ui->label_5->show();
-        ui->label_5->setText(tr("Номер(-a) \"") + orgName + tr("\""));
+        ui->label_5->setText(tr("Номерa \"") + orgName + tr("\""));
     }
 }
 
-bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
+bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
     if (ui->SecondNumber->text().isEmpty())
     {
@@ -123,6 +131,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
         {
             QString number = ui->FirstNumber->text();
 
+            onCall(number);
+
             emit sendNumber(number);
 
             close();
@@ -138,6 +148,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
         if (event->type() == QEvent::MouseButtonPress)
         {
             QString number = ui->SecondNumber->text();
+
+            onCall(number);
 
             emit sendNumber(number);
 
@@ -155,6 +167,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
         {
             QString number = ui->ThirdNumber->text();
 
+            onCall(number);
+
             emit sendNumber(number);
 
             close();
@@ -171,6 +185,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
         {
             QString number = ui->FourthNumber->text();
 
+            onCall(number);
+
             emit sendNumber(number);
 
             close();
@@ -186,6 +202,8 @@ bool ChooseNumber::eventFilter(QObject *target, QEvent *event)
         if (event->type() == QEvent::MouseButtonPress)
         {
             QString number = ui->FifthNumber->text();
+
+            onCall(number);
 
             emit sendNumber(number);
 

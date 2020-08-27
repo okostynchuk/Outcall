@@ -19,9 +19,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
 
-    ui->Comment->installEventFilter(this);
-
-    connect(ui->Comment, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
     connect(ui->backButton, &QPushButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditContactDialog::onSave);
@@ -133,7 +130,7 @@ void EditContactDialog::onSave()
         {
             QString phone = QString(phonesList.at(i)->text());
 
-            if (isPhone(&phone) && !isInnerPhone(&phone))
+            if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -257,6 +254,9 @@ void EditContactDialog::onSave()
             }
         }
 
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     emit sendData(true, this->pos().x(), this->pos().y());
 
     close();
@@ -264,7 +264,7 @@ void EditContactDialog::onSave()
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
-bool EditContactDialog::isInnerPhone(QString *str)
+bool EditContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -280,7 +280,7 @@ bool EditContactDialog::isInnerPhone(QString *str)
     return false;
 }
 
-bool EditContactDialog::isPhone(QString *str)
+bool EditContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
@@ -292,7 +292,7 @@ bool EditContactDialog::isPhone(QString *str)
     return false;
 }
 
-bool EditContactDialog::isVyborID(QString *str)
+bool EditContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
 
@@ -304,7 +304,7 @@ bool EditContactDialog::isVyborID(QString *str)
     return false;
 }
 
-void EditContactDialog::setValuesContacts(QString &i)
+void EditContactDialog::setValuesContacts(QString i)
 {
     updateID = i;
 
@@ -345,7 +345,7 @@ void EditContactDialog::setValuesContacts(QString &i)
     ui->Comment->setText(query.value(7).toString());
 }
 
-void EditContactDialog::receiveOrgID(QString &id)
+void EditContactDialog::receiveOrgID(QString id)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -362,10 +362,13 @@ void EditContactDialog::receiveOrgID(QString &id)
 
 void EditContactDialog::on_addOrgButton_clicked()
 {
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
+
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, SIGNAL(sendOrgID(QString&)), this, SLOT(receiveOrgID(QString&)));
-    addOrgToPerson->show();
-    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
+    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    addOrgToPerson.data()->show();
+    addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void EditContactDialog::on_deleteOrgButton_clicked()
@@ -375,40 +378,27 @@ void EditContactDialog::on_deleteOrgButton_clicked()
 
 void EditContactDialog::onTextChanged()
 {
-    if (ui->Comment->toPlainText().simplified().length() > 255)
+    if (ui->Comment->toPlainText().trimmed().length() > 255)
         ui->Comment->textCursor().deletePreviousChar();
 }
 
-bool EditContactDialog::eventFilter(QObject *object, QEvent *event)
+void EditContactDialog::keyPressEvent(QKeyEvent* event)
 {
-    if (object->objectName() == "Comment")
+    if (event->key() == Qt::Key_Return)
     {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment2");
-
-                return true;
-            }
-        }
+        if (ui->Comment->hasFocus())
+            return;
+        else
+            onSave();
     }
-    else if (object->objectName() == "Comment2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    else
+        QDialog::keyPressEvent(event);
+}
 
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("Comment");
+void EditContactDialog::closeEvent(QCloseEvent* event)
+{
+    QDialog::closeEvent(event);
 
-                return true;
-            }
-        }
-    }
-
-    return false;
+    if (!addOrgToPerson.isNull())
+        addOrgToPerson.data()->close();
 }

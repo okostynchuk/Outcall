@@ -91,7 +91,7 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::showEvent(QShowEvent *event)
+void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
@@ -100,7 +100,7 @@ void CallHistoryDialog::showEvent(QShowEvent *event)
     updateCount();
 }
 
-void CallHistoryDialog::closeEvent(QCloseEvent *event)
+void CallHistoryDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
@@ -606,12 +606,6 @@ void CallHistoryDialog::loadPlacedCalls()
     ui->playAudioPhone->setDisabled(true);
 }
 
-void CallHistoryDialog::playerClosed(bool closed)
-{
-    if (closed)
-        playAudioDialog = nullptr;
-}
-
 void CallHistoryDialog::daysChanged()
 {
      days = ui->comboBox_2->currentText();
@@ -692,7 +686,7 @@ void CallHistoryDialog::updateCount()
     }
 }
 
-bool CallHistoryDialog::isInnerPhone(QString *str)
+bool CallHistoryDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
@@ -720,7 +714,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
         number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
     }
 
-    if (!isInnerPhone(&number))
+    if (!isInternalPhone(&number))
     {
         QSqlDatabase db;
         QSqlQuery query(db);
@@ -782,12 +776,13 @@ void CallHistoryDialog::onCallClicked()
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
-    const QString from = my_number;
+    QString from = my_number;
     QString to = number;
-    const QString protocol = global::getSettingsValue(from, "extensions").toString();
+    QString protocol = global::getSettingsValue(from, "extensions").toString();
 
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
@@ -860,7 +855,7 @@ void CallHistoryDialog::onAddOrgContact()
         editOrgContact(number);
 }
 
-bool CallHistoryDialog::checkNumber(QString &number)
+bool CallHistoryDialog::checkNumber(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -875,7 +870,7 @@ bool CallHistoryDialog::checkNumber(QString &number)
         return true;
 }
 
-void CallHistoryDialog::editContact(QString &number)
+void CallHistoryDialog::editContact(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -898,7 +893,7 @@ void CallHistoryDialog::editContact(QString &number)
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
 }
 
-void CallHistoryDialog::editOrgContact(QString &number)
+void CallHistoryDialog::editOrgContact(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -960,14 +955,13 @@ void CallHistoryDialog::onPlayAudio()
 
     if (!recordpath.isEmpty())
     {
-        if (playAudioDialog != nullptr)
-            playAudioDialog->close();
+        if (!playAudioDialog.isNull())
+            playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog->setValuesCallHistory(recordpath);
-        connect(playAudioDialog, SIGNAL(isClosed(bool)), this, SLOT(playerClosed(bool)));
-        playAudioDialog->show();
-        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->show();
+        playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -981,7 +975,8 @@ void CallHistoryDialog::onPlayAudioPhone()
 
     if (!recordpath.isEmpty())
     {
-        const QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
         g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
     }
 }
@@ -1016,7 +1011,7 @@ void CallHistoryDialog::receiveDataFromNotes()
     updateCount();
 }
 
-QString CallHistoryDialog::getUpdateId(QString &number)
+QString CallHistoryDialog::getUpdateId(QString number)
 {
     QSqlDatabase db;
     QSqlQuery query(db);

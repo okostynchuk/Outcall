@@ -15,12 +15,9 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->textEdit->installEventFilter(this);
-
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
-    connect(ui->textEdit, SIGNAL(objectNameChanged(QString)), this, SLOT(onSave()));
     connect(ui->saveButton, &QPushButton::clicked, this, &EditReminderDialog::onSave);
     connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &EditReminderDialog::onChooseEmployee);
 }
@@ -45,17 +42,20 @@ void EditReminderDialog::onChooseEmployee()
     if (employee.isEmpty())
         employee = employeeInitial;
 
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee->setValuesReminders(employee);
-    connect(chooseEmployee, SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
-    chooseEmployee->show();
-    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
+    chooseEmployee.data()->setValuesReminders(employee);
+    connect(chooseEmployee.data(), SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    chooseEmployee.data()->show();
+    chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void EditReminderDialog::onSave()
 {
     QDateTime dateTime = ui->dateTimeEdit->dateTime();
-    QString note = ui->textEdit->toPlainText().simplified();
+    QString note = ui->textEdit->toPlainText().trimmed();
 
     if (dateTime < QDateTime::currentDateTime())
     {
@@ -64,7 +64,7 @@ void EditReminderDialog::onSave()
         return;
     }
 
-    if (ui->textEdit->toPlainText().simplified().isEmpty())
+    if (note.isEmpty())
     {
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
 
@@ -313,60 +313,30 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
     }
 }
 
-void EditReminderDialog::onTextChanged()
-{
-    if (ui->textEdit->toPlainText().simplified().length() > 255)
-        ui->textEdit->textCursor().deletePreviousChar();
-}
-
-bool EditReminderDialog::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "textEdit")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit2");
-
-                return true;
-            }
-        }
-    }
-    else if (object->objectName() == "textEdit2")
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-            if (keyEvent->key() == Qt::Key_Return)
-            {
-                object->setObjectName("textEdit");
-
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-void EditReminderDialog::closeEvent(QCloseEvent *event)
+void EditReminderDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
-    emit sendData(false);
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+}
+
+void EditReminderDialog::onTextChanged()
+{
+    if (ui->textEdit->toPlainText().trimmed().length() > 255)
+        ui->textEdit->textCursor().deletePreviousChar();
 }
 
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
-    {
-        emit sendData(false);
-
         QDialog::close();
+    else if (event->key() == Qt::Key_Return)
+    {
+        if (ui->textEdit->hasFocus())
+            return;
+        else
+            onSave();
     }
     else
         QWidget::keyPressEvent(event);
