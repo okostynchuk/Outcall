@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Updater</string>
+   <string>Скачивание обновления</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
