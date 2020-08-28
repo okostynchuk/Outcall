@@ -719,7 +719,7 @@ background-color: #fffff0;
                <enum>Qt::ClickFocus</enum>
               </property>
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
               </property>
               <property name="selectionBehavior">
                <enum>QAbstractItemView::SelectRows</enum>
@@ -809,6 +809,9 @@ background-color: #fffff0;
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+             </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
@@ -832,6 +835,9 @@ background-color: #fffff0;
              <property name="focusPolicy">
               <enum>Qt::ClickFocus</enum>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+             </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
@@ -852,6 +858,9 @@ background-color: #fffff0;
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+             </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
@@ -871,6 +880,9 @@ background-color: #fffff0;
                <width>16777215</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
              </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>

@@ -62,11 +62,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     go="default";
     page = "1";
 
@@ -85,6 +80,15 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
+    if (ui->tabWidget->currentIndex() == 0)
+        selectionAll = ui->tableView->selectionModel()->selectedRows();
+    else if (ui->tabWidget->currentIndex() == 1)
+        selectionMissed = ui->tableView_2->selectionModel()->selectedRows();
+    else if (ui->tabWidget->currentIndex() == 2)
+        selectionReceived = ui->tableView_3->selectionModel()->selectedRows();
+    else if (ui->tabWidget->currentIndex() == 3)
+        selectionPlaced = ui->tableView_4->selectionModel()->selectedRows();
+
     go = "default";
 
     updateCount();
@@ -99,6 +103,8 @@ void CallHistoryDialog::closeEvent(QCloseEvent* event)
     ui->comboBox_2->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
+
+    clearSelections();
 
     go = "default";
     page = "1";
@@ -220,6 +226,14 @@ void CallHistoryDialog::loadAllCalls()
     ui->tableView->resizeColumnsToContents();
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    if (!selectionAll.isEmpty())
+        for (int i = 0; i < selectionAll.length(); ++i)
+        {
+            QModelIndex index = selectionAll.at(i);
+
+            ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
 
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
@@ -345,6 +359,14 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    if (!selectionMissed.isEmpty())
+        for (int i = 0; i < selectionMissed.length(); ++i)
+        {
+            QModelIndex index = selectionMissed.at(i);
+
+            ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -468,6 +490,14 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    if (!selectionReceived.isEmpty())
+        for (int i = 0; i < selectionReceived.length(); ++i)
+        {
+            QModelIndex index = selectionReceived.at(i);
+
+            ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -588,6 +618,14 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
+    if (!selectionPlaced.isEmpty())
+        for (int i = 0; i < selectionPlaced.length(); ++i)
+        {
+            QModelIndex index = selectionPlaced.at(i);
+
+            ui->tableView_4->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
@@ -598,14 +636,18 @@ void CallHistoryDialog::loadPlacedCalls()
 
 void CallHistoryDialog::daysChanged()
 {
-     days = ui->comboBox_2->currentText();
-     go = "default";
+    clearSelections();
 
-     updateCount();
+    days = ui->comboBox_2->currentText();
+    go = "default";
+
+    updateCount();
 }
 
 void CallHistoryDialog::tabSelected()
 {
+    clearSelections();
+
     go = "default";
     page = "1";
 
@@ -781,14 +823,7 @@ void CallHistoryDialog::receiveData(bool updating)
 {
     if (updating)
     {
-        if (ui->tabWidget->currentIndex() == 0)
-            ui->tableView->selectionModel()->clearSelection();
-        else if (ui->tabWidget->currentIndex() == 1)
-            ui->tableView_2->selectionModel()->clearSelection();
-        else if (ui->tabWidget->currentIndex() == 2)
-            ui->tableView_3->selectionModel()->clearSelection();
-        else if (ui->tabWidget->currentIndex() == 3)
-            ui->tableView_4->selectionModel()->clearSelection();
+        clearSelections();
 
         ui->callButton->setDisabled(true);
         ui->addContactButton->setDisabled(true);
@@ -996,6 +1031,8 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
 
 void CallHistoryDialog::receiveDataFromNotes()
 {
+    clearSelections();
+
     go = "default";
 
     updateCount();
@@ -1060,8 +1097,23 @@ QWidget* CallHistoryDialog::loadName()
     return nameWgt;
 }
 
+void CallHistoryDialog::clearSelections()
+{
+    selectionAll.clear();
+    selectionMissed.clear();
+    selectionReceived.clear();
+    selectionPlaced.clear();
+
+    ui->tableView->clearSelection();
+    ui->tableView_2->clearSelection();
+    ui->tableView_3->clearSelection();
+    ui->tableView_4->clearSelection();
+}
+
 void CallHistoryDialog::onUpdateClick()
 {
+    clearSelections();
+
     go = "default";
 
     updateCount();
@@ -1069,6 +1121,8 @@ void CallHistoryDialog::onUpdateClick()
 
 void CallHistoryDialog::onUpdate()
 {
+    clearSelections();
+
     if (ui->tabWidget->currentIndex() == 0)
         loadAllCalls();
     else if (ui->tabWidget->currentIndex() == 1)
@@ -1377,7 +1431,7 @@ void CallHistoryDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
 
-    onUpdate();;
+    onUpdate();
 }
 
 void CallHistoryDialog::on_lineEdit_page_returnPressed()

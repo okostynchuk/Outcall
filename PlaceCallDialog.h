@@ -32,7 +32,6 @@ private slots:
     void onCancelButton();
 
     void onUpdate();
-    void onComboBoxSelected();
     void clearEditText();
 
     void showNumber(const QModelIndex &);

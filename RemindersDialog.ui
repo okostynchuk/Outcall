@@ -38,6 +38,9 @@
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+         </property>
          <property name="tabKeyNavigation">
           <bool>false</bool>
          </property>
@@ -58,6 +61,9 @@
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+         </property>
          <property name="tabKeyNavigation">
           <bool>false</bool>
          </property>
@@ -77,6 +83,9 @@
         <widget class="QTableView" name="tableView_3">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
          </property>
          <property name="tabKeyNavigation">
           <bool>false</bool>

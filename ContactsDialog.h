@@ -29,6 +29,7 @@ public:
     ~ContactsDialog();
 
 private slots:
+    void loadContacts();
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
@@ -55,6 +56,8 @@ private:
     Ui::ContactsDialog *ui;
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+
+    QModelIndexList selectionModel;
 
     QSqlQueryModel* queryModel;
 

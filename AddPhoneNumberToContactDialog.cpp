@@ -17,8 +17,6 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     onComboBoxListSelected();
 
     query.prepare("SELECT COUNT(DISTINCT entry_id) FROM entry_phone");
@@ -408,6 +406,8 @@ void AddPhoneNumberToContactDialog::onComboBoxSelected()
 
 void AddPhoneNumberToContactDialog::searchFunction()
 {
+    go = "default";
+
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
@@ -417,7 +417,6 @@ void AddPhoneNumberToContactDialog::searchFunction()
         return;
     }
 
-    go = "default";
     filter = true;
 
     entry_name = nullptr;
