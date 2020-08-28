@@ -15,10 +15,6 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTableView>
-#include <QTextEdit>
-#include <QList>
-#include <QPointer>
 
 namespace Ui {
 class CallHistoryDialog;
