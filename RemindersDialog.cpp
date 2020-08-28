@@ -42,10 +42,6 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
     connect(&timer, &QTimer::timeout, this, &RemindersDialog::onTimer);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     ui->comboBox_list->setVisible(false);
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
@@ -154,10 +150,6 @@ void RemindersDialog::showEvent(QShowEvent* event)
 
     resizeCells = false;
 
-    selectionRelevant.clear();
-    selectionIrrelevant.clear();
-    selectionDelegated.clear();
-
     go = "default";
 
     onUpdate();
@@ -169,6 +161,16 @@ void RemindersDialog::closeEvent(QCloseEvent* event)
 
     QDialog::clearFocus();
 
+    clearSelections();
+
+    ui->tabWidget->setCurrentIndex(0);
+
+    go = "default";
+    page = "1";
+}
+
+void RemindersDialog::clearSelections()
+{
     selectionRelevant.clear();
     selectionIrrelevant.clear();
     selectionDelegated.clear();
@@ -176,11 +178,6 @@ void RemindersDialog::closeEvent(QCloseEvent* event)
     ui->tableView->clearSelection();
     ui->tableView_2->clearSelection();
     ui->tableView_3->clearSelection();
-
-    ui->tabWidget->setCurrentIndex(0);
-
-    go = "default";
-    page = "1";
 }
 
 void RemindersDialog::onTimer()
@@ -1278,13 +1275,7 @@ void RemindersDialog::onTabChanged()
 
 void RemindersDialog::onUpdateTab()
 {
-    selectionRelevant.clear();
-    selectionIrrelevant.clear();
-    selectionDelegated.clear();
-
-    ui->tableView->clearSelection();
-    ui->tableView_2->clearSelection();
-    ui->tableView_3->clearSelection();
+    clearSelections();
 
     if (ui->tabWidget->currentIndex() == 0)
     {

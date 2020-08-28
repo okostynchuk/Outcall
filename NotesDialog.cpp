@@ -30,8 +30,6 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
-
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 }
 
 NotesDialog::~NotesDialog()

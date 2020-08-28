@@ -34,8 +34,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    onComboBoxSelected();
-
     my_number = global::getExtensionNumber("extensions");
 
     ui->my_Number->setText(my_number);
@@ -112,13 +110,6 @@ void PlaceCallDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
     update = "default";
-}
-
-void PlaceCallDialog::onComboBoxSelected()
-{
-    ui->comboBox->addItem(QObject::tr("Поиск по ФИО / названию"));
-    ui->comboBox->addItem(QObject::tr("Поиск по номеру телефона"));
-    ui->comboBox->addItem(QObject::tr("Поиск сотрудников по организации"));
 }
 
 void PlaceCallDialog::on_lineEdit_returnPressed()
@@ -224,8 +215,8 @@ void PlaceCallDialog::onCallButton()
 {
     if (!ui->phoneLine->text().isEmpty())
     {
-        QString to   = ui->phoneLine->text();
-        QString from     = my_number;
+        QString to = ui->phoneLine->text();
+        QString from = my_number;
         QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_pAsteriskManager->originateCall(from, to, protocol, from);

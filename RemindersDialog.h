@@ -49,6 +49,7 @@ private slots:
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
     void onTabChanged();
+    void clearSelections();
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();

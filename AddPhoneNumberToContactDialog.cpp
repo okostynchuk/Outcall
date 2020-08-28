@@ -19,10 +19,7 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPhoneNumberToContactDialog::addPhoneNumber);
-
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPhoneNumberToContactDialog::currentIndexChanged);
 
     page = "1";
@@ -220,6 +217,8 @@ void AddPhoneNumberToContactDialog::onUpdate()
 
 void AddPhoneNumberToContactDialog::searchFunction()
 {
+    go = "default";
+
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
@@ -229,9 +228,9 @@ void AddPhoneNumberToContactDialog::searchFunction()
         return;
     }
 
-    page = "1";
+    filter = true;
 
-    go = "default";
+    page = "1";
 
     onUpdate();
 }

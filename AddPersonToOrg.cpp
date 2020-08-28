@@ -19,8 +19,6 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::getPersonID);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPersonToOrg::currentIndexChanged);
 
@@ -190,6 +188,8 @@ void AddPersonToOrg::onUpdate()
 
 void AddPersonToOrg::searchFunction()
 {
+    go = "default";
+
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
@@ -202,8 +202,6 @@ void AddPersonToOrg::searchFunction()
     filter = true;
 
     page = "1";
-
-    go = "default";
 
     onUpdate();
 }

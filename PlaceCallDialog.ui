@@ -82,7 +82,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox"/>
+          <widget class="QComboBox" name="comboBox">
+           <item>
+            <property name="text">
+             <string>Поиск по ФИО / названию</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Поиск по номеру телефона</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Поиск сотрудников по организации</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </item>
@@ -122,6 +138,9 @@ background-color: #fffff8;
     <widget class="QTableView" name="tableView">
      <property name="focusPolicy">
       <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
