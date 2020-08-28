@@ -36,7 +36,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &RemindersDialog::onTabChanged);
-    connect(ui->addReminderButton, &QPushButton::clicked, this, &RemindersDialog::onAddReminder);
+    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &RemindersDialog::onAddReminder);
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
     connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
     connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);

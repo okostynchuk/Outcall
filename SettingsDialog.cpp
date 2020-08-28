@@ -28,12 +28,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged, this, &SettingsDialog::checkAsteriskState);
 
     // Extensions
-    connect(ui->addButton,      &QPushButton::clicked, this, &SettingsDialog::onAddButtonClicked);
-    connect(ui->addButton_2,    &QPushButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
-    connect(ui->editButton,     &QPushButton::clicked, this, &SettingsDialog::onEditButtonClicked);
-    connect(ui->editButton_2,   &QPushButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
-    connect(ui->removeButton,   &QPushButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
-    connect(ui->removeButton_2, &QPushButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
+    connect(ui->addButton,      &QAbstractButton::clicked, this, &SettingsDialog::onAddButtonClicked);
+    connect(ui->addButton_2,    &QAbstractButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
+    connect(ui->editButton,     &QAbstractButton::clicked, this, &SettingsDialog::onEditButtonClicked);
+    connect(ui->editButton_2,   &QAbstractButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
+    connect(ui->removeButton,   &QAbstractButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
+    connect(ui->removeButton_2, &QAbstractButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
 
     // General
     QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");

@@ -23,13 +23,13 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    connect(ui->addPhoneNumberButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
-    connect(ui->playAudio,            &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
-    connect(ui->playAudioPhone,       &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
-    connect(ui->callButton,           &QPushButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->addContactButton,     &QPushButton::clicked, this, &CallHistoryDialog::onAddContact);
-    connect(ui->addOrgContactButton,  &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton,         &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
+    connect(ui->playAudio,            &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudio);
+    connect(ui->playAudioPhone,       &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
+    connect(ui->callButton,           &QAbstractButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->addContactButton,     &QAbstractButton::clicked, this, &CallHistoryDialog::onAddContact);
+    connect(ui->addOrgContactButton,  &QAbstractButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
+    connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdateClick);
 
     connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
     connect(ui->tabWidget,  &QTabWidget::currentChanged, this, &CallHistoryDialog::tabSelected);

@@ -22,8 +22,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     validator = new QRegularExpressionValidator(regExp, this);
     ui->phoneLine->setValidator(validator);
 
-    connect(ui->callButton,    &QPushButton::clicked,           this, &PlaceCallDialog::onCallButton);
-    connect(ui->cancelButton,  &QPushButton::clicked,           this, &PlaceCallDialog::onCancelButton);
+    connect(ui->callButton,    &QAbstractButton::clicked,           this, &PlaceCallDialog::onCallButton);
+    connect(ui->cancelButton,  &QAbstractButton::clicked,           this, &PlaceCallDialog::onCancelButton);
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
     connect(ui->tableView, &QAbstractItemView::clicked, this, &PlaceCallDialog::showNumber);
 

@@ -17,9 +17,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->addPersonButton, &QPushButton::clicked, this, &ContactsDialog::onAddPerson);
-    connect(ui->addOrgButton, &QPushButton::clicked, this, &ContactsDialog::onAddOrg);
-    connect(ui->updateButton, &QPushButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
+    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &ContactsDialog::showCard);
 

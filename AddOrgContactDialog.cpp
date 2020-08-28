@@ -15,7 +15,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
-    connect(ui->saveButton, &QPushButton::clicked, this, &AddOrgContactDialog::onSave);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &AddOrgContactDialog::onSave);
 
     phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }

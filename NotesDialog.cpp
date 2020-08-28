@@ -21,8 +21,8 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    connect(ui->saveButton, &QPushButton::clicked, this, &NotesDialog::onSave);
-    connect(ui->updateButton, &QPushButton::clicked, this, &NotesDialog::onUpdate);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
     connect(ui->textEdit, &QTextEdit::textChanged, this, &NotesDialog::onTextChanged);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

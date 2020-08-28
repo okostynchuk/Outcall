@@ -27,7 +27,6 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     go = "default";
 
     onUpdate();
-
 }
 
 AddPhoneNumberToContactDialog::~AddPhoneNumberToContactDialog()
