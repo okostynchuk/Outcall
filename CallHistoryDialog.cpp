@@ -2,16 +2,6 @@
 #include "ui_CallHistoryDialog.h"
 
 #include <QMessageBox>
-#include <QWidget>
-#include <QList>
-#include <QSqlQuery>
-#include <QSqlDatabase>
-#include <QSqlRelationalTableModel>
-#include <QTableView>
-#include <QLabel>
-#include <QTextBlock>
-#include <QItemSelectionModel>
-#include <QRegularExpression>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),

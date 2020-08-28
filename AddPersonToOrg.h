@@ -3,14 +3,8 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QHeaderView>
-#include <QBoxLayout>
-#include <QTableView>
-#include <QSqlQuery>
-#include <QSqlDatabase>
 #include <QValidator>
-#include <QMessageBox>
-#include <QDebug>
+#include <QSqlQuery>
 
 namespace Ui {
 class AddPersonToOrg;
@@ -32,8 +26,7 @@ public:
 private slots:
     void deleteObjects();
     void onUpdate();
-    void onComboBoxListSelected();
-    void onComboBoxSelected();
+    void currentIndexChanged();
     void getPersonID(const QModelIndex &index);
     void searchFunction();
 
@@ -63,10 +56,6 @@ private:
     QSqlDatabase db;
     QSqlQuery query;
     QString go;
-    QString entry_name;
-    QString entry_city;
-    QString entry_phone;
-    QString entry_comment;
     bool filter;
 };
 

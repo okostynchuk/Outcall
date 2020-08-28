@@ -10,11 +10,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QHeaderView>
-#include <QHBoxLayout>
-#include <QTableView>
 #include <QSqlQuery>
-#include <QSqlDatabase>
 #include <QValidator>
 
 namespace Ui {
@@ -36,13 +32,13 @@ private slots:
     void onUpdate();
     void onAddPerson();
     void onAddOrg();
-    void onComboBoxListSelected();
-    void onComboBoxSelected();
+    void currentIndexChanged();
     void showCard(const QModelIndex &);
     void searchFunction();
 
     void deleteObjects();
 
+    void on_updateButton_clicked();
     void on_searchButton_clicked();
     void on_previousButton_clicked();
     void on_nextButton_clicked();

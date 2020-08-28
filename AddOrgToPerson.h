@@ -3,11 +3,7 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QHeaderView>
-#include <QBoxLayout>
-#include <QTableView>
 #include <QSqlQuery>
-#include <QSqlDatabase>
 #include <QValidator>
 
 namespace Ui {
@@ -28,8 +24,7 @@ public:
 private slots:
     void deleteObjects();
     void onUpdate();
-    void onComboBoxListSelected();
-    void onComboBoxSelected();
+    void currentIndexChanged();
     void getOrgID(const QModelIndex &index);
     void searchFunction();
 
