@@ -17,7 +17,7 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->textEdit, &QTextEdit::textChanged, this, &EditReminderDialog::onTextChanged);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditReminderDialog::onSave);
     connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &EditReminderDialog::onChooseEmployee);
 }
@@ -47,7 +47,7 @@ void EditReminderDialog::onChooseEmployee()
 
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValuesReminders(employee);
-    connect(chooseEmployee.data(), SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -138,15 +138,24 @@ void EditReminderDialog::onSave()
             }
             else
             {
-                for (int i = 0; i < employeeInitial.length(); ++i)
+                if (employeeInitial.length() == 1)
                 {
-                    if (employee.contains(employeeInitial.at(i)))
-                        continue;
-
-                    query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
-                    query.addBindValue(employeeInitial.at(i));
-                    query.addBindValue(group_id);
+                    query.prepare("UPDATE reminders SET active = false WHERE id = ?");
+                    query.addBindValue(id);
                     query.exec();
+                }
+                else
+                {
+                    for (int i = 0; i < employeeInitial.length(); ++i)
+                    {
+                        if (employee.contains(employeeInitial.at(i)))
+                            continue;
+
+                        query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
+                        query.addBindValue(employeeInitial.at(i));
+                        query.addBindValue(group_id);
+                        query.exec();
+                    }
                 }
 
                 if (employee.length() == 1)
@@ -209,12 +218,21 @@ void EditReminderDialog::onSave()
             }
             else
             {
-                for (int i = 0; i < employeeInitial.length(); ++i)
+                if (employeeInitial.length() == 1)
                 {
-                    query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
-                    query.addBindValue(employeeInitial.at(i));
-                    query.addBindValue(group_id);
+                    query.prepare("UPDATE reminders SET active = false WHERE id = ?");
+                    query.addBindValue(id);
                     query.exec();
+                }
+                else
+                {
+                    for (int i = 0; i < employeeInitial.length(); ++i)
+                    {
+                        query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
+                        query.addBindValue(employeeInitial.at(i));
+                        query.addBindValue(group_id);
+                        query.exec();
+                    }
                 }
 
                 if (employeeInitial.contains(employee.first()))
@@ -228,11 +246,11 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    query.prepare("INSERT INTO reminders (phone_to, datetime, content, completed, active) VALUES(?, ?, ?, false, true)");
+                    query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, completed, active) VALUES(?, ?, ?, ?, false, true)");
+                    query.addBindValue(employee.first());
                     query.addBindValue(employee.first());
                     query.addBindValue(dateTime);
                     query.addBindValue(note);
-                    query.addBindValue(id);
                     query.exec();
                 }
             }

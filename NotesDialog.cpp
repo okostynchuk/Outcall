@@ -26,7 +26,7 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     connect(ui->saveButton, &QPushButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QPushButton::clicked, this, &NotesDialog::onUpdate);
-    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->textEdit, &QTextEdit::textChanged, this, &NotesDialog::onTextChanged);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);

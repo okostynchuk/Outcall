@@ -58,8 +58,8 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(getPersonID(const QModelIndex &)));
-    connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::getPersonID);
+    connect(ui->comboBox_list, &QComboBox::currentTextChanged, this, &AddPersonToOrg::onUpdate);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 

@@ -25,6 +25,7 @@ signals:
 
 public slots:
     void receiveOrgID(QString);
+    void setPos(int, int);
 
 private slots:
     void onSave();
@@ -37,8 +38,6 @@ private slots:
     bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
-
-    void setPos(int, int);
 
     void keyPressEvent(QKeyEvent* event);
     void closeEvent(QCloseEvent* event);

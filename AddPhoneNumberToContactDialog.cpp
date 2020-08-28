@@ -59,8 +59,8 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addPhoneNumber(const QModelIndex &)));
-    connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPhoneNumberToContactDialog::addPhoneNumber);
+    connect(ui->comboBox_list, &QComboBox::currentTextChanged, this, &AddPhoneNumberToContactDialog::onUpdate);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 

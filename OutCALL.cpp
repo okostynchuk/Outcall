@@ -48,10 +48,10 @@ OutCall::OutCall() :
     connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &OutCall::onStateChanged);
     connect(&m_timer,           &QTimer::timeout,                       this, &OutCall::changeIcon);
 
-    connect(m_remindersDialog, SIGNAL(reminders(bool)), this, SLOT(changeIconReminders(bool)));
-    connect(m_settingsDialog, SIGNAL(restart(bool)), this, SLOT(hideTrayIcon(bool)));
+    connect(m_remindersDialog, &RemindersDialog::reminders, this, &OutCall::changeIconReminders);
+    connect(m_settingsDialog, &SettingsDialog::restart, this, &OutCall::hideTrayIcon);
 
-    connect(this, SIGNAL(showReminders(bool)), m_remindersDialog, SLOT(showReminders(bool)));
+    connect(this, &OutCall::showReminders, m_remindersDialog, &RemindersDialog::showReminders);
 
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
@@ -310,6 +310,7 @@ void OutCall::disableActions()
     m_placeCall->setEnabled(false);
     callHistoryAction->setEnabled(false);
     contactsAction->setEnabled(false);
+    internalContactsAction->setEnabled(false);
     remindersAction->setEnabled(false);
 }
 
@@ -318,6 +319,7 @@ void OutCall::enableActions()
     m_placeCall->setEnabled(true);
     callHistoryAction->setEnabled(true);
     contactsAction->setEnabled(true);
+    internalContactsAction->setEnabled(true);
     remindersAction->setEnabled(true);
 }
 
@@ -327,7 +329,7 @@ void OutCall::hideTrayIcon(bool hide)
         m_systemTrayIcon->hide();
 }
 
-void OutCall::changeIconReminders(bool changing)
+void OutCall::changeIconReminders(bool change)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
@@ -351,7 +353,7 @@ void OutCall::changeIconReminders(bool changing)
     if (query.next())
         activeReminders = query.value(0).toInt();
 
-    if (changing)
+    if (change)
     {
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);
@@ -369,7 +371,7 @@ void OutCall::changeIconReminders(bool changing)
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
     }
-    else if (!changing && activeReminders > 0 && receivedReminders > 0)
+    else if (!change && activeReminders > 0 && receivedReminders > 0)
     {
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);
@@ -387,7 +389,7 @@ void OutCall::changeIconReminders(bool changing)
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
     }
-    else if (!changing && activeReminders > 0 && receivedReminders == 0)
+    else if (!change && activeReminders > 0 && receivedReminders == 0)
     {
         QPixmap pixmap(22, 22);
         pixmap.fill(Qt::transparent);
@@ -405,7 +407,7 @@ void OutCall::changeIconReminders(bool changing)
 
         m_systemTrayIcon->setIcon(QIcon(pixmap));
     }
-    else if (!changing && activeReminders == 0)
+    else if (!change && activeReminders == 0)
     {
         QString path(":/images/connected.png");
         m_systemTrayIcon->setIcon(QIcon(path));

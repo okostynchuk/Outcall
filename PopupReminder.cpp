@@ -166,8 +166,8 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QPushButton::clicked, this, &PopupReminder::onClosePopup);
-    connect(ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
-    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectTime()));
+    connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
+    connect(ui->comboBox,  static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
 
     ui->okButton->installEventFilter(this);
     ui->comboBox->installEventFilter(this);
@@ -410,12 +410,12 @@ void PopupReminder::onCall()
     }
 }
 
-void PopupReminder::onSelectTime()
+void PopupReminder::onSelectTime(int index)
 {
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    switch (ui->comboBox->currentIndex())
+    switch (index)
     {
     case 1:
         if (!editReminderDialog.isNull())
@@ -423,7 +423,7 @@ void PopupReminder::onSelectTime()
 
         editReminderDialog = new EditReminderDialog;
         editReminderDialog.data()->setValuesReminders(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
-        connect(editReminderDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(editReminderDialog.data(), &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
         editReminderDialog.data()->show();
         editReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 

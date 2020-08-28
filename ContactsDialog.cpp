@@ -75,8 +75,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->addPersonButton, &QPushButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->addOrgButton, &QPushButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton, &QPushButton::clicked, this, &ContactsDialog::onUpdate);
-    connect(ui->comboBox_list, SIGNAL(currentTextChanged(QString)), this, SLOT(onUpdate()));
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
+    connect(ui->comboBox_list, &QComboBox::currentTextChanged, this, &ContactsDialog::onUpdate);
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &ContactsDialog::showCard);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
@@ -157,7 +157,7 @@ void ContactsDialog::closeEvent(QCloseEvent* event)
 void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
-    connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addContactDialog, &AddContactDialog::sendData, this, &ContactsDialog::receiveData);
     addContactDialog->show();
     addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -165,7 +165,7 @@ void ContactsDialog::onAddPerson()
 void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
-    connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
     addOrgContactDialog->show();
     addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -179,7 +179,7 @@ void ContactsDialog::showCard(const QModelIndex &index)
     {
          viewContactDialog = new ViewContactDialog;
          viewContactDialog->setValuesContacts(updateID);
-         connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+         connect(viewContactDialog, &ViewContactDialog::sendData, this, &ContactsDialog::receiveData);
          viewContactDialog->show();
          viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -187,7 +187,7 @@ void ContactsDialog::showCard(const QModelIndex &index)
     {
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(viewOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
         viewOrgContactDialog->show();
         viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }

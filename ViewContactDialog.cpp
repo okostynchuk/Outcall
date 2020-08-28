@@ -27,8 +27,8 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->tableView_4->verticalHeader()->setSectionsClickable(false);
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->comboBox,    SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
-    connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
+    connect(ui->comboBox,    &QComboBox::currentTextChanged, this, &ViewContactDialog::daysChanged);
+    connect(ui->tabWidget_2, &QTabWidget::currentChanged, this, &ViewContactDialog::tabSelected);
 
     connect(ui->openAccessButton,  &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
     connect(ui->addReminderButton, &QPushButton::clicked, this, &ViewContactDialog::onAddReminder);
@@ -37,15 +37,15 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->playAudio,         &QPushButton::clicked, this, &ViewContactDialog::onPlayAudio);
     connect(ui->playAudioPhone,    &QPushButton::clicked, this, &ViewContactDialog::onPlayAudioPhone);
 
-    connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
+    connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
+    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
+    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
+    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
 
-    connect(ui->tableView,   SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
+    connect(ui->tableView,   &QAbstractItemView::clicked, this, &ViewContactDialog::getData);
+    connect(ui->tableView_2, &QAbstractItemView::clicked, this, &ViewContactDialog::getData);
+    connect(ui->tableView_3, &QAbstractItemView::clicked, this, &ViewContactDialog::getData);
+    connect(ui->tableView_4, &QAbstractItemView::clicked, this, &ViewContactDialog::getData);
 
     my_number = global::getExtensionNumber("extensions");
 
@@ -225,11 +225,9 @@ void ViewContactDialog::onEdit()
 
     editContactDialog = new EditContactDialog();
     editContactDialog->setValuesContacts(contactId);
-    connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool, int, int)));
-
-    connect(this, SIGNAL(getPos(int, int)), editContactDialog, SLOT(setPos(int, int)));
+    connect(editContactDialog, &EditContactDialog::sendData, this, &ViewContactDialog::receiveData);
+    connect(this, &ViewContactDialog::getPos, editContactDialog, &EditContactDialog::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-
     editContactDialog->show();
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

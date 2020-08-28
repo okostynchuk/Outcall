@@ -34,7 +34,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     ui->timeEdit->setTime(QTime::currentTime());
 
-    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->textEdit, &QTextEdit::textChanged, this, &AddReminderDialog::onTextChanged);
     connect(ui->saveButton, &QPushButton::clicked, this, &AddReminderDialog::onSave);
     connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &AddReminderDialog::onChooseEmployee);
 
@@ -63,7 +63,7 @@ void AddReminderDialog::onChooseEmployee()
 
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValuesReminders(employee);
-    connect(chooseEmployee.data(), SIGNAL(sendEmployee(QStringList)), this, SLOT(receiveEmployee(QStringList)));
+    connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
