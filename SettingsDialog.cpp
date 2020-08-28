@@ -535,7 +535,7 @@ void SettingsDialog::checkGroupExten()
 
 void SettingsDialog::on_pushUpdateButton_clicked()
 {
-    updateDialog = new UpdateDialog();
+    updateDialog = new UpdateDialog;
 
     updateDialog->show();
     updateDialog->setAttribute(Qt::WA_DeleteOnClose);
