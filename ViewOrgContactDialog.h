@@ -53,7 +53,6 @@ private slots:
     void onPlayAudioPhone();
     void onCall();
     void onEdit();
-    void onComboBoxSelected();
     void showCard(const QModelIndex &index);
     void viewNotes(const QModelIndex &index);
     void onSectionClicked(int logicalIndex);

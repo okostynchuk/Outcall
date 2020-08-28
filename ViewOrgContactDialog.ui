@@ -42,7 +42,7 @@
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -570,6 +570,21 @@ background-color: #fffff0;
                 <property name="inputMethodHints">
                  <set>Qt::ImhNone</set>
                 </property>
+                <item>
+                 <property name="text">
+                  <string>Поиск по ФИО</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Поиск по номеру телефона</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Поиск по заметке</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>
