@@ -19,7 +19,7 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
 
-    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->Comment, &QTextEdit::textChanged, this, &EditContactDialog::onTextChanged);
     connect(ui->backButton, &QPushButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditContactDialog::onSave);
 
@@ -366,7 +366,7 @@ void EditContactDialog::on_addOrgButton_clicked()
         addOrgToPerson.data()->close();
 
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    connect(addOrgToPerson.data(), &AddOrgToPerson::sendOrgID, this, &EditContactDialog::receiveOrgID);
     addOrgToPerson.data()->show();
     addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }

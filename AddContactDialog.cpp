@@ -17,7 +17,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
     ui->label_org->setText(tr("Нет"));
 
-    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->Comment, &QTextEdit::textChanged, this, &AddContactDialog::onTextChanged);
     connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
 
 //    for(int i = 0; i < ui->phonesLayout->count(); ++i)
@@ -265,7 +265,7 @@ void AddContactDialog::on_addOrgButton_clicked()
         addOrgToPerson.data()->close();
 
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson.data(), SIGNAL(sendOrgID(QString)), this, SLOT(receiveOrgID(QString)));
+    connect(addOrgToPerson.data(), &AddOrgToPerson::sendOrgID, this, &AddContactDialog::receiveOrgID);
     addOrgToPerson.data()->show();
     addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }

@@ -27,7 +27,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     connect(ui->callButton,    &QPushButton::clicked,           this, &PlaceCallDialog::onCallButton);
     connect(ui->cancelButton,  &QPushButton::clicked,           this, &PlaceCallDialog::onCancelButton);
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
-    connect(ui->tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showNumber(const QModelIndex &)));
+    connect(ui->tableView, &QAbstractItemView::clicked, this, &PlaceCallDialog::showNumber);
 
     queryModel = new QSqlQueryModel;
 
@@ -79,7 +79,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
         {
             chooseNumber = new ChooseNumber;
             chooseNumber->setValuesNumber(id);
-            connect(chooseNumber, SIGNAL(sendNumber(QString)), this, SLOT(receiveNumber(QString)));
+            connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
             chooseNumber->show();
             chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }

@@ -35,11 +35,11 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     ui->tableView_3->verticalHeader()->setSectionsClickable(false);
     ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged()));
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &RemindersDialog::onTabChanged);
     connect(ui->addReminderButton, &QPushButton::clicked, this, &RemindersDialog::onAddReminder);
-    connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(onEditReminder(const QModelIndex &)));
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
+    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
+    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &RemindersDialog::onEditReminder);
     connect(&timer, &QTimer::timeout, this, &RemindersDialog::onTimer);
 
     ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
@@ -100,11 +100,11 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     remindersThreadManager->moveToThread(remindersThread);
 
-    connect(remindersThread, SIGNAL(started()), remindersThreadManager, SLOT(process()));
-    connect(remindersThreadManager, SIGNAL(notify(QString, QDateTime, QString)), this, SLOT(onNotify(QString, QDateTime, QString)));
-    connect(remindersThreadManager, SIGNAL(finished()), remindersThread, SLOT(quit()));
-    connect(remindersThreadManager, SIGNAL(finished()), remindersThreadManager, SLOT(deleteLater()));
-    connect(remindersThread, SIGNAL(finished()), remindersThread, SLOT(deleteLater()));
+    connect(remindersThread, &QThread::started, remindersThreadManager, &RemindersThread::process);
+    connect(remindersThreadManager, &RemindersThread::notify, this, &RemindersDialog::onNotify);
+    connect(remindersThreadManager, &RemindersThread::finished, remindersThread, &QThread::quit);
+    connect(remindersThreadManager, &RemindersThread::finished, remindersThreadManager, &QObject::deleteLater);
+    connect(remindersThread, &QThread::finished, remindersThread, &QObject::deleteLater);
 
     remindersThread->start();
 
@@ -772,7 +772,7 @@ void RemindersDialog::loadDelegatedReminders()
 void RemindersDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
-    connect(addReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addReminderDialog, &AddReminderDialog::sendData, this, &RemindersDialog::receiveData);
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -807,7 +807,7 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
 
     editReminderDialog = new EditReminderDialog;
     editReminderDialog->setValuesReminders(id, group_id, dateTime, note);
-    connect(editReminderDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(editReminderDialog, &EditReminderDialog::sendData, this, &RemindersDialog::receiveData);
     editReminderDialog->show();
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -1117,7 +1117,7 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
     QString column = "active";
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
     checkBox->setProperty("id", QVariant::fromValue(id));
     checkBox->setProperty("group_id", QVariant::fromValue(group_id));
@@ -1170,7 +1170,7 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
     QString column = "viewed";
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
     checkBox->setProperty("id", QVariant::fromValue(id));
     checkBox->setProperty("column", QVariant::fromValue(column));
@@ -1259,7 +1259,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
     QString column = "completed";
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, SIGNAL(pressed()), this, SLOT(changeState()));
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
     checkBox->setProperty("id", QVariant::fromValue(id));
     checkBox->setProperty("column", QVariant::fromValue(column));

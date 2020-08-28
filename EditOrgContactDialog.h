@@ -19,6 +19,9 @@ class EditOrgContactDialog : public QDialog
 signals:
     void sendData(bool, int, int);
 
+public slots:
+    void setPos(int, int);
+
 public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     ~EditOrgContactDialog();
@@ -33,8 +36,6 @@ private slots:
     bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
-
-    void setPos(int, int);
 
     void keyPressEvent(QKeyEvent* event);
 

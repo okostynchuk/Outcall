@@ -21,7 +21,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
-    connect(ui->Comment, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(ui->Comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
     connect(ui->backButton, &QPushButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QPushButton::clicked, this, &EditOrgContactDialog::onSave);
 

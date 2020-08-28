@@ -2,16 +2,6 @@
 #include "ui_CallHistoryDialog.h"
 
 #include <QMessageBox>
-#include <QWidget>
-#include <QList>
-#include <QSqlQuery>
-#include <QSqlDatabase>
-#include <QSqlRelationalTableModel>
-#include <QTableView>
-#include <QLabel>
-#include <QTextBlock>
-#include <QItemSelectionModel>
-#include <QRegularExpression>
 
 CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     QDialog(parent),
@@ -48,18 +38,18 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addOrgContactButton,  &QPushButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->updateButton,         &QPushButton::clicked, this, &CallHistoryDialog::onUpdateClick);
 
-    connect(ui->comboBox_2, SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
-    connect(ui->tabWidget,  SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
+    connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
+    connect(ui->tabWidget,  &QTabWidget::currentChanged, this, &CallHistoryDialog::tabSelected);
 
-    connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNote(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNote(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNote(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(addNote(const QModelIndex &)));
+    connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
+    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
+    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
+    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
 
-    connect(ui->tableView,   SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
+    connect(ui->tableView,   &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
+    connect(ui->tableView_2, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
+    connect(ui->tableView_3, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
+    connect(ui->tableView_4, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -824,7 +814,7 @@ void CallHistoryDialog::onAddContact()
     if (checkNumber(number))
     {
         addContactDialog->setValues(number);
-        connect(addContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(addContactDialog, &AddContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         addContactDialog->show();
         addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -847,7 +837,7 @@ void CallHistoryDialog::onAddOrgContact()
     if (checkNumber(number))
     {
         addOrgContactDialog->setOrgValuesCallHistory(number);
-        connect(addOrgContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         addOrgContactDialog->show();
         addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -885,7 +875,7 @@ void CallHistoryDialog::editContact(QString number)
     {
         editContactDialog = new EditContactDialog;
         editContactDialog->setValuesContacts(updateID);
-        connect(editContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
+        connect(editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         editContactDialog->show();
         editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -908,7 +898,7 @@ void CallHistoryDialog::editOrgContact(QString number)
     {
         editOrgContactDialog = new EditOrgContactDialog;
         editOrgContactDialog->setOrgValuesContacts(updateID);
-        connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveData(bool)));
+        connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         editOrgContactDialog->show();
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -937,7 +927,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
     {
         addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
         addPhoneNumberToContactDialog->setPhoneNumber(number);
-        connect(addPhoneNumberToContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         addPhoneNumberToContactDialog->show();
         addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -999,7 +989,7 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
     QString state = "byId";
     notesDialog = new NotesDialog;
     notesDialog->receiveData(uniqueid, phone, state);
-    connect(notesDialog, SIGNAL(sendData()), this, SLOT(receiveDataFromNotes()));
+    connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::receiveDataFromNotes);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }

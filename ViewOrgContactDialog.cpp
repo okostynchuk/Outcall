@@ -38,24 +38,24 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->callButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onCall);
     connect(ui->editButton, &QPushButton::clicked, this, &ViewOrgContactDialog::onEdit);
 
-    connect(ui->tabWidget_3, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
-    connect(m_horiz_header,  SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
-    connect(ui->comboBox_2,  SIGNAL(currentTextChanged(QString)), this, SLOT(daysChanged()));
+    connect(ui->tabWidget_3, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
+    connect(m_horiz_header,  &QHeaderView::sectionClicked, this, &ViewOrgContactDialog::onSectionClicked);
+    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::daysChanged);
 
     connect(ui->playAudio,      &QPushButton::clicked, this, &ViewOrgContactDialog::onPlayAudio);
     connect(ui->playAudioPhone, &QPushButton::clicked, this, &ViewOrgContactDialog::onPlayAudioPhone);
 
-    connect(ui->tableView,   SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(showCard(const QModelIndex &)));
+    connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::showCard);
 
-    connect(ui->tableView_2, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
-    connect(ui->tableView_5, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(viewNotes(const QModelIndex &)));
+    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_5, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
 
-    connect(ui->tableView_2, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_3, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_4, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
-    connect(ui->tableView_5, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getData(const QModelIndex &)));
+    connect(ui->tableView_2, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
+    connect(ui->tableView_3, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
+    connect(ui->tableView_4, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
+    connect(ui->tableView_5, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
 
     onComboBoxSelected();
 
@@ -233,7 +233,7 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
 
     viewContactDialog = new ViewContactDialog;
     viewContactDialog->setValuesContacts(id);
-    connect(viewContactDialog, SIGNAL(sendData(bool)), this, SLOT(receiveDataPerson(bool)));
+    connect(viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
     viewContactDialog->show();
     viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -244,11 +244,9 @@ void ViewOrgContactDialog::onEdit()
 
     editOrgContactDialog = new EditOrgContactDialog;
     editOrgContactDialog->setOrgValuesContacts(contactId);
-    connect(editOrgContactDialog, SIGNAL(sendData(bool, int, int)), this, SLOT(receiveDataOrg(bool, int, int)));
-
-    connect(this, SIGNAL(getPos(int, int)), editOrgContactDialog, SLOT(setPos(int, int)));
+    connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
+    connect(this, &ViewOrgContactDialog::getPos, editOrgContactDialog, &EditOrgContactDialog::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-
     editOrgContactDialog->show();
     editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -1565,7 +1563,7 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 
     addPersonToOrg = new AddPersonToOrg;
     addPersonToOrg.data()->setOrgId(contactId);
-    connect(addPersonToOrg.data(), SIGNAL(newPerson()), this, SLOT(onUpdate()));
+    connect(addPersonToOrg.data(), &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::onUpdate);
     addPersonToOrg.data()->show();
     addPersonToOrg.data()->setAttribute(Qt::WA_DeleteOnClose);
 }

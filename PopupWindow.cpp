@@ -343,7 +343,7 @@ void PopupWindow::onAddPerson()
 
     addContactDialog = new AddContactDialog;
     addContactDialog.data()->setValues(m_pwi.number);
-    connect(addContactDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addContactDialog.data(), &AddContactDialog::sendData, this, &PopupWindow::receiveData);
     addContactDialog.data()->show();
     addContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -357,7 +357,7 @@ void PopupWindow::onAddOrg()
 
     addOrgContactDialog = new AddOrgContactDialog;
     addOrgContactDialog.data()->setOrgValuesPopupWindow(m_pwi.number);
-    connect(addOrgContactDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addOrgContactDialog.data(), &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
     addOrgContactDialog.data()->show();
     addOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -371,7 +371,7 @@ void PopupWindow::onAddPhoneNumberToContact()
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
     addPhoneNumberToContactDialog.data()->setPhoneNumber(m_pwi.number);
-    connect(addPhoneNumberToContactDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+    connect(addPhoneNumberToContactDialog.data(), &AddPhoneNumberToContactDialog::sendData, this, &PopupWindow::receiveData);
     addPhoneNumberToContactDialog.data()->show();
     addPhoneNumberToContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -396,7 +396,7 @@ void PopupWindow::onShowCard()
 
         viewContactDialog = new ViewContactDialog;
         viewContactDialog.data()->setValuesContacts(updateID);
-        connect(viewContactDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(viewContactDialog.data(), &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
         viewContactDialog.data()->show();
         viewContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -407,7 +407,7 @@ void PopupWindow::onShowCard()
 
         viewOrgContactDialog = new ViewOrgContactDialog;
         viewOrgContactDialog.data()->setOrgValuesContacts(updateID);
-        connect(viewOrgContactDialog.data(), SIGNAL(sendData(bool)), this, SLOT(receiveData(bool)));
+        connect(viewOrgContactDialog.data(), &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
         viewOrgContactDialog.data()->show();
         viewOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -674,14 +674,14 @@ void PopupWindow::controlPopup()
     if (!MSSQLopened)
         ui->openAccessButton->hide();
 
-    connect(g_pAsteriskManager, SIGNAL(callStart(QString)), this, SLOT(onCallStart(QString)));
-    connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
-    connect(ui->addPersonButton, SIGNAL(clicked(bool)), this, SLOT(onAddPerson()));
-    connect(ui->addOrgButton, SIGNAL(clicked(bool)), this, SLOT(onAddOrg()));
-    connect(ui->addPhoneNumberButton, SIGNAL(clicked(bool)), this, SLOT(onAddPhoneNumberToContact()));
-    connect(ui->showCardButton, SIGNAL(clicked(bool)), this, SLOT(onShowCard()));
-    connect(ui->saveNoteButton, SIGNAL(clicked(bool)), this, SLOT(onSaveNote()));
-    connect(ui->openAccessButton, SIGNAL(clicked(bool)), this, SLOT(onOpenAccess()));
-    connect(ui->addReminderButton, SIGNAL(clicked(bool)), this, SLOT(onAddReminder()));
-    connect(ui->viewNotesButton, SIGNAL(clicked(bool)), this, SLOT(onViewNotes()));
+    connect(g_pAsteriskManager, &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
+    connect(ui->textEdit, &QTextEdit::textChanged, this, &PopupWindow::onTextChanged);
+    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPerson);
+    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
+    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
+    connect(ui->showCardButton, &QAbstractButton::clicked, this, &PopupWindow::onShowCard);
+    connect(ui->saveNoteButton, &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
+    connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupWindow::onOpenAccess);
+    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
+    connect(ui->viewNotesButton, &QAbstractButton::clicked, this, &PopupWindow::onViewNotes);
 }

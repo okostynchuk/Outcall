@@ -54,7 +54,7 @@ private slots:
     void onCall();
     void onTimer();
     void onClosePopup();
-    void onSelectTime();
+    void onSelectTime(int);
 
     bool isInternalPhone(QString* str);
 
