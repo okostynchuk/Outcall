@@ -7,9 +7,17 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
     QRegularExpression regExp("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
+
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
+
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     onComboBoxListSelected();
 
@@ -52,12 +60,6 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->setModel(query1);
 
     queries.append(query1);
-
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
-
-    ui->tableView->verticalHeader()->setSectionsClickable(false);
-    ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPhoneNumberToContactDialog::addPhoneNumber);
     connect(ui->comboBox_list, &QComboBox::currentTextChanged, this, &AddPhoneNumberToContactDialog::onUpdate);
