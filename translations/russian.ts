@@ -497,7 +497,7 @@
     <name>AddPhoneNumberToContactDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
         <source>Выберите столбец поиска</source>
@@ -599,6 +599,10 @@
         <source>Перейти в конец</source>
         <translation>Перейти в конец</translation>
     </message>
+    <message>
+        <source>Добавление номера к существующему контакту</source>
+        <translation>Добавление номера к существующему контакту</translation>
+    </message>
 </context>
 <context>
     <name>AddReminderDialog</name>
@@ -661,6 +665,14 @@
     <message>
         <source>Ввод содержания</source>
         <translation>Ввод содержания</translation>
+    </message>
+    <message>
+        <source>Выбрать сотрудника(-ов)</source>
+        <translation>Выбрать сотрудника(-ов)</translation>
+    </message>
+    <message>
+        <source>Группа</source>
+        <translation>Группа</translation>
     </message>
 </context>
 <context>
@@ -831,6 +843,29 @@
     </message>
 </context>
 <context>
+    <name>ChooseEmployee</name>
+    <message>
+        <source>Выбор сотрудника(-ов)</source>
+        <translation>Выбор сотрудника(-ов)</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Поиск</translation>
+    </message>
+    <message>
+        <source>Очистить всех</source>
+        <translation>Очистить всех</translation>
+    </message>
+    <message>
+        <source>Выбрать всех</source>
+        <translation>Выбрать всех</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation>Применить</translation>
+    </message>
+</context>
+<context>
     <name>ChooseNumber</name>
     <message>
         <source>Dialog</source>
@@ -866,7 +901,7 @@
     </message>
     <message>
         <source>Номер(-a) &quot;</source>
-        <translation>Номер(-a) &quot;</translation>
+        <translation type="vanished">Номер(-a) &quot;</translation>
     </message>
     <message>
         <source>&quot;</source>
@@ -875,6 +910,10 @@
     <message>
         <source>Выберите номер</source>
         <translation>Выберите номер</translation>
+    </message>
+    <message>
+        <source>Номерa &quot;</source>
+        <translation>Номерa &quot;</translation>
     </message>
 </context>
 <context>
@@ -1097,6 +1136,145 @@
     <message>
         <source>Выход</source>
         <translation>Выход</translation>
+    </message>
+</context>
+<context>
+    <name>Downloader</name>
+    <message>
+        <source>Updater</source>
+        <translation type="vanished">Скачивание обновления</translation>
+    </message>
+    <message>
+        <source>Скачивание обновления</source>
+        <translation>Скачивание обновления</translation>
+    </message>
+    <message>
+        <source>Осталось времени: 0 минут</source>
+        <translation>Осталось времени: 0 минут</translation>
+    </message>
+    <message>
+        <source>Отмена</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Открыть</source>
+        <translation>Открыть</translation>
+    </message>
+    <message>
+        <source>Времени осталось</source>
+        <translation>Времени осталось</translation>
+    </message>
+    <message>
+        <source>неизвестно</source>
+        <translation>неизвестно</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <source>Файл обновления не найден!</source>
+        <translation>Файл обновления не найден!</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Загрузка завершена!</source>
+        <translation>Загрузка завершена!</translation>
+    </message>
+    <message>
+        <source>Установщик откроется отдельно</source>
+        <translation>Установщик откроется отдельно</translation>
+    </message>
+    <message>
+        <source>ОК</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <source>Нажмите &quot;OK&quot; для начала установки обновления</source>
+        <translation>Нажмите &quot;OK&quot; для начала установки обновления</translation>
+    </message>
+    <message>
+        <source>Для установки обновления необходимо закрыть приложение</source>
+        <translation>Для установки обновления необходимо закрыть приложение</translation>
+    </message>
+    <message>
+        <source>Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!</source>
+        <translation>Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!</translation>
+    </message>
+    <message>
+        <source>Нажмите кнопку &quot;Открыть&quot; для применения обновлений</source>
+        <translation>Нажмите кнопку &quot;Открыть&quot; для применения обновлений</translation>
+    </message>
+    <message>
+        <source>Окно обновлений</source>
+        <translation>Окно обновлений</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <source>Вы уверены, что хотите отменить установку?</source>
+        <translation>Вы уверены, что хотите отменить установку?</translation>
+    </message>
+    <message>
+        <source>Вы уверены, что хотите отменить установку? Это обязательное обновление!</source>
+        <translation>Вы уверены, что хотите отменить установку? Это обязательное обновление!</translation>
+    </message>
+    <message>
+        <source>%1 байтов</source>
+        <translation>%1 байтов</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>Скачивание обновлений</source>
+        <translation>Скачивание обновлений</translation>
+    </message>
+    <message>
+        <source>из</source>
+        <translation>из</translation>
+    </message>
+    <message>
+        <source>Неизвестно</source>
+        <translation>Неизвестно</translation>
+    </message>
+    <message>
+        <source>примерно %1 часа(-ов)</source>
+        <translation>примерно %1 часа(-ов)</translation>
+    </message>
+    <message>
+        <source>примерно 1 час</source>
+        <translation>примерно 1 час</translation>
+    </message>
+    <message>
+        <source>%1 минут(-ы)</source>
+        <translation>%1 минут(-ы)</translation>
+    </message>
+    <message>
+        <source>1 минута</source>
+        <translation>1 минута</translation>
+    </message>
+    <message>
+        <source>%1 секунд(-ы)</source>
+        <translation>%1 секунд(-ы)</translation>
+    </message>
+    <message>
+        <source>1 секунда</source>
+        <translation>1 секунда</translation>
     </message>
 </context>
 <context>
@@ -1472,6 +1650,49 @@
         <source>+60 минут</source>
         <translation>+60 минут</translation>
     </message>
+    <message>
+        <source>Выбрать сотрудника(-ов)</source>
+        <translation>Выбрать сотрудника(-ов)</translation>
+    </message>
+    <message>
+        <source>Группа</source>
+        <translation>Группа</translation>
+    </message>
+</context>
+<context>
+    <name>InternalContactsDialog</name>
+    <message>
+        <source>Внутренние контакты</source>
+        <translation>Внутренние контакты</translation>
+    </message>
+    <message>
+        <source>Поиск</source>
+        <translation>Поиск</translation>
+    </message>
+    <message>
+        <source>◄◄</source>
+        <translation>◄◄</translation>
+    </message>
+    <message>
+        <source>◄</source>
+        <translation>◄</translation>
+    </message>
+    <message>
+        <source>►</source>
+        <translation>►</translation>
+    </message>
+    <message>
+        <source>►►</source>
+        <translation>►►</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>из </source>
+        <translation>из </translation>
+    </message>
 </context>
 <context>
     <name>NotesDialog</name>
@@ -1666,6 +1887,10 @@ p, li { white-space: pre-wrap; }
         <source>Напоминания</source>
         <translation>Напоминания</translation>
     </message>
+    <message>
+        <source>Внутренние</source>
+        <translation>Внутренние</translation>
+    </message>
 </context>
 <context>
     <name>PlaceCallDialog</name>
@@ -1715,11 +1940,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Сотрудники организации &quot;</source>
-        <translation>Сотрудники организации &quot;</translation>
+        <translation type="vanished">Сотрудники организации &quot;</translation>
     </message>
     <message>
         <source>&quot;</source>
-        <translation>&quot;</translation>
+        <translation type="vanished">&quot;</translation>
     </message>
     <message>
         <source>Поиск по таблице</source>
@@ -1728,6 +1953,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Ввод номера</source>
         <translation>Ввод номера</translation>
+    </message>
+    <message>
+        <source>Сотрудники организации</source>
+        <translation>Сотрудники организации</translation>
     </message>
 </context>
 <context>
@@ -1863,7 +2092,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt; %1 &lt;/b&gt;</source>
-        <translation>&lt;b&gt; %1 &lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt; %1 &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2190,7 +2419,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Заметка успешно добавлена!</source>
-        <translation>Заметка успешно добавлена!</translation>
+        <translation type="vanished">Заметка успешно добавлена!</translation>
     </message>
     <message>
         <source>Выход</source>
@@ -2255,6 +2484,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Отсутствует подключение к базе заказов!</translation>
+    </message>
+    <message>
+        <source>Данный номер уже привязан к контакту!</source>
+        <translation>Данный номер уже привязан к контакту!</translation>
     </message>
 </context>
 <context>
@@ -2346,6 +2579,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>из </source>
         <translation>из </translation>
+    </message>
+    <message>
+        <source>Группа</source>
+        <translation>Группа</translation>
     </message>
 </context>
 <context>
@@ -2563,6 +2800,124 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Настройки базы заказов</source>
         <translation>Настройки базы заказов</translation>
+    </message>
+    <message>
+        <source>Обновление приложения</source>
+        <translation>Обновление приложения</translation>
+    </message>
+    <message>
+        <source>Проверить доступные обновления</source>
+        <translation>Проверить доступные обновления</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateDialog</name>
+    <message>
+        <source>Обновление приложения</source>
+        <translation>Обновление приложения</translation>
+    </message>
+    <message>
+        <source>Список изменений</source>
+        <translation>Список изменений</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Здесь будут отображены изменения обновленной версии приложения&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Здесь будут отображены изменения обновленной версии приложения&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Проверить доступные обновления</source>
+        <translation>Проверить доступные обновления</translation>
+    </message>
+    <message>
+        <source>Сбросить настройки</source>
+        <translation>Сбросить настройки</translation>
+    </message>
+    <message>
+        <source>Настройки обновлений</source>
+        <translation>Настройки обновлений</translation>
+    </message>
+    <message>
+        <source>0.1</source>
+        <translation>0.1</translation>
+    </message>
+    <message>
+        <source>Write a version string</source>
+        <translation>Write a version string</translation>
+    </message>
+    <message>
+        <source>(Последняя версия *)</source>
+        <translation>(Последняя версия *)</translation>
+    </message>
+    <message>
+        <source>Не использовать QSU библиотеку для AppCast</source>
+        <translation>Не использовать QSU библиотеку для AppCast</translation>
+    </message>
+    <message>
+        <source>Уведомлять когда появятся новые уведомления</source>
+        <translation type="vanished">Уведомлять когда появятся новые обновления</translation>
+    </message>
+    <message>
+        <source>Показывать все уведомления</source>
+        <translation>Показывать все уведомления</translation>
+    </message>
+    <message>
+        <source>Разрешить работу программы-обновителя</source>
+        <translation>Разрешить работу программы-обновителя</translation>
+    </message>
+    <message>
+        <source>Обязательно обновлять</source>
+        <translation>Обязательно обновлять</translation>
+    </message>
+    <message>
+        <source>Уведомлять когда появятся новые обновления</source>
+        <translation>Уведомлять когда появятся новые обновления</translation>
+    </message>
+</context>
+<context>
+    <name>Updater</name>
+    <message>
+        <source>Хотите скачать обновление сейчас?</source>
+        <translation>Хотите скачать обновление сейчас?</translation>
+    </message>
+    <message>
+        <source>Хотите скачать обновление сейчас? Это обязательное обновление!</source>
+        <translation>Хотите скачать обновление сейчас? Это обязательное обновление!</translation>
+    </message>
+    <message>
+        <source>Версия %1 %2 была выпущена!</source>
+        <translation>Версия %1 %2 была выпущена!</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <source>На данный момент нет доступных обновлений</source>
+        <translation>На данный момент нет доступных обновлений</translation>
+    </message>
+    <message>
+        <source>Вы используете последнюю версию %1</source>
+        <translation>Вы используете последнюю версию %1</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>

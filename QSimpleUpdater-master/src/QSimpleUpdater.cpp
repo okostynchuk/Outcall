@@ -222,6 +222,7 @@ QString QSimpleUpdater::getUserAgentString (const QString& url) const
 void QSimpleUpdater::checkForUpdates (const QString& url)
 {
     getUpdater (url)->checkForUpdates();
+
 }
 
 /**

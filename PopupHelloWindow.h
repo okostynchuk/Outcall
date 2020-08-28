@@ -52,7 +52,9 @@ private:
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
+
     bool m_bAppearing;
+
     QTimer m_timer;
 
     PWInformation m_pwi;

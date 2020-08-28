@@ -23,6 +23,8 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     page = "1";
 
+    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+
     go = "default";
 
     onUpdate();

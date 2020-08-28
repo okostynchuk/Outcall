@@ -135,7 +135,7 @@ p, li { white-space: pre-wrap; }
       <item row="4" column="0">
        <widget class="QCheckBox" name="showUpdateNotifications">
         <property name="text">
-         <string>Уведомлять когда появятся новые уведомления</string>
+         <string>Уведомлять когда появятся новые обновления</string>
         </property>
         <property name="checked">
          <bool>true</bool>

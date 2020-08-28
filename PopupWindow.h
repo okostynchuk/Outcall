@@ -29,11 +29,7 @@ class PopupWindow : public QDialog
 {
     Q_OBJECT
 
-signals:
-    void sendSignal(bool);
-
 public slots:
-    void receiveNumber(PopupWindow*);
     void receiveData(bool);
 
 public:
@@ -64,6 +60,7 @@ public:
     static void closeAll();
 
 private slots:
+    void controlPopup();
     void startPopupWaitingTimer();
     void closeAndDestroy();
     void onPopupTimeout();
@@ -101,12 +98,16 @@ private:
     QPointer<NotesDialog> notesDialog;
 
     QPoint position;
+
     QString userID;
     QString author;
+
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
 	int m_nCurrentPosX, m_nCurrentPosY;
     int m_nIncrement;
+
 	bool m_bAppearing;
+
 	QTimer m_timer;
 
 	PWInformation m_pwi;

@@ -12,6 +12,8 @@ UpdateDialog::UpdateDialog (QWidget* parent) :
 {
     ui->setupUi (this);
 
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     QWidget::resize(470, 230);
 
     setWindowTitle (qApp->applicationName());
@@ -48,10 +50,10 @@ UpdateDialog::~UpdateDialog()
 
 void UpdateDialog::resetFields()
 {
-    ui->installedVersion->setText("0.1");
+    ui->installedVersion->setText("3.0.2");
     ui->customAppcast->setChecked(false);
     ui->enableDownloader->setChecked(true);
-    ui->showAllNotifcations->setChecked(false);
+    ui->showAllNotifcations->setChecked(true);
     ui->showUpdateNotifications->setChecked(true);
     ui->mandatoryUpdate->setChecked(false);
 }
