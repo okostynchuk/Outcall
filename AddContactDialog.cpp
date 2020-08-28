@@ -18,7 +18,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     ui->label_org->setText(tr("Нет"));
 
     connect(ui->Comment, &QTextEdit::textChanged, this, &AddContactDialog::onTextChanged);
-    connect(ui->saveButton, &QPushButton::clicked, this, &AddContactDialog::onSave);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
 
 //    for(int i = 0; i < ui->phonesLayout->count(); ++i)
 //    {

@@ -30,12 +30,12 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     connect(ui->comboBox,    &QComboBox::currentTextChanged, this, &ViewContactDialog::daysChanged);
     connect(ui->tabWidget_2, &QTabWidget::currentChanged, this, &ViewContactDialog::tabSelected);
 
-    connect(ui->openAccessButton,  &QPushButton::clicked, this, &ViewContactDialog::onOpenAccess);
-    connect(ui->addReminderButton, &QPushButton::clicked, this, &ViewContactDialog::onAddReminder);
-    connect(ui->editButton,        &QPushButton::clicked, this, &ViewContactDialog::onEdit);
-    connect(ui->callButton,        &QPushButton::clicked, this, &ViewContactDialog::onCall);
-    connect(ui->playAudio,         &QPushButton::clicked, this, &ViewContactDialog::onPlayAudio);
-    connect(ui->playAudioPhone,    &QPushButton::clicked, this, &ViewContactDialog::onPlayAudioPhone);
+    connect(ui->openAccessButton,  &QAbstractButton::clicked, this, &ViewContactDialog::onOpenAccess);
+    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewContactDialog::onAddReminder);
+    connect(ui->editButton,        &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
+    connect(ui->callButton,        &QAbstractButton::clicked, this, &ViewContactDialog::onCall);
+    connect(ui->playAudio,         &QAbstractButton::clicked, this, &ViewContactDialog::onPlayAudio);
+    connect(ui->playAudioPhone,    &QAbstractButton::clicked, this, &ViewContactDialog::onPlayAudioPhone);
 
     connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
     connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
@@ -56,11 +56,6 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
-
-    ui->tableView->setStyleSheet  ("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_2->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_3->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-    ui->tableView_4->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
 
     phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }

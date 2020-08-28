@@ -19,8 +19,8 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
 
     connect(ui->Comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
-    connect(ui->backButton, &QPushButton::clicked, this, &EditOrgContactDialog::onReturn);
-    connect(ui->saveButton, &QPushButton::clicked, this, &EditOrgContactDialog::onSave);
+    connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 
     phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }

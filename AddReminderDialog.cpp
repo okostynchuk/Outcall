@@ -35,10 +35,8 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
     ui->timeEdit->setTime(QTime::currentTime());
 
     connect(ui->textEdit, &QTextEdit::textChanged, this, &AddReminderDialog::onTextChanged);
-    connect(ui->saveButton, &QPushButton::clicked, this, &AddReminderDialog::onSave);
-    connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &AddReminderDialog::onChooseEmployee);
-
-    ui->calendarWidget->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &AddReminderDialog::onSave);
+    connect(ui->chooseEmployeeButton, &QAbstractButton::clicked, this, &AddReminderDialog::onChooseEmployee);
 }
 
 AddReminderDialog::~AddReminderDialog()

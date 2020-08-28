@@ -162,10 +162,10 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     this->installEventFilter(this);
 
     if (!ui->callButton->isHidden())
-        connect(ui->callButton, &QPushButton::clicked, this, &PopupReminder::onCall);
+        connect(ui->callButton, &QAbstractButton::clicked, this, &PopupReminder::onCall);
 
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
-    connect(ui->okButton, &QPushButton::clicked, this, &PopupReminder::onClosePopup);
+    connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
     connect(ui->comboBox,  static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
 
@@ -537,7 +537,7 @@ void PopupReminder::onOpenAccess()
     }
     else
     {
-        setStyleSheet("QMessageBox{ color: #000000; }");
+        setStyleSheet("QMessageBox { color: #000000; }");
 
         QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
     }

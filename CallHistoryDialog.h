@@ -49,6 +49,7 @@ private slots:
     void updateCount();
     void tabSelected();
     void daysChanged();
+    void clearSelections();
     void setPage();
     void setButtonsDisable();
 
@@ -94,6 +95,11 @@ private:
     EditOrgContactDialog* editOrgContactDialog;
     AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
     NotesDialog* notesDialog;
+
+    QModelIndexList selectionAll;
+    QModelIndexList selectionMissed;
+    QModelIndexList selectionReceived;
+    QModelIndexList selectionPlaced;
 
     QString recordpath;
     QString state_call;

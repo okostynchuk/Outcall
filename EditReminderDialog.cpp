@@ -18,8 +18,8 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, &QTextEdit::textChanged, this, &EditReminderDialog::onTextChanged);
-    connect(ui->saveButton, &QPushButton::clicked, this, &EditReminderDialog::onSave);
-    connect(ui->chooseEmployeeButton, &QPushButton::clicked, this, &EditReminderDialog::onChooseEmployee);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &EditReminderDialog::onSave);
+    connect(ui->chooseEmployeeButton, &QAbstractButton::clicked, this, &EditReminderDialog::onChooseEmployee);
 }
 
 EditReminderDialog::~EditReminderDialog()

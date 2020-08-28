@@ -19,8 +19,8 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
 
     connect(ui->Comment, &QTextEdit::textChanged, this, &EditContactDialog::onTextChanged);
-    connect(ui->backButton, &QPushButton::clicked, this, &EditContactDialog::onReturn);
-    connect(ui->saveButton, &QPushButton::clicked, this, &EditContactDialog::onSave);
+    connect(ui->backButton, &QAbstractButton::clicked, this, &EditContactDialog::onReturn);
+    connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
 
     phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 }

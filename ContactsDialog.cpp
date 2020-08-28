@@ -17,11 +17,9 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    ui->tableView->setStyleSheet("QTableView { selection-color: black; selection-background-color: #18B7FF; }");
-
-    connect(ui->addPersonButton, &QPushButton::clicked, this, &ContactsDialog::onAddPerson);
-    connect(ui->addOrgButton, &QPushButton::clicked, this, &ContactsDialog::onAddOrg);
-    connect(ui->updateButton, &QPushButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
+    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
+    connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &ContactsDialog::showCard);
 
@@ -31,7 +29,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
 
     go = "default";
 
-    onUpdate();
+    loadContacts();
 }
 
 ContactsDialog::~ContactsDialog()
@@ -56,16 +54,22 @@ void ContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
+    selectionModel = ui->tableView->selectionModel()->selectedRows();
+
     ui->lineEdit->setFocus();
 
     go = "default";
 
-    onUpdate();
+    loadContacts();
 }
 
 void ContactsDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
+
+    selectionModel.clear();
+
+    ui->tableView->clearSelection();
 
     ui->lineEdit->clear();
 
@@ -76,6 +80,15 @@ void ContactsDialog::closeEvent(QCloseEvent* event)
     page = "1";
 
     go = "default";
+}
+
+void ContactsDialog::onUpdate()
+{
+    selectionModel.clear();
+
+    ui->tableView->clearSelection();
+
+    loadContacts();
 }
 
 void ContactsDialog::onAddPerson()
@@ -137,7 +150,7 @@ void ContactsDialog::deleteObjects()
     queries.clear();
 }
 
-void ContactsDialog::onUpdate()
+void ContactsDialog::loadContacts()
 {
     if (!queries.isEmpty())
         deleteObjects();
@@ -258,6 +271,14 @@ void ContactsDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(10, QHeaderView::Stretch);
+
+    if (!selectionModel.isEmpty())
+        for (int i = 0; i < selectionModel.length(); ++i)
+        {
+            QModelIndex index = selectionModel.at(i);
+
+            ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
 }
 
 QWidget* ContactsDialog::addImageLabel(int row_index)
@@ -324,6 +345,8 @@ QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
 
 void ContactsDialog::searchFunction()
 {
+    go = "default";
+
     if (ui->lineEdit->text().isEmpty())
     {
         filter = false;
@@ -336,8 +359,6 @@ void ContactsDialog::searchFunction()
     filter = true;
 
     page = "1";
-
-    go = "default";
 
     onUpdate();
 }

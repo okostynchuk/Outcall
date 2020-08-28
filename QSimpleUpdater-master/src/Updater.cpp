@@ -464,8 +464,7 @@ void Updater::setUpdateAvailable(const bool available)
                            "%1").arg(moduleName())
                      + "</h3>");
 
-        if (box.exec() == QMessageBox::Close)
-            qApp->closeAllWindows();
+        box.exec();
     }
 }
 
