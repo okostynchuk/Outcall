@@ -5,8 +5,6 @@
 #include "AsteriskManager.h"
 
 #include <QHeaderView>
-#include <QTableView>
-#include <QBoxLayout>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QModelIndex>

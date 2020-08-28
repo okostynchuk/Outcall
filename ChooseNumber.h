@@ -6,7 +6,6 @@
 #include "AsteriskManager.h"
 
 #include <QDialog>
-#include <QString>
 #include <QValidator>
 #include <QEvent>
 

@@ -10,7 +10,6 @@
 #include <QDialog>
 #include <QDateTime>
 #include <QTimer>
-#include <QComboBox>
 #include <QPointer>
 
 namespace Ui {

@@ -5,7 +5,6 @@
 
 #include <QMessageBox>
 #include <QDesktopWidget>
-#include <QDebug>
 
 EditContactDialog::EditContactDialog(QWidget *parent) :
     QDialog(parent),

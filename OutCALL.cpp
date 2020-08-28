@@ -15,13 +15,7 @@
 #include "InternalContactsDialog.h"
 
 #include <QMenu>
-#include <QTcpSocket>
 #include <QApplication>
-#include <QDesktopServices>
-#include <QUrl>
-#include <QVariantList>
-#include <QVariantMap>
-#include <QMessageBox>
 #include <QSqlDatabase>
 #include <QProcess>
 #include <QPainter>

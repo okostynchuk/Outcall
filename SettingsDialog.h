@@ -6,8 +6,6 @@
 
 #include <QDialog>
 #include <QFile>
-#include <QLineEdit>
-#include <QList>
 
 class QTcpSocket;
 class AddExtensionDialog;

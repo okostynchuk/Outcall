@@ -3,10 +3,7 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlQueryModel>
-#include <QPlainTextEdit>
 #include <QMessageBox>
-#include <QDebug>
 #include <QDesktopWidget>
 
 EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :

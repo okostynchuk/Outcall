@@ -2,9 +2,7 @@
 #include "ui_ChooseNumber.h"
 
 #include <QSqlDatabase>
-#include <QTableView>
 #include <QSqlQuery>
-#include <QEvent>
 
 ChooseNumber::ChooseNumber(QWidget *parent) :
     QDialog(parent),

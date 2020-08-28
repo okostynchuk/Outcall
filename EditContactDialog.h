@@ -5,10 +5,10 @@
 
 #include <QDialog>
 #include <QValidator>
-#include <QStringList>
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QPointer>
+#include <QLineEdit>
 
 class ViewContactDialog;
 

@@ -1,8 +1,9 @@
 #include "UpdateDialog.h"
 #include "ui_UpdateDialog.h"
 
-#include <QDebug>
 #include <QSimpleUpdater.h>
+
+#include <QDebug>
 
 static const QString DEFS_URL = "http://192.168.0.30/definitions/updates.json";
 

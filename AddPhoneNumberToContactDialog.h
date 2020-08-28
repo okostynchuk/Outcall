@@ -9,7 +9,6 @@
 #include <QSqlQuery>
 #include <QSqlDatabase>
 #include <QValidator>
-#include <QMessageBox>
 
 namespace Ui {
 class AddPhoneNumberToContactDialog;
@@ -31,8 +30,7 @@ public:
 private slots:
     void deleteObjects();
     void onUpdate();
-    void onComboBoxListSelected();
-    void onComboBoxSelected();
+    void currentIndexChanged();
     void addPhoneNumber(const QModelIndex &index);
     void on_searchButton_clicked();
     void searchFunction();
@@ -47,7 +45,7 @@ private slots:
 private:
     Ui::AddPhoneNumberToContactDialog *ui;
 
-    QSqlQueryModel* query1;
+    QSqlQueryModel* queryModel;
 
     QValidator* validator;
 

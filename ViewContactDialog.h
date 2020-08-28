@@ -11,8 +11,6 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTableView>
-#include <QList>
 #include <QWidget>
 #include <QLineEdit>
 #include <QPointer>

@@ -6,9 +6,6 @@
 
 #include <QMessageBox>
 #include <QSqlDatabase>
-#include <QSettings>
-#include <QTabWidget>
-#include <QProcess>
 
 DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
     QDialog(parent),

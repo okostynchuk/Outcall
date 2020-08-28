@@ -59,6 +59,21 @@
           <property name="inputMethodHints">
            <set>Qt::ImhNone</set>
           </property>
+          <item>
+           <property name="text">
+            <string>Поиск по ФИО / названию</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Поиск по номеру телефона</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Поиск по заметке</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="0" column="1">
@@ -336,6 +351,26 @@
             <property name="focusPolicy">
              <enum>Qt::WheelFocus</enum>
             </property>
+            <item>
+             <property name="text">
+              <string>20</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>40</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>60</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>100</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>
