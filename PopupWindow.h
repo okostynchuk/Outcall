@@ -16,9 +16,6 @@
 
 #include <QDialog>
 #include <QTimer>
-#include <QTextEdit>
-#include <QMap>
-#include <QSqlQuery>
 #include <QPointer>
 
 namespace Ui {

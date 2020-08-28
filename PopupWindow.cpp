@@ -10,8 +10,6 @@
 #include <QWidget>
 #include <QTextEdit>
 #include <QSqlQuery>
-#include <QMap>
-#include <QString>
 #include <QDateTime>
 #include <QTextCursor>
 #include <QMessageBox>

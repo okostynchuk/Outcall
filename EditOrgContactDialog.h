@@ -2,10 +2,8 @@
 #define EDITORGCONTACTDIALOG_H
 
 #include <QDialog>
-#include <QSqlQuery>
 #include <QLineEdit>
 #include <QValidator>
-#include <QStringList>
 #include <QKeyEvent>
 
 namespace Ui {

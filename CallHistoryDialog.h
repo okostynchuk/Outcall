@@ -50,6 +50,8 @@ private slots:
     void tabSelected();
     void daysChanged();
     void clearSelections();
+    void setPage();
+    void setButtonsDisable();
 
     void deleteObjects();
 
@@ -82,6 +84,8 @@ private:
     QSqlQueryModel* queryModel;
 
     QValidator* validator;
+
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     QPointer<PlayAudioDialog> playAudioDialog;
 

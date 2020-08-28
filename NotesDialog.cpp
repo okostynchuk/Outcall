@@ -5,10 +5,7 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QDebug>
-#include <QTime>
-#include <QSqlQuery>
-#include <QList>
+#include <QDateTime>
 
 NotesDialog::NotesDialog(QWidget *parent) :
     QDialog(parent),

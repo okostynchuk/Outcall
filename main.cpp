@@ -5,17 +5,13 @@
 
 #include <QApplication>
 #include <QProcess>
-#include <QLocalSocket>
 #include <QDir>
-#include <QTextCodec>
-#include <QSqlQuery>
 #include <QTranslator>
-#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QDebug>
-#include <QtSql>
 #include <QSqlDatabase>
 #include <QRegularExpressionValidator>
+#include <QSettings>
 
 static const QString PARTIAL_DOWN (".part");
 

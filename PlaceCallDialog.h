@@ -6,7 +6,6 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTableView>
 #include <QValidator>
 #include <QKeyEvent>
 

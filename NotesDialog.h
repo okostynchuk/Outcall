@@ -5,10 +5,11 @@
 
 #include <QDialog>
 #include <QSqlQueryModel>
-#include <QTableView>
-#include <QLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QKeyEvent>
+#include <QRegularExpression>
+#include <QValidator>
 
 namespace Ui {
 class NotesDialog;

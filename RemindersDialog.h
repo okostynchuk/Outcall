@@ -10,7 +10,7 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QCheckBox>
-#include <QLayout>
+#include <QHBoxLayout>
 
 namespace Ui {
 class RemindersDialog;

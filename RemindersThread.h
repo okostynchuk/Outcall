@@ -6,8 +6,6 @@
 #include <QObject>
 #include <QTime>
 #include <QDate>
-#include <QSqlDatabase>
-#include <QSqlQuery>
 
 class RemindersThread : public QObject
 {

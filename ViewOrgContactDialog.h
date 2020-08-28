@@ -13,9 +13,6 @@
 
 #include <QHeaderView>
 #include <QSqlQueryModel>
-#include <QScrollBar>
-#include <QTableView>
-#include <QList>
 #include <QWidget>
 #include <QLineEdit>
 #include <QPointer>

@@ -1,14 +1,6 @@
 #include "PlayAudioDialog.h"
 #include "ui_PlayAudioDialog.h"
 
-#include <QKeyEvent>
-#include <QMainWindow>
-#include <QDesktopWidget>
-#include <QVariant>
-#include <QSettings>
-#include <QFileDialog>
-#include <QCommandLineParser>
-
 PlayAudioDialog::PlayAudioDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PlayAudioDialog)

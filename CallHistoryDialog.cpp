@@ -23,13 +23,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    ui->callButton->setDisabled(true);
-    ui->addContactButton->setDisabled(true);
-    ui->addOrgContactButton->setDisabled(true);
-    ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
-
     connect(ui->addPhoneNumberButton, &QPushButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
     connect(ui->playAudio,            &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudio);
     connect(ui->playAudioPhone,       &QPushButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
@@ -63,6 +56,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
     go="default";
+
     page = "1";
 
     days = ui->comboBox_2->currentText();
@@ -73,6 +67,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 CallHistoryDialog::~CallHistoryDialog()
 {
     deleteObjects();
+
     delete ui;
 }
 
@@ -98,8 +93,6 @@ void CallHistoryDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
-    QDialog::clearFocus();
-
     ui->comboBox_2->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
@@ -107,6 +100,7 @@ void CallHistoryDialog::closeEvent(QCloseEvent* event)
     clearSelections();
 
     go = "default";
+
     page = "1";
 }
 
@@ -119,42 +113,9 @@ void CallHistoryDialog::loadAllCalls()
 
     queriesAll.append(queryModel);
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+    //QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages->setText(tr("из ") + pages);
+    setPage();
 
     QString queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
                                                       "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
@@ -235,12 +196,7 @@ void CallHistoryDialog::loadAllCalls()
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    ui->callButton->setDisabled(true);
-    ui->addContactButton->setDisabled(true);
-    ui->addOrgContactButton->setDisabled(true);
-    ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
+    setButtonsDisable();
 }
 
 void CallHistoryDialog::loadMissedCalls()
@@ -252,42 +208,7 @@ void CallHistoryDialog::loadMissedCalls()
 
     queriesMissed.append(queryModel);
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages->setText(tr("из ") + pages);
+    setPage();
 
     QString queryString =  "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
                                                  "(disposition = 'NO ANSWER' "
@@ -367,12 +288,7 @@ void CallHistoryDialog::loadMissedCalls()
             ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    ui->callButton->setDisabled(true);
-    ui->addContactButton->setDisabled(true);
-    ui->addOrgContactButton->setDisabled(true);
-    ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
+    setButtonsDisable();
 }
 
 void CallHistoryDialog::loadReceivedCalls()
@@ -384,42 +300,7 @@ void CallHistoryDialog::loadReceivedCalls()
 
     queriesReceived.append(queryModel);
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages->setText(tr("из ") + pages);
+    setPage();
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE disposition = 'ANSWERED'"
                                                " AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
@@ -498,12 +379,7 @@ void CallHistoryDialog::loadReceivedCalls()
             ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    ui->callButton->setDisabled(true);
-    ui->addContactButton->setDisabled(true);
-    ui->addOrgContactButton->setDisabled(true);
-    ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
+    setButtonsDisable();
 }
 
 void CallHistoryDialog::loadPlacedCalls()
@@ -515,42 +391,7 @@ void CallHistoryDialog::loadPlacedCalls()
 
     queriesPlaced.append(queryModel);
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages->setText(tr("из ") + pages);
+    setPage();
 
     QString queryString = "SELECT extfield2, dst, src, datetime, uniqueid, recordpath FROM cdr WHERE "
                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
@@ -626,12 +467,7 @@ void CallHistoryDialog::loadPlacedCalls()
             ui->tableView_4->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    ui->callButton->setDisabled(true);
-    ui->addContactButton->setDisabled(true);
-    ui->addOrgContactButton->setDisabled(true);
-    ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
+    setButtonsDisable();
 }
 
 void CallHistoryDialog::daysChanged()
@@ -656,7 +492,6 @@ void CallHistoryDialog::tabSelected()
 
 void CallHistoryDialog::updateCount()
 {
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
     QSqlQuery query(dbCalls);
 
     if (ui->tabWidget->currentIndex() == 0)
@@ -825,12 +660,7 @@ void CallHistoryDialog::receiveData(bool updating)
     {
         clearSelections();
 
-        ui->callButton->setDisabled(true);
-        ui->addContactButton->setDisabled(true);
-        ui->addOrgContactButton->setDisabled(true);
-        ui->addPhoneNumberButton->setDisabled(true);
-        ui->playAudio->setDisabled(true);
-        ui->playAudioPhone->setDisabled(true);
+        setButtonsDisable();
     }
 }
 
@@ -1449,3 +1279,50 @@ void CallHistoryDialog::keyPressEvent(QKeyEvent* event)
         QWidget::keyPressEvent(event);
 }
 
+void CallHistoryDialog::setPage()
+{
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        remainder = count % ui->comboBox_list->currentText().toInt();
+
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+}
+
+void CallHistoryDialog::setButtonsDisable()
+{
+    ui->callButton->setDisabled(true);
+    ui->addContactButton->setDisabled(true);
+    ui->addOrgContactButton->setDisabled(true);
+    ui->addPhoneNumberButton->setDisabled(true);
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
+}

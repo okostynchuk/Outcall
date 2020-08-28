@@ -1,8 +1,9 @@
 #ifndef UPDATEDIALOG_H
 #define UPDATEDIALOG_H
 
-#include <QDialog>
 #include <QSimpleUpdater.h>
+
+#include <QDialog>
 
 namespace Ui {
 class UpdateDialog;

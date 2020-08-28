@@ -5,11 +5,6 @@
 #include <shlobj.h>
 
 #include <QSettings>
-#include <QFile>
-#include <QDir>
-#include <QDateTime>
-#include <QDebug>
-#include <QApplication>
 
 QString g_AppDirPath = "";
 QString g_AppSettingsFolderPath = "";

@@ -2,7 +2,6 @@
 #define DEBUGINFODIALOG_H
 
 #include <QDialog>
-#include <QSqlQuery>
 #include <QKeyEvent>
 
 namespace Ui {

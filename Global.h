@@ -7,10 +7,8 @@
 #define APP_NAME                "OutCALL"
 #define ORGANIZATION_NAME       "Team Nonames"
 
-#include <QString>
 #include <QVariant>
 #include <QMessageBox>
-#include <QSqlDatabase>
 
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;

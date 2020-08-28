@@ -6,11 +6,8 @@
 #include "AddReminderDialog.h"
 
 #include <QDialog>
-#include <QList>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QListWidget>
-#include <QLineEdit>
 
 class AddReminderDialog;
 
