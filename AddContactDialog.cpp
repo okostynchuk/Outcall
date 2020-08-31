@@ -109,7 +109,7 @@ void AddContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesList.at(i)->text() + "')");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) + "')");
             query.exec();
             query.next();
 
@@ -224,7 +224,7 @@ bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("[\\+]?[0-9]{1,12}"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{1,11}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;

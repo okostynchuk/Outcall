@@ -48,7 +48,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    if (extensions.isEmpty())
+    if (extensions.isEmpty() && ui->lineEdit->text().isEmpty())
     {
         extensions = g_pAsteriskManager->extensionNumbers.values();
 
@@ -63,11 +63,10 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
         list->addItems(extensions);
 
         page = "1";
+        go = "default";
+
+        loadContacts();
     }
-
-    go = "default";
-
-    loadContacts();
 }
 
 void InternalContactsDialog::closeEvent(QCloseEvent* event)
@@ -176,7 +175,7 @@ void InternalContactsDialog::onSearch()
 
     ui->listWidget->clear();
 
-    go="default";
+    go = "default";
     page = "1";
 
     loadContacts();
