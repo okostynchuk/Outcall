@@ -17,13 +17,6 @@ static const QString PARTIAL_DOWN (".part");
 
 int main(int argc, char* argv[])
 {
-    QStringList paths = QCoreApplication::libraryPaths();
-    paths.append(".");
-    paths.append("imageformats");
-    paths.append("platforms");
-    paths.append("sqldrivers");
-    QCoreApplication::setLibraryPaths(paths);
-
     QApplication app(argc, argv);
 
     QString appVersion = "3.0.2";
@@ -69,8 +62,8 @@ int main(int argc, char* argv[])
     for (int i = 0; i < list.length(); ++i)
     {
         QSettings sett2("Microsoft\\Windows\\CurrentVersion\\Uninstall" , list.at(i));
-        if(sett2.contains("DisplayName"))
-            if(sett2.value("DisplayName").toString() == "OutCALL" && sett2.value("DisplayVersion").toString() != appVersion)
+        if (sett2.contains("DisplayName"))
+            if (sett2.value("DisplayName").toString() == "OutCALL" && sett2.value("DisplayVersion").toString() != appVersion)
             {
                 QProcess *pro = new QProcess;
                 pro->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + list.at(i) + " /f");
