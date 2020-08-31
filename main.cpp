@@ -28,14 +28,14 @@ int main(int argc, char* argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
 
-    QDir dir("C:\\OutCALL");
+    QDir dir("C:\\" + QString(APP_NAME));
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     int fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    QDir oldAppDir("C:\\OutCALL\\");
+    QDir oldAppDir("C:\\" + QString(APP_NAME) + "\\");
 
     QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder ("C:\\OutCALL\\" + namesOfDirectories.at(i));
+                QDir folder ("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     {
         QSettings sett2("Microsoft\\Windows\\CurrentVersion\\Uninstall" , list.at(i));
         if (sett2.contains("DisplayName"))
-            if (sett2.value("DisplayName").toString() == "OutCALL" && sett2.value("DisplayVersion").toString() != appVersion)
+            if (sett2.value("DisplayName").toString() == QString(APP_NAME) && sett2.value("DisplayVersion").toString() != appVersion)
             {
                 QProcess *pro = new QProcess;
                 pro->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + list.at(i) + " /f");
