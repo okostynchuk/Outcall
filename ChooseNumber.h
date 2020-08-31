@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QValidator>
 #include <QEvent>
+#include <QLineEdit>
 
 class PlaceCallDialog;
 
@@ -27,10 +28,12 @@ public:
     ~ChooseNumber();
 
     void setValuesNumber(QString);
+    bool fromPlaceDialog = false;
 
 private slots:
     void onCall(QString);
 
+    void showEvent(QShowEvent* event);
     bool eventFilter(QObject* target, QEvent* event);
 
 private:
@@ -40,14 +43,13 @@ private:
 
     QValidator* validator;
 
+    QList<QLineEdit*> phonesList;
+
+    QStringList numbersList;
+
     QString my_number;
     QString protocol;
     QString updateID;
-    QString firstNumber;
-    QString secondNumber;
-    QString thirdNumber;
-    QString fourthNumber;
-    QString fifthNumber;
 };
 
 #endif // CHOOSENUMBER_H

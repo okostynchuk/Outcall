@@ -322,6 +322,7 @@ void EditContactDialog::setValuesContacts(QString i)
         phonesList.at(i)->setText(oldPhonesList.at(i));
 
     query.first();
+
     QString orgName = query.value(1).toString();
 
     if (!orgName.isEmpty() && !orgName.isNull())

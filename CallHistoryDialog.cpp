@@ -21,6 +21,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
 
+    setHeadersNonClickable();
+
     ui->comboBox_list->setVisible(false);
 
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
@@ -45,15 +47,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tableView_4, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
 
     ui->tabWidget->setCurrentIndex(0);
-
-    ui->tableView->  verticalHeader()->setSectionsClickable(false);
-    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
-    ui->tableView->  horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
     go="default";
 
@@ -112,8 +105,6 @@ void CallHistoryDialog::loadAllCalls()
     queryModel = new QSqlQueryModel;
 
     queriesAll.append(queryModel);
-
-    //QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     setPage();
 
@@ -1039,13 +1030,13 @@ QWidget* CallHistoryDialog::loadStatus()
     QLabel* statusLabel = new QLabel(statusWgt);
 
     if (dialogStatus == "NO ANSWER")
-        statusLabel->setText(tr("Пропущенный "));
+        statusLabel->setText(tr("Пропущенный") + " ");
     else if (dialogStatus == "BUSY")
-        statusLabel->setText(tr("Занято "));
+        statusLabel->setText(tr("Занято") + " ");
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено "));
+        statusLabel->setText(tr("Отколено") + " ");
     else if (dialogStatus == "ANSWERED")
-        statusLabel->setText(tr("Принятый "));
+        statusLabel->setText(tr("Принятый") + " ");
 
     statusLayout->addWidget(statusLabel);
 
@@ -1325,4 +1316,16 @@ void CallHistoryDialog::setButtonsDisable()
     ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
+}
+
+void CallHistoryDialog::setHeadersNonClickable()
+{
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 }

@@ -16,13 +16,13 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
     my_number = global::getExtensionNumber("extensions");
     protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-    this->setWindowTitle(tr("Выбор номера"));
+    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
 
-    ui->FirstNumber->installEventFilter(this);
-    ui->SecondNumber->installEventFilter(this);
-    ui->ThirdNumber->installEventFilter(this);
-    ui->FourthNumber->installEventFilter(this);
-    ui->FifthNumber->installEventFilter(this);
+    for (int i = 0; i < phonesList.length(); ++i)
+    {
+        phonesList.at(i)->setVisible(false);
+        phonesList.at(i)->installEventFilter(this);
+    }
 }
 
 ChooseNumber::~ChooseNumber()
@@ -42,176 +42,49 @@ void ChooseNumber::setValuesNumber(QString i)
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QString sql = QString("SELECT entry_phone FROM entry_phone WHERE entry_id = %1").arg(updateID);
-
-    query.prepare(sql);
+    query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + updateID);
     query.exec();
 
-    if (query.next())
-        firstNumber = query.value(0).toString();
-    if (query.next())
-        secondNumber = query.value(0).toString();
-    if (query.next())
-        thirdNumber = query.value(0).toString();
-    if (query.next())
-        fourthNumber = query.value(0).toString();
-    if (query.next())
-        fifthNumber = query.value(0).toString();
+    while (query.next())
+         numbersList.append(query.value(0).toString());
 
-    query.prepare("SELECT entry_person_org_id FROM entry WHERE id = " + updateID);
-    query.exec();
-    query.next();
+    for (int i = 0; i < numbersList.length(); ++i)
+        phonesList.at(i)->setText(numbersList.at(i));
 
-    QString orgID = query.value(0).toString();
+    query.first();
 
-    query.prepare("SELECT entry_org_name FROM entry WHERE id = " + orgID);
-    query.exec();
-    query.next();
+    ui->label->show();
+    ui->label->setText(tr("Номерa") + "\"" + query.value(1).toString() + "\"");
+}
 
-    ui->FirstNumber->setText(firstNumber);
-    ui->SecondNumber->setText(secondNumber);
-    ui->ThirdNumber->setText(thirdNumber);
-    ui->FourthNumber->setText(fourthNumber);
-    ui->FifthNumber->setText(fifthNumber);
+void ChooseNumber::showEvent(QShowEvent* event)
+{
+    QDialog::showEvent(event);
 
-    QSqlDatabase db1;
-    QSqlQuery query_org(db1);
+    int size = 31;
 
-    QString orgName = QString ("SELECT entry_name FROM entry_phone WHERE entry_id = %1").arg(updateID);
-
-    query_org.prepare(orgName);
-    query_org.exec();
-
-    while (query_org.next())
-        orgName = query_org.value(0).toString();
-
-    if (orgID != NULL)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
-        ui->label_5->show();
-        ui->label_5->setText(tr("Номерa \"") + orgName + tr("\""));
+        QWidget::setFixedHeight(size += 26);
+        phonesList.at(i)->setVisible(true);
     }
 }
 
 bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
-    if (ui->SecondNumber->text().isEmpty())
+    if (event->type() == QEvent::MouseButtonPress)
     {
-        ui->SecondNumber->hide(); ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
-        ui->label_7->hide(); ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
+       QLineEdit *line =  QDialog::findChild<QLineEdit *>(target->objectName());
 
-        QWidget::setFixedHeight(70);
-    }
-    else if (ui->ThirdNumber->text().isEmpty())
-    {
-        ui->ThirdNumber->hide(); ui->FourthNumber->hide(); ui->FifthNumber->hide();
-        ui->label_8->hide(); ui->label_18->hide(); ui->label_19->hide();
+       onCall(line->text());
 
-        QWidget::setFixedHeight(100);
-    }
-    else if (ui->FourthNumber->text().isEmpty())
-    {
-        ui->FourthNumber->hide(); ui->FifthNumber->hide();
-        ui->label_18->hide(); ui->label_19->hide();
+       if (fromPlaceDialog)
+           emit sendNumber(line->text());
+       else
+           onCall(line->text());
 
-        QWidget::setFixedHeight(130);
-    }
-    else if (ui->FifthNumber->text().isEmpty())
-    {
-        ui->FifthNumber->hide();
-        ui->label_19->hide();
-
-        QWidget::setFixedHeight(160);
+       close();
     }
 
-    if (target == ui->FirstNumber && !ui->FirstNumber->text().isEmpty())
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QString number = ui->FirstNumber->text();
-
-            onCall(number);
-
-            emit sendNumber(number);
-
-            close();
-
-            return true;
-        }
-        else
-            return false;
-    }
-
-    if (target == ui->SecondNumber && !ui->SecondNumber->text().isEmpty())
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QString number = ui->SecondNumber->text();
-
-            onCall(number);
-
-            emit sendNumber(number);
-
-            close();
-
-            return true;
-        }
-        else
-            return false;
-    }
-
-    if (target == ui->ThirdNumber && !ui->ThirdNumber->text().isEmpty())
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QString number = ui->ThirdNumber->text();
-
-            onCall(number);
-
-            emit sendNumber(number);
-
-            close();
-
-            return true;
-        }
-        else
-            return false;
-    }
-
-    if (target == ui->FourthNumber && !ui->FourthNumber->text().isEmpty())
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QString number = ui->FourthNumber->text();
-
-            onCall(number);
-
-            emit sendNumber(number);
-
-            close();
-
-            return true;
-        }
-        else
-            return false;
-    }
-
-    if (target == ui->FifthNumber && !ui->FifthNumber->text().isEmpty())
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QString number = ui->FifthNumber->text();
-
-            onCall(number);
-
-            emit sendNumber(number);
-
-            close();
-
-            return true;
-        }
-        else
-            return false;
-    }
-
-    return QWidget::eventFilter(target, event);
+    return false;
 }

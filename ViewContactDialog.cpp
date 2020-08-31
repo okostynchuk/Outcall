@@ -77,7 +77,7 @@ void ViewContactDialog::showEvent(QShowEvent* event)
                   "(SELECT DISTINCT entry_person_org_id FROM entry WHERE id = " + contactId + ")");
     query.exec();
 
-    if(query.first())
+    if (query.first())
         ui->Organization->setText(query.value(0).toString());
 }
 

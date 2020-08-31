@@ -55,11 +55,11 @@ private slots:
     void onEdit();
     void showCard(const QModelIndex &index);
     void viewNotes(const QModelIndex &index);
-    void onSectionClicked(int logicalIndex);
     void updateCount();
     void searchFunction();
     void tabSelected();
     void daysChanged();
+    void setHeadersNonClickable();
 
     void deleteObjects();
 
@@ -94,8 +94,6 @@ private:
     QSqlQueryModel* queryModel;
 
     QValidator* validator;
-
-    QHeaderView* m_horiz_header;
 
     QString recordpath;
     QString userID;

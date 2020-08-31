@@ -11,15 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Выбор номера</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label_5">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="font">
       <font>
        <pointsize>10</pointsize>
@@ -34,30 +34,6 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_8">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
     <widget class="QLineEdit" name="FirstNumber">
      <property name="mouseTracking">
       <bool>true</bool>
@@ -73,18 +49,6 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
     <widget class="QLineEdit" name="SecondNumber">
      <property name="styleSheet">
       <string notr="true">*{
@@ -96,19 +60,7 @@ background-color: #fffff8;
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_19">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>5</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
+   <item row="3" column="0">
     <widget class="QLineEdit" name="ThirdNumber">
      <property name="styleSheet">
       <string notr="true">*{
@@ -120,19 +72,7 @@ background-color: #fffff8;
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="FifthNumber">
-     <property name="styleSheet">
-      <string notr="true">*{
-background-color: #fffff8;
-}</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
+   <item row="4" column="0">
     <widget class="QLineEdit" name="FourthNumber">
      <property name="styleSheet">
       <string notr="true">*{
@@ -144,19 +84,19 @@ background-color: #fffff8;
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_18">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
+   <item row="5" column="0">
+    <widget class="QLineEdit" name="FifthNumber">
+     <property name="styleSheet">
+      <string notr="true">*{
+background-color: #fffff8;
+}</string>
      </property>
-     <property name="text">
-      <string>4</string>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="6" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
