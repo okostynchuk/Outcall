@@ -74,19 +74,26 @@ void EditReminderDialog::onSave()
     if (employee.isEmpty())
         employee = employeeInitial;
 
+    if (dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Для сохранения требуется внести изменения!"), QMessageBox::Ok);
+
+        return;
+    }
+
     QSqlDatabase db;
     QSqlQuery query(db);
 
     if (!ui->chooseEmployeeButton->isEnabled())
     {
-        if (group_id == "0" || (group_id != "0" && dateTime == oldDateTime))
+        if (group_id == "0")
         {
             query.prepare("UPDATE reminders SET datetime = ?, completed = false, active = true WHERE id = ?");
             query.addBindValue(dateTime);
             query.addBindValue(id);
             query.exec();
         }
-        else if (group_id != "0" && dateTime != oldDateTime)
+        else if (group_id != "0")
         {
             query.prepare("UPDATE reminders SET group_id = NULL, datetime = ?, completed = false, active = true WHERE id = ?");
             query.addBindValue(dateTime);
@@ -300,7 +307,7 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
             ui->chooseEmployeeButton->setDisabled(true);
 
             ui->textEdit->setReadOnly(true);
-            ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
+            ui->textEdit->setStyleSheet("QTextEdit { background-color: #fffff0; }");
         }
     }
     else

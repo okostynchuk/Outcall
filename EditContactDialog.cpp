@@ -157,10 +157,9 @@ void EditContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesList.at(i)->text() + "' AND NOT entry_id = " + updateID + ")");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) + "') AND NOT entry_id = " + updateID + ")");
             query.exec();
             query.next();
-
 
             if (query.value(0) != 0)
             {
@@ -267,8 +266,8 @@ bool EditContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
-    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
+    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -283,7 +282,7 @@ bool EditContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("[\\+]?[0-9]{1,12}"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{1,11}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
