@@ -62,15 +62,15 @@ void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
         ui->tabWidget->setTabEnabled(3, false);
 }
 
-void SettingsDialog::closeEvent(QCloseEvent* event)
+void SettingsDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     QDialog::clearFocus();
 
     ui->tabWidget->setCurrentIndex(0);
     ui->tabWidget_2->setCurrentIndex(0);
     ui->tabWidget_3->setCurrentIndex(0);
+
+    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
 }
 
 void SettingsDialog::saveSettings()

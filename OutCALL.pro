@@ -1,22 +1,21 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-03-16T10:53:56
-#
-#-------------------------------------------------
+QT += core gui
+QT += network
+QT += sql
+QT += widgets
+QT += multimedia
+QT += winextras
+QT += axcontainer
 
-QT       += core gui
-QT       += network
-QT       += sql
-QT       += widgets
-QT       += multimedia
-QT       += winextras
-QT       += axcontainer
+include (QSimpleUpdater-master/QSimpleUpdater.pri)
 
-
-win32:{
+win32:
+{
     VERSION = 3.0.2
+
     QMAKE_TARGET_COMPANY = Vybor
     QMAKE_TARGET_PRODUCT = OutCALL
+
+    RC_ICONS = $$PWD/images/outcall-logo.ico
 }
 
 TARGET = OutCALL
@@ -24,7 +23,8 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-SOURCES += main.cpp\
+SOURCES += \
+    main.cpp \
     AddReminderDialog.cpp \
     DebugInfoDialog.cpp \
     AddExtensionDialog.cpp \
@@ -60,7 +60,7 @@ SOURCES += main.cpp\
     InternalContactsDialog.cpp \
     UpdateDialog.cpp
 
-HEADERS  += \
+HEADERS += \
     AddReminderDialog.h \
     DebugInfoDialog.h \
     AsteriskManager.h \
@@ -96,7 +96,7 @@ HEADERS  += \
     InternalContactsDialog.h \
     UpdateDialog.h
 
-FORMS    += \
+FORMS += \
     AddExtensionDialog.ui \
     AddReminderDialog.ui \
     CallHistoryDialog.ui \
@@ -130,7 +130,3 @@ FORMS    += \
 RESOURCES += \
     images.qrc \
     translations.qrc \
-
-win32: RC_ICONS = $$PWD/images/outcall-logo.ico
-
-include (QSimpleUpdater-master/QSimpleUpdater.pri)

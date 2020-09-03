@@ -27,7 +27,7 @@ private slots:
     void checkDb();
     void checkDbAsterisk();
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::DatabasesConnectDialog *ui;

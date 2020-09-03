@@ -50,8 +50,8 @@ private slots:
     void on_applyButton_clicked();
     void on_cancelButton_clicked();
 
-    void closeEvent(QCloseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent*);
 
     void on_pushUpdateButton_clicked();
 

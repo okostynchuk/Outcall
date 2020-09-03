@@ -50,10 +50,8 @@ void ContactsDialog::receiveData(bool updating)
     }
 }
 
-void ContactsDialog::showEvent(QShowEvent* event)
+void ContactsDialog::showEvent(QShowEvent*)
 {
-    QDialog::showEvent(event);
-
     selectionModel = ui->tableView->selectionModel()->selectedRows();
 
     ui->lineEdit->setFocus();
@@ -63,10 +61,8 @@ void ContactsDialog::showEvent(QShowEvent* event)
     loadContacts();
 }
 
-void ContactsDialog::closeEvent(QCloseEvent* event)
+void ContactsDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     selectionModel.clear();
 
     ui->tableView->clearSelection();

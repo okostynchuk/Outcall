@@ -189,17 +189,13 @@ void PlaceCallDialog::clearEditText()
     ui->lineEdit_2->hide();
 }
 
-void PlaceCallDialog::showEvent(QShowEvent* event)
+void PlaceCallDialog::showEvent(QShowEvent*)
 {
-    QDialog::showEvent(event);
-
     ui->lineEdit->setFocus();
 }
 
-void PlaceCallDialog::closeEvent(QCloseEvent* event)
+void PlaceCallDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     ui->comboBox->setCurrentIndex(0);
 
     ui->lineEdit->clear();

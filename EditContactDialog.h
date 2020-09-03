@@ -39,8 +39,8 @@ private slots:
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
-    void keyPressEvent(QKeyEvent* event);
-    void closeEvent(QCloseEvent* event);
+    void keyPressEvent(QKeyEvent*);
+    void closeEvent(QCloseEvent*);
 
 public:
     explicit EditContactDialog(QWidget *parent = 0);

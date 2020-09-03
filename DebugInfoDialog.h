@@ -22,7 +22,7 @@ private slots:
     void onClear() const;
     void onExit();
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::DebugInfoDialog *ui;

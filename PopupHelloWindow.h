@@ -43,8 +43,8 @@ private slots:
     void onTimer();
     void onPopupTimeout();
 
-    void changeEvent(QEvent* event);
-    void mousePressEvent(QMouseEvent* event);
+    void changeEvent(QEvent*);
+    void mousePressEvent(QMouseEvent*);
 
 private:
     Ui::PopupHelloWindow *ui;
