@@ -28,7 +28,6 @@ public:
     ~ChooseNumber();
 
     void setValuesNumber(QString);
-    bool fromPlaceDialog = false;
 
 private slots:
     void onCall(QString);
