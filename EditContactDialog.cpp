@@ -316,19 +316,6 @@ bool EditContactDialog::isPhone(QString* str)
     return false;
 }
 
-bool EditContactDialog::isPhone2(QString* str)
-{
-    int pos = 0;
-
-    QRegularExpressionValidator validator(QRegularExpression("(\\+)?\\b(38)?(0[\\d]{2}))([\\d-]{5,8})([\\d]{2}"));
-
-    if (validator.validate(*str, pos) == QValidator::Acceptable)
-        return true;
-
-    return false;
-}
-
-
 bool EditContactDialog::isVyborID(QString* str)
 {
     int pos = 0;
