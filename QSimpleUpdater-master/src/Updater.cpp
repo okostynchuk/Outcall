@@ -39,7 +39,7 @@ Updater::Updater()
     m_platform = "ios";
 #endif
 
-    setUserAgentString(QString ("%1/%2 (Qt; QSimpleUpdater)").arg(qApp->applicationName(),
+    setUserAgentString(QString("%1/%2 (Qt; QSimpleUpdater)").arg(qApp->applicationName(),
                         qApp->applicationVersion()));
 
     connect(m_downloader, SIGNAL(downloadFinished(QString, QString)), this, SIGNAL(downloadFinished(QString, QString)));
@@ -374,16 +374,17 @@ void Updater::onReply(QNetworkReply* reply)
     }
 
     /* Get the platform information */
-    QJsonObject updates = document.object().value ("updates").toObject();
-    QJsonObject platform = updates.value (platformKey()).toObject();
+    QJsonObject updates = document.object().value("updates").toObject();
+    QJsonObject platform = updates.value(platformKey()).toObject();
 
     /* Get update information */
-    m_openUrl = platform.value ("open-url").toString();
-    m_changelog = platform.value ("changelog").toString();
-    m_downloadUrl = platform.value ("download-url").toString();
-    m_latestVersion = platform.value ("latest-version").toString();
+    m_openUrl = platform.value("open-url").toString();
+    m_changelog = platform.value("changelog").toString();
+    m_downloadUrl = platform.value("download-url").toString();
+    m_latestVersion = platform.value("latest-version").toString();
+
     if (platform.contains("mandatory-update"))
-        m_mandatoryUpdate = platform.value ("mandatory-update").toBool();
+        m_mandatoryUpdate = platform.value("mandatory-update").toBool();
 
     /* Compare latest and current version */
     setUpdateAvailable(compare(latestVersion(), moduleVersion()));
@@ -399,7 +400,7 @@ void Updater::onReply(QNetworkReply* reply)
  */
 void Updater::setUpdateAvailable(const bool available)
 {
-    m_updateAvailable = available;    
+    m_updateAvailable = available;
 
     QMessageBox box;
     box.setTextFormat(Qt::RichText);
@@ -411,7 +412,7 @@ void Updater::setUpdateAvailable(const bool available)
         if (m_mandatoryUpdate)
         {
             text = tr("Хотите скачать обновление сейчас? Это обязательное обновление!");
-        }
+        }    
 
         QString title = "<h3>"
                         + tr("Версия %1 %2 была выпущена!")
@@ -433,7 +434,7 @@ void Updater::setUpdateAvailable(const bool available)
             else if (downloaderEnabled())
             {
                 m_downloader->setUrlId(url());
-                m_downloader->setFileName(downloadUrl().split ("/").last());
+                m_downloader->setFileName(downloadUrl().split("/").last());
                 m_downloader->setMandatoryUpdate(m_mandatoryUpdate);
                 m_downloader->startDownload(QUrl(downloadUrl()));
             }

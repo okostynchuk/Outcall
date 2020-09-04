@@ -15,9 +15,9 @@ class QSU_DECL Updater : public QObject
     Q_OBJECT
 
 signals:
-    void checkingFinished (const QString& url);
-    void downloadFinished (const QString& url, const QString& filepath);
-    void appcastDownloaded (const QString& url, const QByteArray& data);
+    void checkingFinished(const QString& url);
+    void downloadFinished(const QString& url, const QString& filepath);
+    void appcastDownloaded(const QString& url, const QByteArray& data);
 
 public:
     Updater();
@@ -43,24 +43,24 @@ public:
 
 public slots:
     void checkForUpdates();
-    void setUrl (const QString& url);
-    void setModuleName (const QString& name);
-    void setNotifyOnUpdate (const bool notify);
-    void setNotifyOnFinish (const bool notify);
-    void setUserAgentString (const QString& agent);
-    void setModuleVersion (const QString& version);
-    void setDownloaderEnabled (const bool enabled);
-    void setPlatformKey (const QString& platformKey);
-    void setUseCustomAppcast (const bool customAppcast);
-    void setUseCustomInstallProcedures (const bool custom);
-    void setMandatoryUpdate (const bool mandatory_update);
+    void setUrl(const QString& url);
+    void setModuleName(const QString& name);
+    void setNotifyOnUpdate(const bool notify);
+    void setNotifyOnFinish(const bool notify);
+    void setUserAgentString(const QString& agent);
+    void setModuleVersion(const QString& version);
+    void setDownloaderEnabled(const bool enabled);
+    void setPlatformKey(const QString& platformKey);
+    void setUseCustomAppcast(const bool customAppcast);
+    void setUseCustomInstallProcedures(const bool custom);
+    void setMandatoryUpdate(const bool mandatory_update);
 
 private slots:
-    void onReply (QNetworkReply* reply);
-    void setUpdateAvailable (const bool available);
+    void onReply(QNetworkReply* reply);
+    void setUpdateAvailable(const bool available);
 
 private:
-    bool compare (const QString& x, const QString& y);
+    bool compare(const QString& x, const QString& y);
 
 private:
     QString m_url;
@@ -80,7 +80,6 @@ private:
     QString m_downloadUrl;
     QString m_moduleVersion;
     QString m_latestVersion;
-
 
     Downloader* m_downloader;
     QNetworkAccessManager* m_manager;

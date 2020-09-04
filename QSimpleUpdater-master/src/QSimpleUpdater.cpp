@@ -33,7 +33,7 @@ QSimpleUpdater* QSimpleUpdater::getInstance()
  */
 bool QSimpleUpdater::usesCustomAppcast(const QString& url) const
 {
-    return getUpdater (url)->customAppcast();
+    return getUpdater(url)->customAppcast();
 }
 
 /**
@@ -222,7 +222,6 @@ QString QSimpleUpdater::getUserAgentString(const QString& url) const
 void QSimpleUpdater::checkForUpdates(const QString& url)
 {
     getUpdater(url)->checkForUpdates();
-
 }
 
 /**
@@ -236,7 +235,7 @@ void QSimpleUpdater::checkForUpdates(const QString& url)
  */
 void QSimpleUpdater::setModuleName(const QString& url, const QString& name)
 {
-    getUpdater(url)->setModuleName (name);
+    getUpdater(url)->setModuleName(name);
 }
 
 /**
@@ -374,16 +373,17 @@ void QSimpleUpdater::setMandatoryUpdate(const QString& url,
  */
 Updater* QSimpleUpdater::getUpdater(const QString& url) const
 {
-    if (!URLS.contains(url)) {
+    if (!URLS.contains(url))
+    {
         Updater* updater = new Updater;
         updater->setUrl(url);
 
         URLS.append(url);
         UPDATERS.append(updater);
 
-        connect (updater, SIGNAL(checkingFinished(QString)), this, SIGNAL(checkingFinished(QString)));
-        connect (updater, SIGNAL(downloadFinished(QString, QString)), this, SIGNAL (downloadFinished(QString, QString)));
-        connect (updater, SIGNAL(appcastDownloaded(QString, QByteArray)), this, SIGNAL(appcastDownloaded(QString, QByteArray)));
+        connect(updater, SIGNAL(checkingFinished(QString)), this, SIGNAL(checkingFinished(QString)));
+        connect(updater, SIGNAL(downloadFinished(QString, QString)), this, SIGNAL(downloadFinished(QString, QString)));
+        connect(updater, SIGNAL(appcastDownloaded(QString, QByteArray)), this, SIGNAL(appcastDownloaded(QString, QByteArray)));
     }
 
     return UPDATERS.at(URLS.indexOf(url));

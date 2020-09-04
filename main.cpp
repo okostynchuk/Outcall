@@ -41,7 +41,8 @@ int main(int argc, char* argv[])
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
     int pos = 0;
 
-    if (oldAppDir.exists()){
+    if (oldAppDir.exists())
+    {
         for (int i = 0; i < fileAmount; i++)
         {
             QString str = namesOfDirectories.at(i);

@@ -41,8 +41,8 @@ Downloader::Downloader(QWidget* parent) : QWidget(parent)
     /* Configure the appearance and behavior of the buttons */
 
     m_ui->stopButton->hide();
-    connect(m_ui->stopButton, SIGNAL (clicked()), this, SLOT(cancelDownload()));
-    //connect(m_ui->openButton, SIGNAL (clicked()), this, SLOT (installUpdate()));
+    connect(m_ui->stopButton, SIGNAL(clicked()), this, SLOT(cancelDownload()));
+    //connect(m_ui->openButton, SIGNAL(clicked()), this, SLOT(installUpdate()));
 
     /* Resize to fit */
     setFixedSize(minimumSizeHint());
@@ -84,9 +84,9 @@ void Downloader::startDownload(const QUrl& url)
 {
     /* Reset UI */
     m_ui->progressBar->setValue(0);
-    m_ui->stopButton->setText (tr("Отмена"));
-    m_ui->downloadLabel->setText (tr("Скачивание обновления"));
-    m_ui->timeLabel->setText (tr("Времени осталось") + ": " + tr("неизвестно"));
+    m_ui->stopButton->setText(tr("Отмена"));
+    m_ui->downloadLabel->setText(tr("Скачивание обновления"));
+    m_ui->timeLabel->setText(tr("Времени осталось") + ": " + tr("неизвестно"));
 
     /* Configure the network request */
     QNetworkRequest request (url);
@@ -102,13 +102,13 @@ void Downloader::startDownload(const QUrl& url)
         m_downloadDir.mkpath(".");
 
     /* Remove old downloads */
-    QFile::remove (m_downloadDir.filePath(m_fileName));
-    QFile::remove (m_downloadDir.filePath(m_fileName + PARTIAL_DOWN));
+    QFile::remove(m_downloadDir.filePath(m_fileName));
+    QFile::remove(m_downloadDir.filePath(m_fileName + PARTIAL_DOWN));
 
     /* Update UI when download progress changes or download finishes */
-    connect (m_reply, SIGNAL (downloadProgress (qint64, qint64)), this, SLOT(updateProgress(qint64, qint64)));
-    connect (m_reply, SIGNAL (finished()), this, SLOT(finished()));
-    //connect (m_reply, SIGNAL (redirected(QUrl)), this, SLOT (startDownload(QUrl)));
+    connect(m_reply, SIGNAL(downloadProgress (qint64, qint64)), this, SLOT(updateProgress(qint64, qint64)));
+    connect(m_reply, SIGNAL(finished()), this, SLOT(finished()));
+    //connect(m_reply, SIGNAL(redirected(QUrl)), this, SLOT(startDownload(QUrl)));
 
     showNormal();
 }
@@ -135,16 +135,16 @@ void Downloader::setUserAgentString(const QString& agent)
 void Downloader::finished()
 {
     /* Rename file */
-    QFile::rename (m_downloadDir.filePath (m_fileName + PARTIAL_DOWN),
-                   m_downloadDir.filePath (m_fileName));
+    QFile::rename(m_downloadDir.filePath(m_fileName + PARTIAL_DOWN),
+                  m_downloadDir.filePath (m_fileName));
 
     /* Notify application */
-    emit downloadFinished (m_url, m_downloadDir.filePath (m_fileName));
+    emit downloadFinished(m_url, m_downloadDir.filePath(m_fileName));
 
     /* Install the update */
     m_reply->close();
     installUpdate();
-    setVisible (false);
+    setVisible(false);
 }
 
 /**
@@ -156,7 +156,7 @@ void Downloader::openDownload()
 {
     if (!m_fileName.isEmpty())
     {
-        QDesktopServices::openUrl (QUrl::fromLocalFile (m_downloadDir.filePath (m_fileName)));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(m_downloadDir.filePath(m_fileName)));
         qApp->closeAllWindows();
         qApp->quit();
     }
@@ -164,8 +164,8 @@ void Downloader::openDownload()
     else
     {
         QMessageBox::critical(this,
-                               tr ("Ошибка"),
-                               tr ("Файл обновления не найден!"),
+                               tr("Ошибка"),
+                               tr("Файл обновления не найден!"),
                                QMessageBox::Close);
     }
 
@@ -206,7 +206,7 @@ void Downloader::installUpdate()
 
     box.setButtonText(QMessageBox::Yes, tr("ОК"));
     box.setButtonText(QMessageBox::Cancel, tr("Отмена"));
-    box.setInformativeText (tr ("Нажмите \"OK\" для начала установки обновления"));
+    box.setInformativeText(tr("Нажмите \"OK\" для начала установки обновления"));
 
     QString text = tr("Для установки обновления необходимо закрыть приложение");
 
@@ -248,9 +248,9 @@ void Downloader::cancelDownload()
     if (!m_reply->isFinished())
     {
         QMessageBox box;
-        box.setWindowTitle (tr ("Окно обновлений"));
-        box.setIcon (QMessageBox::Question);
-        box.setStandardButtons (QMessageBox::Yes | QMessageBox::No);
+        box.setWindowTitle(tr ("Окно обновлений"));
+        box.setIcon(QMessageBox::Question);
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         box.setButtonText(QMessageBox::Yes, tr("Да"));
         box.setButtonText(QMessageBox::No, tr("Нет"));
 
@@ -259,7 +259,7 @@ void Downloader::cancelDownload()
         {
             text = tr("Вы уверены, что хотите отменить установку? Это обязательное обновление!");
         }
-        box.setText (text);
+        box.setText(text);
 
         if (box.exec() == QMessageBox::Yes)
         {
@@ -292,16 +292,16 @@ void Downloader::saveFile(qint64 received, qint64 total)
                    QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (!url.isEmpty())
     {
-        startDownload (url);
+        startDownload(url);
         return;
     }
 
     /* Save downloaded data to disk */
-    QFile file (m_downloadDir.filePath (m_fileName + PARTIAL_DOWN));
+    QFile file(m_downloadDir.filePath(m_fileName + PARTIAL_DOWN));
 
-    if (file.open (QIODevice::WriteOnly | QIODevice::Append))
+    if (file.open(QIODevice::WriteOnly | QIODevice::Append))
     {
-        file.write (m_reply->readAll());
+        file.write(m_reply->readAll());
         file.close();
     }
 }
@@ -312,7 +312,7 @@ void Downloader::saveFile(qint64 received, qint64 total)
  * data and the total download size. Then, this function proceeds to update the
  * dialog controls/UI.
  */
-void Downloader::calculateSizes (qint64 received, qint64 total)
+void Downloader::calculateSizes(qint64 received, qint64 total)
 {
     QString totalSize;
     QString receivedSize;
@@ -321,10 +321,10 @@ void Downloader::calculateSizes (qint64 received, qint64 total)
         totalSize = tr("%1 байтов").arg(total);
 
     else if (total < 1048576)
-        totalSize = tr("%1 KB").arg(round (total / 1024));
+        totalSize = tr("%1 KB").arg(round(total / 1024));
 
     else
-        totalSize = tr("%1 MB").arg(round (total / 1048576));
+        totalSize = tr("%1 MB").arg(round(total / 1048576));
 
     if (received < 1024)
         receivedSize = tr("%1 байтов").arg(received);
@@ -336,7 +336,7 @@ void Downloader::calculateSizes (qint64 received, qint64 total)
         receivedSize = tr("%1 MB").arg(received / 1048576);
 
     m_ui->downloadLabel->setText(tr("Скачивание обновлений")
-                                  + " (" + receivedSize + " " + tr ("из")
+                                  + " (" + receivedSize + " " + tr("из")
                                   + " " + totalSize + ")");
 }
 
@@ -352,16 +352,16 @@ void Downloader::updateProgress(qint64 received, qint64 total)
         m_ui->progressBar->setMaximum(100);
         m_ui->progressBar->setValue((received * 100) / total);
 
-        calculateSizes (received, total);
-        calculateTimeRemaining (received, total);
-        saveFile (received, total);
+        calculateSizes(received, total);
+        calculateTimeRemaining(received, total);
+        saveFile(received, total);
     }
 
     else
     {
         m_ui->progressBar->setMinimum(0);
-        m_ui->progressBar->setMaximum (0);
-        m_ui->progressBar->setValue (-1);
+        m_ui->progressBar->setMaximum(0);
+        m_ui->progressBar->setValue(-1);
         m_ui->downloadLabel->setText(tr("Скачивание обновлений") + "...");
         m_ui->timeLabel->setText(QString("%1: %2")
                                   .arg(tr("Времени осталось"))
@@ -389,10 +389,10 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
         if (timeRemaining > 7200)
         {
             timeRemaining /= 3600;
-            int hours = int (timeRemaining + 0.5);
+            int hours = int(timeRemaining + 0.5);
 
             if (hours > 1)
-                timeString = tr("примерно %1 часа(-ов)").arg (hours);
+                timeString = tr("примерно %1 часа(-ов)").arg(hours);
             else
                 timeString = tr("примерно 1 час");
         }
@@ -400,10 +400,10 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
         else if (timeRemaining > 60)
         {
             timeRemaining /= 60;
-            int minutes = int (timeRemaining + 0.5);
+            int minutes = int(timeRemaining + 0.5);
 
             if (minutes > 1)
-                timeString = tr("%1 минут(-ы)").arg (minutes);
+                timeString = tr("%1 минут(-ы)").arg(minutes);
             else
                 timeString = tr("1 минута");
         }
@@ -413,12 +413,12 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
             int seconds = int(timeRemaining + 0.5);
 
             if (seconds > 1)
-                timeString = tr("%1 секунд(-ы)").arg (seconds);
+                timeString = tr("%1 секунд(-ы)").arg(seconds);
             else
                 timeString = tr("1 секунда");
         }
 
-        m_ui->timeLabel->setText (tr("Времени осталось") + ": " + timeString);
+        m_ui->timeLabel->setText(tr("Времени осталось") + ": " + timeString);
     }
 }
 
