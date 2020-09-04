@@ -14,7 +14,7 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText(tr("Имя:<span style=\"color: red;\">*</span>"));
+    ui->label_3->setText(tr("Имя") + ":<span style=\"color: red;\">*</span>");
     ui->label_org->setText(tr("Нет"));
 
     connect(ui->Comment, &QTextEdit::textChanged, this, &AddContactDialog::onTextChanged);
@@ -40,21 +40,32 @@ void AddContactDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QString lastName = QString(ui->LastName->text());
-    QString firstName = QString(ui->FirstName->text());
-    QString patronymic = QString(ui->Patronymic->text());
+    QString lastName = ui->LastName->text();
+    QString firstName = ui->FirstName->text();
+    QString patronymic = ui->Patronymic->text();
 
-    if (QString(ui->FirstName->text()).isEmpty())
+    QStringList phonesListRegExp;
+
+    for (int i = 0; i < phonesList.length(); ++i)
     {
-         ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+
+        phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+    }
+
+    bool empty_field = false;
+
+    if (ui->FirstName->text().isEmpty())
+    {
+         ui->label_15->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
          ui->FirstName->setStyleSheet("border: 1px solid red");
 
-         return;
+         empty_field = true;
     }
     else
     {
-        ui->label_15->setText(tr(""));
+        ui->label_15->setText("");
 
         ui->FirstName->setStyleSheet("border: 1px solid grey");
     }
@@ -62,18 +73,21 @@ void AddContactDialog::onSave()
     if (ui->FirstNumber->text().isEmpty())
     {
         ui->label_14->show();
-        ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+        ui->label_14->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
 
-        return;
+        empty_field = true;
     }
     else
     {
-        ui->label_14->setText(tr(""));
+        ui->label_14->setText("");
 
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
     }
+
+    if (empty_field)
+        return;
 
     bool invalid_phones = false;
 
@@ -81,7 +95,7 @@ void AddContactDialog::onSave()
     {
         if (!phonesList.at(i)->text().isEmpty())
         {
-            QString phone = QString(phonesList.at(i)->text());
+            QString phone = phonesList.at(i)->text();
 
             if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
@@ -101,21 +115,19 @@ void AddContactDialog::onSave()
         return;
     }
 
-    for (int i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
-
     bool same_phones = false;
 
     for (int i = 0; i < phonesList.length(); ++i)
-        for (int j = 0; j < phonesList.length(); j++)
-            if ( (!phonesList.at(i)->text().isEmpty() && phonesList.at(i)->text() == phonesList.at(j)->text() && i != j)
-                || (QString(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3][8][0]"))) == phonesList.at(j)->text() && !phonesList.at(i)->text().isEmpty() && i != j))
+        for (int j = 0; j < phonesList.length(); ++j)
+        {
+            if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
                 phonesList.at(j)->setStyleSheet("border: 1px solid red");
 
                 same_phones = true;
             }
+        }
 
     if (same_phones)
     {
@@ -124,22 +136,12 @@ void AddContactDialog::onSave()
         return;
     }
 
-    if (!QString(ui->FirstName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
-    {
-        ui->label_15->setText(tr(""));
-        ui->label_14->setText(tr(""));
-
-        ui->FirstName->setStyleSheet("border: 1px solid grey");
-
-        for(int i = 0; i < phonesList.length(); ++i)
-            phonesList.at(i)->setStyleSheet("border: 1px solid grey");
-    }
-
+    bool existing_phones = false;
 
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3][8][0]")) + "'))");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesListRegExp.at(i) + "')");
             query.exec();
             query.next();
 
@@ -147,13 +149,18 @@ void AddContactDialog::onSave()
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
 
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
-
-                return;
+                existing_phones = true;
             }
         }
 
-    QString vyborId = QString(ui->VyborID->text());
+    if (existing_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    QString vyborId = ui->VyborID->text();
 
     if (!vyborId.isEmpty())
     {
@@ -184,9 +191,8 @@ void AddContactDialog::onSave()
     {
         QSqlQuery queryOrg(db);
 
-        QString sqlOrg = QString("SELECT id FROM entry WHERE entry_org_name = '%1'").arg(orgName);
-
-        queryOrg.prepare(sqlOrg);
+        queryOrg.prepare("SELECT id FROM entry WHERE entry_org_name = ?");
+        queryOrg.addBindValue(orgName);
         queryOrg.exec();
 
         if (queryOrg.next())
@@ -218,7 +224,7 @@ void AddContactDialog::onSave()
             query.prepare("INSERT INTO fones (entry_id, fone)"
                            "VALUES(?, ?)");
             query.addBindValue(id);
-            query.addBindValue(phonesList.at(i)->text());
+            query.addBindValue(phonesListRegExp.at(i));
             query.exec();
         }
 
@@ -254,7 +260,7 @@ bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{9,}$)"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[3][8][0][0-9]{9}$|^[0][0-9]{9}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;

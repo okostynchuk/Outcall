@@ -16,7 +16,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
-    ui->label_3->setText(tr("Название организации:<span style=\"color: red;\">*</span>"));
+    ui->label_3->setText(tr("Название организации") + ":<span style=\"color: red;\">*</span>");
 
     connect(ui->Comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
@@ -88,44 +88,60 @@ void EditOrgContactDialog::onSave()
     QSqlDatabase db;
     QSqlQuery query(db);
 
-    QString orgName = QString(ui->OrgName->text());
+    QString orgName = ui->OrgName->text();
 
-    if (QString(ui->OrgName->text()).isEmpty())
+    QStringList phonesListRegExp;
+
+    for (int i = 0; i < phonesList.length(); ++i)
     {
-         ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+
+        phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+    }
+
+    bool empty_field = false;
+
+    if (ui->OrgName->text().isEmpty())
+    {
+         ui->label_15->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
          ui->OrgName->setStyleSheet("border: 1px solid red");
 
-         return;
+         empty_field = true;
     }
     else
     {
-        ui->label_15->setText(tr(""));
+        ui->label_15->setText("");
 
         ui->OrgName->setStyleSheet("border: 1px solid grey");
     }
 
-    if (QString(ui->FirstNumber->text()).isEmpty())
+    if (ui->FirstNumber->text().isEmpty())
     {
         ui->label_14->show();
-        ui->label_14->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
+        ui->label_14->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
         ui->FirstNumber->setStyleSheet("border: 1px solid red");
 
-        return;
+        empty_field = true;
     }
     else
     {
-        ui->label_14->setText(tr(""));
+        ui->label_14->setText("");
 
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
     }
+
+    if (empty_field)
+        return;
+
+    bool invalid_phones = false;
 
     for (int i = 0; i < phonesList.length(); ++i)
     {
         if (!phonesList.at(i)->text().isEmpty())
         {
-            QString phone = QString(phonesList.at(i)->text());
+            QString phone = phonesList.at(i)->text();
 
             if (isPhone(&phone) && !isInternalPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
@@ -133,28 +149,45 @@ void EditOrgContactDialog::onSave()
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
 
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
-
-                return;
+                invalid_phones = true;
             }
         }
     }
 
-    if (!QString(ui->OrgName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
+    if (invalid_phones)
     {
-        ui->label_15->setText(tr(""));
-        ui->label_14->setText(tr(""));
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
 
-        ui->OrgName->setStyleSheet("border: 1px solid grey");
-
-        for(int i = 0; i < phonesList.length(); ++i)
-            phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+        return;
     }
+
+    bool same_phones = false;
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        for (int j = 0; j < phonesList.length(); ++j)
+        {
+            if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
+            {
+                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                phonesList.at(j)->setStyleSheet("border: 1px solid red");
+
+                same_phones = true;
+            }
+        }
+
+    if (same_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    bool existing_phones = false;
 
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) + "') AND NOT entry_id = " + updateID + ")");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesListRegExp.at(i) + "' AND entry_id <> " + updateID + ")");
             query.exec();
             query.next();
 
@@ -162,13 +195,18 @@ void EditOrgContactDialog::onSave()
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
 
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
-
-                return;
+                existing_phones = true;
             }
         }
 
-    QString vyborId = QString(ui->VyborID->text());
+    if (existing_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    QString vyborId = ui->VyborID->text();
 
     if (!vyborId.isEmpty())
     {
@@ -205,13 +243,13 @@ void EditOrgContactDialog::onSave()
                 query.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query.addBindValue(updateID);
-                query.addBindValue(phonesList.at(i)->text());
+                query.addBindValue(phonesListRegExp.at(i));
                 query.exec();
             }
             else
             {
                 query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
-                query.addBindValue(phonesList.at(i)->text());
+                query.addBindValue(phonesListRegExp.at(i));
                 query.addBindValue(updateID);
                 query.addBindValue(oldPhonesList.at(i));
                 query.exec();
@@ -229,8 +267,8 @@ bool EditOrgContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
-    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
+    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -245,7 +283,7 @@ bool EditOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{1,11}$)"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[3][8][0][0-9]{9}$|^[0][0-9]{9}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
