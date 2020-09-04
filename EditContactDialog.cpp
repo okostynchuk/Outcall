@@ -145,7 +145,7 @@ void EditContactDialog::onSave()
         {
             QString phone = phonesList.at(i)->text();
 
-            if (isPhone(&phone) && !isInternalPhone(&phone))
+            if (isPhone(&phone))
                 phonesList.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
@@ -295,22 +295,6 @@ void EditContactDialog::onSave()
     close();
 
     QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
-}
-
-bool EditContactDialog::isInternalPhone(QString* str)
-{
-    int pos = 0;
-
-    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
-    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
-
-    if (validator1.validate(*str, pos) == QValidator::Acceptable)
-        return true;
-
-    if (validator2.validate(*str, pos) == QValidator::Acceptable)
-        return true;
-
-    return false;
 }
 
 bool EditContactDialog::isPhone(QString* str)

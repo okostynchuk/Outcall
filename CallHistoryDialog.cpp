@@ -544,8 +544,8 @@ bool CallHistoryDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
-    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
+    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;

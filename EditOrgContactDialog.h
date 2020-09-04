@@ -31,7 +31,6 @@ private slots:
     void onReturn();
     void onTextChanged();
 
-    bool isInternalPhone(QString* str);
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
