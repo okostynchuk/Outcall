@@ -64,10 +64,8 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::showEvent(QShowEvent* event)
+void CallHistoryDialog::showEvent(QShowEvent*)
 {
-    QDialog::showEvent(event);
-
     if (ui->tabWidget->currentIndex() == 0)
         selectionAll = ui->tableView->selectionModel()->selectedRows();
     else if (ui->tabWidget->currentIndex() == 1)
@@ -82,10 +80,8 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
     updateCount();
 }
 
-void CallHistoryDialog::closeEvent(QCloseEvent* event)
+void CallHistoryDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     ui->comboBox_2->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);

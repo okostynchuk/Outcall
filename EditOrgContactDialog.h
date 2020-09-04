@@ -35,7 +35,7 @@ private slots:
     bool isPhone(QString* str);
     bool isVyborID(QString* str);
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::EditOrgContactDialog *ui;

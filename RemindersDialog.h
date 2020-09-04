@@ -57,9 +57,9 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent* event);
-    void closeEvent(QCloseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
+    void showEvent(QShowEvent*);
+    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::RemindersDialog *ui;

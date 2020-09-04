@@ -66,7 +66,7 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent*);
 
 private:
     Ui::ViewContactDialog *ui;

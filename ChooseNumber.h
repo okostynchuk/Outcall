@@ -28,13 +28,12 @@ public:
     ~ChooseNumber();
 
     void setValuesNumber(QString);
-    bool fromPlaceDialog = false;
 
 private slots:
     void onCall(QString);
 
-    void showEvent(QShowEvent* event);
-    bool eventFilter(QObject* target, QEvent* event);
+    void showEvent(QShowEvent*);
+    bool eventFilter(QObject*, QEvent*);
 
 private:
     Ui::ChooseNumber *ui;

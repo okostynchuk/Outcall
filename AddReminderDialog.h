@@ -40,8 +40,8 @@ private slots:
     void on_add5MinButton_clicked();
     void on_add60MinButton_clicked();
 
-    void keyPressEvent(QKeyEvent* event);
-    void closeEvent(QCloseEvent* event);
+    void keyPressEvent(QKeyEvent*);
+    void closeEvent(QCloseEvent*);
 
 private:
     Ui::AddReminderDialog *ui;

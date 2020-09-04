@@ -35,7 +35,7 @@ private slots:
     void on_removeAllButton_clicked();
     void on_applyButton_clicked();
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::ChooseEmployee *ui;

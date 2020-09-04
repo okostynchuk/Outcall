@@ -36,8 +36,8 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent* event);
-    void closeEvent(QCloseEvent* event);
+    void showEvent(QShowEvent*);
+    void closeEvent(QCloseEvent*);
 
 private:
     Ui::InternalContactsDialog *ui;

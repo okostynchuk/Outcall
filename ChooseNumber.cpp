@@ -54,7 +54,7 @@ void ChooseNumber::setValuesNumber(QString i)
     query.first();
 
     ui->label->show();
-    ui->label->setText(tr("Номерa") + "\"" + query.value(1).toString() + "\"");
+    ui->label->setText(tr("Номерa") + " \"" + query.value(1).toString() + "\"");
 }
 
 void ChooseNumber::showEvent(QShowEvent* event)
@@ -68,22 +68,21 @@ void ChooseNumber::showEvent(QShowEvent* event)
         QWidget::setFixedHeight(size += 26);
         phonesList.at(i)->setVisible(true);
     }
+
+    QWidget::setFixedHeight(size += 10);
 }
 
 bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
-       QLineEdit *line =  QDialog::findChild<QLineEdit *>(target->objectName());
+        QLineEdit* line =  QDialog::findChild<QLineEdit*>(target->objectName());
 
-       onCall(line->text());
+        onCall(line->text());
 
-       if (fromPlaceDialog)
-           emit sendNumber(line->text());
-       else
-           onCall(line->text());
+        emit sendNumber(line->text());
 
-       close();
+        close();
     }
 
     return false;

@@ -75,7 +75,6 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
         {
             chooseNumber = new ChooseNumber;
             chooseNumber->setValuesNumber(id);
-            chooseNumber->fromPlaceDialog = true;
             connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
             chooseNumber->show();
             chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
@@ -190,17 +189,13 @@ void PlaceCallDialog::clearEditText()
     ui->lineEdit_2->hide();
 }
 
-void PlaceCallDialog::showEvent(QShowEvent* event)
+void PlaceCallDialog::showEvent(QShowEvent*)
 {
-    QDialog::showEvent(event);
-
     ui->lineEdit->setFocus();
 }
 
-void PlaceCallDialog::closeEvent(QCloseEvent* event)
+void PlaceCallDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     ui->comboBox->setCurrentIndex(0);
 
     ui->lineEdit->clear();

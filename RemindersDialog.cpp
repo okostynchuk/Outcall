@@ -132,10 +132,8 @@ void RemindersDialog::showReminders(bool show)
     }
 }
 
-void RemindersDialog::showEvent(QShowEvent* event)
+void RemindersDialog::showEvent(QShowEvent*)
 {
-    QDialog::showEvent(event);
-
     PopupNotification::closeAll();
 
     QSqlDatabase db;
@@ -155,10 +153,8 @@ void RemindersDialog::showEvent(QShowEvent* event)
     onUpdate();
 }
 
-void RemindersDialog::closeEvent(QCloseEvent* event)
+void RemindersDialog::closeEvent(QCloseEvent*)
 {
-    QDialog::closeEvent(event);
-
     QDialog::clearFocus();
 
     clearSelections();
