@@ -48,7 +48,7 @@ void AddContactDialog::onSave()
     {
          ui->label_15->setText(tr("<span style=\"color: red;\">Заполните обязательное поле!</span>"));
 
-         ui->FirstName->setStyleSheet("border: 1px solid red");\
+         ui->FirstName->setStyleSheet("border: 1px solid red");
 
          return;
     }
@@ -75,6 +75,8 @@ void AddContactDialog::onSave()
         ui->FirstNumber->setStyleSheet("border: 1px solid grey");
     }
 
+    bool invalid_phones = false;
+
     for (int i = 0; i < phonesList.length(); ++i)
     {
         if (!phonesList.at(i)->text().isEmpty())
@@ -87,11 +89,39 @@ void AddContactDialog::onSave()
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
 
-                QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
-
-                return;
+                invalid_phones = true;
             }
         }
+    }
+
+    if (invalid_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+
+    bool same_phones = false;
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        for (int j = 0; j < phonesList.length(); j++)
+            if ( (!phonesList.at(i)->text().isEmpty() && phonesList.at(i)->text() == phonesList.at(j)->text() && i != j)
+                || (QString(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3][8][0]"))) == phonesList.at(j)->text() && !phonesList.at(i)->text().isEmpty() && i != j))
+            {
+                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                phonesList.at(j)->setStyleSheet("border: 1px solid red");
+
+                same_phones = true;
+            }
+
+    if (same_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
+
+        return;
     }
 
     if (!QString(ui->FirstName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
@@ -109,7 +139,7 @@ void AddContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) + "')");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3][8][0]")) + "'))");
             query.exec();
             query.next();
 
@@ -208,8 +238,8 @@ bool AddContactDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator1(QRegularExpression("[0-9]{4}"));
-    QRegularExpressionValidator validator2(QRegularExpression("[2][0-9]{2}"));
+    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
+    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
 
     if (validator1.validate(*str, pos) == QValidator::Acceptable)
         return true;
@@ -224,7 +254,7 @@ bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{1,11}$)"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{9,}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;

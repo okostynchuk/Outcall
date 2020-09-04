@@ -142,6 +142,32 @@ void EditContactDialog::onSave()
         }
     }
 
+    for (int i = 0; i < phonesList.length(); ++i)
+        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+
+    bool same_phones = false;
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        for (int j = 0; j < phonesList.length(); j++)
+        {
+            if (!phonesList.at(i)->text().isEmpty() && (QString(phonesList.at(i)->text().contains(QRegularExpression("^[\\+][3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) : phonesList.at(i)->text()) == phonesList.at(j)->text()
+                || phonesList.at(i)->text() == phonesList.at(j)->text() || QString(phonesList.at(i)->text().contains(QRegularExpression("^[3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[3][8]")) : phonesList.at(i)->text()) == phonesList.at(j)->text()
+                || QString(phonesList.at(i)->text().contains(QRegularExpression("^[\\+][3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[\\+]")) : phonesList.at(i)->text()) == phonesList.at(j)->text()) && i != j)
+            {
+                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                phonesList.at(j)->setStyleSheet("border: 1px solid red");
+
+                same_phones = true;
+            }
+        }
+
+    if (same_phones)
+    {
+        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
+
+        return;
+    }
+
     if (!QString(ui->FirstName->text()).isEmpty() && !QString(ui->FirstNumber->text()).isEmpty())
     {
         ui->label_15->setText(tr(""));
@@ -152,12 +178,12 @@ void EditContactDialog::onSave()
         for(int i = 0; i < phonesList.length(); ++i)
             phonesList.at(i)->setStyleSheet("border: 1px solid grey");
 
-     }
+    }
 
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) + "') AND NOT entry_id = " + updateID + ")");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE (entry_phone = '" + phonesList.at(i)->text() + "' OR entry_phone = '" + QString(phonesList.at(i)->text().contains(QRegularExpression("^[\\+][3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[\\+][3][8]")) : QString("+38" + phonesList.at(i)->text())) + "' OR entry_phone = '" + QString(phonesList.at(i)->text().contains(QRegularExpression("^[3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[3][8]")) :QString("38" + phonesList.at(i)->text())) + "' OR entry_phone = '" + QString(phonesList.at(i)->text().contains(QRegularExpression("^[\\+][3][8][0]")) ? phonesList.at(i)->text().remove(QRegularExpression("^[\\+]")) : phonesList.at(i)->text()) + "' OR entry_phone = '" + QString(phonesList.at(i)->text().contains(QRegularExpression("^[3][8][0]")) ? QString("+" + phonesList.at(i)->text()) : phonesList.at(i)->text()) + "') AND NOT entry_id = " + updateID + ")");
             query.exec();
             query.next();
 
@@ -282,13 +308,26 @@ bool EditContactDialog::isPhone(QString* str)
 {
     int pos = 0;
 
-    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{9}$|^[1-9]{1}[0-9]{1,11}$)"));
+    QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[0][0-9]{5,}$|^[1-9]{1}[0-9]{9,}$)"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
 
     return false;
 }
+
+bool EditContactDialog::isPhone2(QString* str)
+{
+    int pos = 0;
+
+    QRegularExpressionValidator validator(QRegularExpression("(\\+)?\\b(38)?(0[\\d]{2}))([\\d-]{5,8})([\\d]{2}"));
+
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
+}
+
 
 bool EditContactDialog::isVyborID(QString* str)
 {
