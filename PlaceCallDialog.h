@@ -8,6 +8,7 @@
 #include <QSqlQueryModel>
 #include <QValidator>
 #include <QKeyEvent>
+#include <QSqlDatabase>
 
 class ChooseNumber;
 
@@ -44,6 +45,8 @@ private slots:
 
 private:
     Ui::PlaceCallDialog *ui;
+
+    QSqlDatabase db;
 
     ChooseNumber* chooseNumber;
 

@@ -4,7 +4,6 @@
 #include "AsteriskManager.h"
 #include "Global.h"
 
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDesktopWidget>
@@ -146,7 +145,6 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 
 void ViewOrgContactDialog::onCall()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
@@ -260,7 +258,6 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString i)
 {
     contactId = i;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
@@ -329,8 +326,6 @@ void ViewOrgContactDialog::loadAllCalls()
     queryModel = new QSqlQueryModel;
 
     queriesAll.append(queryModel);
-
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -431,7 +426,6 @@ void ViewOrgContactDialog::loadAllCalls()
         if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = "+uniqueid+")");
@@ -463,13 +457,10 @@ void ViewOrgContactDialog::loadMissedCalls()
     if (!queriesMissed.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
     queryModel = new QSqlQueryModel;
 
     queriesMissed.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -585,13 +576,10 @@ void ViewOrgContactDialog::loadReceivedCalls()
     if (!queriesReceived.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
     queryModel = new QSqlQueryModel;
 
     queriesReceived.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -707,13 +695,10 @@ void ViewOrgContactDialog::loadPlacedCalls()
     if (!queriesPlaced.isEmpty())
         deleteObjects();
 
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
-
     queryModel = new QSqlQueryModel;
 
     queriesPlaced.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -830,7 +815,6 @@ QWidget* ViewOrgContactDialog::loadNote()
 
     layout->addWidget(noteLabel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
@@ -1169,7 +1153,6 @@ void ViewOrgContactDialog::tabSelected()
 
 void ViewOrgContactDialog::updateCount()
 {
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
     QSqlQuery query(dbCalls);
 
     if (ui->tabWidget_3->currentIndex() == 0)
@@ -1321,6 +1304,7 @@ void ViewOrgContactDialog::onOpenAccess()
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
     QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+
     dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
                             "Server="+hostName_3+","+port_3+";"
                             "Database="+databaseName_3+";"

@@ -71,6 +71,9 @@ private slots:
 private:
     Ui::ViewContactDialog *ui;
 
+    QSqlDatabase db;
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
     QPointer<AddReminderDialog> addReminderDialog;

@@ -36,7 +36,6 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString note;
@@ -378,7 +377,6 @@ void PopupWindow::onShowCard()
 {
     m_pwi.stopTimer = true;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT id, entry_type, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
@@ -444,7 +442,6 @@ void PopupWindow::onOpenAccess()
 {
     m_pwi.stopTimer = true;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
@@ -461,6 +458,7 @@ void PopupWindow::onOpenAccess()
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
     QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+
     dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
                             "Server="+hostName_3+","+port_3+";"
                             "Database="+databaseName_3+";"
@@ -504,7 +502,6 @@ void PopupWindow::receiveData(bool update)
         }
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT id, entry_name, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
@@ -565,7 +562,6 @@ void PopupWindow::onSaveNote()
 {
     m_pwi.stopTimer = true;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
@@ -651,7 +647,6 @@ void PopupWindow::controlPopup()
     }
     else
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");

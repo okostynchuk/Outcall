@@ -49,6 +49,8 @@ private slots:
 private:
     Ui::PopupNotification *ui;
 
+    QSqlDatabase db;
+
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
     int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;

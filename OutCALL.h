@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QMap>
 #include <QSystemTrayIcon>
+#include <QSqlDatabase>
 
 class QSystemTrayIcon;
 class QMenu;
@@ -59,6 +60,8 @@ protected:
     void createContextMenu();
 
 private:
+    QSqlDatabase db;
+
     QMenu* m_menu;
 
     QAction* m_signIn;

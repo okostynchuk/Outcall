@@ -325,7 +325,6 @@ void OutCall::hideTrayIcon(bool hide)
 
 void OutCall::changeIconReminders(bool change)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
@@ -469,7 +468,6 @@ void OutCall::onRemindersDialog()
     m_remindersDialog->showNormal();
     m_remindersDialog->raise();
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ?");

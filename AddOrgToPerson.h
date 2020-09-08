@@ -15,7 +15,7 @@ class AddOrgToPerson : public QDialog
     Q_OBJECT
 
 signals:
-    void sendOrgID(QString);
+    void sendOrgName(QString, QString);
 
 public:
     explicit AddOrgToPerson(QWidget *parent = 0);
@@ -25,7 +25,7 @@ private slots:
     void deleteObjects();
     void onUpdate();
     void currentIndexChanged();
-    void getOrgID(const QModelIndex &index);
+    void getOrgName(const QModelIndex &index);
     void searchFunction();
 
     void on_searchButton_clicked();

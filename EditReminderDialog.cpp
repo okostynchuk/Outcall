@@ -81,7 +81,6 @@ void EditReminderDialog::onSave()
         return;
     }
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (!ui->chooseEmployeeButton->isEnabled())
@@ -285,7 +284,6 @@ void EditReminderDialog::setValuesReminders(QString receivedId, QString received
     cursor.movePosition(QTextCursor::End);
     ui->textEdit->setTextCursor(cursor);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (group_id == "0")

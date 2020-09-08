@@ -1,7 +1,6 @@
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
 
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDesktopWidget>
@@ -98,7 +97,6 @@ void EditOrgContactDialog::setPos(int x, int y)
 
 void EditOrgContactDialog::onSave()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString orgName = ui->OrgName->text();
@@ -279,7 +277,6 @@ void EditOrgContactDialog::setOrgValuesContacts(QString i)
 {
     updateID = i;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + updateID);

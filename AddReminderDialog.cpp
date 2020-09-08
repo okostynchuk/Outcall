@@ -1,7 +1,6 @@
 #include "AddReminderDialog.h"
 #include "ui_AddReminderDialog.h"
 
-#include <QSqlQuery>
 #include <QDebug>
 
 AddReminderDialog::AddReminderDialog(QWidget *parent) :
@@ -87,7 +86,6 @@ void AddReminderDialog::onSave()
         return;
     }
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (callId.isEmpty())

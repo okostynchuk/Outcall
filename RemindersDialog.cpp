@@ -55,7 +55,6 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     go = "default";
     page = "1";
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
@@ -136,7 +135,6 @@ void RemindersDialog::showEvent(QShowEvent*)
 {
     PopupNotification::closeAll();
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
@@ -178,7 +176,6 @@ void RemindersDialog::clearSelections()
 
 void RemindersDialog::onTimer()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false ORDER BY id DESC");
@@ -320,7 +317,6 @@ void RemindersDialog::sendNewValues()
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
@@ -346,7 +342,6 @@ void RemindersDialog::receiveData(bool updating)
         selectionIrrelevant.clear();
         selectionDelegated.clear();
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
@@ -375,7 +370,6 @@ void RemindersDialog::loadRelevantReminders()
 
     queriesRelevant.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = true");
@@ -510,7 +504,6 @@ void RemindersDialog::loadIrrelevantReminders()
 
     queriesIrrelevant.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = false");
@@ -642,7 +635,6 @@ void RemindersDialog::loadDelegatedReminders()
 
     queriesDelegated.append(queryModel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END");
@@ -782,7 +774,6 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
 
     if (ui->tabWidget->currentIndex() == 0 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("UPDATE reminders SET viewed = true WHERE id = ? AND active = true");
@@ -825,7 +816,6 @@ void RemindersDialog::changeState()
     }
     else
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         if (ui->tabWidget->currentIndex() == 0)
@@ -1056,7 +1046,6 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
         }
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT active FROM reminders WHERE group_id = ?");
@@ -1139,7 +1128,6 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
     }
     else
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT viewed, phone_to FROM reminders WHERE group_id = ?");
@@ -1205,7 +1193,6 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
         }
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT completed, phone_to FROM reminders WHERE group_id = ?");
@@ -1277,7 +1264,6 @@ void RemindersDialog::onUpdateTab()
     {
         loadRelevantReminders();
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true");

@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QRegularExpression>
 #include <QValidator>
+#include <QSqlDatabase>
 
 namespace Ui {
 class NotesDialog;
@@ -48,6 +49,8 @@ private slots:
 
 private:
     Ui::NotesDialog *ui;
+
+    QSqlDatabase db;
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 

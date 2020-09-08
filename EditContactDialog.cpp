@@ -98,7 +98,6 @@ void EditContactDialog::setPos(int x, int y)
 
 void EditContactDialog::onSave()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString lastName = ui->LastName->text();
@@ -232,25 +231,8 @@ void EditContactDialog::onSave()
     else
         query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic);
 
-    QString orgName = ui->label_org->text();
-
-    if (orgName != tr("Нет"))
-    {
-        QSqlQuery queryOrg(db);
-
-        queryOrg.prepare("SELECT id FROM entry WHERE entry_org_name = ?");
-        queryOrg.addBindValue(orgName);
-        queryOrg.exec();
-
-        if (queryOrg.next())
-            query.addBindValue(queryOrg.value(0).toInt());
-        else
-        {
-            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
-
-            return;
-        }
-    }
+    if (!orgID.isNull())
+        query.addBindValue(orgID);
     else
         query.addBindValue(QVariant(QVariant::Int));
 
@@ -313,7 +295,6 @@ void EditContactDialog::setValuesContacts(QString i)
 {
     updateID = i;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_phone, (SELECT DISTINCT entry_name FROM entry_phone WHERE entry_id = "
@@ -351,17 +332,13 @@ void EditContactDialog::setValuesContacts(QString i)
     ui->Comment->setText(query.value(7).toString());
 }
 
-void EditContactDialog::receiveOrgID(QString id)
+void EditContactDialog::receiveOrgName(QString id, QString name)
 {
-    QSqlDatabase db;
-    QSqlQuery query(db);
-
-    query.prepare("SELECT entry_name FROM entry_phone WHERE entry_id = " + id);
-    query.exec();
-    query.first();
-
-    if (!query.value(0).toString().isEmpty())
-        ui->label_org->setText(query.value(0).toString());
+    if (!id.isNull())
+    {
+        orgID = id;
+        ui->label_org->setText(name);
+    }
     else
         ui->label_org->setText(tr("Нет"));
 }
@@ -372,7 +349,7 @@ void EditContactDialog::on_addOrgButton_clicked()
         addOrgToPerson.data()->close();
 
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson.data(), &AddOrgToPerson::sendOrgID, this, &EditContactDialog::receiveOrgID);
+    connect(addOrgToPerson.data(), &AddOrgToPerson::sendOrgName, this, &EditContactDialog::receiveOrgName);
     addOrgToPerson.data()->show();
     addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }

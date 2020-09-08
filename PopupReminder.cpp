@@ -26,7 +26,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     setAttribute(Qt::WA_TranslucentBackground);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT call_id, phone_from, group_id FROM reminders WHERE id = ?");
@@ -40,8 +39,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     {
         m_pri.call_id = query.value(0).toString();
 
-        QSqlDatabase db = QSqlDatabase::database("Calls");
-        QSqlQuery query(db);
+        QSqlQuery query(dbCalls);
 
         query.prepare("SELECT src, extfield1 FROM cdr WHERE uniqueid = ?");
         query.addBindValue(m_pri.call_id);
@@ -59,7 +57,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
             }
             else
             {
-                QSqlDatabase db;
                 QSqlQuery query(db);
 
                 query.prepare("SELECT entry_name, entry_vybor_id FROM entry_phone WHERE entry_phone = ?");
@@ -82,7 +79,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         }
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT entry_name, entry_phone, entry_vybor_id FROM entry_phone WHERE entry_id = ?");
@@ -416,7 +412,6 @@ void PopupReminder::onCall()
 
 void PopupReminder::onSelectTime(int index)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     switch (index)
@@ -500,7 +495,6 @@ void PopupReminder::onSelectTime(int index)
 
 void PopupReminder::onOpenAccess()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pri.number + "')");
@@ -518,6 +512,7 @@ void PopupReminder::onOpenAccess()
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
     QSqlDatabase dbOrders = QSqlDatabase::addDatabase("QODBC", "Orders");
+
     dbOrders.setDatabaseName("DRIVER={SQL Server Native Client 10.0};"
                             "Server="+hostName_3+","+port_3+";"
                             "Database="+databaseName_3+";"
@@ -549,7 +544,6 @@ void PopupReminder::onOpenAccess()
 
 void PopupReminder::onClosePopup()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     if (m_pri.my_number == m_pri.number)

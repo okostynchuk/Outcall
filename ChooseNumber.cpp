@@ -1,7 +1,6 @@
 #include "ChooseNumber.h"
 #include "ui_ChooseNumber.h"
 
-#include <QSqlDatabase>
 #include <QSqlQuery>
 
 ChooseNumber::ChooseNumber(QWidget *parent) :
@@ -39,7 +38,6 @@ void ChooseNumber::setValuesNumber(QString i)
 {
     updateID = i;
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + updateID);

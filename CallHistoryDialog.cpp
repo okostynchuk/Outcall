@@ -152,7 +152,6 @@ void CallHistoryDialog::loadAllCalls()
         if (extfield.isEmpty())
             ui->tableView->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = "+uniqueid+")");
@@ -245,7 +244,6 @@ void CallHistoryDialog::loadMissedCalls()
         if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
@@ -335,7 +333,6 @@ void CallHistoryDialog::loadReceivedCalls()
         if (extfield.isEmpty())
             ui->tableView_3->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
@@ -423,7 +420,6 @@ void CallHistoryDialog::loadPlacedCalls()
         if (extfield.isEmpty())
             ui->tableView_4->setIndexWidget(queryModel->index(row_index, 0), loadName());
 
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
@@ -570,7 +566,6 @@ void CallHistoryDialog::getData(const QModelIndex &index)
 
     if (!isInternalPhone(&number))
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         ui->addContactButton->setDisabled(true);
@@ -699,7 +694,6 @@ void CallHistoryDialog::onAddOrgContact()
 
 bool CallHistoryDialog::checkNumber(QString number)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
@@ -714,7 +708,6 @@ bool CallHistoryDialog::checkNumber(QString number)
 
 void CallHistoryDialog::editContact(QString number)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString updateID = getUpdateId(number);
@@ -737,7 +730,6 @@ void CallHistoryDialog::editContact(QString number)
 
 void CallHistoryDialog::editOrgContact(QString number)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString updateID = getUpdateId(number);
@@ -768,7 +760,6 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
 
     clearFocus();
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
@@ -857,7 +848,6 @@ void CallHistoryDialog::receiveDataFromNotes()
 
 QString CallHistoryDialog::getUpdateId(QString number)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
@@ -958,7 +948,6 @@ QWidget* CallHistoryDialog::loadNote()
 
     layout->addWidget(noteLabel);
 
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");

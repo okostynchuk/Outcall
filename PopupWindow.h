@@ -86,6 +86,8 @@ private slots:
 private:
     Ui::PopupWindow *ui;
 
+    QSqlDatabase db;
+
     QPointer<AddContactDialog> addContactDialog;
     QPointer<AddOrgContactDialog> addOrgContactDialog;
     QPointer<AddPhoneNumberToContactDialog> addPhoneNumberToContactDialog;

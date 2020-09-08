@@ -231,7 +231,6 @@ void PopupNotification::onTimer()
 
 void PopupNotification::onClosePopup()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE id = ?");

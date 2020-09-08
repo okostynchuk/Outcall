@@ -80,13 +80,14 @@ private slots:
 private:
     Ui::CallHistoryDialog *ui;
 
+    QSqlDatabase db;
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
     QSqlQueryModel* queryModel;
 
     QValidator* validator;
-
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     QPointer<PlayAudioDialog> playAudioDialog;
 

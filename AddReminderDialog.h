@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include <QPointer>
+#include <QSqlQuery>
 
 namespace Ui {
 class AddReminderDialog;
@@ -45,6 +46,8 @@ private slots:
 
 private:
     Ui::AddReminderDialog *ui;
+
+    QSqlDatabase db;
 
     QPointer<ChooseEmployee> chooseEmployee;
 

@@ -24,7 +24,7 @@ signals:
     void sendData(bool, int, int);
 
 public slots:
-    void receiveOrgID(QString);
+    void receiveOrgName(QString, QString);
     void setPos(int, int);
 
 private slots:
@@ -49,6 +49,8 @@ public:
 private:
     Ui::EditContactDialog *ui;
 
+    QSqlDatabase db;
+
     QPointer<AddOrgToPerson> addOrgToPerson;
 
     QList<QLineEdit*> phonesList;
@@ -59,6 +61,7 @@ private:
     QValidator* vyborIdValidator;
 
     QString updateID;
+    QString orgID;
     QString number;  
 };
 

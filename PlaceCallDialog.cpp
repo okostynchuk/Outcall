@@ -5,7 +5,6 @@
 #include "AsteriskManager.h"
 
 #include <QHeaderView>
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QModelIndex>
 
@@ -53,7 +52,6 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 
     if (queryModel->data(queryModel->index(row, 3)).toString() == "person" || queryModel->data(queryModel->index(row, 3)).toString() == "org")
     {
-        QSqlDatabase db;
         QSqlQuery query(db);
 
         query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
@@ -149,7 +147,6 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     {
         QString entry_org = ui->lineEdit->text();
 
-        QSqlDatabase db;
         QSqlQuery query_org(db);
 
         query_org.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_org + "%'");

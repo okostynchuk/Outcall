@@ -63,6 +63,8 @@ private slots:
 
 private:
     Ui::RemindersDialog *ui;
+
+    QSqlDatabase db;
 	
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 	

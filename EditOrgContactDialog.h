@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QKeyEvent>
+#include <QSqlDatabase>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -37,6 +38,8 @@ private slots:
 
 private:
     Ui::EditOrgContactDialog *ui;
+
+    QSqlDatabase db;
 
     QList<QLineEdit*> phonesList;
 

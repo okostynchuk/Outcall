@@ -36,6 +36,8 @@ private slots:
 private:
     Ui::AddOrgContactDialog *ui;
 
+    QSqlDatabase db;
+
     QList<QLineEdit*> phonesList;
 
     QValidator* phonesValidator;

@@ -17,7 +17,7 @@ AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddOrgToPerson::getOrgID);
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddOrgToPerson::getOrgName);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddOrgToPerson::currentIndexChanged);
 
     page = "1";
@@ -43,11 +43,12 @@ void AddOrgToPerson::deleteObjects()
     queries.clear();
 }
 
-void AddOrgToPerson::getOrgID(const QModelIndex &index)
+void AddOrgToPerson::getOrgName(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
+    QString name = queryModel->data(queryModel->index(index.row(), 1)).toString();
 
-    emit sendOrgID(id);
+    emit sendOrgName(id, name);
 
     close();
 }

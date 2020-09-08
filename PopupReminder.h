@@ -65,6 +65,9 @@ private slots:
 private:
     Ui::PopupReminder *ui;
 
+    QSqlDatabase db;
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
     QPointer<EditReminderDialog> editReminderDialog;

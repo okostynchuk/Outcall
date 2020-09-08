@@ -40,7 +40,6 @@ AddOrgContactDialog::~AddOrgContactDialog()
 
 void AddOrgContactDialog::onSave()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString orgName = ui->OrgName->text();

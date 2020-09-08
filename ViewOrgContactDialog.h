@@ -16,6 +16,7 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QPointer>
+#include <QSqlDatabase>
 
 namespace Ui {
 class ViewOrgContactDialog;
@@ -76,6 +77,9 @@ private slots:
 
 private:
     Ui::ViewOrgContactDialog *ui;
+
+    QSqlDatabase db;
+    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 

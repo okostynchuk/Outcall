@@ -9,6 +9,7 @@
 #include <QValidator>
 #include <QEvent>
 #include <QLineEdit>
+#include <QSqlDatabase>
 
 class PlaceCallDialog;
 
@@ -37,6 +38,8 @@ private slots:
 
 private:
     Ui::ChooseNumber *ui;
+
+    QSqlDatabase db;
 
     PlaceCallDialog* placeCallDialog;
 

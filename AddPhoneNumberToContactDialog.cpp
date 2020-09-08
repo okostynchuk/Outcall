@@ -52,7 +52,6 @@ void AddPhoneNumberToContactDialog::setPhoneNumber(QString receivedPhoneNumber)
 
 void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = ?)");

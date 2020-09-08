@@ -3,7 +3,6 @@
 
 #include "CallHistoryDialog.h"
 
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QDateTime>
 
@@ -63,7 +62,6 @@ void NotesDialog::hideAddNote()
 
 void NotesDialog::loadNotes()
 {
-    QSqlDatabase db;
     QSqlQuery queryCount(db);
 
     QString queryString = "SELECT COUNT(*) FROM calls WHERE ";
@@ -76,7 +74,6 @@ void NotesDialog::loadNotes()
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
@@ -155,7 +152,6 @@ void NotesDialog::loadNotes()
             queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
         else
         {
-            QSqlDatabase db;
             QSqlQuery query(db);
 
             query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
@@ -232,7 +228,6 @@ void NotesDialog::loadNotes()
 
 void NotesDialog::onSave()
 {
-    QSqlDatabase db;
     QSqlQuery query(db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
