@@ -35,8 +35,7 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isPhone(QString* str);
-    bool isVyborID(QString* str);
+    bool isPhone(QString*);
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);
@@ -56,7 +55,8 @@ private:
 
     QStringList oldPhonesList;
 
-    QValidator* validator;
+    QValidator* phonesValidator;
+    QValidator* vyborIdValidator;
 
     QString updateID;
     QString number;  

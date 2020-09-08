@@ -77,12 +77,26 @@ int main(int argc, char* argv[])
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtTranslator;
     if (languages == "Русский (по умолчанию)")
-       qtTranslator.load(":/translations/russian.qm");
+    {
+        qtTranslator.load(":/translations/russian.qm");
+        app.installTranslator(&qtTranslator);
+
+        qtTranslator.load(":/translations/widgets_russian.qm");
+        app.installTranslator(&qtTranslator);
+    }
     else if (languages == "Українська")
-       qtTranslator.load(":/translations/ukrainian.qm");
+    {
+        qtTranslator.load(":/translations/ukrainian.qm");
+        app.installTranslator(&qtTranslator);
+
+        qtTranslator.load(":/translations/widgets_ukrainian.qm");
+        app.installTranslator(&qtTranslator);
+    }
     else if (languages == "English")
-       qtTranslator.load(":/translations/english.qm");
-    app.installTranslator(&qtTranslator);
+    {
+        qtTranslator.load(":/translations/english.qm");
+        app.installTranslator(&qtTranslator);
+    }
 
     QProcess tasklist;
     tasklist.start(
