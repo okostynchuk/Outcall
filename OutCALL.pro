@@ -6,7 +6,7 @@ QT += multimedia
 QT += winextras
 QT += axcontainer
 
-include (QSimpleUpdater-master/QSimpleUpdater.pri)
+include (QSimpleUpdater/QSimpleUpdater.pri)
 
 win32:
 {
