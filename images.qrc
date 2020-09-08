@@ -29,7 +29,7 @@
         <file>images/arrowBack.png</file>
         <file>images/addPerson_R.png</file>
         <file>images/viewNote.png</file>
-        <file>images/chooseAll_R.png</file>
-        <file>images/removeAll_R.png</file>
+        <file>images/addList_R.png</file>
+        <file>images/deleteList_R.png</file>
     </qresource>
 </RCC>
