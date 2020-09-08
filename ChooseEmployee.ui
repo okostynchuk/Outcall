@@ -64,12 +64,12 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/chooseAll_R.png</normaloff>:/images/chooseAll_R.png</iconset>
+           <normaloff>:/images/addList_R.png</normaloff>:/images/addList_R.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>23</width>
-           <height>23</height>
+           <width>24</width>
+           <height>24</height>
           </size>
          </property>
          <property name="autoDefault">
@@ -99,12 +99,12 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/removeAll_R.png</normaloff>:/images/removeAll_R.png</iconset>
+           <normaloff>:/images/deleteList_R.png</normaloff>:/images/deleteList_R.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>23</width>
-           <height>23</height>
+           <width>24</width>
+           <height>24</height>
           </size>
          </property>
          <property name="autoDefault">
