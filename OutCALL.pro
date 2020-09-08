@@ -57,8 +57,7 @@ SOURCES += \
     EditReminderDialog.cpp \
     PopupReminder.cpp \
     ChooseEmployee.cpp \
-    InternalContactsDialog.cpp \
-    UpdateDialog.cpp
+    InternalContactsDialog.cpp
 
 HEADERS += \
     AddReminderDialog.h \
@@ -93,8 +92,7 @@ HEADERS += \
     EditReminderDialog.h \
     PopupReminder.h \
     ChooseEmployee.h \
-    InternalContactsDialog.h \
-    UpdateDialog.h
+    InternalContactsDialog.h
 
 FORMS += \
     AddExtensionDialog.ui \
@@ -124,8 +122,7 @@ FORMS += \
     EditReminderDialog.ui \
     PopupReminder.ui \
     ChooseEmployee.ui \
-    InternalContactsDialog.ui \
-    UpdateDialog.ui
+    InternalContactsDialog.ui
 
 RESOURCES += \
     images.qrc \

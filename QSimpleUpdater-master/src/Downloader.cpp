@@ -226,10 +226,6 @@ void Downloader::installUpdate()
         }
 
     }
-    else if (QMessageBox::Cancel)
-    {
-       qApp->closeAllWindows();
-    }
     /* Wait */
     else {
         if (m_mandatoryUpdate)

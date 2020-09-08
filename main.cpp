@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    QString appVersion = "3.0.2";
+    QString appVersion = g_CurrentAppVersion;
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
     app.setApplicationVersion(appVersion);

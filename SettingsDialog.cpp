@@ -10,6 +10,8 @@
 #include <QMessageBox>
 #include <QProcess>
 
+static const QString DEFS_URL = "http://192.168.0.30/definitions/updates.json";
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog),
@@ -34,6 +36,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(ui->editButton_2,   &QAbstractButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
     connect(ui->removeButton,   &QAbstractButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
     connect(ui->removeButton_2, &QAbstractButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
+    connect(ui->pushUpdateButton, &QAbstractButton::clicked, this, &SettingsDialog::checkForUpdates);
 
     // General
     QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
@@ -47,11 +50,27 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     checkExten();
     checkGroupExten();
+
+    /* QSimpleUpdater is single-instance */
+    m_updater = QSimpleUpdater::getInstance();
 }
 
 SettingsDialog::~SettingsDialog()
 {
     delete ui;
+}
+
+void SettingsDialog::checkForUpdates()
+{
+    m_updater->setModuleVersion(DEFS_URL, g_CurrentAppVersion);
+    m_updater->setNotifyOnFinish(DEFS_URL, true);
+    m_updater->setNotifyOnUpdate(DEFS_URL, true);
+    m_updater->setUseCustomAppcast(DEFS_URL, false);
+    m_updater->setDownloaderEnabled(DEFS_URL, true);
+    m_updater->setMandatoryUpdate(DEFS_URL, false);
+
+    /* Check for updates */
+    m_updater->checkForUpdates(DEFS_URL);
 }
 
 void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
@@ -531,14 +550,6 @@ void SettingsDialog::checkGroupExten()
         ui->addButton_2->setEnabled(false);
     else
         ui->addButton_2->setEnabled(true);
-}
-
-void SettingsDialog::on_pushUpdateButton_clicked()
-{
-    updateDialog = new UpdateDialog;
-
-    updateDialog->show();
-    updateDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void SettingsDialog::keyPressEvent(QKeyEvent* event)

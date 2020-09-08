@@ -8,6 +8,7 @@
 
 QString g_AppDirPath = "";
 QString g_AppSettingsFolderPath = "";
+QString g_CurrentAppVersion = "3.0.2";
 bool opened = false;
 bool MSSQLopened = false;
 
