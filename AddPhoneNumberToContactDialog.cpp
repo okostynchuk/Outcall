@@ -69,16 +69,12 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = ?");
+    query.prepare("SELECT COUNT(entry_phone) FROM entry_phone WHERE entry_id = ?");
     query.addBindValue(id);
     query.exec();
+    query.first();
 
-    int count = 0;
-
-    while (query.next())
-        count++;
-
-    if (count < 5)
+    if (query.value(0).toInt() < 5)
     {
         QMessageBox msgBox;
         msgBox.setText(tr("Добавление номера"));
