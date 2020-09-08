@@ -154,19 +154,22 @@ void EditContactDialog::onSave()
 
     for (int i = 0; i < phonesList.length(); ++i)
     {
-        if (!phonesList.at(i)->text().isEmpty())
-        {
-            QString phone = phonesList.at(i)->text();
-
-            if (isPhone(&phone))
-                phonesList.at(i)->setStyleSheet("border: 1px solid grey");
-            else
+        if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
+            continue;
+        else
+            if (!phonesList.at(i)->text().isEmpty())
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                QString phone = phonesList.at(i)->text();
 
-                invalid_phones = true;
+                if (isPhone(&phone))
+                    phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+                else
+                {
+                    phonesList.at(i)->setStyleSheet("border: 1px solid red");
+
+                    invalid_phones = true;
+                }
             }
-        }
     }
 
     if (invalid_phones)
