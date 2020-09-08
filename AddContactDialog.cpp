@@ -28,10 +28,23 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
 //    }
 
     phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+
+    QRegularExpression regExp("^[\\+]?[0-9]*$");
+    phonesValidator = new QRegularExpressionValidator(regExp, this);
+
+    for (int i = 0; i < phonesList.length(); ++i)
+        phonesList.at(i)->setValidator(phonesValidator);
+
+    regExp.setPattern("^[0-9]*$");
+    vyborIdValidator = new QRegularExpressionValidator(regExp, this);
+
+    ui->VyborID->setValidator(vyborIdValidator);
 }
 
 AddContactDialog::~AddContactDialog()
 {
+    delete phonesValidator;
+    delete vyborIdValidator;
     delete ui;
 }
 
@@ -160,22 +173,6 @@ void AddContactDialog::onSave()
         return;
     }
 
-    QString vyborId = ui->VyborID->text();
-
-    if (!vyborId.isEmpty())
-    {
-        if (isVyborID(&vyborId))
-            ui->VyborID->setStyleSheet("border: 1px solid grey");
-        else
-        {
-            ui->VyborID->setStyleSheet("border: 1px solid red");
-
-            QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("VyborID не соответствует формату!"), QMessageBox::Ok);
-
-            return;
-        }
-    }
-
     query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("person");
@@ -244,18 +241,6 @@ bool AddContactDialog::isPhone(QString* str)
     int pos = 0;
 
     QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[3][8][0][0-9]{9}$|^[0][0-9]{9}$)"));
-
-    if (validator.validate(*str, pos) == QValidator::Acceptable)
-        return true;
-
-    return false;
-}
-
-bool AddContactDialog::isVyborID(QString* str)
-{
-    int pos = 0;
-
-    QRegularExpressionValidator validator(QRegularExpression("[0-9]*"));
 
     if (validator.validate(*str, pos) == QValidator::Acceptable)
         return true;
