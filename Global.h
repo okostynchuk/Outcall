@@ -12,6 +12,7 @@
 
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
+extern QString g_CurrentAppVersion;
 extern bool opened;
 extern bool MSSQLopened;
 

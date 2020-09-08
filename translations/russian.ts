@@ -88,7 +88,7 @@
     </message>
     <message>
         <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
-        <translation>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+        <translation type="vanished">Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Нет</source>
@@ -96,7 +96,7 @@
     </message>
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
-        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+        <translation type="vanished">&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -139,6 +139,14 @@
     <message>
         <source>Привязать организацию</source>
         <translation>Привязать организацию</translation>
+    </message>
+    <message>
+        <source>Имя</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <source>Заполните обязательное поле!</source>
+        <translation>Заполните обязательное поле!</translation>
     </message>
 </context>
 <context>
@@ -298,11 +306,11 @@
     </message>
     <message>
         <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
-        <translation>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+        <translation type="vanished">Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
-        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+        <translation type="vanished">&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -337,6 +345,14 @@
     <message>
         <source>Ввод заметки</source>
         <translation>Ввод заметки</translation>
+    </message>
+    <message>
+        <source>Название организации</source>
+        <translation>Название организации</translation>
+    </message>
+    <message>
+        <source>Заполните обязательное поле!</source>
+        <translation>Заполните обязательное поле!</translation>
     </message>
 </context>
 <context>
@@ -767,11 +783,11 @@
     </message>
     <message>
         <source>Пропущенный</source>
-        <translation type="vanished">Пропущенный</translation>
+        <translation>Пропущенный</translation>
     </message>
     <message>
         <source>Занято</source>
-        <translation type="vanished">Занято</translation>
+        <translation>Занято</translation>
     </message>
     <message>
         <source>Отклонено</source>
@@ -779,7 +795,7 @@
     </message>
     <message>
         <source>Принятый</source>
-        <translation type="vanished">Принятый</translation>
+        <translation>Принятый</translation>
     </message>
     <message>
         <source>◄</source>
@@ -807,7 +823,7 @@
     </message>
     <message>
         <source>Отколено</source>
-        <translation type="vanished">Отколено</translation>
+        <translation>Отколено</translation>
     </message>
     <message>
         <source>Прослушать запись звонка</source>
@@ -819,19 +835,19 @@
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Пропущенный </translation>
+        <translation type="vanished">Пропущенный </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Занято </translation>
+        <translation type="vanished">Занято </translation>
     </message>
     <message>
         <source>Отколено </source>
-        <translation>Отколено </translation>
+        <translation type="vanished">Отколено </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Принятый </translation>
+        <translation type="vanished">Принятый </translation>
     </message>
     <message>
         <source>Добавить к существующему</source>
@@ -854,22 +870,30 @@
     </message>
     <message>
         <source>Очистить всех</source>
-        <translation>Очистить всех</translation>
+        <translation type="vanished">Очистить всех</translation>
     </message>
     <message>
         <source>Выбрать всех</source>
-        <translation>Выбрать всех</translation>
+        <translation type="vanished">Выбрать всех</translation>
     </message>
     <message>
         <source>Применить</source>
         <translation>Применить</translation>
+    </message>
+    <message>
+        <source>Выбрать всех сотрудников</source>
+        <translation>Выбрать всех сотрудников</translation>
+    </message>
+    <message>
+        <source>Очистить всех сотрудников</source>
+        <translation>Очистить всех сотрудников</translation>
     </message>
 </context>
 <context>
     <name>ChooseNumber</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
         <source>Номера:</source>
@@ -877,23 +901,23 @@
     </message>
     <message>
         <source>1</source>
-        <translation>1</translation>
+        <translation type="vanished">1</translation>
     </message>
     <message>
         <source>3</source>
-        <translation>3</translation>
+        <translation type="vanished">3</translation>
     </message>
     <message>
         <source>2</source>
-        <translation>2</translation>
+        <translation type="vanished">2</translation>
     </message>
     <message>
         <source>5</source>
-        <translation>5</translation>
+        <translation type="vanished">5</translation>
     </message>
     <message>
         <source>4</source>
-        <translation>4</translation>
+        <translation type="vanished">4</translation>
     </message>
     <message>
         <source>Выбор номера</source>
@@ -905,7 +929,7 @@
     </message>
     <message>
         <source>&quot;</source>
-        <translation>&quot;</translation>
+        <translation type="vanished">&quot;</translation>
     </message>
     <message>
         <source>Выберите номер</source>
@@ -913,7 +937,11 @@
     </message>
     <message>
         <source>Номерa &quot;</source>
-        <translation>Номерa &quot;</translation>
+        <translation type="vanished">Номерa &quot;</translation>
+    </message>
+    <message>
+        <source>Номерa</source>
+        <translation>Номерa</translation>
     </message>
 </context>
 <context>
@@ -1370,11 +1398,11 @@
     </message>
     <message>
         <source>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
-        <translation>Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+        <translation type="vanished">Имя:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
-        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+        <translation type="vanished">&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -1429,6 +1457,14 @@
     <message>
         <source>Вернуться к резюме</source>
         <translation>Вернуться к резюме</translation>
+    </message>
+    <message>
+        <source>Имя</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <source>Заполните обязательное поле!</source>
+        <translation>Заполните обязательное поле!</translation>
     </message>
 </context>
 <context>
@@ -1523,11 +1559,11 @@
     </message>
     <message>
         <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
-        <translation>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+        <translation type="vanished">Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</source>
-        <translation>&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
+        <translation type="vanished">&lt;span style=&quot;color: red;&quot;&gt;Заполните обязательное поле!&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Ошибка</source>
@@ -1574,6 +1610,14 @@
     <message>
         <source>Вернуться к резюме</source>
         <translation>Вернуться к резюме</translation>
+    </message>
+    <message>
+        <source>Название организации</source>
+        <translation>Название организации</translation>
+    </message>
+    <message>
+        <source>Заполните обязательное поле!</source>
+        <translation>Заполните обязательное поле!</translation>
     </message>
 </context>
 <context>
@@ -2427,15 +2471,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Поиск по ФИО / названию</source>
-        <translation>Поиск по ФИО / названию</translation>
+        <translation type="vanished">Поиск по ФИО / названию</translation>
     </message>
     <message>
         <source>Поиск по номеру телефона</source>
-        <translation>Поиск по номеру телефона</translation>
+        <translation type="vanished">Поиск по номеру телефона</translation>
     </message>
     <message>
         <source>Поиск сотрудников по организации</source>
-        <translation>Поиск сотрудников по организации</translation>
+        <translation type="vanished">Поиск сотрудников по организации</translation>
     </message>
     <message>
         <source>Отсутствует подлючение к базе Access!</source>
@@ -2488,6 +2532,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Данный номер уже привязан к контакту!</source>
         <translation>Данный номер уже привязан к контакту!</translation>
+    </message>
+    <message>
+        <source>Присутсвуют одинаковые номера!</source>
+        <translation>Присутсвуют одинаковые номера!</translation>
+    </message>
+    <message>
+        <source>Для сохранения требуется внести изменения!</source>
+        <translation>Для сохранения требуется внести изменения!</translation>
     </message>
 </context>
 <context>
@@ -2814,11 +2866,11 @@ p, li { white-space: pre-wrap; }
     <name>UpdateDialog</name>
     <message>
         <source>Обновление приложения</source>
-        <translation>Обновление приложения</translation>
+        <translation type="vanished">Обновление приложения</translation>
     </message>
     <message>
         <source>Список изменений</source>
-        <translation>Список изменений</translation>
+        <translation type="vanished">Список изменений</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2834,35 +2886,35 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Закрыть</source>
-        <translation>Закрыть</translation>
+        <translation type="vanished">Закрыть</translation>
     </message>
     <message>
         <source>Проверить доступные обновления</source>
-        <translation>Проверить доступные обновления</translation>
+        <translation type="vanished">Проверить доступные обновления</translation>
     </message>
     <message>
         <source>Сбросить настройки</source>
-        <translation>Сбросить настройки</translation>
+        <translation type="vanished">Сбросить настройки</translation>
     </message>
     <message>
         <source>Настройки обновлений</source>
-        <translation>Настройки обновлений</translation>
+        <translation type="vanished">Настройки обновлений</translation>
     </message>
     <message>
         <source>0.1</source>
-        <translation>0.1</translation>
+        <translation type="vanished">0.1</translation>
     </message>
     <message>
         <source>Write a version string</source>
-        <translation>Write a version string</translation>
+        <translation type="vanished">Write a version string</translation>
     </message>
     <message>
         <source>(Последняя версия *)</source>
-        <translation>(Последняя версия *)</translation>
+        <translation type="vanished">(Последняя версия *)</translation>
     </message>
     <message>
         <source>Не использовать QSU библиотеку для AppCast</source>
-        <translation>Не использовать QSU библиотеку для AppCast</translation>
+        <translation type="vanished">Не использовать QSU библиотеку для AppCast</translation>
     </message>
     <message>
         <source>Уведомлять когда появятся новые уведомления</source>
@@ -2870,19 +2922,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Показывать все уведомления</source>
-        <translation>Показывать все уведомления</translation>
+        <translation type="vanished">Показывать все уведомления</translation>
     </message>
     <message>
         <source>Разрешить работу программы-обновителя</source>
-        <translation>Разрешить работу программы-обновителя</translation>
+        <translation type="vanished">Разрешить работу программы-обновителя</translation>
     </message>
     <message>
         <source>Обязательно обновлять</source>
-        <translation>Обязательно обновлять</translation>
+        <translation type="vanished">Обязательно обновлять</translation>
     </message>
     <message>
         <source>Уведомлять когда появятся новые обновления</source>
-        <translation>Уведомлять когда появятся новые обновления</translation>
+        <translation type="vanished">Уведомлять когда появятся новые обновления</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2890,7 +2942,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Здесь будут отображены изменения обновленной версии приложения&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -2930,6 +2982,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Закрыть</source>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Список изменений:</source>
+        <translation>Список изменений:</translation>
     </message>
 </context>
 <context>

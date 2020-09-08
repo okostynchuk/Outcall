@@ -265,7 +265,7 @@ void Updater::setNotifyOnFinish(const bool notify)
 void Updater::setUserAgentString(const QString& agent)
 {
     m_userAgentString = agent;
-    m_downloader->setUserAgentString (agent);
+    m_downloader->setUserAgentString(agent);
 }
 
 /**
@@ -408,6 +408,7 @@ void Updater::setUpdateAvailable(const bool available)
 
     if (updateAvailable() && (notifyOnUpdate() || notifyOnFinish()))
     {
+        QString logChanges = tr("Список изменений:");
         QString text = tr("Хотите скачать обновление сейчас?");
         if (m_mandatoryUpdate)
         {
@@ -420,7 +421,7 @@ void Updater::setUpdateAvailable(const bool available)
                         + "</h3>";
 
         box.setText(title);
-        box.setInformativeText(text);
+        box.setInformativeText(logChanges + "\n" + m_changelog + "\n\n" + text);
 
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         box.setButtonText(QMessageBox::Yes, tr("Да"));
@@ -442,10 +443,7 @@ void Updater::setUpdateAvailable(const bool available)
             else
                 QDesktopServices::openUrl(QUrl(downloadUrl()));
         }
-        else if (QMessageBox::No)
-        {
-           qApp->closeAllWindows();
-        }
+
         else
         {
             if (m_mandatoryUpdate)
@@ -460,11 +458,10 @@ void Updater::setUpdateAvailable(const bool available)
         box.setStandardButtons(QMessageBox::Close);
         box.setButtonText(QMessageBox::Close, tr("Закрыть"));
         box.setInformativeText(tr("На данный момент нет доступных обновлений"));
-        box.setText ("<h3>"
+        box.setText("<h3>"
                      + tr("Вы используете последнюю версию "
                            "%1").arg(moduleName())
                      + "</h3>");
-
         box.exec();
     }
 }
