@@ -31,8 +31,7 @@ private slots:
     void onReturn();
     void onTextChanged();
 
-    bool isPhone(QString* str);
-    bool isVyborID(QString* str);
+    bool isPhone(QString*);
 
     void keyPressEvent(QKeyEvent*);
 
@@ -43,7 +42,8 @@ private:
 
     QStringList oldPhonesList;
 
-    QValidator* validator;
+    QValidator* phonesValidator;
+    QValidator* vyborIdValidator;
 
     QString updateID;
     QString firstNumber;

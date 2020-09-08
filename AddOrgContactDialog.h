@@ -29,8 +29,7 @@ private slots:
     void onSave();
     void onTextChanged();
 
-    bool isPhone(QString* str);
-    bool isVyborID(QString* str);
+    bool isPhone(QString*);
 
     void keyPressEvent(QKeyEvent*);
 
@@ -39,7 +38,8 @@ private:
 
     QList<QLineEdit*> phonesList;
 
-    QValidator* validator;
+    QValidator* phonesValidator;
+    QValidator* vyborIdValidator;
 
     QStringList numbers;
 };

@@ -37,8 +37,7 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isPhone(QString* str);
-    bool isVyborID(QString* str);
+    bool isPhone(QString*);
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);
@@ -50,7 +49,8 @@ private:
 
     QList<QLineEdit*> phonesList;
 
-    QValidator* validator;
+    QValidator* phonesValidator;
+    QValidator* vyborIdValidator;
 };
 
 #endif // ADDCONTACTDIALOG_H
