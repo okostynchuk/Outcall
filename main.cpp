@@ -75,27 +75,28 @@ int main(int argc, char* argv[])
         global::setSettingsValue("show_call_popup", true, "general");
 
     QString languages = global::getSettingsValue("language", "settings").toString();
-    QTranslator qtTranslator;
+    QTranslator qtMain;
+    QTranslator qtBase;
     if (languages == "Русский (по умолчанию)")
     {
-        qtTranslator.load(":/translations/russian.qm");
-        app.installTranslator(&qtTranslator);
+        qtMain.load(":/translations/russian.qm");
+        app.installTranslator(&qtMain);
 
-        qtTranslator.load(":/translations/widgets_russian.qm");
-        app.installTranslator(&qtTranslator);
+        qtBase.load(":/translations/qtbase_ru.qm");
+        app.installTranslator(&qtBase);
     }
     else if (languages == "Українська")
     {
-        qtTranslator.load(":/translations/ukrainian.qm");
-        app.installTranslator(&qtTranslator);
+        qtMain.load(":/translations/ukrainian.qm");
+        app.installTranslator(&qtMain);
 
-        qtTranslator.load(":/translations/widgets_ukrainian.qm");
-        app.installTranslator(&qtTranslator);
+        qtBase.load(":/translations/qtbase_uk.qm");
+        app.installTranslator(&qtBase);
     }
     else if (languages == "English")
     {
-        qtTranslator.load(":/translations/english.qm");
-        app.installTranslator(&qtTranslator);
+        qtMain.load(":/translations/english.qm");
+        app.installTranslator(&qtMain);
     }
 
     QProcess tasklist;
