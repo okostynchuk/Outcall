@@ -243,7 +243,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
         if (eventValues.value("Event") == "EndpointListComplete")
         {
-            for (int i = 0; i < endpoints.length(); i++)
+            for (int i = 0; i < endpoints.length(); ++i)
             {
                 QString command;
                 command   = "Action: PJSIPShowEndpoint\r\n";

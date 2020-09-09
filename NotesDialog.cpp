@@ -86,7 +86,7 @@ void NotesDialog::loadNotes()
                 queryString.append("( phone_number = '" + phoneNumber + "'");
             else
             {
-                for (int i = 0; i < numbersList.size(); i++)
+                for (int i = 0; i < numbersList.size(); ++i)
                 {
                     if (i == 0)
                         queryString.append("( phone_number = '" + numbersList[i] + "'");
@@ -164,7 +164,7 @@ void NotesDialog::loadNotes()
                 queryString.append("( phone_number = '" + phoneNumber + "'");
             else
             {
-                for (int i = 0; i < numbersList.size(); i++)
+                for (int i = 0; i < numbersList.size(); ++i)
                 {
                     if (i == 0)
                         queryString.append("( phone_number = '" + numbersList[i] + "'");

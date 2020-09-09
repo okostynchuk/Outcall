@@ -131,7 +131,7 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    for (int i = 0; i < employee.length(); i++)
+                    for (int i = 0; i < employee.length(); ++i)
                     {
                         query.prepare("UPDATE reminders SET datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE phone_to = ? AND group_id = ?");
                         query.addBindValue(dateTime);
