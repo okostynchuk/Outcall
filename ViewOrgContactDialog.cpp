@@ -364,7 +364,7 @@ void ViewOrgContactDialog::loadAllCalls()
 
     QString queryString = "SELECT IF(";
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
         if (i == 0)
             queryString.append("src = '"+numbersList[i]+"'");
@@ -377,7 +377,7 @@ void ViewOrgContactDialog::loadAllCalls()
                           " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                           "'" + days + "' DAY) AND (");
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
         if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
@@ -502,7 +502,7 @@ void ViewOrgContactDialog::loadMissedCalls()
                           "disposition = 'NO ANSWER' OR disposition = 'BUSY' "
                           "OR disposition = 'CANCEL') AND (";
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
@@ -620,7 +620,7 @@ void ViewOrgContactDialog::loadReceivedCalls()
     QString queryString = "SELECT extfield2, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE "
                           "disposition = 'ANSWERED' AND (";
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
         if (i == 0)
             queryString.append(" src = '" + numbersList[i] + "'");
@@ -738,7 +738,7 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
     QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE (";
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
         if (i == 0)
             queryString.append(" dst = '" + numbersList[i] + "'");
@@ -911,7 +911,7 @@ QWidget* ViewOrgContactDialog::loadName()
 
     int counter = 0;
 
-    for (int i = 0; i < numbersList.length(); i++)
+    for (int i = 0; i < numbersList.length(); ++i)
     {
         if (src == numbersList[i])
         {
@@ -1162,7 +1162,7 @@ void ViewOrgContactDialog::updateCount()
                               "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
                               "'" + days + "' DAY) AND ( ";
 
-        for (int i = 0; i < numbersList.length(); i++)
+        for (int i = 0; i < numbersList.length(); ++i)
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "' OR src = '" + numbersList[i] + "'");
@@ -1187,7 +1187,7 @@ void ViewOrgContactDialog::updateCount()
                       " OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
                       "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < numbersList.length(); i++)
+        for (int i = 0; i < numbersList.length(); ++i)
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
@@ -1211,7 +1211,7 @@ void ViewOrgContactDialog::updateCount()
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE disposition = 'ANSWERED' "
                       "AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < numbersList.length(); i++)
+        for (int i = 0; i < numbersList.length(); ++i)
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
@@ -1235,7 +1235,7 @@ void ViewOrgContactDialog::updateCount()
         QString queryString = ("SELECT COUNT(*) FROM cdr WHERE "
                       "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) AND (");
 
-        for (int i = 0; i < numbersList.length(); i++)
+        for (int i = 0; i < numbersList.length(); ++i)
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "'");

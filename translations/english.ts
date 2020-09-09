@@ -2025,6 +2025,50 @@ p, li { white-space: pre-wrap; }
         <source>{6bf52a52-394a-11d3-b153-00c04f79faa6}</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Остановлено</source>
+        <translation>Stopped</translation>
+    </message>
+    <message>
+        <source>Пауза</source>
+        <translation>Pause</translation>
+    </message>
+    <message>
+        <source>Воспроизведение</source>
+        <translation>Play</translation>
+    </message>
+    <message>
+        <source>Перемотка вперед</source>
+        <translation>Skip forward</translation>
+    </message>
+    <message>
+        <source>Перемотка назад</source>
+        <translation>Skip backward</translation>
+    </message>
+    <message>
+        <source>Буферизация</source>
+        <translation>Buffering</translation>
+    </message>
+    <message>
+        <source>Ожидание</source>
+        <translation>Waiting</translation>
+    </message>
+    <message>
+        <source>Конец файла</source>
+        <translation>End of the file</translation>
+    </message>
+    <message>
+        <source>Переход</source>
+        <translation>Move</translation>
+    </message>
+    <message>
+        <source>Готово</source>
+        <translation>Ready</translation>
+    </message>
+    <message>
+        <source>Переподключение</source>
+        <translation>Reconnection</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
@@ -2406,7 +2450,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID is not formatted!</translation>
+        <translation type="vanished">VyborID is not formatted!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>

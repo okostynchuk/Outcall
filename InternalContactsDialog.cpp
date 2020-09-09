@@ -30,13 +30,13 @@ InternalContactsDialog::~InternalContactsDialog()
 
 void InternalContactsDialog::deleteObjects()
 {
-    for (int i = 0; i < layouts.length(); i++)
+    for (int i = 0; i < layouts.length(); ++i)
         layouts[i]->deleteLater();
 
-    for (int i = 0; i < widgets.length(); i++)
+    for (int i = 0; i < widgets.length(); ++i)
         widgets[i]->deleteLater();
 
-    for (int i = 0; i < buttons.length(); i++)
+    for (int i = 0; i < buttons.length(); ++i)
         buttons[i]->deleteLater();
 
     layouts.clear();

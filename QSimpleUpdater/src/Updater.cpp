@@ -42,8 +42,8 @@ Updater::Updater()
     setUserAgentString(QString("%1/%2 (Qt; QSimpleUpdater)").arg(qApp->applicationName(),
                         qApp->applicationVersion()));
 
-    connect(m_downloader, SIGNAL(downloadFinished(QString, QString)), this, SIGNAL(downloadFinished(QString, QString)));
-    connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onReply(QNetworkReply*)));
+    connect(m_downloader, &Downloader::downloadFinished, this, &Updater::downloadFinished);
+    connect(m_manager, &QNetworkAccessManager::finished, this, &Updater::onReply);
 }
 
 Updater::~Updater()
@@ -320,7 +320,7 @@ void Updater::setUseCustomAppcast(const bool customAppcast)
  */
 void Updater::setUseCustomInstallProcedures(const bool custom)
 {
-    m_downloader->setUseCustomInstallProcedures (custom);
+    m_downloader->setUseCustomInstallProcedures(custom);
 }
 
 /**
@@ -408,7 +408,6 @@ void Updater::setUpdateAvailable(const bool available)
 
     if (updateAvailable() && (notifyOnUpdate() || notifyOnFinish()))
     {
-        QString logChanges = tr("Список изменений:");
         QString text = tr("Хотите скачать обновление сейчас?");
         if (m_mandatoryUpdate)
         {
@@ -419,6 +418,8 @@ void Updater::setUpdateAvailable(const bool available)
                         + tr("Версия %1 %2 была выпущена!")
                         .arg(latestVersion()).arg(moduleName())
                         + "</h3>";
+
+        QString logChanges = tr("Список изменений:");
 
         box.setText(title);
         box.setInformativeText(logChanges + "\n" + m_changelog + "\n\n" + text);
