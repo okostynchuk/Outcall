@@ -89,7 +89,7 @@ void Downloader::startDownload(const QUrl& url)
     m_ui->timeLabel->setText(tr("Времени осталось") + ": " + tr("неизвестно"));
 
     /* Configure the network request */
-    QNetworkRequest request (url);
+    QNetworkRequest request(url);
     if (!m_userAgentString.isEmpty())
         request.setRawHeader("", m_userAgentString.toUtf8());
 
@@ -213,9 +213,7 @@ void Downloader::installUpdate()
     if (m_mandatoryUpdate)
         text = tr("Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!");
 
-    box.setText("<h3>" +
-                 text
-                 + "</h3>");
+    box.setText("<h3>" + text + "</h3>");
 
     /* User wants to install the download */
     if (box.exec() == QMessageBox::Ok)
@@ -227,7 +225,8 @@ void Downloader::installUpdate()
 
     }
     /* Wait */
-    else {
+    else
+    {
         if (m_mandatoryUpdate)
             QApplication::quit();
 

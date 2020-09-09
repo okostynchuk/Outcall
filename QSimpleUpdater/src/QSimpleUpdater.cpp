@@ -245,8 +245,7 @@ void QSimpleUpdater::setModuleName(const QString& url, const QString& name)
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setNotifyOnUpdate(const QString& url,
-                                        const bool notify)
+void QSimpleUpdater::setNotifyOnUpdate(const QString& url, const bool notify)
 {
     getUpdater(url)->setNotifyOnUpdate(notify);
 }
@@ -259,8 +258,7 @@ void QSimpleUpdater::setNotifyOnUpdate(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setNotifyOnFinish(const QString& url,
-                                        const bool notify)
+void QSimpleUpdater::setNotifyOnFinish(const QString& url, const bool notify)
 {
     getUpdater(url)->setNotifyOnFinish(notify);
 }
@@ -279,8 +277,7 @@ void QSimpleUpdater::setNotifyOnFinish(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setPlatformKey(const QString& url,
-                                     const QString& platform)
+void QSimpleUpdater::setPlatformKey(const QString& url, const QString& platform)
 {
     getUpdater(url)->setPlatformKey(platform);
 }
@@ -293,8 +290,7 @@ void QSimpleUpdater::setPlatformKey(const QString& url,
  *       If the module name is empty, then the \c Updater instance will use the
  *       application version.
  */
-void QSimpleUpdater::setModuleVersion(const QString& url,
-                                       const QString& version)
+void QSimpleUpdater::setModuleVersion(const QString& url, const QString& version)
 {
     getUpdater(url)->setModuleVersion(version);
 }
@@ -307,8 +303,7 @@ void QSimpleUpdater::setModuleVersion(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setDownloaderEnabled(const QString& url,
-                                           const bool enabled)
+void QSimpleUpdater::setDownloaderEnabled(const QString& url, const bool enabled)
 {
     getUpdater(url)->setDownloaderEnabled(enabled);
 }
@@ -320,8 +315,7 @@ void QSimpleUpdater::setDownloaderEnabled(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setUserAgentString(const QString& url,
-                                         const QString& agent)
+void QSimpleUpdater::setUserAgentString(const QString& url, const QString& agent)
 {
     getUpdater(url)->setUserAgentString(agent);
 }
@@ -335,8 +329,7 @@ void QSimpleUpdater::setUserAgentString(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setUseCustomAppcast(const QString& url,
-                                          const bool customAppcast)
+void QSimpleUpdater::setUseCustomAppcast(const QString& url, const bool customAppcast)
 {
     getUpdater(url)->setUseCustomAppcast(customAppcast);
 }
@@ -352,8 +345,7 @@ void QSimpleUpdater::setUseCustomAppcast(const QString& url,
  * \note If an \c Updater instance registered with the given \a url is not
  *       found, that \c Updater instance will be initialized automatically
  */
-void QSimpleUpdater::setUseCustomInstallProcedures(const QString& url,
-        const bool custom)
+void QSimpleUpdater::setUseCustomInstallProcedures(const QString& url, const bool custom)
 {
     getUpdater(url)->setUseCustomInstallProcedures(custom);
 }
