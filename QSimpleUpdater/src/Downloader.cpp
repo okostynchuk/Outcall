@@ -176,7 +176,7 @@ void Downloader::openDownload()
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    for (int i = 0; i < fileAmount; i++)
+    for (int i = 0; i < fileAmount; ++i)
         QFile::rename("C:\\OutCALL\\" + namesOfDirectories.at(i), "C:\\OutCALL\\" + PARTIAL_DOWN + namesOfDirectories.at(i));
 }
 

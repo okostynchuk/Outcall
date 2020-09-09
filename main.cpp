@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
     if (oldAppDir.exists())
     {
-        for (int i = 0; i < fileAmount; i++)
+        for (int i = 0; i < fileAmount; ++i)
         {
             QString str = namesOfDirectories.at(i);
 
@@ -58,25 +58,28 @@ int main(int argc, char* argv[])
         }
     }
 
-    QSettings sett("Microsoft\\Windows\\CurrentVersion", "Uninstall");
-    QStringList list = sett.childGroups();
-    for (int i = 0; i < list.length(); ++i)
+    QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion", "Uninstall");
+    QStringList childFolders = uninstallFolder.childGroups();
+
+    for (int i = 0; i < childFolders.length(); ++i)
     {
-        QSettings sett2("Microsoft\\Windows\\CurrentVersion\\Uninstall" , list.at(i));
-        if (sett2.contains("DisplayName"))
-            if (sett2.value("DisplayName").toString() == QString(APP_NAME) && sett2.value("DisplayVersion").toString() != appVersion)
+        uninstallFolder.setValue("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
+
+        if (uninstallFolder.contains("DisplayName"))
+            if (uninstallFolder.value("DisplayName").toString() == QString(APP_NAME) && uninstallFolder.value("DisplayVersion").toString() != appVersion)
             {
-                QProcess *pro = new QProcess;
-                pro->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + list.at(i) + " /f");
+                QProcess* process = new QProcess;
+
+                process->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + childFolders.at(i) + " /f");
+
+                delete process;
             }
     }
-
-    if (global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
-        global::setSettingsValue("show_call_popup", true, "general");
 
     QString languages = global::getSettingsValue("language", "settings").toString();
     QTranslator qtMain;
     QTranslator qtBase;
+
     if (languages == "Русский (по умолчанию)")
     {
         qtMain.load(":/translations/russian.qm");
@@ -117,6 +120,9 @@ int main(int argc, char* argv[])
 
             return 1;
         }
+
+    if (global::getSettingsValue("show_call_popup", "general").toString().isEmpty())
+        global::setSettingsValue("show_call_popup", true, "general");
 
     global::setSettingsValue("auto_sign_in",  true, "general");
     global::setSettingsValue("auto_startup",  true, "general");
@@ -214,24 +220,6 @@ int main(int argc, char* argv[])
             MSSQLopened = true;
         else
             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
-    }
-
-    bool bCallRequest = false;
-
-    if (argc==2 && QString(argv[1]) == "installer")
-        QDir().mkpath(g_AppSettingsFolderPath);
-
-    if (argc == 2)
-        bCallRequest = QString(argv[1]).contains("Dial#####");
-
-    if (bCallRequest)
-    {
-        QStringList arguments = QString(argv[1]).split("#####");
-        QString contactName = arguments[1];
-
-        contactName.replace("&&&", " ");
-
-        return 0;
     }
 
     QString username  = global::getSettingsValue("username", "settings").toString();
