@@ -233,7 +233,6 @@ int main(int argc, char* argv[])
                       "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
                       "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
 
-
     OutCall outcall;
     outcall.show();
 
