@@ -105,9 +105,14 @@ void EditOrgContactDialog::onSave()
 
     for (int i = 0; i < phonesList.length(); ++i)
     {
-        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+        if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
+            continue;
+        else
+        {
+            phonesList.at(i)->setStyleSheet("border: 1px solid grey");
 
-        phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+            phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+        }
     }
 
     bool empty_field = false;

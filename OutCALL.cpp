@@ -136,6 +136,11 @@ void OutCall::createContextMenu()
     m_menu->addSeparator();
 
     m_menu->addAction(exitAction);
+
+    m_menu->setStyleSheet("QMenu                {background-color: #F2F2F2;}"
+                          "QMenu::item          {padding-left: 30px; padding-right: 30px; padding-top: 5px; padding-bottom: 5px; margin-top: 2px; margin-bottom:2px; background-color: #F2F2F2;}"
+                          "QMenu::separator     {background-color: black; height: 1px; margin-left:30px; }"
+                          "QMenu::item:selected {background-color: #90C8F6; color: black;}");
 }
 
 void OutCall::automaticlySignIn()

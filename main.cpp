@@ -237,6 +237,10 @@ int main(int argc, char* argv[])
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();
     AsteriskManager manager(username, QString(QByteArray::fromBase64(secret)));
 
+    app.setStyleSheet("QMenu                {margin: 0px; padding: 0px; background-color: #F2F2F2;}"
+                      "QMenu::item          {background-color: #F2F2F2;}"
+                      "QMenu::separator     {margin: 0px; padding: 0px; background-color: #F2F2F2}"
+                      "QMenu::item:selected {background-color: #18B7FF; color: black;}");
     OutCall outcall;
     outcall.show();
 
