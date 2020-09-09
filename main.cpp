@@ -63,8 +63,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < childFolders.length(); ++i)
     {
-        uninstallFolder.setValue("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
-
+        QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
         if (uninstallFolder.contains("DisplayName"))
             if (uninstallFolder.value("DisplayName").toString() == QString(APP_NAME) && uninstallFolder.value("DisplayVersion").toString() != appVersion)
             {
