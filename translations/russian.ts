@@ -2013,6 +2013,50 @@ p, li { white-space: pre-wrap; }
         <source>{6bf52a52-394a-11d3-b153-00c04f79faa6}</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Остановлено</source>
+        <translation>Остановлено</translation>
+    </message>
+    <message>
+        <source>Пауза</source>
+        <translation>Пауза</translation>
+    </message>
+    <message>
+        <source>Воспроизведение</source>
+        <translation>Воспроизведение</translation>
+    </message>
+    <message>
+        <source>Перемотка вперед</source>
+        <translation>Перемотка вперед</translation>
+    </message>
+    <message>
+        <source>Перемотка назад</source>
+        <translation>Перемотка назад</translation>
+    </message>
+    <message>
+        <source>Буферизация</source>
+        <translation>Буферизация</translation>
+    </message>
+    <message>
+        <source>Ожидание</source>
+        <translation>Ожидание</translation>
+    </message>
+    <message>
+        <source>Конец файла</source>
+        <translation>Конец файла</translation>
+    </message>
+    <message>
+        <source>Переход</source>
+        <translation>Переход</translation>
+    </message>
+    <message>
+        <source>Готово</source>
+        <translation>Готово</translation>
+    </message>
+    <message>
+        <source>Переподключение</source>
+        <translation>Переподключение</translation>
+    </message>
 </context>
 <context>
     <name>PopupHelloWindow</name>
@@ -2391,7 +2435,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>VyborID не соответствует формату!</source>
-        <translation>VyborID не соответствует формату!</translation>
+        <translation type="vanished">VyborID не соответствует формату!</translation>
     </message>
     <message>
         <source>Номер не соответствует формату!</source>
