@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>OutCALL</DisplayName>
+    <ReleaseDate>2020-09-09</ReleaseDate>
+    <Version>3.0.3</Version>    
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+    <RequiresAdminRights>false</RequiresAdminRights>
+</Package>
