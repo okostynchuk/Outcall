@@ -6,6 +6,7 @@
 #define LOG_INFORMATION			2
 #define APP_NAME                "OutCALL"
 #define ORGANIZATION_NAME       "Team Nonames"
+#define APP_VERSION             "3.0.2"
 
 #include <QVariant>
 #include <QMessageBox>

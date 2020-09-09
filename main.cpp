@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < childFolders.length(); ++i)
     {
         QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
+
         if (uninstallFolder.contains("DisplayName"))
             if (uninstallFolder.value("DisplayName").toString() == QString(APP_NAME) && uninstallFolder.value("DisplayVersion").toString() != appVersion)
             {
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
 
                 process->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + childFolders.at(i) + " /f");
 
-                delete process;
+                process->deleteLater();
             }
     }
 
