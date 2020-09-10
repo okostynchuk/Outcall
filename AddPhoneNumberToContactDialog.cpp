@@ -61,7 +61,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
     if (query.value(0) != 0)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный номер уже привязан к контакту!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Данный номер уже привязан к контакту!"), QMessageBox::Ok);
 
         return;
     }
@@ -98,7 +98,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
                 msgBox.close();
 
-                QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Номер успешно добавлен!"), QMessageBox::Ok);
+                QMessageBox::information(this, tr("Уведомление"), tr("Номер успешно добавлен!"), QMessageBox::Ok);
                 break;
             case QMessageBox::No:
                 msgBox.close();
@@ -108,7 +108,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
         }
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
 }
 
 void AddPhoneNumberToContactDialog::onUpdate()
@@ -192,11 +192,11 @@ void AddPhoneNumberToContactDialog::onUpdate()
 
     queries.append(queryModel);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО / Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Город"));
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Заметка"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Город"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(queryModel);
 

@@ -178,7 +178,7 @@ void EditContactDialog::onSave()
 
     if (invalid_phones)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Номер не соответствует формату!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Номер не соответствует формату!"), QMessageBox::Ok);
 
         return;
     }
@@ -199,7 +199,7 @@ void EditContactDialog::onSave()
 
     if (same_phones)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
 
         return;
     }
@@ -223,7 +223,7 @@ void EditContactDialog::onSave()
 
     if (existing_phones)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Введены существующие номера!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Введены существующие номера!"), QMessageBox::Ok);
 
         return;
     }
@@ -281,7 +281,7 @@ void EditContactDialog::onSave()
 
     close();
 
-    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Запись успешно изменена!"), QMessageBox::Ok);
+    QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
 bool EditContactDialog::isPhone(QString* str)

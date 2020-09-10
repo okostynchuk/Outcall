@@ -79,7 +79,7 @@ OutCall::~OutCall()
 void OutCall::createContextMenu()
 {
     // Exit action
-    QAction* exitAction = new QAction(QObject::tr("Выход"), m_menu);
+    QAction* exitAction = new QAction(tr("Выход"), m_menu);
     connect(exitAction, &QAction::triggered, this, &OutCall::close);
 
     // Sign In
@@ -210,7 +210,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
     QString my_number       = call.value("to").toString();
 
     if (from == callerIDName)
-        callerIDName = QObject::tr("Неизвестный");
+        callerIDName = tr("Неизвестный");
 
     if (show_call_popup)
         PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIDName), my_number);

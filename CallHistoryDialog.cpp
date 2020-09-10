@@ -19,7 +19,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     my_number = global::getExtensionNumber("extensions");
     my_group = global::getGroupExtensionNumber("group_extensions");
 
-    setWindowTitle(QObject::tr("История звонков по номеру:") + " " + my_number);
+    setWindowTitle(tr("История звонков по номеру:") + " " + my_number);
 
     setHeadersNonClickable();
 
@@ -124,12 +124,12 @@ void CallHistoryDialog::loadAllCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Статус"));
-    queryModel->setHeaderData(5, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
+    queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(6);
     queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
@@ -221,10 +221,10 @@ void CallHistoryDialog::loadMissedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -310,9 +310,9 @@ void CallHistoryDialog::loadReceivedCalls()
     queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -398,9 +398,9 @@ void CallHistoryDialog::loadPlacedCalls()
     queryModel->setQuery(queryString, dbCalls);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -624,7 +624,7 @@ void CallHistoryDialog::onCallClicked()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
         return;
     }
@@ -650,7 +650,7 @@ void CallHistoryDialog::onAddContact()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
 
@@ -673,7 +673,7 @@ void CallHistoryDialog::onAddOrgContact()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
 
@@ -725,7 +725,7 @@ void CallHistoryDialog::editContact(QString number)
         editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::editOrgContact(QString number)
@@ -747,14 +747,14 @@ void CallHistoryDialog::editOrgContact(QString number)
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::onAddPhoneNumberToContact()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
 
@@ -775,14 +775,14 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Данный номер уже принадлежит контакту!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Данный номер уже принадлежит контакту!"), QMessageBox::Ok);
 }
 
 void CallHistoryDialog::onPlayAudio()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
 
@@ -792,7 +792,7 @@ void CallHistoryDialog::onPlayAudio()
             playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->openMedia(recordpath);
         playAudioDialog.data()->show();
         playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -802,7 +802,7 @@ void CallHistoryDialog::onPlayAudioPhone()
 {
     if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
 

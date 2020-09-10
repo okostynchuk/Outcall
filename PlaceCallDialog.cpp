@@ -90,9 +90,9 @@ void PlaceCallDialog::onUpdate()
     if (update == "default")
         queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name ASC");
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО / Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
 
     ui->tableView->setModel(NULL);
     ui->tableView->setModel(queryModel);

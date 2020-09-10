@@ -48,8 +48,6 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
 
     ui->tabWidget->setCurrentIndex(0);
 
-    languages = global::getSettingsValue("language", "settings").toString();
-
     resizeCells = true;
 
     go = "default";
@@ -430,13 +428,13 @@ void RemindersDialog::loadRelevantReminders()
     queryModel->setQuery(queryString);
 
     queryModel->insertColumn(1);
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("От"));
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Активно"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("От"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(9);
-    queryModel->setHeaderData(9, Qt::Horizontal, QObject::tr("Содержание"));
+    queryModel->setHeaderData(9, Qt::Horizontal, tr("Содержание"));
     queryModel->insertColumn(10);
-    queryModel->setHeaderData(10, Qt::Horizontal, QObject::tr("Выполнено"));
+    queryModel->setHeaderData(10, Qt::Horizontal, tr("Выполнено"));
 
     ui->tableView->setModel(queryModel);
 
@@ -563,13 +561,13 @@ void RemindersDialog::loadIrrelevantReminders()
     queryModel->setQuery(queryString);
 
     queryModel->insertColumn(1);
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("От"));
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Активно"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("От"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(9);
-    queryModel->setHeaderData(9, Qt::Horizontal, QObject::tr("Содержание"));
+    queryModel->setHeaderData(9, Qt::Horizontal, tr("Содержание"));
     queryModel->insertColumn(10);
-    queryModel->setHeaderData(10, Qt::Horizontal, QObject::tr("Выполнено"));
+    queryModel->setHeaderData(10, Qt::Horizontal, tr("Выполнено"));
 
     ui->tableView_2->setModel(queryModel);
 
@@ -696,15 +694,15 @@ void RemindersDialog::loadDelegatedReminders()
     queryModel->setQuery(queryString);
 
     queryModel->insertColumn(1);
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Активно"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Активно"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(9);
-    queryModel->setHeaderData(9, Qt::Horizontal, QObject::tr("Содержание"));
+    queryModel->setHeaderData(9, Qt::Horizontal, tr("Содержание"));
     queryModel->insertColumn(10);
-    queryModel->setHeaderData(10, Qt::Horizontal, QObject::tr("Просмотрено"));
+    queryModel->setHeaderData(10, Qt::Horizontal, tr("Просмотрено"));
     queryModel->insertColumn(11);
-    queryModel->setHeaderData(11, Qt::Horizontal, QObject::tr("Выполнено"));
+    queryModel->setHeaderData(11, Qt::Horizontal, tr("Выполнено"));
 
     ui->tableView_3->setModel(queryModel);
 
@@ -812,7 +810,7 @@ void RemindersDialog::changeState()
     {
         checkBox->setChecked(false);
 
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
     }
     else
     {
