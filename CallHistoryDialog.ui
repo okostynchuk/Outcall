@@ -242,7 +242,7 @@
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
+            <normaloff>:/images/addOrg.png</normaloff>:/images/addOrg.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -296,7 +296,7 @@
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+            <normaloff>:/images/makeCall.png</normaloff>:/images/makeCall.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -331,7 +331,7 @@
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/addToExisting_R.png</normaloff>:/images/addToExisting_R.png</iconset>
+            <normaloff>:/images/addToExisting.png</normaloff>:/images/addToExisting.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -438,7 +438,7 @@
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/addPerson_R.png</normaloff>:/images/addPerson_R.png</iconset>
+            <normaloff>:/images/addPerson.png</normaloff>:/images/addPerson.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -635,7 +635,7 @@
           </property>
           <property name="icon">
            <iconset resource="images.qrc">
-            <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
+            <normaloff>:/images/refresh.png</normaloff>:/images/refresh.png</iconset>
           </property>
           <property name="iconSize">
            <size>

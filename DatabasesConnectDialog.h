@@ -17,24 +17,25 @@ public:
     explicit DatabasesConnectDialog(QWidget *parent = 0);
     ~DatabasesConnectDialog();
 
-    void setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state);
+    void setDatabases(QSqlDatabase, QSqlDatabase, QString);
 
 private slots:
     void onSave();
     void onClose();
-    void setSettingForFirstDb();
-    void setSettingForSecondDb();
-    void checkDb();
-    void checkDbAsterisk();
+    void setSettingsDb();
+    void setSettingsDbCalls();
+    void openDb();
+    void openDbCalls();
 
     void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::DatabasesConnectDialog *ui;
 
-    QString state_db;
-    QSqlDatabase DB;
-    QSqlDatabase DbAsterisk;
+    QSqlDatabase db;
+    QSqlDatabase dbCalls;
+
+    QString state;
 };
 
 #endif // DATABASESCONNECTDIALOG_H

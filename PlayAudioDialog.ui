@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>150</height>
+    <width>362</width>
+    <height>175</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,19 +15,37 @@
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
-    <normaloff>:/images/disconnected.png</normaloff>:/images/disconnected.png</iconset>
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="MediaAxWidget" name="mediaPlayer">
+    <widget class="QAxWidget" name="mediaPlayer">
      <property name="control" stdset="0">
       <string>{6bf52a52-394a-11d3-b153-00c04f79faa6}</string>
+     </property>
+     <property name="locale" stdset="0">
+      <locale language="Russian" country="Ukraine"/>
+     </property>
+     <property name="URL" stdset="0">
+      <string notr="true"/>
      </property>
      <property name="sizePolicy" stdset="0">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="enableContextMenu" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="enabled" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="uiMode" stdset="0">
+      <string notr="true">full</string>
+     </property>
+     <property name="windowlessVideo" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -38,11 +56,6 @@
    <class>QAxWidget</class>
    <extends>QWidget</extends>
    <header>qaxwidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MediaAxWidget</class>
-   <extends>QAxWidget</extends>
-   <header>mediaaxwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

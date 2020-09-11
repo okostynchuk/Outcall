@@ -124,7 +124,7 @@ void ViewContactDialog::onOpenAccess()
         dbOrders.close();
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
 void ViewContactDialog::receiveData(bool updating, int x, int y)
@@ -148,7 +148,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
     }
     else
     {
-        if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
         {
             x = 0;
             this->move(x, y);
@@ -159,7 +159,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
             y = nWidgetHeight;
             this->move(x, y);
         }
-        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
         {
             x = nWidgetWidth * 0.9;
             this->move(x, y);
@@ -348,12 +348,12 @@ void ViewContactDialog::loadAllCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Статус"));
-    queryModel->setHeaderData(5, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
+    queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(6);
     queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
@@ -475,10 +475,10 @@ void ViewContactDialog::loadMissedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -592,10 +592,10 @@ void ViewContactDialog::loadReceivedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -709,10 +709,10 @@ void ViewContactDialog::loadPlacedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -1271,7 +1271,7 @@ void ViewContactDialog::onPlayAudio()
 {
     if ((ui->tabWidget_2->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
         return;
     }
@@ -1282,7 +1282,7 @@ void ViewContactDialog::onPlayAudio()
             playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->openMedia(recordpath);
         playAudioDialog.data()->show();
         playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -1292,7 +1292,7 @@ void ViewContactDialog::onPlayAudioPhone()
 {
     if ((ui->tabWidget_2->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_2->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
         return;
     }

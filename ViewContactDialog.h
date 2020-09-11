@@ -35,7 +35,6 @@ public:
     ~ViewContactDialog();
 
     void setValuesContacts(QString);
-    void setValuesCallHistory(QString);
 
 private slots:
     void loadAllCalls();

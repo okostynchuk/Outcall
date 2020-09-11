@@ -228,17 +228,17 @@ void ContactsDialog::loadContacts()
 
     queries.append(queryModel);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
     queryModel->insertColumn(2);
     queryModel->setHeaderData(2, Qt::Horizontal, tr("Тип"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("ФИО / Название"));
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Телефон"));
-    queryModel->setHeaderData(5, Qt::Horizontal, QObject::tr("Город"));
-    queryModel->setHeaderData(6, Qt::Horizontal, QObject::tr("Адрес"));
-    queryModel->setHeaderData(7, Qt::Horizontal, QObject::tr("Email"));
-    queryModel->setHeaderData(8, Qt::Horizontal, QObject::tr("VyborID"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("ФИО / Название"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Телефон"));
+    queryModel->setHeaderData(5, Qt::Horizontal, tr("Город"));
+    queryModel->setHeaderData(6, Qt::Horizontal, tr("Адрес"));
+    queryModel->setHeaderData(7, Qt::Horizontal, tr("Email"));
+    queryModel->setHeaderData(8, Qt::Horizontal, tr("VyborID"));
     queryModel->insertColumn(10);
-    queryModel->setHeaderData(10, Qt::Horizontal, QObject::tr("Заметка"));
+    queryModel->setHeaderData(10, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(queryModel);
 

@@ -69,6 +69,8 @@ void AddReminderDialog::onChooseEmployee()
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValuesReminders(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
+    connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    emit getPos(this->pos().x(), this->pos().y());
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -82,14 +84,14 @@ void AddReminderDialog::onSave()
 
     if (dateTime < QDateTime::currentDateTime())
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
 
         return;
     }
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
 
         return;
     }
@@ -192,9 +194,9 @@ void AddReminderDialog::onSave()
     close();
 
     if (ui->employee->text() != my_number)
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
     else
-        QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
 }
 
 void AddReminderDialog::setCallId(QString receivedCallId)

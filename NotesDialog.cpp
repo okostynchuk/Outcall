@@ -192,7 +192,7 @@ void NotesDialog::loadNotes()
 
     query->setQuery(queryString);
 
-    query->setHeaderData(0, Qt::Horizontal, QObject::tr("Дата и время"));
+    query->setHeaderData(0, Qt::Horizontal, tr("Дата и время"));
     query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
     query->insertColumn(2);
     query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
@@ -235,7 +235,7 @@ void NotesDialog::onSave()
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
 
         return;
     }
@@ -252,9 +252,11 @@ void NotesDialog::onSave()
 
     go = "default";
 
+    ui->textEdit->clear();
+
     onUpdate();
 
-    //QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Заметка успешно добавлена!"), QMessageBox::Ok);
+    //QMessageBox::information(this, tr("Уведомление"), tr("Заметка успешно добавлена!"), QMessageBox::Ok);
 }
 
 void NotesDialog::onTextChanged()

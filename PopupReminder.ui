@@ -130,7 +130,7 @@ text-align: center;
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="images.qrc">:/images/notification_R.png</pixmap>
+    <pixmap resource="images.qrc">:/images/notification.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -279,7 +279,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+        <normaloff>:/images/makeCall.png</normaloff>:/images/makeCall.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -323,7 +323,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+        <normaloff>:/images/orders.png</normaloff>:/images/orders.png</iconset>
       </property>
       <property name="iconSize">
        <size>

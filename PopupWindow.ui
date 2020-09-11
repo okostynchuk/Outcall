@@ -790,7 +790,7 @@ QToolTip {
    </property>
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/reminders_R.png</normaloff>:/images/reminders_R.png</iconset>
+     <normaloff>:/images/reminders.png</normaloff>:/images/reminders.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -1487,7 +1487,7 @@ QToolTip {
    </property>
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/save_R.png</normaloff>:/images/save_R.png</iconset>
+     <normaloff>:/images/save.png</normaloff>:/images/save.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -1962,7 +1962,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/addPerson_R.png</normaloff>:/images/addPerson_R.png</iconset>
+        <normaloff>:/images/addPerson.png</normaloff>:/images/addPerson.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -2428,7 +2428,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
+        <normaloff>:/images/addOrg.png</normaloff>:/images/addOrg.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -2894,7 +2894,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/addToExisting_R.png</normaloff>:/images/addToExisting_R.png</iconset>
+        <normaloff>:/images/addToExisting.png</normaloff>:/images/addToExisting.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -3370,7 +3370,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+        <normaloff>:/images/orders.png</normaloff>:/images/orders.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -3839,7 +3839,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/orders_R.png</normaloff>:/images/orders_R.png</iconset>
+        <normaloff>:/images/clientCard.png</normaloff>:/images/clientCard.png</iconset>
       </property>
       <property name="iconSize">
        <size>

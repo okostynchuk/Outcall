@@ -53,68 +53,68 @@ DatabasesConnectDialog::~DatabasesConnectDialog()
 
 void DatabasesConnectDialog::onSave()
 {
-    setSettingForFirstDb();
-    setSettingForSecondDb();
+    setSettingsDb();
+    setSettingsDbCalls();
 
-    if (state_db == "twoDb")
+    if (state == "twoDbs")
     {
-        checkDb();
-        checkDbAsterisk();
+        openDb();
+        openDbCalls();
 
-        if (!DB.isOpen() && !DbAsterisk.isOpen())
+        if (!db.isOpen() && !dbCalls.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение не создано!"), QMessageBox::Ok);
-        else if (!DB.isOpen())
+        else if (!db.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
 
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
 
-            setSettingForSecondDb();
+            setSettingsDbCalls();
         }
-        else if (!DbAsterisk.isOpen())
+        else if (!dbCalls.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
 
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
 
-            setSettingForFirstDb();
+            setSettingsDb();
         }
-        else if (DB.isOpen() && DbAsterisk.isOpen())
+        else if (db.isOpen() && dbCalls.isOpen())
         {
-            setSettingForFirstDb();
-            setSettingForSecondDb();
+            setSettingsDb();
+            setSettingsDbCalls();
 
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
             close();
         }
     }
-    else if (state_db == "db")
+    else if (state == "db")
     {
-        checkDb();
+        openDb();
 
-        if (!DB.isOpen())
+        if (!db.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
         else
         {
-            setSettingForFirstDb();
+            setSettingsDb();
 
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
             close();
         }
     }
-    else if (state_db == "dbCalls")
+    else if (state == "dbCalls")
     {
-        checkDbAsterisk();
+        openDbCalls();
 
-        if (!DbAsterisk.isOpen())
+        if (!dbCalls.isOpen())
             QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
         else
         {
-            setSettingForSecondDb();
+            setSettingsDbCalls();
 
             QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
 
@@ -123,72 +123,70 @@ void DatabasesConnectDialog::onSave()
     }
 }
 
-void DatabasesConnectDialog::setSettingForFirstDb()
+void DatabasesConnectDialog::setSettingsDb()
 {
     global::setSettingsValue("hostName_1", ui->hostName_1->text(), "settings");
-    global::setSettingsValue("databaseName_1",   ui->databaseName_1->text(),   "settings");
-    global::setSettingsValue("userName_1",   ui->userName_1->text(),   "settings");
-    QByteArray ba1;
-    ba1.append(ui->password_1->text());
-    global::setSettingsValue("password_1", ba1.toBase64(),    "settings");
-    global::setSettingsValue("port_1", ui->port_1->text(),    "settings");
+    global::setSettingsValue("databaseName_1",   ui->databaseName_1->text(), "settings");
+    global::setSettingsValue("userName_1",   ui->userName_1->text(), "settings");
+    QByteArray password_1;
+    password_1.append(ui->password_1->text());
+    global::setSettingsValue("password_1", password_1.toBase64(), "settings");
+    global::setSettingsValue("port_1", ui->port_1->text(), "settings");
 }
 
-void DatabasesConnectDialog::setSettingForSecondDb()
+void DatabasesConnectDialog::setSettingsDbCalls()
 {
     global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
-    global::setSettingsValue("databaseName_2",   ui->databaseName_2->text(),   "settings");
-    global::setSettingsValue("userName_2",   ui->userName_2->text(),   "settings");
-    QByteArray ba2;
-    ba2.append(ui->password_2->text());
-    global::setSettingsValue("password_2", ba2.toBase64(),    "settings");
-    global::setSettingsValue("port_2", ui->port_2->text(),    "settings");
+    global::setSettingsValue("databaseName_2", ui->databaseName_2->text(), "settings");
+    global::setSettingsValue("userName_2", ui->userName_2->text(), "settings");
+    QByteArray password_2;
+    password_2.append(ui->password_2->text());
+    global::setSettingsValue("password_2", password_2.toBase64(), "settings");
+    global::setSettingsValue("port_2", ui->port_2->text(), "settings");
 }
 
 void DatabasesConnectDialog::onClose()
 {
-     g_pAsteriskManager->signOut();
-
-     qApp->quit();
+    qApp->quit();
 }
 
 void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
 {
-    state_db = state;
+    this->state = state;
 
-    if (state_db == "db")
+    if (this->state == "db")
     {
         ui->tabWidget_2->setCurrentIndex(0);
         ui->tabWidget_2->setTabEnabled(1, false);
     }
-    else if (state_db == "dbCalls")
+    else if (this->state == "dbCalls")
     {
         ui->tabWidget_2->setCurrentIndex(1);
         ui->tabWidget_2->setTabEnabled(0, false);
     }
 
-    DB = db;
-    DbAsterisk = dbCalls;
+    this->db = db;
+    this->dbCalls = dbCalls;
 }
 
-void DatabasesConnectDialog::checkDb()
+void DatabasesConnectDialog::openDb()
 {
-    DB.setHostName(ui->hostName_1->text());
-    DB.setDatabaseName(ui->databaseName_1->text());
-    DB.setUserName(ui->userName_1->text());
-    DB.setPassword(ui->password_1->text());
-    DB.setPort(ui->port_1->text().toUInt());
-    DB.open();
+    db.setHostName(ui->hostName_1->text());
+    db.setDatabaseName(ui->databaseName_1->text());
+    db.setUserName(ui->userName_1->text());
+    db.setPassword(ui->password_1->text());
+    db.setPort(ui->port_1->text().toUInt());
+    db.open();
 }
 
-void DatabasesConnectDialog::checkDbAsterisk()
+void DatabasesConnectDialog::openDbCalls()
 {
-    DbAsterisk.setHostName(ui->hostName_2->text());
-    DbAsterisk.setDatabaseName(ui->databaseName_2->text());
-    DbAsterisk.setUserName(ui->userName_2->text());
-    DbAsterisk.setPassword( ui->password_2->text() );
-    DbAsterisk.setPort( ui->port_2->text().toUInt() );
-    DbAsterisk.open();
+    dbCalls.setHostName(ui->hostName_2->text());
+    dbCalls.setDatabaseName(ui->databaseName_2->text());
+    dbCalls.setUserName(ui->userName_2->text());
+    dbCalls.setPassword(ui->password_2->text());
+    dbCalls.setPort(ui->port_2->text().toUInt());
+    dbCalls.open();
 }
 
 void DatabasesConnectDialog::keyPressEvent(QKeyEvent* event)

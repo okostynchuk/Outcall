@@ -10,6 +10,8 @@ include (QSimpleUpdater/QSimpleUpdater.pri)
 
 win32:
 {
+    VERSION = 3.0.2
+
     QMAKE_TARGET_COMPANY = Vybor
     QMAKE_TARGET_PRODUCT = OutCALL
 

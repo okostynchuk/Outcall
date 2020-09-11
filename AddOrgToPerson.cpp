@@ -130,10 +130,10 @@ void AddOrgToPerson::onUpdate()
 
     queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Город"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Адрес"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Название"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Город"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Адрес"));
 
     ui->tableView->setModel(queryModel);
 

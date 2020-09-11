@@ -491,7 +491,7 @@ void PopupWindow::onOpenAccess()
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
 
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
     }
 }
 

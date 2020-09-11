@@ -84,7 +84,6 @@ private:
 
     bool showReminder;
     QTimer timer;
-    QString languages;
     QString my_number;
     QString page;
     QString pages;

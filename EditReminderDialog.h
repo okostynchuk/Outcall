@@ -20,6 +20,7 @@ class EditReminderDialog : public QDialog
 
 signals:
     void sendData(bool);
+    void getPos(int, int);
 
 public slots:
     void receiveEmployee(QStringList);

@@ -70,7 +70,7 @@ void AddPersonToOrg::getPersonID(const QModelIndex &index)
 
     if (query.value(0) == 0)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
 
         return;
     }
@@ -84,7 +84,7 @@ void AddPersonToOrg::getPersonID(const QModelIndex &index)
 
     onUpdate();
 
-    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
+    QMessageBox::information(this, tr("Уведомление"), tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
 }
 
 void AddPersonToOrg::onUpdate()
@@ -168,10 +168,10 @@ void AddPersonToOrg::onUpdate()
 
     queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(queryModel);
 

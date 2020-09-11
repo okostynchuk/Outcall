@@ -48,6 +48,8 @@ void EditReminderDialog::onChooseEmployee()
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValuesReminders(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
+    connect(this, &EditReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    emit getPos(this->pos().x(), this->pos().y());
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -59,14 +61,14 @@ void EditReminderDialog::onSave()
 
     if (dateTime < QDateTime::currentDateTime())
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Указано прошедшее время!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
 
         return;
     }
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
 
         return;
     }
@@ -74,9 +76,9 @@ void EditReminderDialog::onSave()
     if (employee.isEmpty())
         employee = employeeInitial;
 
-    if (dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
+    if ((group_id != "0" || (employee.first() == my_number && !ui->chooseEmployeeButton->isEnabled())) && dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Для сохранения требуется внести изменения!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Для сохранения требуется внести изменения!"), QMessageBox::Ok);
 
         return;
     }
@@ -267,7 +269,7 @@ void EditReminderDialog::onSave()
 
     close();
 
-    QMessageBox::information(this, QObject::tr("Уведомление"), QObject::tr("Напоминание успешно изменено!"), QMessageBox::Ok);
+    QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно изменено!"), QMessageBox::Ok);
 }
 
 void EditReminderDialog::setValuesReminders(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)

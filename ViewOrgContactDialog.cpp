@@ -226,10 +226,10 @@ void ViewOrgContactDialog::onUpdate()
 
     query_model->setQuery(queryString);
 
-    query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
-    query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    query_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    query_model->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
+    query_model->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+    query_model->setHeaderData(3, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(query_model);
 
@@ -290,10 +290,10 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString i)
 
     query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + contactId + "' GROUP BY ep.entry_id ORDER BY entry_name ASC");
 
-    query_model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    query_model->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО"));
-    query_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Телефон"));
-    query_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Заметка"));
+    query_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    query_model->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
+    query_model->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+    query_model->setHeaderData(3, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(query_model);
 
@@ -398,12 +398,12 @@ void ViewOrgContactDialog::loadAllCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
     queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, QObject::tr("Статус"));
-    queryModel->setHeaderData(5, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
+    queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(6);
     queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
@@ -525,10 +525,10 @@ void ViewOrgContactDialog::loadMissedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -643,10 +643,10 @@ void ViewOrgContactDialog::loadReceivedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -761,10 +761,10 @@ void ViewOrgContactDialog::loadPlacedCalls()
 
     queryModel->setQuery(queryString, dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Дата и время"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
     queryModel->insertColumn(4);
     queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
 
@@ -1327,14 +1327,14 @@ void ViewOrgContactDialog::onOpenAccess()
         dbOrders.close();
     }
     else
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
 void ViewOrgContactDialog::onPlayAudio()
 {
     if ((ui->tabWidget_3->currentIndex() == 0 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 1 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 2 && ui->tableView_4->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 3 && ui->tableView_5->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
         return;
     }
@@ -1345,7 +1345,7 @@ void ViewOrgContactDialog::onPlayAudio()
             playAudioDialog.data()->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog.data()->setValuesCallHistory(recordpath);
+        playAudioDialog.data()->openMedia(recordpath);
         playAudioDialog.data()->show();
         playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -1355,7 +1355,7 @@ void ViewOrgContactDialog::onPlayAudioPhone()
 {
     if ((ui->tabWidget_3->currentIndex() == 0 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 1 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 2 && ui->tableView_4->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget_3->currentIndex() == 3 && ui->tableView_5->selectionModel()->selectedRows().count() != 1))
     {
-        QMessageBox::critical(this, QObject::tr("Ошибка"), QObject::tr("Выберите одну запись!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
         return;
     }

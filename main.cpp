@@ -13,7 +13,7 @@
 #include <QRegularExpressionValidator>
 #include <QSettings>
 
-static const QString PARTIAL_DOWN (".part");
+static const QString PARTIAL_DOWN(".part");
 
 int main(int argc, char* argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder ("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
+                QDir folder("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }
@@ -164,35 +164,29 @@ int main(int argc, char* argv[])
 
     if (!db.isOpen() && !dbCalls.isOpen())
     {
-        QString state = "twoDb";
-
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbCalls, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, "twoDbs");
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
     else if (!db.isOpen())
     {
-        QString state = "db";
-
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbCalls, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, "db");
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
 
     }
     else if (!dbCalls.isOpen())
     {
-        QString state = "dbCalls";
-
         QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
-        databasesConnectDialog->setDatabases(db, dbCalls, state);
+        databasesConnectDialog->setDatabases(db, dbCalls, "dbCalls");
         databasesConnectDialog->exec();
         databasesConnectDialog->deleteLater();
     }
