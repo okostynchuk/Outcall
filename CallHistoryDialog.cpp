@@ -172,7 +172,8 @@ void CallHistoryDialog::loadAllCalls()
 
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+        ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
     if (!selectionAll.isEmpty())
         for (int i = 0; i < selectionAll.length(); ++i)

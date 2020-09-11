@@ -131,8 +131,6 @@ void RemindersDialog::showReminders(bool show)
 
 void RemindersDialog::showEvent(QShowEvent*)
 {
-    PopupNotification::closeAll();
-
     QSqlQuery query(db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");

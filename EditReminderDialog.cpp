@@ -76,7 +76,7 @@ void EditReminderDialog::onSave()
     if (employee.isEmpty())
         employee = employeeInitial;
 
-    if ((group_id != "0" || employee.first() != my_number) && dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
+    if ((group_id != "0" || (employee.first() == my_number && !ui->chooseEmployeeButton->isEnabled())) && dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Для сохранения требуется внести изменения!"), QMessageBox::Ok);
 
