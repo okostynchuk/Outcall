@@ -148,7 +148,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
     }
     else
     {
-        if (x < 0 && (nDesktopHeight-y) > nWidgetHeight)
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
         {
             x = 0;
             this->move(x, y);
@@ -159,7 +159,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
             y = nWidgetHeight;
             this->move(x, y);
         }
-        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
         {
             x = nWidgetWidth * 0.9;
             this->move(x, y);

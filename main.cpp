@@ -13,7 +13,7 @@
 #include <QRegularExpressionValidator>
 #include <QSettings>
 
-static const QString PARTIAL_DOWN (".part");
+static const QString PARTIAL_DOWN(".part");
 
 int main(int argc, char* argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder ("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
+                QDir folder("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }

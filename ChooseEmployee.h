@@ -21,6 +21,7 @@ signals:
 
 public slots:
     void setValuesReminders(QStringList);
+    void setPos(int, int);
 
 public:
     explicit ChooseEmployee(QWidget *parent = 0);

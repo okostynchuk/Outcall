@@ -61,6 +61,8 @@ void AddReminderDialog::onChooseEmployee()
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValuesReminders(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
+    connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    emit getPos(this->pos().x(), this->pos().y());
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }

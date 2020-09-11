@@ -130,7 +130,7 @@ text-align: center;
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="images.qrc">:/images/notification_R.png</pixmap>
+    <pixmap resource="images.qrc">:/images/notification.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

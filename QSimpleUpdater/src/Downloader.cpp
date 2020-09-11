@@ -39,7 +39,6 @@ Downloader::Downloader(QWidget* parent) : QWidget(parent)
     setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
     /* Configure the appearance and behavior of the buttons */
-
     m_ui->stopButton->hide();
     connect(m_ui->stopButton, &QAbstractButton::clicked, this, &Downloader::cancelDownload);
     //connect(m_ui->openButton, &QAbstractButton::clicked, this, &Downloader::installUpdate);

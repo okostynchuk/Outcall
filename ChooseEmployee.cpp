@@ -27,6 +27,11 @@ ChooseEmployee::~ChooseEmployee()
     delete ui;
 }
 
+void ChooseEmployee::setPos(int x, int y)
+{
+    this->move(x, y);
+}
+
 void ChooseEmployee::onChoose(QListWidgetItem* item)
 {
     ui->listWidget_2->addItem(ui->listWidget->takeItem(ui->listWidget->row(item)));

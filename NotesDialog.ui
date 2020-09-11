@@ -375,7 +375,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/refresh_R.png</normaloff>:/images/refresh_R.png</iconset>
+         <normaloff>:/images/refresh.png</normaloff>:/images/refresh.png</iconset>
        </property>
        <property name="iconSize">
         <size>

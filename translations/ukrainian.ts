@@ -1270,7 +1270,7 @@
     </message>
     <message>
         <source>Сохранить</source>
-        <translation>Зберегти</translation>
+        <translation type="vanished">Зберегти</translation>
     </message>
     <message>
         <source>Отмена</source>
@@ -1300,6 +1300,10 @@
         <source>Подключение успешно создано!</source>
         <translation>Підключення успішно створено!</translation>
     </message>
+    <message>
+        <source>Сохранить настройки</source>
+        <translation>Зберегти налаштування</translation>
+    </message>
 </context>
 <context>
     <name>DebugInfoDialog</name>
@@ -1328,7 +1332,7 @@
     </message>
     <message>
         <source>Осталось времени: 0 минут</source>
-        <translation>Часу залишилося: 0 хвилин</translation>
+        <translation type="vanished">Часу залишилося: 0 хвилин</translation>
     </message>
     <message>
         <source>Отмена</source>
@@ -1453,6 +1457,14 @@
     <message>
         <source>1 секунда</source>
         <translation>1 секунда</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Скачивание обновления&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Завантаження оновлення&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Осталось времени: 0 минут&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Часу залишилося: 0 хвилин&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

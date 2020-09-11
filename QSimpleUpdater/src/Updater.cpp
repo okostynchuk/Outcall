@@ -468,7 +468,7 @@ void Updater::setUpdateAvailable(const bool available)
 }
 
 /**
- * Compares the two version strings (\a x and \a y).
+ * Compares the two version strings(\a x and \a y).
  *     - If \a x is greater than \y, this function returns \c true.
  *     - If \a y is greater than \x, this function returns \c false.
  *     - If both versions are the same, this function returns \c false.
@@ -480,7 +480,8 @@ bool Updater::compare(const QString& x, const QString& y)
 
     int count = qMin(versionsX.count(), versionsY.count());
 
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count; ++i)
+    {
         int a = QString(versionsX.at(i)).toInt();
         int b = QString(versionsY.at(i)).toInt();
 

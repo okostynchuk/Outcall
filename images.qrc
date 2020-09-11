@@ -11,14 +11,14 @@
         <file>images/addToExisting.png</file>
         <file>images/clientCard.png</file>
         <file>images/addOrg.png</file>
-        <file>images/refresh_R.png</file>
+        <file>images/refresh.png</file>
         <file>images/search.png</file>
         <file>images/makeCall.png</file>
         <file>images/orders.png</file>
         <file>images/edit.png</file>
         <file>images/bind.png</file>
         <file>images/unbind.png</file>
-        <file>images/notification_R.png</file>
+        <file>images/notification.png</file>
         <file>images/uk.png</file>
         <file>images/ua.png</file>
         <file>images/ru.png</file>
@@ -31,5 +31,6 @@
         <file>images/viewNote.png</file>
         <file>images/addList.png</file>
         <file>images/deleteList.png</file>
+        <file>images/exitFromApp.png</file>
     </qresource>
 </RCC>
