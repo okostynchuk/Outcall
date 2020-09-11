@@ -1,8 +1,6 @@
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
-#include <QDesktopWidget>
-
 InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InternalContactsDialog)
