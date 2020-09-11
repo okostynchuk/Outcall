@@ -104,17 +104,17 @@ void EditContactDialog::onSave()
     QString firstName = ui->FirstName->text();
     QString patronymic = ui->Patronymic->text();
 
-    QStringList phonesListRegExp;
+    QStringList actualPhonesList;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (int i = 0; i < phonesList.length(); i++)
     {
         if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
-            continue;
+            actualPhonesList.append(phonesList.at(i)->text());
         else
         {
             phonesList.at(i)->setStyleSheet("border: 1px solid grey");
 
-            phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+            actualPhonesList.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
         }
     }
 
@@ -158,10 +158,15 @@ void EditContactDialog::onSave()
 
     for (int i = 0; i < phonesList.length(); ++i)
     {
-        if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
-            continue;
-        else
-            if (!phonesList.at(i)->text().isEmpty())
+        if (!phonesList.at(i)->text().isEmpty())
+        {
+            bool old_phone = false;
+
+            for (int j = 0; j < oldPhonesList.length(); ++j)
+                if (phonesList.at(i)->text() == oldPhonesList.at(j))
+                    old_phone = true;
+
+            if (!old_phone)
             {
                 QString phone = phonesList.at(i)->text();
 
@@ -174,6 +179,7 @@ void EditContactDialog::onSave()
                     invalid_phones = true;
                 }
             }
+        }
     }
 
     if (invalid_phones)
@@ -188,7 +194,7 @@ void EditContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         for (int j = 0; j < phonesList.length(); ++j)
         {
-            if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
+            if (!phonesList.at(i)->text().isEmpty() && actualPhonesList.at(i) == actualPhonesList.at(j) && i != j)
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
                 phonesList.at(j)->setStyleSheet("border: 1px solid red");
@@ -209,7 +215,7 @@ void EditContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesListRegExp.at(i) + "' AND entry_id <> " + updateID + ")");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + actualPhonesList.at(i) + "' AND entry_id <> " + updateID + ")");
             query.exec();
             query.next();
 
@@ -260,13 +266,13 @@ void EditContactDialog::onSave()
                 query.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
                 query.addBindValue(updateID);
-                query.addBindValue(phonesListRegExp.at(i));
+                query.addBindValue(actualPhonesList.at(i));
                 query.exec();
             }
             else
             {
                 query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
-                query.addBindValue(phonesListRegExp.at(i));
+                query.addBindValue(actualPhonesList.at(i));
                 query.addBindValue(updateID);
                 query.addBindValue(oldPhonesList.at(i));
                 query.exec();

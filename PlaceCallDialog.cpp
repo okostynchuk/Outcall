@@ -21,14 +21,16 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     validator = new QRegularExpressionValidator(regExp, this);
     ui->phoneLine->setValidator(validator);
 
-    connect(ui->callButton,    &QAbstractButton::clicked,           this, &PlaceCallDialog::onCallButton);
-    connect(ui->cancelButton,  &QAbstractButton::clicked,           this, &PlaceCallDialog::onCancelButton);
-    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &PlaceCallDialog::clearEditText);
-    connect(ui->tableView, &QAbstractItemView::clicked, this, &PlaceCallDialog::showNumber);
+    connect(ui->callButton,    &QAbstractButton::clicked,       this, &PlaceCallDialog::onCallButton);
+    connect(ui->cancelButton,  &QAbstractButton::clicked,       this, &PlaceCallDialog::onCancelButton);
+    connect(ui->comboBox,      &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
+    connect(ui->comboBox_2, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
+    connect(ui->tableView,     &QAbstractItemView::clicked,     this, &PlaceCallDialog::showNumber);
 
     queryModel = new QSqlQueryModel;
 
     ui->lineEdit_2->hide();
+    ui->comboBox_2->hide();
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
@@ -48,36 +50,60 @@ PlaceCallDialog::~PlaceCallDialog()
 void PlaceCallDialog::showNumber(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
-    int row = ui->tableView->currentIndex().row();
 
-    if (queryModel->data(queryModel->index(row, 3)).toString() == "person" || queryModel->data(queryModel->index(row, 3)).toString() == "org")
+    QSqlQuery query(db);
+
+    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
+    query.addBindValue(id);
+    query.exec();
+
+    if (query.size() == 1)
     {
-        QSqlQuery query(db);
+        query.next();
 
-        query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
-        query.addBindValue(id);
-        query.exec();
+        QString number = query.value(0).toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        if (query.size() == 1)
-        {
-            query.next();
+        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 
-            QString number = query.value(0).toString();
-            QString protocol = global::getSettingsValue(my_number, "extensions").toString();
-
-            g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
-
-            ui->phoneLine->setText(number);
-        }
-        else
-        {
-            chooseNumber = new ChooseNumber;
-            chooseNumber->setValuesNumber(id);
-            connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
-            chooseNumber->show();
-            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
-        }
+        ui->phoneLine->setText(number);
     }
+    else
+    {
+        chooseNumber = new ChooseNumber;
+        chooseNumber->setValuesNumber(id);
+        connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
+        chooseNumber->show();
+        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+    }
+}
+
+void PlaceCallDialog::onOrgChanged()
+{
+
+    QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone "
+                          "WHERE entry_person_org_id = '" + orgsId.at(ui->comboBox_2->currentIndex()) + "' "
+                          "GROUP BY entry_id ORDER BY entry_name ASC";
+
+    queryModel->setQuery(queryString);
+
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+
+    ui->tableView->setModel(NULL);
+    ui->tableView->setModel(queryModel);
+
+    ui->tableView->setColumnHidden(3, true);
+
+    ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
+
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->resizeColumnsToContents();
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+
 }
 
 void PlaceCallDialog::receiveNumber(QString number)
@@ -87,8 +113,53 @@ void PlaceCallDialog::receiveNumber(QString number)
 
 void PlaceCallDialog::onUpdate()
 {
-    if (update == "default")
-        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone GROUP BY entry_id ORDER BY entry_name ASC");
+    QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone ";
+
+    if (ui->comboBox->currentIndex() == 0)
+        queryString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
+    else if (ui->comboBox->currentIndex() == 1)
+        queryString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text() + "%' ");
+    else if (ui->comboBox->currentIndex() == 2)
+    {
+        QSqlQuery query(db);
+
+        query.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + ui->lineEdit->text() + "%' GROUP BY entry_id");
+        query.exec();
+
+        if (!orgsId.isEmpty())
+        {
+           orgsId.clear();
+           orgsName.clear();
+        }
+
+        while (query.next())
+        {
+            orgsId.append(query.value(0).toString());
+            orgsName.append(query.value(1).toString());
+        }
+
+        if (!orgsId.isEmpty())
+        {
+            queryString.append("WHERE entry_person_org_id = " + orgsId.at(0) + " ");
+
+            ui->lineEdit_2->show();
+            ui->lineEdit_2->setText(tr("Сотрудники организации"));
+
+            ui->comboBox_2->blockSignals(true);
+
+            ui->comboBox_2->clear();
+            ui->comboBox_2->addItems(orgsName);
+            ui->comboBox_2->show();
+
+            ui->comboBox_2->blockSignals(false);
+        }
+        else
+            return;
+    }
+
+    queryString.append("GROUP BY entry_id ORDER BY entry_name ASC");
+
+    queryModel->setQuery(queryString);
 
     queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     queryModel->setHeaderData(1, Qt::Horizontal, QObject::tr("ФИО / Название"));
@@ -107,76 +178,27 @@ void PlaceCallDialog::onUpdate()
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
-    update = "default";
 }
 
 void PlaceCallDialog::on_lineEdit_returnPressed()
 {
-    update = "filter";
-
     ui->phoneLine->clear();
 
-    if (QString(ui->lineEdit->text()).isEmpty())
+    if (ui->lineEdit->text().isEmpty())
     {
         ui->lineEdit->clear();
 
         ui->lineEdit_2->clear();        
         ui->lineEdit_2->hide();
 
+        ui->comboBox_2->hide();
+
         ui->tableView->setModel(NULL);
 
         return;
     }
-    else if (ui->comboBox->currentText() == tr("Поиск по ФИО / названию"))
-    {
-        QString entry_name = ui->lineEdit->text();
 
-        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone WHERE entry_name LIKE '%" + entry_name + "%' GROUP BY entry_id ORDER BY entry_name ASC");
-
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == tr("Поиск по номеру телефона"))
-    {
-        QString entry_phone = ui->lineEdit->text();
-
-        queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone WHERE entry_phone LIKE '%" + entry_phone + "%' GROUP BY entry_id ORDER BY entry_name ASC");
-
-        onUpdate();
-    }
-    else if (ui->comboBox->currentText() == tr("Поиск сотрудников по организации"))
-    {
-        QString entry_org = ui->lineEdit->text();
-
-        QSqlQuery query_org(db);
-
-        query_org.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + entry_org + "%'");
-        query_org.exec();
-
-        QString orgID = NULL;
-        QString orgName = NULL;
-
-        while (query_org.next())
-        {
-            orgID = query_org.value(0).toString();
-            orgName = query_org.value(1).toString();
-        }
-
-        if (orgID != NULL)
-        {
-            queryModel->setQuery("SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone WHERE entry_type = 'person' AND entry_person_org_id = '" + orgID + "' GROUP BY entry_id ORDER BY entry_name ASC");
-
-            ui->lineEdit_2->show();
-            ui->lineEdit_2->setText(tr("Сотрудники организации") + " \"" + orgName + "\"");
-
-            onUpdate();
-        }
-        else
-        {
-            ui->tableView->setModel(NULL);
-
-            ui->lineEdit_2->clear();
-        }
-    }
+    onUpdate();
 }
 
 void PlaceCallDialog::clearEditText()
@@ -184,6 +206,10 @@ void PlaceCallDialog::clearEditText()
     ui->phoneLine->clear();
 
     ui->lineEdit_2->hide();
+
+    ui->comboBox_2->hide();
+
+    ui->tableView->setModel(NULL);
 }
 
 void PlaceCallDialog::showEvent(QShowEvent*)

@@ -33,6 +33,7 @@ private slots:
 
     void onUpdate();
     void clearEditText();
+    void onOrgChanged();
 
     void showNumber(const QModelIndex &);
 
@@ -47,6 +48,9 @@ private:
     Ui::PlaceCallDialog *ui;
 
     QSqlDatabase db;
+
+    QStringList orgsId;
+    QStringList orgsName;
 
     ChooseNumber* chooseNumber;
 
