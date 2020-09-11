@@ -252,6 +252,8 @@ void NotesDialog::onSave()
 
     go = "default";
 
+    ui->textEdit->clear();
+
     onUpdate();
 
     //QMessageBox::information(this, tr("Уведомление"), tr("Заметка успешно добавлена!"), QMessageBox::Ok);
