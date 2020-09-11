@@ -29,7 +29,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     queryModel = new QSqlQueryModel;
 
-    ui->lineEdit_2->hide();
+    ui->orgLabel->hide();
     ui->comboBox_2->hide();
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
@@ -116,14 +116,14 @@ void PlaceCallDialog::onUpdate()
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone ";
 
     if (ui->comboBox->currentIndex() == 0)
-        queryString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
+        queryString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text().trimmed() + "%' ");
     else if (ui->comboBox->currentIndex() == 1)
-        queryString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text() + "%' ");
+        queryString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text().trimmed() + "%' ");
     else if (ui->comboBox->currentIndex() == 2)
     {
         QSqlQuery query(db);
 
-        query.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + ui->lineEdit->text() + "%' GROUP BY entry_id");
+        query.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + ui->lineEdit->text().trimmed() + "%' GROUP BY entry_id");
         query.exec();
 
         if (!orgsId.isEmpty())
@@ -142,8 +142,8 @@ void PlaceCallDialog::onUpdate()
         {
             queryString.append("WHERE entry_person_org_id = " + orgsId.at(0) + " ");
 
-            ui->lineEdit_2->show();
-            ui->lineEdit_2->setText(tr("Сотрудники организации"));
+            ui->orgLabel->show();
+            ui->orgLabel->setText(tr("Сотрудники организации"));
 
             ui->comboBox_2->blockSignals(true);
 
@@ -188,8 +188,8 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     {
         ui->lineEdit->clear();
 
-        ui->lineEdit_2->clear();        
-        ui->lineEdit_2->hide();
+        ui->orgLabel->clear();
+        ui->orgLabel->hide();
 
         ui->comboBox_2->hide();
 
@@ -205,7 +205,7 @@ void PlaceCallDialog::clearEditText()
 {
     ui->phoneLine->clear();
 
-    ui->lineEdit_2->hide();
+    ui->orgLabel->hide();
 
     ui->comboBox_2->hide();
 
@@ -223,7 +223,7 @@ void PlaceCallDialog::closeEvent(QCloseEvent*)
 
     ui->lineEdit->clear();
 
-    ui->lineEdit_2->hide();
+    ui->orgLabel->hide();
 
     ui->phoneLine->clear();
 
