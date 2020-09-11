@@ -317,7 +317,7 @@
      </property>
      <property name="icon">
       <iconset resource="images.qrc">
-       <normaloff>:/images/reminders_R.png</normaloff>:/images/reminders_R.png</iconset>
+       <normaloff>:/images/reminders.png</normaloff>:/images/reminders.png</iconset>
      </property>
      <property name="iconSize">
       <size>

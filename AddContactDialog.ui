@@ -171,7 +171,7 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/unbind_R.png</normaloff>:/images/unbind_R.png</iconset>
+           <normaloff>:/images/unbind.png</normaloff>:/images/unbind.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -203,7 +203,7 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/bind_R.png</normaloff>:/images/bind_R.png</iconset>
+           <normaloff>:/images/bind.png</normaloff>:/images/bind.png</iconset>
          </property>
          <property name="iconSize">
           <size>

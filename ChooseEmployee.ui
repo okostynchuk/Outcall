@@ -64,7 +64,7 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/addList_R.png</normaloff>:/images/addList_R.png</iconset>
+           <normaloff>:/images/addList.png</normaloff>:/images/addList.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -99,7 +99,7 @@
          </property>
          <property name="icon">
           <iconset resource="images.qrc">
-           <normaloff>:/images/deleteList_R.png</normaloff>:/images/deleteList_R.png</iconset>
+           <normaloff>:/images/deleteList.png</normaloff>:/images/deleteList.png</iconset>
          </property>
          <property name="iconSize">
           <size>
