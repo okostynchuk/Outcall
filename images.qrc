@@ -6,18 +6,18 @@
         <file>images/outcall-logo.png</file>
         <file>images/org.png</file>
         <file>images/person.png</file>
-        <file>images/reminders_R.png</file>
-        <file>images/save_R.png</file>
-        <file>images/addToExisting_R.png</file>
-        <file>images/orders_R.png</file>
-        <file>images/addOrg_R.png</file>
+        <file>images/reminders.png</file>
+        <file>images/save.png</file>
+        <file>images/addToExisting.png</file>
+        <file>images/clientCard.png</file>
+        <file>images/addOrg.png</file>
         <file>images/refresh_R.png</file>
-        <file>images/search_R.png</file>
-        <file>images/makeCall_R.png</file>
-        <file>images/orders_RR.png</file>
-        <file>images/edit_R.png</file>
-        <file>images/bind_R.png</file>
-        <file>images/unbind_R.png</file>
+        <file>images/search.png</file>
+        <file>images/makeCall.png</file>
+        <file>images/orders.png</file>
+        <file>images/edit.png</file>
+        <file>images/bind.png</file>
+        <file>images/unbind.png</file>
         <file>images/notification_R.png</file>
         <file>images/uk.png</file>
         <file>images/ua.png</file>
@@ -27,9 +27,9 @@
         <file>images/listeningToCallRecording.png</file>
         <file>images/listeningToCallOnPhone.png</file>
         <file>images/arrowBack.png</file>
-        <file>images/addPerson_R.png</file>
+        <file>images/addPerson.png</file>
         <file>images/viewNote.png</file>
-        <file>images/addList_R.png</file>
-        <file>images/deleteList_R.png</file>
+        <file>images/addList.png</file>
+        <file>images/deleteList.png</file>
     </qresource>
 </RCC>

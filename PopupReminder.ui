@@ -279,7 +279,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/makeCall_R.png</normaloff>:/images/makeCall_R.png</iconset>
+        <normaloff>:/images/makeCall.png</normaloff>:/images/makeCall.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -323,7 +323,7 @@ QToolTip {
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/images/orders_RR.png</normaloff>:/images/orders_RR.png</iconset>
+        <normaloff>:/images/orders.png</normaloff>:/images/orders.png</iconset>
       </property>
       <property name="iconSize">
        <size>

@@ -157,7 +157,7 @@
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
-              <normaloff>:/images/search_R.png</normaloff>:/images/search_R.png</iconset>
+              <normaloff>:/images/search.png</normaloff>:/images/search.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -485,7 +485,7 @@
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
-              <normaloff>:/images/addPerson_R.png</normaloff>:/images/addPerson_R.png</iconset>
+              <normaloff>:/images/addPerson.png</normaloff>:/images/addPerson.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -528,7 +528,7 @@
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
-              <normaloff>:/images/addOrg_R.png</normaloff>:/images/addOrg_R.png</iconset>
+              <normaloff>:/images/addOrg.png</normaloff>:/images/addOrg.png</iconset>
             </property>
             <property name="iconSize">
              <size>

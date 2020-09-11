@@ -185,7 +185,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     QPushButton* callButton = new QPushButton();
     callButton->setAutoDefault(false);
     callButton->setFocusPolicy(Qt::ClickFocus);
-    callButton->setIcon(QIcon(":/images/makeCall_R.png"));
+    callButton->setIcon(QIcon(":/images/makeCall.png"));
     callButton->setIconSize(QSize(25, 25));
     callButton->setFixedSize(30, 30);
     connect(callButton, &QAbstractButton::clicked, this, &InternalContactsDialog::onCall);
@@ -194,7 +194,7 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     QPushButton* addReminderButton = new QPushButton();
     addReminderButton->setAutoDefault(false);
     addReminderButton->setFocusPolicy(Qt::ClickFocus);
-    addReminderButton->setIcon(QIcon(":/images/reminders_R.png"));
+    addReminderButton->setIcon(QIcon(":/images/reminders.png"));
     addReminderButton->setIconSize(QSize(25, 25));
     addReminderButton->setFixedSize(30, 30);
     connect(addReminderButton, &QAbstractButton::clicked, this, &InternalContactsDialog::onAddReminder);
