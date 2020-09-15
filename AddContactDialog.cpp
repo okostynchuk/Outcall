@@ -235,11 +235,16 @@ void AddContactDialog::receiveOrgName(QString id, QString name)
 {
     if (!id.isNull())
     {
-        orgId = id;
         ui->label_org->setText(name);
+
+        orgId = id;
     }
     else
+    {
         ui->label_org->setText(tr("Нет"));
+
+        orgId = "0";
+    }
 }
 
 void AddContactDialog::on_addOrgButton_clicked()
@@ -256,6 +261,8 @@ void AddContactDialog::on_addOrgButton_clicked()
 void AddContactDialog::on_deleteOrgButton_clicked()
 {
     ui->label_org->setText(tr("Нет"));
+
+    orgId = "0";
 }
 
 void AddContactDialog::setValues(QString number)
