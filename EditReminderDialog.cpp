@@ -46,7 +46,7 @@ void EditReminderDialog::onChooseEmployee()
         chooseEmployee.data()->close();
 
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee.data()->setValuesReminders(employee);
+    chooseEmployee.data()->setValues(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
     connect(this, &EditReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
@@ -272,7 +272,7 @@ void EditReminderDialog::onSave()
     QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно изменено!"), QMessageBox::Ok);
 }
 
-void EditReminderDialog::setValuesReminders(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
+void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
 {
     id = receivedId;
     group_id = receivedGroupId;

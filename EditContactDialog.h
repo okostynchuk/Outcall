@@ -44,7 +44,8 @@ public:
     explicit EditContactDialog(QWidget *parent = 0);
     ~EditContactDialog();
 
-    void setValuesContacts(QString);
+    void setValues(QString);
+    void hideBackButton();
 
 private:
     Ui::EditContactDialog *ui;
@@ -60,8 +61,8 @@ private:
     QValidator* phonesValidator;
     QValidator* vyborIdValidator;
 
-    QString updateID;
-    QString orgID;
+    QString contactId;
+    QString orgId;
     QString number;  
 };
 

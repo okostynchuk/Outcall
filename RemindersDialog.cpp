@@ -786,7 +786,7 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
         group_id = queryModel->data(queryModel->index(index.row(), 12), Qt::EditRole).toString();
 
     editReminderDialog = new EditReminderDialog;
-    editReminderDialog->setValuesReminders(id, group_id, dateTime, note);
+    editReminderDialog->setValues(id, group_id, dateTime, note);
     connect(editReminderDialog, &EditReminderDialog::sendData, this, &RemindersDialog::receiveData);
     editReminderDialog->show();
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);

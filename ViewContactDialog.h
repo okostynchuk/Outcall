@@ -34,7 +34,7 @@ public:
     explicit ViewContactDialog(QWidget *parent = 0);
     ~ViewContactDialog();
 
-    void setValuesContacts(QString);
+    void setValues(QString);
 
 private slots:
     void loadAllCalls();
@@ -91,7 +91,7 @@ private:
     QValidator* validator;
 
     QString recordpath;
-    QString userID;
+    QString userId;
     QString contactId;
     QString uniqueid;
     QString number;

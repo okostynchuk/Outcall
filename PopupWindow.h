@@ -98,7 +98,7 @@ private:
 
     QPoint position;
 
-    QString userID;
+    QString userId;
     QString author;
 
 	int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;

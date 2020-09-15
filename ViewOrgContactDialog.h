@@ -38,7 +38,7 @@ public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
     ~ViewOrgContactDialog();
 
-    void setOrgValuesContacts(QString);
+    void setValues(QString);
 
 private slots:
     void loadAllCalls();
@@ -100,7 +100,7 @@ private:
     QValidator* validator;
 
     QString recordpath;
-    QString userID;
+    QString userId;
     QString contactId;
     QString my_number;
     QString uniqueid;

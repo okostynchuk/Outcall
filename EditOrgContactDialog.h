@@ -25,7 +25,8 @@ public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
     ~EditOrgContactDialog();
 
-    void setOrgValuesContacts(QString);
+    void setValues(QString);
+    void hideBackButton();
 
 private slots:
     void onSave();
@@ -48,7 +49,7 @@ private:
     QValidator* phonesValidator;
     QValidator* vyborIdValidator;
 
-    QString updateID;
+    QString contactId;
     QString firstNumber;
     QString secondNumber;
     QString thirdNumber;

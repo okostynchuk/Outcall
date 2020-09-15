@@ -37,7 +37,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
 
     my_number = global::getExtensionNumber("extensions");
 
-    ui->my_Number->setText(my_number);
+    ui->number->setText(my_number);
 }
 
 PlaceCallDialog::~PlaceCallDialog()
@@ -71,7 +71,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     else
     {
         chooseNumber = new ChooseNumber;
-        chooseNumber->setValuesNumber(id);
+        chooseNumber->setValues(id);
         connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
         chooseNumber->show();
         chooseNumber->setAttribute(Qt::WA_DeleteOnClose);

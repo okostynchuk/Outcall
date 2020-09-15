@@ -105,13 +105,13 @@ void ContactsDialog::onAddOrg()
 
 void ContactsDialog::showCard(const QModelIndex &index)
 {
-    QString updateID = queryModel->data(queryModel->index(index.row(), 0)).toString();
+    QString contactId = queryModel->data(queryModel->index(index.row(), 0)).toString();
     int row = ui->tableView->currentIndex().row();
 
     if (queryModel->data(queryModel->index(row, 1)).toString() == "person")
     {
          viewContactDialog = new ViewContactDialog;
-         viewContactDialog->setValuesContacts(updateID);
+         viewContactDialog->setValues(contactId);
          connect(viewContactDialog, &ViewContactDialog::sendData, this, &ContactsDialog::receiveData);
          viewContactDialog->show();
          viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -119,7 +119,7 @@ void ContactsDialog::showCard(const QModelIndex &index)
     else
     {
         viewOrgContactDialog = new ViewOrgContactDialog;
-        viewOrgContactDialog->setOrgValuesContacts(updateID);
+        viewOrgContactDialog->setValues(contactId);
         connect(viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
         viewOrgContactDialog->show();
         viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);

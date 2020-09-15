@@ -17,7 +17,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddOrgContactDialog::onSave);
 
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     phonesValidator = new QRegularExpressionValidator(regExp, this);
@@ -28,7 +28,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     regExp.setPattern("^[0-9]*$");
     vyborIdValidator = new QRegularExpressionValidator(regExp, this);
 
-    ui->VyborID->setValidator(vyborIdValidator);
+    ui->vyborId->setValidator(vyborIdValidator);
 }
 
 AddOrgContactDialog::~AddOrgContactDialog()
@@ -42,7 +42,7 @@ void AddOrgContactDialog::onSave()
 {
     QSqlQuery query(db);
 
-    QString orgName = ui->OrgName->text();
+    QString orgName = ui->orgName->text();
 
     QStringList phonesListRegExp;
 
@@ -55,11 +55,11 @@ void AddOrgContactDialog::onSave()
 
     bool empty_field = false;
 
-    if (ui->OrgName->text().isEmpty())
+    if (ui->orgName->text().isEmpty())
     {
          ui->label_15->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
-         ui->OrgName->setStyleSheet("border: 1px solid red");
+         ui->orgName->setStyleSheet("border: 1px solid red");
 
          empty_field = true;
     }
@@ -67,15 +67,15 @@ void AddOrgContactDialog::onSave()
     {
         ui->label_15->setText("");
 
-        ui->OrgName->setStyleSheet("border: 1px solid grey");
+        ui->orgName->setStyleSheet("border: 1px solid grey");
     }
 
-    if (ui->FirstNumber->text().isEmpty())
+    if (ui->firstNumber->text().isEmpty())
     {
         ui->label_14->show();
         ui->label_14->setText("<span style=\"color: red;\">" + tr("Заполните обязательное поле!") + "</span>");
 
-        ui->FirstNumber->setStyleSheet("border: 1px solid red");
+        ui->firstNumber->setStyleSheet("border: 1px solid red");
 
         empty_field = true;
     }
@@ -83,7 +83,7 @@ void AddOrgContactDialog::onSave()
     {
         ui->label_14->setText("");
 
-        ui->FirstNumber->setStyleSheet("border: 1px solid grey");
+        ui->firstNumber->setStyleSheet("border: 1px solid grey");
     }
 
     if (empty_field)
@@ -165,11 +165,11 @@ void AddOrgContactDialog::onSave()
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);
-    query.addBindValue(ui->City->text());
-    query.addBindValue(ui->Address->text());
-    query.addBindValue(ui->Email->text());
-    query.addBindValue(ui->VyborID->text());
-    query.addBindValue(ui->Comment->toPlainText().trimmed());
+    query.addBindValue(ui->city->text());
+    query.addBindValue(ui->address->text());
+    query.addBindValue(ui->email->text());
+    query.addBindValue(ui->vyborId->text());
+    query.addBindValue(ui->comment->toPlainText().trimmed());
     query.exec();
 
     int id = query.lastInsertId().toInt();
@@ -204,27 +204,22 @@ bool AddOrgContactDialog::isPhone(QString* str)
     return false;
 }
 
-void AddOrgContactDialog::setOrgValuesCallHistory(QString number)
+void AddOrgContactDialog::setValues(QString number)
 {
-    ui->FirstNumber->setText(number);
-}
-
-void AddOrgContactDialog::setOrgValuesPopupWindow(QString number)
-{
-    ui->FirstNumber->setText(number);
+    ui->firstNumber->setText(number);
 }
 
 void AddOrgContactDialog::onTextChanged()
 {
-    if (ui->Comment->toPlainText().trimmed().length() > 255)
-        ui->Comment->textCursor().deletePreviousChar();
+    if (ui->comment->toPlainText().trimmed().length() > 255)
+        ui->comment->textCursor().deletePreviousChar();
 }
 
 void AddOrgContactDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
     {
-        if (ui->Comment->hasFocus())
+        if (ui->comment->hasFocus())
             return;
         else
             onSave();

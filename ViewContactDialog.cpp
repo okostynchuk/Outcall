@@ -13,7 +13,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    userID = global::getSettingsValue("user_login", "settings").toString();
+    userId = global::getSettingsValue("user_login", "settings").toString();
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -57,7 +57,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 }
 
 ViewContactDialog::~ViewContactDialog()
@@ -77,7 +77,7 @@ void ViewContactDialog::showEvent(QShowEvent* event)
     query.exec();
 
     if (query.first())
-        ui->Organization->setText(query.value(0).toString());
+        ui->organization->setText(query.value(0).toString());
 }
 
 void ViewContactDialog::onAddReminder()
@@ -115,8 +115,8 @@ void ViewContactDialog::onOpenAccess()
 
         query.prepare("INSERT INTO CallTable (UserID, ClientID)"
                     "VALUES (?, ?)");
-        query.addBindValue(userID);
-        query.addBindValue(ui->VyborID->text().toInt());
+        query.addBindValue(userId);
+        query.addBindValue(ui->vyborId->text().toInt());
         query.exec();
 
         ui->openAccessButton->setDisabled(true);
@@ -207,7 +207,7 @@ void ViewContactDialog::onCall()
             chooseNumber.data()->close();
 
         chooseNumber = new ChooseNumber;
-        chooseNumber.data()->setValuesNumber(contactId);
+        chooseNumber.data()->setValues(contactId);
         chooseNumber.data()->show();
         chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -218,7 +218,7 @@ void ViewContactDialog::onEdit()
     hide();
 
     editContactDialog = new EditContactDialog();
-    editContactDialog->setValuesContacts(contactId);
+    editContactDialog->setValues(contactId);
     connect(editContactDialog, &EditContactDialog::sendData, this, &ViewContactDialog::receiveData);
     connect(this, &ViewContactDialog::getPos, editContactDialog, &EditContactDialog::setPos);
     emit getPos(this->pos().x(), this->pos().y());
@@ -226,9 +226,9 @@ void ViewContactDialog::onEdit()
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewContactDialog::setValuesContacts(QString i)
+void ViewContactDialog::setValues(QString id)
 {
-    contactId = i;
+    contactId = id;
 
     QSqlQuery query(db);
 
@@ -246,19 +246,19 @@ void ViewContactDialog::setValuesContacts(QString i)
     query.exec();
     query.next();
 
-    ui->FirstName->setText(query.value(0).toString());
-    ui->Patronymic->setText(query.value(1).toString());
-    ui->LastName->setText(query.value(2).toString());
-    ui->City->setText(query.value(3).toString());
-    ui->City->QWidget::setToolTip(query.value(3).toString());
-    ui->Address->setText(query.value(4).toString());
-    ui->Address->QWidget::setToolTip(query.value(4).toString());
-    ui->Email->setText(query.value(5).toString());
-    ui->Email->QWidget::setToolTip(query.value(5).toString());
-    ui->VyborID->setText(query.value(6).toString());
-    ui->Comment->setText(query.value(7).toString());
+    ui->firstName->setText(query.value(0).toString());
+    ui->patronymic->setText(query.value(1).toString());
+    ui->lastName->setText(query.value(2).toString());
+    ui->city->setText(query.value(3).toString());
+    ui->city->QWidget::setToolTip(query.value(3).toString());
+    ui->address->setText(query.value(4).toString());
+    ui->address->QWidget::setToolTip(query.value(4).toString());
+    ui->email->setText(query.value(5).toString());
+    ui->email->QWidget::setToolTip(query.value(5).toString());
+    ui->vyborId->setText(query.value(6).toString());
+    ui->comment->setText(query.value(7).toString());
 
-    if (ui->VyborID->text() == "0")
+    if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
 
     days = ui->comboBox->currentText();

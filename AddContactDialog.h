@@ -54,7 +54,7 @@ private:
     QValidator* phonesValidator;
     QValidator* vyborIdValidator;
 
-    QString orgID;
+    QString orgId;
 };
 
 #endif // ADDCONTACTDIALOG_H

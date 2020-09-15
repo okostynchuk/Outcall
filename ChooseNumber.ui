@@ -34,7 +34,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLineEdit" name="FirstNumber">
+    <widget class="QLineEdit" name="firstNumber">
      <property name="mouseTracking">
       <bool>true</bool>
      </property>
@@ -49,7 +49,7 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLineEdit" name="SecondNumber">
+    <widget class="QLineEdit" name="secondNumber">
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
@@ -61,7 +61,7 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLineEdit" name="ThirdNumber">
+    <widget class="QLineEdit" name="thirdNumber">
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
@@ -73,7 +73,7 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLineEdit" name="FourthNumber">
+    <widget class="QLineEdit" name="fourthNumber">
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
@@ -85,7 +85,7 @@ background-color: #fffff8;
     </widget>
    </item>
    <item row="5" column="0">
-    <widget class="QLineEdit" name="FifthNumber">
+    <widget class="QLineEdit" name="fifthNumber">
      <property name="styleSheet">
       <string notr="true">*{
 background-color: #fffff8;
@@ -112,11 +112,11 @@ background-color: #fffff8;
   </layout>
  </widget>
  <tabstops>
-  <tabstop>FirstNumber</tabstop>
-  <tabstop>SecondNumber</tabstop>
-  <tabstop>ThirdNumber</tabstop>
-  <tabstop>FourthNumber</tabstop>
-  <tabstop>FifthNumber</tabstop>
+  <tabstop>firstNumber</tabstop>
+  <tabstop>secondNumber</tabstop>
+  <tabstop>thirdNumber</tabstop>
+  <tabstop>fourthNumber</tabstop>
+  <tabstop>fifthNumber</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

@@ -67,7 +67,7 @@ void AddReminderDialog::onChooseEmployee()
         chooseEmployee.data()->close();
 
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee.data()->setValuesReminders(employee);
+    chooseEmployee.data()->setValues(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
     connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());

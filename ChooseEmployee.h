@@ -20,7 +20,7 @@ signals:
     void sendEmployee(QStringList);
 
 public slots:
-    void setValuesReminders(QStringList);
+    void setValues(QStringList);
     void setPos(int, int);
 
 public:

@@ -2144,7 +2144,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Вывод организации</source>
-        <translation>Вывод организации</translation>
+        <translation type="vanished">Вывод организации</translation>
     </message>
     <message>
         <source>Позвонить</source>
@@ -2197,6 +2197,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Телефон</source>
         <translation>Телефон</translation>
+    </message>
+    <message>
+        <source>Сотрудники организации:</source>
+        <translation>Сотрудники организации:</translation>
     </message>
 </context>
 <context>

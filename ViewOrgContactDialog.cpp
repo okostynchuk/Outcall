@@ -14,7 +14,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    userID = global::getSettingsValue("user_login", "settings").toString();
+    userId = global::getSettingsValue("user_login", "settings").toString();
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -55,7 +55,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -166,7 +166,7 @@ void ViewOrgContactDialog::onCall()
             chooseNumber.data()->close();
 
         chooseNumber = new ChooseNumber;
-        chooseNumber.data()->setValuesNumber(contactId);
+        chooseNumber.data()->setValues(contactId);
         chooseNumber.data()->show();
         chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
@@ -177,7 +177,7 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
 
     viewContactDialog = new ViewContactDialog;
-    viewContactDialog->setValuesContacts(id);
+    viewContactDialog->setValues(id);
     connect(viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
     viewContactDialog->show();
     viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -188,7 +188,7 @@ void ViewOrgContactDialog::onEdit()
     hide();
 
     editOrgContactDialog = new EditOrgContactDialog;
-    editOrgContactDialog->setOrgValuesContacts(contactId);
+    editOrgContactDialog->setValues(contactId);
     connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
     connect(this, &ViewOrgContactDialog::getPos, editOrgContactDialog, &EditOrgContactDialog::setPos);
     emit getPos(this->pos().x(), this->pos().y());
@@ -254,9 +254,9 @@ void ViewOrgContactDialog::onUpdateCalls()
         loadPlacedCalls();
 }
 
-void ViewOrgContactDialog::setOrgValuesContacts(QString i)
+void ViewOrgContactDialog::setValues(QString id)
 {
-    contactId = i;
+    contactId = id;
 
     QSqlQuery query(db);
 
@@ -273,17 +273,17 @@ void ViewOrgContactDialog::setOrgValuesContacts(QString i)
     query.exec();
     query.next();
 
-    ui->OrgName->setText(query.value(0).toString());
-    ui->City->setText(query.value(1).toString());
-    ui->City->QWidget::setToolTip(query.value(1).toString());
-    ui->Address->setText(query.value(2).toString());
-    ui->Address->QWidget::setToolTip(query.value(2).toString());
-    ui->Email->setText(query.value(3).toString());
-    ui->Email->QWidget::setToolTip(query.value(3).toString());
-    ui->VyborID->setText(query.value(4).toString());
-    ui->Comment->setText(query.value(5).toString());
+    ui->orgName->setText(query.value(0).toString());
+    ui->city->setText(query.value(1).toString());
+    ui->city->QWidget::setToolTip(query.value(1).toString());
+    ui->address->setText(query.value(2).toString());
+    ui->address->QWidget::setToolTip(query.value(2).toString());
+    ui->email->setText(query.value(3).toString());
+    ui->email->QWidget::setToolTip(query.value(3).toString());
+    ui->vyborId->setText(query.value(4).toString());
+    ui->comment->setText(query.value(5).toString());
 
-    if (ui->VyborID->text() == "0")
+    if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
 
     query_model = new QSqlQueryModel;
@@ -1318,8 +1318,8 @@ void ViewOrgContactDialog::onOpenAccess()
 
         query.prepare("INSERT INTO CallTable (UserID, ClientID)"
                     "VALUES (?, ?)");
-        query.addBindValue(userID);
-        query.addBindValue(ui->VyborID->text().toInt());
+        query.addBindValue(userId);
+        query.addBindValue(ui->vyborId->text().toInt());
         query.exec();
 
         ui->openAccessButton->setDisabled(true);

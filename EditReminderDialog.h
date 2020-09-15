@@ -29,7 +29,7 @@ public:
     explicit EditReminderDialog(QWidget *parent = 0);
     ~EditReminderDialog();
 
-    void setValuesReminders(QString, QString, QDateTime, QString);
+    void setValues(QString, QString, QDateTime, QString);
 
 private slots:
     void onChooseEmployee();

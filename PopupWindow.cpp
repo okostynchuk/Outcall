@@ -39,7 +39,7 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
                       "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
                       "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
 
-    userID = global::getSettingsValue("user_login", "settings").toString();
+    userId = global::getSettingsValue("user_login", "settings").toString();
 
     author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
@@ -360,7 +360,7 @@ void PopupWindow::onAddOrg()
         addOrgContactDialog.data()->close();
 
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog.data()->setOrgValuesPopupWindow(m_pwi.number);
+    addOrgContactDialog.data()->setValues(m_pwi.number);
     connect(addOrgContactDialog.data(), &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
     addOrgContactDialog.data()->show();
     addOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -390,7 +390,7 @@ void PopupWindow::onShowCard()
     query.exec();
     query.first();
 
-    QString updateID = query.value(0).toString();
+    QString contactId = query.value(0).toString();
 
     if (query.value(1).toString() == "person")
     {
@@ -398,7 +398,7 @@ void PopupWindow::onShowCard()
             viewContactDialog.data()->close();
 
         viewContactDialog = new ViewContactDialog;
-        viewContactDialog.data()->setValuesContacts(updateID);
+        viewContactDialog.data()->setValues(contactId);
         connect(viewContactDialog.data(), &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
         viewContactDialog.data()->show();
         viewContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -409,7 +409,7 @@ void PopupWindow::onShowCard()
             viewOrgContactDialog.data()->close();
 
         viewOrgContactDialog = new ViewOrgContactDialog;
-        viewOrgContactDialog.data()->setOrgValuesContacts(updateID);
+        viewOrgContactDialog.data()->setValues(contactId);
         connect(viewOrgContactDialog.data(), &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
         viewOrgContactDialog.data()->show();
         viewOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -455,7 +455,7 @@ void PopupWindow::onOpenAccess()
     query.exec();
     query.first();
 
-    QString vyborID = query.value(0).toString();
+    QString vyborId = query.value(0).toString();
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -479,8 +479,8 @@ void PopupWindow::onOpenAccess()
 
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (user_id(?), ?)");
-        query1.addBindValue(userID);
-        query1.addBindValue(vyborID);
+        query1.addBindValue(userId);
+        query1.addBindValue(vyborId);
         query1.exec();
 
         ui->openAccessButton->setDisabled(true);

@@ -124,7 +124,7 @@ void ChooseEmployee::onSearch()
     ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
-void ChooseEmployee::setValuesReminders(QStringList employee)
+void ChooseEmployee::setValues(QStringList employee)
 {
     this->employee = employee;
     this->employee.removeAll(my_number);

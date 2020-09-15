@@ -56,7 +56,7 @@
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
-      <widget class="QLineEdit" name="FirstName">
+      <widget class="QLineEdit" name="firstName">
        <property name="minimumSize">
         <size>
          <width>160</width>
@@ -76,7 +76,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLineEdit" name="LastName">
+      <widget class="QLineEdit" name="lastName">
        <property name="minimumSize">
         <size>
          <width>160</width>
@@ -106,7 +106,7 @@
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QLineEdit" name="Patronymic">
+      <widget class="QLineEdit" name="patronymic">
        <property name="minimumSize">
         <size>
          <width>160</width>
@@ -260,7 +260,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="FirstNumber">
+      <widget class="QLineEdit" name="firstNumber">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -274,7 +274,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="SecondNumber">
+      <widget class="QLineEdit" name="secondNumber">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -294,7 +294,7 @@
       </widget>
      </item>
      <item row="3" column="3">
-      <widget class="QLineEdit" name="City">
+      <widget class="QLineEdit" name="city">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -308,7 +308,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="ThirdNumber">
+      <widget class="QLineEdit" name="thirdNumber">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -325,7 +325,7 @@
       </widget>
      </item>
      <item row="4" column="3">
-      <widget class="QLineEdit" name="Address">
+      <widget class="QLineEdit" name="address">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -339,7 +339,7 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="FourthNumber">
+      <widget class="QLineEdit" name="fourthNumber">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -356,7 +356,7 @@
       </widget>
      </item>
      <item row="5" column="3">
-      <widget class="QLineEdit" name="VyborID">
+      <widget class="QLineEdit" name="vyborId">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -370,7 +370,7 @@
       </widget>
      </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="FifthNumber">
+      <widget class="QLineEdit" name="fifthNumber">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -387,7 +387,7 @@
       </widget>
      </item>
      <item row="6" column="3">
-      <widget class="QLineEdit" name="Email">
+      <widget class="QLineEdit" name="email">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -425,7 +425,7 @@
       </widget>
      </item>
      <item row="1" column="0" colspan="3">
-      <widget class="QTextEdit" name="Comment">
+      <widget class="QTextEdit" name="comment">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -451,21 +451,21 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>LastName</tabstop>
-  <tabstop>FirstName</tabstop>
-  <tabstop>Patronymic</tabstop>
-  <tabstop>FirstNumber</tabstop>
-  <tabstop>SecondNumber</tabstop>
-  <tabstop>ThirdNumber</tabstop>
-  <tabstop>FourthNumber</tabstop>
-  <tabstop>FifthNumber</tabstop>
-  <tabstop>City</tabstop>
-  <tabstop>Address</tabstop>
-  <tabstop>VyborID</tabstop>
-  <tabstop>Email</tabstop>
+  <tabstop>lastName</tabstop>
+  <tabstop>firstName</tabstop>
+  <tabstop>patronymic</tabstop>
+  <tabstop>firstNumber</tabstop>
+  <tabstop>secondNumber</tabstop>
+  <tabstop>thirdNumber</tabstop>
+  <tabstop>fourthNumber</tabstop>
+  <tabstop>fifthNumber</tabstop>
+  <tabstop>city</tabstop>
+  <tabstop>address</tabstop>
+  <tabstop>vyborId</tabstop>
+  <tabstop>email</tabstop>
   <tabstop>addOrgButton</tabstop>
   <tabstop>deleteOrgButton</tabstop>
-  <tabstop>Comment</tabstop>
+  <tabstop>comment</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources>

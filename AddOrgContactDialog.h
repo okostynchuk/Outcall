@@ -22,8 +22,7 @@ public:
     explicit AddOrgContactDialog(QWidget *parent = 0);
     ~AddOrgContactDialog();
 
-    void setOrgValuesCallHistory(QString);
-    void setOrgValuesPopupWindow(QString);
+    void setValues(QString);
 
 private slots:
     void onSave();

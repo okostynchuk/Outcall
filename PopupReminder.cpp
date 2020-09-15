@@ -398,7 +398,7 @@ void PopupReminder::onCall()
                 chooseNumber.data()->close();
 
             chooseNumber = new ChooseNumber;
-            chooseNumber.data()->setValuesNumber(m_pri.call_id);
+            chooseNumber.data()->setValues(m_pri.call_id);
             chooseNumber.data()->show();
             chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
         }
@@ -428,7 +428,7 @@ void PopupReminder::onSelectTime(int index)
             editReminderDialog.data()->close();
 
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog.data()->setValuesReminders(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
+        editReminderDialog.data()->setValues(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
         connect(editReminderDialog.data(), &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
         editReminderDialog.data()->show();
         editReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -508,8 +508,8 @@ void PopupReminder::onOpenAccess()
     query.exec();
     query.first();
 
-    QString vyborID = query.value(0).toString();
-    QString userID = global::getSettingsValue("user_login", "settings").toString();
+    QString vyborId = query.value(0).toString();
+    QString userId = global::getSettingsValue("user_login", "settings").toString();
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -533,8 +533,8 @@ void PopupReminder::onOpenAccess()
 
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
                    "VALUES (user_id(?), ?)");
-        query1.addBindValue(userID);
-        query1.addBindValue(vyborID);
+        query1.addBindValue(userId);
+        query1.addBindValue(vyborId);
         query1.exec();
 
         ui->openAccessButton->setDisabled(true);

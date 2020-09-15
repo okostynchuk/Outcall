@@ -657,10 +657,9 @@ void CallHistoryDialog::onAddContact()
 
     clearFocus();
 
-    addContactDialog = new AddContactDialog;
-
     if (checkNumber(number))
     {
+        addContactDialog = new AddContactDialog;
         addContactDialog->setValues(number);
         connect(addContactDialog, &AddContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         addContactDialog->show();
@@ -680,11 +679,10 @@ void CallHistoryDialog::onAddOrgContact()
 
     clearFocus();
 
-    addOrgContactDialog = new AddOrgContactDialog;
-
     if (checkNumber(number))
     {
-        addOrgContactDialog->setOrgValuesCallHistory(number);
+        addOrgContactDialog = new AddOrgContactDialog;
+        addOrgContactDialog->setValues(number);
         connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         addOrgContactDialog->show();
         addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -711,7 +709,7 @@ void CallHistoryDialog::editContact(QString number)
 {
     QSqlQuery query(db);
 
-    QString updateID = getUpdateId(number);
+    QString contactId = getUpdateId(number);
 
     query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
@@ -720,7 +718,8 @@ void CallHistoryDialog::editContact(QString number)
     if (query.value(0).toString() == "person")
     {
         editContactDialog = new EditContactDialog;
-        editContactDialog->setValuesContacts(updateID);
+        editContactDialog->setValues(contactId);
+        editContactDialog->hideBackButton();
         connect(editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         editContactDialog->show();
         editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -733,7 +732,7 @@ void CallHistoryDialog::editOrgContact(QString number)
 {
     QSqlQuery query(db);
 
-    QString updateID = getUpdateId(number);
+    QString contactId = getUpdateId(number);
 
     query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
@@ -742,7 +741,8 @@ void CallHistoryDialog::editOrgContact(QString number)
     if (query.value(0).toString() == "org")
     {
         editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setOrgValuesContacts(updateID);
+        editOrgContactDialog->setValues(contactId);
+        editOrgContactDialog->hideBackButton();
         connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         editOrgContactDialog->show();
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -855,9 +855,9 @@ QString CallHistoryDialog::getUpdateId(QString number)
     query.exec();
     query.first();
 
-    QString updateID = query.value(0).toString();
+    QString contactId = query.value(0).toString();
 
-    return updateID;
+    return contactId;
 }
 
 QWidget* CallHistoryDialog::loadName()

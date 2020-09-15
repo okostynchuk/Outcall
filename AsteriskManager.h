@@ -46,7 +46,7 @@ public:
         QString destUniqueid;
     };
 
-    void originateCall(QString from, QString to,  QString protocol, QString callerID);
+    void originateCall(QString from, QString to,  QString protocol, QString callerId);
     void originateAudio(QString number, QString protocol, QString recordpath);
 
     bool isSignedIn() const;

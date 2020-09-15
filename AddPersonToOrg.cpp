@@ -19,7 +19,7 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::getPersonID);
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::getPersonId);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPersonToOrg::currentIndexChanged);
 
     page = "1";
@@ -59,7 +59,7 @@ void AddPersonToOrg::setOrgId(QString orgId)
     setWindowTitle(tr("Добавление сотрудников к организации") + " \"" + orgName + "\"");
 }
 
-void AddPersonToOrg::getPersonID(const QModelIndex &index)
+void AddPersonToOrg::getPersonId(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
 

@@ -60,7 +60,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="my_Number">
+        <widget class="QLabel" name="number">
          <property name="text">
           <string/>
          </property>

@@ -15,7 +15,7 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
     my_number = global::getExtensionNumber("extensions");
     protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-    phonesList = { ui->FirstNumber, ui->SecondNumber, ui->ThirdNumber, ui->FourthNumber, ui->FifthNumber };
+    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     for (int i = 0; i < phonesList.length(); ++i)
     {
@@ -34,13 +34,13 @@ void ChooseNumber::onCall(QString number)
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
-void ChooseNumber::setValuesNumber(QString i)
+void ChooseNumber::setValues(QString id)
 {
-    updateID = i;
+    contactId = id;
 
     QSqlQuery query(db);
 
-    query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + updateID);
+    query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
 
     while (query.next())

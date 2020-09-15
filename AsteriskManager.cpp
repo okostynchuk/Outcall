@@ -212,7 +212,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
         QString uniqueid     = eventValues.value("Uniqueid");
-        QString callerIDName = eventValues.value("CallerIDName");
+        QString callerIdName = eventValues.value("CallerIDName");
         QString ch           = eventValues.value("Channel");
 
         QRegExp reg("([^/]*)(/)(\\d+)");
@@ -227,7 +227,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         if (type == chType)
         {
             Call* call       = new Call;
-            call->callerName = callerIDName;
+            call->callerName = callerIdName;
             call->chType     = chType;
             call->chExten    = chExten;
 
@@ -286,8 +286,8 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
         const QString number         = eventValues.value("TransferTargetCallerIDNum");
         const QString uniqueid       = eventValues.value("TransfereeUniqueid");
-        const QString callerIDName   = eventValues.value("TransfereeCallerIDName");
-        const QString callerIDNum    = eventValues.value("TransfereeCallerIDNum");
+        const QString callerIdName   = eventValues.value("TransfereeCallerIDName");
+        const QString callerIdNum    = eventValues.value("TransfereeCallerIDNum");
 
         QString dateTime = QTime::currentTime().toString();
 
@@ -296,9 +296,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
             QMap<QString, QVariant> received;
 
             received.insert("dateTime", dateTime);
-            received.insert("from", callerIDNum);
+            received.insert("from", callerIdNum);
             received.insert("to", number);
-            received.insert("callerIDName", callerIDName);
+            received.insert("callerIdName", callerIdName);
             received.insert("uniqueid", uniqueid);
 
             int counter = m_dialedNum.value(uniqueid, 0);
@@ -363,10 +363,10 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         const QString channelStateDesc  = eventValues.value("ChannelStateDesc");
-        const QString callerIDNum       = eventValues.value("CallerIDNum");
+        const QString callerIdNum       = eventValues.value("CallerIDNum");
         QString destExten               = eventValues.value("DestExten");
         const QString destChannel       = eventValues.value("DestChannel");
-        const QString callerIDName      = eventValues.value("CallerIDName");
+        const QString callerIdName      = eventValues.value("CallerIDName");
         const QString uniqueid          = eventValues.value("Uniqueid");
         const QString context           = eventValues.value("Context");
         const QString linkedid          = eventValues.value("Linkedid");
@@ -397,10 +397,10 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     QMap<QString, QVariant> received;
 
                     received.insert("dateTime", dateTime);
-                    received.insert("from", callerIDNum);
+                    received.insert("from", callerIdNum);
                     received.insert("to", destExten);
                     received.insert("protocol", destProtocol);
-                    received.insert("callerIDName", callerIDName);
+                    received.insert("callerIdName", callerIdName);
                     received.insert("uniqueid", uniqueid);
                     received.insert("context", context);
                     received.insert("linkedid", linkedid);
@@ -423,11 +423,11 @@ void AsteriskManager::parseEvent(const QString &eventData)
         getEventValues(eventData, eventValues);
 
         QString channelStateDesc = eventValues.value("ChannelStateDesc");
-        QString callerIDNum      = eventValues.value("CallerIDNum");
+        QString callerIdNum      = eventValues.value("CallerIDNum");
         QString exten            = eventValues.value("Exten");
         QString destChannel      = eventValues.value("DestChannel");
         QString dialStatus       = eventValues.value("DialStatus");
-        QString callerIDName     = eventValues.value("CallerIDName");
+        QString callerIdName     = eventValues.value("CallerIDName");
         QString uniqueid         = eventValues.value("Uniqueid");
 
         int index                = destChannel.indexOf("/");
@@ -457,11 +457,11 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
                     QMap<QString, QVariant> received;
 
-                    received.insert("from",         callerIDNum);
+                    received.insert("from",         callerIdNum);
                     received.insert("to",           exten);
                     received.insert("protocol",     destProtocol);
                     received.insert("date_time",    dateTime);
-                    received.insert("callerIDName", callerIDName);
+                    received.insert("callerIdName", callerIdName);
 
                     QList<QVariant> list = global::getSettingsValue("received", "calls").toList();
 
@@ -502,11 +502,11 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
                     QMap<QString, QVariant> missed;
 
-                    missed.insert("from",           callerIDNum);
+                    missed.insert("from",           callerIdNum);
                     missed.insert("to",             exten);
                     missed.insert("protocol",       destProtocol);
                     missed.insert("date_time",      date);
-                    missed.insert("callerIDName",   callerIDName);
+                    missed.insert("callerIdName",   callerIdName);
 
                     QList<QVariant> list = global::getSettingsValue("missed", "calls", QVariantList()).toList();
 
@@ -577,7 +577,7 @@ void AsteriskManager::login()
     getExtensionNumbers();
 }
 
-void AsteriskManager::originateCall(QString from, QString exten, QString protocol, QString callerID)
+void AsteriskManager::originateCall(QString from, QString exten, QString protocol, QString callerId)
 {
     const QString channel = protocol + "/" + from;
 
@@ -587,7 +587,7 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
     result += "Exten: "         + exten         + "\r\n";
     result += "Context: DLPN_DialPlan" + from + "\r\n";
     result += "Priority: 1\r\n";
-    result += "CallerID: "      + callerID      + "\r\n";
+    result += "CallerID: "      + callerId      + "\r\n";
 
     m_tcpSocket->write(result.toLatin1().data());
     m_tcpSocket->write("\r\n");
@@ -703,7 +703,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
         QString channel          = eventValues.value("Channel");
         QString calledNum        = eventValues.value("Exten");
         QString state            = eventValues.value("ChannelStateDesc");
-        QString callerIDName     = eventValues.value("CallerIDName");
+        QString callerIdName     = eventValues.value("CallerIDName");
 
         QRegExp reg("([^/]*)(/)(\\d+)");
         reg.indexIn(channel);
@@ -718,7 +718,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             call->exten         = calledNum;
             call->state         = state;
             call->chType        = protocol;
-            call->callerName    = callerIDName;
+            call->callerName    = callerIdName;
 
             m_calls.insert(uniqueid, call);
         }
@@ -731,7 +731,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
         QString channelStateDesc = eventValues.value("ChannelStateDesc");
         QString uniqueid         = eventValues.value("Uniqueid");
         QString channel          = eventValues.value("Channel");
-        QString callerIDName     = eventValues.value("ConnectedLineName");
+        QString callerIdName     = eventValues.value("ConnectedLineName");
         QString connectedLineNum = eventValues.value("ConnectedLineNum");
 
         if (!m_calls.contains(uniqueid))
@@ -762,7 +762,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 QMap<QString, QVariant> received;
 
                 received.insert("from", connectedLineNum);
-                received.insert("callerIDName", callerIDName);
+                received.insert("callerIdName", callerIdName);
 
                 Call* call = m_calls.value(uniqueid);
                 call->state      = channelStateDesc;
@@ -780,7 +780,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
                 received.insert("to",           exten);
                 received.insert("protocol",     protocol);
                 received.insert("date_time",    dateTime);
-                received.insert("callerIDName", callerIDName);
+                received.insert("callerIdName", callerIdName);
 
                 QList<QVariant> list = global::getSettingsValue("received", "calls").toList();
 
@@ -886,7 +886,7 @@ void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
             missed.insert("to",             call->chExten);
             missed.insert("protocol",       call->chType);
             missed.insert("date_time",      dateTime);
-            missed.insert("callerIDName",   connectedLineName);
+            missed.insert("callerIdName",   connectedLineName);
 
             QList<QVariant> list = global::getSettingsValue("missed", "calls", QVariantList()).toList();
 
