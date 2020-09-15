@@ -159,7 +159,6 @@ void Downloader::openDownload()
         qApp->closeAllWindows();
         qApp->quit();
     }
-
     else
     {
         QMessageBox::critical(this,
@@ -193,43 +192,42 @@ void Downloader::installUpdate()
         return;
 
     /* Update labels */
-    m_ui->stopButton->setText(tr("Закрыть"));
-    m_ui->downloadLabel->setText(tr("Загрузка завершена!"));
-    m_ui->timeLabel->setText(tr("Установщик откроется отдельно"));
+//    m_ui->stopButton->setText(tr("Закрыть"));
+//    m_ui->downloadLabel->setText(tr("Загрузка завершена!"));
+//    m_ui->timeLabel->setText(tr("Установщик откроется отдельно"));
 
     /* Ask the user to install the download */
-    QMessageBox box;
-    box.setIcon(QMessageBox::Question);
-    box.setDefaultButton(QMessageBox::Ok);
-    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+//    QMessageBox box;
+//    box.setIcon(QMessageBox::Question);
+//    box.setDefaultButton(QMessageBox::Ok);
+//    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
-    box.setButtonText(QMessageBox::Yes, tr("ОК"));
-    box.setButtonText(QMessageBox::Cancel, tr("Отмена"));
-    box.setInformativeText(tr("Нажмите \"OK\" для начала установки обновления"));
+//    box.setButtonText(QMessageBox::Yes, tr("ОК"));
+//    box.setButtonText(QMessageBox::Cancel, tr("Отмена"));
+//    box.setInformativeText(tr("Нажмите \"OK\" для начала установки обновления"));
 
-    QString text = tr("Для установки обновления необходимо закрыть приложение");
+//    QString text = tr("Для установки обновления необходимо закрыть приложение");
 
-    if (m_mandatoryUpdate)
-        text = tr("Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!");
+//    if (m_mandatoryUpdate)
+//        text = tr("Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!");
 
-    box.setText("<h3>" + text + "</h3>");
+//    box.setText("<h3>" + text + "</h3>");
 
     /* User wants to install the download */
-    if (box.exec() == QMessageBox::Ok)
-    {
+//    if (box.exec() == QMessageBox::Ok)
+//    {
         if (!useCustomInstallProcedures())
         {
             openDownload();
         }
-
-    }
+//    }
     /* Wait */
     else
     {
         if (m_mandatoryUpdate)
             QApplication::quit();
 
-        m_ui->timeLabel->setText(tr("Нажмите кнопку \"Открыть\" для применения обновлений"));
+        //m_ui->timeLabel->setText(tr("Нажмите кнопку \"Открыть\" для применения обновлений"));
     }
 }
 

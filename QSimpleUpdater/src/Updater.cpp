@@ -408,10 +408,10 @@ void Updater::setUpdateAvailable(const bool available)
 
     if (updateAvailable() && (notifyOnUpdate() || notifyOnFinish()))
     {
-        QString text = tr("Хотите скачать обновление сейчас?");
+        QString text = tr("Хотите скачать обновление сейчас?\nПриложение будет перезапущено!");
         if (m_mandatoryUpdate)
         {
-            text = tr("Хотите скачать обновление сейчас? Это обязательное обновление!");
+            text = tr("Хотите скачать обновление сейчас (это обязательное обновление)? Приложение будет перезапущено!");
         }    
 
         QString title = "<h3>"
