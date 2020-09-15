@@ -2,7 +2,7 @@
 <Package>
     <DisplayName>OutCALL</DisplayName>
     <ReleaseDate>2020-09-09</ReleaseDate>
-    <Version>3.0.3</Version>    
+    <Version>3.0.2</Version>    
     <Default>true</Default>
     <Script>installscript.qs</Script>
     <RequiresAdminRights>false</RequiresAdminRights>

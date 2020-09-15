@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>OutCALL</Name>
-    <Version>3.0.3</Version>
+    <Version>3.0.2</Version>
     <Title>OutCALL</Title>
     <Publisher>Vybor</Publisher>
     <StartMenuDir>OutCALL</StartMenuDir>
     <TargetDir>@RootDir@/OutCALL</TargetDir>
     <WizardStyle>Modern</WizardStyle>
     <TitleColor>#FFFFFF</TitleColor>
-    <ControlScript>controller.qs</ControlScript>
+    <!--<ControlScript>controller.qs</ControlScript>-->
     <!-- -->
     <RunProgram>@TargetDir@/OutCALL.exe</RunProgram>
     <RunProgramDescription>Запустить OutCALL после установки</RunProgramDescription>
