@@ -141,7 +141,6 @@ void AddOrgToPerson::onUpdate()
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
-    ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
