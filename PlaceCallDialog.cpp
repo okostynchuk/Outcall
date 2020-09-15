@@ -24,7 +24,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     connect(ui->callButton,    &QAbstractButton::clicked,       this, &PlaceCallDialog::onCallButton);
     connect(ui->cancelButton,  &QAbstractButton::clicked,       this, &PlaceCallDialog::onCancelButton);
     connect(ui->comboBox,      &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
-    connect(ui->comboBox_2, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
+    connect(ui->comboBox_2,    static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
     connect(ui->tableView,     &QAbstractItemView::clicked,     this, &PlaceCallDialog::showNumber);
 
     queryModel = new QSqlQueryModel;
@@ -154,7 +154,12 @@ void PlaceCallDialog::onUpdate()
             ui->comboBox_2->blockSignals(false);
         }
         else
+        {
+            ui->comboBox_2->hide();
+            ui->orgLabel->hide();
+            ui->tableView->setModel(NULL);
             return;
+        }
     }
 
     queryString.append("GROUP BY entry_id ORDER BY entry_name ASC");
