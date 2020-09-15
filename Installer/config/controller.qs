@@ -22,6 +22,7 @@ Controller.prototype.CredentialsPageCallback = function()
 Controller.prototype.IntroductionPageCallback = function()
 {
 	gui.clickButton(buttons.NextButton);
+
 }
 
 Controller.prototype.TargetDirectoryPageCallback = function()
