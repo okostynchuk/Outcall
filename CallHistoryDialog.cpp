@@ -33,8 +33,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addOrgContactButton,  &QAbstractButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdateClick);
 
-    connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
-    connect(ui->tabWidget,  &QTabWidget::currentChanged, this, &CallHistoryDialog::tabSelected);
+    connect(ui->tabWidget,   &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
+    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
 
     connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
     connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
@@ -64,8 +64,10 @@ CallHistoryDialog::~CallHistoryDialog()
     delete ui;
 }
 
-void CallHistoryDialog::showEvent(QShowEvent*)
+void CallHistoryDialog::showEvent(QShowEvent* event)
 {
+    QDialog::showEvent(event);
+
     if (ui->tabWidget->currentIndex() == 0)
         selectionAll = ui->tableView->selectionModel()->selectedRows();
     else if (ui->tabWidget->currentIndex() == 1)

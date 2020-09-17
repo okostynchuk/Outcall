@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setText(QObject::tr("Приложение уже запущено!"));
             msgBox.exec();
-
+            msgBox.deleteLater();
             return 1;
         }
 
