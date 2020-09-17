@@ -101,9 +101,11 @@ void PlaceCallDialog::onOrgChanged()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-
+    if (ui->tableView->model()->columnCount() != 0)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    }
 }
 
 void PlaceCallDialog::receiveNumber(QString number)
@@ -180,9 +182,11 @@ void PlaceCallDialog::onUpdate()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-
+    if (ui->tableView->model()->columnCount() != 0)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    }
 }
 
 void PlaceCallDialog::on_lineEdit_returnPressed()

@@ -143,9 +143,12 @@ void AddOrgToPerson::onUpdate()
 
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    }
 }
 
 void AddOrgToPerson::searchFunction()

@@ -396,7 +396,8 @@ void ViewContactDialog::loadAllCalls()
 
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+        ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
@@ -514,7 +515,8 @@ void ViewContactDialog::loadMissedCalls()
 
     ui->tableView_2->resizeColumnsToContents();
 
-    ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_2->model()->columnCount() != 0)
+        ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
@@ -632,7 +634,8 @@ void ViewContactDialog::loadReceivedCalls()
 
     ui->tableView_3->resizeColumnsToContents();
 
-    ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_3->model()->columnCount() != 0)
+        ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
@@ -749,7 +752,8 @@ void ViewContactDialog::loadPlacedCalls()
 
     ui->tableView_4->resizeColumnsToContents();
 
-    ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_4->model()->columnCount() != 0)
+        ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);

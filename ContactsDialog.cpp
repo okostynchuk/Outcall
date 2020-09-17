@@ -262,11 +262,14 @@ void ContactsDialog::loadContacts()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(10, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(10, QHeaderView::Stretch);
+    }
 
     if (!selectionModel.isEmpty())
         for (int i = 0; i < selectionModel.length(); ++i)

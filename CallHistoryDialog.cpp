@@ -264,7 +264,8 @@ void CallHistoryDialog::loadMissedCalls()
 
     ui->tableView_2->resizeColumnsToContents();
 
-    ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_2->model()->columnCount() != 0)
+        ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     if (!selectionMissed.isEmpty())
         for (int i = 0; i < selectionMissed.length(); ++i)
@@ -354,7 +355,8 @@ void CallHistoryDialog::loadReceivedCalls()
 
     ui->tableView_3->resizeColumnsToContents();
 
-    ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_3->model()->columnCount() != 0)
+        ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     if (!selectionReceived.isEmpty())
         for (int i = 0; i < selectionReceived.length(); ++i)
@@ -441,7 +443,8 @@ void CallHistoryDialog::loadPlacedCalls()
 
     ui->tableView_4->resizeColumnsToContents();
 
-    ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView_4->model()->columnCount() != 0)
+        ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     if (!selectionPlaced.isEmpty())
         for (int i = 0; i < selectionPlaced.length(); ++i)

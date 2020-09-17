@@ -216,7 +216,8 @@ void NotesDialog::loadNotes()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
     if (state == "save_disable")
     {

@@ -205,8 +205,11 @@ void AddPhoneNumberToContactDialog::onUpdate()
     ui->tableView->resizeRowsToContents();
     ui->tableView->resizeColumnsToContents();
 
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    if (ui->tableView->model()->columnCount() != 0)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    }
 }
 
 void AddPhoneNumberToContactDialog::searchFunction()
