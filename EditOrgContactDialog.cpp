@@ -14,9 +14,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
-    ui->label_3->setText(tr("Название организации") + ":<span style=\"color: red;\">*</span>");
-
     connect(ui->comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);

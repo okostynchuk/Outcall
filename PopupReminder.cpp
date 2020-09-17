@@ -6,6 +6,7 @@
 #include <QListView>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QLineEdit>
 
 QList<PopupReminder*> PopupReminder::m_PopupReminders;
 
@@ -24,12 +25,12 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setStyleSheet("QMenu                       {margin: 0px; padding: 0px; background-color: #F2F2F2;}"
-                      "QMenu::item                   {color: black; background-color: #F2F2F2;}"
-                      "QMenu::separator              {background-color: #A9A9A9; black; height: 1px;}"
-                      "QMenu::item:selected          {background-color: #18B7FF; color: #000000;}"
-                      "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
-                      "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
+    this->setStyleSheet("QMenu                         {background-color: #F2F2F2; margin: 0px; padding: 0px;}"
+                        "QMenu::item                   {background-color: #F2F2F2; color: black;}"
+                        "QMenu::separator              {background-color: #A9A9A9; black; height: 1px;}"
+                        "QMenu::item:selected          {background-color: #18B7FF; color: #000000;}"
+                        "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
+                        "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
 
     setAttribute(Qt::WA_TranslucentBackground);
 
@@ -140,8 +141,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     for (int i = 0; i < hrefs.length(); ++i)
         note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
-
-    ui->lblText->setText(note);
+    ui->textEdit->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
@@ -591,7 +591,7 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     pri.note = receivedNote;
     pri.active = true;
 
-    pri.text = "<b> " + pri.note + " </b>";
+    pri.text = pri.note;
 
     PopupReminder* reminder = new PopupReminder(pri);
 

@@ -217,8 +217,10 @@ void PlaceCallDialog::clearEditText()
     ui->tableView->setModel(NULL);
 }
 
-void PlaceCallDialog::showEvent(QShowEvent*)
+void PlaceCallDialog::showEvent(QShowEvent* event)
 {
+    QDialog::showEvent(event);
+
     ui->lineEdit->setFocus();
 }
 

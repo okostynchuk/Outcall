@@ -155,9 +155,12 @@ void EditReminderDialog::onSave()
             {
                 if (employeeInitial.length() == 1)
                 {
-                    query.prepare("UPDATE reminders SET active = false WHERE id = ?");
-                    query.addBindValue(id);
-                    query.exec();
+                    if (!employee.contains(employeeInitial.first()))
+                    {
+                        query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE id = ?");
+                        query.addBindValue(id);
+                        query.exec();
+                    }
                 }
                 else
                 {
@@ -235,9 +238,12 @@ void EditReminderDialog::onSave()
             {
                 if (employeeInitial.length() == 1)
                 {
-                    query.prepare("UPDATE reminders SET active = false WHERE id = ?");
-                    query.addBindValue(id);
-                    query.exec();
+                    if (!employee.contains(employeeInitial.first()))
+                    {
+                        query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE id = ?");
+                        query.addBindValue(id);
+                        query.exec();
+                    }
                 }
                 else
                 {

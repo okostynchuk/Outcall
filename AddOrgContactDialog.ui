@@ -33,7 +33,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Название организации*:</string>
+            <string>Название организации&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</string>
            </property>
           </widget>
          </item>
@@ -206,7 +206,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>1*</string>
+          <string>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</string>
          </property>
         </widget>
        </item>
