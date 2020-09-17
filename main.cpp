@@ -76,11 +76,11 @@ int main(int argc, char* argv[])
             }
     }
 
-    QString languages = global::getSettingsValue("language", "settings").toString();
+    QString language = global::getSettingsValue("language", "settings").toString();
     QTranslator qtMain;
     QTranslator qtBase;
 
-    if (languages == "Русский (по умолчанию)")
+    if (language == "Русский (по умолчанию)")
     {
         qtMain.load(":/translations/russian.qm");
         app.installTranslator(&qtMain);
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
         qtBase.load(":/translations/qtbase_ru.qm");
         app.installTranslator(&qtBase);
     }
-    else if (languages == "Українська")
+    else if (language == "Українська")
     {
         qtMain.load(":/translations/ukrainian.qm");
         app.installTranslator(&qtMain);
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
         qtBase.load(":/translations/qtbase_uk.qm");
         app.installTranslator(&qtBase);
     }
-    else if (languages == "English")
+    else if (language == "English")
     {
         qtMain.load(":/translations/english.qm");
         app.installTranslator(&qtMain);

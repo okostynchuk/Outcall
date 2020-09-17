@@ -51,7 +51,7 @@ private slots:
     void daysChanged();
     void clearSelections();
     void setPage();
-    void setButtonsDisable();
+    void disableButtons();
     void setHeadersNonClickable();
 
     void deleteObjects();

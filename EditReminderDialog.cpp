@@ -100,6 +100,13 @@ void EditReminderDialog::onSave()
             query.addBindValue(dateTime);
             query.addBindValue(id);
             query.exec();
+
+            if (employee.length() == 2)
+            {
+                query.prepare("UPDATE reminders SET group_id = NULL WHERE group_id = ?");
+                query.addBindValue(group_id);
+                query.exec();
+            }
         }
     }
     else
