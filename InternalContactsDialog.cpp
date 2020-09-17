@@ -267,4 +267,3 @@ void InternalContactsDialog::on_lineEdit_page_returnPressed()
 
     loadContacts();
 }
-

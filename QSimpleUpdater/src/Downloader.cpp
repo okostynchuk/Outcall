@@ -161,10 +161,7 @@ void Downloader::openDownload()
     }
     else
     {
-        QMessageBox::critical(this,
-                               tr("Ошибка"),
-                               tr("Файл обновления не найден!"),
-                               QMessageBox::Close);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Файл обновления не найден!"), QMessageBox::Close);
     }
 
     QDir dir("C:\\OutCALL");
@@ -247,6 +244,7 @@ void Downloader::cancelDownload()
         box.setButtonText(QMessageBox::No, tr("Нет"));
 
         QString text = tr("Вы уверены, что хотите отменить установку?");
+
         if (m_mandatoryUpdate)
         {
             text = tr("Вы уверены, что хотите отменить установку? Это обязательное обновление!");
@@ -311,19 +309,14 @@ void Downloader::calculateSizes(qint64 received, qint64 total)
 
     if (total < 1024)
         totalSize = tr("%1 байтов").arg(total);
-
     else if (total < 1048576)
         totalSize = tr("%1 KB").arg(round(total / 1024));
-
     else
         totalSize = tr("%1 MB").arg(round(total / 1048576));
-
     if (received < 1024)
         receivedSize = tr("%1 байтов").arg(received);
-
     else if (received < 1048576)
         receivedSize = tr("%1 KB").arg(received / 1024);
-
     else
         receivedSize = tr("%1 MB").arg(received / 1048576);
 
@@ -348,16 +341,13 @@ void Downloader::updateProgress(qint64 received, qint64 total)
         calculateTimeRemaining(received, total);
         saveFile(received, total);
     }
-
     else
     {
         m_ui->progressBar->setMinimum(0);
         m_ui->progressBar->setMaximum(0);
         m_ui->progressBar->setValue(-1);
         m_ui->downloadLabel->setText(tr("Скачивание обновлений") + "...");
-        m_ui->timeLabel->setText(QString("%1: %2")
-                                  .arg(tr("Времени осталось"))
-                                  .arg(tr("Неизвестно")));
+        m_ui->timeLabel->setText(QString("%1: %2").arg(tr("Времени осталось")).arg(tr("Неизвестно")));
     }
 }
 
@@ -388,7 +378,6 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
             else
                 timeString = tr("примерно 1 час");
         }
-
         else if (timeRemaining > 60)
         {
             timeRemaining /= 60;
@@ -399,7 +388,6 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
             else
                 timeString = tr("1 минута");
         }
-
         else if (timeRemaining <= 60)
         {
             int seconds = int(timeRemaining + 0.5);

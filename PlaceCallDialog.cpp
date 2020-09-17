@@ -254,7 +254,7 @@ void PlaceCallDialog::onCancelButton()
 
 void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         QDialog::close();
     else
         QWidget::keyPressEvent(event);

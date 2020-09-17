@@ -189,7 +189,6 @@ void AddOrgContactDialog::onSave()
     close();
 
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно добавлена!"), QMessageBox::Ok);
-
 }
 
 bool AddOrgContactDialog::isPhone(QString* str)

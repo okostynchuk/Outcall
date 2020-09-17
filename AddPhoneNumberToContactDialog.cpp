@@ -113,7 +113,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
 void AddPhoneNumberToContactDialog::onUpdate()
 {
-    if(!queries.isEmpty())
+    if (!queries.isEmpty())
         deleteObjects();
 
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone "

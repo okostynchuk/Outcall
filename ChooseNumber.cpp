@@ -74,7 +74,7 @@ bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
-        QLineEdit* line =  QDialog::findChild<QLineEdit*>(target->objectName());
+        QLineEdit* line = QDialog::findChild<QLineEdit*>(target->objectName());
 
         onCall(line->text());
 

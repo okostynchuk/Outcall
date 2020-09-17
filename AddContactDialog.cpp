@@ -296,4 +296,3 @@ void AddContactDialog::closeEvent(QCloseEvent* event)
     if (!addOrgToPerson.isNull())
         addOrgToPerson.data()->close();
 }
-

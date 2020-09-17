@@ -73,7 +73,7 @@ void EditOrgContactDialog::setPos(int x, int y)
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
     {
         x = nWidgetWidth;
         this->move(x, y);
@@ -247,7 +247,7 @@ void EditOrgContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            if(i >= oldPhonesList.length())
+            if (i >= oldPhonesList.length())
             {
                 query.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
