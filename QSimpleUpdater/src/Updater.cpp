@@ -40,7 +40,7 @@ Updater::Updater()
 #endif
 
     setUserAgentString(QString("%1/%2 (Qt; QSimpleUpdater)").arg(qApp->applicationName(),
-                        qApp->applicationVersion()));
+                                                             qApp->applicationVersion()));
 
     connect(m_downloader, &Downloader::downloadFinished, this, &Updater::downloadFinished);
     connect(m_manager, &QNetworkAccessManager::finished, this, &Updater::onReply);
@@ -337,8 +337,7 @@ void Updater::setMandatoryUpdate(const bool mandatory_update)
 void Updater::onReply(QNetworkReply* reply)
 {
     /* Check if we need to redirect */
-    QUrl redirect = reply->attribute(
-                        QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    QUrl redirect = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (!redirect.isEmpty())
     {
         setUrl(redirect.toString());
@@ -414,10 +413,7 @@ void Updater::setUpdateAvailable(const bool available)
             text = tr("Хотите скачать обновление сейчас (это обязательное обновление)? Приложение будет перезапущено!");
         }    
 
-        QString title = "<h3>"
-                        + tr("Версия %1 %2 была выпущена!")
-                        .arg(latestVersion()).arg(moduleName())
-                        + "</h3>";
+        QString title = "<h3>" + tr("Версия %1 %2 была выпущена!").arg(latestVersion()).arg(moduleName()) + "</h3>";
 
         QString logChanges = tr("Список изменений:");
 
@@ -432,7 +428,6 @@ void Updater::setUpdateAvailable(const bool available)
         {
             if (!openUrl().isEmpty())
                 QDesktopServices::openUrl(QUrl(openUrl()));
-
             else if (downloaderEnabled())
             {
                 m_downloader->setUrlId(url());
@@ -440,11 +435,9 @@ void Updater::setUpdateAvailable(const bool available)
                 m_downloader->setMandatoryUpdate(m_mandatoryUpdate);
                 m_downloader->startDownload(QUrl(downloadUrl()));
             }
-
             else
                 QDesktopServices::openUrl(QUrl(downloadUrl()));
         }
-
         else
         {
             if (m_mandatoryUpdate)
@@ -453,16 +446,12 @@ void Updater::setUpdateAvailable(const bool available)
             }
         }
     }
-
     else if (notifyOnFinish())
     {
         box.setStandardButtons(QMessageBox::Close);
         box.setButtonText(QMessageBox::Close, tr("Закрыть"));
         box.setInformativeText(tr("На данный момент нет доступных обновлений"));
-        box.setText("<h3>"
-                     + tr("Вы используете последнюю версию "
-                           "%1").arg(moduleName())
-                     + "</h3>");
+        box.setText("<h3>" + tr("Вы используете последнюю версию %1").arg(moduleName()) + "</h3>");
         box.exec();
     }
 }
@@ -487,7 +476,6 @@ bool Updater::compare(const QString& x, const QString& y)
 
         if (a > b)
             return true;
-
         else if (b > a)
             return false;
     }

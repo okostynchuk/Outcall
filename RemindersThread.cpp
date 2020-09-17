@@ -50,4 +50,3 @@ void RemindersThread::process()
         QThread::currentThread()->msleep(100);
     }
 }
-

@@ -44,8 +44,10 @@ void InternalContactsDialog::deleteObjects()
     buttons.clear();
 }
 
-void InternalContactsDialog::showEvent(QShowEvent*)
+void InternalContactsDialog::showEvent(QShowEvent* event)
 {
+    QDialog::showEvent(event);
+
     if (extensions.isEmpty() && ui->lineEdit->text().isEmpty())
     {
         extensions = g_pAsteriskManager->extensionNumbers.values();
@@ -267,4 +269,3 @@ void InternalContactsDialog::on_lineEdit_page_returnPressed()
 
     loadContacts();
 }
-

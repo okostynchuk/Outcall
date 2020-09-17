@@ -13,10 +13,6 @@ AddContactDialog::AddContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText(tr("Имя") + ":<span style=\"color: red;\">*</span>");
-    ui->label_org->setText(tr("Нет"));
-
     connect(ui->comment, &QTextEdit::textChanged, this, &AddContactDialog::onTextChanged);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
 
@@ -296,4 +292,3 @@ void AddContactDialog::closeEvent(QCloseEvent* event)
     if (!addOrgToPerson.isNull())
         addOrgToPerson.data()->close();
 }
-

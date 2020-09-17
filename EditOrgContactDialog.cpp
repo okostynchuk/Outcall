@@ -14,9 +14,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->label_6->setText(tr("1<span style=\"color: red;\">*</span>"));
-    ui->label_3->setText(tr("Название организации") + ":<span style=\"color: red;\">*</span>");
-
     connect(ui->comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
@@ -73,7 +70,7 @@ void EditOrgContactDialog::setPos(int x, int y)
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight-y) > nWidgetHeight)
+    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
     {
         x = nWidgetWidth;
         this->move(x, y);
@@ -247,7 +244,7 @@ void EditOrgContactDialog::onSave()
     for (int i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
-            if(i >= oldPhonesList.length())
+            if (i >= oldPhonesList.length())
             {
                 query.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");

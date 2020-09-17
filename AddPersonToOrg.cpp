@@ -260,4 +260,3 @@ void AddPersonToOrg::on_searchButton_clicked()
 {
     searchFunction();
 }
-

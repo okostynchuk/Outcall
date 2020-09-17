@@ -221,8 +221,10 @@ void PlaceCallDialog::clearEditText()
     ui->tableView->setModel(NULL);
 }
 
-void PlaceCallDialog::showEvent(QShowEvent*)
+void PlaceCallDialog::showEvent(QShowEvent* event)
 {
+    QDialog::showEvent(event);
+
     ui->lineEdit->setFocus();
 }
 
@@ -258,7 +260,7 @@ void PlaceCallDialog::onCancelButton()
 
 void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         QDialog::close();
     else
         QWidget::keyPressEvent(event);

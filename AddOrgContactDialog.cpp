@@ -12,9 +12,6 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText(tr("Название организации") + ":<span style=\"color: red;\">*</span>");
-
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddOrgContactDialog::onSave);
 
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
@@ -189,7 +186,6 @@ void AddOrgContactDialog::onSave()
     close();
 
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно добавлена!"), QMessageBox::Ok);
-
 }
 
 bool AddOrgContactDialog::isPhone(QString* str)

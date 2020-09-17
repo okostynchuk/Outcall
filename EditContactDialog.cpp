@@ -15,9 +15,6 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    ui->label_6->setText("1<span style=\"color: red;\">*</span>");
-    ui->label_3->setText(tr("Имя") + ":<span style=\"color: red;\">*</span>");
-
     connect(ui->comment, &QTextEdit::textChanged, this, &EditContactDialog::onTextChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);

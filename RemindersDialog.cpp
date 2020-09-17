@@ -129,8 +129,10 @@ void RemindersDialog::showReminders(bool show)
     }
 }
 
-void RemindersDialog::showEvent(QShowEvent*)
+void RemindersDialog::showEvent(QShowEvent* event)
 {
+    QDialog::showEvent(event);
+
     QSqlQuery query(db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");

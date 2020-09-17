@@ -89,7 +89,7 @@
          <enum>Qt::StrongFocus</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -335,8 +335,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>31</width>
+            <height>31</height>
            </size>
           </property>
           <property name="autoDefault">

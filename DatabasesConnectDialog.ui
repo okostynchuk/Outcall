@@ -223,32 +223,28 @@
    </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="1">
-      <widget class="QPushButton" name="saveButton">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="closeButton">
        <property name="minimumSize">
         <size>
-         <width>27</width>
-         <height>27</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>27</width>
-         <height>27</height>
+         <width>2000</width>
+         <height>2000</height>
         </size>
        </property>
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="toolTip">
-        <string>Сохранить настройки</string>
-       </property>
-       <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/save.png</normaloff>:/images/save.png</iconset>
+       <property name="text">
+        <string>Выйти из приложения</string>
        </property>
        <property name="iconSize">
         <size>
@@ -261,32 +257,28 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="closeButton">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="saveButton">
        <property name="minimumSize">
         <size>
-         <width>27</width>
-         <height>27</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>27</width>
-         <height>27</height>
+         <width>2000</width>
+         <height>2000</height>
         </size>
        </property>
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="toolTip">
-        <string>Выйти из приложения</string>
-       </property>
-       <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/exitFromApp.png</normaloff>:/images/exitFromApp.png</iconset>
+       <property name="text">
+        <string>Сохранить настройки</string>
        </property>
        <property name="iconSize">
         <size>
