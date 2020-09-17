@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Имя*:</source>
-        <translation>Name:</translation>
+        <translation type="vanished">Name:</translation>
     </message>
     <message>
         <source>Фамилия:</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>1*</source>
-        <translation>1*</translation>
+        <translation type="vanished">1*</translation>
     </message>
     <message>
         <source>Номера:</source>
@@ -150,7 +150,7 @@
     </message>
     <message>
         <source>Имя</source>
-        <translation>Name</translation>
+        <translation type="vanished">Name</translation>
     </message>
     <message>
         <source>Заполните обязательное поле!</source>
@@ -159,6 +159,14 @@
     <message>
         <source>Присутсвуют одинаковые номера!</source>
         <translation>There are the same numbers!</translation>
+    </message>
+    <message>
+        <source>Имя&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</source>
+        <translation>Name&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</translation>
+    </message>
+    <message>
+        <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -262,7 +270,7 @@
     </message>
     <message>
         <source>Название организации*:</source>
-        <translation>Organization name*:</translation>
+        <translation type="vanished">Organization name*:</translation>
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
@@ -306,7 +314,7 @@
     </message>
     <message>
         <source>1*</source>
-        <translation>1*</translation>
+        <translation type="vanished">1*</translation>
     </message>
     <message>
         <source>Заметка:</source>
@@ -359,7 +367,7 @@
     </message>
     <message>
         <source>Название организации</source>
-        <translation>Organization name</translation>
+        <translation type="vanished">Organization name</translation>
     </message>
     <message>
         <source>Заполните обязательное поле!</source>
@@ -368,6 +376,14 @@
     <message>
         <source>Присутсвуют одинаковые номера!</source>
         <translation>There are the same numbers!</translation>
+    </message>
+    <message>
+        <source>Название организации&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</source>
+        <translation>Organization name&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</translation>
+    </message>
+    <message>
+        <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -1496,7 +1512,7 @@
     </message>
     <message>
         <source>Имя*:</source>
-        <translation>Name*:</translation>
+        <translation type="vanished">Name*:</translation>
     </message>
     <message>
         <source>Фамилия:</source>
@@ -1512,7 +1528,7 @@
     </message>
     <message>
         <source>1*</source>
-        <translation>1*</translation>
+        <translation type="vanished">1*</translation>
     </message>
     <message>
         <source>Номера:</source>
@@ -1637,7 +1653,7 @@
     </message>
     <message>
         <source>Имя</source>
-        <translation>Name</translation>
+        <translation type="vanished">Name</translation>
     </message>
     <message>
         <source>Заполните обязательное поле!</source>
@@ -1646,6 +1662,14 @@
     <message>
         <source>Присутсвуют одинаковые номера!</source>
         <translation>There are the same numbers!</translation>
+    </message>
+    <message>
+        <source>Имя&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</source>
+        <translation>Name&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</translation>
+    </message>
+    <message>
+        <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -1660,7 +1684,7 @@
     </message>
     <message>
         <source>Название организации*:</source>
-        <translation>Organization name*:</translation>
+        <translation type="vanished">Organization name*:</translation>
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
@@ -1704,7 +1728,7 @@
     </message>
     <message>
         <source>1*</source>
-        <translation>1*</translation>
+        <translation type="vanished">1*</translation>
     </message>
     <message>
         <source>Заметка:</source>
@@ -1761,7 +1785,7 @@
     </message>
     <message>
         <source>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
-        <translation>1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+        <translation type="vanished">1&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Название организации:&lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
@@ -1793,7 +1817,7 @@
     </message>
     <message>
         <source>Название организации</source>
-        <translation>Organization name</translation>
+        <translation type="vanished">Organization name</translation>
     </message>
     <message>
         <source>Заполните обязательное поле!</source>
@@ -1802,6 +1826,14 @@
     <message>
         <source>Присутсвуют одинаковые номера!</source>
         <translation>There are the same numbers!</translation>
+    </message>
+    <message>
+        <source>Название организации&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</source>
+        <translation>Organization name&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;:</translation>
+    </message>
+    <message>
+        <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
+        <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -2376,7 +2408,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перезвонить Денису Комадарику&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;01.02.2020 08:30&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2401,6 +2433,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Connection to orders database not created!</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:13pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Перезвонить Денису Комадарику&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:13pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Call back Denis Komadaric&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
