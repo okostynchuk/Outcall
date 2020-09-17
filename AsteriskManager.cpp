@@ -308,7 +308,10 @@ void AsteriskManager::parseEvent(const QString &eventData)
             m_dialedNum.insert(uniqueid, counter);
 
             if (counter == 1)
+            {
                 emit callReceived(received);
+                emit callStart(uniqueid);
+            }
         }
     }
     else if (eventData.contains("Event: Newexten"))
