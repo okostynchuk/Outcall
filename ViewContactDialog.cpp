@@ -217,7 +217,7 @@ void ViewContactDialog::onEdit()
 {
     hide();
 
-    editContactDialog = new EditContactDialog();
+    editContactDialog = new EditContactDialog;
     editContactDialog->setValues(contactId);
     connect(editContactDialog, &EditContactDialog::sendData, this, &ViewContactDialog::receiveData);
     connect(this, &ViewContactDialog::getPos, editContactDialog, &EditContactDialog::setPos);

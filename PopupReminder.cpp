@@ -152,17 +152,15 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     ui->comboBox->addItem(tr("Через 1 час"));
     ui->comboBox->addItem(tr("Через 24 часа"));
 
-    QString languages = global::getSettingsValue("language", "settings").toString();
-    if (languages == "Русский (по умолчанию)")
+    QString language = global::getSettingsValue("language", "settings").toString();
+    if (language == "Русский (по умолчанию)")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 16px;} ::drop-down{border: 0px;}");
-    else if (languages == "Українська")
+    else if (language == "Українська")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 21px;} ::drop-down{border: 0px;}");
-    else if (languages == "English")
+    else if (language == "English")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 40px;} ::drop-down{border: 0px;}");
 
     qobject_cast<QListView*>(ui->comboBox->view())->setRowHidden(0, true);
-
-    this->installEventFilter(this);
 
     if (!ui->callButton->isHidden())
         connect(ui->callButton, &QAbstractButton::clicked, this, &PopupReminder::onCall);
@@ -171,9 +169,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
     connect(ui->comboBox,  static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
-
-    ui->okButton->installEventFilter(this);
-    ui->comboBox->installEventFilter(this);
 
     unsigned int nDesktopHeight;
     unsigned int nDesktopWidth;

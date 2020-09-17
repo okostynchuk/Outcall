@@ -185,7 +185,7 @@ void CallHistoryDialog::loadAllCalls()
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    setButtonsDisable();
+    disableButtons();
 }
 
 void CallHistoryDialog::loadMissedCalls()
@@ -276,7 +276,7 @@ void CallHistoryDialog::loadMissedCalls()
             ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    setButtonsDisable();
+    disableButtons();
 }
 
 void CallHistoryDialog::loadReceivedCalls()
@@ -366,7 +366,7 @@ void CallHistoryDialog::loadReceivedCalls()
             ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    setButtonsDisable();
+    disableButtons();
 }
 
 void CallHistoryDialog::loadPlacedCalls()
@@ -453,7 +453,7 @@ void CallHistoryDialog::loadPlacedCalls()
             ui->tableView_4->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
 
-    setButtonsDisable();
+    disableButtons();
 }
 
 void CallHistoryDialog::daysChanged()
@@ -645,7 +645,7 @@ void CallHistoryDialog::receiveData(bool updating)
     {
         clearSelections();
 
-        setButtonsDisable();
+        disableButtons();
     }
 }
 
@@ -656,8 +656,6 @@ void CallHistoryDialog::onAddContact()
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
-
-    clearFocus();
 
     if (checkNumber(number))
     {
@@ -678,8 +676,6 @@ void CallHistoryDialog::onAddOrgContact()
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
-
-    clearFocus();
 
     if (checkNumber(number))
     {
@@ -760,8 +756,6 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
         return;
     }
-
-    clearFocus();
 
     QSqlQuery query(db);
 
@@ -1296,7 +1290,7 @@ void CallHistoryDialog::setPage()
     ui->label_pages->setText(tr("из ") + pages);
 }
 
-void CallHistoryDialog::setButtonsDisable()
+void CallHistoryDialog::disableButtons()
 {
     ui->callButton->setDisabled(true);
     ui->addContactButton->setDisabled(true);

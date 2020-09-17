@@ -1362,35 +1362,35 @@
     </message>
     <message>
         <source>Закрыть</source>
-        <translation>Закрыть</translation>
+        <translation type="vanished">Закрыть</translation>
     </message>
     <message>
         <source>Загрузка завершена!</source>
-        <translation>Загрузка завершена!</translation>
+        <translation type="vanished">Загрузка завершена!</translation>
     </message>
     <message>
         <source>Установщик откроется отдельно</source>
-        <translation>Установщик откроется отдельно</translation>
+        <translation type="vanished">Установщик откроется отдельно</translation>
     </message>
     <message>
         <source>ОК</source>
-        <translation>ОК</translation>
+        <translation type="vanished">ОК</translation>
     </message>
     <message>
         <source>Нажмите &quot;OK&quot; для начала установки обновления</source>
-        <translation>Нажмите &quot;OK&quot; для начала установки обновления</translation>
+        <translation type="vanished">Нажмите &quot;OK&quot; для начала установки обновления</translation>
     </message>
     <message>
         <source>Для установки обновления необходимо закрыть приложение</source>
-        <translation>Для установки обновления необходимо закрыть приложение</translation>
+        <translation type="vanished">Для установки обновления необходимо закрыть приложение</translation>
     </message>
     <message>
         <source>Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!</source>
-        <translation>Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!</translation>
+        <translation type="vanished">Для установки обновления необходимо закрыть приложение. Это обязательное обновление, программа будет закрыта!</translation>
     </message>
     <message>
         <source>Нажмите кнопку &quot;Открыть&quot; для применения обновлений</source>
-        <translation>Нажмите кнопку &quot;Открыть&quot; для применения обновлений</translation>
+        <translation type="vanished">Нажмите кнопку &quot;Открыть&quot; для применения обновлений</translation>
     </message>
     <message>
         <source>Окно обновлений</source>
@@ -3233,11 +3233,11 @@ p, li { white-space: pre-wrap; }
     <name>Updater</name>
     <message>
         <source>Хотите скачать обновление сейчас?</source>
-        <translation>Хотите скачать обновление сейчас?</translation>
+        <translation type="vanished">Хотите скачать обновление сейчас?</translation>
     </message>
     <message>
         <source>Хотите скачать обновление сейчас? Это обязательное обновление!</source>
-        <translation>Хотите скачать обновление сейчас? Это обязательное обновление!</translation>
+        <translation type="vanished">Хотите скачать обновление сейчас? Это обязательное обновление!</translation>
     </message>
     <message>
         <source>Версия %1 %2 была выпущена!</source>
@@ -3266,6 +3266,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Список изменений:</source>
         <translation>Список изменений:</translation>
+    </message>
+    <message>
+        <source>Хотите скачать обновление сейчас?
+Приложение будет перезапущено!</source>
+        <translation>Хотите скачать обновление сейчас?
+Приложение будет перезапущено!</translation>
+    </message>
+    <message>
+        <source>Хотите скачать обновление сейчас (это обязательное обновление)? Приложение будет перезапущено!</source>
+        <translation>Хотите скачать обновление сейчас (это обязательное обновление)?
+Приложение будет перезапущено!</translation>
     </message>
 </context>
 <context>

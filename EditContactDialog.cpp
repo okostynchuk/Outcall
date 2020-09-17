@@ -326,7 +326,7 @@ void EditContactDialog::setValues(QString id)
         ui->label_org->setText(tr("Нет"));
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
-                  " entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
+                  " entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_person_org_id FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
@@ -338,17 +338,24 @@ void EditContactDialog::setValues(QString id)
     ui->email->setText(query.value(5).toString());
     ui->vyborId->setText(query.value(6).toString());
     ui->comment->setText(query.value(7).toString());
+
+    orgId = query.value(8).toString();
 }
 
 void EditContactDialog::receiveOrgName(QString id, QString name)
 {
     if (!id.isNull())
     {
-        orgId = id;
         ui->label_org->setText(name);
+
+        orgId = id;
     }
     else
+    {
         ui->label_org->setText(tr("Нет"));
+
+        orgId = "0";
+    }
 }
 
 void EditContactDialog::on_addOrgButton_clicked()
@@ -365,6 +372,8 @@ void EditContactDialog::on_addOrgButton_clicked()
 void EditContactDialog::on_deleteOrgButton_clicked()
 {
     ui->label_org->setText(tr("Нет"));
+
+    orgId = "0";
 }
 
 void EditContactDialog::onTextChanged()
