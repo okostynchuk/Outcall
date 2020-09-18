@@ -25,13 +25,6 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setStyleSheet("QMenu                         {background-color: #F2F2F2; margin: 0px; padding: 0px;}"
-                        "QMenu::item                   {background-color: #F2F2F2; color: black;}"
-                        "QMenu::separator              {background-color: #A9A9A9; black; height: 1px;}"
-                        "QMenu::item:selected          {background-color: #18B7FF; color: #000000;}"
-                        "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
-                        "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
-
     setAttribute(Qt::WA_TranslucentBackground);
 
     QSqlQuery query(db);
@@ -139,9 +132,12 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         hrefs << href;
     }
 
+    note.replace(QRegularExpression("\\n"), QString(" <br> "));
+
     for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
-    ui->textEdit->setText(note);
+        note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+
+    ui->textBrowser->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 

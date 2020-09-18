@@ -1031,6 +1031,10 @@
         <source>Очистить всех сотрудников</source>
         <translation>Clear all employees</translation>
     </message>
+    <message>
+        <source>Контакты для рассылки</source>
+        <translation>Contacts for sending reminders</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>

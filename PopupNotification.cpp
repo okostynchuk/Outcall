@@ -25,13 +25,6 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     ui->setupUi(this);
 
-    this->setStyleSheet("QMenu                       {margin: 0px; padding: 0px; background-color: #F2F2F2;}"
-                      "QMenu::item                   {color: black; background-color: #F2F2F2;}"
-                      "QMenu::separator              {background-color: #A9A9A9; black; height: 1px;}"
-                      "QMenu::item:selected          {background-color: #18B7FF; color: #000000;}"
-                      "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
-                      "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
-
     setAttribute(Qt::WA_TranslucentBackground);
 
     ui->label->setText(tr("Новое напоминание от ") + m_pni.number);
@@ -49,10 +42,12 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
         hrefs << href;
     }
 
-    for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+    note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-    ui->lblText->setText(note);
+    for (int i = 0; i < hrefs.length(); ++i)
+        note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+
+    ui->textBrowser->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 

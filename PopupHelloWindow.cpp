@@ -25,13 +25,6 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setStyleSheet("QMenu                       {margin: 0px; padding: 0px; background-color: #F2F2F2;}"
-                      "QMenu::item                   {color: black; background-color: #F2F2F2;}"
-                      "QMenu::separator              {background-color: #A9A9A9; black; height: 1px;}"
-                      "QMenu::item:selected          {background-color: #18B7FF; color: #000000;}"
-                      "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
-                      "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
-
     setAttribute(Qt::WA_TranslucentBackground);
 
     ui->lblText->setText(pwi.text);

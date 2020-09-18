@@ -1024,6 +1024,10 @@
         <source>Очистить всех сотрудников</source>
         <translation>Очистить всех сотрудников</translation>
     </message>
+    <message>
+        <source>Контакты для рассылки</source>
+        <translation>Контакты для рассылки</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>

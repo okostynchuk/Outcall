@@ -410,7 +410,7 @@ background-color: #fffff8;
               </size>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+              <enum>Qt::StrongFocus</enum>
              </property>
              <property name="toolTip">
               <string>Добавить напоминание</string>
@@ -427,6 +427,9 @@ background-color: #fffff8;
                <width>27</width>
                <height>27</height>
               </size>
+             </property>
+             <property name="autoDefault">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -704,6 +707,9 @@ background-color: #fffff0;
                  <height>16777215</height>
                 </size>
                </property>
+               <property name="focusPolicy">
+                <enum>Qt::ClickFocus</enum>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
                </property>
@@ -750,6 +756,9 @@ background-color: #fffff0;
                  <height>16777215</height>
                 </size>
                </property>
+               <property name="focusPolicy">
+                <enum>Qt::ClickFocus</enum>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
                </property>
@@ -775,6 +784,9 @@ background-color: #fffff0;
                  <width>16777215</width>
                  <height>16777215</height>
                 </size>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::ClickFocus</enum>
                </property>
                <property name="styleSheet">
                 <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
@@ -1079,7 +1091,10 @@ background-color: #fffff0;
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>callButton</tabstop>
   <tabstop>openAccessButton</tabstop>
+  <tabstop>addReminderButton</tabstop>
   <tabstop>editButton</tabstop>
   <tabstop>lastName</tabstop>
   <tabstop>firstName</tabstop>
@@ -1099,6 +1114,15 @@ background-color: #fffff0;
   <tabstop>tabWidget_2</tabstop>
   <tabstop>tableView_3</tabstop>
   <tabstop>tableView_4</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>previousStartButton</tabstop>
+  <tabstop>previousButton</tabstop>
+  <tabstop>lineEdit_page</tabstop>
+  <tabstop>nextButton</tabstop>
+  <tabstop>nextEndButton</tabstop>
+  <tabstop>comboBox_list</tabstop>
+  <tabstop>playAudio</tabstop>
+  <tabstop>playAudioPhone</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>
