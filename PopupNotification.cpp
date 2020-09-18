@@ -49,10 +49,12 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
         hrefs << href;
     }
 
-    for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+    note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-    ui->lblText->setText(note);
+    for (int i = 0; i < hrefs.length(); ++i)
+        note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+
+    ui->textBrowser->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
