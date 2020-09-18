@@ -847,8 +847,10 @@ QWidget* ViewOrgContactDialog::loadNote()
             hrefs << href;
         }
 
+        note.replace(QRegularExpression("\\n"), QString(" <br> "));
+
         for (int i = 0; i < hrefs.length(); ++i)
-            note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
+            note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
     noteLabel->setText(note);

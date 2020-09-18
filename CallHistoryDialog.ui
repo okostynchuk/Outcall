@@ -663,11 +663,14 @@
   <tabstop>lineEdit_page</tabstop>
   <tabstop>nextButton</tabstop>
   <tabstop>nextEndButton</tabstop>
+  <tabstop>comboBox_list</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>addContactButton</tabstop>
   <tabstop>addOrgContactButton</tabstop>
   <tabstop>updateButton</tabstop>
-  <tabstop>comboBox_list</tabstop>
+  <tabstop>addPhoneNumberButton</tabstop>
+  <tabstop>playAudio</tabstop>
+  <tabstop>playAudioPhone</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

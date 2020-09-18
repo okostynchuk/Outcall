@@ -139,9 +139,12 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         hrefs << href;
     }
 
+    note.replace(QRegularExpression("\\n"), QString(" <br> "));
+
     for (int i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegularExpression("(^|\\s)" + QRegularExpression::escape(hrefs.at(i)) + "(\\s|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
-    ui->textEdit->setText(note);
+        note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
+
+    ui->textBrowser->setText(note);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
