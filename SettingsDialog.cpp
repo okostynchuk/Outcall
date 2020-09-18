@@ -76,9 +76,15 @@ void SettingsDialog::checkForUpdates()
 void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
+    {
         ui->tabWidget->setTabEnabled(3, true);
+        ui->pushUpdateButton->setDisabled(false);
+    }
     else
+    {
         ui->tabWidget->setTabEnabled(3, false);
+        ui->pushUpdateButton->setDisabled(true);
+    }
 }
 
 void SettingsDialog::closeEvent(QCloseEvent*)

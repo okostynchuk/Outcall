@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QSystemTrayIcon>
 #include <QSqlDatabase>
+#include <QColor>
 
 class QSystemTrayIcon;
 class QMenu;
@@ -54,6 +55,7 @@ protected slots:
     void changeIcon();
     void disableActions();
     void enableActions();
+    void setIconReminders(QColor, int);
 
 protected:
     void automaticlySignIn();

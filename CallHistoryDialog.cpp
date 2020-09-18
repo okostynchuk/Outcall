@@ -146,8 +146,8 @@ void CallHistoryDialog::loadAllCalls()
         extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
         src = queryModel->data(queryModel->index(row_index, 1)).toString();
         dst = queryModel->data(queryModel->index(row_index, 2)).toString();
-        uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
         dialogStatus = queryModel->data(queryModel->index(row_index, 3)).toString();
+        uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
 
         ui->tableView->setIndexWidget(queryModel->index(row_index, 4), loadStatus());
 

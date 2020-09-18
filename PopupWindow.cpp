@@ -678,14 +678,15 @@ void PopupWindow::controlPopup()
     if (!MSSQLopened)
         ui->openAccessButton->hide();
 
-    connect(g_pAsteriskManager, &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
-    connect(ui->textEdit, &QTextEdit::textChanged, this, &PopupWindow::onTextChanged);
-    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPerson);
-    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
+    connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
+
+    connect(ui->textEdit,             &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
+    connect(ui->addOrgButton,         &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
+    connect(ui->saveNoteButton,       &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
+    connect(ui->showCardButton,       &QAbstractButton::clicked, this, &PopupWindow::onShowCard);
+    connect(ui->viewNotesButton,      &QAbstractButton::clicked, this, &PopupWindow::onViewNotes);
+    connect(ui->addPersonButton,      &QAbstractButton::clicked, this, &PopupWindow::onAddPerson);
+    connect(ui->openAccessButton,     &QAbstractButton::clicked, this, &PopupWindow::onOpenAccess);
+    connect(ui->addReminderButton,    &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
-    connect(ui->showCardButton, &QAbstractButton::clicked, this, &PopupWindow::onShowCard);
-    connect(ui->saveNoteButton, &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
-    connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupWindow::onOpenAccess);
-    connect(ui->addReminderButton, &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
-    connect(ui->viewNotesButton, &QAbstractButton::clicked, this, &PopupWindow::onViewNotes);
 }

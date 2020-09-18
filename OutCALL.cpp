@@ -354,64 +354,35 @@ void OutCall::changeIconReminders(bool change)
         activeReminders = query.value(0).toInt();
 
     if (change)
-    {
-        QPixmap pixmap(22, 22);
-        pixmap.fill(Qt::transparent);
-        QPainter painter(&pixmap);
-        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
-        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
-        painter.setBrush(QBrush(Qt::red));
-        painter.drawEllipse(4, 4, 18, 18);
-        QFont font("MS Shell Dlg 2", 8);
-        font.setBold(true);
-        painter.setFont(font);
-        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter.end();
-
-        m_systemTrayIcon->setIcon(QIcon(pixmap));
-    }
+        setIconReminders(Qt::red , activeReminders);
     else if (!change && activeReminders > 0 && receivedReminders > 0)
-    {
-        QPixmap pixmap(22, 22);
-        pixmap.fill(Qt::transparent);
-        QPainter painter(&pixmap);
-        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
-        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
-        painter.setBrush(QBrush(Qt::red));
-        painter.drawEllipse(4, 4, 18, 18);
-        QFont font("MS Shell Dlg 2", 8);
-        font.setBold(true);
-        painter.setFont(font);
-        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter.end();
-
-        m_systemTrayIcon->setIcon(QIcon(pixmap));
-    }
+        setIconReminders(Qt::red, activeReminders);
     else if (!change && activeReminders > 0 && receivedReminders == 0)
-    {
-        QPixmap pixmap(22, 22);
-        pixmap.fill(Qt::transparent);
-        QPainter painter(&pixmap);
-        painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
-        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
-        painter.setBrush(QBrush(Qt::lightGray));
-        painter.drawEllipse(4, 4, 18, 18);
-        QFont font("MS Shell Dlg 2", 8);
-        font.setBold(true);
-        painter.setFont(font);
-        painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter.end();
-
-        m_systemTrayIcon->setIcon(QIcon(pixmap));
-    }
+        setIconReminders(Qt::lightGray, activeReminders);
     else if (!change && activeReminders == 0)
     {
         QString path(":/images/connected.png");
         m_systemTrayIcon->setIcon(QIcon(path));
     }
+}
+
+void OutCall::setIconReminders(QColor color, int activeReminders)
+{
+    QPixmap pixmap(22, 22);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.drawPixmap(0, 0, QPixmap(":/images/connectedTray.png"));
+    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
+    painter.setBrush(QBrush(color));
+    painter.drawEllipse(4, 4, 18, 18);
+    QFont font("MS Shell Dlg 2", 8);
+    font.setBold(true);
+    painter.setFont(font);
+    painter.drawText(QRect(4, 7, 18, 13), Qt::AlignCenter, QString::number(activeReminders));
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    painter.end();
+
+    m_systemTrayIcon->setIcon(QIcon(pixmap));
 }
 
 void OutCall::changeIcon()
