@@ -1022,6 +1022,10 @@
         <source>Очистить всех сотрудников</source>
         <translation>Очистити всіх співробітників</translation>
     </message>
+    <message>
+        <source>Контакты для рассылки</source>
+        <translation>Контакти для розсилки нагадувань</translation>
+    </message>
 </context>
 <context>
     <name>ChooseNumber</name>

@@ -5,7 +5,7 @@ function Controller()
 
 Controller.prototype.WelcomePageCallback = function()
 {
-	if (installer.isInstaller())
+	if (installer.isInstaller() || installer.isUninstaller || installer.isUpdater())
 	{
 		gui.clickButton(buttons.NextButton);
 	}
@@ -13,7 +13,7 @@ Controller.prototype.WelcomePageCallback = function()
 
 Controller.prototype.CredentialsPageCallback = function()
 {
-	if (installer.isInstaller())
+	if (installer.isInstaller() || installer.isUninstaller() || installer.isUpdater())
 	{
 		gui.clickButton(buttons.NextButton);
 	}
@@ -21,8 +21,10 @@ Controller.prototype.CredentialsPageCallback = function()
 
 Controller.prototype.IntroductionPageCallback = function()
 {
-	gui.clickButton(buttons.NextButton);
-
+	if (installer.isInstaller() || installer.isUninstaller() || installer.isUpdater())
+	{
+		gui.clickButton(buttons.NextButton);
+	}
 }
 
 Controller.prototype.TargetDirectoryPageCallback = function()
@@ -37,7 +39,7 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 
 Controller.prototype.ComponentSelectionPageCallback = function()
 {
-	if (installer.isInstaller())
+	if (installer.isInstaller() || installer.isUninstaller() || installer.isUpdater())
 	{
 		gui.clickButton(buttons.NextButton);
 	}
@@ -45,7 +47,7 @@ Controller.prototype.ComponentSelectionPageCallback = function()
 
 Controller.prototype.LicenseCheckPageCallback = function()
 {
-	if (installer.isInstaller())
+	if (installer.isInstaller() || installer.isUnistaller() || installer.isUpdater())
 	{
 		gui.clickButton(buttons.NextButton);
 	}
@@ -53,7 +55,7 @@ Controller.prototype.LicenseCheckPageCallback = function()
 
 Controller.prototype.StartMenuDirectoryPageCallback = function()
 {
-	if (installer.isInstaller())
+	if (installer.isInstaller() || installer.isUninstaller() || installer.isUpdater())
 	{
 		gui.clickButton(buttons.NextButton);
 	}
