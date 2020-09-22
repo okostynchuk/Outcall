@@ -156,11 +156,14 @@ color: #ffb64f;
    <property name="styleSheet">
     <string notr="true">*{
 border: 1px solid grey;
-border-radius: 7px;
+border-radius: 5px;
 color: #ffb64f;
 text-align: center;
 background-color: rgba(0, 0, 0,  0);
-}</string>
+}
+
+QScrollBar:vertical {border: #d8d8d8; color: #CCCCCC;}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background-color: rgba(245, 245, 245, 60);}</string>
    </property>
    <property name="tabChangesFocus">
     <bool>false</bool>
