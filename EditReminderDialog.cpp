@@ -88,7 +88,7 @@ void EditReminderDialog::onSave()
 
     QSqlQuery query(db);
 
-    if (!ui->chooseEmployeeButton->isEnabled())
+    if (ui->chooseEmployeeButton->isHidden())
     {
         if (group_id == "0")
         {
@@ -316,7 +316,7 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
 
         if (phone_from != phone_to && phone_from != my_number)
         {
-            ui->chooseEmployeeButton->setDisabled(true);
+            ui->chooseEmployeeButton->hide();
 
             ui->textEdit->setReadOnly(true);
             ui->textEdit->setStyleSheet("QTextEdit { background-color: #fffff0; }");
@@ -338,7 +338,7 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
 
         if (query.value(0).toString() != my_number)
         {
-            ui->chooseEmployeeButton->setDisabled(true);
+            ui->chooseEmployeeButton->hide();
 
             ui->textEdit->setReadOnly(true);
             ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
