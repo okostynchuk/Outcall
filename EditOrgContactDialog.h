@@ -6,6 +6,7 @@
 #include <QValidator>
 #include <QKeyEvent>
 #include <QSqlDatabase>
+#include <QTextCursor>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -32,10 +33,13 @@ private slots:
     void onSave();
     void onReturn();
     void onTextChanged();
+    void onCursorPosChanged();
 
     bool isPhone(QString*);
 
     void keyPressEvent(QKeyEvent*);
+
+    bool eventFilter(QObject*, QEvent*);
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -57,6 +61,8 @@ private:
     QString fifthNumber;
     QString number;
     QStringList numbers;
+
+    QTextCursor textCursor;
 };
 
 #endif // EDITORGCONTACTDIALOG_H

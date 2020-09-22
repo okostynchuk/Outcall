@@ -11,10 +11,13 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->installEventFilter(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     connect(ui->comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
+    connect(ui->comment, &QTextEdit::cursorPositionChanged, this, &EditOrgContactDialog::onCursorPosChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 
@@ -37,6 +40,35 @@ EditOrgContactDialog::~EditOrgContactDialog()
     delete phonesValidator;
     delete vyborIdValidator;
     delete ui;
+}
+
+void EditOrgContactDialog::onCursorPosChanged()
+{
+    if (textCursor.isNull())
+    {
+        textCursor = ui->comment->textCursor();
+        textCursor.movePosition(QTextCursor::End);
+    }
+    else
+        textCursor = ui->comment->textCursor();
+}
+
+bool EditOrgContactDialog::eventFilter(QObject*, QEvent* event)
+{
+    if (event && event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+
+        if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
+        {
+            if (ui->comment->hasFocus())
+                ui->comment->setTextCursor(textCursor);
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void EditOrgContactDialog::onReturn()
@@ -237,7 +269,7 @@ void EditOrgContactDialog::onSave()
     query.addBindValue(ui->address->text());
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
-    query.addBindValue(ui->comment->toPlainText());
+    query.addBindValue(ui->comment->toPlainText().trimmed());
     query.addBindValue(contactId);
     query.exec();
 
@@ -307,7 +339,7 @@ void EditOrgContactDialog::setValues(QString id)
     ui->email->setText(query.value(3).toString());
     ui->vyborId->setText(query.value(4).toString());
     ui->comment->setText(query.value(5).toString());
-}//
+}
 
 void EditOrgContactDialog::onTextChanged()
 {

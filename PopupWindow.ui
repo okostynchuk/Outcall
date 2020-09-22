@@ -4336,13 +4336,13 @@ border-right-color: transparent;
  <tabstops>
   <tabstop>textEdit</tabstop>
   <tabstop>saveNoteButton</tabstop>
+  <tabstop>addPersonButton</tabstop>
+  <tabstop>addOrgButton</tabstop>
+  <tabstop>addPhoneNumberButton</tabstop>
   <tabstop>viewNotesButton</tabstop>
   <tabstop>addReminderButton</tabstop>
   <tabstop>openAccessButton</tabstop>
   <tabstop>showCardButton</tabstop>
-  <tabstop>addPersonButton</tabstop>
-  <tabstop>addOrgButton</tabstop>
-  <tabstop>addPhoneNumberButton</tabstop>
   <tabstop>closeButton</tabstop>
  </tabstops>
  <resources>
