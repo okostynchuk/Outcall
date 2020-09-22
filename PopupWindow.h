@@ -17,6 +17,7 @@
 #include <QDialog>
 #include <QTimer>
 #include <QPointer>
+#include <QTextCursor>
 
 namespace Ui {
     class PopupWindow;
@@ -57,7 +58,6 @@ public:
     static void closeAll();
 
 private slots:
-    void controlPopup();
     void startPopupWaitingTimer();
     void closeAndDestroy();
     void onPopupTimeout();
@@ -72,6 +72,7 @@ private slots:
     void onAddReminder();
     void onViewNotes();
     void onCallStart(QString);
+    void onCursorPosChanged();
 
     void on_closeButton_clicked();
 
@@ -82,6 +83,8 @@ private slots:
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
+
+    bool eventFilter(QObject*, QEvent*);
 
 private:
     Ui::PopupWindow *ui;
@@ -97,6 +100,8 @@ private:
     QPointer<NotesDialog> notesDialog;
 
     QPoint position;
+
+    QTextCursor textCursor;
 
     QString userId;
     QString author;

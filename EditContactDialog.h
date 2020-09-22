@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 #include <QPointer>
 #include <QLineEdit>
+#include <QTextCursor>
 
 class ViewContactDialog;
 
@@ -31,6 +32,7 @@ private slots:
     void onSave();
     void onReturn();
     void onTextChanged();
+    void onCursorPosChanged();
 
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
@@ -39,6 +41,8 @@ private slots:
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);
+
+    bool eventFilter(QObject*, QEvent*);
 
 public:
     explicit EditContactDialog(QWidget *parent = 0);
@@ -63,7 +67,9 @@ private:
 
     QString contactId;
     QString orgId;
-    QString number;  
+    QString number;
+
+    QTextCursor textCursor;
 };
 
 #endif // EDITCONTACTDIALOG_H

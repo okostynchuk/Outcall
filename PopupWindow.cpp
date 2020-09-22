@@ -32,11 +32,58 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     ui->setupUi(this);
 
-    userId = global::getSettingsValue("user_login", "settings").toString();
-
-    author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+    this->installEventFilter(this);
 
     QSqlQuery query(db);
+
+    if (isInternalPhone(&m_pwi.number))
+    {
+        ui->addPersonButton->hide();
+        ui->addOrgButton->hide();
+        ui->showCardButton->hide();
+        ui->addPhoneNumberButton->hide();
+        ui->openAccessButton->hide();
+    }
+    else
+    {
+        query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
+        query.exec();
+
+        if (query.next())
+        {
+            ui->addPersonButton->hide();
+            ui->addOrgButton->hide();
+            ui->addPhoneNumberButton->hide();
+
+            if (query.value(1) == 0)
+                ui->openAccessButton->hide();
+        }
+        else
+        {
+            ui->openAccessButton->hide();
+            ui->showCardButton->hide();
+        }
+    }
+
+    if (!MSSQLopened)
+        ui->openAccessButton->hide();
+
+    connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
+
+    connect(ui->textEdit,             &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
+    connect(ui->textEdit,             &QTextEdit::cursorPositionChanged, this, &PopupWindow::onCursorPosChanged);
+
+    connect(ui->addOrgButton,         &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
+    connect(ui->saveNoteButton,       &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
+    connect(ui->showCardButton,       &QAbstractButton::clicked, this, &PopupWindow::onShowCard);
+    connect(ui->viewNotesButton,      &QAbstractButton::clicked, this, &PopupWindow::onViewNotes);
+    connect(ui->addPersonButton,      &QAbstractButton::clicked, this, &PopupWindow::onAddPerson);
+    connect(ui->openAccessButton,     &QAbstractButton::clicked, this, &PopupWindow::onOpenAccess);
+    connect(ui->addReminderButton,    &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
+    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
+
+    userId = global::getSettingsValue("user_login", "settings").toString();
+    author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     QString note;
 
@@ -45,10 +92,6 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     if (query.next())
         note = query.value(0).toString();
-
-    QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    ui->textEdit->setTextCursor(cursor);
 
     ui->textEdit->setText(note);
 
@@ -136,6 +179,44 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 PopupWindow::~PopupWindow()
 {
     delete ui;
+}
+
+void PopupWindow::onCursorPosChanged()
+{
+    if (textCursor.isNull())
+    {
+        textCursor = ui->textEdit->textCursor();
+        textCursor.movePosition(QTextCursor::End);
+    }
+    else
+        textCursor = ui->textEdit->textCursor();
+}
+
+bool PopupWindow::eventFilter(QObject*, QEvent* event)
+{
+    if (event && event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+
+        if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
+        {
+            if (ui->textEdit->hasFocus())
+                ui->textEdit->setTextCursor(textCursor);
+
+            return true;
+        }
+    }
+    else if (event->type() == QEvent::WindowActivate)
+    {
+        if (ui->textEdit->toPlainText().trimmed().isEmpty())
+            ui->textEdit->setFocus();
+        else
+            ui->saveNoteButton->setFocus();
+
+        return true;
+    }
+
+    return false;
 }
 
 void PopupWindow::mousePressEvent(QMouseEvent* event)
@@ -287,10 +368,9 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
 
     PopupWindow* popup = new PopupWindow(pwi);
 
-    popup->controlPopup();
-	popup->show();
+    popup->ui->timeLabel->setText("<font size = 1>" + dateTime + "</font>");
 
-    popup->ui->timeLabel->setText(tr("<font size = 1>%1</font>").arg(dateTime));
+    popup->show();
 
 	m_PopupWindows.append(popup);
 }
@@ -635,53 +715,4 @@ bool PopupWindow::isInternalPhone(QString* str)
         return true;
 
     return false;
-}
-
-void PopupWindow::controlPopup()
-{
-    if (isInternalPhone(&m_pwi.number))
-    {
-        ui->addPersonButton->hide();
-        ui->addOrgButton->hide();
-        ui->showCardButton->hide();
-        ui->addPhoneNumberButton->hide();
-        ui->openAccessButton->hide();
-    }
-    else
-    {
-        QSqlQuery query(db);
-
-        query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
-        query.exec();
-
-        if (query.next())
-        {
-            ui->addPersonButton->hide();
-            ui->addOrgButton->hide();
-            ui->addPhoneNumberButton->hide();
-
-            if (query.value(1) == 0)
-                ui->openAccessButton->hide();
-        }
-        else
-        {
-            ui->openAccessButton->hide();
-            ui->showCardButton->hide();
-        }
-    }
-
-    if (!MSSQLopened)
-        ui->openAccessButton->hide();
-
-    connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
-
-    connect(ui->textEdit,             &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
-    connect(ui->addOrgButton,         &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
-    connect(ui->saveNoteButton,       &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
-    connect(ui->showCardButton,       &QAbstractButton::clicked, this, &PopupWindow::onShowCard);
-    connect(ui->viewNotesButton,      &QAbstractButton::clicked, this, &PopupWindow::onViewNotes);
-    connect(ui->addPersonButton,      &QAbstractButton::clicked, this, &PopupWindow::onAddPerson);
-    connect(ui->openAccessButton,     &QAbstractButton::clicked, this, &PopupWindow::onOpenAccess);
-    connect(ui->addReminderButton,    &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
-    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
 }

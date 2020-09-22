@@ -12,10 +12,13 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->installEventFilter(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     connect(ui->comment, &QTextEdit::textChanged, this, &EditContactDialog::onTextChanged);
+    connect(ui->comment, &QTextEdit::cursorPositionChanged, this, &EditContactDialog::onCursorPosChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditContactDialog::onSave);
 
@@ -38,6 +41,35 @@ EditContactDialog::~EditContactDialog()
     delete phonesValidator;
     delete vyborIdValidator;
     delete ui;
+}
+
+void EditContactDialog::onCursorPosChanged()
+{
+    if (textCursor.isNull())
+    {
+        textCursor = ui->comment->textCursor();
+        textCursor.movePosition(QTextCursor::End);
+    }
+    else
+        textCursor = ui->comment->textCursor();
+}
+
+bool EditContactDialog::eventFilter(QObject*, QEvent* event)
+{
+    if (event && event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+
+        if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
+        {
+            if (ui->comment->hasFocus())
+                ui->comment->setTextCursor(textCursor);
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void EditContactDialog::onReturn()
@@ -251,7 +283,7 @@ void EditContactDialog::onSave()
     query.addBindValue(ui->address->text());
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
-    query.addBindValue(ui->comment->toPlainText());
+    query.addBindValue(ui->comment->toPlainText().trimmed());
     query.addBindValue(contactId);
     query.exec();
 

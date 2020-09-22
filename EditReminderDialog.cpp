@@ -12,12 +12,15 @@ EditReminderDialog::EditReminderDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->installEventFilter(this);
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     connect(ui->textEdit, &QTextEdit::textChanged, this, &EditReminderDialog::onTextChanged);
+    connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this, &EditReminderDialog::onCursorPosChanged);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditReminderDialog::onSave);
     connect(ui->chooseEmployeeButton, &QAbstractButton::clicked, this, &EditReminderDialog::onChooseEmployee);
 }
@@ -295,10 +298,6 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
     ui->dateTimeEdit->setDateTime(oldDateTime);
     ui->textEdit->setText(oldNote);
 
-    QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    ui->textEdit->setTextCursor(cursor);
-
     QSqlQuery query(db);
 
     if (group_id == "0")
@@ -363,6 +362,35 @@ void EditReminderDialog::onTextChanged()
 {
     if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
+}
+
+void EditReminderDialog::onCursorPosChanged()
+{
+    if (textCursor.isNull())
+    {
+        textCursor = ui->textEdit->textCursor();
+        textCursor.movePosition(QTextCursor::End);
+    }
+    else
+        textCursor = ui->textEdit->textCursor();
+}
+
+bool EditReminderDialog::eventFilter(QObject*, QEvent* event)
+{
+    if (event && event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+
+        if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
+        {
+            if (ui->textEdit->hasFocus())
+                ui->textEdit->setTextCursor(textCursor);
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)

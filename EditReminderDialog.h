@@ -9,6 +9,7 @@
 #include <QDateTime>
 #include <QPointer>
 #include <QSqlDatabase>
+#include <QTextCursor>
 
 namespace Ui {
 class EditReminderDialog;
@@ -35,6 +36,7 @@ private slots:
     void onChooseEmployee();
     void onSave();
     void onTextChanged();
+    void onCursorPosChanged();
 
     void on_add5MinButton_clicked();
     void on_add10MinButton_clicked();
@@ -43,6 +45,8 @@ private slots:
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);
+
+    bool eventFilter(QObject*, QEvent*);
 
 private:
     Ui::EditReminderDialog *ui;
@@ -60,6 +64,8 @@ private:
     QString group_id;
     QDateTime oldDateTime;
     QString oldNote;
+
+    QTextCursor textCursor;
 };
 
 #endif // EDITREMINDERDIALOG_H
