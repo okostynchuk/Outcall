@@ -184,8 +184,8 @@ void CallHistoryDialog::loadAllCalls()
 
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    disableButtons();
+    else
+        disableButtons();
 }
 
 void CallHistoryDialog::loadMissedCalls()
@@ -276,8 +276,8 @@ void CallHistoryDialog::loadMissedCalls()
 
             ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    disableButtons();
+    else
+        disableButtons();
 }
 
 void CallHistoryDialog::loadReceivedCalls()
@@ -367,8 +367,8 @@ void CallHistoryDialog::loadReceivedCalls()
 
             ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    disableButtons();
+    else
+        disableButtons();
 }
 
 void CallHistoryDialog::loadPlacedCalls()
@@ -455,8 +455,8 @@ void CallHistoryDialog::loadPlacedCalls()
 
             ui->tableView_4->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
-
-    disableButtons();
+    else
+        disableButtons();
 }
 
 void CallHistoryDialog::daysChanged()
