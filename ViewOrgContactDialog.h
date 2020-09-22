@@ -48,7 +48,7 @@ private slots:
 
     void onAddReminder();
     void onOpenAccess();
-    void onUpdate();
+    void onUpdateEmployees();
     void onUpdateCalls();
     void onPlayAudio();
     void onPlayAudioPhone();
@@ -59,8 +59,8 @@ private slots:
     void updateCount();
     void searchFunction();
     void tabSelected();
+    void callTabSelected();
     void daysChanged();
-    void setHeadersNonClickable();
 
     void deleteObjects();
 

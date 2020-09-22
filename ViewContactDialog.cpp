@@ -335,16 +335,14 @@ void ViewContactDialog::loadAllCalls()
             queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
     }
 
+    queryString.append(") ORDER BY datetime DESC LIMIT ");
+
     if (ui->lineEdit_page->text() == "1")
-    {
-        queryString.append(") ORDER BY datetime DESC LIMIT 0,"
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    }
+        queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-    {
-       queryString.append(") ORDER BY datetime DESC LIMIT "
-                        + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
-    }
+       queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                          ui->comboBox_list->currentText().toInt()) + " , " +
+                          QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -461,18 +459,14 @@ void ViewContactDialog::loadMissedCalls()
                 queryString.append(" OR src = '" + numbersList[i] + "'");
     }
 
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ORDER BY datetime ");
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
-        queryString.append("DESC LIMIT 0,"
-                              + QString::number(ui->lineEdit_page->text().toInt() *
-                                                ui->comboBox_list->currentText().toInt()) + " ");
+        queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-        queryString.append("DESC LIMIT "
-                           + QString::number(ui->lineEdit_page->text().toInt()
-                                             * ui->comboBox_list->currentText().toInt() -
-                                             ui->comboBox_list->currentText().toInt()) + " , " +
-                           QString::number(ui->comboBox_list->currentText().toInt()));
+       queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                          ui->comboBox_list->currentText().toInt()) + " , " +
+                          QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -579,18 +573,14 @@ void ViewContactDialog::loadReceivedCalls()
             queryString.append(" OR src = '" + numbersList[i] + "'");
     }
 
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
-        queryString.append("DESC LIMIT 0,"
-                              + QString::number(ui->lineEdit_page->text().toInt() *
-                                                ui->comboBox_list->currentText().toInt()) + " ");
+        queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-        queryString.append("DESC LIMIT "
-                         + QString::number(ui->lineEdit_page->text().toInt()
-                                           * ui->comboBox_list->currentText().toInt() -
-                                           ui->comboBox_list->currentText().toInt()) + " , " +
-                         QString::number(ui->comboBox_list->currentText().toInt()));
+       queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                          ui->comboBox_list->currentText().toInt()) + " , " +
+                          QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -697,18 +687,14 @@ void ViewContactDialog::loadPlacedCalls()
             queryString.append(" OR dst = '" + numbersList[i] + "'");
     }
 
-    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime ");
+    queryString.append(") AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
-        queryString.append("DESC LIMIT 0,"
-                              + QString::number(ui->lineEdit_page->text().toInt() *
-                                                ui->comboBox_list->currentText().toInt()) + " ");
+        queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-        queryString.append("DESC LIMIT "
-                           + QString::number(ui->lineEdit_page->text().toInt()
-                                             * ui->comboBox_list->currentText().toInt() -
-                                             ui->comboBox_list->currentText().toInt()) + " , " +
-                           QString::number(ui->comboBox_list->currentText().toInt()));
+       queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                          ui->comboBox_list->currentText().toInt()) + " , " +
+                          QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString, dbCalls);
 
