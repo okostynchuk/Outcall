@@ -34,6 +34,7 @@ private slots:
     void onUpdate();
     void clearEditText();
     void onOrgChanged();
+    void setModel(QString);
 
     void showNumber(const QModelIndex &);
 

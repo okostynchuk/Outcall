@@ -21,17 +21,22 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     setWindowTitle(tr("История звонков по номеру:") + " " + my_number);
 
-    setHeadersNonClickable();
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
-    ui->comboBox_list->setVisible(false);
-
-    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
     connect(ui->playAudio,            &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudio);
-    connect(ui->playAudioPhone,       &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
     connect(ui->callButton,           &QAbstractButton::clicked, this, &CallHistoryDialog::onCallClicked);
+    connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->playAudioPhone,       &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
     connect(ui->addContactButton,     &QAbstractButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton,  &QAbstractButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
-    connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
 
     connect(ui->tabWidget,   &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
     connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
@@ -46,9 +51,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->tableView_3, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
     connect(ui->tableView_4, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
 
+    ui->comboBox_list->setVisible(false);
+
     ui->tabWidget->setCurrentIndex(0);
 
-    go="default";
+    go = "default";
 
     page = "1";
 
@@ -115,14 +122,12 @@ void CallHistoryDialog::loadAllCalls()
                                                       "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT ";
 
     if (ui->lineEdit_page->text() == "1")
-    {
         queryString.append("0, "
                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    }
     else
-    {
-        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
-    }
+        queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()
+                                           - ui->comboBox_list->currentText().toInt()) + " , " +
+                           QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -209,18 +214,13 @@ void CallHistoryDialog::loadMissedCalls()
                                                  "OR dst = '"+my_group+"') ORDER BY datetime DESC LIMIT ";
 
     if (ui->lineEdit_page->text() == "1")
-    {
         queryString.append("0, "
-                          + QString::number(ui->lineEdit_page->text().toInt() *
-                                            ui->comboBox_list->currentText().toInt()) + " ");
-    }
+                          + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-    {
-        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt()
+        queryString.append(QString::number(ui->lineEdit_page->text().toInt()
                                             * ui->comboBox_list->currentText().toInt() -
                                             ui->comboBox_list->currentText().toInt()) + " , " +
                           QString::number(ui->comboBox_list->currentText().toInt()));
-    }
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -299,17 +299,12 @@ void CallHistoryDialog::loadReceivedCalls()
                                                "ORDER BY datetime DESC LIMIT ";
 
     if (ui->lineEdit_page->text() == "1")
-    {
         queryString.append("0, "
-                         + QString::number(ui->lineEdit_page->text().toInt() *
-                                           ui->comboBox_list->currentText().toInt()) + " ");
-    }
+                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-    {
-       queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+        queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
                                                ui->comboBox_list->currentText().toInt()) + " , " +
                          QString::number(ui->comboBox_list->currentText().toInt()));
-    }
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -387,18 +382,13 @@ void CallHistoryDialog::loadPlacedCalls()
                      "src = '"+my_number+"' ORDER BY datetime DESC LIMIT ";
 
     if (ui->lineEdit_page->text() == "1")
-    {
         queryString.append("0, "
-                         + QString::number(ui->lineEdit_page->text().toInt() *
-                                           ui->comboBox_list->currentText().toInt()) + " ");
-    }
+                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
     else
-    {
-        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt()
+        queryString.append(QString::number(ui->lineEdit_page->text().toInt()
                                            * ui->comboBox_list->currentText().toInt() -
                                            ui->comboBox_list->currentText().toInt()) + " , " +
                          QString::number(ui->comboBox_list->currentText().toInt()));
-    }
 
     queryModel->setQuery(queryString, dbCalls);
 
@@ -1303,16 +1293,4 @@ void CallHistoryDialog::disableButtons()
     ui->addPhoneNumberButton->setDisabled(true);
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
-}
-
-void CallHistoryDialog::setHeadersNonClickable()
-{
-    ui->tableView->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
-    ui->tableView->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 }

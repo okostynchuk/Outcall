@@ -52,7 +52,6 @@ private slots:
     void clearSelections();
     void setPage();
     void disableButtons();
-    void setHeadersNonClickable();
 
     void deleteObjects();
 

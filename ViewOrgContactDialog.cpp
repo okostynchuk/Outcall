@@ -19,31 +19,40 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    setHeadersNonClickable();
+    ui->tableView->verticalHeader()->setSectionsClickable(false);
+    ui->tableView->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
+    ui->tableView_5->verticalHeader()->setSectionsClickable(false);
+    ui->tableView_5->horizontalHeader()->setSectionsClickable(false);
 
+    connect(ui->tabWidget,   &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
+    connect(ui->tabWidget_3, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::callTabSelected);
+
+    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::daysChanged);
+
+    connect(ui->playAudio,         &QAbstractButton::clicked, this, &ViewOrgContactDialog::onPlayAudio);
+    connect(ui->callButton,        &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
+    connect(ui->editButton,        &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
+    connect(ui->playAudioPhone,    &QAbstractButton::clicked, this, &ViewOrgContactDialog::onPlayAudioPhone);
     connect(ui->openAccessButton,  &QAbstractButton::clicked, this, &ViewOrgContactDialog::onOpenAccess);
     connect(ui->addReminderButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onAddReminder);
 
-    connect(ui->callButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
-    connect(ui->editButton, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onEdit);
-
-    connect(ui->tabWidget_3, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
-    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::daysChanged);
-
-    connect(ui->playAudio,      &QAbstractButton::clicked, this, &ViewOrgContactDialog::onPlayAudio);
-    connect(ui->playAudioPhone, &QAbstractButton::clicked, this, &ViewOrgContactDialog::onPlayAudioPhone);
-
     connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::showCard);
-
-    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
-    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
-    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
-    connect(ui->tableView_5, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
 
     connect(ui->tableView_2, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
     connect(ui->tableView_3, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
     connect(ui->tableView_4, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
     connect(ui->tableView_5, &QAbstractItemView::clicked, this, &ViewOrgContactDialog::getData);
+
+    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
+    connect(ui->tableView_5, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
 
     my_number = global::getExtensionNumber("extensions");
 
@@ -65,135 +74,53 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
     delete ui;
 }
 
-void ViewOrgContactDialog::onAddReminder()
+void ViewOrgContactDialog::setValues(QString id)
 {
-    if (!addReminderDialog.isNull())
-        addReminderDialog.data()->close();
+    contactId = id;
 
-    addReminderDialog = new AddReminderDialog;
-    addReminderDialog.data()->setCallId(contactId);
-    addReminderDialog.data()->show();
-    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
-}
-
-void ViewOrgContactDialog::receiveDataPerson(bool updating)
-{
-    if (updating)
-    {
-        emit sendData(true);
-
-        onUpdate();
-    }
-}
-
-void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
-{
-    int nDesktopHeight;
-    int nDesktopWidth;
-    int nWidgetHeight = QWidget::height();
-    int nWidgetWidth = QWidget::width();
-
-    QDesktopWidget desktop;
-    QRect rcDesktop = desktop.availableGeometry(this);
-
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-
-    if (updating)
-    {
-        emit sendData(true);
-
-        close();
-    }
-    else
-    {
-        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
-        {
-            x = 0;
-            this->move(x, y);
-        }
-        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            x = 0;
-            y = nWidgetHeight;
-            this->move(x, y);
-        }
-        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
-        {
-            x = nWidgetWidth * 0.9;
-            this->move(x, y);
-        }
-        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            x = nWidgetWidth * 0.9;
-            y = nWidgetHeight * 0.9;
-            this->move(x, y);
-        }
-        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            y = nWidgetHeight * 0.9;
-            this->move(x, y);
-        }
-        else
-        {
-            this->move(x, y);
-        }
-
-        show();
-    }
-}
-
-void ViewOrgContactDialog::onCall()
-{
     QSqlQuery query(db);
 
-    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
-    query.addBindValue(contactId);
+    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
 
-    if (query.size() == 1)
-    {
-        query.next();
+    while (query.next())
+         numbersList.append(query.value(0).toString());
 
-        QString number = query.value(0).toString();
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+    for (int i = 0; i < numbersList.length(); ++i)
+        phonesList.at(i)->setText(numbersList.at(i));
 
-        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
-    }
-    else
-    {
-        if (!chooseNumber.isNull())
-            chooseNumber.data()->close();
+    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
+    query.exec();
+    query.next();
 
-        chooseNumber = new ChooseNumber;
-        chooseNumber.data()->setValues(contactId);
-        chooseNumber.data()->show();
-        chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
-    }
+    ui->orgName->setText(query.value(0).toString());
+    ui->city->setText(query.value(1).toString());
+    ui->city->QWidget::setToolTip(query.value(1).toString());
+    ui->address->setText(query.value(2).toString());
+    ui->address->QWidget::setToolTip(query.value(2).toString());
+    ui->email->setText(query.value(3).toString());
+    ui->email->QWidget::setToolTip(query.value(3).toString());
+    ui->vyborId->setText(query.value(4).toString());
+    ui->comment->setText(query.value(5).toString());
+
+    if (ui->vyborId->text() == "0")
+        ui->openAccessButton->hide();
 }
 
-void ViewOrgContactDialog::showCard(const QModelIndex &index)
-{   
-    QString id = query_model->data(query_model->index(index.row(), 0)).toString();
-
-    viewContactDialog = new ViewContactDialog;
-    viewContactDialog->setValues(id);
-    connect(viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
-    viewContactDialog->show();
-    viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-}
-
-void ViewOrgContactDialog::onEdit()
+void ViewOrgContactDialog::tabSelected()
 {
-    hide();
+    if (ui->tabWidget->currentIndex() == 1)
+        onUpdateEmployees();
+    else if (ui->tabWidget->currentIndex() == 2)
+    {
+        update = "default";
 
-    editOrgContactDialog = new EditOrgContactDialog;
-    editOrgContactDialog->setValues(contactId);
-    connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
-    connect(this, &ViewOrgContactDialog::getPos, editOrgContactDialog, &EditOrgContactDialog::setPos);
-    emit getPos(this->pos().x(), this->pos().y());
-    editOrgContactDialog->show();
-    editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        days = ui->comboBox_2->currentText();
+
+        page = "1";
+
+        updateCount();
+    }
 }
 
 void ViewOrgContactDialog::searchFunction()
@@ -203,14 +130,15 @@ void ViewOrgContactDialog::searchFunction()
     else
         filter = true;
 
-    onUpdate();
+    onUpdateEmployees();
 }
 
-void ViewOrgContactDialog::onUpdate()
+void ViewOrgContactDialog::onUpdateEmployees()
 {
     query_model = new QSqlQueryModel;
 
-    QString queryString = "SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + contactId + "' ";
+    QString queryString = "SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment "
+                          "FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + contactId + "' ";
 
     if (filter)
     {
@@ -245,83 +173,25 @@ void ViewOrgContactDialog::onUpdate()
     }
 }
 
-void ViewOrgContactDialog::onUpdateCalls()
+void ViewOrgContactDialog::showCard(const QModelIndex &index)
 {
-    if (ui->tabWidget_3->currentIndex() == 0)
-        loadAllCalls();
-    else if (ui->tabWidget_3->currentIndex() == 1)
-        loadMissedCalls();
-    else if (ui->tabWidget_3->currentIndex() == 2)
-        loadReceivedCalls();
-    else if (ui->tabWidget_3->currentIndex() == 3)
-        loadPlacedCalls();
+    QString id = query_model->data(query_model->index(index.row(), 0)).toString();
+
+    viewContactDialog = new ViewContactDialog;
+    viewContactDialog->setValues(id);
+    connect(viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
+    viewContactDialog->show();
+    viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void ViewOrgContactDialog::setValues(QString id)
+void ViewOrgContactDialog::receiveDataPerson(bool updating)
 {
-    contactId = id;
-
-    QSqlQuery query(db);
-
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
-    query.exec();
-
-    while (query.next())
-         numbersList.append(query.value(0).toString());
-
-    for (int i = 0; i < numbersList.length(); ++i)
-        phonesList.at(i)->setText(numbersList.at(i));
-
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
-    query.exec();
-    query.next();
-
-    ui->orgName->setText(query.value(0).toString());
-    ui->city->setText(query.value(1).toString());
-    ui->city->QWidget::setToolTip(query.value(1).toString());
-    ui->address->setText(query.value(2).toString());
-    ui->address->QWidget::setToolTip(query.value(2).toString());
-    ui->email->setText(query.value(3).toString());
-    ui->email->QWidget::setToolTip(query.value(3).toString());
-    ui->vyborId->setText(query.value(4).toString());
-    ui->comment->setText(query.value(5).toString());
-
-    if (ui->vyborId->text() == "0")
-        ui->openAccessButton->hide();
-
-    query_model = new QSqlQueryModel;
-
-    query_model->setQuery("SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + contactId + "' GROUP BY ep.entry_id ORDER BY entry_name ASC");
-
-    query_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    query_model->setHeaderData(1, Qt::Horizontal, tr("ФИО"));
-    query_model->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
-    query_model->setHeaderData(3, Qt::Horizontal, tr("Заметка"));
-
-    ui->tableView->setModel(query_model);
-
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->resizeColumnsToContents();
-
-    if (ui->tableView->model()->columnCount() != 0)
+    if (updating)
     {
-        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+        emit sendData(true);
+
+        onUpdateEmployees();
     }
-
-    update = "default";
-
-    filter = false;
-
-    days = ui->comboBox_2->currentText();
-
-    page = "1";
-
-    updateCount();
 }
 
 void ViewOrgContactDialog::loadAllCalls()
@@ -817,6 +687,18 @@ void ViewOrgContactDialog::loadPlacedCalls()
     ui->playAudioPhone->setDisabled(true);
 }
 
+void ViewOrgContactDialog::onUpdateCalls()
+{
+    if (ui->tabWidget_3->currentIndex() == 0)
+        loadAllCalls();
+    else if (ui->tabWidget_3->currentIndex() == 1)
+        loadMissedCalls();
+    else if (ui->tabWidget_3->currentIndex() == 2)
+        loadReceivedCalls();
+    else if (ui->tabWidget_3->currentIndex() == 3)
+        loadPlacedCalls();
+}
+
 QWidget* ViewOrgContactDialog::loadNote()
 {
     QWidget* wgt = new QWidget;
@@ -1145,6 +1027,27 @@ void ViewOrgContactDialog::deleteObjects()
     }
 }
 
+void ViewOrgContactDialog::getData(const QModelIndex &index)
+{
+    if (ui->tabWidget_3->currentIndex() == 0)
+        recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
+    if (ui->tabWidget_3->currentIndex() == 1)
+        recordpath = "";
+    if (ui->tabWidget_3->currentIndex() == 2 || ui->tabWidget_3->currentIndex() == 3)
+        recordpath = queryModel->data(queryModel->index(index.row(), 6)).toString();
+
+    if (!recordpath.isEmpty())
+    {
+        ui->playAudio->setDisabled(false);
+        ui->playAudioPhone->setDisabled(false);
+    }
+    else
+    {
+        ui->playAudio->setDisabled(true);
+        ui->playAudioPhone->setDisabled(true);
+    }
+}
+
 void ViewOrgContactDialog::daysChanged()
 {
      days = ui->comboBox_2->currentText();
@@ -1154,7 +1057,7 @@ void ViewOrgContactDialog::daysChanged()
      updateCount();
 }
 
-void ViewOrgContactDialog::tabSelected()
+void ViewOrgContactDialog::callTabSelected()
 {
     go = "default";
 
@@ -1285,7 +1188,7 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 
     addPersonToOrg = new AddPersonToOrg;
     addPersonToOrg.data()->setOrgId(contactId);
-    connect(addPersonToOrg.data(), &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::onUpdate);
+    connect(addPersonToOrg.data(), &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::onUpdateEmployees);
     addPersonToOrg.data()->show();
     addPersonToOrg.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -1380,25 +1283,57 @@ void ViewOrgContactDialog::onPlayAudioPhone()
     }
 }
 
-void ViewOrgContactDialog::getData(const QModelIndex &index)
+void ViewOrgContactDialog::onCall()
 {
-    if (ui->tabWidget_3->currentIndex() == 0)
-        recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
-    if (ui->tabWidget_3->currentIndex() == 1)
-        recordpath = "";
-    if (ui->tabWidget_3->currentIndex() == 2 || ui->tabWidget_3->currentIndex() == 3)
-        recordpath = queryModel->data(queryModel->index(index.row(), 6)).toString();
+    QSqlQuery query(db);
 
-    if (!recordpath.isEmpty())
+    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
+    query.addBindValue(contactId);
+    query.exec();
+
+    if (query.size() == 1)
     {
-        ui->playAudio->setDisabled(false);
-        ui->playAudioPhone->setDisabled(false);
+        query.next();
+
+        QString number = query.value(0).toString();
+        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
+        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
     }
     else
     {
-        ui->playAudio->setDisabled(true);
-        ui->playAudioPhone->setDisabled(true);
+        if (!chooseNumber.isNull())
+            chooseNumber.data()->close();
+
+        chooseNumber = new ChooseNumber;
+        chooseNumber.data()->setValues(contactId);
+        chooseNumber.data()->show();
+        chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
     }
+}
+
+void ViewOrgContactDialog::onEdit()
+{
+    hide();
+
+    editOrgContactDialog = new EditOrgContactDialog;
+    editOrgContactDialog->setValues(contactId);
+    connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
+    connect(this, &ViewOrgContactDialog::getPos, editOrgContactDialog, &EditOrgContactDialog::setPos);
+    emit getPos(this->pos().x(), this->pos().y());
+    editOrgContactDialog->show();
+    editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void ViewOrgContactDialog::onAddReminder()
+{
+    if (!addReminderDialog.isNull())
+        addReminderDialog.data()->close();
+
+    addReminderDialog = new AddReminderDialog;
+    addReminderDialog.data()->setCallId(contactId);
+    addReminderDialog.data()->show();
+    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ViewOrgContactDialog::on_previousButton_clicked()
@@ -1436,16 +1371,59 @@ void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
     onUpdateCalls();
 }
 
-void ViewOrgContactDialog::setHeadersNonClickable()
+void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 {
-    ui->tableView->verticalHeader()->setSectionsClickable(false);
-    ui->tableView->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_5->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_5->horizontalHeader()->setSectionsClickable(false);
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
+    if (updating)
+    {
+        emit sendData(true);
+
+        close();
+    }
+    else
+    {
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = 0;
+            this->move(x, y);
+        }
+        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = 0;
+            y = nWidgetHeight;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = nWidgetWidth * 0.9;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = nWidgetWidth * 0.9;
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else
+        {
+            this->move(x, y);
+        }
+
+        show();
+    }
 }

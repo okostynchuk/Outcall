@@ -80,32 +80,11 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 
 void PlaceCallDialog::onOrgChanged()
 {
-
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone "
                           "WHERE entry_person_org_id = '" + orgsId.at(ui->comboBox_2->currentIndex()) + "' "
                           "GROUP BY entry_id ORDER BY entry_name ASC";
 
-    queryModel->setQuery(queryString);
-
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
-
-    ui->tableView->setModel(NULL);
-    ui->tableView->setModel(queryModel);
-
-    ui->tableView->setColumnHidden(3, true);
-
-    ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->resizeColumnsToContents();
-
-    if (ui->tableView->model()->columnCount() != 0)
-    {
-        ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-    }
+    setModel(queryString);
 }
 
 void PlaceCallDialog::receiveNumber(QString number)
@@ -166,6 +145,11 @@ void PlaceCallDialog::onUpdate()
 
     queryString.append("GROUP BY entry_id ORDER BY entry_name ASC");
 
+    setModel(queryString);
+}
+
+void PlaceCallDialog::setModel(QString queryString)
+{
     queryModel->setQuery(queryString);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
