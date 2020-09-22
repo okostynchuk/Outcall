@@ -274,8 +274,8 @@ void Downloader::cancelDownload()
  */
 void Downloader::saveFile(qint64 received, qint64 total)
 {
-    Q_UNUSED (received);
-    Q_UNUSED (total);
+    Q_UNUSED(received);
+    Q_UNUSED(total);
 
     /* Check if we need to redirect */
     QUrl url = m_reply->attribute(

@@ -354,7 +354,7 @@ void OutCall::changeIconReminders(bool change)
         activeReminders = query.value(0).toInt();
 
     if (change)
-        setIconReminders(Qt::red , activeReminders);
+        setIconReminders(Qt::red, activeReminders);
     else if (!change && activeReminders > 0 && receivedReminders > 0)
         setIconReminders(Qt::red, activeReminders);
     else if (!change && activeReminders > 0 && receivedReminders == 0)
