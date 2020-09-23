@@ -1,3 +1,7 @@
+/*
+ * Класс служит для добавления организаций.
+ */
+
 #include "AddOrgContactDialog.h"
 #include "ui_AddOrgContactDialog.h"
 
@@ -35,6 +39,9 @@ AddOrgContactDialog::~AddOrgContactDialog()
     delete ui;
 }
 
+/**
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
+ */
 void AddOrgContactDialog::onSave()
 {
     QSqlQuery query(db);
@@ -188,6 +195,9 @@ void AddOrgContactDialog::onSave()
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно добавлена!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет проверку на соответсвие номера шаблону.
+ */
 bool AddOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
@@ -200,17 +210,28 @@ bool AddOrgContactDialog::isPhone(QString* str)
     return false;
 }
 
+/**
+ * Получает номер телефона неизвестного физ. лица из класса CallHistoryDialog.
+ */
 void AddOrgContactDialog::setValues(QString number)
 {
     ui->firstNumber->setText(number);
 }
 
+/**
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
+ */
 void AddOrgContactDialog::onTextChanged()
 {
     if (ui->comment->toPlainText().trimmed().length() > 255)
         ui->comment->textCursor().deletePreviousChar();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void AddOrgContactDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)

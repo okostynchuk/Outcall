@@ -47,8 +47,6 @@ private:
 
     QList<QLineEdit*> phonesList;
 
-    QStringList numbersList;
-
     QString my_number;
     QString protocol;
     QString contactId;

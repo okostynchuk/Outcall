@@ -1,3 +1,7 @@
+/*
+ * Класс служит для вывода списка всех контактов из БД и различного взаимодействия с ним.
+ */
+
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
@@ -40,6 +44,9 @@ ContactsDialog::~ContactsDialog()
     delete ui;
 }
 
+/**
+ * Получает запрос на обновление списка контактов.
+ */
 void ContactsDialog::receiveData(bool updating)
 {
     if (updating)
@@ -50,6 +57,9 @@ void ContactsDialog::receiveData(bool updating)
     }
 }
 
+/**
+ * Выполняет обработку появления окна.
+ */
 void ContactsDialog::showEvent(QShowEvent*)
 {
     selectionModel = ui->tableView->selectionModel()->selectedRows();
@@ -61,6 +71,9 @@ void ContactsDialog::showEvent(QShowEvent*)
     loadContacts();
 }
 
+/**
+ * Выполняет обработку закрытия окна.
+ */
 void ContactsDialog::closeEvent(QCloseEvent*)
 {
     selectionModel.clear();
@@ -78,6 +91,9 @@ void ContactsDialog::closeEvent(QCloseEvent*)
     go = "default";
 }
 
+/**
+ * Выполняет операции для последующего обновления списка контактов.
+ */
 void ContactsDialog::onUpdate()
 {
     selectionModel.clear();
@@ -87,6 +103,9 @@ void ContactsDialog::onUpdate()
     loadContacts();
 }
 
+/**
+ * Выполняет открытие окна добавления нового контакта (физ. лицо).
+ */
 void ContactsDialog::onAddPerson()
 {
     addContactDialog = new AddContactDialog;
@@ -95,6 +114,9 @@ void ContactsDialog::onAddPerson()
     addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие окна добавления нового контакта (организация).
+ */
 void ContactsDialog::onAddOrg()
 {
     addOrgContactDialog = new AddOrgContactDialog;
@@ -103,6 +125,9 @@ void ContactsDialog::onAddOrg()
     addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие окна просмотра данных выбранного контакта.
+ */
 void ContactsDialog::showCard(const QModelIndex &index)
 {
     QString contactId = queryModel->data(queryModel->index(index.row(), 0)).toString();
@@ -126,6 +151,9 @@ void ContactsDialog::showCard(const QModelIndex &index)
     }
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void ContactsDialog::deleteObjects()
 {
     for (int i = 0; i < widgets.size(); ++i)
@@ -146,6 +174,9 @@ void ContactsDialog::deleteObjects()
     queries.clear();
 }
 
+/**
+ * Выполняет вывод и обновление списка всех контактов.
+ */
 void ContactsDialog::loadContacts()
 {
     if (!queries.isEmpty())
@@ -280,6 +311,9 @@ void ContactsDialog::loadContacts()
         }
 }
 
+/**
+ * Выполняет добавление виджета для поля "Тип".
+ */
 QWidget* ContactsDialog::addImageLabel(int row_index)
 {
     QWidget* wgt = new QWidget;
@@ -302,6 +336,9 @@ QWidget* ContactsDialog::addImageLabel(int row_index)
     return wgt;
 }
 
+/**
+ * Выполняет добавление виджета для поля "Заметка".
+ */
 QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
 {
     QWidget* wgt = new QWidget;
@@ -344,6 +381,9 @@ QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
     return wgt;
 }
 
+/**
+ * Выполняет операции для последующего поиска по списку.
+ */
 void ContactsDialog::searchFunction()
 {
     go = "default";
@@ -364,6 +404,9 @@ void ContactsDialog::searchFunction()
     onUpdate();
 }
 
+/**
+ * Выполняет обработку события смены количества выводимых контактов на странице.
+ */
 void ContactsDialog::currentIndexChanged()
 {
     go = "default";
@@ -371,6 +414,9 @@ void ContactsDialog::currentIndexChanged()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего обновления списка контактов.
+ */
 void ContactsDialog::on_updateButton_clicked()
 {
     go = "default";
@@ -378,6 +424,9 @@ void ContactsDialog::on_updateButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void ContactsDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -385,6 +434,9 @@ void ContactsDialog::on_previousButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void ContactsDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -392,6 +444,9 @@ void ContactsDialog::on_nextButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void ContactsDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -399,6 +454,9 @@ void ContactsDialog::on_previousStartButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void ContactsDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -406,6 +464,9 @@ void ContactsDialog::on_nextEndButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void ContactsDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
@@ -413,16 +474,27 @@ void ContactsDialog::on_lineEdit_page_returnPressed()
     onUpdate();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии клавиши Enter,
+ * находясь в строке поиска.
+ */
 void ContactsDialog::on_lineEdit_returnPressed()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии кнопки поиска.
+ */
 void ContactsDialog::on_searchButton_clicked()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void ContactsDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

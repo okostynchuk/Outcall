@@ -15,6 +15,10 @@
 
 static const QString PARTIAL_DOWN(".part");
 
+/**
+ * Выполняет запуск программы, подключение к базам данных, загрузку языковых файлов,
+ * удаление старой версии программы после обновления.
+ */
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);

@@ -32,8 +32,6 @@ Downloader::Downloader(QWidget* parent) : QWidget(parent)
     /* Set download directory */
     m_downloadDir.setPath(QDir::homePath() + "/Downloads/");
 
-    m_AppDir.setPath("C:\\");
-
     /* Make the window look like a modal dialog */
     setWindowIcon(QIcon());
     setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);

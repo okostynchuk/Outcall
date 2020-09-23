@@ -1,3 +1,7 @@
+/*
+ * Класс служит для добавления физ. лиц.
+ */
+
 #include "AddContactDialog.h"
 #include "ui_AddContactDialog.h"
 
@@ -44,6 +48,9 @@ AddContactDialog::~AddContactDialog()
     delete ui;
 }
 
+/**
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
+ */
 void AddContactDialog::onSave()
 {
     QSqlQuery query(db);
@@ -215,6 +222,9 @@ void AddContactDialog::onSave()
 
 }
 
+/**
+ * Выполняет проверку на соответсвие номера шаблону.
+ */
 bool AddContactDialog::isPhone(QString* str)
 {
     int pos = 0;
@@ -227,6 +237,10 @@ bool AddContactDialog::isPhone(QString* str)
     return false;
 }
 
+/**
+ * Получает id и название выбранной организации из класса AddOrgToPerson
+ * для последующей привязки к физ. лицу.
+ */
 void AddContactDialog::receiveOrgName(QString id, QString name)
 {
     if (!id.isNull())
@@ -243,6 +257,9 @@ void AddContactDialog::receiveOrgName(QString id, QString name)
     }
 }
 
+/**
+ * Выполняет открытие окна со списком организаций для выбора определенной на привязку.
+ */
 void AddContactDialog::on_addOrgButton_clicked()
 {
     if (!addOrgToPerson.isNull())
@@ -254,6 +271,9 @@ void AddContactDialog::on_addOrgButton_clicked()
     addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет отвязку организации.
+ */
 void AddContactDialog::on_deleteOrgButton_clicked()
 {
     ui->label_org->setText(tr("Нет"));
@@ -261,17 +281,28 @@ void AddContactDialog::on_deleteOrgButton_clicked()
     orgId = "0";
 }
 
+/**
+ * Получает номер телефона неизвестного физ. лица из класса CallHistoryDialog.
+ */
 void AddContactDialog::setValues(QString number)
 {
     ui->firstNumber->setText(number);
 }
 
+/**
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
+ */
 void AddContactDialog::onTextChanged()
 {
     if (ui->comment->toPlainText().trimmed().length() > 255)
         ui->comment->textCursor().deletePreviousChar();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void AddContactDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
@@ -285,6 +316,9 @@ void AddContactDialog::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
+/**
+ * Выполняет обработку закрытия окна.
+ */
 void AddContactDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);

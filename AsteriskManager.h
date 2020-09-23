@@ -80,7 +80,6 @@ protected:
     void getEventValues(QString eventData, QMap<QString, QString> &map);
     void parseEvent(const QString &event);
     void asterisk_11_eventHandler(const QString &eventData);
-    void formatNumber(QString &number);
     void setAsteriskVersion(const QString &msg);
 
 private:

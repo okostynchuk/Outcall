@@ -1,5 +1,8 @@
-#include "AsteriskManager.h"
+/*
+ * Класс служит для взаимодействия с сервером Asterisk.
+ */
 
+#include "AsteriskManager.h"
 #include "Global.h"
 
 #include <QTcpSocket>
@@ -36,6 +39,9 @@ AsteriskManager::AsteriskManager(const QString username, const QString secret, Q
 AsteriskManager::~AsteriskManager()
 {}
 
+/**
+ * Выполняет подключение к серверу Asterisk.
+ */
 void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
 {
     if (!m_isSignedIn && (m_currentState == DISCONNECTED || m_currentState == ERROR_ON_CONNECTING))
@@ -49,6 +55,9 @@ void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
     }
 }
 
+/**
+ * Выполняет отключение от сервера Asterisk.
+ */
 void AsteriskManager::signOut()
 {
     m_tcpSocket->abort();
@@ -61,6 +70,10 @@ void AsteriskManager::signOut()
     setState(DISCONNECTED);
 }
 
+/**
+ * Выполняет обработку события неконтролируемого
+ * отключения от сервера Asterisk.
+ */
 void AsteriskManager::onError(QAbstractSocket::SocketError socketError)
 {
     if (m_currentState == CONNECTING && !m_autoConnectingOnError)
@@ -82,6 +95,9 @@ void AsteriskManager::onError(QAbstractSocket::SocketError socketError)
     setState(ERROR_ON_CONNECTING);
 }
 
+/**
+ * Выполняет операции для последующего переподключения к серверу Asterisk.
+ */
 void AsteriskManager::reconnect()
 {
     if (!m_autoSignIn)
@@ -98,11 +114,18 @@ void AsteriskManager::reconnect()
     signIn(m_server, m_port);
 }
 
+/**
+ * Получает и присваивает значение для включения / отключения
+ * автоматического подключения к серверу Asterisk.
+ */
 void AsteriskManager::setAutoSignIn(bool ok)
 {
     m_autoSignIn = ok;
 }
 
+/**
+ * Получает и присваивает значение состояния подключения к серверу Asterisk.
+ */
 void AsteriskManager::setState(AsteriskState state)
 {
     if (state == m_currentState)
@@ -140,6 +163,9 @@ void AsteriskManager::setState(AsteriskState state)
         m_currentState = ERROR_ON_CONNECTING;
 }
 
+/**
+ * Получает и присваивает значение используемой версии Asterisk.
+ */
 void AsteriskManager::setAsteriskVersion(const QString &msg)
 {
     int index = msg.indexOf("/") + 1;
@@ -152,6 +178,9 @@ void AsteriskManager::setAsteriskVersion(const QString &msg)
         m_currentVersion = VERSION_13;
 }
 
+/**
+ * Выполняет считывание сообщения, полученного через TCP сокет от сервера Asterisk.
+ */
 void AsteriskManager::read()
 {
     while (m_tcpSocket->canReadLine())
@@ -205,6 +234,9 @@ void AsteriskManager::read()
     }
 }
 
+/**
+ * Выполняет обработку событий, полученных в сообщении (Asterisk 13).
+ */
 void AsteriskManager::parseEvent(const QString &eventData)
 {
     if (eventData.contains("Event: Newchannel"))
@@ -541,6 +573,9 @@ void AsteriskManager::parseEvent(const QString &eventData)
     }
 }
 
+/**
+ * Выполняет преобразование полученного сообщения в список пар "ключ: значение".
+ */
 void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &map)
 {
     QStringList list = eventData.split("\r\n");
@@ -554,6 +589,9 @@ void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &
     }
 }
 
+/**
+ * Выполняет отправку команды для получения списка внутренних номеров.
+ */
 void AsteriskManager::getExtensionNumbers()
 {
     extensionNumbers.clear();
@@ -566,12 +604,15 @@ void AsteriskManager::getExtensionNumbers()
     m_tcpSocket->flush();
 }
 
+/**
+ * Выполняет отправку команды для входа в аккаунт.
+ */
 void AsteriskManager::login()
 {
     QString login;
     login =  "Action: Login\r\n";
-    login += "Username: "        + m_username      + "\r\n";
-    login += "Secret: "          + m_secret        + "\r\n";
+    login += "Username: " + m_username + "\r\n";
+    login += "Secret: " + m_secret + "\r\n";
 
     m_tcpSocket->write(login.toLatin1().data());
     m_tcpSocket->write("\r\n");
@@ -580,23 +621,29 @@ void AsteriskManager::login()
     getExtensionNumbers();
 }
 
+/**
+ * Выполняет отправку команды для совершения звонка.
+ */
 void AsteriskManager::originateCall(QString from, QString exten, QString protocol, QString callerId)
 {
     const QString channel = protocol + "/" + from;
 
     QString result;
     result =  "Action: Originate\r\n";
-    result += "Channel: "       + channel       + "\r\n";
-    result += "Exten: "         + exten         + "\r\n";
+    result += "Channel: " + channel + "\r\n";
+    result += "Exten: " + exten + "\r\n";
     result += "Context: DLPN_DialPlan" + from + "\r\n";
     result += "Priority: 1\r\n";
-    result += "CallerID: "      + callerId      + "\r\n";
+    result += "CallerID: " + callerId + "\r\n";
 
     m_tcpSocket->write(result.toLatin1().data());
     m_tcpSocket->write("\r\n");
     m_tcpSocket->flush();
 }
 
+/**
+ * Выполняет отправку команды для аудио воспроизведения записи звонка.
+ */
 void AsteriskManager::originateAudio(QString number, QString protocol, QString recordpath)
 {
     const QString channel = protocol + "/" + number;
@@ -615,60 +662,9 @@ void AsteriskManager::originateAudio(QString number, QString protocol, QString r
     m_tcpSocket->flush();
 }
 
-void AsteriskManager::formatNumber(QString &number)
-{
-    QString formatted_number = number;
-    QString international = global::getSettingsValue("international", "dial_rules").toString();
-
-    QVariantList list = global::getSettingsValue("replacement_rules", "dial_rules").toList();
-
-    for (int i = 0; i < list.size(); ++i)
-    {
-        QMap<QString, QVariant> rules = list[i].toMap();
-
-        int isRegEx         = rules.value("regex").toInt();
-        QString replacement = rules.value("replacement").toString();
-        QString text        = rules.value("text").toString();
-
-        if (isRegEx)
-        {
-            formatted_number.replace(QRegExp(text), replacement);
-        }
-        else
-        {
-            formatted_number.replace(text, replacement);
-        }
-    }
-
-    number.clear();
-
-    char ch;
-    for (int i = 0; i < formatted_number.length(); ++i)
-    {
-        ch = formatted_number.at(i).toLatin1();
-        if (ch=='+')
-            number.append(international);
-        else if ((ch>='0' && ch<='9') || ch=='*' || ch=='#')
-            number.append(QChar(ch));
-        else if (ch=='a' || ch=='b' || ch=='c' || ch=='A' || ch=='B' || ch=='C')
-            number.append(QChar('2'));
-        else if (ch=='d' || ch=='e' || ch=='f' || ch=='D' || ch=='E' || ch=='F')
-            number.append(QChar('3'));
-        else if (ch=='g' || ch=='h' || ch=='i' || ch=='G' || ch=='H' || ch=='I')
-            number.append(QChar('4'));
-        else if (ch=='j' || ch=='k' || ch=='l' || ch=='J' || ch=='K' || ch=='L')
-            number.append(QChar('5'));
-        else if (ch=='m' || ch=='n' || ch=='o' || ch=='M' || ch=='N' || ch=='O')
-            number.append(QChar('6'));
-        else if (ch=='p' || ch=='q' || ch=='r' || ch=='s' || ch=='P' || ch=='Q' || ch=='R' || ch=='S')
-            number.append(QChar('7'));
-        else if (ch=='v' || ch=='u' || ch=='t' || ch=='V' || ch=='U' || ch=='T')
-            number.append(QChar('8'));
-        else if (ch=='w' || ch=='x' || ch=='y' || ch=='z' || ch=='W' || ch=='X' || ch=='Y' || ch=='Z')
-            number.append(QChar('9'));
-    }
-}
-
+/**
+ * Выполняет изменение настроек подключения к серверу Asterisk.
+ */
 void AsteriskManager::onSettingsChange()
 {
     QString server            = global::getSettingsValue("servername", "settings").toString();
@@ -690,11 +686,17 @@ void AsteriskManager::onSettingsChange()
     }
 }
 
+/**
+ * Возвращает состояние подключения к серверу Asterisk.
+ */
 bool AsteriskManager::isSignedIn() const
 {
     return m_isSignedIn;
 }
 
+/**
+ * Выполняет обработку событий, полученных в сообщении (Asterisk 11).
+ */
 void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
 {
     if (eventData.contains("Event: Newchannel"))

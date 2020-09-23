@@ -27,11 +27,17 @@ ChooseEmployee::~ChooseEmployee()
     delete ui;
 }
 
+/**
+ * Задаёт позицию окна в зависимости от позиции окна-родителя.
+ */
 void ChooseEmployee::setPos(int x, int y)
 {
     this->move(x, y);
 }
 
+/**
+ * Выполняет добавление выбранного сотрудника в список получателей напоминания.
+ */
 void ChooseEmployee::onChoose(QListWidgetItem* item)
 {
     ui->listWidget_2->addItem(ui->listWidget->takeItem(ui->listWidget->row(item)));
@@ -40,6 +46,9 @@ void ChooseEmployee::onChoose(QListWidgetItem* item)
     results.removeAll(item->text());
 }
 
+/**
+ * Выполняет добавление всех сотрудников в список получателей напоминания.
+ */
 void ChooseEmployee::on_chooseAllButton_clicked()
 {
     if (ui->listWidget->count() == 0)
@@ -54,6 +63,9 @@ void ChooseEmployee::on_chooseAllButton_clicked()
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 }
 
+/**
+ * Выполняет удаление выбранного сотрудника из списка получателей напоминания.
+ */
 void ChooseEmployee::onRemove(QListWidgetItem* item)
 {
     if (ui->lineEdit->text().isEmpty())
@@ -72,6 +84,9 @@ void ChooseEmployee::onRemove(QListWidgetItem* item)
     ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
+/**
+ * Выполняет удаление всех сотрудников из списка получателей напоминания.
+ */
 void ChooseEmployee::on_removeAllButton_clicked()
 {
     if (ui->listWidget_2->count() == 0)
@@ -99,6 +114,9 @@ void ChooseEmployee::on_removeAllButton_clicked()
     ui->listWidget_2->clear();
 }
 
+/**
+ * Выполняет поиск по списку сотрудников.
+ */
 void ChooseEmployee::onSearch()
 {
     results.clear();
@@ -124,6 +142,10 @@ void ChooseEmployee::onSearch()
     ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
+/**
+ * Получает список сотрудников из классов AddReminderDialog,
+ * EditReminderDialog, PopupReminder.
+ */
 void ChooseEmployee::setValues(QStringList employee)
 {
     this->employee = employee;
@@ -136,6 +158,10 @@ void ChooseEmployee::setValues(QStringList employee)
         qDeleteAll(ui->listWidget->findItems(ui->listWidget_2->item(i)->text(), Qt::MatchFixedString));
 }
 
+/**
+ * Выполняет сохранение списка получателей напоминания
+ * при нажатии кнопки "Применить".
+ */
 void ChooseEmployee::on_applyButton_clicked()
 {
     QStringList employee;
@@ -151,6 +177,11 @@ void ChooseEmployee::on_applyButton_clicked()
     close();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиш Enter, стрелка влево,
+ * стрелка вправо и Esc.
+ */
 void ChooseEmployee::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)

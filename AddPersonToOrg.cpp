@@ -1,3 +1,7 @@
+/*
+ * Класс служит для добавления физ. лиц к организации.
+ */
+
 #include "AddPersonToOrg.h"
 #include "ui_AddPersonToOrg.h"
 
@@ -37,6 +41,9 @@ AddPersonToOrg::~AddPersonToOrg()
     delete ui;
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void AddPersonToOrg::deleteObjects()
 {
     for (int i = 0; i < queries.size(); ++i)
@@ -45,6 +52,9 @@ void AddPersonToOrg::deleteObjects()
     queries.clear();
 }
 
+/**
+ * Получает id организации из класса ViewOrgContactDialog.
+ */
 void AddPersonToOrg::setOrgId(QString orgId)
 {
     this->orgId = orgId;
@@ -59,6 +69,9 @@ void AddPersonToOrg::setOrgId(QString orgId)
     setWindowTitle(tr("Добавление сотрудников к организации") + " \"" + orgName + "\"");
 }
 
+/**
+ * Выполняет привязку выбранного физ. лица к организации.
+ */
 void AddPersonToOrg::getPersonId(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
@@ -87,6 +100,10 @@ void AddPersonToOrg::getPersonId(const QModelIndex &index)
     QMessageBox::information(this, tr("Уведомление"), tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет вывод и обновление списка всех физ. лиц,
+ * не привязанных к какой-либо организации.
+ */
 void AddPersonToOrg::onUpdate()
 {
     deleteObjects();
@@ -189,6 +206,9 @@ void AddPersonToOrg::onUpdate()
     }
 }
 
+/**
+ * Выполняет операции для последующего поиска по списку.
+ */
 void AddPersonToOrg::searchFunction()
 {
     go = "default";
@@ -209,6 +229,9 @@ void AddPersonToOrg::searchFunction()
     onUpdate();
 }
 
+/**
+ * Выполняет обработку события смены количества выводимых физ. лиц на странице.
+ */
 void AddPersonToOrg::currentIndexChanged()
 {
     go = "default";
@@ -216,6 +239,9 @@ void AddPersonToOrg::currentIndexChanged()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void AddPersonToOrg::on_previousButton_clicked()
 {
     go = "previous";
@@ -223,6 +249,9 @@ void AddPersonToOrg::on_previousButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void AddPersonToOrg::on_nextButton_clicked()
 {
     go = "next";
@@ -230,6 +259,9 @@ void AddPersonToOrg::on_nextButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void AddPersonToOrg::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -237,6 +269,9 @@ void AddPersonToOrg::on_previousStartButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void AddPersonToOrg::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -244,6 +279,9 @@ void AddPersonToOrg::on_nextEndButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void AddPersonToOrg::on_lineEdit_page_returnPressed()
 {
     go = "enter";
@@ -251,11 +289,18 @@ void AddPersonToOrg::on_lineEdit_page_returnPressed()
     onUpdate();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии клавиши Enter,
+ * находясь в строке поиска.
+ */
 void AddPersonToOrg::on_lineEdit_returnPressed()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии кнопки поиска.
+ */
 void AddPersonToOrg::on_searchButton_clicked()
 {
     searchFunction();
