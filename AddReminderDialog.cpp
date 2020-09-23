@@ -1,3 +1,7 @@
+/*
+ * Класс служит для создания напоминания.
+ */
+
 #include "AddReminderDialog.h"
 #include "ui_AddReminderDialog.h"
 
@@ -43,6 +47,9 @@ AddReminderDialog::~AddReminderDialog()
     delete ui;
 }
 
+/**
+ * Получает список выбранных сотрудников из класса ChooseEmployee.
+ */
 void AddReminderDialog::receiveEmployee(QStringList employee)
 {
     this->employee = employee;
@@ -53,6 +60,9 @@ void AddReminderDialog::receiveEmployee(QStringList employee)
         ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
 }
 
+/**
+ * Получает сотрудника из класса InternalContactsDialog.
+ */
 void AddReminderDialog::setEmployee(QString employee)
 {
     ui->employee->setText(employee);
@@ -61,6 +71,10 @@ void AddReminderDialog::setEmployee(QString employee)
     this->employee.append(employee);
 }
 
+/**
+ * Выполняет открытие окна для выбора списка сотрудников,
+ * которые получат напоминание.
+ */
 void AddReminderDialog::onChooseEmployee()
 {
     if (!chooseEmployee.isNull())
@@ -75,6 +89,9 @@ void AddReminderDialog::onChooseEmployee()
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
+ */
 void AddReminderDialog::onSave()
 {
     QDate date = ui->calendarWidget->selectedDate();
@@ -199,17 +216,29 @@ void AddReminderDialog::onSave()
         QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
 }
 
-void AddReminderDialog::setCallId(QString receivedCallId)
+/**
+ * Получает уникальный id звонка из класса PopupWindow
+ * или id контакта из классов ViewContactDialog и ViewOrgContactDialog.
+ */
+void AddReminderDialog::setCallId(QString callId)
 {
-    callId = receivedCallId;
+    this->callId = callId;
 }
 
+/**
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
+ */
 void AddReminderDialog::onTextChanged()
 {
     if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void AddReminderDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
@@ -223,6 +252,9 @@ void AddReminderDialog::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
+/**
+ * Выполняет обработку закрытия окна.
+ */
 void AddReminderDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
@@ -231,21 +263,37 @@ void AddReminderDialog::closeEvent(QCloseEvent* event)
         chooseEmployee.data()->close();
 }
 
+/**
+ * Выполняет прибавление к текущему времени 5 минут
+ * при нажатии кнопки +5.
+ */
 void AddReminderDialog::on_add5MinButton_clicked()
 {
     ui->timeEdit->setTime(ui->timeEdit->time().addSecs(300));
 }
 
+/**
+ * Выполняет прибавление к текущему времени 10 минут
+ * при нажатии кнопки +10.
+ */
 void AddReminderDialog::on_add10MinButton_clicked()
 {
     ui->timeEdit->setTime(ui->timeEdit->time().addSecs(600));
 }
 
+/**
+ * Выполняет прибавление к текущему времени 30 минут
+ * при нажатии кнопки +30.
+ */
 void AddReminderDialog::on_add30MinButton_clicked()
 {
     ui->timeEdit->setTime(ui->timeEdit->time().addSecs(1800));
 }
 
+/**
+ * Выполняет прибавление к текущему времени 60 минут
+ * при нажатии кнопки +60.
+ */
 void AddReminderDialog::on_add60MinButton_clicked()
 {
     ui->timeEdit->setTime(ui->timeEdit->time().addSecs(3600));

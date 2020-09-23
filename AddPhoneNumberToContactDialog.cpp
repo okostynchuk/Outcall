@@ -1,3 +1,7 @@
+/*
+ * Класс служит для добавления номера к существующему контакту.
+ */
+
 #include "AddPhoneNumberToContactDialog.h"
 #include "ui_AddPhoneNumberToContactDialog.h"
 
@@ -37,6 +41,9 @@ AddPhoneNumberToContactDialog::~AddPhoneNumberToContactDialog()
     delete ui;
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void AddPhoneNumberToContactDialog::deleteObjects()
 {
     for (int i = 0; i < queries.size(); ++i)
@@ -45,11 +52,17 @@ void AddPhoneNumberToContactDialog::deleteObjects()
     queries.clear();
 }
 
-void AddPhoneNumberToContactDialog::setPhoneNumber(QString receivedPhoneNumber)
+/**
+ * Получает неизвестный номер из классов CallHistoryDialog и PopupWindow.
+ */
+void AddPhoneNumberToContactDialog::setPhoneNumber(QString phoneNumber)
 {
-    phoneNumber = receivedPhoneNumber;
+    this->phoneNumber = phoneNumber;
 }
 
+/**
+ * Выполняет привязку номера к существующему контакту.
+ */
 void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 {
     QSqlQuery query(db);
@@ -111,6 +124,10 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
         QMessageBox::critical(this, tr("Ошибка"), tr("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет вывод и обновление списка всех контактов,
+ * к которым привязано не более 5 номеров.
+ */
 void AddPhoneNumberToContactDialog::onUpdate()
 {
     if (!queries.isEmpty())
@@ -177,7 +194,7 @@ void AddPhoneNumberToContactDialog::onUpdate()
     queryModel = new QSqlQueryModel;
 
     queryString.append(searchString);
-    queryString.append("GROUP BY entry_id ORDER BY entry_name ASC LIMIT ");
+    queryString.append("GROUP BY entry_id HAVING COUNT(entry_phone) <> 5 ORDER BY entry_name ASC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
         queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() *
@@ -212,6 +229,9 @@ void AddPhoneNumberToContactDialog::onUpdate()
     }
 }
 
+/**
+ * Выполняет операции для последующего поиска по списку.
+ */
 void AddPhoneNumberToContactDialog::searchFunction()
 {
     go = "default";
@@ -232,6 +252,9 @@ void AddPhoneNumberToContactDialog::searchFunction()
     onUpdate();
 }
 
+/**
+ * Выполняет обработку события смены количества выводимых контактов на странице.
+ */
 void AddPhoneNumberToContactDialog::currentIndexChanged()
 {
     go = "default";
@@ -239,6 +262,9 @@ void AddPhoneNumberToContactDialog::currentIndexChanged()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void AddPhoneNumberToContactDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -246,6 +272,9 @@ void AddPhoneNumberToContactDialog::on_previousButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void AddPhoneNumberToContactDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -253,6 +282,9 @@ void AddPhoneNumberToContactDialog::on_nextButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -260,6 +292,9 @@ void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -267,6 +302,9 @@ void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
@@ -274,11 +312,18 @@ void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
     onUpdate();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии клавиши Enter,
+ * находясь в строке поиска.
+ */
 void AddPhoneNumberToContactDialog::on_lineEdit_returnPressed()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии кнопки поиска.
+ */
 void AddPhoneNumberToContactDialog::on_searchButton_clicked()
 {
     searchFunction();
