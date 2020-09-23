@@ -1,3 +1,7 @@
+/*
+ * Класс служит для отображения внутренних контактов (контактов сотрудников).
+ */
+
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
@@ -28,6 +32,9 @@ InternalContactsDialog::~InternalContactsDialog()
     delete ui;
 }
 
+/**
+ * Удаление объектов.
+ */
 void InternalContactsDialog::deleteObjects()
 {
     for (int i = 0; i < layouts.length(); ++i)
@@ -44,6 +51,9 @@ void InternalContactsDialog::deleteObjects()
     buttons.clear();
 }
 
+/**
+ * Обновление списка контактов при открытии окна.
+ */
 void InternalContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -69,6 +79,9 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
     }
 }
 
+/**
+ * Установка начальных значений при закрытии окна.
+ */
 void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
     ui->lineEdit->clear();
@@ -81,6 +94,9 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
     page = "1";
 }
 
+/**
+ * Загрузка внутренних контактов.
+ */
 void InternalContactsDialog::loadContacts()
 {
     count = extensions.count();
@@ -159,6 +175,9 @@ void InternalContactsDialog::loadContacts()
     }
 }
 
+/**
+ * Реализация поиска по списку контактов.
+ */
 void InternalContactsDialog::onSearch()
 {
     if (!itemsSearch.isEmpty())
@@ -179,6 +198,9 @@ void InternalContactsDialog::onSearch()
     loadContacts();
 }
 
+/**
+ * Реализация виджета для отображения кнопок осуществления звонка и создания напоминания.
+ */
 QWidget* InternalContactsDialog::addWgt(QString name)
 {
     QHBoxLayout* layout = new QHBoxLayout;
@@ -218,6 +240,9 @@ QWidget* InternalContactsDialog::addWgt(QString name)
     return wgt;
 }
 
+/**
+ * Реализация кнопки осуществления звонка.
+ */
 void InternalContactsDialog::onCall()
 {
     QString from = global::getExtensionNumber("extensions");
@@ -227,6 +252,9 @@ void InternalContactsDialog::onCall()
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
+/**
+ * Реализация кнопки добавления напоминания.
+ */
 void InternalContactsDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
@@ -235,6 +263,9 @@ void InternalContactsDialog::onAddReminder()
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация перехода на предыдущую страницу.
+ */
 void InternalContactsDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -242,6 +273,9 @@ void InternalContactsDialog::on_previousButton_clicked()
     loadContacts();
 }
 
+/**
+ * Реализация перехода на следующую страницу.
+ */
 void InternalContactsDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -249,6 +283,9 @@ void InternalContactsDialog::on_nextButton_clicked()
     loadContacts();
 }
 
+/**
+ * Реализация перехода на первую страницу.
+ */
 void InternalContactsDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -256,6 +293,9 @@ void InternalContactsDialog::on_previousStartButton_clicked()
     loadContacts();
 }
 
+/**
+ * Реализация перехода на последнюю страницу.
+ */
 void InternalContactsDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -263,6 +303,9 @@ void InternalContactsDialog::on_nextEndButton_clicked()
     loadContacts();;
 }
 
+/**
+ * Реализация перехода на заданную страницу.
+ */
 void InternalContactsDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";

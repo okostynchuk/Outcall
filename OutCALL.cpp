@@ -1,3 +1,7 @@
+/*
+ * Класс служит для создания меню приложения и входа в аккаунт.
+ */
+
 #include "OutCALL.h"
 
 #include "DebugInfoDialog.h"
@@ -76,6 +80,9 @@ OutCall::~OutCall()
     delete m_internalContactsDialog;
 }
 
+/**
+ * Создание элементов контекстного меню.
+ */
 void OutCall::createContextMenu()
 {
     // Exit action
@@ -145,6 +152,9 @@ void OutCall::createContextMenu()
                           "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
 }
 
+/**
+ * Реализация автоматического входа в аккаунт.
+ */
 void OutCall::automaticlySignIn()
 {
     bool autoSingIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
@@ -153,6 +163,9 @@ void OutCall::automaticlySignIn()
         signInOut();
 }
 
+/**
+ * Реализация входа / выхода из аккаунта.
+ */
 void OutCall::signInOut()
 {
     if (m_signIn->text() == tr("Выйти из аккаунта") || m_signIn->text() == tr("Отменить вход"))
@@ -173,6 +186,9 @@ void OutCall::signInOut()
         g_pAsteriskManager->signOut();
 }
 
+/**
+ * Реализация вывода ошибок.
+ */
 void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
 {
     switch (socketError)
@@ -195,12 +211,19 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
     }
 }
 
+/**
+ * Обновление окна класса DebugInfoDialog.cpp.
+ */
 void OutCall::onMessageReceived(const QString &message)
 {
     if (m_debugInfoDialog)
         m_debugInfoDialog->updateDebug(message);
 }
 
+/**
+ * Реализация отображения уведомления при входящем звонке
+ * с передачей данных звонка в PopupWindow.cpp.
+ */
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 {
     QString dateTime        = call.value("dateTime").toString();
@@ -216,6 +239,9 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
         PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName), my_number);
 }
 
+/**
+ * Отслеживание изменений состояния подключения к Asterisk.
+ */
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
@@ -306,6 +332,9 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
     }
 }
 
+/**
+ * Отключение элементов контекстного меню.
+ */
 void OutCall::disableActions()
 {
     m_placeCall->setEnabled(false);
@@ -315,6 +344,9 @@ void OutCall::disableActions()
     remindersAction->setEnabled(false);
 }
 
+/**
+ * Включение элементов контекстного меню.
+ */
 void OutCall::enableActions()
 {
     m_placeCall->setEnabled(true);
@@ -324,12 +356,18 @@ void OutCall::enableActions()
     remindersAction->setEnabled(true);
 }
 
+/**
+ * Скрытие иконки приложения в области уведомлений.
+ */
 void OutCall::hideTrayIcon(bool hide)
 {
     if (hide)
         m_systemTrayIcon->hide();
 }
 
+/**
+ * Реализация изменения иконки приложения при наличии актуальных напоминаний.
+ */
 void OutCall::changeIconReminders(bool change)
 {
     QSqlQuery query(db);
@@ -366,6 +404,9 @@ void OutCall::changeIconReminders(bool change)
     }
 }
 
+/**
+ * Реализация иконки в области уведомлений с количеством активных уведомлений.
+ */
 void OutCall::setIconReminders(QColor color, int activeReminders)
 {
     QPixmap pixmap(22, 22);
@@ -385,6 +426,9 @@ void OutCall::setIconReminders(QColor color, int activeReminders)
     m_systemTrayIcon->setIcon(QIcon(pixmap));
 }
 
+/**
+ * Изменение иконки приложения при подключенном / неподключенном Asterisk.
+ */
 void OutCall::changeIcon()
 {
     if (m_switch)
@@ -403,12 +447,18 @@ void OutCall::changeIcon()
     }
 }
 
+/**
+ * Реализация открытия окна с историей звонков.
+ */
 void OutCall::onCallHistory()
 {
     m_callHistoryDialog->showNormal();
     m_callHistoryDialog->raise();
 }
 
+/**
+ * Реализация открытия окна с настройками приложения.
+ */
 void OutCall::onSettingsDialog()
 {
 //    SettingsDialog dialog;
@@ -417,30 +467,45 @@ void OutCall::onSettingsDialog()
     m_settingsDialog->raise();
 }
 
+/**
+ * Реализация открытия окна с информацией об отладке приложения.
+ */
 void OutCall::onDebugInfo()
 {
     m_debugInfoDialog->showNormal();
     m_debugInfoDialog->raise();
 }
 
+/**
+ * Реализация открытия окна для осуществления звонков.
+ */
 void OutCall::onPlaceCall()
 {
     m_placeCallDialog->showNormal();
     m_placeCallDialog->raise();
 }
 
+/**
+ * Реализация открытия окна с книгой контактов.
+ */
 void OutCall::onContactsDialog()
 {
     m_contactsDialog->showMaximized();
     m_contactsDialog->raise();
 }
 
+/**
+ * Реализация открытия окна с внутренними контактами.
+ */
 void OutCall::onInternalContactsDialog()
 {
     m_internalContactsDialog->showNormal();
     m_internalContactsDialog->raise();
 }
 
+/**
+ * Реализация открытия окна с созданием напоминаний.
+ */
 void OutCall::onRemindersDialog()
 {
     m_remindersDialog->showNormal();
@@ -456,6 +521,9 @@ void OutCall::onRemindersDialog()
     m_remindersDialog->reminders(false);
 }
 
+/**
+ * Выход из аккаунта.
+ */
 void OutCall::close()
 {
     g_pAsteriskManager->signOut();
@@ -465,6 +533,9 @@ void OutCall::close()
     QApplication::quit();
 }
 
+/**
+ * Активация окон при входе в аккаунт.
+ */
 void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
@@ -486,6 +557,9 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+/**
+ * Отображение контекстного меню.
+ */
 void OutCall::show()
 {
     m_systemTrayIcon->show();

@@ -1,3 +1,7 @@
+/*
+ * Класс служит для вывода результатов отладки.
+ */
+
 #include "DebugInfoDialog.h"
 #include "ui_DebugInfoDialog.h"
 
@@ -25,21 +29,34 @@ DebugInfoDialog::~DebugInfoDialog()
     delete ui;
 }
 
+/**
+ * Реализация очистки окна отладки.
+ */
 void DebugInfoDialog::onClear() const
 {
     ui->textEdit->clear();
 }
 
+/**
+ * Закрытия окна.
+ */
 void DebugInfoDialog::onExit()
 {
     hide();
 }
 
+/**
+ * Реализация обновления информации об отладке.
+ */
 void DebugInfoDialog::updateDebug(const QString &info)
 {
     ui->textEdit->appendPlainText(info);
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void DebugInfoDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)

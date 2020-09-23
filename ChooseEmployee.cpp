@@ -1,3 +1,7 @@
+/*
+ * Класс служит для выбора сотрудников, которые получат напоминание.
+ */
+
 #include "ChooseEmployee.h"
 #include "ui_ChooseEmployee.h"
 

@@ -1,3 +1,7 @@
+/*
+ * Класс служит для редактирования организации.
+ */
+
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
 
@@ -42,6 +46,9 @@ EditOrgContactDialog::~EditOrgContactDialog()
     delete ui;
 }
 
+/**
+ * Изменяет позицию курсора.
+ */
 void EditOrgContactDialog::onCursorPosChanged()
 {
     if (textCursor.isNull())
@@ -53,6 +60,9 @@ void EditOrgContactDialog::onCursorPosChanged()
         textCursor = ui->comment->textCursor();
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool EditOrgContactDialog::eventFilter(QObject*, QEvent* event)
 {
     if (event && event->type() == QEvent::KeyRelease)
@@ -71,6 +81,9 @@ bool EditOrgContactDialog::eventFilter(QObject*, QEvent* event)
     return false;
 }
 
+/**
+ * Реализация закрытия окна и отправка сигнала об позиции окна.
+ */
 void EditOrgContactDialog::onReturn()
 {
     emit sendData(false, this->pos().x(), this->pos().y());
@@ -78,6 +91,9 @@ void EditOrgContactDialog::onReturn()
     close();
 }
 
+/**
+ * Реализация установки позиции окна в зависимости от позиции ViewOrgContactDialog.
+ */
 void EditOrgContactDialog::setPos(int x, int y)
 {
     int nDesktopHeight;
@@ -124,6 +140,9 @@ void EditOrgContactDialog::setPos(int x, int y)
     }
 }
 
+/**
+ * Сохранение введенных данных с проверками.
+ */
 void EditOrgContactDialog::onSave()
 {
     QSqlQuery query(db);
@@ -301,6 +320,9 @@ void EditOrgContactDialog::onSave()
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
+/**
+ * Реализация проверки введенных данных в поля номеров.
+ */
 bool EditOrgContactDialog::isPhone(QString* str)
 {
     int pos = 0;
@@ -313,6 +335,10 @@ bool EditOrgContactDialog::isPhone(QString* str)
     return false;
 }
 
+/**
+ * Получение и заполнение полей окна необходимыми данными.
+ * Получение id контакта из CallHistoryDialog.cpp, ViewOrgContactDialog.cpp.
+ */
 void EditOrgContactDialog::setValues(QString id)
 {
     contactId = id;
@@ -341,17 +367,27 @@ void EditOrgContactDialog::setValues(QString id)
     ui->comment->setText(query.value(5).toString());
 }
 
+/**
+ * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ */
 void EditOrgContactDialog::onTextChanged()
 {
     if (ui->comment->toPlainText().trimmed().length() > 255)
         ui->comment->textCursor().deletePreviousChar();
 }
 
+/**
+ * Реализация скрытия кнопки возврата к карточке организации.
+ */
 void EditOrgContactDialog::hideBackButton()
 {
     ui->backButton->hide();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void EditOrgContactDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)

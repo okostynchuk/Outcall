@@ -1,3 +1,7 @@
+/*
+ * Класс служит для воспроизведения записей разговоров в проигрывателе.
+ */
+
 #include "PlayAudioDialog.h"
 
 #include <QDebug>
@@ -16,6 +20,9 @@ PlayAudioDialog::~PlayAudioDialog()
     delete ui;
 }
 
+/**
+ * Воспроизведение файла из заданного источника.
+ */
 void PlayAudioDialog::openMedia(QString recordpath)
 {
     if (!recordpath.isEmpty())

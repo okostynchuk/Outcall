@@ -1,3 +1,9 @@
+/*
+ * Класс служит для оповещения пользователя о звонке,
+ * для добавления / редактирования списка контактов,
+ * для добавления напоминания.
+ */
+
 #include "PopupWindow.h"
 #include "ui_PopupWindow.h"
 
@@ -181,6 +187,9 @@ PopupWindow::~PopupWindow()
     delete ui;
 }
 
+/**
+ * Изменяет позицию курсора.
+ */
 void PopupWindow::onCursorPosChanged()
 {
     if (textCursor.isNull())
@@ -192,6 +201,9 @@ void PopupWindow::onCursorPosChanged()
         textCursor = ui->textEdit->textCursor();
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool PopupWindow::eventFilter(QObject*, QEvent* event)
 {
     if (event && event->type() == QEvent::KeyRelease)
@@ -219,6 +231,9 @@ bool PopupWindow::eventFilter(QObject*, QEvent* event)
     return false;
 }
 
+/**
+ * Захват точки нажатия мышью по окну.
+ */
 void PopupWindow::mousePressEvent(QMouseEvent* event)
 {
     m_pwi.stopTimer = true;
@@ -226,12 +241,18 @@ void PopupWindow::mousePressEvent(QMouseEvent* event)
     position = event->globalPos();
 }
 
+/**
+ * Устанавка нулевой позиции при отпускании клика.
+ */
 void PopupWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
     position = QPoint();
 }
 
+/**
+ * Реализация изменения позиции окна на экране.
+ */
 void PopupWindow::mouseMoveEvent(QMouseEvent* event)
 {
     m_pwi.stopTimer = true;
@@ -251,6 +272,9 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
+/**
+ * Установка языка интерфейса окна.
+ */
 void PopupWindow::changeEvent(QEvent* event)
 {
     QDialog::changeEvent(event);
@@ -265,12 +289,18 @@ void PopupWindow::changeEvent(QEvent* event)
     }
 }
 
+/**
+ * Реализация запуска таймера.
+ */
 void PopupWindow::onPopupTimeout()
 {
     if (isVisible() && m_pwi.stopTimer == false)
         m_timer.start();
 }
 
+/**
+ * Реализация остановки таймера.
+ */
 void PopupWindow::startPopupWaitingTimer()
 {
     m_bAppearing = false;
@@ -282,6 +312,9 @@ void PopupWindow::startPopupWaitingTimer()
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
 
+/**
+ * Закрытие окна.
+ */
 void PopupWindow::closeAndDestroy()
 {
     hide();
@@ -293,6 +326,9 @@ void PopupWindow::closeAndDestroy()
     delete this;
 }
 
+/**
+ * Реализация движения окна при открытии / закрытии окна.
+ */
 void PopupWindow::onTimer()
 {
     if (m_bAppearing) // APPEARING
@@ -300,26 +336,26 @@ void PopupWindow::onTimer()
         switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY>(m_nStartPosY-height()))
-                    m_nCurrentPosY-=m_nIncrement;
+                if (m_nCurrentPosY > (m_nStartPosY - height()))
+                    m_nCurrentPosY -= m_nIncrement;
                 else
                     startPopupWaitingTimer();
                 break;
             case TASKBAR_ON_TOP:
-                if ((m_nCurrentPosY-m_nStartPosY)<height())
-                    m_nCurrentPosY+=m_nIncrement;
+                if ((m_nCurrentPosY - m_nStartPosY) < height())
+                    m_nCurrentPosY += m_nIncrement;
                 else
                     startPopupWaitingTimer();
                 break;
             case TASKBAR_ON_LEFT:
-                if ((m_nCurrentPosX-m_nStartPosX)<width())
-                    m_nCurrentPosX+=m_nIncrement;
+                if ((m_nCurrentPosX - m_nStartPosX) < width())
+                    m_nCurrentPosX += m_nIncrement;
                 else
                     startPopupWaitingTimer();
                 break;
             case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX>(m_nStartPosX-width()))
-                    m_nCurrentPosX-=m_nIncrement;
+                if (m_nCurrentPosX > (m_nStartPosX - width()))
+                    m_nCurrentPosX -= m_nIncrement;
                 else
                     startPopupWaitingTimer();
                 break;
@@ -351,6 +387,9 @@ void PopupWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
+/**
+ * Реализация появления окна оповещения о звонке.
+ */
 void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
 {
 	PWInformation pwi;
@@ -375,6 +414,9 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
 	m_PopupWindows.append(popup);
 }
 
+/**
+ * Реализация появления окна оповещения о входе в приложение.
+ */
 void PopupWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
 	PWInformation pwi;
@@ -398,6 +440,9 @@ void PopupWindow::showInformationMessage(QString caption, QString message, QPixm
 	m_PopupWindows.append(popup);
 }
 
+/**
+ * Удаление объектов и установка начальной позиции окна.
+ */
 void PopupWindow::closeAll()
 {
     for (int i = 0; i < m_PopupWindows.size(); ++i)
@@ -406,11 +451,17 @@ void PopupWindow::closeAll()
     m_PopupWindows.clear();
 }
 
+/**
+ * Закрытие окна по кнопке.
+ */
 void PopupWindow::on_closeButton_clicked()
 {
     closeAndDestroy();
 }
 
+/**
+ * Реализация кнопки добавления физ. лица.
+ */
 void PopupWindow::onAddPerson()
 {
     m_pwi.stopTimer = true;
@@ -425,6 +476,9 @@ void PopupWindow::onAddPerson()
     addContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация кнопки добавления организации.
+ */
 void PopupWindow::onAddOrg()
 {
     m_pwi.stopTimer = true;
@@ -439,6 +493,9 @@ void PopupWindow::onAddOrg()
     addOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация кнопки добавления номера к существующему контакту.
+ */
 void PopupWindow::onAddPhoneNumberToContact()
 {
     m_pwi.stopTimer = true;
@@ -453,6 +510,9 @@ void PopupWindow::onAddPhoneNumberToContact()
     addPhoneNumberToContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация кнопки открытия карточки контакта.
+ */
 void PopupWindow::onShowCard()
 {
     m_pwi.stopTimer = true;
@@ -489,6 +549,9 @@ void PopupWindow::onShowCard()
     }
 }
 
+/**
+ * Реализация кнопки добавления напоминания к звонку.
+ */
 void PopupWindow::onAddReminder()
 {
     m_pwi.stopTimer = true;
@@ -502,6 +565,9 @@ void PopupWindow::onAddReminder()
     addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация кнопки просмотра комментариев по контакту.
+ */
 void PopupWindow::onViewNotes()
 {
     m_pwi.stopTimer = true;
@@ -518,6 +584,9 @@ void PopupWindow::onViewNotes()
     notesDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация кнопки открытия базы заказов;
+ */
 void PopupWindow::onOpenAccess()
 {
     m_pwi.stopTimer = true;
@@ -568,6 +637,9 @@ void PopupWindow::onOpenAccess()
     }
 }
 
+/**
+ * Выполняет запрос на обновление списка контактов.
+ */
 void PopupWindow::receiveData(bool update)
 {
     if (update)
@@ -638,6 +710,9 @@ void PopupWindow::receiveData(bool update)
     }
 }
 
+/**
+ * Реализация кнопки сохранения заметок в список контактов.
+ */
 void PopupWindow::onSaveNote()
 {
     m_pwi.stopTimer = true;
@@ -661,6 +736,10 @@ void PopupWindow::onSaveNote()
     ui->saveNoteButton->setStyleSheet("border: 2px solid lightgreen; background-color: #e1e1e1; border-left-color: transparent;");
 }
 
+/**
+ * Выполнение остановки таймера и
+ * изменение рамок окна ввода комментария при вводе текста.
+ */
 void PopupWindow::onTextChanged()
 {
     m_pwi.stopTimer = true;
@@ -676,6 +755,10 @@ void PopupWindow::onTextChanged()
     ui->saveNoteButton->setStyleSheet("background-color: #e1e1e1; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void PopupWindow::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
@@ -691,6 +774,9 @@ void PopupWindow::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
+/**
+ * Изменение иконки на окне в случае ответа на звонок.
+ */
 void PopupWindow::onCallStart(QString uniqueid)
 {
     if (m_pwi.uniqueid == uniqueid)
@@ -701,6 +787,9 @@ void PopupWindow::onCallStart(QString uniqueid)
     }
 }
 
+/**
+ * Выполняет проверку на внутренний номер.
+ */
 bool PopupWindow::isInternalPhone(QString* str)
 {
     int pos = 0;

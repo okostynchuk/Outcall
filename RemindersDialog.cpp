@@ -1,3 +1,7 @@
+/*
+ * Класс служит для просмотра и добавления напоминаний.
+ */
+
 #include "RemindersDialog.h"
 #include "ui_RemindersDialog.h"
 
@@ -111,6 +115,9 @@ RemindersDialog::~RemindersDialog()
     delete ui;
 }
 
+/**
+ *
+ */
 void RemindersDialog::showReminders(bool show)
 {
     if (show)
@@ -129,6 +136,9 @@ void RemindersDialog::showReminders(bool show)
     }
 }
 
+/**
+ * Обновление списка напоминаний при открытии окна.
+ */
 void RemindersDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -149,6 +159,9 @@ void RemindersDialog::showEvent(QShowEvent* event)
     onUpdate();
 }
 
+/**
+ * Установка начальных значений для окна при закрытии.
+ */
 void RemindersDialog::closeEvent(QCloseEvent*)
 {
     QDialog::clearFocus();
@@ -161,6 +174,9 @@ void RemindersDialog::closeEvent(QCloseEvent*)
     page = "1";
 }
 
+/**
+ *
+ */
 void RemindersDialog::clearSelections()
 {
     selectionRelevant.clear();
@@ -172,6 +188,9 @@ void RemindersDialog::clearSelections()
     ui->tableView_3->clearSelection();
 }
 
+/**
+ * Обновление списка напоминаний с заданной периодичностью.
+ */
 void RemindersDialog::onTimer()
 {
     QSqlQuery query(db);
@@ -230,6 +249,9 @@ void RemindersDialog::onTimer()
     sendNewValues();
 }
 
+/**
+ * Удаление определенных объектов в зависимости от текущей вкладки.
+ */
 void RemindersDialog::deleteObjects()
 {
     if (ui->tabWidget->currentIndex() == 0)
@@ -309,6 +331,9 @@ void RemindersDialog::deleteObjects()
     }
 }
 
+/**
+ *
+ */
 void RemindersDialog::sendNewValues()
 {
     QList<QString> ids;
@@ -330,6 +355,9 @@ void RemindersDialog::sendNewValues()
     remindersThreadManager->receiveNewValues(ids, dateTimes, notes);
 }
 
+/**
+ *
+ */
 void RemindersDialog::receiveData(bool updating)
 {
     if (updating)
@@ -359,6 +387,9 @@ void RemindersDialog::receiveData(bool updating)
     }
 }
 
+/**
+ * Загрузка актуальных напоминаний.
+ */
 void RemindersDialog::loadRelevantReminders()
 {
     if (!queriesRelevant.isEmpty())
@@ -493,6 +524,9 @@ void RemindersDialog::loadRelevantReminders()
     emit reminders(false);
 }
 
+/**
+ * Загрузка неактуальных напоминаний.
+ */
 void RemindersDialog::loadIrrelevantReminders()
 {
     if (!queriesIrrelevant.isEmpty())
@@ -624,6 +658,9 @@ void RemindersDialog::loadIrrelevantReminders()
     resizeCells = true;
 }
 
+/**
+ * Загрузка делегированных напоминаний.
+ */
 void RemindersDialog::loadDelegatedReminders()
 {
     if (!queriesDelegated.isEmpty())
@@ -752,6 +789,9 @@ void RemindersDialog::loadDelegatedReminders()
     resizeCells = true;
 }
 
+/**
+ * Реализация кнопки добавления нового напоминания.
+ */
 void RemindersDialog::onAddReminder()
 {
     addReminderDialog = new AddReminderDialog;
@@ -760,6 +800,9 @@ void RemindersDialog::onAddReminder()
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполнение редактирования напоминания по двойному нажатию на строку с ним.
+ */
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
     if (ui->tabWidget->currentIndex() == 1 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
@@ -794,6 +837,9 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
     editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ *
+ */
 void RemindersDialog::changeState()
 {
     QCheckBox* checkBox = sender()->property("checkBox").value<QCheckBox*>();
@@ -940,6 +986,9 @@ void RemindersDialog::changeState()
     }
 }
 
+/**
+ * Добавление виджета с текстом напоминания.
+ */
 QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
 {
     QWidget* wgt = new QWidget;
@@ -997,6 +1046,9 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
     return wgt;
 }
 
+/**
+ * Добавление виджета для поля "Активно".
+ */
 QWidget* RemindersDialog::addWidgetActive()
 {
     QWidget* wgt = new QWidget;
@@ -1025,6 +1077,9 @@ QWidget* RemindersDialog::addWidgetActive()
     return wgt;
 }
 
+/**
+ * Добавление чекбоксов для поля "Активно".
+ */
 QWidget* RemindersDialog::addCheckBoxActive(int row_index)
 {
     QWidget* wgt = new QWidget;
@@ -1109,6 +1164,9 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
     return wgt;
 }
 
+/**
+ * Добавление чекбоксов для поля "Просмотрено".
+ */
 QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
 {
     QWidget* wgt = new QWidget;
@@ -1160,6 +1218,9 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
     return wgt;
 }
 
+/**
+ * Добавление виджета для поля "Выполнено".
+ */
 QWidget* RemindersDialog::addWidgetCompleted()
 {
     QWidget* wgt = new QWidget;
@@ -1172,6 +1233,9 @@ QWidget* RemindersDialog::addWidgetCompleted()
     return wgt;
 }
 
+/**
+ * Добавление чексбоксов для поля "Выполнено".
+ */
 QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
 {
     QWidget* wgt = new QWidget;
@@ -1248,6 +1312,9 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
     return wgt;
 }
 
+/**
+ * Вызов метода onUpdateTab().
+ */
 void RemindersDialog::onTabChanged()
 {
     go = "default";
@@ -1256,6 +1323,9 @@ void RemindersDialog::onTabChanged()
     onUpdateTab();
 }
 
+/**
+ * Обновление таблиц при перелючении вкладок.
+ */
 void RemindersDialog::onUpdateTab()
 {
     clearSelections();
@@ -1279,6 +1349,9 @@ void RemindersDialog::onUpdateTab()
         loadDelegatedReminders();
 }
 
+/**
+ * Обновление списков напоминаний.
+ */
 void RemindersDialog::onUpdate()
 {
     if (ui->tabWidget->currentIndex() == 0)
@@ -1289,12 +1362,18 @@ void RemindersDialog::onUpdate()
         loadDelegatedReminders();
 }
 
+/**
+ * Вызов метода появления окна PopupReminder (напоминания).
+ */
 void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
 {
     if (showReminder)
         PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
 }
 
+/**
+ * Реализация перехода на предыдущую страницу.
+ */
 void RemindersDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -1302,6 +1381,9 @@ void RemindersDialog::on_previousButton_clicked()
     onUpdateTab();
 }
 
+/**
+ * Реализация перехода на следующую страницу.
+ */
 void RemindersDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -1309,6 +1391,9 @@ void RemindersDialog::on_nextButton_clicked()
     onUpdateTab();
 }
 
+/**
+ * Реализация перехода на первую страницу.
+ */
 void RemindersDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -1316,6 +1401,9 @@ void RemindersDialog::on_previousStartButton_clicked()
     onUpdateTab();
 }
 
+/**
+ * Реализация перехода на следующую страницу.
+ */
 void RemindersDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -1323,6 +1411,9 @@ void RemindersDialog::on_nextEndButton_clicked()
     onUpdateTab();;
 }
 
+/**
+ * Реализация перехода на заданную страницу.
+ */
 void RemindersDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
@@ -1330,6 +1421,10 @@ void RemindersDialog::on_lineEdit_page_returnPressed()
     onUpdateTab();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void RemindersDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

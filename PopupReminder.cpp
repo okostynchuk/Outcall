@@ -1,3 +1,7 @@
+/*
+ * Класс служит для отображения окна с напоминанием.
+ */
+
 #include "PopupReminder.h"
 #include "ui_PopupReminder.h"
 
@@ -236,6 +240,9 @@ PopupReminder::~PopupReminder()
     delete ui;
 }
 
+/**
+ * Закрытие окна.
+ */
 void PopupReminder::closeAndDestroy()
 {
     hide();
@@ -247,17 +254,26 @@ void PopupReminder::closeAndDestroy()
     delete this;
 }
 
+/**
+ * Захват точки нажатия мышью по окну.
+ */
 void PopupReminder::mousePressEvent(QMouseEvent* event)
 {
     position = event->globalPos();
 }
 
+/**
+ * Устанавка нулевой позиции при отпускании клика.
+ */
 void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
     position = QPoint();
 }
 
+/**
+ * Реализация изменения позиции окна на экране.
+ */
 void PopupReminder::mouseMoveEvent(QMouseEvent* event)
 {
     if (!position.isNull())
@@ -275,6 +291,9 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
+/**
+ * Выполняет проверку на внутренний номер.
+ */
 bool PopupReminder::isInternalPhone(QString* str)
 {
     int pos = 0;
@@ -291,6 +310,9 @@ bool PopupReminder::isInternalPhone(QString* str)
     return false;
 }
 
+/**
+ * Реализация движения окна при открытии / закрытии окна.
+ */
 void PopupReminder::onTimer()
 {
     if (m_bAppearing) // APPEARING
@@ -298,8 +320,8 @@ void PopupReminder::onTimer()
         switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY>(m_nStartPosY-height()))
-                    m_nCurrentPosY-=m_nIncrement;
+                if (m_nCurrentPosY > (m_nStartPosY - height()))
+                    m_nCurrentPosY -= m_nIncrement;
                 else
                 {
                     m_bAppearing = false;
@@ -308,8 +330,8 @@ void PopupReminder::onTimer()
                 }
                 break;
             case TASKBAR_ON_TOP:
-                if ((m_nCurrentPosY-m_nStartPosY)<height())
-                    m_nCurrentPosY+=m_nIncrement;
+                if ((m_nCurrentPosY - m_nStartPosY) < height())
+                    m_nCurrentPosY += m_nIncrement;
                 else
                 {
                     m_bAppearing = false;
@@ -318,8 +340,8 @@ void PopupReminder::onTimer()
                 }
                 break;
             case TASKBAR_ON_LEFT:
-                if ((m_nCurrentPosX-m_nStartPosX)<width())
-                    m_nCurrentPosX+=m_nIncrement;
+                if ((m_nCurrentPosX - m_nStartPosX) < width())
+                    m_nCurrentPosX += m_nIncrement;
                 else
                 {
                     m_bAppearing = false;
@@ -328,8 +350,8 @@ void PopupReminder::onTimer()
                 }
                 break;
             case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX>(m_nStartPosX-width()))
-                    m_nCurrentPosX-=m_nIncrement;
+                if (m_nCurrentPosX > (m_nStartPosX - width()))
+                    m_nCurrentPosX -= m_nIncrement;
                 else
                 {
                     m_bAppearing = false;
@@ -365,6 +387,9 @@ void PopupReminder::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
+/**
+ * Получение данных из класса EditReminderDialog.cpp.
+ */
 void PopupReminder::receiveData(bool updating)
 {
     if (updating)
@@ -377,6 +402,9 @@ void PopupReminder::receiveData(bool updating)
     }
 }
 
+/**
+ * Реализация кнопки вызова контакту.
+ */
 void PopupReminder::onCall()
 {
     QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
@@ -408,6 +436,9 @@ void PopupReminder::onCall()
     }
 }
 
+/**
+ * Реализация переноса напоминания на заданное время.
+ */
 void PopupReminder::onSelectTime(int index)
 {
     QSqlQuery query(db);
@@ -491,6 +522,9 @@ void PopupReminder::onSelectTime(int index)
     }
 }
 
+/**
+ * Реализация кнопки открытия базы заказов.
+ */
 void PopupReminder::onOpenAccess()
 {
     QSqlQuery query(db);
@@ -540,6 +574,9 @@ void PopupReminder::onOpenAccess()
     }
 }
 
+/**
+ * Реализация закрытия окна (запуск таймера) при клике на кнопку закрытия.
+ */
 void PopupReminder::onClosePopup()
 {
     QSqlQuery query(db);
@@ -568,6 +605,9 @@ void PopupReminder::onClosePopup()
         m_timer.start();
 }
 
+/**
+ * Закрытие окна.
+ */
 void PopupReminder::closeAll()
 {
     for (int i = 0; i < m_PopupReminders.size(); ++i)
@@ -576,6 +616,9 @@ void PopupReminder::closeAll()
     m_PopupReminders.clear();
 }
 
+/**
+ * Реализация отображения окна.
+ */
 void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {
     PopupReminderInfo pri;
@@ -599,6 +642,10 @@ void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QStri
     m_PopupReminders.append(reminder);
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void PopupReminder::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

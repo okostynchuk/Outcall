@@ -1,3 +1,7 @@
+/*
+ * Класс служит для объявления и инициализации глобальных переменных и настроек.
+ */
+
 #include "Global.h"
 
 #include <Windows.h>
@@ -28,6 +32,9 @@ QMessageBox::StandardButton MsgBoxWarning(const QString &text, QMessageBox::Stan
     return QMessageBox::warning(parent, title, text, buttons, defaultButton);
 }
 
+/**
+ * Установка настроек приложения.
+ */
 void global::setSettingsValue(QString key, QVariant value, QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
@@ -38,6 +45,9 @@ void global::setSettingsValue(QString key, QVariant value, QString group)
     settings.setValue(key, value);
 }
 
+/**
+ * Получение настроек приложения.
+ */
 QVariant global::getSettingsValue(const QString key, const QString group, const QVariant defaultValue)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
@@ -48,6 +58,9 @@ QVariant global::getSettingsValue(const QString key, const QString group, const 
     return settings.value(key, defaultValue);
 }
 
+/**
+ * Удаление ключа настроек приложения.
+ */
 void global::removeSettingsKey(const QString key, const QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
@@ -58,6 +71,9 @@ void global::removeSettingsKey(const QString key, const QString group)
     settings.remove(key);
 }
 
+/**
+ * Реализация проверки на наличие ключа настроек.
+ */
 bool global::containsSettingsKey(const QString key, const QString group)
 {
     if (key.isEmpty())
@@ -71,6 +87,9 @@ bool global::containsSettingsKey(const QString key, const QString group)
     return settings.contains(key);
 }
 
+/**
+ * Получение ключей настройки.
+ */
 QStringList global::getSettingKeys(const QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
@@ -81,6 +100,9 @@ QStringList global::getSettingKeys(const QString group)
     return settings.childKeys();
 }
 
+/**
+ * Реализация получения номера пользователя из реестра.
+ */
 QString global::getExtensionNumber(const QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
@@ -94,6 +116,9 @@ QString global::getExtensionNumber(const QString group)
         return NULL;
 }
 
+/**
+ * Реализация получения номера группы из реестра.
+ */
 QString global::getGroupExtensionNumber(const QString group)
 {
     QSettings settings(ORGANIZATION_NAME, APP_NAME);
