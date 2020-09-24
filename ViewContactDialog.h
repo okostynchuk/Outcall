@@ -81,10 +81,6 @@ private:
     EditContactDialog* editContactDialog;
     NotesDialog* notesDialog;
 
-    QList<QLineEdit*> phonesList;
-
-    QStringList numbersList;
-
     QSqlQueryModel* queryModel;
 
     QValidator* validator;
@@ -96,16 +92,19 @@ private:
     QString page;
     QString pages;
     QString go;
-    int count;
-    int countNumbers = 1;
     QString days;
-    QString contact_number;
+
+    int count;
 
     QWidget* loadStatus(QString);
     QWidget* loadNote(QString);
     QWidget* loadName(QString, QString);
 
     QModelIndexList selections;
+
+    QStringList numbersList;
+
+    QList<QLineEdit*> phonesList;
 
     QList<QSqlQueryModel*> queries;
 

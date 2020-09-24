@@ -115,62 +115,6 @@ void ViewContactDialog::onOpenAccess()
         QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
-void ViewContactDialog::receiveData(bool updating, int x, int y)
-{
-    int nDesktopHeight;
-    int nDesktopWidth;
-    int nWidgetHeight = QWidget::height();
-    int nWidgetWidth = QWidget::width();
-
-    QDesktopWidget desktop;
-    QRect rcDesktop = desktop.availableGeometry(this);
-
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-
-    if (updating)
-    {
-        emit sendData(true);
-
-        close();
-    }
-    else
-    {
-        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
-        {
-            x = 0;
-            this->move(x, y);
-        }
-        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            x = 0;
-            y = nWidgetHeight;
-            this->move(x, y);
-        }
-        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
-        {
-            x = nWidgetWidth * 0.9;
-            this->move(x, y);
-        }
-        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            x = nWidgetWidth * 0.9;
-            y = nWidgetHeight * 0.9;
-            this->move(x, y);
-        }
-        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
-        {
-            y = nWidgetHeight * 0.9;
-            this->move(x, y);
-        }
-        else
-        {
-            this->move(x, y);
-        }
-
-        show();
-    }
-}
 
 void ViewContactDialog::onCall()
 {
@@ -303,23 +247,23 @@ void ViewContactDialog::loadCalls()
         if (ui->tabWidget->currentIndex() == 0)
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "' ");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "' ");
         }
         else if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + numbersList[i] + "' ");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + numbersList[i] + "' ");
         }
         else if (ui->tabWidget->currentIndex() == 3)
         {
             if (i == 0)
-                queryString.append(" dst = '" + numbersList[i] + "'");
+                queryString.append(" dst = '" + numbersList[i] + "' ");
             else
-                queryString.append(" OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR dst = '" + numbersList[i] + "' ");
         }
     }
 
@@ -740,4 +684,61 @@ void ViewContactDialog::setPage()
 
     ui->lineEdit_page->setText(page);
     ui->label_pages_2->setText(tr("из ") + pages);
+}
+
+void ViewContactDialog::receiveData(bool updating, int x, int y)
+{
+    int nDesktopHeight;
+    int nDesktopWidth;
+    int nWidgetHeight = QWidget::height();
+    int nWidgetWidth = QWidget::width();
+
+    QDesktopWidget desktop;
+    QRect rcDesktop = desktop.availableGeometry(this);
+
+    nDesktopWidth = rcDesktop.width();
+    nDesktopHeight = rcDesktop.height();
+
+    if (updating)
+    {
+        emit sendData(true);
+
+        close();
+    }
+    else
+    {
+        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = 0;
+            this->move(x, y);
+        }
+        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = 0;
+            y = nWidgetHeight;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
+        {
+            x = nWidgetWidth * 0.9;
+            this->move(x, y);
+        }
+        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            x = nWidgetWidth * 0.9;
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        {
+            y = nWidgetHeight * 0.9;
+            this->move(x, y);
+        }
+        else
+        {
+            this->move(x, y);
+        }
+
+        show();
+    }
 }
