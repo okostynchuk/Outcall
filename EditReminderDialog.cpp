@@ -1,3 +1,7 @@
+/*
+ * Класс служит для изменения существующего напоминания.
+ */
+
 #include "EditReminderDialog.h"
 #include "ui_EditReminderDialog.h"
 
@@ -30,6 +34,9 @@ EditReminderDialog::~EditReminderDialog()
     delete ui;
 }
 
+/**
+ * Получение списка с сотрудниками.
+ */
 void EditReminderDialog::receiveEmployee(QStringList employee)
 {
     this->employee = employee;
@@ -40,6 +47,9 @@ void EditReminderDialog::receiveEmployee(QStringList employee)
         ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
 }
 
+/**
+ * Реализация выбора сотрудников для рассылки напоминаний.
+ */
 void EditReminderDialog::onChooseEmployee()
 {
     if (employee.isEmpty())
@@ -57,6 +67,9 @@ void EditReminderDialog::onChooseEmployee()
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет сохранение напоминания с проверками.
+ */
 void EditReminderDialog::onSave()
 {
     QDateTime dateTime = ui->dateTimeEdit->dateTime();
@@ -88,7 +101,7 @@ void EditReminderDialog::onSave()
 
     QSqlQuery query(db);
 
-    if (!ui->chooseEmployeeButton->isEnabled())
+    if (ui->chooseEmployeeButton->isHidden())
     {
         if (group_id == "0")
         {
@@ -288,6 +301,10 @@ void EditReminderDialog::onSave()
     QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно изменено!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет получение идентификатора, времени и содержания заметки
+ * из классов PopupReminder и RemindersDialog.
+ */
 void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
 {
     id = receivedId;
@@ -316,7 +333,7 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
 
         if (phone_from != phone_to && phone_from != my_number)
         {
-            ui->chooseEmployeeButton->setDisabled(true);
+            ui->chooseEmployeeButton->hide();
 
             ui->textEdit->setReadOnly(true);
             ui->textEdit->setStyleSheet("QTextEdit { background-color: #fffff0; }");
@@ -338,7 +355,7 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
 
         if (query.value(0).toString() != my_number)
         {
-            ui->chooseEmployeeButton->setDisabled(true);
+            ui->chooseEmployeeButton->hide();
 
             ui->textEdit->setReadOnly(true);
             ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
@@ -350,6 +367,9 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
     }
 }
 
+/**
+ * Установка начальных значений при закрытии окна.
+ */
 void EditReminderDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
@@ -358,12 +378,18 @@ void EditReminderDialog::closeEvent(QCloseEvent* event)
         chooseEmployee.data()->close();
 }
 
+/**
+ * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ */
 void EditReminderDialog::onTextChanged()
 {
     if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
+/**
+ * Изменяет позицию курсора.
+ */
 void EditReminderDialog::onCursorPosChanged()
 {
     if (textCursor.isNull())
@@ -375,6 +401,9 @@ void EditReminderDialog::onCursorPosChanged()
         textCursor = ui->textEdit->textCursor();
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool EditReminderDialog::eventFilter(QObject*, QEvent* event)
 {
     if (event && event->type() == QEvent::KeyRelease)
@@ -393,6 +422,10 @@ bool EditReminderDialog::eventFilter(QObject*, QEvent* event)
     return false;
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
@@ -408,21 +441,33 @@ void EditReminderDialog::keyPressEvent(QKeyEvent* event)
         QWidget::keyPressEvent(event);
 }
 
+/**
+ * Реализация добавления к текущему времени 5 минут.
+ */
 void EditReminderDialog::on_add5MinButton_clicked()
 {
     ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(300));
 }
 
+/**
+ * Реализация добавления к текущему времени 10 минут.
+ */
 void EditReminderDialog::on_add10MinButton_clicked()
 {
      ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(600));
 }
 
+/**
+ * Реализация добавления к текущему времени 30 минут.
+ */
 void EditReminderDialog::on_add30MinButton_clicked()
 {
      ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(1800));
 }
 
+/**
+ * Реализация добавления к текущему времени 60 минут.
+ */
 void EditReminderDialog::on_add60MinButton_clicked()
 {
      ui->dateTimeEdit->setTime(ui->dateTimeEdit->time().addSecs(3600));

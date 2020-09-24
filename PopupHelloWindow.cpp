@@ -1,3 +1,7 @@
+/*
+ * Класс служит для отображения окна приветствия приложения.
+ */
+
 #include "PopupHelloWindow.h"
 #include "ui_PopupHelloWindow.h"
 
@@ -109,6 +113,9 @@ PopupHelloWindow::~PopupHelloWindow()
     delete ui;
 }
 
+/**
+ * Установка языка интерфейса окна.
+ */
 void PopupHelloWindow::changeEvent(QEvent* event)
 {
     QDialog::changeEvent(event);
@@ -123,12 +130,18 @@ void PopupHelloWindow::changeEvent(QEvent* event)
     }
 }
 
+/**
+ * Запуск таймера.
+ */
 void PopupHelloWindow::onPopupTimeout()
 {
     if (isVisible())
         m_timer.start();
 }
 
+/**
+ * Остановка таймера.
+ */
 void PopupHelloWindow::startPopupWaitingTimer()
 {
     m_bAppearing = false;
@@ -143,6 +156,9 @@ void PopupHelloWindow::startPopupWaitingTimer()
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
 
+/**
+ * Закрытие окна.
+ */
 void PopupHelloWindow::closeAndDestroy()
 {
     hide();
@@ -154,6 +170,9 @@ void PopupHelloWindow::closeAndDestroy()
     delete this;
 }
 
+/**
+ * Реализация появления и закрытия окна.
+ */
 void PopupHelloWindow::onTimer()
 {
     if (m_bAppearing) // APPEARING
@@ -192,8 +211,8 @@ void PopupHelloWindow::onTimer()
         switch (m_nTaskbarPlacement)
         {
             case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY<m_nStartPosY)
-                    m_nCurrentPosY+=m_nIncrement;
+                if (m_nCurrentPosY < m_nStartPosY)
+                    m_nCurrentPosY += m_nIncrement;
                 else
                 {
                     closeAndDestroy();
@@ -202,8 +221,8 @@ void PopupHelloWindow::onTimer()
                 }
                 break;
             case TASKBAR_ON_TOP:
-                if (m_nCurrentPosY>m_nStartPosY)
-                    m_nCurrentPosY-=m_nIncrement;
+                if (m_nCurrentPosY > m_nStartPosY)
+                    m_nCurrentPosY -= m_nIncrement;
                 else
                 {
                     closeAndDestroy();
@@ -212,8 +231,8 @@ void PopupHelloWindow::onTimer()
                 }
                 break;
             case TASKBAR_ON_LEFT:
-                if (m_nCurrentPosX>m_nStartPosX)
-                    m_nCurrentPosX-=m_nIncrement;
+                if (m_nCurrentPosX > m_nStartPosX)
+                    m_nCurrentPosX -= m_nIncrement;
                 else
                 {
                     closeAndDestroy();
@@ -222,8 +241,8 @@ void PopupHelloWindow::onTimer()
                 }
                 break;
             case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX<m_nStartPosX)
-                    m_nCurrentPosX+=m_nIncrement;
+                if (m_nCurrentPosX < m_nStartPosX)
+                    m_nCurrentPosX += m_nIncrement;
                 else
                 {
                     closeAndDestroy();
@@ -237,6 +256,9 @@ void PopupHelloWindow::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
+/**
+ * Отображение информации на окне оповещения.
+ */
 void PopupHelloWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
     PWInformation pwi;
@@ -260,6 +282,9 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
     m_PopupHelloWindows.append(popup);
 }
 
+/**
+ * Удаление объектов и установка начальной позиции окна.
+ */
 void PopupHelloWindow::closeAll()
 {
     for (int i = 0; i < m_PopupHelloWindows.size(); ++i)
@@ -268,6 +293,9 @@ void PopupHelloWindow::closeAll()
     m_PopupHelloWindows.clear();
 }
 
+/**
+ * Закрытие окна по нажатию кнопкой мыши.
+ */
 void PopupHelloWindow::mousePressEvent(QMouseEvent*)
 {
     m_bAppearing = false;

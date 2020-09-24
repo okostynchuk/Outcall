@@ -1,3 +1,7 @@
+/*
+ * Класс служит для добавления и просмотра заметок к звонкам.
+ */
+
 #include "NotesDialog.h"
 #include "ui_NotesDialog.h"
 
@@ -37,6 +41,10 @@ NotesDialog::~NotesDialog()
     delete ui;
 }
 
+/**
+ * Получение данных  из классов CallHistoryDialog,
+ * ViewContactDialog и ViewOrgContactDialog.
+ */
 void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState)
 {
     callId = uniqueid;
@@ -52,6 +60,9 @@ void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState
     loadNotes();
 }
 
+/**
+ * Скрытие возможности добавления заметок.
+ */
 void NotesDialog::hideAddNote()
 {
     ui->saveButton->setVisible(false);
@@ -61,6 +72,9 @@ void NotesDialog::hideAddNote()
     QWidget::resize(550, 275);
 }
 
+/**
+ * Реализация загрузки заметок.
+ */
 void NotesDialog::loadNotes()
 {
     QSqlQuery queryCount(db);
@@ -228,6 +242,9 @@ void NotesDialog::loadNotes()
     }
 }
 
+/**
+ * Реализация сохранения заметок с проверками.
+ */
 void NotesDialog::onSave()
 {
     QSqlQuery query(db);
@@ -261,12 +278,19 @@ void NotesDialog::onSave()
     //QMessageBox::information(this, tr("Уведомление"), tr("Заметка успешно добавлена!"), QMessageBox::Ok);
 }
 
+/**
+ * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ */
 void NotesDialog::onTextChanged()
 {
     if (ui->textEdit->toPlainText().trimmed().length() > 255)
         ui->textEdit->textCursor().deletePreviousChar();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void NotesDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
@@ -280,12 +304,18 @@ void NotesDialog::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
+/**
+ * Реализация обновления списка заметок.
+ */
 void NotesDialog::onUpdate()
 {
     deleteObjects();
     loadNotes();
 }
 
+/**
+ * Реализация добавление виджета для поля "Заметка".
+ */
 QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
 {
     QWidget* wgt = new QWidget;
@@ -329,6 +359,9 @@ QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
     return wgt;
 }
 
+/**
+ * Реализация удаления объектов.
+ */
 void NotesDialog::deleteObjects()
 {
     for (int i = 0; i < widgets.size(); ++i)
@@ -347,6 +380,9 @@ void NotesDialog::deleteObjects()
     delete query;
 }
 
+/**
+ * Проверка на внутренний номер.
+ */
 bool NotesDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
@@ -363,6 +399,9 @@ bool NotesDialog::isInternalPhone(QString* str)
     return false;
 }
 
+/**
+ * Реализация перехода на предыдущую страницу.
+ */
 void NotesDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -370,6 +409,9 @@ void NotesDialog::on_previousButton_clicked()
     onUpdate();
 }
 
+/**
+ * Реализация перехода на следующую страницу.
+ */
 void NotesDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -377,6 +419,9 @@ void NotesDialog::on_nextButton_clicked()
     onUpdate();
 }
 
+/**
+ * Реализация перехода на первую страницу.
+ */
 void NotesDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -384,6 +429,9 @@ void NotesDialog::on_previousStartButton_clicked()
     onUpdate();
 }
 
+/**
+ * Реализация перехода на последнюю страницу.
+ */
 void NotesDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -391,6 +439,9 @@ void NotesDialog::on_nextEndButton_clicked()
     onUpdate();;
 }
 
+/**
+ * Реализация перехода на заданную страницу.
+ */
 void NotesDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";

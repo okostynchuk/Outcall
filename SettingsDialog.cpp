@@ -1,3 +1,7 @@
+/*
+ * Класс служит для настройки приложения, а также сохранения настроек в реестре.
+ */
+
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 
@@ -60,6 +64,9 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
+/**
+ * Выполняет проверку на наличие доступного обновления.
+ */
 void SettingsDialog::checkForUpdates()
 {
     m_updater->setModuleVersion(DEFS_URL, g_CurrentAppVersion);
@@ -73,6 +80,10 @@ void SettingsDialog::checkForUpdates()
     m_updater->checkForUpdates(DEFS_URL);
 }
 
+/**
+ * Проверка соединения с Asterisk
+ * для предоставления возможности обновить приложение.
+ */
 void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
 {
     if (state == AsteriskManager::CONNECTED)
@@ -87,6 +98,9 @@ void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
     }
 }
 
+/**
+ * Установка начальных значений для окна при закрытии.
+ */
 void SettingsDialog::closeEvent(QCloseEvent*)
 {
     QDialog::clearFocus();
@@ -98,6 +112,9 @@ void SettingsDialog::closeEvent(QCloseEvent*)
     ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
 }
 
+/**
+ * Выполняет сохранение настроек приложения в реестр.
+ */
 void SettingsDialog::saveSettings()
 {
     // General
@@ -181,6 +198,11 @@ void SettingsDialog::saveSettings()
 
 }
 
+/**
+ * Выполняет получение настроек из реестра и
+ * заполнение необходимых полей ввода (параметров подключения к базам данных,
+ * язык интерфейса).
+ */
 void SettingsDialog::loadSettings()
 {
     // General
@@ -255,6 +277,9 @@ void SettingsDialog::loadSettings()
     }
 }
 
+/**
+ * Выполняет открытие окна.
+ */
 void SettingsDialog::show()
 {
     ui->tabWidget->setCurrentIndex(0);
@@ -262,6 +287,9 @@ void SettingsDialog::show()
     QDialog::show();
 }
 
+/**
+ * Реализация кнопки применения настроек.
+ */
 void SettingsDialog::on_applyButton_clicked()
 {
     QMessageBox msgBox;    
@@ -293,11 +321,17 @@ void SettingsDialog::on_applyButton_clicked()
     }
 }
 
+/**
+ * Закрытие окна.
+ */
 void SettingsDialog::on_cancelButton_clicked()
 {
     QDialog::close();
 }
 
+/**
+ * Выполняет применение настроек приложения (подключение / отключение автозагрузки).
+ */
 void SettingsDialog::applySettings()
 {
 //    if (ui->autoStartBox->isChecked())
@@ -308,6 +342,9 @@ void SettingsDialog::applySettings()
 //    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }
 
+/**
+ * Реализует выбор и применение языка интерфейса приложения.
+ */
 void SettingsDialog::loadLanguages()
 {
     QString ruPath(":/images/ru.png");
@@ -333,6 +370,9 @@ void SettingsDialog::loadLanguages()
         ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
 }
 
+/**
+ *  Выполняет получение личного номера.
+ */
 QString SettingsDialog::getExtension()
 {
     QStringList extensions = global::getSettingKeys("extensions");
@@ -349,6 +389,9 @@ QString SettingsDialog::getExtension()
     return NULL;
 }
 
+/**
+ * Выполняет получение номера группы.
+ */
 QString SettingsDialog::getGroupExtension()
 {
     QStringList group_extensions = global::getSettingKeys("group_extensions");
@@ -365,6 +408,9 @@ QString SettingsDialog::getGroupExtension()
     return NULL;
 }
 
+/**
+ * Реализация добавления личного номера.
+ */
 void SettingsDialog::onAddButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
@@ -388,6 +434,9 @@ void SettingsDialog::onAddButtonClicked()
     m_addExtensionDialog->deleteLater();
 }
 
+/**
+ * Реализация добавления номера группы.
+ */
 void SettingsDialog::onAddGroupButtonClicked()
 {
     m_addExtensionDialog = new AddExtensionDialog;
@@ -412,6 +461,9 @@ void SettingsDialog::onAddGroupButtonClicked()
     m_addExtensionDialog->deleteLater();
 }
 
+/**
+ * Выполняет удаление личного номера.
+ */
 void SettingsDialog::onRemoveButtonClicked()
 {
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
@@ -447,6 +499,9 @@ void SettingsDialog::onRemoveButtonClicked()
     }
 }
 
+/**
+ * Выполняет удаление номера группы.
+ */
 void SettingsDialog::onRemoveGroupButtonClicked()
 {
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
@@ -482,6 +537,9 @@ void SettingsDialog::onRemoveGroupButtonClicked()
     }
 }
 
+/**
+ * Реализация редактирования личного номера.
+ */
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
@@ -510,6 +568,9 @@ void SettingsDialog::onEditButtonClicked()
     }
 }
 
+/**
+ * Реализация редактирования номера группы.
+ */
 void SettingsDialog::onEditGroupButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
@@ -538,6 +599,9 @@ void SettingsDialog::onEditGroupButtonClicked()
     }
 }
 
+/**
+ * Выполняет проверку на наличие личного номера.
+ */
 void SettingsDialog::checkExten()
 {
     exten = getExtension();
@@ -548,6 +612,9 @@ void SettingsDialog::checkExten()
         ui->addButton->setEnabled(true);
 }
 
+/**
+ * Выполняет проверку на наличие номера группы.
+ */
 void SettingsDialog::checkGroupExten()
 {
     group_exten = getGroupExtension();
@@ -558,6 +625,9 @@ void SettingsDialog::checkGroupExten()
         ui->addButton_2->setEnabled(true);
 }
 
+/**
+ * Реализация закрытия окна по Esc и oсобая обработка для клавиши Enter.
+ */
 void SettingsDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

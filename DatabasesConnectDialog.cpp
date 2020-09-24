@@ -1,3 +1,7 @@
+/*
+ * Класс служит для подключения к базам данных.
+ */
+
 #include "DatabasesConnectDialog.h"
 #include "ui_DatabasesConnectDialog.h"
 
@@ -51,6 +55,10 @@ DatabasesConnectDialog::~DatabasesConnectDialog()
     delete ui;
 }
 
+/**
+ * Реализация проверки введенных  данных с полей на правильность
+ * и вызов setSettingsDb() / setSettingsDbCalls().
+ */
 void DatabasesConnectDialog::onSave()
 {
     setSettingsDb();
@@ -123,6 +131,9 @@ void DatabasesConnectDialog::onSave()
     }
 }
 
+/**
+ * Реализация сохранения в реестр данных с полей окна подключения к базе контактов.
+ */
 void DatabasesConnectDialog::setSettingsDb()
 {
     global::setSettingsValue("hostName_1", ui->hostName_1->text(), "settings");
@@ -134,6 +145,9 @@ void DatabasesConnectDialog::setSettingsDb()
     global::setSettingsValue("port_1", ui->port_1->text(), "settings");
 }
 
+/**
+ * Реализация сохранения в реестр данных с полей окна подключения к базе звонков.
+ */
 void DatabasesConnectDialog::setSettingsDbCalls()
 {
     global::setSettingsValue("hostName_2", ui->hostName_2->text(), "settings");
@@ -145,11 +159,17 @@ void DatabasesConnectDialog::setSettingsDbCalls()
     global::setSettingsValue("port_2", ui->port_2->text(), "settings");
 }
 
+/**
+ * Выход из приложения.
+ */
 void DatabasesConnectDialog::onClose()
 {
     qApp->quit();
 }
 
+/**
+ * Реализация получения параметров баз данных из main.
+ */
 void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
 {
     this->state = state;
@@ -169,6 +189,9 @@ void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls,
     this->dbCalls = dbCalls;
 }
 
+/**
+ * Реализация открытия базы контактов.
+ */
 void DatabasesConnectDialog::openDb()
 {
     db.setHostName(ui->hostName_1->text());
@@ -179,6 +202,9 @@ void DatabasesConnectDialog::openDb()
     db.open();
 }
 
+/**
+ * Реализация открытия базы звонков.
+ */
 void DatabasesConnectDialog::openDbCalls()
 {
     dbCalls.setHostName(ui->hostName_2->text());
@@ -189,6 +215,10 @@ void DatabasesConnectDialog::openDbCalls()
     dbCalls.open();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void DatabasesConnectDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)

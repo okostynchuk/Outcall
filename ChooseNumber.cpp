@@ -1,3 +1,7 @@
+/*
+ * Класс служит для выбора номера телефона определенного контакта для совершения звонка.
+ */
+
 #include "ChooseNumber.h"
 #include "ui_ChooseNumber.h"
 
@@ -29,11 +33,18 @@ ChooseNumber::~ChooseNumber()
     delete ui;
 }
 
+/**
+ * Выполняет операцию для последующего совершения звонка.
+ */
 void ChooseNumber::onCall(QString number)
 {
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
+/**
+ * Получает id контакта из классов PlaceCallDialog,
+ * PopupReminder, ViewContactDialog, ViewOrgContactDialog.
+ */
 void ChooseNumber::setValues(QString id)
 {
     contactId = id;
@@ -43,11 +54,14 @@ void ChooseNumber::setValues(QString id)
     query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
 
-    while (query.next())
-         numbersList.append(query.value(0).toString());
+    int i = 0;
 
-    for (int i = 0; i < numbersList.length(); ++i)
-        phonesList.at(i)->setText(numbersList.at(i));
+    while (query.next())
+    {
+        phonesList.at(i)->setText(query.value(0).toString());
+
+        ++i;
+    }
 
     query.first();
 
@@ -55,21 +69,29 @@ void ChooseNumber::setValues(QString id)
     ui->label->setText(tr("Номерa") + " \"" + query.value(1).toString() + "\"");
 }
 
+/**
+ * Выполняет обработку появления окна.
+ */
 void ChooseNumber::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
     int size = 31;
 
-    for (int i = 0; i < numbersList.length(); ++i)
-    {
-        QWidget::setFixedHeight(size += 26);
-        phonesList.at(i)->setVisible(true);
-    }
+    for (int i = 0; i < phonesList.length(); ++i)
+        if (!phonesList.at(i)->text().isEmpty())
+        {
+            QWidget::setFixedHeight(size += 26);
+
+            phonesList.at(i)->setVisible(true);
+        }
 
     QWidget::setFixedHeight(size += 10);
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
 {
     if (event->type() == QEvent::MouseButtonPress)
@@ -81,6 +103,8 @@ bool ChooseNumber::eventFilter(QObject* target, QEvent* event)
         emit sendNumber(line->text());
 
         close();
+
+        return true;
     }
 
     return false;

@@ -53,7 +53,6 @@ private:
     QString m_url;
     uint m_startTime;
     QDir m_downloadDir;
-    QDir m_AppDir;
     QString m_fileName;
     QString m_AppName;
     Ui::Downloader* m_ui;

@@ -1,3 +1,7 @@
+/*
+ * Класс служит для осуществления звонков.
+ */
+
 #include "PlaceCallDialog.h"
 #include "ui_PlaceCallDialog.h"
 
@@ -49,6 +53,9 @@ PlaceCallDialog::~PlaceCallDialog()
     delete validator;
 }
 
+/**
+ * Реализация перехода в окно выбора номера.
+ */
 void PlaceCallDialog::showNumber(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
@@ -80,6 +87,9 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
     }
 }
 
+/**
+ * Выполнение запроса при изменении организации в comboBox.
+ */
 void PlaceCallDialog::onOrgChanged()
 {
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone "
@@ -89,11 +99,17 @@ void PlaceCallDialog::onOrgChanged()
     setModel(queryString);
 }
 
+/**
+ * Получение выбранного номера из ChooseNumber.
+ */
 void PlaceCallDialog::receiveNumber(QString number)
 {
     ui->phoneLine->setText(number);
 }
 
+/**
+ * Обновление списка.
+ */
 void PlaceCallDialog::onUpdate()
 {
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone ";
@@ -150,6 +166,9 @@ void PlaceCallDialog::onUpdate()
     setModel(queryString);
 }
 
+/**
+ * Установка модели таблицы.
+ */
 void PlaceCallDialog::setModel(QString queryString)
 {
     queryModel->setQuery(queryString);
@@ -175,6 +194,9 @@ void PlaceCallDialog::setModel(QString queryString)
     }
 }
 
+/**
+ * Реализация кнопки Enter для поиска по таблице.
+ */
 void PlaceCallDialog::on_lineEdit_returnPressed()
 {
     ui->phoneLine->clear();
@@ -196,6 +218,9 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
     onUpdate();
 }
 
+/**
+ * Реализация очистки полей ввода / вывода.
+ */
 void PlaceCallDialog::clearEditText()
 {
     ui->phoneLine->clear();
@@ -207,6 +232,9 @@ void PlaceCallDialog::clearEditText()
     ui->tableView->setModel(NULL);
 }
 
+/**
+ * Обновление списка при открытии окна.
+ */
 void PlaceCallDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -214,6 +242,9 @@ void PlaceCallDialog::showEvent(QShowEvent* event)
     ui->lineEdit->setFocus();
 }
 
+/**
+ * Установка начальных значений при закрытии окна.
+ */
 void PlaceCallDialog::closeEvent(QCloseEvent*)
 {
     ui->comboBox->setCurrentIndex(0);
@@ -227,6 +258,9 @@ void PlaceCallDialog::closeEvent(QCloseEvent*)
     ui->tableView->setModel(NULL);
 }
 
+/**
+ * Реализация кнопки осуществления вызова.
+ */
 void PlaceCallDialog::onCallButton()
 {
     if (!ui->phoneLine->text().isEmpty())
@@ -239,11 +273,18 @@ void PlaceCallDialog::onCallButton()
     }
 }
 
+/**
+ * Закрытие окна по кнопке.
+ */
 void PlaceCallDialog::onCancelButton()
 {
     QDialog::close();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
@@ -252,6 +293,9 @@ void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
         QWidget::keyPressEvent(event);
 }
 
+/**
+ * Реализация звонка по нажатию кнопки Enter.
+ */
 void PlaceCallDialog::on_phoneLine_returnPressed()
 {
     onCallButton();

@@ -1,3 +1,7 @@
+/*
+ * Класс служит для редактирования физического лица.
+ */
+
 #include "EditContactDialog.h"
 #include "ui_EditContactDialog.h"
 
@@ -43,6 +47,9 @@ EditContactDialog::~EditContactDialog()
     delete ui;
 }
 
+/**
+ * Изменяет позицию курсора.
+ */
 void EditContactDialog::onCursorPosChanged()
 {
     if (textCursor.isNull())
@@ -54,6 +61,9 @@ void EditContactDialog::onCursorPosChanged()
         textCursor = ui->comment->textCursor();
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool EditContactDialog::eventFilter(QObject*, QEvent* event)
 {
     if (event && event->type() == QEvent::KeyRelease)
@@ -72,6 +82,9 @@ bool EditContactDialog::eventFilter(QObject*, QEvent* event)
     return false;
 }
 
+/**
+ * Закрытие окна и отправка сигнала в класс ViewContactDialog.
+ */
 void EditContactDialog::onReturn()
 {    
     emit sendData(false, this->pos().x(), this->pos().y());
@@ -79,6 +92,9 @@ void EditContactDialog::onReturn()
     close();
 }
 
+/**
+ * Установка позиции окна, согласно позиции окна ViewContactDialog.
+ */
 void EditContactDialog::setPos(int x, int y)
 {
     int nDesktopHeight;
@@ -125,6 +141,9 @@ void EditContactDialog::setPos(int x, int y)
     }
 }
 
+/**
+ * Реализация сохранения введенных данных с проверками.
+ */
 void EditContactDialog::onSave()
 {
     QSqlQuery query(db);
@@ -319,6 +338,9 @@ void EditContactDialog::onSave()
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно изменена!"), QMessageBox::Ok);
 }
 
+/**
+ * Реализация проверки введенных данных в поля номеров.
+ */
 bool EditContactDialog::isPhone(QString* str)
 {
     int pos = 0;
@@ -331,6 +353,10 @@ bool EditContactDialog::isPhone(QString* str)
     return false;
 }
 
+/**
+ * Получение и заполнение полей окна необходимыми данными.
+ * Получение id контакта из CallHistoryDialog, ViewContactDialog.
+ */
 void EditContactDialog::setValues(QString id)
 {
     contactId = id;
@@ -374,6 +400,10 @@ void EditContactDialog::setValues(QString id)
     orgId = query.value(8).toString();
 }
 
+/**
+ * Получение id организации из класса AddOrgToPerson
+ * для последующей привязки к физ. лицу.
+ */
 void EditContactDialog::receiveOrgName(QString id, QString name)
 {
     if (!id.isNull())
@@ -390,6 +420,10 @@ void EditContactDialog::receiveOrgName(QString id, QString name)
     }
 }
 
+/**
+ * Реализация открытия окна со списком организаций
+ * с возможным последующим добавлением.
+ */
 void EditContactDialog::on_addOrgButton_clicked()
 {
     if (!addOrgToPerson.isNull())
@@ -401,6 +435,9 @@ void EditContactDialog::on_addOrgButton_clicked()
     addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Реализация отвязка организации от физического лица.
+ */
 void EditContactDialog::on_deleteOrgButton_clicked()
 {
     ui->label_org->setText(tr("Нет"));
@@ -408,17 +445,27 @@ void EditContactDialog::on_deleteOrgButton_clicked()
     orgId = "0";
 }
 
+/**
+ * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ */
 void EditContactDialog::onTextChanged()
 {
     if (ui->comment->toPlainText().trimmed().length() > 255)
         ui->comment->textCursor().deletePreviousChar();
 }
 
+/**
+ * Реализация скрытия кнопки возврата к карточке организации.
+ */
 void EditContactDialog::hideBackButton()
 {
     ui->backButton->hide();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Enter.
+ */
 void EditContactDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Return)
@@ -432,6 +479,9 @@ void EditContactDialog::keyPressEvent(QKeyEvent* event)
         QDialog::keyPressEvent(event);
 }
 
+/**
+ * Установка начальных значений при закрытии окна.
+ */
 void EditContactDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);

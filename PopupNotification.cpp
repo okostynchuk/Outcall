@@ -1,3 +1,7 @@
+/*
+ * Класс служит для оповещения пользователя о делегированном ему напоминании.
+ */
+
 #include "PopupNotification.h"
 #include "ui_PopupNotification.h"
 
@@ -123,11 +127,17 @@ PopupNotification::~PopupNotification()
     delete ui;
 }
 
+/**
+ * Захват точки нажатия мышью по окну.
+ */
 void PopupNotification::mousePressEvent(QMouseEvent* event)
 {
     position = event->globalPos();
 }
 
+/**
+ * Устанавливает нулевую позиции при отпускании клика.
+ */
 void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
@@ -135,6 +145,9 @@ void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
     position = QPoint();
 }
 
+/**
+ * Реализация изменения позиции окна на экране.
+ */
 void PopupNotification::mouseMoveEvent(QMouseEvent* event)
 {
     if (!position.isNull())
@@ -152,11 +165,17 @@ void PopupNotification::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
+/**
+ * Закрытие окна по кнопке.
+ */
 void PopupNotification::on_pushButton_close_clicked()
 {
     onClosePopup();
 }
 
+/**
+ * Реализация появления и закрытия окна.
+ */
 void PopupNotification::onTimer()
 {
     if (m_bAppearing) // APPEARING
@@ -231,6 +250,9 @@ void PopupNotification::onTimer()
     move(m_nCurrentPosX, m_nCurrentPosY);
 }
 
+/**
+ * Реализация закрытия окна (запуск таймера) при клике на кнопку закрытия.
+ */
 void PopupNotification::onClosePopup()
 {
     QSqlQuery query(db);
@@ -243,6 +265,9 @@ void PopupNotification::onClosePopup()
         m_timer.start();
 }
 
+/**
+ * Закрытие окна.
+ */
 void PopupNotification::closeAndDestroy()
 {
     hide();
@@ -257,6 +282,9 @@ void PopupNotification::closeAndDestroy()
     delete this;
 }
 
+/**
+ * Закрытие всех окон.
+ */
 void PopupNotification::closeAll()
 {
     for (int i = 0; i < m_PopupNotifications.size(); ++i)
@@ -265,6 +293,9 @@ void PopupNotification::closeAll()
     m_PopupNotifications.clear();
 }
 
+/**
+ * Реализация отображения информации на окне.
+ */
 void PopupNotification::showNotification(RemindersDialog* receivedRemindersDialog, QString receivedId, QString receivedNumber, QString receivedNote)
 {
     PopupNotificationInfo pni;
@@ -283,6 +314,10 @@ void PopupNotification::showNotification(RemindersDialog* receivedRemindersDialo
     m_PopupNotifications.append(notification);
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void PopupNotification::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)

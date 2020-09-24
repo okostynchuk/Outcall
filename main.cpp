@@ -15,6 +15,10 @@
 
 static const QString PARTIAL_DOWN(".part");
 
+/**
+ * Выполняет запуск программы, подключение к базам данных, загрузку языковых файлов,
+ * удаление старой версии программы после обновления.
+ */
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
@@ -28,14 +32,14 @@ int main(int argc, char* argv[])
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
 
-    QDir dir("C:\\" + QString(APP_NAME));
+    QDir dir(qApp->applicationDirPath());
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     int fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    QDir oldAppDir("C:\\" + QString(APP_NAME) + "\\");
+    QDir oldAppDir(qApp->applicationDirPath() + "\\");
 
     QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
@@ -52,7 +56,7 @@ int main(int argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder("C:\\" + QString(APP_NAME) + "\\" + namesOfDirectories.at(i));
+                QDir folder(qApp->applicationDirPath() + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }
