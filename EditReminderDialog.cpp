@@ -303,7 +303,7 @@ void EditReminderDialog::onSave()
 
 /**
  * Выполняет получение идентификатора, времени и содержания заметки
- * из классов PopupReminder.cpp и RemindersDialog.cpp.
+ * из классов PopupReminder и RemindersDialog.
  */
 void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
 {

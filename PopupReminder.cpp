@@ -388,7 +388,7 @@ void PopupReminder::onTimer()
 }
 
 /**
- * Получение данных из класса EditReminderDialog.cpp.
+ * Получение данных из класса EditReminderDialog.
  */
 void PopupReminder::receiveData(bool updating)
 {

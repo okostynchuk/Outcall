@@ -337,7 +337,7 @@ bool EditOrgContactDialog::isPhone(QString* str)
 
 /**
  * Получение и заполнение полей окна необходимыми данными.
- * Получение id контакта из CallHistoryDialog.cpp, ViewOrgContactDialog.cpp.
+ * Получение id контакта из CallHistoryDialog, ViewOrgContactDialog.
  */
 void EditOrgContactDialog::setValues(QString id)
 {

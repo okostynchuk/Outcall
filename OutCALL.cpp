@@ -212,7 +212,7 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
 }
 
 /**
- * Обновление окна класса DebugInfoDialog.cpp.
+ * Обновление окна класса DebugInfoDialog.
  */
 void OutCall::onMessageReceived(const QString &message)
 {
@@ -222,7 +222,7 @@ void OutCall::onMessageReceived(const QString &message)
 
 /**
  * Реализация отображения уведомления при входящем звонке
- * с передачей данных звонка в PopupWindow.cpp.
+ * с передачей данных звонка в PopupWindow.
  */
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 {

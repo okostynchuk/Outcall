@@ -168,7 +168,7 @@ void DatabasesConnectDialog::onClose()
 }
 
 /**
- * Реализация получения параметров баз данных из main.cpp.
+ * Реализация получения параметров баз данных из main.
  */
 void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
 {

@@ -42,8 +42,8 @@ NotesDialog::~NotesDialog()
 }
 
 /**
- * Получение данных  из классов CallHistoryDialog.cpp,
- * ViewContactDialog.cpp и ViewOrgContactDialog.cpp.
+ * Получение данных  из классов CallHistoryDialog,
+ * ViewContactDialog и ViewOrgContactDialog.
  */
 void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState)
 {

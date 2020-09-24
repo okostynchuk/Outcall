@@ -98,7 +98,7 @@ void PlaceCallDialog::onOrgChanged()
 }
 
 /**
- * Получение выбранного номера из ChooseNumber.cpp.
+ * Получение выбранного номера из ChooseNumber.
  */
 void PlaceCallDialog::receiveNumber(QString number)
 {

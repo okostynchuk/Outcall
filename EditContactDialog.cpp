@@ -83,7 +83,7 @@ bool EditContactDialog::eventFilter(QObject*, QEvent* event)
 }
 
 /**
- * Закрытие окна и отправка сигнала в класс ViewContactDialog.cpp.
+ * Закрытие окна и отправка сигнала в класс ViewContactDialog.
  */
 void EditContactDialog::onReturn()
 {    
@@ -93,7 +93,7 @@ void EditContactDialog::onReturn()
 }
 
 /**
- * Установка позиции окна, согласно позиции окна ViewContactDialog.cpp.
+ * Установка позиции окна, согласно позиции окна ViewContactDialog.
  */
 void EditContactDialog::setPos(int x, int y)
 {
@@ -355,7 +355,7 @@ bool EditContactDialog::isPhone(QString* str)
 
 /**
  * Получение и заполнение полей окна необходимыми данными.
- * Получение id контакта из CallHistoryDialog.cpp, ViewContactDialog.cpp.
+ * Получение id контакта из CallHistoryDialog, ViewContactDialog.
  */
 void EditContactDialog::setValues(QString id)
 {
@@ -401,7 +401,7 @@ void EditContactDialog::setValues(QString id)
 }
 
 /**
- * Получение id организации из класса AddOrgToPerson.cpp
+ * Получение id организации из класса AddOrgToPerson
  * для последующей привязки к физ. лицу.
  */
 void EditContactDialog::receiveOrgName(QString id, QString name)
