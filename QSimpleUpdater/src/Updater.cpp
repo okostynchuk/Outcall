@@ -1,3 +1,7 @@
+/*
+ * The class is used to maintain the app's updating.
+ */
+
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QMessageBox>

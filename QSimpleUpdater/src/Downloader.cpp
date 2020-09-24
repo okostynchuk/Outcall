@@ -1,3 +1,7 @@
+/*
+ * The class is used to load the installer file.
+ */
+
 #include <QDir>
 #include <QFile>
 #include <QProcess>

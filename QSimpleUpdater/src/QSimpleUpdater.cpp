@@ -1,3 +1,7 @@
+/*
+ * The class is used to link Updater and Downloader.
+ */
+
 #include "Updater.h"
 #include "QSimpleUpdater.h"
 
