@@ -35,7 +35,7 @@ EditReminderDialog::~EditReminderDialog()
 }
 
 /**
- * Получение списка с сотрудниками.
+ * Получает список выбранных сотрудников из класса ChooseEmployee.
  */
 void EditReminderDialog::receiveEmployee(QStringList employee)
 {
@@ -48,7 +48,8 @@ void EditReminderDialog::receiveEmployee(QStringList employee)
 }
 
 /**
- * Реализация выбора сотрудников для рассылки напоминаний.
+ * Выполняет открытие окна для выбора списка сотрудников,
+ * которые получат напоминание.
  */
 void EditReminderDialog::onChooseEmployee()
 {
@@ -68,7 +69,7 @@ void EditReminderDialog::onChooseEmployee()
 }
 
 /**
- * Выполняет сохранение напоминания с проверками.
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
  */
 void EditReminderDialog::onSave()
 {
@@ -302,8 +303,8 @@ void EditReminderDialog::onSave()
 }
 
 /**
- * Выполняет получение идентификатора, времени и содержания заметки
- * из классов PopupReminder и RemindersDialog.
+ * Получает данные существующего напоминания из классов
+ * PopupReminder и RemindersDialog.
  */
 void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
 {
@@ -368,7 +369,7 @@ void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, 
 }
 
 /**
- * Установка начальных значений при закрытии окна.
+ * Выполняет обработку закрытия окна.
  */
 void EditReminderDialog::closeEvent(QCloseEvent* event)
 {
@@ -379,7 +380,8 @@ void EditReminderDialog::closeEvent(QCloseEvent* event)
 }
 
 /**
- * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
  */
 void EditReminderDialog::onTextChanged()
 {
@@ -388,7 +390,7 @@ void EditReminderDialog::onTextChanged()
 }
 
 /**
- * Изменяет позицию курсора.
+ * Выполняет сохранение позиции текстового курсора.
  */
 void EditReminderDialog::onCursorPosChanged()
 {
@@ -442,7 +444,7 @@ void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 }
 
 /**
- * Реализация добавления к текущему времени 5 минут.
+ * Выполняет прибавление к текущему времени 5 минут.
  */
 void EditReminderDialog::on_add5MinButton_clicked()
 {
@@ -450,7 +452,7 @@ void EditReminderDialog::on_add5MinButton_clicked()
 }
 
 /**
- * Реализация добавления к текущему времени 10 минут.
+ * Выполняет прибавление к текущему времени 10 минут.
  */
 void EditReminderDialog::on_add10MinButton_clicked()
 {
@@ -458,7 +460,7 @@ void EditReminderDialog::on_add10MinButton_clicked()
 }
 
 /**
- * Реализация добавления к текущему времени 30 минут.
+ * Выполняет прибавление к текущему времени 30 минут.
  */
 void EditReminderDialog::on_add30MinButton_clicked()
 {
@@ -466,7 +468,7 @@ void EditReminderDialog::on_add30MinButton_clicked()
 }
 
 /**
- * Реализация добавления к текущему времени 60 минут.
+ * Выполняет прибавление к текущему времени 60 минут.
  */
 void EditReminderDialog::on_add60MinButton_clicked()
 {

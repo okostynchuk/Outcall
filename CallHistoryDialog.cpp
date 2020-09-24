@@ -629,7 +629,7 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
 
     QString state = "byId";
     notesDialog = new NotesDialog;
-    notesDialog->receiveData(uniqueid, phone, state);
+    notesDialog->setValues(uniqueid, phone, state);
     connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);

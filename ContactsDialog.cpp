@@ -1,5 +1,5 @@
 /*
- * Класс служит для вывода списка всех контактов из БД и различного взаимодействия с ним.
+ * Класс служит для вывода списка всех контактов и различного взаимодействия с ним.
  */
 
 #include "ContactsDialog.h"
@@ -45,7 +45,8 @@ ContactsDialog::~ContactsDialog()
 }
 
 /**
- * Получает запрос на обновление списка контактов.
+ * Получает запрос на обновление списка контактов из классов
+ * AddContactDialog, AddOrgContactDialog, ViewContactDialog, ViewOrgContactDialog.
  */
 void ContactsDialog::receiveData(bool updating)
 {
@@ -175,7 +176,7 @@ void ContactsDialog::deleteObjects()
 }
 
 /**
- * Выполняет вывод и обновление списка всех контактов.
+ * Выполняет вывод и обновление списка контактов с и без фильтра.
  */
 void ContactsDialog::loadContacts()
 {
@@ -405,7 +406,7 @@ void ContactsDialog::searchFunction()
 }
 
 /**
- * Выполняет обработку события смены количества выводимых контактов на странице.
+ * Выполняет обработку смены количества выводимых контактов на странице.
  */
 void ContactsDialog::currentIndexChanged()
 {
@@ -476,7 +477,7 @@ void ContactsDialog::on_lineEdit_page_returnPressed()
 
 /**
  * Выполняет поиск по списку при нажатии клавиши Enter,
- * находясь в строке поиска.
+ * находясь в поле поиска.
  */
 void ContactsDialog::on_lineEdit_returnPressed()
 {

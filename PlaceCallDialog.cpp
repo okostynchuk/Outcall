@@ -54,7 +54,7 @@ PlaceCallDialog::~PlaceCallDialog()
 }
 
 /**
- * Реализация перехода в окно выбора номера.
+ * Выполняет операции для последующего выбора номера и совершения звонка.
  */
 void PlaceCallDialog::showNumber(const QModelIndex &index)
 {
@@ -88,7 +88,7 @@ void PlaceCallDialog::showNumber(const QModelIndex &index)
 }
 
 /**
- * Выполнение запроса при изменении организации в comboBox.
+ * Выполняет запрос при смене организации в поле со списком.
  */
 void PlaceCallDialog::onOrgChanged()
 {
@@ -100,7 +100,7 @@ void PlaceCallDialog::onOrgChanged()
 }
 
 /**
- * Получение выбранного номера из ChooseNumber.
+ * Получает выбранный номер из класса ChooseNumber.
  */
 void PlaceCallDialog::receiveNumber(QString number)
 {
@@ -108,7 +108,7 @@ void PlaceCallDialog::receiveNumber(QString number)
 }
 
 /**
- * Обновление списка.
+ * Выполняет вывод списка контактов по фильтру.
  */
 void PlaceCallDialog::onUpdate()
 {
@@ -167,7 +167,7 @@ void PlaceCallDialog::onUpdate()
 }
 
 /**
- * Установка модели таблицы.
+ * Выполняет установку модели таблицы.
  */
 void PlaceCallDialog::setModel(QString queryString)
 {
@@ -195,7 +195,8 @@ void PlaceCallDialog::setModel(QString queryString)
 }
 
 /**
- * Реализация кнопки Enter для поиска по таблице.
+ * Выполняет операции для последующего поиска по списку
+ * при нажатии клавиши Enter, находясь в поле поиска.
  */
 void PlaceCallDialog::on_lineEdit_returnPressed()
 {
@@ -219,7 +220,7 @@ void PlaceCallDialog::on_lineEdit_returnPressed()
 }
 
 /**
- * Реализация очистки полей ввода / вывода.
+ * Выполняет очистку полей ввода / вывода.
  */
 void PlaceCallDialog::clearEditText()
 {
@@ -233,7 +234,7 @@ void PlaceCallDialog::clearEditText()
 }
 
 /**
- * Обновление списка при открытии окна.
+ * Выполняет обработку открытия окна.
  */
 void PlaceCallDialog::showEvent(QShowEvent* event)
 {
@@ -243,7 +244,7 @@ void PlaceCallDialog::showEvent(QShowEvent* event)
 }
 
 /**
- * Установка начальных значений при закрытии окна.
+ * Выполняет обработку закрытия окна.
  */
 void PlaceCallDialog::closeEvent(QCloseEvent*)
 {
@@ -259,7 +260,7 @@ void PlaceCallDialog::closeEvent(QCloseEvent*)
 }
 
 /**
- * Реализация кнопки осуществления вызова.
+ * Выполняет совершение звонка при нажатии кнопки "Позвонить".
  */
 void PlaceCallDialog::onCallButton()
 {
@@ -274,7 +275,7 @@ void PlaceCallDialog::onCallButton()
 }
 
 /**
- * Закрытие окна по кнопке.
+ * Выполняет закрытие окна при нажатии кнопки "Отменить".
  */
 void PlaceCallDialog::onCancelButton()
 {
@@ -294,7 +295,8 @@ void PlaceCallDialog::keyPressEvent(QKeyEvent* event)
 }
 
 /**
- * Реализация звонка по нажатию кнопки Enter.
+ * Выполняет совершение звонка при нажатии клавиши Enter,
+ * находясь в поле ввода номера.
  */
 void PlaceCallDialog::on_phoneLine_returnPressed()
 {

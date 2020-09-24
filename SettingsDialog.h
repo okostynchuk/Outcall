@@ -61,7 +61,7 @@ private:
 
     AddExtensionDialog* m_addExtensionDialog;
 
-    QSimpleUpdater *m_updater;
+    QSimpleUpdater* m_updater;
 
     QFile f;
     QString userName;

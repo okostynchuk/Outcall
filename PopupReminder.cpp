@@ -19,7 +19,7 @@ QList<PopupReminder*> PopupReminder::m_PopupReminders;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 // msec
+#define TIME_TO_SHOW    800 // msec
 
 PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     QDialog(parent),
@@ -241,7 +241,7 @@ PopupReminder::~PopupReminder()
 }
 
 /**
- * Закрытие окна.
+ * Выполняет закрытие и удаление объекта окна.
  */
 void PopupReminder::closeAndDestroy()
 {
@@ -255,7 +255,7 @@ void PopupReminder::closeAndDestroy()
 }
 
 /**
- * Захват точки нажатия мышью по окну.
+ * Выполняет сохранение позиции нажатия мышью по окну.
  */
 void PopupReminder::mousePressEvent(QMouseEvent* event)
 {
@@ -263,7 +263,7 @@ void PopupReminder::mousePressEvent(QMouseEvent* event)
 }
 
 /**
- * Устанавка нулевой позиции при отпускании клика.
+ * Выполняет установку нулевой позиции при отжатии кнопки мыши.
  */
 void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -272,7 +272,7 @@ void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
 }
 
 /**
- * Реализация изменения позиции окна на экране.
+ * Выполняет изменение позиции окна на экране.
  */
 void PopupReminder::mouseMoveEvent(QMouseEvent* event)
 {
@@ -292,7 +292,7 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
 }
 
 /**
- * Выполняет проверку на внутренний номер.
+ * Выполняет проверку номера на соотвествие шаблону внутреннего номера.
  */
 bool PopupReminder::isInternalPhone(QString* str)
 {
@@ -311,7 +311,7 @@ bool PopupReminder::isInternalPhone(QString* str)
 }
 
 /**
- * Реализация движения окна при открытии / закрытии окна.
+ * Выполняет операции динамического появления и последующего закрытия окна.
  */
 void PopupReminder::onTimer()
 {
@@ -388,7 +388,8 @@ void PopupReminder::onTimer()
 }
 
 /**
- * Получение данных из класса EditReminderDialog.
+ * Получает запрос из класса EditReminderDialog на обновление списка напоминаний,
+ * изменение иконки приложения, а также закрытие и удаление объекта окна.
  */
 void PopupReminder::receiveData(bool updating)
 {
@@ -403,7 +404,7 @@ void PopupReminder::receiveData(bool updating)
 }
 
 /**
- * Реализация кнопки вызова контакту.
+ * Выполняет операции для последующего выбора номера и совершения звонка.
  */
 void PopupReminder::onCall()
 {
@@ -437,7 +438,7 @@ void PopupReminder::onCall()
 }
 
 /**
- * Реализация переноса напоминания на заданное время.
+ * Выполняет перенос напоминания на заданное время.
  */
 void PopupReminder::onSelectTime(int index)
 {
@@ -523,7 +524,7 @@ void PopupReminder::onSelectTime(int index)
 }
 
 /**
- * Реализация кнопки открытия базы заказов.
+ * Выполняет открытие базы заказов.
  */
 void PopupReminder::onOpenAccess()
 {
@@ -575,7 +576,8 @@ void PopupReminder::onOpenAccess()
 }
 
 /**
- * Реализация закрытия окна (запуск таймера) при клике на кнопку закрытия.
+ * Выполняет установку напоминания в неактивное состояние и
+ * запускает таймер для последующего закрытия окна.
  */
 void PopupReminder::onClosePopup()
 {
@@ -606,7 +608,7 @@ void PopupReminder::onClosePopup()
 }
 
 /**
- * Закрытие окна.
+ * Выполняет закрытие и удаление всех объектов окон.
  */
 void PopupReminder::closeAll()
 {
@@ -617,7 +619,7 @@ void PopupReminder::closeAll()
 }
 
 /**
- * Реализация отображения окна.
+ * Выполняет создание окна и отображение в нём полученной информации из класса RemindersDialog.
  */
 void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
 {

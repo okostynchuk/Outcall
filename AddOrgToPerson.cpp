@@ -52,7 +52,7 @@ void AddOrgToPerson::deleteObjects()
 
 /**
  * Выполняет отправку id и названия выбранной организации в классы
- * AddOrgContactDialog и EditOrgContactDialog.
+ * AddContactDialog и EditContactDialog.
  */
 void AddOrgToPerson::getOrgName(const QModelIndex &index)
 {
@@ -65,7 +65,7 @@ void AddOrgToPerson::getOrgName(const QModelIndex &index)
 }
 
 /**
- * Выполняет вывод и обновление списка всех организаций.
+ * Выполняет вывод и обновление списка организаций с и без фильтра.
  */
 void AddOrgToPerson::onUpdate()
 {
@@ -189,7 +189,7 @@ void AddOrgToPerson::searchFunction()
 }
 
 /**
- * Выполняет обработку события смены количества выводимых организаций на странице.
+ * Выполняет обработку смены количества выводимых организаций на странице.
  */
 void AddOrgToPerson::currentIndexChanged()
 {
@@ -250,7 +250,7 @@ void AddOrgToPerson::on_lineEdit_page_returnPressed()
 
 /**
  * Выполняет поиск по списку при нажатии клавиши Enter,
- * находясь в строке поиска.
+ * находясь в поле поиска.
  */
 void AddOrgToPerson::on_lineEdit_returnPressed()
 {

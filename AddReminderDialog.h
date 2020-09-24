@@ -30,7 +30,6 @@ public:
     ~AddReminderDialog();
 
     void setCallId(QString);
-    void setEmployee(QString);
 
 private slots:
     void onChooseEmployee();

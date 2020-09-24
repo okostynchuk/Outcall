@@ -1,5 +1,5 @@
 /*
- * Класс служит для добавления организаций.
+ * Класс служит для добавления организации.
  */
 
 #include "AddOrgContactDialog.h"
@@ -211,7 +211,8 @@ bool AddOrgContactDialog::isPhone(QString* str)
 }
 
 /**
- * Получает номер телефона неизвестного физ. лица из класса CallHistoryDialog.
+ * Получает номер телефона неизвестной организации из классов
+ * CallHistoryDialog и PopupWindow.
  */
 void AddOrgContactDialog::setValues(QString number)
 {

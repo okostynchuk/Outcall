@@ -1,5 +1,6 @@
 /*
- * Класс служит для настройки приложения, а также сохранения настроек в реестре.
+ * Класс служит для настройки приложения,
+ * а также сохранения настроек в реестре.
  */
 
 #include "SettingsDialog.h"
@@ -81,8 +82,8 @@ void SettingsDialog::checkForUpdates()
 }
 
 /**
- * Проверка соединения с Asterisk
- * для предоставления возможности обновить приложение.
+ * Выполняет проверку соединения с Asterisk
+ * для того, чтобы управлять доступом к функционалу.
  */
 void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
 {
@@ -99,7 +100,7 @@ void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
 }
 
 /**
- * Установка начальных значений для окна при закрытии.
+ * Выполняет обработку закрытия окна.
  */
 void SettingsDialog::closeEvent(QCloseEvent*)
 {
@@ -109,18 +110,18 @@ void SettingsDialog::closeEvent(QCloseEvent*)
     ui->tabWidget_2->setCurrentIndex(0);
     ui->tabWidget_3->setCurrentIndex(0);
 
-    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
+    ui->languageList->setCurrentText(global::getSettingsValue("language", "settings").toString());
 }
 
 /**
- * Выполняет сохранение настроек приложения в реестр.
+ * Выполняет сохранение настроек приложения в реестре.
  */
 void SettingsDialog::saveSettings()
 {
     // General
     //global::setSettingsValue("auto_sign_in",  ui->autoSignIn->isChecked(), "general");
     //global::setSettingsValue("auto_startup",  ui->autoStartBox->isChecked(), "general");
-    global::setSettingsValue("language", ui->languageList_2->currentText(), "settings");
+    global::setSettingsValue("language", ui->languageList->currentText(), "settings");
 
     // Server
     global::setSettingsValue("servername", ui->serverName->text(), "settings");
@@ -199,15 +200,14 @@ void SettingsDialog::saveSettings()
 }
 
 /**
- * Выполняет получение настроек из реестра и
- * заполнение необходимых полей ввода (параметров подключения к базам данных,
- * язык интерфейса).
+ * Выполняет получение настроек приложения из реестра и заполнение необходимых полей ввода
+ * (параметров подключения к базам данных, язык интерфейса и т.д.).
  */
 void SettingsDialog::loadSettings()
 {
     // General
     ui->autoStartBox->setChecked(global::getSettingsValue("auto_startup", "general", true).toBool());
-    ui->languageList_2->setCurrentText(global::getSettingsValue("language", "settings").toString());
+    ui->languageList->setCurrentText(global::getSettingsValue("language", "settings").toString());
     bool autoSignIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
     g_pAsteriskManager->setAutoSignIn(autoSignIn);
@@ -288,7 +288,8 @@ void SettingsDialog::show()
 }
 
 /**
- * Реализация кнопки применения настроек.
+ * Выполняет операции для последующего применения настроек
+ * или же отмены их применения.
  */
 void SettingsDialog::on_applyButton_clicked()
 {
@@ -322,7 +323,7 @@ void SettingsDialog::on_applyButton_clicked()
 }
 
 /**
- * Закрытие окна.
+ * Выполняет закрытие окна при нажатии кнопки "Отменить".
  */
 void SettingsDialog::on_cancelButton_clicked()
 {
@@ -330,7 +331,8 @@ void SettingsDialog::on_cancelButton_clicked()
 }
 
 /**
- * Выполняет применение настроек приложения (подключение / отключение автозагрузки).
+ * Выполняет применение настроек приложения
+ * (включение / отключение автозагрузки и автоподключения).
  */
 void SettingsDialog::applySettings()
 {
@@ -343,7 +345,7 @@ void SettingsDialog::applySettings()
 }
 
 /**
- * Реализует выбор и применение языка интерфейса приложения.
+ * Выполняет загрузку языка интерфейса приложения.
  */
 void SettingsDialog::loadLanguages()
 {
@@ -359,19 +361,19 @@ void SettingsDialog::loadLanguages()
     QIcon ukIcon = (QIcon(ukPath));
     QString ukLabel = (tr("English"));
 
-    ui->languageList_2->addItem(ruIcon, ruLabel);
-    ui->languageList_2->addItem(uaIcon, uaLabel);
-    ui->languageList_2->addItem(ukIcon, ukLabel);
+    ui->languageList->addItem(ruIcon, ruLabel);
+    ui->languageList->addItem(uaIcon, uaLabel);
+    ui->languageList->addItem(ukIcon, ukLabel);
 
     QString lang = global::getSettingsValue("language", "settings").toString();
     if (lang == "")
-        ui->languageList_2->setCurrentIndex(0);
+        ui->languageList->setCurrentIndex(0);
     else
-        ui->languageList_2->setCurrentIndex(ui->languageList_2->findData(lang, Qt::UserRole, Qt::MatchExactly));
+        ui->languageList->setCurrentIndex(ui->languageList->findData(lang, Qt::UserRole, Qt::MatchExactly));
 }
 
 /**
- *  Выполняет получение личного номера.
+ * Возвращает личный номер пользователя.
  */
 QString SettingsDialog::getExtension()
 {
@@ -390,7 +392,7 @@ QString SettingsDialog::getExtension()
 }
 
 /**
- * Выполняет получение номера группы.
+ * Возвращает номер группы пользователя.
  */
 QString SettingsDialog::getGroupExtension()
 {
@@ -409,7 +411,7 @@ QString SettingsDialog::getGroupExtension()
 }
 
 /**
- * Реализация добавления личного номера.
+ * Выполняет добавление личного номера.
  */
 void SettingsDialog::onAddButtonClicked()
 {
@@ -435,7 +437,7 @@ void SettingsDialog::onAddButtonClicked()
 }
 
 /**
- * Реализация добавления номера группы.
+ * Выполняет добавление номера группы.
  */
 void SettingsDialog::onAddGroupButtonClicked()
 {
@@ -538,7 +540,7 @@ void SettingsDialog::onRemoveGroupButtonClicked()
 }
 
 /**
- * Реализация редактирования личного номера.
+ * Выполняет редактирование личного номера.
  */
 void SettingsDialog::onEditButtonClicked()
 {
@@ -569,7 +571,7 @@ void SettingsDialog::onEditButtonClicked()
 }
 
 /**
- * Реализация редактирования номера группы.
+ * Выполняет редактирование номера группы.
  */
 void SettingsDialog::onEditGroupButtonClicked()
 {
@@ -626,7 +628,8 @@ void SettingsDialog::checkGroupExten()
 }
 
 /**
- * Реализация закрытия окна по Esc и oсобая обработка для клавиши Enter.
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиш Esc и Enter.
  */
 void SettingsDialog::keyPressEvent(QKeyEvent* event)
 {

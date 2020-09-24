@@ -1,5 +1,5 @@
 /*
- * Класс служит для редактирования физического лица.
+ * Класс служит для редактирования физ. лица.
  */
 
 #include "EditContactDialog.h"
@@ -48,7 +48,7 @@ EditContactDialog::~EditContactDialog()
 }
 
 /**
- * Изменяет позицию курсора.
+ * Выполняет сохранение позиции текстового курсора.
  */
 void EditContactDialog::onCursorPosChanged()
 {
@@ -83,7 +83,7 @@ bool EditContactDialog::eventFilter(QObject*, QEvent* event)
 }
 
 /**
- * Закрытие окна и отправка сигнала в класс ViewContactDialog.
+ * Выполняет закрытие окна и отправку данных в класс ViewContactDialog.
  */
 void EditContactDialog::onReturn()
 {    
@@ -93,7 +93,7 @@ void EditContactDialog::onReturn()
 }
 
 /**
- * Установка позиции окна, согласно позиции окна ViewContactDialog.
+ * Выполняет установку позиции окна в зависимости от позиции окна-родителя ViewContactDialog.
  */
 void EditContactDialog::setPos(int x, int y)
 {
@@ -142,7 +142,7 @@ void EditContactDialog::setPos(int x, int y)
 }
 
 /**
- * Реализация сохранения введенных данных с проверками.
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
  */
 void EditContactDialog::onSave()
 {
@@ -339,7 +339,7 @@ void EditContactDialog::onSave()
 }
 
 /**
- * Реализация проверки введенных данных в поля номеров.
+ * Выполняет проверку на соответсвие номера шаблону.
  */
 bool EditContactDialog::isPhone(QString* str)
 {
@@ -354,8 +354,8 @@ bool EditContactDialog::isPhone(QString* str)
 }
 
 /**
- * Получение и заполнение полей окна необходимыми данными.
- * Получение id контакта из CallHistoryDialog, ViewContactDialog.
+ * Получает и заполняет поля окна необходимыми данными.
+ * Получает id контакта из классов CallHistoryDialog, ViewContactDialog.
  */
 void EditContactDialog::setValues(QString id)
 {
@@ -401,7 +401,7 @@ void EditContactDialog::setValues(QString id)
 }
 
 /**
- * Получение id организации из класса AddOrgToPerson
+ * Получает id и название организации из класса AddOrgToPerson
  * для последующей привязки к физ. лицу.
  */
 void EditContactDialog::receiveOrgName(QString id, QString name)
@@ -421,8 +421,7 @@ void EditContactDialog::receiveOrgName(QString id, QString name)
 }
 
 /**
- * Реализация открытия окна со списком организаций
- * с возможным последующим добавлением.
+ * Выполняет открытие окна со списком организаций для выбора определенной на привязку.
  */
 void EditContactDialog::on_addOrgButton_clicked()
 {
@@ -436,7 +435,7 @@ void EditContactDialog::on_addOrgButton_clicked()
 }
 
 /**
- * Реализация отвязка организации от физического лица.
+ * Выполняет отвязку организации.
  */
 void EditContactDialog::on_deleteOrgButton_clicked()
 {
@@ -446,7 +445,8 @@ void EditContactDialog::on_deleteOrgButton_clicked()
 }
 
 /**
- * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
  */
 void EditContactDialog::onTextChanged()
 {
@@ -455,7 +455,7 @@ void EditContactDialog::onTextChanged()
 }
 
 /**
- * Реализация скрытия кнопки возврата к карточке организации.
+ * Выполняет скрытие кнопки возврата к карточке физ. лица.
  */
 void EditContactDialog::hideBackButton()
 {
@@ -480,7 +480,7 @@ void EditContactDialog::keyPressEvent(QKeyEvent* event)
 }
 
 /**
- * Установка начальных значений при закрытии окна.
+ * Выполняет обработку закрытия окна.
  */
 void EditContactDialog::closeEvent(QCloseEvent* event)
 {

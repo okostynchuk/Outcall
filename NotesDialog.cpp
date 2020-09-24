@@ -38,14 +38,15 @@ NotesDialog::NotesDialog(QWidget *parent) :
 NotesDialog::~NotesDialog()
 {
     deleteObjects();
+
     delete ui;
 }
 
 /**
- * Получение данных  из классов CallHistoryDialog,
- * ViewContactDialog и ViewOrgContactDialog.
+ * Получает данные заметок по звонку или номеру из классов CallHistoryDialog,
+ * PopupWindow, ViewContactDialog и ViewOrgContactDialog.
  */
-void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState)
+void NotesDialog::setValues(QString uniqueid, QString phone, QString loadState)
 {
     callId = uniqueid;
 
@@ -61,7 +62,7 @@ void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState
 }
 
 /**
- * Скрытие возможности добавления заметок.
+ * Выполняет скрытие возможности добавления заметок.
  */
 void NotesDialog::hideAddNote()
 {
@@ -73,7 +74,7 @@ void NotesDialog::hideAddNote()
 }
 
 /**
- * Реализация загрузки заметок.
+ * Выполняет вывод и обновление списка заметок.
  */
 void NotesDialog::loadNotes()
 {
@@ -243,7 +244,7 @@ void NotesDialog::loadNotes()
 }
 
 /**
- * Реализация сохранения заметок с проверками.
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
  */
 void NotesDialog::onSave()
 {
@@ -279,7 +280,8 @@ void NotesDialog::onSave()
 }
 
 /**
- * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
  */
 void NotesDialog::onTextChanged()
 {
@@ -305,7 +307,7 @@ void NotesDialog::keyPressEvent(QKeyEvent* event)
 }
 
 /**
- * Реализация обновления списка заметок.
+ * Выполняет операции для последующего обновления списка заметок.
  */
 void NotesDialog::onUpdate()
 {
@@ -314,7 +316,7 @@ void NotesDialog::onUpdate()
 }
 
 /**
- * Реализация добавление виджета для поля "Заметка".
+ * Выполняет добавление виджета для поля "Заметка".
  */
 QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
 {
@@ -360,7 +362,7 @@ QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
 }
 
 /**
- * Реализация удаления объектов.
+ * Выполняет удаление объектов класса.
  */
 void NotesDialog::deleteObjects()
 {
@@ -381,7 +383,7 @@ void NotesDialog::deleteObjects()
 }
 
 /**
- * Проверка на внутренний номер.
+ * Выполняет проверку номера на соотвествие шаблону внутреннего номера.
  */
 bool NotesDialog::isInternalPhone(QString* str)
 {
@@ -400,7 +402,7 @@ bool NotesDialog::isInternalPhone(QString* str)
 }
 
 /**
- * Реализация перехода на предыдущую страницу.
+ * Выполняет операции для последующего перехода на предыдущую страницу.
  */
 void NotesDialog::on_previousButton_clicked()
 {
@@ -410,7 +412,7 @@ void NotesDialog::on_previousButton_clicked()
 }
 
 /**
- * Реализация перехода на следующую страницу.
+ * Выполняет операции для последующего перехода на следующую страницу.
  */
 void NotesDialog::on_nextButton_clicked()
 {
@@ -420,7 +422,7 @@ void NotesDialog::on_nextButton_clicked()
 }
 
 /**
- * Реализация перехода на первую страницу.
+ * Выполняет операции для последующего перехода на первую страницу.
  */
 void NotesDialog::on_previousStartButton_clicked()
 {
@@ -430,7 +432,7 @@ void NotesDialog::on_previousStartButton_clicked()
 }
 
 /**
- * Реализация перехода на последнюю страницу.
+ * Выполняет операции для последующего перехода на последнюю страницу.
  */
 void NotesDialog::on_nextEndButton_clicked()
 {
@@ -440,7 +442,7 @@ void NotesDialog::on_nextEndButton_clicked()
 }
 
 /**
- * Реализация перехода на заданную страницу.
+ * Выполняет операции для последующего перехода на заданную страницу.
  */
 void NotesDialog::on_lineEdit_page_returnPressed()
 {

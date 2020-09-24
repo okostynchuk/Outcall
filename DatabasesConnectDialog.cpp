@@ -4,7 +4,6 @@
 
 #include "DatabasesConnectDialog.h"
 #include "ui_DatabasesConnectDialog.h"
-
 #include "Global.h"
 #include "OutCALL.h"
 
@@ -56,8 +55,7 @@ DatabasesConnectDialog::~DatabasesConnectDialog()
 }
 
 /**
- * Реализация проверки введенных  данных с полей на правильность
- * и вызов setSettingsDb() / setSettingsDbCalls().
+ * Выполняет проверку введенных данных и сохраняет их.
  */
 void DatabasesConnectDialog::onSave()
 {
@@ -132,7 +130,7 @@ void DatabasesConnectDialog::onSave()
 }
 
 /**
- * Реализация сохранения в реестр данных с полей окна подключения к базе контактов.
+ * Выполняет сохранение в реестр данных с полей окна подключения к базе контактов.
  */
 void DatabasesConnectDialog::setSettingsDb()
 {
@@ -146,7 +144,7 @@ void DatabasesConnectDialog::setSettingsDb()
 }
 
 /**
- * Реализация сохранения в реестр данных с полей окна подключения к базе звонков.
+ * Выполняет сохранение в реестр данных с полей окна подключения к базе звонков.
  */
 void DatabasesConnectDialog::setSettingsDbCalls()
 {
@@ -160,7 +158,7 @@ void DatabasesConnectDialog::setSettingsDbCalls()
 }
 
 /**
- * Выход из приложения.
+ * Выполняет выход из приложения.
  */
 void DatabasesConnectDialog::onClose()
 {
@@ -168,7 +166,7 @@ void DatabasesConnectDialog::onClose()
 }
 
 /**
- * Реализация получения параметров баз данных из main.
+ * Получает параметры баз данных из main.
  */
 void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
 {
@@ -190,7 +188,7 @@ void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls,
 }
 
 /**
- * Реализация открытия базы контактов.
+ * Выполняет установку параметров и открытие соединения с базой контактов.
  */
 void DatabasesConnectDialog::openDb()
 {
@@ -203,7 +201,7 @@ void DatabasesConnectDialog::openDb()
 }
 
 /**
- * Реализация открытия базы звонков.
+ * Выполняет установку параметров и открытие соединения с базой звонков.
  */
 void DatabasesConnectDialog::openDbCalls()
 {

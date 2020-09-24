@@ -3,6 +3,7 @@
  */
 
 #include "AsteriskManager.h"
+
 #include "Global.h"
 
 #include <QTcpSocket>

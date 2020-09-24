@@ -27,7 +27,7 @@ QList<PopupWindow*> PopupWindow::m_PopupWindows;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 // msec
+#define TIME_TO_SHOW	800   // msec
 #define TIME_TO_LIVE	60000 // msec
 
 PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
@@ -273,23 +273,6 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
 }
 
 /**
- * Установка языка интерфейса окна.
- */
-void PopupWindow::changeEvent(QEvent* event)
-{
-    QDialog::changeEvent(event);
-
-    switch (event->type())
-    {
-        case QEvent::LanguageChange:
-            ui->retranslateUi(this);
-            break;
-        default:
-            break;
-    }
-}
-
-/**
  * Реализация запуска таймера.
  */
 void PopupWindow::onPopupTimeout()
@@ -390,7 +373,7 @@ void PopupWindow::onTimer()
 /**
  * Реализация появления окна оповещения о звонке.
  */
-void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
+void PopupWindow::showCall(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
 {
 	PWInformation pwi;
 
@@ -410,32 +393,6 @@ void PopupWindow::showCallNotification(QString dateTime, QString uniqueid, QStri
     popup->ui->timeLabel->setText("<font size = 1>" + dateTime + "</font>");
 
     popup->show();
-
-	m_PopupWindows.append(popup);
-}
-
-/**
- * Реализация появления окна оповещения о входе в приложение.
- */
-void PopupWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
-{
-	PWInformation pwi;
-
-	pwi.type = type;
-
-	if (caption!="")
-		pwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
-	else
-		pwi.text = message;
-
-	if (avatar.isNull())
-        avatar = QPixmap(":/images/outcall-logo.png");
-
-	pwi.avatar = avatar;
-
-    PopupWindow* popup = new PopupWindow(pwi);
-
-	popup->show();
 
 	m_PopupWindows.append(popup);
 }
@@ -578,7 +535,7 @@ void PopupWindow::onViewNotes()
         notesDialog.data()->close();
 
     notesDialog = new NotesDialog;
-    notesDialog.data()->receiveData(m_pwi.uniqueid, m_pwi.number, loadState);
+    notesDialog.data()->setValues(m_pwi.uniqueid, m_pwi.number, loadState);
     notesDialog.data()->hideAddNote();
     notesDialog.data()->show();
     notesDialog.data()->setAttribute(Qt::WA_DeleteOnClose);

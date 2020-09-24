@@ -43,7 +43,6 @@ private slots:
     void onTimer();
     void onPopupTimeout();
 
-    void changeEvent(QEvent*);
     void mousePressEvent(QMouseEvent*);
 
 private:

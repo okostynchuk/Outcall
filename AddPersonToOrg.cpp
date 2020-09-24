@@ -23,7 +23,7 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::getPersonId);
+    connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::addPerson);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPersonToOrg::currentIndexChanged);
 
     page = "1";
@@ -72,7 +72,7 @@ void AddPersonToOrg::setOrgId(QString orgId)
 /**
  * Выполняет привязку выбранного физ. лица к организации.
  */
-void AddPersonToOrg::getPersonId(const QModelIndex &index)
+void AddPersonToOrg::addPerson(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
 
@@ -101,8 +101,8 @@ void AddPersonToOrg::getPersonId(const QModelIndex &index)
 }
 
 /**
- * Выполняет вывод и обновление списка всех физ. лиц,
- * не привязанных к какой-либо организации.
+ * Выполняет вывод и обновление списка физ. лиц,
+ * не привязанных к какой-либо организации, с и без фильтра.
  */
 void AddPersonToOrg::onUpdate()
 {
@@ -230,7 +230,7 @@ void AddPersonToOrg::searchFunction()
 }
 
 /**
- * Выполняет обработку события смены количества выводимых физ. лиц на странице.
+ * Выполняет обработку смены количества выводимых физ. лиц на странице.
  */
 void AddPersonToOrg::currentIndexChanged()
 {
@@ -291,7 +291,7 @@ void AddPersonToOrg::on_lineEdit_page_returnPressed()
 
 /**
  * Выполняет поиск по списку при нажатии клавиши Enter,
- * находясь в строке поиска.
+ * находясь в поле поиска.
  */
 void AddPersonToOrg::on_lineEdit_returnPressed()
 {

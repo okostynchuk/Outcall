@@ -1,5 +1,5 @@
 /*
- * Класс служит для добавления физ. лиц.
+ * Класс служит для добавления физ. лица.
  */
 
 #include "AddContactDialog.h"
@@ -282,7 +282,8 @@ void AddContactDialog::on_deleteOrgButton_clicked()
 }
 
 /**
- * Получает номер телефона неизвестного физ. лица из класса CallHistoryDialog.
+ * Получает номер телефона неизвестного физ. лица из классов
+ * CallHistoryDialog и PopupWindow.
  */
 void AddContactDialog::setValues(QString number)
 {

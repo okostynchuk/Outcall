@@ -1,6 +1,6 @@
 /*
  * Переопределение класса QSqlQueryModel для закрашивания
- * в таблице строк с делегированными нам напоминаниями.
+ * в таблице строк с делегированными пользователю напоминаниями.
  */
 
 #include "QSqlQueryModelReminders.h"
@@ -14,7 +14,7 @@ QSqlQueryModelReminders::QSqlQueryModelReminders()
 }
 
 /**
- * Установка родительской таблицы.
+ * Выполняет установку родительской таблицы.
  */
 void QSqlQueryModelReminders::setParentTable(QTableView* p)
 {
@@ -22,7 +22,7 @@ void QSqlQueryModelReminders::setParentTable(QTableView* p)
 }
 
 /**
- * Переопределение метода data для закраски нужных строк таблицы.
+ * Выполняет закраску нужных строк таблицы (переопределение функции).
  */
 QVariant QSqlQueryModelReminders::data(const QModelIndex &index, int role) const
 {

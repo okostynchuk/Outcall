@@ -1,29 +1,40 @@
+/*
+ * Класс служит для отлавливания момента,
+ * когда должно появиться окно напоминания.
+ */
+
 #include "RemindersThread.h"
 
 #include <QDebug>
 #include <QThread>
 #include <QMessageBox>
 
-RemindersThread::RemindersThread(QString receivedNumber, QList<QString> receivedIds, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes)
+RemindersThread::RemindersThread(QList<QString> ids, QList<QDateTime> dateTimes, QList<QString> notes)
 {
-    my_number = receivedNumber;
-    ids = receivedIds;
-    dateTimes = receivedDateTimes;
-    notes = receivedNotes;
+    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+
+    this->ids = ids;
+    this->dateTimes = dateTimes;
+    this->notes = notes;
 }
 
 RemindersThread::~RemindersThread()
-{
+{}
 
+/**
+ * Получает данные актуальных напоминаний из класса RemindersDialog.
+ */
+void RemindersThread::setValues(QList<QString> ids, QList<QDateTime> dateTimes, QList<QString> notes)
+{
+    this->ids = ids;
+    this->dateTimes = dateTimes;
+    this->notes = notes;
 }
 
-void RemindersThread::receiveNewValues(QList<QString> receivedIds, QList<QDateTime> receivedDateTimes, QList<QString> receivedNotes)
-{
-    ids = receivedIds;
-    dateTimes = receivedDateTimes;
-    notes = receivedNotes;
-}
-
+/**
+ * Выполняет сравнения текущего времени с временем актуальных напоминаний.
+ * Когда приходит время напоминания, происходит отправка его данных в класс RemindersDialog.
+ */
 void RemindersThread::process()
 {
     forever

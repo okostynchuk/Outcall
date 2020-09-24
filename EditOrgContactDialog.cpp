@@ -47,7 +47,7 @@ EditOrgContactDialog::~EditOrgContactDialog()
 }
 
 /**
- * Изменяет позицию курсора.
+ * Выполняет сохранение позиции текстового курсора.
  */
 void EditOrgContactDialog::onCursorPosChanged()
 {
@@ -82,7 +82,7 @@ bool EditOrgContactDialog::eventFilter(QObject*, QEvent* event)
 }
 
 /**
- * Реализация закрытия окна и отправка сигнала об позиции окна.
+ * Выполняет закрытие окна и отправку данных в класс ViewOrgContactDialog.
  */
 void EditOrgContactDialog::onReturn()
 {
@@ -92,7 +92,7 @@ void EditOrgContactDialog::onReturn()
 }
 
 /**
- * Реализация установки позиции окна в зависимости от позиции ViewOrgContactDialog.
+ * Выполняет установку позиции окна в зависимости от позиции окна-родителя ViewOrgContactDialog.
  */
 void EditOrgContactDialog::setPos(int x, int y)
 {
@@ -141,7 +141,7 @@ void EditOrgContactDialog::setPos(int x, int y)
 }
 
 /**
- * Сохранение введенных данных с проверками.
+ * Выполняет проверку введенных данных и их последующее сохранение в БД.
  */
 void EditOrgContactDialog::onSave()
 {
@@ -321,7 +321,7 @@ void EditOrgContactDialog::onSave()
 }
 
 /**
- * Реализация проверки введенных данных в поля номеров.
+ * Выполняет проверку на соответсвие номера шаблону.
  */
 bool EditOrgContactDialog::isPhone(QString* str)
 {
@@ -336,8 +336,8 @@ bool EditOrgContactDialog::isPhone(QString* str)
 }
 
 /**
- * Получение и заполнение полей окна необходимыми данными.
- * Получение id контакта из CallHistoryDialog, ViewOrgContactDialog.
+ * Получает и заполняет поля окна необходимыми данными.
+ * Получает id контакта из классов CallHistoryDialog, ViewOrgContactDialog.
  */
 void EditOrgContactDialog::setValues(QString id)
 {
@@ -368,7 +368,8 @@ void EditOrgContactDialog::setValues(QString id)
 }
 
 /**
- * Реализация ограничения максимальной длины напоминания 255-ю символами.
+ * Выполняет удаление последнего символа в тексте,
+ * если его длина превышает 255 символов.
  */
 void EditOrgContactDialog::onTextChanged()
 {
@@ -377,7 +378,7 @@ void EditOrgContactDialog::onTextChanged()
 }
 
 /**
- * Реализация скрытия кнопки возврата к карточке организации.
+ * Выполняет скрытие кнопки возврата к карточке организации.
  */
 void EditOrgContactDialog::hideBackButton()
 {

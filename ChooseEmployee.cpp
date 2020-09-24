@@ -147,8 +147,8 @@ void ChooseEmployee::onSearch()
 }
 
 /**
- * Получает список сотрудников из классов AddReminderDialog,
- * EditReminderDialog, PopupReminder.
+ * Получает список сотрудников из классов
+ * AddReminderDialog, EditReminderDialog.
  */
 void ChooseEmployee::setValues(QStringList employee)
 {
