@@ -37,10 +37,7 @@ public:
     void setValues(QString);
 
 private slots:
-    void loadAllCalls();
-    void loadMissedCalls();
-    void loadReceivedCalls();
-    void loadPlacedCalls();
+    void loadCalls();
 
     void onAddReminder();
     void onOpenAccess();
@@ -52,6 +49,8 @@ private slots:
     void updateCount();
     void tabSelected();
     void daysChanged();
+
+    void setPage();
 
     void deleteObjects();
 
@@ -93,67 +92,28 @@ private:
     QString recordpath;
     QString userId;
     QString contactId;
-    QString uniqueid;
-    QString number;
     QString my_number;
     QString page;
     QString pages;
     QString go;
-    QString extfield;
-    QString src;
-    QString dst;
-    QString dialogStatus;
     int count;
     int countNumbers = 1;
-    int remainder;
     QString days;
-    QString state_call;
     QString contact_number;
 
-    QWidget* loadNote();
-    QWidget* loadStatus();
-    QWidget* loadName();
+    QWidget* loadStatus(QString);
+    QWidget* loadNote(QString);
+    QWidget* loadName(QString, QString);
 
-    QList<QSqlQueryModel*> queriesAll;
-    QList<QSqlQueryModel*> queriesMissed;
-    QList<QSqlQueryModel*> queriesReceived;
-    QList<QSqlQueryModel*> queriesPlaced;
+    QModelIndexList selections;
 
-    QList<QHBoxLayout*> layoutsStatus;
+    QList<QSqlQueryModel*> queries;
 
-    QList<QHBoxLayout*> layoutsAllName;
-    QList<QHBoxLayout*> layoutsMissedName;
-    QList<QHBoxLayout*> layoutsReceivedName;
-    QList<QHBoxLayout*> layoutsPlacedName;
+    QList<QHBoxLayout*> layouts;
 
-    QList<QHBoxLayout*> layoutsAllNotes;
-    QList<QHBoxLayout*> layoutsMissedNotes;
-    QList<QHBoxLayout*> layoutsReceivedNotes;
-    QList<QHBoxLayout*> layoutsPlacedNotes;
+    QList<QWidget*> widgets;
 
-    QList<QWidget*> widgetsAllName;
-    QList<QWidget*> widgetsMissedName;
-    QList<QWidget*> widgetsReceivedName;
-    QList<QWidget*> widgetsPlacedName;
-
-    QList<QWidget*> widgetsStatus;
-
-    QList<QWidget*> widgetsAllNotes;
-    QList<QWidget*> widgetsMissedNotes;
-    QList<QWidget*> widgetsReceivedNotes;
-    QList<QWidget*> widgetsPlacedNotes;
-
-    QList<QLabel*> labelsAllName;
-    QList<QLabel*> labelsMissedName;
-    QList<QLabel*> labelsReceivedName;
-    QList<QLabel*> labelsPlacedName;
-
-    QList<QLabel*> labelsStatus;
-
-    QList<QLabel*> notesAll;
-    QList<QLabel*> notesMissed;
-    QList<QLabel*> notesReceived;
-    QList<QLabel*> notesPlaced;
+    QList<QLabel*> labels;
 };
 
 #endif // VIEWCONTACTDIALOG_H

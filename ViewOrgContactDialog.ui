@@ -29,9 +29,9 @@
    <iconset resource="images.qrc">
     <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_16">
+  <layout class="QGridLayout" name="gridLayout_10">
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="tabWidget_2">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -764,7 +764,7 @@ background-color: #fffff0;
       <attribute name="title">
        <string>Журнал звонков</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_15">
+      <layout class="QGridLayout" name="gridLayout_12">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_11">
          <item row="0" column="3">
@@ -816,7 +816,19 @@ background-color: #fffff0;
         </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QTabWidget" name="tabWidget_3">
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>21</height>
+          </size>
+         </property>
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -824,112 +836,38 @@ background-color: #fffff0;
           <attribute name="title">
            <string>Все звонки</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_12">
-           <item row="0" column="0">
-            <widget class="QTableView" name="tableView_2">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
          <widget class="QWidget" name="tab_5">
           <attribute name="title">
            <string>Пропущенные</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_10">
-           <item row="0" column="0">
-            <widget class="QTableView" name="tableView_3">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
          <widget class="QWidget" name="tab_6">
           <attribute name="title">
            <string>Входящие</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_10">
-           <item>
-            <widget class="QTableView" name="tableView_4">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
            <string>Исходящие</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_17">
-           <item row="0" column="0">
-            <widget class="QTableView" name="tableView_5">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <property name="gridStyle">
-              <enum>Qt::SolidLine</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </widget>
        </item>
        <item row="2" column="0">
+        <widget class="QTableView" name="tableView_2">
+         <property name="styleSheet">
+          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
         <layout class="QGridLayout" name="gridLayout_13">
          <item row="0" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -1218,7 +1156,7 @@ background-color: #fffff0;
   </layout>
  </widget>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>tabWidget_2</tabstop>
   <tabstop>orgName</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>openAccessButton</tabstop>
@@ -1237,10 +1175,7 @@ background-color: #fffff0;
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
   <tabstop>comboBox_2</tabstop>
-  <tabstop>tabWidget_3</tabstop>
-  <tabstop>tableView_4</tabstop>
-  <tabstop>tableView_2</tabstop>
-  <tabstop>tableView_5</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>
   <tabstop>lineEdit_page</tabstop>

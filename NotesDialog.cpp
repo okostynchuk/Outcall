@@ -46,6 +46,7 @@ void NotesDialog::receiveData(QString uniqueid, QString phone, QString loadState
     this->loadState = loadState;
 
     go = "default";
+
     page = "1";
 
     loadNotes();

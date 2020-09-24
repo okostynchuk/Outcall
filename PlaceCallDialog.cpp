@@ -21,11 +21,13 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     validator = new QRegularExpressionValidator(regExp, this);
     ui->phoneLine->setValidator(validator);
 
-    connect(ui->callButton,    &QAbstractButton::clicked,       this, &PlaceCallDialog::onCallButton);
-    connect(ui->cancelButton,  &QAbstractButton::clicked,       this, &PlaceCallDialog::onCancelButton);
-    connect(ui->comboBox,      &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
-    connect(ui->comboBox_2,    static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
-    connect(ui->tableView,     &QAbstractItemView::clicked,     this, &PlaceCallDialog::showNumber);
+    connect(ui->tableView, &QAbstractItemView::clicked, this, &PlaceCallDialog::showNumber);
+
+    connect(ui->callButton,   &QAbstractButton::clicked, this, &PlaceCallDialog::onCallButton);
+    connect(ui->cancelButton, &QAbstractButton::clicked, this, &PlaceCallDialog::onCancelButton);
+
+    connect(ui->comboBox,   &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
+    connect(ui->comboBox_2, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
 
     queryModel = new QSqlQueryModel;
 

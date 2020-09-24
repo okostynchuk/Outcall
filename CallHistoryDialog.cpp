@@ -23,33 +23,20 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_2->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_3->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_3->horizontalHeader()->setSectionsClickable(false);
-    ui->tableView_4->verticalHeader()->setSectionsClickable(false);
-    ui->tableView_4->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->playAudio,            &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudio);
     connect(ui->callButton,           &QAbstractButton::clicked, this, &CallHistoryDialog::onCallClicked);
-    connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdateClick);
+    connect(ui->updateButton,         &QAbstractButton::clicked, this, &CallHistoryDialog::onUpdate);
     connect(ui->playAudioPhone,       &QAbstractButton::clicked, this, &CallHistoryDialog::onPlayAudioPhone);
     connect(ui->addContactButton,     &QAbstractButton::clicked, this, &CallHistoryDialog::onAddContact);
     connect(ui->addOrgContactButton,  &QAbstractButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
 
-    connect(ui->tabWidget,   &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
-    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
+    connect(ui->tabWidget,  &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
+    connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
 
-    connect(ui->tableView,   &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
-    connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
-    connect(ui->tableView_3, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
-    connect(ui->tableView_4, &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
-
-    connect(ui->tableView,   &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
-    connect(ui->tableView_2, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
-    connect(ui->tableView_3, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
-    connect(ui->tableView_4, &QAbstractItemView::clicked, this, &CallHistoryDialog::getData);
+    connect(ui->tableView,  &QAbstractItemView::clicked,       this, &CallHistoryDialog::getData);
+    connect(ui->tableView,  &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
 
     ui->comboBox_list->setVisible(false);
 
@@ -61,12 +48,13 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     days = ui->comboBox_2->currentText();
 
-    loadAllCalls();
 }
 
 CallHistoryDialog::~CallHistoryDialog()
 {
     deleteObjects();
+
+    queryModel->deleteLater();
 
     delete ui;
 }
@@ -75,14 +63,7 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    if (ui->tabWidget->currentIndex() == 0)
-        selectionAll = ui->tableView->selectionModel()->selectedRows();
-    else if (ui->tabWidget->currentIndex() == 1)
-        selectionMissed = ui->tableView_2->selectionModel()->selectedRows();
-    else if (ui->tabWidget->currentIndex() == 2)
-        selectionReceived = ui->tableView_3->selectionModel()->selectedRows();
-    else if (ui->tabWidget->currentIndex() == 3)
-        selectionPlaced = ui->tableView_4->selectionModel()->selectedRows();
+    selections = ui->tableView->selectionModel()->selectedRows();
 
     go = "default";
 
@@ -102,24 +83,51 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
     page = "1";
 }
 
-void CallHistoryDialog::loadAllCalls()
+void CallHistoryDialog::loadCalls()
 {
-    if (!queriesAll.isEmpty())
-        deleteObjects();
+    deleteObjects();
 
     queryModel = new QSqlQueryModel;
 
-    queriesAll.append(queryModel);
+    queries.append(queryModel);
 
     setPage();
 
-    QString queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), src, dst, disposition, datetime, uniqueid, recordpath FROM cdr "
-                                                      "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL'"
-                                                      " OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                                                      "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                                                      "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                      "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                                                      "OR src = '"+my_number+"') ORDER BY datetime DESC LIMIT ";
+    QString queryString;
+
+    if (ui->tabWidget->currentIndex() == 0)
+        queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), ";
+    else if (ui->tabWidget->currentIndex() == 3)
+        queryString = "SELECT extfield2, ";
+    else
+        queryString = "SELECT extfield1, ";
+
+    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ");
+
+    if (ui->tabWidget->currentIndex() == 3)
+            queryString.append("AND src = '"+my_number+"' ");
+    else
+    {
+        if (ui->tabWidget->currentIndex() == 0)
+            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
+        else if (ui->tabWidget->currentIndex() == 1)
+            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+        else if (ui->tabWidget->currentIndex() == 2)
+            queryString.append("AND disposition = 'ANSWERED' ");
+
+        queryString.append("AND ( ");
+
+        if (ui->tabWidget->currentIndex() == 0)
+            queryString.append("dst = '"+my_group+"' OR src = '"+my_number+"' OR ");
+        if (ui->tabWidget->currentIndex() == 1)
+            queryString.append("dst = '"+my_group+"' OR ");
+
+        queryString.append("dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' "
+                                                    "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                                                 "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') ");
+    }
+
+    queryString.append("ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
         queryString.append("0, "
@@ -142,22 +150,30 @@ void CallHistoryDialog::loadAllCalls()
 
     ui->tableView->setModel(queryModel);
 
+    if (ui->tabWidget->currentIndex() == 3)
+        ui->tableView->setColumnHidden(1, true);
+
     ui->tableView->setColumnHidden(3, true);
+
+    if (ui->tabWidget->currentIndex() != 0)
+        ui->tableView->setColumnHidden(4, true);
+
     ui->tableView->setColumnHidden(7, true);
     ui->tableView->setColumnHidden(8, true);
 
     for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        src = queryModel->data(queryModel->index(row_index, 1)).toString();
-        dst = queryModel->data(queryModel->index(row_index, 2)).toString();
-        dialogStatus = queryModel->data(queryModel->index(row_index, 3)).toString();
-        uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
-
-        ui->tableView->setIndexWidget(queryModel->index(row_index, 4), loadStatus());
+        QString extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
+        QString src = queryModel->data(queryModel->index(row_index, 1)).toString();
+        QString dst = queryModel->data(queryModel->index(row_index, 2)).toString();
+        QString dialogStatus = queryModel->data(queryModel->index(row_index, 3)).toString();
+        QString uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
 
         if (extfield.isEmpty())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 0), loadName());
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
+
+        if (ui->tabWidget->currentIndex() == 0)
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
         QSqlQuery query(db);
 
@@ -165,14 +181,14 @@ void CallHistoryDialog::loadAllCalls()
         query.exec();
         query.first();
 
-        if (query.value(0).toInt() != 0)
+        if (query.value(0).toBool())
         {
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 6), loadNote());
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 6), loadNote(uniqueid));
 
             ui->tableView->resizeRowToContents(row_index);
         }
         else
-            ui->tableView->setRowHeight(row_index, 34);
+            ui->tableView->setRowHeight(row_index, 33);
     }
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
@@ -182,10 +198,10 @@ void CallHistoryDialog::loadAllCalls()
     if (ui->tableView->model()->columnCount() != 0)
         ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    if (!selectionAll.isEmpty())
-        for (int i = 0; i < selectionAll.length(); ++i)
+    if (!selections.isEmpty())
+        for (int i = 0; i < selections.length(); ++i)
         {
-            QModelIndex index = selectionAll.at(i);
+            QModelIndex index = selections.at(i);
 
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
@@ -193,343 +209,42 @@ void CallHistoryDialog::loadAllCalls()
         disableButtons();
 }
 
-void CallHistoryDialog::loadMissedCalls()
-{
-    if (!queriesMissed.isEmpty())
-        deleteObjects();
-
-    queryModel = new QSqlQueryModel;
-
-    queriesMissed.append(queryModel);
-
-    setPage();
-
-    QString queryString =  "SELECT extfield1, src, dst, datetime, uniqueid FROM cdr WHERE "
-                                                 "(disposition = 'NO ANSWER' "
-                                                 "OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
-                                                 "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                                                 "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                                                 "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' "
-                                                 "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' "
-                                                 "OR dst = '"+my_group+"') ORDER BY datetime DESC LIMIT ";
-
-    if (ui->lineEdit_page->text() == "1")
-        queryString.append("0, "
-                          + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    else
-        queryString.append(QString::number(ui->lineEdit_page->text().toInt()
-                                            * ui->comboBox_list->currentText().toInt() -
-                                            ui->comboBox_list->currentText().toInt()) + " , " +
-                          QString::number(ui->comboBox_list->currentText().toInt()));
-
-    queryModel->setQuery(queryString, dbCalls);
-
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
-    queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
-
-    ui->tableView_2->setModel(queryModel);
-
-    ui->tableView_2->setColumnHidden(5, true);
-
-    if (my_group.isEmpty())
-        ui->tableView_2->setColumnHidden(2, true);
-
-    for (int row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
-    {
-        uniqueid = queryModel->data(queryModel->index(row_index, 5)).toString();
-        extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        src = queryModel->data(queryModel->index(row_index, 1)).toString();
-
-        if (extfield.isEmpty())
-            ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName());
-
-        QSqlQuery query(db);
-
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-        query.exec();
-        query.first();
-
-        if (query.value(0).toInt() != 0)
-        {
-            ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadNote());
-
-            ui->tableView_2->resizeRowToContents(row_index);
-        }
-        else
-            ui->tableView_2->setRowHeight(row_index, 34);
-    }
-    ui->tableView_2->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-
-    ui->tableView_2->resizeColumnsToContents();
-
-    if (ui->tableView_2->model()->columnCount() != 0)
-        ui->tableView_2->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    if (!selectionMissed.isEmpty())
-        for (int i = 0; i < selectionMissed.length(); ++i)
-        {
-            QModelIndex index = selectionMissed.at(i);
-
-            ui->tableView_2->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        }
-    else
-        disableButtons();
-}
-
-void CallHistoryDialog::loadReceivedCalls()
-{
-    if (!queriesReceived.isEmpty())
-        deleteObjects();
-
-    queryModel = new QSqlQueryModel;
-
-    queriesReceived.append(queryModel);
-
-    setPage();
-
-    QString queryString = "SELECT extfield1, src, dst, datetime, uniqueid, recordpath FROM cdr WHERE disposition = 'ANSWERED'"
-                                               " AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                                               "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                                               "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR "
-                                               "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') "
-                                               "ORDER BY datetime DESC LIMIT ";
-
-    if (ui->lineEdit_page->text() == "1")
-        queryString.append("0, "
-                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    else
-        queryString.append(QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
-                                               ui->comboBox_list->currentText().toInt()) + " , " +
-                         QString::number(ui->comboBox_list->currentText().toInt()));
-
-    queryModel->setQuery(queryString, dbCalls);
-
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
-    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
-    queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
-
-    ui->tableView_3->setModel(queryModel);
-
-    ui->tableView_3->setColumnHidden(5, true);
-    ui->tableView_3->setColumnHidden(6, true);
-
-    if (my_group.isEmpty())
-        ui->tableView_3->setColumnHidden(2, true);
-
-    for (int row_index = 0; row_index < ui->tableView_3->model()->rowCount(); ++row_index)
-    {
-        uniqueid = queryModel->data(queryModel->index(row_index, 5)).toString();
-        extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        src = queryModel->data(queryModel->index(row_index, 1)).toString();
-
-        if (extfield.isEmpty())
-            ui->tableView_3->setIndexWidget(queryModel->index(row_index, 0), loadName());
-
-        QSqlQuery query(db);
-
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-        query.exec();
-        query.first();
-
-        if (query.value(0).toInt() != 0)
-        {
-            ui->tableView_3->setIndexWidget(queryModel->index(row_index, 4), loadNote());
-
-            ui->tableView_3->resizeRowToContents(row_index);
-        }
-        else
-            ui->tableView_3->setRowHeight(row_index, 34);
-    }
-
-    ui->tableView_3->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-
-    ui->tableView_3->resizeColumnsToContents();
-
-    if (ui->tableView_3->model()->columnCount() != 0)
-        ui->tableView_3->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    if (!selectionReceived.isEmpty())
-        for (int i = 0; i < selectionReceived.length(); ++i)
-        {
-            QModelIndex index = selectionReceived.at(i);
-
-            ui->tableView_3->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        }
-    else
-        disableButtons();
-}
-
-void CallHistoryDialog::loadPlacedCalls()
-{
-    if (!queriesPlaced.isEmpty())
-        deleteObjects();
-
-    queryModel = new QSqlQueryModel;
-
-    queriesPlaced.append(queryModel);
-
-    setPage();
-
-    QString queryString = "SELECT extfield2, dst, src, datetime, uniqueid, recordpath FROM cdr WHERE "
-                     "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                     "src = '"+my_number+"' ORDER BY datetime DESC LIMIT ";
-
-    if (ui->lineEdit_page->text() == "1")
-        queryString.append("0, "
-                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    else
-        queryString.append(QString::number(ui->lineEdit_page->text().toInt()
-                                           * ui->comboBox_list->currentText().toInt() -
-                                           ui->comboBox_list->currentText().toInt()) + " , " +
-                         QString::number(ui->comboBox_list->currentText().toInt()));
-
-    queryModel->setQuery(queryString, dbCalls);
-
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Кому"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Откуда"));
-    queryModel->setHeaderData(3, Qt::Horizontal, tr("Дата и время"));
-    queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Заметка"));
-
-    ui->tableView_4->setModel(queryModel);
-
-    ui->tableView_4->setColumnHidden(2, true);
-    ui->tableView_4->setColumnHidden(5, true);
-    ui->tableView_4->setColumnHidden(6, true);
-
-    for (int row_index = 0; row_index < ui->tableView_4->model()->rowCount(); ++row_index)
-    {
-        uniqueid = queryModel->data(queryModel->index(row_index, 5)).toString();
-        extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        dst = queryModel->data(queryModel->index(row_index, 1)).toString();
-        src = queryModel->data(queryModel->index(row_index, 2)).toString();
-
-        if (extfield.isEmpty())
-            ui->tableView_4->setIndexWidget(queryModel->index(row_index, 0), loadName());
-
-        QSqlQuery query(db);
-
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid ="+uniqueid+")");
-        query.exec();
-        query.first();
-
-        if (query.value(0).toInt() != 0)
-        {
-            ui->tableView_4->setIndexWidget(queryModel->index(row_index, 4), loadNote());
-
-            ui->tableView_4->resizeRowToContents(row_index);
-        }
-        else
-            ui->tableView_4->setRowHeight(row_index, 34);
-    }
-
-    ui->tableView_4->horizontalHeader()->setDefaultSectionSize(maximumWidth());
-
-    ui->tableView_4->resizeColumnsToContents();
-
-    if (ui->tableView_4->model()->columnCount() != 0)
-        ui->tableView_4->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
-
-    if (!selectionPlaced.isEmpty())
-        for (int i = 0; i < selectionPlaced.length(); ++i)
-        {
-            QModelIndex index = selectionPlaced.at(i);
-
-            ui->tableView_4->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        }
-    else
-        disableButtons();
-}
-
-void CallHistoryDialog::daysChanged()
-{
-    clearSelections();
-
-    days = ui->comboBox_2->currentText();
-    go = "default";
-
-    updateCount();
-}
-
-void CallHistoryDialog::tabSelected()
-{
-    clearSelections();
-
-    go = "default";
-    page = "1";
-
-    updateCount();
-}
-
 void CallHistoryDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
 
-    if (ui->tabWidget->currentIndex() == 0)
+    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ";
+
+    if (ui->tabWidget->currentIndex() == 3)
+            queryString.append("AND src = '" + my_number + "' ");
+    else
     {
-        query.prepare("SELECT COUNT(*) FROM cdr "
-                      "WHERE (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' "
-                      "OR disposition = 'ANSWERED') AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL "
-                      "'"+ days +"' DAY) AND (dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+""
-                      "[)]$' OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                      "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' OR dst = '"+my_group+"' "
-                    "OR src = '"+my_number+"')");
-        query.exec();
-        query.first();
+        if (ui->tabWidget->currentIndex() == 0)
+            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
+        else if (ui->tabWidget->currentIndex() == 1)
+            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+        else if (ui->tabWidget->currentIndex() == 2)
+            queryString.append("AND disposition = 'ANSWERED' ");
 
-        count = query.value(0).toInt();
+        queryString.append("AND ( ");
 
-        loadAllCalls();
+        if (ui->tabWidget->currentIndex() == 0)
+            queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
+        if (ui->tabWidget->currentIndex() == 1)
+            queryString.append("dst = '" + my_group + "' OR ");
+
+        queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "
+                                                    "OR dst REGEXP '^" + my_number + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                                                 "'^" + my_number + "[(][a-z]+ [0-9]+[(]" + my_number + "[)][)]$') ");
     }
-    else if (ui->tabWidget->currentIndex() == 1)
-    {
-        query.prepare("SELECT COUNT(*) FROM cdr WHERE (disposition = 'NO ANSWER'"
-                      " OR disposition = 'BUSY' OR disposition = 'CANCEL') AND "
-                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                      "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                      "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' "
-                      "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$' "
-                      "OR dst = '"+my_group+"')");
-        query.exec();
-        query.first();
 
-        count = query.value(0).toInt();
+    query.prepare(queryString);
+    query.exec();
+    query.first();
 
-        loadMissedCalls();
-    }
-    else if (ui->tabWidget->currentIndex() == 2)
-    {
-        query.prepare("SELECT COUNT(*) FROM cdr WHERE disposition = 'ANSWERED' "
-                      "AND datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND "
-                      "(dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' OR "
-                      "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR "
-                      "dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$')");
-        query.exec();
-        query.first();
+    count = query.value(0).toInt();
 
-        count = query.value(0).toInt();
-
-        loadReceivedCalls();
-    }
-    else if (ui->tabWidget->currentIndex() == 3)
-    {
-        query.prepare("SELECT COUNT(*) FROM cdr WHERE "
-                      "datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) AND src = '"+my_number+"'");
-        query.exec();
-        query.first();
-
-        count = query.value(0).toInt();
-
-        loadPlacedCalls();
-    }
+    loadCalls();
 }
 
 bool CallHistoryDialog::isInternalPhone(QString* str)
@@ -552,7 +267,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
 {
     ui->callButton->setDisabled(false);
 
-    number = queryModel->data(queryModel->index(index.row(), 1)).toString();
+    QString number = queryModel->data(queryModel->index(index.row(), 1)).toString();
 
     if (number == my_number)
     {
@@ -572,7 +287,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
         query.exec();
         query.next();
 
-        if (query.value(0) == 0)
+        if (!query.value(0).toBool())
         {
             ui->addContactButton->setDisabled(false);
             ui->addOrgContactButton->setDisabled(false);
@@ -597,28 +312,146 @@ void CallHistoryDialog::getData(const QModelIndex &index)
         ui->addPhoneNumberButton->setDisabled(true);
     }
 
-    if (ui->tabWidget->currentIndex() == 0)
-        recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
-    else if (ui->tabWidget->currentIndex() == 1)
-        recordpath = "";
-    else if (ui->tabWidget->currentIndex() == 2 || ui->tabWidget->currentIndex() == 3)
-        recordpath = queryModel->data(queryModel->index(index.row(), 6)).toString();
+    ui->playAudio->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
+
+    recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
 
     if (!recordpath.isEmpty())
     {
         ui->playAudio->setDisabled(false);
         ui->playAudioPhone->setDisabled(false);
     }
+}
+
+QWidget* CallHistoryDialog::loadName(QString src, QString dst)
+{
+    QHBoxLayout* nameLayout = new QHBoxLayout;
+    QWidget* nameWgt = new QWidget;
+    QLabel* nameLabel = new QLabel(nameWgt);
+
+    if (src == my_number)
+        nameLabel->setText(dst);
     else
+        nameLabel->setText(src);
+
+    nameLayout->addWidget(nameLabel);
+
+    nameLayout->setContentsMargins(3, 0, 0, 0);
+
+    nameWgt->setLayout(nameLayout);
+
+    layouts.append(nameLayout);
+    widgets.append(nameWgt);
+    labels.append(nameLabel);
+
+    return nameWgt;
+}
+
+QWidget* CallHistoryDialog::loadNote(QString uniqueid)
+{
+    QWidget* wgt = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel* noteLabel = new QLabel(wgt);
+
+    layout->addWidget(noteLabel);
+
+    QSqlQuery query(db);
+
+    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
+    query.exec();
+    query.first();
+
+    QString note = query.value(0).toString();
+
+    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+
+    if (hrefIterator.hasNext())
     {
-        ui->playAudio->setDisabled(true);
-        ui->playAudioPhone->setDisabled(true);
+        QStringList hrefs;
+
+        while (hrefIterator.hasNext())
+        {
+            QRegularExpressionMatch match = hrefIterator.next();
+            QString href = match.captured(1);
+
+            hrefs << href;
+        }
+
+        note.replace(QRegularExpression("\\n"), QString(" <br> "));
+
+        for (int i = 0; i < hrefs.length(); ++i)
+            note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
+
+    noteLabel->setText(note);
+    noteLabel->setOpenExternalLinks(true);
+    noteLabel->setWordWrap(true);
+
+    wgt->setLayout(layout);
+
+    widgets.append(wgt);
+    layouts.append(layout);
+    labels.append(noteLabel);
+
+    return wgt;
+}
+
+QWidget* CallHistoryDialog::loadStatus(QString dialogStatus)
+{
+    QHBoxLayout* statusLayout = new QHBoxLayout;
+    QWidget* statusWgt = new QWidget;
+    QLabel* statusLabel = new QLabel(statusWgt);
+
+    if (dialogStatus == "NO ANSWER")
+        statusLabel->setText(tr("Пропущенный") + " ");
+    else if (dialogStatus == "BUSY")
+        statusLabel->setText(tr("Занято") + " ");
+    else if (dialogStatus == "CANCEL")
+        statusLabel->setText(tr("Отколено") + " ");
+    else if (dialogStatus == "ANSWERED")
+        statusLabel->setText(tr("Принятый") + " ");
+
+    statusLayout->addWidget(statusLabel);
+
+    statusLayout->setContentsMargins(3, 0, 0, 0);
+
+    statusWgt->setLayout(statusLayout);
+
+    layouts.append(statusLayout);
+    widgets.append(statusWgt);
+    labels.append(statusLabel);
+
+    return statusWgt;
+}
+
+void CallHistoryDialog::deleteObjects()
+{
+    if (!widgets.isEmpty())
+        for (int i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
+
+    if (!layouts.isEmpty())
+        for (int i = 0; i < layouts.size(); ++i)
+            layouts[i]->deleteLater();
+
+    if (!labels.isEmpty())
+        for (int i = 0; i < labels.size(); ++i)
+            labels[i]->deleteLater();
+
+    if (!queries.isEmpty())
+        for (int i = 0; i < queries.size(); ++i)
+            queries[i]->deleteLater();
+
+    widgets.clear();
+    layouts.clear();
+    labels.clear();
+    queries.clear();
 }
 
 void CallHistoryDialog::onCallClicked()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
 
@@ -632,21 +465,12 @@ void CallHistoryDialog::onCallClicked()
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
-void CallHistoryDialog::receiveData(bool updating)
-{
-    if (updating)
-    {
-        clearSelections();
-
-        disableButtons();
-    }
-}
-
 void CallHistoryDialog::onAddContact()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -664,9 +488,10 @@ void CallHistoryDialog::onAddContact()
 
 void CallHistoryDialog::onAddOrgContact()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -680,20 +505,6 @@ void CallHistoryDialog::onAddOrgContact()
     }
     else
         editOrgContact(number);
-}
-
-bool CallHistoryDialog::checkNumber(QString number)
-{
-    QSqlQuery query(db);
-
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
-    query.exec();
-    query.next();
-
-    if (query.value(0) != 0)
-        return false;
-    else
-        return true;
 }
 
 void CallHistoryDialog::editContact(QString number)
@@ -744,9 +555,10 @@ void CallHistoryDialog::editOrgContact(QString number)
 
 void CallHistoryDialog::onAddPhoneNumberToContact()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -770,9 +582,10 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
 
 void CallHistoryDialog::onPlayAudio()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -790,9 +603,10 @@ void CallHistoryDialog::onPlayAudio()
 
 void CallHistoryDialog::onPlayAudioPhone()
 {
-    if ((ui->tabWidget->currentIndex() == 0 && ui->tableView->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 1 && ui->tableView_2->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 2 && ui->tableView_3->selectionModel()->selectedRows().count() != 1) || (ui->tabWidget->currentIndex() == 3 && ui->tableView_4->selectionModel()->selectedRows().count() != 1))
+    if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
         QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+
         return;
     }
 
@@ -806,41 +620,50 @@ void CallHistoryDialog::onPlayAudioPhone()
 
 void CallHistoryDialog::addNote(const QModelIndex &index)
 {
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
-        phone =  queryModel->data(queryModel->index(index.row(), 1)).toString();
-        if(phone == my_number)
-            phone =  queryModel->data(queryModel->index(index.row(), 2)).toString();
-    }
-    else
-    {
-        uniqueid = queryModel->data(queryModel->index(index.row(), 5)).toString();
-        phone = queryModel->data(queryModel->index(index.row(), 1)).toString();
-    }
+    QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
+
+    QString phone =  queryModel->data(queryModel->index(index.row(), 1)).toString();
+
+    if(phone == my_number)
+        phone =  queryModel->data(queryModel->index(index.row(), 2)).toString();
 
     QString state = "byId";
     notesDialog = new NotesDialog;
     notesDialog->receiveData(uniqueid, phone, state);
-    connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::receiveDataFromNotes);
+    connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void CallHistoryDialog::receiveDataFromNotes()
+bool CallHistoryDialog::checkNumber(QString number)
 {
-    clearSelections();
+    QSqlQuery query(db);
 
-    go = "default";
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
+    query.exec();
+    query.next();
 
-    updateCount();
+    if (query.value(0) != 0)
+        return false;
+    else
+        return true;
+}
+
+void CallHistoryDialog::receiveData(bool updating)
+{
+    if (updating)
+    {
+        clearSelections();
+
+        disableButtons();
+    }
 }
 
 QString CallHistoryDialog::getUpdateId(QString number)
 {
     QSqlQuery query(db);
 
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '"+number+"')");
+    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
     query.first();
 
@@ -849,65 +672,23 @@ QString CallHistoryDialog::getUpdateId(QString number)
     return contactId;
 }
 
-QWidget* CallHistoryDialog::loadName()
+void CallHistoryDialog::daysChanged()
 {
-    QHBoxLayout* nameLayout = new QHBoxLayout;
-    QWidget* nameWgt = new QWidget;
-    QLabel* nameLabel = new QLabel(nameWgt);
+    days = ui->comboBox_2->currentText();
 
-    if (src == my_number)
-        nameLabel->setText(dst);
-    else
-        nameLabel->setText(src);
-
-    nameLayout->addWidget(nameLabel);
-
-    nameLayout->setContentsMargins(3, 0, 0, 0);
-
-    nameWgt->setLayout(nameLayout);
-
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        layoutsAllName.append(nameLayout);
-        widgetsAllName.append(nameWgt);
-        labelsAllName.append(nameLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 1)
-    {
-        layoutsMissedName.append(nameLayout);
-        widgetsMissedName.append(nameWgt);
-        labelsMissedName.append(nameLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 2)
-    {
-        layoutsReceivedName.append(nameLayout);
-        widgetsReceivedName.append(nameWgt);
-        labelsReceivedName.append(nameLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 3)
-    {
-        layoutsPlacedName.append(nameLayout);
-        widgetsPlacedName.append(nameWgt);
-        labelsPlacedName.append(nameLabel);
-    }
-
-    return nameWgt;
+    onUpdate();
 }
 
-void CallHistoryDialog::clearSelections()
+void CallHistoryDialog::tabSelected()
 {
-    selectionAll.clear();
-    selectionMissed.clear();
-    selectionReceived.clear();
-    selectionPlaced.clear();
+    page = "1";
 
-    ui->tableView->clearSelection();
-    ui->tableView_2->clearSelection();
-    ui->tableView_3->clearSelection();
-    ui->tableView_4->clearSelection();
+    ui->tableView->setModel(NULL);
+
+    onUpdate();
 }
 
-void CallHistoryDialog::onUpdateClick()
+void CallHistoryDialog::onUpdate()
 {
     clearSelections();
 
@@ -916,332 +697,58 @@ void CallHistoryDialog::onUpdateClick()
     updateCount();
 }
 
-void CallHistoryDialog::onUpdate()
+void CallHistoryDialog::updateDefault()
 {
     clearSelections();
 
-    if (ui->tabWidget->currentIndex() == 0)
-        loadAllCalls();
-    else if (ui->tabWidget->currentIndex() == 1)
-        loadMissedCalls();
-    else if (ui->tabWidget->currentIndex() == 2)
-        loadReceivedCalls();
-    else if (ui->tabWidget->currentIndex() == 3)
-        loadPlacedCalls();
+    loadCalls();
 }
 
-QWidget* CallHistoryDialog::loadNote()
+void CallHistoryDialog::clearSelections()
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* noteLabel = new QLabel(wgt);
+    selections.clear();
 
-    layout->addWidget(noteLabel);
-
-    QSqlQuery query(db);
-
-    query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
-    query.exec();
-    query.first();
-
-    QString note = query.value(0).toString();
-
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
-
-    if (hrefIterator.hasNext())
-    {
-        QStringList hrefs;
-
-        while (hrefIterator.hasNext())
-        {
-            QRegularExpressionMatch match = hrefIterator.next();
-            QString href = match.captured(1);
-
-            hrefs << href;
-        }
-
-        note.replace(QRegularExpression("\\n"), QString(" <br> "));
-
-        for (int i = 0; i < hrefs.length(); ++i)
-            note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
-    }
-
-    noteLabel->setText(note);
-    noteLabel->setOpenExternalLinks(true);
-    noteLabel->setWordWrap(true);
-
-    wgt->setLayout(layout);
-
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        widgetsAllNotes.append(wgt);
-        layoutsAllNotes.append(layout);
-        notesAll.append(noteLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 1)
-    {
-        widgetsMissedNotes.append(wgt);
-        layoutsMissedNotes.append(layout);
-        notesMissed.append(noteLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 2)
-    {
-        widgetsReceivedNotes.append(wgt);
-        layoutsReceivedNotes.append(layout);
-        notesReceived.append(noteLabel);
-    }
-    else if (ui->tabWidget->currentIndex() == 3)
-    {
-        widgetsPlacedNotes.append(wgt);
-        layoutsPlacedNotes.append(layout);
-        notesPlaced.append(noteLabel);
-    }
-
-    return wgt;
-}
-
-QWidget* CallHistoryDialog::loadStatus()
-{
-    QHBoxLayout* statusLayout = new QHBoxLayout;
-    QWidget* statusWgt = new QWidget;
-    QLabel* statusLabel = new QLabel(statusWgt);
-
-    if (dialogStatus == "NO ANSWER")
-        statusLabel->setText(tr("Пропущенный") + " ");
-    else if (dialogStatus == "BUSY")
-        statusLabel->setText(tr("Занято") + " ");
-    else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено") + " ");
-    else if (dialogStatus == "ANSWERED")
-        statusLabel->setText(tr("Принятый") + " ");
-
-    statusLayout->addWidget(statusLabel);
-
-    statusLayout->setContentsMargins(3, 0, 0, 0);
-
-    statusWgt->setLayout(statusLayout);
-
-    layoutsStatus.append(statusLayout);
-    widgetsStatus.append(statusWgt);
-    labelsStatus.append(statusLabel);
-
-    return statusWgt;
-}
-
-void CallHistoryDialog::deleteObjects()
-{
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        if (!widgetsAllNotes.isEmpty())
-        {
-            for (int i = 0; i < widgetsAllNotes.size(); ++i)
-                widgetsAllNotes[i]->deleteLater();
-
-            for (int i = 0; i < layoutsAllNotes.size(); ++i)
-                layoutsAllNotes[i]->deleteLater();
-
-            for (int i = 0; i < notesAll.size(); ++i)
-                notesAll[i]->deleteLater();
-
-            widgetsAllNotes.clear();
-            layoutsAllNotes.clear();
-            notesAll.clear();
-        }
-
-        if (!widgetsAllName.isEmpty())
-        {
-            for (int i = 0; i < layoutsAllName.size(); ++i)
-                layoutsAllName[i]->deleteLater();
-
-            for (int i = 0; i < widgetsAllName.size(); ++i)
-                widgetsAllName[i]->deleteLater();
-
-            for (int i = 0; i < labelsAllName.size(); ++i)
-                labelsAllName[i]->deleteLater();
-
-            layoutsAllName.clear();
-            widgetsAllName.clear();
-            labelsAllName.clear();
-        }
-
-        if (!widgetsStatus.isEmpty())
-        {
-            for (int i = 0; i < layoutsStatus.size(); ++i)
-                layoutsStatus[i]->deleteLater();
-
-            for (int i = 0; i < widgetsStatus.size(); ++i)
-                widgetsStatus[i]->deleteLater();
-
-            for (int i = 0; i < labelsStatus.size(); ++i)
-                labelsStatus[i]->deleteLater();
-
-            layoutsStatus.clear();
-            widgetsStatus.clear();
-            labelsStatus.clear();
-        }
-
-        for (int i = 0; i < queriesAll.size(); ++i)
-            queriesAll[i]->deleteLater();
-
-        queriesAll.clear();
-    }
-    else if (ui->tabWidget->currentIndex() == 1)
-    {
-        if (!widgetsMissedNotes.isEmpty())
-        {
-            for (int i = 0; i < widgetsMissedNotes.size(); ++i)
-                widgetsMissedNotes[i]->deleteLater();
-
-            for (int i = 0; i < layoutsMissedNotes.size(); ++i)
-                layoutsMissedNotes[i]->deleteLater();
-
-            for (int i = 0; i < notesMissed.size(); ++i)
-                notesMissed[i]->deleteLater();
-
-            widgetsMissedNotes.clear();
-            layoutsMissedNotes.clear();
-            notesMissed.clear();
-        }
-
-        if (!widgetsMissedName.isEmpty())
-        {
-            for (int i = 0; i < layoutsMissedName.size(); ++i)
-                layoutsMissedName[i]->deleteLater();
-
-            for (int i = 0; i < widgetsMissedName.size(); ++i)
-                widgetsMissedName[i]->deleteLater();
-
-            for (int i = 0; i < labelsMissedName.size(); ++i)
-                labelsMissedName[i]->deleteLater();
-
-            layoutsMissedName.clear();
-            widgetsMissedName.clear();
-            labelsMissedName.clear();
-        }
-
-        for (int i = 0; i < queriesMissed.size(); ++i)
-            queriesMissed[i]->deleteLater();
-
-        queriesMissed.clear();
-    }
-    else if (ui->tabWidget->currentIndex() == 2)
-    {
-        if (!widgetsReceivedNotes.isEmpty())
-        {
-            for (int i = 0; i < widgetsReceivedNotes.size(); ++i)
-                widgetsReceivedNotes[i]->deleteLater();
-
-            for (int i = 0; i < layoutsReceivedNotes.size(); ++i)
-                layoutsReceivedNotes[i]->deleteLater();
-
-            for (int i = 0; i < notesReceived.size(); ++i)
-                notesReceived[i]->deleteLater();
-
-            widgetsReceivedNotes.clear();
-            layoutsReceivedNotes.clear();
-            notesReceived.clear();
-        }
-
-        if (!widgetsReceivedName.isEmpty())
-        {
-            for (int i = 0; i < layoutsReceivedName.size(); ++i)
-                layoutsReceivedName[i]->deleteLater();
-
-            for (int i = 0; i < widgetsReceivedName.size(); ++i)
-                widgetsReceivedName[i]->deleteLater();
-
-            for (int i = 0; i < labelsReceivedName.size(); ++i)
-                labelsReceivedName[i]->deleteLater();
-
-            layoutsReceivedName.clear();
-            widgetsReceivedName.clear();
-            labelsReceivedName.clear();
-        }
-
-        for (int i = 0; i < queriesReceived.size(); ++i)
-            queriesReceived[i]->deleteLater();
-
-        queriesReceived.clear();
-    }
-    else if (ui->tabWidget->currentIndex() == 3)
-    {
-        if (!widgetsPlacedNotes.isEmpty())
-        {
-            for (int i = 0; i < widgetsPlacedNotes.size(); ++i)
-                widgetsPlacedNotes[i]->deleteLater();
-
-            for (int i = 0; i < layoutsPlacedNotes.size(); ++i)
-                layoutsPlacedNotes[i]->deleteLater();
-
-            for (int i = 0; i < notesPlaced.size(); ++i)
-                notesPlaced[i]->deleteLater();
-
-            widgetsPlacedNotes.clear();
-            layoutsPlacedNotes.clear();
-            notesPlaced.clear();
-        }
-
-        if (!widgetsPlacedName.isEmpty())
-        {
-            for (int i = 0; i < layoutsPlacedName.size(); ++i)
-                layoutsPlacedName[i]->deleteLater();
-
-            for (int i = 0; i < widgetsPlacedName.size(); ++i)
-                widgetsPlacedName[i]->deleteLater();
-
-            for (int i = 0; i < labelsPlacedName.size(); ++i)
-                labelsPlacedName[i]->deleteLater();
-
-            layoutsPlacedName.clear();
-            widgetsPlacedName.clear();
-            labelsPlacedName.clear();
-        }
-
-        for (int i = 0; i < queriesPlaced.size(); ++i)
-            queriesPlaced[i]->deleteLater();
-
-        queriesPlaced.clear();
-    }
+    ui->tableView->clearSelection();
 }
 
 void CallHistoryDialog::on_previousButton_clicked()
 {
     go = "previous";
 
-    onUpdate();
+    updateDefault();
 }
 
 void CallHistoryDialog::on_nextButton_clicked()
 {
     go = "next";
 
-    onUpdate();
+    updateDefault();
 }
 
 void CallHistoryDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
 
-    onUpdate();
+    updateDefault();
 }
 
 void CallHistoryDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
 
-    onUpdate();
+    updateDefault();
 }
 
 void CallHistoryDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
 
-    onUpdate();
+    updateDefault();
 }
 
 void CallHistoryDialog::keyPressEvent(QKeyEvent* event)
 {
-    if(event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape)
         QDialog::close();
     else
         QWidget::keyPressEvent(event);
@@ -1253,7 +760,7 @@ void CallHistoryDialog::setPage()
         pages = "1";
     else
     {
-        remainder = count % ui->comboBox_list->currentText().toInt();
+        int remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;

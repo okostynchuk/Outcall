@@ -26,17 +26,13 @@ class CallHistoryDialog : public QDialog
 
 public slots:
     void receiveData(bool);
-    void receiveDataFromNotes();
 
 public:
     explicit CallHistoryDialog(QWidget *parent = 0);
     ~CallHistoryDialog();
 
 private slots:
-    void loadAllCalls();
-    void loadMissedCalls();
-    void loadReceivedCalls();
-    void loadPlacedCalls();
+    void loadCalls();
 
     void onAddPhoneNumberToContact();
     void onPlayAudio();
@@ -45,7 +41,8 @@ private slots:
     void onAddOrgContact();
     void onCallClicked();
     void onUpdate();
-    void onUpdateClick();
+    void updateDefault();
+
     void updateCount();
     void tabSelected();
     void daysChanged();
@@ -97,11 +94,6 @@ private:
     AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
     NotesDialog* notesDialog;
 
-    QModelIndexList selectionAll;
-    QModelIndexList selectionMissed;
-    QModelIndexList selectionReceived;
-    QModelIndexList selectionPlaced;
-
     QString recordpath;
     QString state_call;
     QString page;
@@ -111,59 +103,21 @@ private:
     QString number;
     QString my_number;
     QString my_group;
-    QString extfield;
-    QString src;
-    QString dst;
-    QString uniqueid;
-    QString dialogStatus;
-    QString phone;
     int count;
-    int remainder;
 
-    QWidget* loadStatus();
-    QWidget* loadNote();
-    QWidget* loadName();
+    QWidget* loadStatus(QString);
+    QWidget* loadNote(QString);
+    QWidget* loadName(QString, QString);
 
-    QList<QSqlQueryModel*> queriesAll;
-    QList<QSqlQueryModel*> queriesMissed;
-    QList<QSqlQueryModel*> queriesReceived;
-    QList<QSqlQueryModel*> queriesPlaced;
+    QModelIndexList selections;
 
-    QList<QHBoxLayout*> layoutsAllNotes;
-    QList<QHBoxLayout*> layoutsMissedNotes;
-    QList<QHBoxLayout*> layoutsReceivedNotes;
-    QList<QHBoxLayout*> layoutsPlacedNotes;
+    QList<QSqlQueryModel*> queries;
 
-    QList<QHBoxLayout*> layoutsAllName;
-    QList<QHBoxLayout*> layoutsMissedName;
-    QList<QHBoxLayout*> layoutsReceivedName;
-    QList<QHBoxLayout*> layoutsPlacedName;
-    QList<QHBoxLayout*> layoutsStatus;
+    QList<QHBoxLayout*> layouts;
 
-    QList<QWidget*> widgetsStatus;
+    QList<QWidget*> widgets;
 
-    QList<QWidget*> widgetsAllNotes;
-    QList<QWidget*> widgetsMissedNotes;
-    QList<QWidget*> widgetsReceivedNotes;
-    QList<QWidget*> widgetsPlacedNotes;
-
-    QList<QWidget*> widgetsAllName;
-    QList<QWidget*> widgetsMissedName;
-    QList<QWidget*> widgetsReceivedName;
-    QList<QWidget*> widgetsPlacedName;
-
-    QList<QWidget*> widgetsBusy;
-    QList<QWidget*> widgetsCancel;
-
-    QList<QLabel*> labelsAllName;
-    QList<QLabel*> labelsMissedName;
-    QList<QLabel*> labelsReceivedName;
-    QList<QLabel*> labelsPlacedName;
-    QList<QLabel*> labelsStatus;
-    QList<QLabel*> notesAll;
-    QList<QLabel*> notesMissed;
-    QList<QLabel*> notesReceived;
-    QList<QLabel*> notesPlaced;
+    QList<QLabel*> labels;
 };
 
 #endif // CALLHISTORYDIALOG_H
