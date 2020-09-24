@@ -37,9 +37,7 @@ public:
     bool resizeCells;
 
 private slots:
-    void loadRelevantReminders();
-    void loadIrrelevantReminders();
-    void loadDelegatedReminders();
+    void loadReminders();
 
     void onTimer();
     void onAddReminder();
@@ -48,6 +46,7 @@ private slots:
     void changeState();
     void onNotify(QString, QDateTime, QString);
     void onUpdateTab();
+    void updateCount();
     void onTabChanged();
     void clearSelections();
 
@@ -78,45 +77,31 @@ private:
 
     QSqlQueryModelReminders* queryModel;
 
-    QModelIndexList selectionRelevant;
-    QModelIndexList selectionIrrelevant;
-    QModelIndexList selectionDelegated;
-
     bool showReminder;
     QTimer timer;
     QString my_number;
     QString page;
     QString pages;
     QString go;
-    int count;
-    int remainder;
     int oldActiveReminders;
     int oldReceivedReminders;
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
     QWidget* addWidgetContent(int, QString);
+
     QWidget* addCheckBoxViewed(int);
     QWidget* addCheckBoxCompleted(int);
     QWidget* addCheckBoxActive(int);
 
-    QList<QSqlQueryModelReminders*> queriesRelevant;
-    QList<QWidget*> widgetsRelevant;
-    QList<QHBoxLayout*> layoutsRelevant;
-    QList<QCheckBox*> boxesRelevant;
-    QList<QLabel*> labelsRelevant;
+    QModelIndexList selections;
 
-    QList<QSqlQueryModelReminders*> queriesIrrelevant;
-    QList<QWidget*> widgetsIrrelevant;
-    QList<QHBoxLayout*> layoutsIrrelevant;
-    QList<QCheckBox*> boxesIrrelevant;
-    QList<QLabel*> labelsIrrelevant;
+    QList<QSqlQueryModelReminders*> queries;
 
-    QList<QSqlQueryModelReminders*> queriesDelegated;
-    QList<QWidget*> widgetsDelegated;
-    QList<QHBoxLayout*> layoutsDelegated;
-    QList<QCheckBox*> boxesDelegated;
-    QList<QLabel*> labelsDelegated;
+    QList<QWidget*> widgets;
+    QList<QHBoxLayout*> layouts;
+    QList<QCheckBox*> boxes;
+    QList<QLabel*> labels;
 };
 
 #endif // REMINDERSDIALOG_H

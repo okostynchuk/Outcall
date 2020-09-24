@@ -40,14 +40,11 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    ui->tabWidget->setCurrentIndex(0);
-
     go = "default";
 
     page = "1";
 
     days = ui->comboBox_2->currentText();
-
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -63,11 +60,11 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    selections = ui->tableView->selectionModel()->selectedRows();
-
     go = "default";
 
     updateCount();
+
+    selections = ui->tableView->selectionModel()->selectedRows();
 }
 
 void CallHistoryDialog::closeEvent(QCloseEvent*)
@@ -388,6 +385,7 @@ QWidget* CallHistoryDialog::loadNote(QString uniqueid)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
+    wgt->setMinimumHeight(33);
     wgt->setLayout(layout);
 
     widgets.append(wgt);
@@ -794,10 +792,11 @@ void CallHistoryDialog::setPage()
 
 void CallHistoryDialog::disableButtons()
 {
+    ui->playAudio->setDisabled(true);
     ui->callButton->setDisabled(true);
+    ui->playAudioPhone->setDisabled(true);
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
     ui->addPhoneNumberButton->setDisabled(true);
-    ui->playAudio->setDisabled(true);
-    ui->playAudioPhone->setDisabled(true);
+
 }
