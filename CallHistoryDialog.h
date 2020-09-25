@@ -33,6 +33,7 @@ public:
 
 private slots:
     void loadCalls();
+    void setPage();
 
     void onAddPhoneNumberToContact();
     void onPlayAudio();
@@ -45,9 +46,7 @@ private slots:
 
     void updateCount();
     void tabSelected();
-    void daysChanged();
     void clearSelections();
-    void setPage();
     void disableButtons();
 
     void deleteObjects();
@@ -95,15 +94,12 @@ private:
     NotesDialog* notesDialog;
 
     QString recordpath;
-    QString state_call;
-    QString page;
-    QString pages;
     QString go;
-    QString days;
     QString number;
     QString my_number;
     QString my_group;
-    int count;
+
+    int countRecords;
 
     QWidget* loadStatus(QString);
     QWidget* loadNote(QString);

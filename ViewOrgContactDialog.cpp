@@ -189,40 +189,7 @@ void ViewOrgContactDialog::loadCalls()
 
     queries.append(queryModel);
 
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages_2->setText(tr("из ") + pages);
+    setPage();
 
     QString queryString;
 
@@ -354,9 +321,42 @@ void ViewOrgContactDialog::loadCalls()
     ui->playAudioPhone->setDisabled(true);
 }
 
-void ViewOrgContactDialog::onUpdateCalls()
+void ViewOrgContactDialog::setPage()
 {
-    loadCalls();
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        int remainder = count % ui->comboBox_list->currentText().toInt();
+
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages_2->setText(tr("из ") + pages);
 }
 
 QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
@@ -493,6 +493,9 @@ void ViewOrgContactDialog::deleteObjects()
     queries.clear();
 }
 
+/**
+ * Выполняет вытягивание значений полей из записи.
+ */
 void ViewOrgContactDialog::getData(const QModelIndex &index)
 {
     recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
@@ -647,6 +650,9 @@ void ViewOrgContactDialog::onOpenAccess()
         QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет открытие окна с медиапроигрывателем для прослушивания записи звонка.
+ */
 void ViewOrgContactDialog::onPlayAudio()
 {
     if (ui->tableView_2->selectionModel()->selectedRows().count() != 1)
@@ -668,6 +674,9 @@ void ViewOrgContactDialog::onPlayAudio()
     }
 }
 
+/**
+ * Выполняет операции для последующего прослушивания записи звонка через телефон.
+ */
 void ViewOrgContactDialog::onPlayAudioPhone()
 {
     if (ui->tableView_2->selectionModel()->selectedRows().count() != 1)
@@ -738,39 +747,54 @@ void ViewOrgContactDialog::onAddReminder()
     addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void ViewOrgContactDialog::on_previousButton_clicked()
 {
     go = "previous";
 
-    onUpdateCalls();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void ViewOrgContactDialog::on_nextButton_clicked()
 {
     go = "next";
 
-    onUpdateCalls();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void ViewOrgContactDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
 
-    onUpdateCalls();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void ViewOrgContactDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
 
-    onUpdateCalls();;
+    loadCalls();;
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
 
-    onUpdateCalls();
+    loadCalls();
 }
 
 void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)

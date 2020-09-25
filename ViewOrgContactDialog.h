@@ -43,10 +43,10 @@ public:
 private slots:
     void loadCalls();
 
+    void setPage();
     void onAddReminder();
     void onOpenAccess();
     void onUpdateEmployees();
-    void onUpdateCalls();
     void onPlayAudio();
     void onPlayAudioPhone();
     void onCall();

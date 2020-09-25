@@ -1,3 +1,7 @@
+/*
+ * Класс служит для просмотра и взаимодействия с историей звонков.
+ */
+
 #include "CallHistoryDialog.h"
 #include "ui_CallHistoryDialog.h"
 
@@ -33,7 +37,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
 
     connect(ui->tabWidget,  &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
-    connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &CallHistoryDialog::daysChanged);
+    connect(ui->comboBox_days, &QComboBox::currentTextChanged, this, &CallHistoryDialog::onUpdate);
 
     connect(ui->tableView,  &QAbstractItemView::clicked,       this, &CallHistoryDialog::getData);
     connect(ui->tableView,  &QAbstractItemView::doubleClicked, this, &CallHistoryDialog::addNote);
@@ -42,20 +46,19 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     go = "default";
 
-    page = "1";
-
-    days = ui->comboBox_2->currentText();
+    ui->lineEdit_page->setText("1");
 }
 
 CallHistoryDialog::~CallHistoryDialog()
 {
     deleteObjects();
 
-    queryModel->deleteLater();
-
     delete ui;
 }
 
+/**
+ * Выполняет обработку появления окна.
+ */
 void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -67,9 +70,12 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
     selections = ui->tableView->selectionModel()->selectedRows();
 }
 
+/**
+ * Выполняет обработку закрытия окна.
+ */
 void CallHistoryDialog::closeEvent(QCloseEvent*)
 {
-    ui->comboBox_2->setCurrentIndex(0);
+    ui->comboBox_days->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
 
@@ -77,9 +83,12 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
 
     go = "default";
 
-    page = "1";
+    ui->lineEdit_page->setText("1");
 }
 
+/**
+ * Выполняет вывод и обновление истории звонков.
+ */
 void CallHistoryDialog::loadCalls()
 {
     deleteObjects();
@@ -99,7 +108,7 @@ void CallHistoryDialog::loadCalls()
     else
         queryString = "SELECT extfield1, ";
 
-    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ");
+    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ ui->comboBox_days->currentText() +"' DAY) ");
 
     if (ui->tabWidget->currentIndex() == 3)
             queryString.append("AND src = '"+my_number+"' ");
@@ -206,11 +215,58 @@ void CallHistoryDialog::loadCalls()
         disableButtons();
 }
 
+/**
+ * Выполняет установку страницы для перехода.
+ */
+void CallHistoryDialog::setPage()
+{
+    QString page = ui->lineEdit_page->text();
+    QString pages = ui->label_pages->text();
+
+    if (countRecords <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        int remainder = countRecords % ui->comboBox_list->currentText().toInt();
+
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+
+        pages = QString::number(countRecords / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages->setText(tr("из ") + pages);
+}
+
+/**
+ * Выполняет обновление количества записей в истории звонков.
+ */
 void CallHistoryDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
 
-    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ";
+    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
     if (ui->tabWidget->currentIndex() == 3)
             queryString.append("AND src = '" + my_number + "' ");
@@ -239,11 +295,14 @@ void CallHistoryDialog::updateCount()
     query.exec();
     query.first();
 
-    count = query.value(0).toInt();
+    countRecords = query.value(0).toInt();
 
     loadCalls();
 }
 
+/**
+ * Выполняет проверку номера на соотвествие шаблону внутреннего номера.
+ */
 bool CallHistoryDialog::isInternalPhone(QString* str)
 {
     int pos = 0;
@@ -260,6 +319,9 @@ bool CallHistoryDialog::isInternalPhone(QString* str)
     return false;
 }
 
+/**
+ * Выполняет вытягивание значений полей из записи.
+ */
 void CallHistoryDialog::getData(const QModelIndex &index)
 {
     ui->callButton->setDisabled(false);
@@ -321,6 +383,9 @@ void CallHistoryDialog::getData(const QModelIndex &index)
     }
 }
 
+/**
+ * Выполняет установку виджета для поля "Имя".
+ */
 QWidget* CallHistoryDialog::loadName(QString src, QString dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
@@ -345,6 +410,9 @@ QWidget* CallHistoryDialog::loadName(QString src, QString dst)
     return nameWgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Заметка".
+ */
 QWidget* CallHistoryDialog::loadNote(QString uniqueid)
 {
     QWidget* wgt = new QWidget;
@@ -395,6 +463,9 @@ QWidget* CallHistoryDialog::loadNote(QString uniqueid)
     return wgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Статус".
+ */
 QWidget* CallHistoryDialog::loadStatus(QString dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
@@ -423,6 +494,9 @@ QWidget* CallHistoryDialog::loadStatus(QString dialogStatus)
     return statusWgt;
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void CallHistoryDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
@@ -447,6 +521,9 @@ void CallHistoryDialog::deleteObjects()
     queries.clear();
 }
 
+/**
+ * Выполняет операции для последующего совершения звонка.
+ */
 void CallHistoryDialog::onCallClicked()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -463,6 +540,10 @@ void CallHistoryDialog::onCallClicked()
     g_pAsteriskManager->originateCall(from, to, protocol, from);
 }
 
+/**
+ * Выполняет открытие окна добавления физ. лица
+ * или же осуществляет переход в функцию его редактирования.
+ */
 void CallHistoryDialog::onAddContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -484,6 +565,10 @@ void CallHistoryDialog::onAddContact()
         editContact(number);
 }
 
+/**
+ * Выполняет открытие окна добавления организации
+ * или же осуществляет переход в функцию её редактирования.
+ */
 void CallHistoryDialog::onAddOrgContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -505,6 +590,9 @@ void CallHistoryDialog::onAddOrgContact()
         editOrgContact(number);
 }
 
+/**
+ * Выполняет открытие окна редактирования физ. лица.
+ */
 void CallHistoryDialog::editContact(QString number)
 {
     QSqlQuery query(db);
@@ -528,6 +616,9 @@ void CallHistoryDialog::editContact(QString number)
         QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет открытие окна редактирования организации.
+ */
 void CallHistoryDialog::editOrgContact(QString number)
 {
     QSqlQuery query(db);
@@ -551,6 +642,9 @@ void CallHistoryDialog::editOrgContact(QString number)
         QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет открытие окна привязки номера к существующему контакту.
+ */
 void CallHistoryDialog::onAddPhoneNumberToContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -578,6 +672,9 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         QMessageBox::critical(this, tr("Ошибка"), tr("Данный номер уже принадлежит контакту!"), QMessageBox::Ok);
 }
 
+/**
+ * Выполняет открытие окна с медиапроигрывателем для прослушивания записи звонка.
+ */
 void CallHistoryDialog::onPlayAudio()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -599,6 +696,9 @@ void CallHistoryDialog::onPlayAudio()
     }
 }
 
+/**
+ * Выполняет операции для последующего прослушивания записи звонка через телефон.
+ */
 void CallHistoryDialog::onPlayAudioPhone()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -616,6 +716,9 @@ void CallHistoryDialog::onPlayAudioPhone()
     }
 }
 
+/**
+ * Выполняет открытие окна с заметками для их просмотра и добавления.
+ */
 void CallHistoryDialog::addNote(const QModelIndex &index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
@@ -627,6 +730,9 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет проверку существования номера в БД.
+ */
 bool CallHistoryDialog::checkNumber(QString number)
 {
     QSqlQuery query(db);
@@ -641,6 +747,9 @@ bool CallHistoryDialog::checkNumber(QString number)
         return true;
 }
 
+/**
+ * Получает запрос на обновление состояния окна.
+ */
 void CallHistoryDialog::receiveData(bool updating)
 {
     if (updating)
@@ -651,6 +760,9 @@ void CallHistoryDialog::receiveData(bool updating)
     }
 }
 
+/**
+ * Возвращает id контакта по его номеру.
+ */
 QString CallHistoryDialog::getUpdateId(QString number)
 {
     QSqlQuery query(db);
@@ -664,22 +776,22 @@ QString CallHistoryDialog::getUpdateId(QString number)
     return contactId;
 }
 
-void CallHistoryDialog::daysChanged()
-{
-    days = ui->comboBox_2->currentText();
-
-    onUpdate();
-}
-
+/**
+ * Выполняет обработку смены вкладки.
+ */
 void CallHistoryDialog::tabSelected()
 {
-    page = "1";
+    ui->lineEdit_page->setText("1");
 
     ui->tableView->setModel(NULL);
 
     onUpdate();
 }
 
+/**
+ * Выполняет операции для последующего обновления истории звонков
+ * (с количеством записей).
+ */
 void CallHistoryDialog::onUpdate()
 {
     clearSelections();
@@ -689,6 +801,10 @@ void CallHistoryDialog::onUpdate()
     updateCount();
 }
 
+/**
+ * Выполняет операции для последующего обновления истории звонков
+ * (без количества записей).
+ */
 void CallHistoryDialog::updateDefault()
 {
     clearSelections();
@@ -696,6 +812,9 @@ void CallHistoryDialog::updateDefault()
     loadCalls();
 }
 
+/**
+ * Выполняет снятие выделения с записей.
+ */
 void CallHistoryDialog::clearSelections()
 {
     selections.clear();
@@ -703,6 +822,9 @@ void CallHistoryDialog::clearSelections()
     ui->tableView->clearSelection();
 }
 
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void CallHistoryDialog::on_previousButton_clicked()
 {
     go = "previous";
@@ -710,6 +832,9 @@ void CallHistoryDialog::on_previousButton_clicked()
     updateDefault();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void CallHistoryDialog::on_nextButton_clicked()
 {
     go = "next";
@@ -717,6 +842,9 @@ void CallHistoryDialog::on_nextButton_clicked()
     updateDefault();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void CallHistoryDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
@@ -724,6 +852,9 @@ void CallHistoryDialog::on_previousStartButton_clicked()
     updateDefault();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void CallHistoryDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
@@ -731,6 +862,9 @@ void CallHistoryDialog::on_nextEndButton_clicked()
     updateDefault();
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void CallHistoryDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
@@ -738,6 +872,10 @@ void CallHistoryDialog::on_lineEdit_page_returnPressed()
     updateDefault();
 }
 
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
 void CallHistoryDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
@@ -746,44 +884,9 @@ void CallHistoryDialog::keyPressEvent(QKeyEvent* event)
         QWidget::keyPressEvent(event);
 }
 
-void CallHistoryDialog::setPage()
-{
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages->setText(tr("из ") + pages);
-}
-
+/**
+ * Выполняет отключение кнопок окна.
+ */
 void CallHistoryDialog::disableButtons()
 {
     ui->playAudio->setDisabled(true);

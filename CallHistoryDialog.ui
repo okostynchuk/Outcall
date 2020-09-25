@@ -69,7 +69,7 @@
          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
         </property>
         <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
+         <enum>QAbstractItemView::ExtendedSelection</enum>
         </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
@@ -567,7 +567,7 @@
          </spacer>
         </item>
         <item row="0" column="8">
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="comboBox_days">
           <item>
            <property name="text">
             <string>7</string>
@@ -600,7 +600,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>comboBox_2</tabstop>
+  <tabstop>comboBox_days</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>
   <tabstop>lineEdit_page</tabstop>

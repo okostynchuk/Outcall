@@ -234,7 +234,7 @@ void PlaceCallDialog::clearEditText()
 }
 
 /**
- * Выполняет обработку открытия окна.
+ * Выполняет обработку появления окна.
  */
 void PlaceCallDialog::showEvent(QShowEvent* event)
 {
