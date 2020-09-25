@@ -301,6 +301,7 @@
   <tabstop>add60MinButton</tabstop>
   <tabstop>dateTimeEdit</tabstop>
   <tabstop>textEdit</tabstop>
+  <tabstop>chooseEmployeeButton</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
  <resources/>

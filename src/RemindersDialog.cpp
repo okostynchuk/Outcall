@@ -1,5 +1,5 @@
 /*
- * Класс служит для просмотра и добавления напоминаний.
+ * Класс служит для просмотра и взаимодейстия с напоминаниями.
  */
 
 #include "RemindersDialog.h"
@@ -111,7 +111,8 @@ RemindersDialog::~RemindersDialog()
 }
 
 /**
- *
+ * Получает запрос на показ / скрытие
+ * всплывающих окон напоминаний.
  */
 void RemindersDialog::showReminders(bool show)
 {
@@ -132,7 +133,7 @@ void RemindersDialog::showReminders(bool show)
 }
 
 /**
- * Обновление списка напоминаний при открытии окна.
+ * Выполняет обработку появления окна.
  */
 void RemindersDialog::showEvent(QShowEvent* event)
 {
@@ -155,7 +156,7 @@ void RemindersDialog::showEvent(QShowEvent* event)
 }
 
 /**
- * Установка начальных значений для окна при закрытии.
+ * Выполняет обработку закрытия окна.
  */
 void RemindersDialog::closeEvent(QCloseEvent*)
 {
@@ -171,7 +172,7 @@ void RemindersDialog::closeEvent(QCloseEvent*)
 }
 
 /**
- *
+ * Выполняет снятие выделения с записей.
  */
 void RemindersDialog::clearSelections()
 {
@@ -181,7 +182,7 @@ void RemindersDialog::clearSelections()
 }
 
 /**
- * Обновление списка напоминаний с заданной периодичностью.
+ * Выполняет по таймеру обновление списка напоминаний.
  */
 void RemindersDialog::onTimer()
 {
@@ -242,7 +243,7 @@ void RemindersDialog::onTimer()
 }
 
 /**
- * Удаление определенных объектов в зависимости от текущей вкладки.
+ * Выполняет удаление объектов класса.
  */
 void RemindersDialog::deleteObjects()
 {
@@ -272,7 +273,7 @@ void RemindersDialog::deleteObjects()
 }
 
 /**
- *
+ * Выполняет отправку данных актуальных напоминаний в класс RemindersThread.
  */
 void RemindersDialog::sendValues()
 {
@@ -296,7 +297,7 @@ void RemindersDialog::sendValues()
 }
 
 /**
- *
+ * Получает запрос на обновление состояния окна.
  */
 void RemindersDialog::receiveData(bool updating)
 {
@@ -325,6 +326,9 @@ void RemindersDialog::receiveData(bool updating)
     }
 }
 
+/**
+ * Выполняет обновление количества напоминаний.
+ */
 void RemindersDialog::updateCount()
 {
     QSqlQuery query(db);
@@ -380,7 +384,7 @@ void RemindersDialog::updateCount()
 }
 
 /**
- * Загрузка актуальных напоминаний.
+ * Выполняет вывод и обновление списка напоминаний.
  */
 void RemindersDialog::loadReminders()
 {
@@ -502,7 +506,7 @@ void RemindersDialog::loadReminders()
 }
 
 /**
- * Добавление виджета с текстом напоминания.
+ * Выполняет установку виджета для поля "Содержание".
  */
 QWidget* RemindersDialog::addWidgetContent(int row_index, bool url)
 {
@@ -547,7 +551,7 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, bool url)
 }
 
 /**
- * Добавление виджета для поля "Активно".
+ * Выполняет установку виджета для поля "Активно" в полученных напоминаниях.
  */
 QWidget* RemindersDialog::addWidgetActive()
 {
@@ -569,7 +573,7 @@ QWidget* RemindersDialog::addWidgetActive()
 }
 
 /**
- * Добавление чекбоксов для поля "Активно".
+ * Выполняет установку виджета для поля "Активно" в личных напоминаниях.
  */
 QWidget* RemindersDialog::addCheckBoxActive(int row_index)
 {
@@ -636,7 +640,7 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
 }
 
 /**
- * Добавление чекбоксов для поля "Просмотрено".
+ * Выполняет установку виджета для поля "Просмотрено".
  */
 QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
 {
@@ -692,7 +696,7 @@ QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
 }
 
 /**
- * Добавление виджета для поля "Выполнено".
+ * Выполняет установку виджета для поля "Выполнено" в личных напоминаниях.
  */
 QWidget* RemindersDialog::addWidgetCompleted()
 {
@@ -704,7 +708,7 @@ QWidget* RemindersDialog::addWidgetCompleted()
 }
 
 /**
- * Добавление чексбоксов для поля "Выполнено".
+ * Выполняет установку виджета для поля "Выполнено" в полученных напоминаниях.
  */
 QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
 {
@@ -772,7 +776,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
 }
 
 /**
- *
+ * Выполняет обработку смены состояния чекбокса.
  */
 void RemindersDialog::changeState()
 {
@@ -921,7 +925,7 @@ void RemindersDialog::changeState()
 }
 
 /**
- * Вызов метода onUpdateTab().
+ * Выполняет обработку смены вкладки.
  */
 void RemindersDialog::onTabChanged()
 {
@@ -935,7 +939,7 @@ void RemindersDialog::onTabChanged()
 }
 
 /**
- * Обновление таблиц при перелючении вкладок.
+ * Выполняет операции для последующего обновления списка напоминаний.
  */
 void RemindersDialog::onUpdateTab()
 {
@@ -957,7 +961,7 @@ void RemindersDialog::onUpdateTab()
 }
 
 /**
- * Реализация кнопки добавления нового напоминания.
+ * Выполняет открытие окна добавления напоминания.
  */
 void RemindersDialog::onAddReminder()
 {
@@ -968,7 +972,7 @@ void RemindersDialog::onAddReminder()
 }
 
 /**
- * Выполнение редактирования напоминания по двойному нажатию на строку с ним.
+ * Выполняет открытие окна редактирования напоминания.
  */
 void RemindersDialog::onEditReminder(const QModelIndex &index)
 {
@@ -999,12 +1003,12 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
 }
 
 /**
- * Вызов метода появления окна PopupReminder (напоминания).
+ * Получает данные напоминания для их последующей передачи классу PopupReminder.
  */
-void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, QString reminderNote)
+void RemindersDialog::onNotify(QString id, QDateTime dateTime, QString note)
 {
     if (showReminder)
-        PopupReminder::showReminder(this, my_number, reminderId, reminderDateTime, reminderNote);
+        PopupReminder::showReminder(this, my_number, id, dateTime, note);
 }
 
 /**

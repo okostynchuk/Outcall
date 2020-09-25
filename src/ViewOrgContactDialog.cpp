@@ -1,3 +1,7 @@
+/*
+ * Класс служит для просмотра и взаимодействия с данными организации.
+ */
+
 #include "ViewOrgContactDialog.h"
 #include "ui_ViewOrgContactDialog.h"
 
@@ -61,6 +65,9 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
     delete ui;
 }
 
+/**
+ * Получает id контакта из классов ContactsDialog, PopupWindow.
+ */
 void ViewOrgContactDialog::setValues(QString id)
 {
     contactId = id;
@@ -94,6 +101,9 @@ void ViewOrgContactDialog::setValues(QString id)
         ui->openAccessButton->hide();
 }
 
+/**
+ * Выполняет обработку смены основной вкладки.
+ */
 void ViewOrgContactDialog::tabSelected()
 {
     if (ui->tabWidget_2->currentIndex() == 1)
@@ -106,6 +116,10 @@ void ViewOrgContactDialog::tabSelected()
     }
 }
 
+/**
+ * Выполняет операции для последующего поиска
+ * по списку сотрудников организации.
+ */
 void ViewOrgContactDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
@@ -116,6 +130,9 @@ void ViewOrgContactDialog::searchFunction()
     onUpdateEmployees();
 }
 
+/**
+ * Выполняет вывод и обновление списка сотрудников организации.
+ */
 void ViewOrgContactDialog::onUpdateEmployees()
 {
     query_model = new QSqlQueryModel;
@@ -156,6 +173,9 @@ void ViewOrgContactDialog::onUpdateEmployees()
     }
 }
 
+/**
+ * Выполняет открытие окна с данными сотрудника организации.
+ */
 void ViewOrgContactDialog::showCard(const QModelIndex &index)
 {
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
@@ -167,6 +187,9 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
     viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Получает запрос на обновление списка сотрудников организации.
+ */
 void ViewOrgContactDialog::receiveDataPerson(bool updating)
 {
     if (updating)
@@ -177,6 +200,9 @@ void ViewOrgContactDialog::receiveDataPerson(bool updating)
     }
 }
 
+/**
+ * Выполняет вывод и обновление истории звонков данной организации.
+ */
 void ViewOrgContactDialog::loadCalls()
 {
     deleteObjects();
@@ -317,6 +343,9 @@ void ViewOrgContactDialog::loadCalls()
     ui->playAudioPhone->setDisabled(true);
 }
 
+/**
+ * Выполняет установку страницы для перехода.
+ */
 void ViewOrgContactDialog::setPage()
 {
     QString page = ui->lineEdit_page->text();
@@ -358,6 +387,9 @@ void ViewOrgContactDialog::setPage()
     ui->label_pages->setText(tr("из ") + pages);
 }
 
+/**
+ * Выполняет установку виджета для поля "Заметка".
+ */
 QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
 {
     QWidget* wgt = new QWidget;
@@ -407,6 +439,9 @@ QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
     return wgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Статус".
+ */
 QWidget* ViewOrgContactDialog::loadStatus(QString dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
@@ -435,6 +470,9 @@ QWidget* ViewOrgContactDialog::loadStatus(QString dialogStatus)
     return statusWgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Имя".
+ */
 QWidget* ViewOrgContactDialog::loadName(QString src, QString dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
@@ -468,6 +506,9 @@ QWidget* ViewOrgContactDialog::loadName(QString src, QString dst)
     return nameWgt;
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void ViewOrgContactDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
@@ -509,6 +550,10 @@ void ViewOrgContactDialog::getData(const QModelIndex &index)
     }
 }
 
+/**
+ * Выполняет операции для последующего обновления истории звонков
+ * (с количеством записей).
+ */
 void ViewOrgContactDialog::onUpdate()
 {
      go = "default";
@@ -516,6 +561,9 @@ void ViewOrgContactDialog::onUpdate()
      updateCount();
 }
 
+/**
+ * Выполняет обработку смены вкладки в истории звонков.
+ */
 void ViewOrgContactDialog::callTabSelected()
 {
     ui->tableView_2->setModel(NULL);
@@ -525,6 +573,9 @@ void ViewOrgContactDialog::callTabSelected()
     onUpdate();
 }
 
+/**
+ * Выполняет обновление количества записей в истории звонков.
+ */
 void ViewOrgContactDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
@@ -576,16 +627,26 @@ void ViewOrgContactDialog::updateCount()
     loadCalls();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии кнопки поиска.
+ */
 void ViewOrgContactDialog::on_searchButton_clicked()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет поиск по списку при нажатии клавиши Enter,
+ * находясь в поле поиска.
+ */
 void ViewOrgContactDialog::on_lineEdit_returnPressed()
 {
     searchFunction();
 }
 
+/**
+ * Выполняет открытие окна привязки физ. лица к организации.
+ */
 void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 {
     if (!addPersonToOrg.isNull())
@@ -598,6 +659,9 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
     addPersonToOrg.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие окна с заметками для их просмотра.
+ */
 void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
@@ -609,6 +673,9 @@ void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие базы заказов.
+ */
 void ViewOrgContactDialog::onOpenAccess()
 {
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
@@ -689,6 +756,9 @@ void ViewOrgContactDialog::onPlayAudioPhone()
     }
 }
 
+/**
+ * Выполняет операции для последующего выбора номера контакта и совершения звонка.
+ */
 void ViewOrgContactDialog::onCall()
 {
     QSqlQuery query(db);
@@ -718,6 +788,9 @@ void ViewOrgContactDialog::onCall()
     }
 }
 
+/**
+ * Выполняет скрытие текущего окна и открытие окна редактирования.
+ */
 void ViewOrgContactDialog::onEdit()
 {
     hide();
@@ -731,6 +804,9 @@ void ViewOrgContactDialog::onEdit()
     editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие окна добавления напоминания.
+ */
 void ViewOrgContactDialog::onAddReminder()
 {
     if (!addReminderDialog.isNull())
@@ -792,6 +868,9 @@ void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
     loadCalls();
 }
 
+/**
+ * Получает запрос на обновление состояния окна.
+ */
 void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
 {
     int nDesktopHeight;
