@@ -119,7 +119,7 @@ void RemindersDialog::showReminders(bool show)
     {
         showReminder = true;
 
-        updateCount();
+        loadReminders();
 
         timer.start();
     }
@@ -151,7 +151,7 @@ void RemindersDialog::showEvent(QShowEvent* event)
 
     go = "default";
 
-    onUpdate();
+    loadReminders();
 }
 
 /**
@@ -236,9 +236,9 @@ void RemindersDialog::onTimer()
 
     go = "default";
 
-    onUpdate();
+    loadReminders();
 
-    sendNewValues();
+    sendValues();
 }
 
 /**
@@ -274,7 +274,7 @@ void RemindersDialog::deleteObjects()
 /**
  *
  */
-void RemindersDialog::sendNewValues()
+void RemindersDialog::sendValues()
 {
     QList<QString> ids;
     QList<QDateTime> dateTimes;
@@ -377,8 +377,6 @@ void RemindersDialog::updateCount()
 
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
-
-    loadReminders();
 }
 
 /**
@@ -387,6 +385,8 @@ void RemindersDialog::updateCount()
 void RemindersDialog::loadReminders()
 {
     deleteObjects();
+
+    updateCount();
 
     queryModel = new QSqlQueryModelReminders;
 
@@ -941,7 +941,7 @@ void RemindersDialog::onUpdateTab()
 {
     clearSelections();
 
-    updateCount();
+    loadReminders();
 
     if (ui->tabWidget->currentIndex() == 0)
     {
@@ -954,14 +954,6 @@ void RemindersDialog::onUpdateTab()
 
         emit reminders(false);
     }
-}
-
-/**
- * Обновление списков напоминаний.
- */
-void RemindersDialog::onUpdate()
-{
-    loadReminders();
 }
 
 /**
@@ -1016,7 +1008,7 @@ void RemindersDialog::onNotify(QString reminderId, QDateTime reminderDateTime, Q
 }
 
 /**
- * Реализация перехода на предыдущую страницу.
+ * Выполняет операции для последующего перехода на предыдущую страницу.
  */
 void RemindersDialog::on_previousButton_clicked()
 {
@@ -1026,7 +1018,7 @@ void RemindersDialog::on_previousButton_clicked()
 }
 
 /**
- * Реализация перехода на следующую страницу.
+ * Выполняет операции для последующего перехода на следующую страницу.
  */
 void RemindersDialog::on_nextButton_clicked()
 {
@@ -1036,7 +1028,7 @@ void RemindersDialog::on_nextButton_clicked()
 }
 
 /**
- * Реализация перехода на первую страницу.
+ * Выполняет операции для последующего перехода на первую страницу.
  */
 void RemindersDialog::on_previousStartButton_clicked()
 {
@@ -1046,7 +1038,7 @@ void RemindersDialog::on_previousStartButton_clicked()
 }
 
 /**
- * Реализация перехода на следующую страницу.
+ * Выполняет операции для последующего перехода на последнюю страницу.
  */
 void RemindersDialog::on_nextEndButton_clicked()
 {
@@ -1056,7 +1048,7 @@ void RemindersDialog::on_nextEndButton_clicked()
 }
 
 /**
- * Реализация перехода на заданную страницу.
+ * Выполняет операции для последующего перехода на заданную страницу.
  */
 void RemindersDialog::on_lineEdit_page_returnPressed()
 {

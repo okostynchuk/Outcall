@@ -1,3 +1,7 @@
+/*
+ * Класс служит для просмотра и взаимодействия с данными физ. лица.
+ */
+
 #include "ViewContactDialog.h"
 #include "ui_ViewContactDialog.h"
 
@@ -54,6 +58,9 @@ ViewContactDialog::~ViewContactDialog()
     delete ui;
 }
 
+/**
+ * Выполняет обработку появления окна.
+ */
 void ViewContactDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -68,6 +75,9 @@ void ViewContactDialog::showEvent(QShowEvent* event)
         ui->organization->setText(query.value(0).toString());
 }
 
+/**
+ * Выполняет открытие окна добавления напоминания.
+ */
 void ViewContactDialog::onAddReminder()
 {
     if (!addReminderDialog.isNull())
@@ -79,6 +89,9 @@ void ViewContactDialog::onAddReminder()
     addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет открытие базы заказов.
+ */
 void ViewContactDialog::onOpenAccess()
 {
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
@@ -115,7 +128,9 @@ void ViewContactDialog::onOpenAccess()
         QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
 }
 
-
+/**
+ * Выполняет операции для последующего выбора номера и совершения звонка.
+ */
 void ViewContactDialog::onCall()
 {
     QSqlQuery query(db);
@@ -145,6 +160,9 @@ void ViewContactDialog::onCall()
     }
 }
 
+/**
+ * Выполняет скрытие текущего окна и открытие окна редактирования.
+ */
 void ViewContactDialog::onEdit()
 {
     hide();
@@ -158,6 +176,10 @@ void ViewContactDialog::onEdit()
     editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Получает id контакта из классов ContactsDialog,
+ * ViewOrgContactDialog, PopupWindow.
+ */
 void ViewContactDialog::setValues(QString id)
 {
     contactId = id;
@@ -200,6 +222,9 @@ void ViewContactDialog::setValues(QString id)
     updateCount();
 }
 
+/**
+ * Выполняет вывод и обновление истории звонков c данным физ. лицом.
+ */
 void ViewContactDialog::loadCalls()
 {
     deleteObjects();
@@ -340,6 +365,50 @@ void ViewContactDialog::loadCalls()
     ui->playAudioPhone->setDisabled(true);
 }
 
+/**
+ * Выполняет установку страницы для перехода.
+ */
+void ViewContactDialog::setPage()
+{
+    if (count <= ui->comboBox_list->currentText().toInt())
+        pages = "1";
+    else
+    {
+        int remainder = count % ui->comboBox_list->currentText().toInt();
+
+        if (remainder)
+            remainder = 1;
+        else
+            remainder = 0;
+
+        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+    }
+
+    if (go == "previous" && page != "1")
+        page = QString::number(page.toInt() - 1);
+    else if (go == "previousStart" && page != "1")
+        page = "1";
+    else if (go == "next" && page.toInt() < pages.toInt())
+        page = QString::number(page.toInt() + 1);
+    else if (go == "next" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "nextEnd" && page.toInt() < pages.toInt())
+        page = pages;
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        page = ui->lineEdit_page->text();
+    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (go == "default" && page.toInt() >= pages.toInt())
+        page = pages;
+    else if (go == "default" && page == "1")
+        page = "1";
+
+    ui->lineEdit_page->setText(page);
+    ui->label_pages_2->setText(tr("из ") + pages);
+}
+
+/**
+ * Выполняет установку виджета для поля "Заметка".
+ */
 QWidget* ViewContactDialog::loadNote(QString uniqueid)
 {
     QWidget* wgt = new QWidget;
@@ -389,6 +458,9 @@ QWidget* ViewContactDialog::loadNote(QString uniqueid)
     return wgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Статус".
+ */
 QWidget* ViewContactDialog::loadStatus(QString dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
@@ -417,6 +489,9 @@ QWidget* ViewContactDialog::loadStatus(QString dialogStatus)
     return statusWgt;
 }
 
+/**
+ * Выполняет установку виджета для поля "Имя".
+ */
 QWidget* ViewContactDialog::loadName(QString src, QString dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
@@ -450,6 +525,9 @@ QWidget* ViewContactDialog::loadName(QString src, QString dst)
     return nameWgt;
 }
 
+/**
+ * Выполняет удаление объектов класса.
+ */
 void ViewContactDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
@@ -474,6 +552,9 @@ void ViewContactDialog::deleteObjects()
     queries.clear();
 }
 
+/**
+ * Выполняет обновление количества записей в истории звонков.
+ */
 void ViewContactDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
@@ -525,6 +606,9 @@ void ViewContactDialog::updateCount()
     loadCalls();
 }
 
+/**
+ * Выполняет открытие окна с заметками для их просмотра.
+ */
 void ViewContactDialog::viewNotes(const QModelIndex &index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
@@ -536,6 +620,10 @@ void ViewContactDialog::viewNotes(const QModelIndex &index)
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Выполняет обработку смены количества дней периода,
+ * за который отображаются звонки.
+ */
 void ViewContactDialog::daysChanged()
 {
      days = ui->comboBox->currentText();
@@ -545,6 +633,9 @@ void ViewContactDialog::daysChanged()
      updateCount();
 }
 
+/**
+ * Выполняет обработку смены вкладки.
+ */
 void ViewContactDialog::tabSelected()
 {
     ui->tableView->setModel(NULL);
@@ -556,46 +647,59 @@ void ViewContactDialog::tabSelected()
     updateCount();
 }
 
-void ViewContactDialog::onUpdate()
-{
-    loadCalls();
-}
-
+/**
+ * Выполняет операции для последующего перехода на предыдущую страницу.
+ */
 void ViewContactDialog::on_previousButton_clicked()
 {
     go = "previous";
 
-    onUpdate();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на следующую страницу.
+ */
 void ViewContactDialog::on_nextButton_clicked()
 {
     go = "next";
 
-    onUpdate();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на первую страницу.
+ */
 void ViewContactDialog::on_previousStartButton_clicked()
 {
     go = "previousStart";
 
-    onUpdate();
+    loadCalls();
 }
 
+/**
+ * Выполняет операции для последующего перехода на последнюю страницу.
+ */
 void ViewContactDialog::on_nextEndButton_clicked()
 {
     go = "nextEnd";
 
-    onUpdate();;
+    loadCalls();;
 }
 
+/**
+ * Выполняет операции для последующего перехода на заданную страницу.
+ */
 void ViewContactDialog::on_lineEdit_page_returnPressed()
 {
     go = "enter";
 
-    onUpdate();
+    loadCalls();
 }
 
+/**
+ * Выполняет открытие окна с медиапроигрывателем для прослушивания записи звонка.
+ */
 void ViewContactDialog::onPlayAudio()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -617,6 +721,9 @@ void ViewContactDialog::onPlayAudio()
     }
 }
 
+/**
+ * Выполняет операции для последующего прослушивания записи звонка через телефон.
+ */
 void ViewContactDialog::onPlayAudioPhone()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
@@ -634,6 +741,9 @@ void ViewContactDialog::onPlayAudioPhone()
     }
 }
 
+/**
+ * Выполняет вытягивание значений полей из записи.
+ */
 void ViewContactDialog::getData(const QModelIndex &index)
 {
     recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
@@ -646,44 +756,6 @@ void ViewContactDialog::getData(const QModelIndex &index)
         ui->playAudio->setDisabled(false);
         ui->playAudioPhone->setDisabled(false);
     }
-}
-
-void ViewContactDialog::setPage()
-{
-    if (count <= ui->comboBox_list->currentText().toInt())
-        pages = "1";
-    else
-    {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
-
-        if (remainder)
-            remainder = 1;
-        else
-            remainder = 0;
-
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
-    }
-
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
-
-    ui->lineEdit_page->setText(page);
-    ui->label_pages_2->setText(tr("из ") + pages);
 }
 
 void ViewContactDialog::receiveData(bool updating, int x, int y)

@@ -24,11 +24,11 @@ signals:
     void reminders(bool);
 
 public slots:
-    void sendNewValues();
+    void sendValues();
     void receiveData(bool);
     void showReminders(bool);
 
-    void onUpdate();
+    void loadReminders();
 
 public:
     explicit RemindersDialog(QWidget *parent = 0);
@@ -37,8 +37,6 @@ public:
     bool resizeCells;
 
 private slots:
-    void loadReminders();
-
     void onTimer();
     void onAddReminder();
     void onEditReminder(const QModelIndex &);

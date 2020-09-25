@@ -397,7 +397,7 @@ void PopupReminder::receiveData(bool updating)
     {
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
-        m_pri.remindersDialog->onUpdate();
+        m_pri.remindersDialog->loadReminders();
 
         closeAndDestroy();
     }
@@ -466,7 +466,7 @@ void PopupReminder::onSelectTime(int index)
 
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
-        m_pri.remindersDialog->onUpdate();
+        m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
             editReminderDialog.data()->close();
@@ -481,7 +481,7 @@ void PopupReminder::onSelectTime(int index)
 
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
-        m_pri.remindersDialog->onUpdate();
+        m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
             editReminderDialog.data()->close();
@@ -496,7 +496,7 @@ void PopupReminder::onSelectTime(int index)
 
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
-        m_pri.remindersDialog->onUpdate();
+        m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
             editReminderDialog.data()->close();
@@ -511,7 +511,7 @@ void PopupReminder::onSelectTime(int index)
 
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
-        m_pri.remindersDialog->onUpdate();
+        m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
             editReminderDialog.data()->close();
@@ -598,7 +598,7 @@ void PopupReminder::onClosePopup()
 
     m_pri.remindersDialog->reminders(false);
     m_pri.remindersDialog->resizeCells = false;
-    m_pri.remindersDialog->onUpdate();
+    m_pri.remindersDialog->loadReminders();
 
     if (!editReminderDialog.isNull())
         editReminderDialog.data()->close();

@@ -45,7 +45,6 @@ private slots:
     void onPlayAudioPhone();
     void onCall();
     void onEdit();
-    void onUpdate();
     void updateCount();
     void tabSelected();
     void daysChanged();
