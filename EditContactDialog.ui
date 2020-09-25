@@ -88,7 +88,7 @@
            <property name="minimumSize">
             <size>
              <width>160</width>
-             <height>0</height>
+             <height>20</height>
             </size>
            </property>
            <property name="focusPolicy">
@@ -160,7 +160,7 @@
            <property name="minimumSize">
             <size>
              <width>160</width>
-             <height>0</height>
+             <height>20</height>
             </size>
            </property>
            <property name="focusPolicy">
@@ -302,6 +302,12 @@
      </item>
      <item row="2" column="1">
       <widget class="QLineEdit" name="firstNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -316,6 +322,12 @@
      </item>
      <item row="3" column="1">
       <widget class="QLineEdit" name="secondNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -336,6 +348,12 @@
      </item>
      <item row="3" column="3">
       <widget class="QLineEdit" name="city">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -350,6 +368,12 @@
      </item>
      <item row="4" column="1">
       <widget class="QLineEdit" name="thirdNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -367,6 +391,12 @@
      </item>
      <item row="4" column="3">
       <widget class="QLineEdit" name="address">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -381,6 +411,12 @@
      </item>
      <item row="5" column="1">
       <widget class="QLineEdit" name="fourthNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -398,6 +434,12 @@
      </item>
      <item row="5" column="3">
       <widget class="QLineEdit" name="vyborId">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -412,6 +454,12 @@
      </item>
      <item row="6" column="1">
       <widget class="QLineEdit" name="fifthNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -429,6 +477,12 @@
      </item>
      <item row="6" column="3">
       <widget class="QLineEdit" name="email">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
