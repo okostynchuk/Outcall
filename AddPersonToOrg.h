@@ -27,7 +27,7 @@ private slots:
     void deleteObjects();
     void onUpdate();
     void currentIndexChanged();
-    void getPersonId(const QModelIndex &index);
+    void addPerson(const QModelIndex &index);
     void searchFunction();
 
     void on_searchButton_clicked();

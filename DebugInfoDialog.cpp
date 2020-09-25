@@ -30,7 +30,7 @@ DebugInfoDialog::~DebugInfoDialog()
 }
 
 /**
- * Реализация очистки окна отладки.
+ * Выполняет очистку окна отладки.
  */
 void DebugInfoDialog::onClear() const
 {
@@ -38,7 +38,7 @@ void DebugInfoDialog::onClear() const
 }
 
 /**
- * Закрытия окна.
+ * Выполняет закрытие окна.
  */
 void DebugInfoDialog::onExit()
 {
@@ -46,7 +46,7 @@ void DebugInfoDialog::onExit()
 }
 
 /**
- * Реализация обновления информации об отладке.
+ * Выполняет обновление информации об отладке.
  */
 void DebugInfoDialog::updateDebug(const QString &info)
 {

@@ -114,24 +114,7 @@ PopupHelloWindow::~PopupHelloWindow()
 }
 
 /**
- * Установка языка интерфейса окна.
- */
-void PopupHelloWindow::changeEvent(QEvent* event)
-{
-    QDialog::changeEvent(event);
-
-    switch (event->type())
-    {
-        case QEvent::LanguageChange:
-            ui->retranslateUi(this);
-            break;
-        default:
-            break;
-    }
-}
-
-/**
- * Запуск таймера.
+ * Выполняет запуск таймера для последующего закрытия окна.
  */
 void PopupHelloWindow::onPopupTimeout()
 {
@@ -140,7 +123,7 @@ void PopupHelloWindow::onPopupTimeout()
 }
 
 /**
- * Остановка таймера.
+ * Выполняет запуск таймера существования окна.
  */
 void PopupHelloWindow::startPopupWaitingTimer()
 {
@@ -150,14 +133,11 @@ void PopupHelloWindow::startPopupWaitingTimer()
 
     int time2live = TIME_TO_LIVE;
 
-    if (this->m_pwi.type == PWPhoneCall)
-        time2live = global::getSettingsValue("call_popup_duration", "popup", "20").toInt() * 1000;
-
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
 
 /**
- * Закрытие окна.
+ * Выполняет закрытие и удаление объекта окна.
  */
 void PopupHelloWindow::closeAndDestroy()
 {
@@ -171,7 +151,7 @@ void PopupHelloWindow::closeAndDestroy()
 }
 
 /**
- * Реализация появления и закрытия окна.
+ * Выполняет операции динамического появления и последующего закрытия окна.
  */
 void PopupHelloWindow::onTimer()
 {
@@ -257,7 +237,7 @@ void PopupHelloWindow::onTimer()
 }
 
 /**
- * Отображение информации на окне оповещения.
+ * Выполняет создание окна и отображение в нём полученной информации из класса OutCALL.
  */
 void PopupHelloWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
 {
@@ -283,7 +263,7 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
 }
 
 /**
- * Удаление объектов и установка начальной позиции окна.
+ * Выполняет закрытие и удаление всех объектов окон.
  */
 void PopupHelloWindow::closeAll()
 {
@@ -294,7 +274,7 @@ void PopupHelloWindow::closeAll()
 }
 
 /**
- * Закрытие окна по нажатию кнопкой мыши.
+ * Выполняет закрытие окна при нажатии по нему кнопкой мыши.
  */
 void PopupHelloWindow::mousePressEvent(QMouseEvent*)
 {

@@ -621,7 +621,7 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 
     notesDialog = new NotesDialog;
-    notesDialog->receiveData(uniqueid, "");
+    notesDialog->setValues(uniqueid, "");
     connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);

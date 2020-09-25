@@ -48,7 +48,8 @@ AddReminderDialog::~AddReminderDialog()
 }
 
 /**
- * Получает список выбранных сотрудников из класса ChooseEmployee.
+ * Получает список выбранных сотрудников из классов
+ * ChooseEmployee и InternalContactsDialog.
  */
 void AddReminderDialog::receiveEmployee(QStringList employee)
 {
@@ -58,17 +59,6 @@ void AddReminderDialog::receiveEmployee(QStringList employee)
         ui->employee->setText(employee.first());
     else
         ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
-}
-
-/**
- * Получает сотрудника из класса InternalContactsDialog.
- */
-void AddReminderDialog::setEmployee(QString employee)
-{
-    ui->employee->setText(employee);
-
-    this->employee.clear();
-    this->employee.append(employee);
 }
 
 /**
@@ -264,8 +254,7 @@ void AddReminderDialog::closeEvent(QCloseEvent* event)
 }
 
 /**
- * Выполняет прибавление к текущему времени 5 минут
- * при нажатии кнопки +5.
+ * Выполняет прибавление к текущему времени 5 минут.
  */
 void AddReminderDialog::on_add5MinButton_clicked()
 {
@@ -273,8 +262,7 @@ void AddReminderDialog::on_add5MinButton_clicked()
 }
 
 /**
- * Выполняет прибавление к текущему времени 10 минут
- * при нажатии кнопки +10.
+ * Выполняет прибавление к текущему времени 10 минут.
  */
 void AddReminderDialog::on_add10MinButton_clicked()
 {
@@ -282,8 +270,7 @@ void AddReminderDialog::on_add10MinButton_clicked()
 }
 
 /**
- * Выполняет прибавление к текущему времени 30 минут
- * при нажатии кнопки +30.
+ * Выполняет прибавление к текущему времени 30 минут.
  */
 void AddReminderDialog::on_add30MinButton_clicked()
 {
@@ -291,8 +278,7 @@ void AddReminderDialog::on_add30MinButton_clicked()
 }
 
 /**
- * Выполняет прибавление к текущему времени 60 минут
- * при нажатии кнопки +60.
+ * Выполняет прибавление к текущему времени 60 минут.
  */
 void AddReminderDialog::on_add60MinButton_clicked()
 {

@@ -1,5 +1,5 @@
 /*
- * Класс служит для создания меню приложения и входа в аккаунт.
+ * Класс служит для управления основной логикой приложения.
  */
 
 #include "OutCALL.h"
@@ -81,7 +81,7 @@ OutCall::~OutCall()
 }
 
 /**
- * Создание элементов контекстного меню.
+ * Выполняет создание элементов контекстного меню.
  */
 void OutCall::createContextMenu()
 {
@@ -153,7 +153,7 @@ void OutCall::createContextMenu()
 }
 
 /**
- * Реализация автоматического входа в аккаунт.
+ * Выполняет автоматический вход в аккаунт.
  */
 void OutCall::automaticlySignIn()
 {
@@ -164,7 +164,7 @@ void OutCall::automaticlySignIn()
 }
 
 /**
- * Реализация входа / выхода из аккаунта.
+ * Выполняет вход / выход из аккаунта.
  */
 void OutCall::signInOut()
 {
@@ -187,7 +187,7 @@ void OutCall::signInOut()
 }
 
 /**
- * Реализация вывода ошибок.
+ * Выполняет отображение ошибок, связанных с сервером Asterisk.
  */
 void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
 {
@@ -212,7 +212,8 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
 }
 
 /**
- * Обновление окна класса DebugInfoDialog.
+ * Получает сообщение из класса AsteriskManager
+ * для его последующей передачи классу DebugInfoDialog.
  */
 void OutCall::onMessageReceived(const QString &message)
 {
@@ -221,8 +222,8 @@ void OutCall::onMessageReceived(const QString &message)
 }
 
 /**
- * Реализация отображения уведомления при входящем звонке
- * с передачей данных звонка в PopupWindow.
+ * Получает данные входящего звонка из класса AsteriskManager
+ * для их последующей передачи классу PopupWindow.
  */
 void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 {
@@ -236,11 +237,11 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
         callerIdName = tr("Неизвестный");
 
     if (show_call_popup)
-        PopupWindow::showCallNotification(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName), my_number);
+        PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName), my_number);
 }
 
 /**
- * Отслеживание изменений состояния подключения к Asterisk.
+ * Выполняет операции при изменении состояния подключения к Asterisk.
  */
 void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 {
@@ -333,7 +334,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 }
 
 /**
- * Отключение элементов контекстного меню.
+ * Выполняет отключение элементов контекстного меню.
  */
 void OutCall::disableActions()
 {
@@ -345,7 +346,7 @@ void OutCall::disableActions()
 }
 
 /**
- * Включение элементов контекстного меню.
+ * Выполняет включение элементов контекстного меню.
  */
 void OutCall::enableActions()
 {
@@ -357,7 +358,7 @@ void OutCall::enableActions()
 }
 
 /**
- * Скрытие иконки приложения в области уведомлений.
+ * Выполняет скрытие иконки приложения в области уведомлений.
  */
 void OutCall::hideTrayIcon(bool hide)
 {
@@ -366,7 +367,8 @@ void OutCall::hideTrayIcon(bool hide)
 }
 
 /**
- * Реализация изменения иконки приложения при наличии актуальных напоминаний.
+ * Выполняет изменение иконки приложения при изменении
+ * количества актуальных напоминаний.
  */
 void OutCall::changeIconReminders(bool change)
 {
@@ -405,7 +407,8 @@ void OutCall::changeIconReminders(bool change)
 }
 
 /**
- * Реализация иконки в области уведомлений с количеством активных уведомлений.
+ * Выполняет установку иконки в области уведомлений
+ * с количеством актуальных напоминаний.
  */
 void OutCall::setIconReminders(QColor color, int activeReminders)
 {
@@ -427,7 +430,7 @@ void OutCall::setIconReminders(QColor color, int activeReminders)
 }
 
 /**
- * Изменение иконки приложения при подключенном / неподключенном Asterisk.
+ * Выполняет изменение иконки приложения при подключенном / неподключенном Asterisk.
  */
 void OutCall::changeIcon()
 {
@@ -448,7 +451,7 @@ void OutCall::changeIcon()
 }
 
 /**
- * Реализация открытия окна с историей звонков.
+ * Выполняет открытие окна с историей звонков.
  */
 void OutCall::onCallHistory()
 {
@@ -457,7 +460,7 @@ void OutCall::onCallHistory()
 }
 
 /**
- * Реализация открытия окна с настройками приложения.
+ * Выполняет открытие окна с настройками приложения.
  */
 void OutCall::onSettingsDialog()
 {
@@ -468,7 +471,7 @@ void OutCall::onSettingsDialog()
 }
 
 /**
- * Реализация открытия окна с информацией об отладке приложения.
+ * Выполняет открытие окна с информацией об отладке приложения.
  */
 void OutCall::onDebugInfo()
 {
@@ -477,7 +480,7 @@ void OutCall::onDebugInfo()
 }
 
 /**
- * Реализация открытия окна для осуществления звонков.
+ * Выполняет открытие окна для осуществления звонков.
  */
 void OutCall::onPlaceCall()
 {
@@ -486,7 +489,7 @@ void OutCall::onPlaceCall()
 }
 
 /**
- * Реализация открытия окна с книгой контактов.
+ * Выполняет открытие окна с контактной книгой.
  */
 void OutCall::onContactsDialog()
 {
@@ -495,7 +498,7 @@ void OutCall::onContactsDialog()
 }
 
 /**
- * Реализация открытия окна с внутренними контактами.
+ * Выполняет открытие окна с внутренними контактами.
  */
 void OutCall::onInternalContactsDialog()
 {
@@ -504,7 +507,7 @@ void OutCall::onInternalContactsDialog()
 }
 
 /**
- * Реализация открытия окна с созданием напоминаний.
+ * Выполняет открытие окна со списком напоминаний.
  */
 void OutCall::onRemindersDialog()
 {
@@ -522,7 +525,7 @@ void OutCall::onRemindersDialog()
 }
 
 /**
- * Выход из аккаунта.
+ * Выполняет выход из приложения.
  */
 void OutCall::close()
 {
@@ -534,7 +537,7 @@ void OutCall::close()
 }
 
 /**
- * Активация окон при входе в аккаунт.
+ * Выполняет открытие контекстного меню.
  */
 void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
 {
@@ -558,7 +561,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
 }
 
 /**
- * Отображение контекстного меню.
+ * Выполняет отображение иконки приложения при запуске.
  */
 void OutCall::show()
 {

@@ -27,7 +27,7 @@ public:
     explicit NotesDialog(QWidget *parent = 0);
     ~NotesDialog();
 
-    void receiveData(QString uniqueid, QString phone);
+    void setValues(QString uniqueid, QString phone);
     void hideAddNote();
 
 private slots:

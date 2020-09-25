@@ -19,7 +19,7 @@ QList<PopupNotification*> PopupNotification::m_PopupNotifications;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 // msec
+#define TIME_TO_SHOW    800 // msec
 
 PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent) :
     QDialog(parent),
@@ -128,7 +128,7 @@ PopupNotification::~PopupNotification()
 }
 
 /**
- * Захват точки нажатия мышью по окну.
+ * Выполняет сохранение позиции нажатия мышью по окну.
  */
 void PopupNotification::mousePressEvent(QMouseEvent* event)
 {
@@ -136,7 +136,7 @@ void PopupNotification::mousePressEvent(QMouseEvent* event)
 }
 
 /**
- * Устанавливает нулевую позиции при отпускании клика.
+ * Выполняет установку нулевой позиции при отжатии кнопки мыши.
  */
 void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -146,7 +146,7 @@ void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
 }
 
 /**
- * Реализация изменения позиции окна на экране.
+ * Выполняет изменение позиции окна на экране.
  */
 void PopupNotification::mouseMoveEvent(QMouseEvent* event)
 {
@@ -166,7 +166,7 @@ void PopupNotification::mouseMoveEvent(QMouseEvent* event)
 }
 
 /**
- * Закрытие окна по кнопке.
+ * Выполняет операцию для последующего закрытия окна при нажатии кнопки "Х".
  */
 void PopupNotification::on_pushButton_close_clicked()
 {
@@ -174,7 +174,7 @@ void PopupNotification::on_pushButton_close_clicked()
 }
 
 /**
- * Реализация появления и закрытия окна.
+ * Выполняет операции динамического появления и последующего закрытия окна.
  */
 void PopupNotification::onTimer()
 {
@@ -251,7 +251,7 @@ void PopupNotification::onTimer()
 }
 
 /**
- * Реализация закрытия окна (запуск таймера) при клике на кнопку закрытия.
+ * Выполняет запуск таймера для последующего закрытия окна.
  */
 void PopupNotification::onClosePopup()
 {
@@ -266,7 +266,7 @@ void PopupNotification::onClosePopup()
 }
 
 /**
- * Закрытие окна.
+ * Выполняет закрытие и удаление объекта окна.
  */
 void PopupNotification::closeAndDestroy()
 {
@@ -283,7 +283,7 @@ void PopupNotification::closeAndDestroy()
 }
 
 /**
- * Закрытие всех окон.
+ * Выполняет закрытие и удаление всех объектов окон.
  */
 void PopupNotification::closeAll()
 {
@@ -294,9 +294,9 @@ void PopupNotification::closeAll()
 }
 
 /**
- * Реализация отображения информации на окне.
+ * Выполняет создание окна и отображение в нём полученной информации из класса RemindersDialog.
  */
-void PopupNotification::showNotification(RemindersDialog* receivedRemindersDialog, QString receivedId, QString receivedNumber, QString receivedNote)
+void PopupNotification::showReminderNotification(RemindersDialog* receivedRemindersDialog, QString receivedId, QString receivedNumber, QString receivedNote)
 {
     PopupNotificationInfo pni;
 

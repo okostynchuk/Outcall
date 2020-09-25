@@ -33,7 +33,7 @@ QMessageBox::StandardButton MsgBoxWarning(const QString &text, QMessageBox::Stan
 }
 
 /**
- * Установка настроек приложения.
+ * Выполняет установку настройки в реестре.
  */
 void global::setSettingsValue(QString key, QVariant value, QString group)
 {
@@ -46,7 +46,7 @@ void global::setSettingsValue(QString key, QVariant value, QString group)
 }
 
 /**
- * Получение настроек приложения.
+ * Возвращает настройку из реестра.
  */
 QVariant global::getSettingsValue(const QString key, const QString group, const QVariant defaultValue)
 {
@@ -59,7 +59,7 @@ QVariant global::getSettingsValue(const QString key, const QString group, const 
 }
 
 /**
- * Удаление ключа настроек приложения.
+ * Выполняет удаление ключа настройки в реестре.
  */
 void global::removeSettingsKey(const QString key, const QString group)
 {
@@ -72,7 +72,7 @@ void global::removeSettingsKey(const QString key, const QString group)
 }
 
 /**
- * Реализация проверки на наличие ключа настроек.
+ * Выполняет проверку на наличие ключа настройки в реестре.
  */
 bool global::containsSettingsKey(const QString key, const QString group)
 {
@@ -88,7 +88,7 @@ bool global::containsSettingsKey(const QString key, const QString group)
 }
 
 /**
- * Получение ключей настройки.
+ * Возвращает ключи настройки из реестра.
  */
 QStringList global::getSettingKeys(const QString group)
 {
@@ -101,7 +101,7 @@ QStringList global::getSettingKeys(const QString group)
 }
 
 /**
- * Реализация получения номера пользователя из реестра.
+ * Возвращает номер пользователя из реестра.
  */
 QString global::getExtensionNumber(const QString group)
 {
@@ -117,7 +117,7 @@ QString global::getExtensionNumber(const QString group)
 }
 
 /**
- * Реализация получения номера группы из реестра.
+ * Возвращает номер группы из реестра.
  */
 QString global::getGroupExtensionNumber(const QString group)
 {

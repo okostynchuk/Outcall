@@ -88,7 +88,7 @@ RemindersDialog::RemindersDialog(QWidget *parent) :
     }
 
     remindersThread = new QThread;
-    remindersThreadManager = new RemindersThread(my_number, ids, dateTimes, notes);
+    remindersThreadManager = new RemindersThread(ids, dateTimes, notes);
 
     remindersThreadManager->moveToThread(remindersThread);
 
@@ -210,7 +210,7 @@ void RemindersDialog::onTimer()
             emit reminders(true);
 
             while (query.next())
-                PopupNotification::showNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
+                PopupNotification::showReminderNotification(this, query.value(0).toString(), query.value(1).toString(), query.value(2).toString());
         }
     }
     else
@@ -292,7 +292,7 @@ void RemindersDialog::sendNewValues()
         notes.append(query.value(2).value<QString>());
     }
 
-    remindersThreadManager->receiveNewValues(ids, dateTimes, notes);
+    remindersThreadManager->setValues(ids, dateTimes, notes);
 }
 
 /**

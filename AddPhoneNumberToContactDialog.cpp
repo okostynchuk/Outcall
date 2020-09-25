@@ -125,8 +125,8 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 }
 
 /**
- * Выполняет вывод и обновление списка всех контактов,
- * к которым привязано не более 5 номеров.
+ * Выполняет вывод и обновление списка контактов,
+ * к которым привязано не более 5 номеров, с и без фильтра.
  */
 void AddPhoneNumberToContactDialog::onUpdate()
 {
@@ -314,7 +314,7 @@ void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
 
 /**
  * Выполняет поиск по списку при нажатии клавиши Enter,
- * находясь в строке поиска.
+ * находясь в поле поиска.
  */
 void AddPhoneNumberToContactDialog::on_lineEdit_returnPressed()
 {

@@ -31,7 +31,7 @@ public:
     PopupNotification(PopupNotificationInfo& pni, QWidget *parent = 0);
     ~PopupNotification();
 
-    static void showNotification(RemindersDialog*, QString, QString, QString);
+    static void showReminderNotification(RemindersDialog*, QString, QString, QString);
     static void closeAll();
 
 private slots:

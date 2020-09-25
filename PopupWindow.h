@@ -53,8 +53,7 @@ public:
     PopupWindow(PWInformation& pwi, QWidget *parent = 0);
     ~PopupWindow();
 
-    static void showCallNotification(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number);
-    static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
+    static void showCall(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number);
     static void closeAll();
 
 private slots:
@@ -78,7 +77,6 @@ private slots:
 
     bool isInternalPhone(QString* str);
 
-    void changeEvent(QEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
