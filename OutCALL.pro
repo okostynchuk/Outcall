@@ -6,7 +6,7 @@ QT += multimedia
 QT += winextras
 QT += axcontainer
 
-include (QSimpleUpdater/QSimpleUpdater.pri)
+include ($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
 win32:
 {
@@ -15,13 +15,15 @@ win32:
     QMAKE_TARGET_COMPANY = Vybor
     QMAKE_TARGET_PRODUCT = OutCALL
 
-    RC_ICONS = $$PWD/images/outcall-logo.ico
+    RC_ICONS = $$PWD/src/images/outcall-logo.ico
 }
 
 TARGET = OutCALL
 TEMPLATE = app
 
 CONFIG += c++11
+
+VPATH += $$PWD/src
 
 SOURCES += \
     main.cpp \

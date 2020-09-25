@@ -14,7 +14,6 @@
 #include <math.h>
 
 #include "Downloader.h"
-#include "Global.h"
 
 static const QString PARTIAL_DOWN(".part");
 
