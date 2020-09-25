@@ -36,7 +36,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
     connect(ui->addOrgContactButton,  &QAbstractButton::clicked, this, &CallHistoryDialog::onAddOrgContact);
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &CallHistoryDialog::onAddPhoneNumberToContact);
 
-    connect(ui->tabWidget,  &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
+    connect(ui->tabWidget,     &QTabWidget::currentChanged,    this, &CallHistoryDialog::tabSelected);
     connect(ui->comboBox_days, &QComboBox::currentTextChanged, this, &CallHistoryDialog::onUpdate);
 
     connect(ui->tableView,  &QAbstractItemView::clicked,       this, &CallHistoryDialog::getData);

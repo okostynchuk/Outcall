@@ -72,8 +72,9 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 
         list->addItems(extensions);
 
-        page = "1";
         go = "default";
+
+        ui->lineEdit_page->setText("1");
 
         loadContacts();
     }
@@ -92,7 +93,7 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
 
     go = "default";
 
-    page = "1";
+    ui->lineEdit_page->setText("1");
 }
 
 /**
@@ -100,13 +101,16 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
  */
 void InternalContactsDialog::loadContacts()
 {
-    count = extensions.count();
+    QString page = ui->lineEdit_page->text();
+    QString pages = ui->label_pages->text();
+
+    int count = extensions.count();
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
-        remainder = count % ui->comboBox_list->currentText().toInt();
+        int remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -170,9 +174,9 @@ void InternalContactsDialog::loadContacts()
 
     for (int i = 0; i < ui->listWidget->count(); ++i)
     {
-        ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
+       ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
 
-        ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text())->sizeHint());
+       ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text())->sizeHint());
     }
 }
 
@@ -194,7 +198,8 @@ void InternalContactsDialog::onSearch()
     ui->listWidget->clear();
 
     go = "default";
-    page = "1";
+
+    ui->lineEdit_page->setText("1");
 
     loadContacts();
 }

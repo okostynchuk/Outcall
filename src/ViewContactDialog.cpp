@@ -26,7 +26,7 @@ ViewContactDialog::ViewContactDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tabWidget, &QTabWidget::currentChanged,    this, &ViewContactDialog::tabSelected);
-    connect(ui->comboBox,  &QComboBox::currentTextChanged, this, &ViewContactDialog::daysChanged);
+    connect(ui->comboBox_days,  &QComboBox::currentTextChanged, this, &ViewContactDialog::onUpdate);
 
     connect(ui->playAudio,         &QAbstractButton::clicked, this, &ViewContactDialog::onPlayAudio);
     connect(ui->editButton,        &QAbstractButton::clicked, this, &ViewContactDialog::onEdit);
@@ -215,9 +215,7 @@ void ViewContactDialog::setValues(QString id)
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
 
-    days = ui->comboBox->currentText();
-
-    page = "1";
+    ui->lineEdit_page->setText("1");
 
     updateCount();
 }
@@ -256,7 +254,7 @@ void ViewContactDialog::loadCalls()
     else
         queryString = "SELECT extfield2, ";
 
-    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ");
+    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ");
 
     if (ui->tabWidget->currentIndex() == 0)
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
@@ -370,18 +368,21 @@ void ViewContactDialog::loadCalls()
  */
 void ViewContactDialog::setPage()
 {
-    if (count <= ui->comboBox_list->currentText().toInt())
+    QString page = ui->lineEdit_page->text();
+    QString pages = ui->label_pages->text();
+
+    if (countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
+        int remainder = countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
 
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        pages = QString::number(countRecords / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
     if (go == "previous" && page != "1")
@@ -403,7 +404,7 @@ void ViewContactDialog::setPage()
         page = "1";
 
     ui->lineEdit_page->setText(page);
-    ui->label_pages_2->setText(tr("из ") + pages);
+    ui->label_pages->setText(tr("из ") + pages);
 }
 
 /**
@@ -559,7 +560,7 @@ void ViewContactDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
 
-    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ";
+    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
     if (ui->tabWidget->currentIndex() == 0)
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
@@ -601,7 +602,7 @@ void ViewContactDialog::updateCount()
     query.exec();
     query.first();
 
-    count = query.value(0).toInt();
+    countRecords = query.value(0).toInt();
 
     loadCalls();
 }
@@ -621,28 +622,24 @@ void ViewContactDialog::viewNotes(const QModelIndex &index)
 }
 
 /**
- * Выполняет обработку смены количества дней периода,
- * за который отображаются звонки.
- */
-void ViewContactDialog::daysChanged()
-{
-     days = ui->comboBox->currentText();
-
-     go = "default";
-
-     updateCount();
-}
-
-/**
  * Выполняет обработку смены вкладки.
  */
 void ViewContactDialog::tabSelected()
 {
     ui->tableView->setModel(NULL);
 
-    go = "default";
+    ui->lineEdit_page->setText("1");
 
-    page = "1";
+    onUpdate();
+}
+
+/**
+ * Выполняет операции для последующего обновления истории звонков
+ * (с количеством записей).
+ */
+void ViewContactDialog::onUpdate()
+{
+    go = "default";
 
     updateCount();
 }

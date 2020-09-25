@@ -42,7 +42,7 @@
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -782,7 +782,7 @@ background-color: #fffff0;
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QComboBox" name="comboBox_2">
+          <widget class="QComboBox" name="comboBox_days">
            <item>
             <property name="text">
              <string>7</string>
@@ -962,7 +962,7 @@ background-color: #fffff0;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_pages_2">
+            <widget class="QLabel" name="label_pages">
              <property name="text">
               <string/>
              </property>
@@ -1174,7 +1174,7 @@ background-color: #fffff0;
   <tabstop>comment</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
-  <tabstop>comboBox_2</tabstop>
+  <tabstop>comboBox_days</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>

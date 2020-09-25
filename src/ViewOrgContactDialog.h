@@ -57,7 +57,7 @@ private slots:
     void searchFunction();
     void tabSelected();
     void callTabSelected();
-    void daysChanged();
+    void onUpdate();
 
     void deleteObjects();
 
@@ -98,12 +98,9 @@ private:
     QString userId;
     QString contactId;
     QString my_number;
-    QString page;
-    QString pages;
     QString go;
-    QString days;
 
-    int count;
+    int countRecords;
 
     bool filter;
 

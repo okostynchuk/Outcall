@@ -47,11 +47,9 @@ private:
     QValidator* validator;
 
     QString my_number;
-    QString page;
-    QString pages;
     QString go;
 
-    int count;
+    int countRecords;
     int remainder;
     int l_from;
     int l_to;

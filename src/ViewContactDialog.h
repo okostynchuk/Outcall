@@ -46,8 +46,8 @@ private slots:
     void onCall();
     void onEdit();
     void updateCount();
+    void onUpdate();
     void tabSelected();
-    void daysChanged();
 
     void setPage();
 
@@ -88,12 +88,9 @@ private:
     QString userId;
     QString contactId;
     QString my_number;
-    QString page;
-    QString pages;
     QString go;
-    QString days;
 
-    int count;
+    int countRecords;
 
     QWidget* loadStatus(QString);
     QWidget* loadNote(QString);

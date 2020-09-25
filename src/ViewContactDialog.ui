@@ -641,7 +641,7 @@ background-color: #fffff0;
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="comboBox_days">
            <item>
             <property name="text">
              <string>7</string>
@@ -822,7 +822,7 @@ background-color: #fffff0;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_pages_2">
+            <widget class="QLabel" name="label_pages">
              <property name="text">
               <string/>
              </property>
@@ -1035,7 +1035,7 @@ background-color: #fffff0;
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
   <tabstop>comment</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>comboBox_days</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>

@@ -27,7 +27,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
     connect(ui->tabWidget,   &QTabWidget::currentChanged, this, &ViewOrgContactDialog::callTabSelected);
     connect(ui->tabWidget_2, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
 
-    connect(ui->comboBox_2,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::daysChanged);
+    connect(ui->comboBox_days,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::onUpdate);
 
     connect(ui->playAudio,         &QAbstractButton::clicked, this, &ViewOrgContactDialog::onPlayAudio);
     connect(ui->callButton,        &QAbstractButton::clicked, this, &ViewOrgContactDialog::onCall);
@@ -100,13 +100,9 @@ void ViewOrgContactDialog::tabSelected()
         onUpdateEmployees();
     else if (ui->tabWidget_2->currentIndex() == 2)
     {
-        go = "default";
+        ui->lineEdit_page->setText("1");
 
-        days = ui->comboBox_2->currentText();
-
-        page = "1";
-
-        updateCount();
+        onUpdate();
     }
 }
 
@@ -212,7 +208,7 @@ void ViewOrgContactDialog::loadCalls()
     else
         queryString = "SELECT extfield2, ";
 
-    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ days +"' DAY) ");
+    queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ");
 
     if (ui->tabWidget->currentIndex() == 0)
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
@@ -323,18 +319,21 @@ void ViewOrgContactDialog::loadCalls()
 
 void ViewOrgContactDialog::setPage()
 {
-    if (count <= ui->comboBox_list->currentText().toInt())
+    QString page = ui->lineEdit_page->text();
+    QString pages = ui->label_pages->text();
+
+    if (countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
+        int remainder = countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
 
-        pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
+        pages = QString::number(countRecords / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
     if (go == "previous" && page != "1")
@@ -356,7 +355,7 @@ void ViewOrgContactDialog::setPage()
         page = "1";
 
     ui->lineEdit_page->setText(page);
-    ui->label_pages_2->setText(tr("из ") + pages);
+    ui->label_pages->setText(tr("из ") + pages);
 }
 
 QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
@@ -510,10 +509,8 @@ void ViewOrgContactDialog::getData(const QModelIndex &index)
     }
 }
 
-void ViewOrgContactDialog::daysChanged()
+void ViewOrgContactDialog::onUpdate()
 {
-     days = ui->comboBox_2->currentText();
-
      go = "default";
 
      updateCount();
@@ -523,18 +520,16 @@ void ViewOrgContactDialog::callTabSelected()
 {
     ui->tableView_2->setModel(NULL);
 
-    go = "default";
+    ui->lineEdit_page->setText("1");
 
-    page = "1";
-
-    updateCount();
+    onUpdate();
 }
 
 void ViewOrgContactDialog::updateCount()
 {
     QSqlQuery query(dbCalls);
 
-    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + days + "' DAY) ";
+    QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
     if (ui->tabWidget->currentIndex() == 0)
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
@@ -576,7 +571,7 @@ void ViewOrgContactDialog::updateCount()
     query.exec();
     query.first();
 
-    count = query.value(0).toInt();
+    countRecords = query.value(0).toInt();
 
     loadCalls();
 }
