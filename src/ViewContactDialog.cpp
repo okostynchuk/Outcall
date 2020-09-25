@@ -129,7 +129,7 @@ void ViewContactDialog::onOpenAccess()
 }
 
 /**
- * Выполняет операции для последующего выбора номера и совершения звонка.
+ * Выполняет операции для последующего выбора номера контакта и совершения звонка.
  */
 void ViewContactDialog::onCall()
 {
@@ -223,7 +223,7 @@ void ViewContactDialog::setValues(QString id)
 }
 
 /**
- * Выполняет вывод и обновление истории звонков c данным физ. лицом.
+ * Выполняет вывод и обновление истории звонков данного физ. лица.
  */
 void ViewContactDialog::loadCalls()
 {
@@ -758,6 +758,9 @@ void ViewContactDialog::getData(const QModelIndex &index)
     }
 }
 
+/**
+ * Получает запрос на обновление состояния окна.
+ */
 void ViewContactDialog::receiveData(bool updating, int x, int y)
 {
     int nDesktopHeight;
