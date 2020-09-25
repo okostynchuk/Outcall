@@ -402,6 +402,7 @@ void RemindersDialog::loadReminders()
         queryString = "SELECT id, phone_from, IF(group_id IS NULL, phone_to, '" + tr("Группа") + "'), datetime, content, active, viewed, completed, group_id FROM reminders WHERE "
                                            "phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END";
 
+
     queryString.append(" ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
@@ -473,9 +474,9 @@ void RemindersDialog::loadReminders()
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(queryModel->data(queryModel->index(row_index, 5), Qt::EditRole).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 9), addWidgetContent(row_index, "URL"));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 9), addWidgetContent(row_index, true));
         else
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 9), addWidgetContent(row_index, ""));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 9), addWidgetContent(row_index, false));
     }
 
     if (resizeCells)
@@ -503,7 +504,7 @@ void RemindersDialog::loadReminders()
 /**
  * Добавление виджета с текстом напоминания.
  */
-QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
+QWidget* RemindersDialog::addWidgetContent(int row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -513,7 +514,7 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, QString url)
 
     QString note = queryModel->data(queryModel->index(row_index, 5), Qt::EditRole).toString();
 
-    if (url == "URL")
+    if (url)
     {
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
         QStringList hrefs;
@@ -983,9 +984,9 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
         return;
 
     QString id = queryModel->data(queryModel->index(index.row(), 0), Qt::EditRole).toString();
-    QString note = queryModel->data(queryModel->index(index.row(), 5), Qt::EditRole).toString();
-    QString group_id = queryModel->data(queryModel->index(index.row(), 11), Qt::EditRole).toString();
     QDateTime dateTime = queryModel->data(queryModel->index(index.row(), 4), Qt::EditRole).toDateTime();
+    QString note = queryModel->data(queryModel->index(index.row(), 5), Qt::EditRole).toString();
+    QString group_id = queryModel->data(queryModel->index(index.row(), 12), Qt::EditRole).toString();
 
     if (ui->tabWidget->currentIndex() == 0 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
     {

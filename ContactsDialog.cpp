@@ -21,11 +21,13 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
-    connect(ui->addOrgButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
-    connect(ui->updateButton, &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
-    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &ContactsDialog::showCard);
+
+    connect(ui->addOrgButton,    &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
+    connect(ui->updateButton,    &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
+    connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
+    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
+
 
     filter = false;
 
@@ -280,9 +282,9 @@ void ContactsDialog::loadContacts()
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(queryModel->data(queryModel->index(row_index, 9)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, "URL"));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, ""));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(1, true);
@@ -339,7 +341,7 @@ QWidget* ContactsDialog::addImageLabel(int row_index)
 /**
  * Выполняет добавление виджета для поля "Заметка".
  */
-QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
+QWidget* ContactsDialog::addWidgetNote(int row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -349,7 +351,7 @@ QWidget* ContactsDialog::addWidgetNote(int row_index, QString url)
 
     QString note = queryModel->data(queryModel->index(row_index, 9)).toString();
 
-    if (url == "URL")
+    if (url)
     {
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
         QStringList hrefs;

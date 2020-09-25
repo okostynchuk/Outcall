@@ -572,13 +572,11 @@ void PopupWindow::onViewNotes()
 {
     m_pwi.stopTimer = true;
 
-    QString loadState;
-
     if (!notesDialog.isNull())
         notesDialog.data()->close();
 
     notesDialog = new NotesDialog;
-    notesDialog.data()->receiveData(m_pwi.uniqueid, m_pwi.number, loadState);
+    notesDialog.data()->receiveData(m_pwi.uniqueid, m_pwi.number);
     notesDialog.data()->hideAddNote();
     notesDialog.data()->show();
     notesDialog.data()->setAttribute(Qt::WA_DeleteOnClose);

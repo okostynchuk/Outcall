@@ -88,7 +88,7 @@ private:
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
-    QWidget* addWidgetContent(int, QString);
+    QWidget* addWidgetContent(int, bool);
 
     QWidget* addCheckBoxViewed(int);
     QWidget* addCheckBoxCompleted(int);
