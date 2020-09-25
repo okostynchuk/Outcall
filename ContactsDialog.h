@@ -69,7 +69,7 @@ private:
     QValidator* validator;
 
     QWidget* addImageLabel(int);
-    QWidget* addWidgetNote(int, QString);
+    QWidget* addWidgetNote(int, bool);
 
     QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;

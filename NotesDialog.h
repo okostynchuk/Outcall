@@ -27,7 +27,7 @@ public:
     explicit NotesDialog(QWidget *parent = 0);
     ~NotesDialog();
 
-    void setValues(QString uniqueid, QString phone, QString loadState);
+    void setValues(QString uniqueid, QString phone);
     void hideAddNote();
 
 private slots:
@@ -58,7 +58,7 @@ private:
 
     QSqlQueryModel* query;
 
-    QWidget* addWidgetNote(int, QString);
+    QWidget* addWidgetNote(int, bool);
 
     QList<QWidget*> widgets;
     QList<QHBoxLayout*> layouts;
@@ -68,7 +68,7 @@ private:
     QString callId;
     QString state;
     QString my_number;
-    QString phoneNumber;
+    QString phone;
     QString loadState;
     QString page;
     QString pages;

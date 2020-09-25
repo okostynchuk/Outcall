@@ -24,9 +24,9 @@ NotesDialog::NotesDialog(QWidget *parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    connect(ui->saveButton, &QAbstractButton::clicked, this, &NotesDialog::onSave);
+    connect(ui->textEdit,     &QTextEdit::textChanged,   this, &NotesDialog::onTextChanged);
+    connect(ui->saveButton,   &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
-    connect(ui->textEdit, &QTextEdit::textChanged, this, &NotesDialog::onTextChanged);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
@@ -46,13 +46,11 @@ NotesDialog::~NotesDialog()
  * Получает данные заметок по звонку или номеру из классов CallHistoryDialog,
  * PopupWindow, ViewContactDialog и ViewOrgContactDialog.
  */
-void NotesDialog::setValues(QString uniqueid, QString phone, QString loadState)
+void NotesDialog::setValues(QString uniqueid, QString phone)
 {
     callId = uniqueid;
 
-    phoneNumber = phone;
-
-    this->loadState = loadState;
+    this->phone = phone;
 
     go = "default";
 
@@ -82,24 +80,24 @@ void NotesDialog::loadNotes()
 
     QString queryString = "SELECT COUNT(*) FROM calls WHERE ";
 
-    if (loadState == "byId")
+    if (phone.isEmpty())
         queryString.append("uniqueid = '" + callId + "' ");
     else
     {
-        if (isInternalPhone(&phoneNumber))
-            queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
+        if (isInternalPhone(&phone))
+            queryString.append("phone_number = '" + phone + "' AND author = '" + my_number +"'");
         else
         {
             QSqlQuery query(db);
 
-            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
+            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phone + "')");
             query.exec();
 
             while (query.next())
                 numbersList.append(query.value(0).toString());
 
             if (numbersList.isEmpty())
-                queryString.append("( phone_number = '" + phoneNumber + "'");
+                queryString.append("( phone_number = '" + phone + "'");
             else
             {
                 for (int i = 0; i < numbersList.size(); ++i)
@@ -158,53 +156,17 @@ void NotesDialog::loadNotes()
     ui->lineEdit_page->setText(page);
     ui->label_pages->setText(tr("из ") + pages);
 
-    queryString = "SELECT datetime, author, note FROM calls WHERE ";
-
-    if (loadState == "byId")
-        queryString.append("uniqueid = '" + callId + "' ");
-    else
-    {
-        if (isInternalPhone(&phoneNumber))
-            queryString.append("phone_number = '" + phoneNumber + "' AND author = '" + my_number +"'");
-        else
-        {
-            QSqlQuery query(db);
-
-            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phoneNumber + "')");
-            query.exec();
-
-            while (query.next())
-                numbersList.append(query.value(0).toString());
-
-            if (numbersList.isEmpty())
-                queryString.append("( phone_number = '" + phoneNumber + "'");
-            else
-            {
-                for (int i = 0; i < numbersList.size(); ++i)
-                {
-                    if (i == 0)
-                        queryString.append("( phone_number = '" + numbersList[i] + "'");
-                    else
-                        queryString.append(" OR phone_number = '" + numbersList[i] + "'");
-                }
-            }
-
-            queryString.append(") AND author = '" + my_number + "'");
-        }
-    }
+    queryString.replace("COUNT(*)", "datetime, author, note");
 
     queryString.append(" ORDER BY datetime DESC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
-    {
         queryString.append("0, "
                         + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt()) + " ");
-    }
     else
-    {
-        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() - ui->comboBox_list->currentText().toInt()) + " , " + QString::number(ui->comboBox_list->currentText().toInt()));
-    }
-
+        queryString.append("" + QString::number(ui->lineEdit_page->text().toInt() * ui->comboBox_list->currentText().toInt() -
+                                                ui->comboBox_list->currentText().toInt()) + " , " +
+                           QString::number(ui->comboBox_list->currentText().toInt()));
 
     query->setQuery(queryString);
 
@@ -220,9 +182,9 @@ void NotesDialog::loadNotes()
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query->data(query->index(row_index, 3)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, "URL"));
+            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, ""));
+            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(3, true);
@@ -265,7 +227,7 @@ void NotesDialog::onSave()
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(my_number);
-    query.addBindValue(phoneNumber);
+    query.addBindValue(phone);
     query.exec();
 
     emit sendData();
@@ -318,7 +280,7 @@ void NotesDialog::onUpdate()
 /**
  * Выполняет добавление виджета для поля "Заметка".
  */
-QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
+QWidget* NotesDialog::addWidgetNote(int row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -328,7 +290,7 @@ QWidget* NotesDialog::addWidgetNote(int row_index, QString url)
 
     QString note = query->data(query->index(row_index, 3)).toString();
 
-    if (url == "URL")
+    if (url)
     {
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
         QStringList hrefs;

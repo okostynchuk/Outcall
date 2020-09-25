@@ -530,7 +530,7 @@ void ViewContactDialog::viewNotes(const QModelIndex &index)
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 
     notesDialog = new NotesDialog;
-    notesDialog->setValues(uniqueid, "", "byId");
+    notesDialog->setValues(uniqueid, "");
     notesDialog->hideAddNote();
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);

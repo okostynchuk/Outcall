@@ -264,7 +264,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
 {
     ui->callButton->setDisabled(false);
 
-    QString number = queryModel->data(queryModel->index(index.row(), 1)).toString();
+    number = queryModel->data(queryModel->index(index.row(), 1)).toString();
 
     if (number == my_number)
     {
@@ -620,14 +620,8 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 
-    QString phone =  queryModel->data(queryModel->index(index.row(), 1)).toString();
-
-    if(phone == my_number)
-        phone =  queryModel->data(queryModel->index(index.row(), 2)).toString();
-
-    QString state = "byId";
     notesDialog = new NotesDialog;
-    notesDialog->setValues(uniqueid, phone, state);
+    notesDialog->setValues(uniqueid, "");
     connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
     notesDialog->show();
     notesDialog->setAttribute(Qt::WA_DeleteOnClose);
