@@ -351,7 +351,7 @@ void SettingsDialog::loadLanguages()
 {
     QString ruPath(":/images/ru.png");
     QIcon ruIcon = (QIcon(ruPath));
-    QString ruLabel = (tr("Русский (по умолчанию)"));
+    QString ruLabel = (tr("Русский"));
 
     QString uaPath(":/images/ua.png");
     QIcon uaIcon = (QIcon(uaPath));

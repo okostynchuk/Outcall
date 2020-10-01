@@ -749,9 +749,9 @@ bool CallHistoryDialog::checkNumber(QString number)
 /**
  * Получает запрос на обновление состояния окна.
  */
-void CallHistoryDialog::receiveData(bool updating)
+void CallHistoryDialog::receiveData(bool update)
 {
-    if (updating)
+    if (update)
     {
         clearSelections();
 

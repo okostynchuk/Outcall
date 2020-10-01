@@ -299,9 +299,9 @@ void RemindersDialog::sendValues()
 /**
  * Получает запрос на обновление состояния окна.
  */
-void RemindersDialog::receiveData(bool updating)
+void RemindersDialog::receiveData(bool update)
 {
-    if (updating)
+    if (update)
     {
         emit reminders(false);
 

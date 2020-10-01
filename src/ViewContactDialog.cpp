@@ -755,7 +755,7 @@ void ViewContactDialog::getData(const QModelIndex &index)
 /**
  * Получает запрос на обновление состояния окна.
  */
-void ViewContactDialog::receiveData(bool updating, int x, int y)
+void ViewContactDialog::receiveData(bool update, int x, int y)
 {
     int nDesktopHeight;
     int nDesktopWidth;
@@ -768,7 +768,7 @@ void ViewContactDialog::receiveData(bool updating, int x, int y)
     nDesktopWidth = rcDesktop.width();
     nDesktopHeight = rcDesktop.height();
 
-    if (updating)
+    if (update)
     {
         emit sendData(true);
 
