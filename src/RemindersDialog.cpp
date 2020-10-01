@@ -1016,6 +1016,8 @@ void RemindersDialog::onNotify(QString id, QDateTime dateTime, QString note)
  */
 void RemindersDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     onUpdateTab();
@@ -1026,6 +1028,8 @@ void RemindersDialog::on_previousButton_clicked()
  */
 void RemindersDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     onUpdateTab();
@@ -1036,6 +1040,8 @@ void RemindersDialog::on_nextButton_clicked()
  */
 void RemindersDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     onUpdateTab();
@@ -1046,6 +1052,8 @@ void RemindersDialog::on_previousStartButton_clicked()
  */
 void RemindersDialog::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     onUpdateTab();;
@@ -1056,6 +1064,8 @@ void RemindersDialog::on_nextEndButton_clicked()
  */
 void RemindersDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     onUpdateTab();

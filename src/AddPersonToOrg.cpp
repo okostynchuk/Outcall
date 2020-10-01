@@ -244,6 +244,8 @@ void AddPersonToOrg::currentIndexChanged()
  */
 void AddPersonToOrg::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     onUpdate();
@@ -254,6 +256,8 @@ void AddPersonToOrg::on_previousButton_clicked()
  */
 void AddPersonToOrg::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     onUpdate();
@@ -264,6 +268,8 @@ void AddPersonToOrg::on_nextButton_clicked()
  */
 void AddPersonToOrg::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     onUpdate();
@@ -274,6 +280,8 @@ void AddPersonToOrg::on_previousStartButton_clicked()
  */
 void AddPersonToOrg::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     onUpdate();
@@ -284,6 +292,8 @@ void AddPersonToOrg::on_nextEndButton_clicked()
  */
 void AddPersonToOrg::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     onUpdate();

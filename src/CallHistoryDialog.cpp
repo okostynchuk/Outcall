@@ -826,6 +826,8 @@ void CallHistoryDialog::clearSelections()
  */
 void CallHistoryDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     updateDefault();
@@ -836,6 +838,8 @@ void CallHistoryDialog::on_previousButton_clicked()
  */
 void CallHistoryDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     updateDefault();
@@ -846,6 +850,8 @@ void CallHistoryDialog::on_nextButton_clicked()
  */
 void CallHistoryDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     updateDefault();
@@ -856,6 +862,8 @@ void CallHistoryDialog::on_previousStartButton_clicked()
  */
 void CallHistoryDialog::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     updateDefault();
@@ -866,6 +874,8 @@ void CallHistoryDialog::on_nextEndButton_clicked()
  */
 void CallHistoryDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     updateDefault();

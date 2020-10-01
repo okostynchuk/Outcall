@@ -368,6 +368,8 @@ bool NotesDialog::isInternalPhone(QString* str)
  */
 void NotesDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     onUpdate();
@@ -378,6 +380,8 @@ void NotesDialog::on_previousButton_clicked()
  */
 void NotesDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     onUpdate();
@@ -388,6 +392,8 @@ void NotesDialog::on_nextButton_clicked()
  */
 void NotesDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     onUpdate();
@@ -398,6 +404,8 @@ void NotesDialog::on_previousStartButton_clicked()
  */
 void NotesDialog::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     onUpdate();;
@@ -408,6 +416,8 @@ void NotesDialog::on_nextEndButton_clicked()
  */
 void NotesDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     onUpdate();

@@ -432,6 +432,8 @@ void ContactsDialog::on_updateButton_clicked()
  */
 void ContactsDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     onUpdate();
@@ -442,6 +444,8 @@ void ContactsDialog::on_previousButton_clicked()
  */
 void ContactsDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     onUpdate();
@@ -452,6 +456,8 @@ void ContactsDialog::on_nextButton_clicked()
  */
 void ContactsDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     onUpdate();
@@ -462,6 +468,8 @@ void ContactsDialog::on_previousStartButton_clicked()
  */
 void ContactsDialog::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     onUpdate();
@@ -472,6 +480,8 @@ void ContactsDialog::on_nextEndButton_clicked()
  */
 void ContactsDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     onUpdate();

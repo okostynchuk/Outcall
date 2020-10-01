@@ -271,6 +271,8 @@ void InternalContactsDialog::onAddReminder()
  */
 void InternalContactsDialog::on_previousButton_clicked()
 {
+    ui->listWidget->scrollToTop();
+
     go = "previous";
 
     loadContacts();
@@ -281,6 +283,8 @@ void InternalContactsDialog::on_previousButton_clicked()
  */
 void InternalContactsDialog::on_nextButton_clicked()
 {
+    ui->listWidget->scrollToTop();
+
     go = "next";
 
     loadContacts();
@@ -291,6 +295,8 @@ void InternalContactsDialog::on_nextButton_clicked()
  */
 void InternalContactsDialog::on_previousStartButton_clicked()
 {
+    ui->listWidget->scrollToTop();
+
     go = "previousStart";
 
     loadContacts();
@@ -301,6 +307,8 @@ void InternalContactsDialog::on_previousStartButton_clicked()
  */
 void InternalContactsDialog::on_nextEndButton_clicked()
 {
+    ui->listWidget->scrollToTop();
+
     go = "nextEnd";
 
     loadContacts();;
@@ -311,6 +319,8 @@ void InternalContactsDialog::on_nextEndButton_clicked()
  */
 void InternalContactsDialog::on_lineEdit_page_returnPressed()
 {
+    ui->listWidget->scrollToTop();
+
     go = "enter";
 
     loadContacts();

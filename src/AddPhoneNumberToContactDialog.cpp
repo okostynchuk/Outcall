@@ -267,6 +267,8 @@ void AddPhoneNumberToContactDialog::currentIndexChanged()
  */
 void AddPhoneNumberToContactDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     onUpdate();
@@ -277,6 +279,8 @@ void AddPhoneNumberToContactDialog::on_previousButton_clicked()
  */
 void AddPhoneNumberToContactDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     onUpdate();
@@ -287,6 +291,8 @@ void AddPhoneNumberToContactDialog::on_nextButton_clicked()
  */
 void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     onUpdate();
@@ -296,7 +302,9 @@ void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
  * Выполняет операции для последующего перехода на последнюю страницу.
  */
 void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
-{
+{  
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     onUpdate();
@@ -307,6 +315,8 @@ void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
  */
 void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     onUpdate();

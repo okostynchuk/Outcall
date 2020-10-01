@@ -646,6 +646,8 @@ void ViewContactDialog::onUpdate()
  */
 void ViewContactDialog::on_previousButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previous";
 
     loadCalls();
@@ -656,6 +658,8 @@ void ViewContactDialog::on_previousButton_clicked()
  */
 void ViewContactDialog::on_nextButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "next";
 
     loadCalls();
@@ -666,6 +670,8 @@ void ViewContactDialog::on_nextButton_clicked()
  */
 void ViewContactDialog::on_previousStartButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "previousStart";
 
     loadCalls();
@@ -676,6 +682,8 @@ void ViewContactDialog::on_previousStartButton_clicked()
  */
 void ViewContactDialog::on_nextEndButton_clicked()
 {
+    ui->tableView->scrollToTop();
+
     go = "nextEnd";
 
     loadCalls();;
@@ -686,6 +694,8 @@ void ViewContactDialog::on_nextEndButton_clicked()
  */
 void ViewContactDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView->scrollToTop();
+
     go = "enter";
 
     loadCalls();

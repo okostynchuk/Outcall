@@ -820,6 +820,8 @@ void ViewOrgContactDialog::onAddReminder()
  */
 void ViewOrgContactDialog::on_previousButton_clicked()
 {
+    ui->tableView_2->scrollToTop();
+
     go = "previous";
 
     loadCalls();
@@ -830,6 +832,8 @@ void ViewOrgContactDialog::on_previousButton_clicked()
  */
 void ViewOrgContactDialog::on_nextButton_clicked()
 {
+    ui->tableView_2->scrollToTop();
+
     go = "next";
 
     loadCalls();
@@ -840,6 +844,8 @@ void ViewOrgContactDialog::on_nextButton_clicked()
  */
 void ViewOrgContactDialog::on_previousStartButton_clicked()
 {
+    ui->tableView_2->scrollToTop();
+
     go = "previousStart";
 
     loadCalls();
@@ -850,6 +856,8 @@ void ViewOrgContactDialog::on_previousStartButton_clicked()
  */
 void ViewOrgContactDialog::on_nextEndButton_clicked()
 {
+    ui->tableView_2->scrollToTop();
+
     go = "nextEnd";
 
     loadCalls();;
@@ -860,6 +868,8 @@ void ViewOrgContactDialog::on_nextEndButton_clicked()
  */
 void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
 {
+    ui->tableView_2->scrollToTop();
+
     go = "enter";
 
     loadCalls();
