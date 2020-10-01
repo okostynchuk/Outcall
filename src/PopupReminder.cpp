@@ -153,7 +153,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     ui->comboBox->addItem(tr("Через 24 часа"));
 
     QString language = global::getSettingsValue("language", "settings").toString();
-    if (language == "Русский (по умолчанию)")
+    if (language == "Русский")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 16px;} ::drop-down{border: 0px;}");
     else if (language == "Українська")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 21px;} ::drop-down{border: 0px;}");
@@ -391,9 +391,9 @@ void PopupReminder::onTimer()
  * Получает запрос из класса EditReminderDialog на обновление списка напоминаний,
  * изменение иконки приложения, а также закрытие и удаление объекта окна.
  */
-void PopupReminder::receiveData(bool updating)
+void PopupReminder::receiveData(bool update)
 {
-    if (updating)
+    if (update)
     {
         m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;

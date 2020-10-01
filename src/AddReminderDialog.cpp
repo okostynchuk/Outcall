@@ -24,7 +24,7 @@ AddReminderDialog::AddReminderDialog(QWidget *parent) :
 
     QString language = global::getSettingsValue("language", "settings").toString();
 
-    if (language == "Русский (по умолчанию)")
+    if (language == "Русский")
         ui->calendarWidget->setLocale(QLocale::Russian);
     else if (language == "Українська")
         ui->calendarWidget->setLocale(QLocale::Ukrainian);
@@ -73,7 +73,7 @@ void AddReminderDialog::onChooseEmployee()
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValues(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
-    connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    connect(this, &AddReminderDialog::getPos, chooseEmployee.data(), &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -227,11 +227,13 @@ void AddReminderDialog::onTextChanged()
 
 /**
  * Выполняет обработку нажатий клавиш.
- * Особая обработка для клавиши Enter.
+ * Особая обработка для клавиш Esc и Enter.
  */
 void AddReminderDialog::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Return)
+    if (event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else if (event->key() == Qt::Key_Return)
     {
         if (ui->textEdit->hasFocus())
             return;

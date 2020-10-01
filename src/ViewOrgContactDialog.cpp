@@ -190,9 +190,9 @@ void ViewOrgContactDialog::showCard(const QModelIndex &index)
 /**
  * Получает запрос на обновление списка сотрудников организации.
  */
-void ViewOrgContactDialog::receiveDataPerson(bool updating)
+void ViewOrgContactDialog::receiveDataPerson(bool update)
 {
-    if (updating)
+    if (update)
     {
         emit sendData(true);
 
@@ -878,7 +878,7 @@ void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
 /**
  * Получает запрос на обновление состояния окна.
  */
-void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
+void ViewOrgContactDialog::receiveDataOrg(bool update, int x, int y)
 {
     int nDesktopHeight;
     int nDesktopWidth;
@@ -891,7 +891,7 @@ void ViewOrgContactDialog::receiveDataOrg(bool updating, int x, int y)
     nDesktopWidth = rcDesktop.width();
     nDesktopHeight = rcDesktop.height();
 
-    if (updating)
+    if (update)
     {
         emit sendData(true);
 

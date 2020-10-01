@@ -50,9 +50,9 @@ ContactsDialog::~ContactsDialog()
  * Получает запрос на обновление списка контактов из классов
  * AddContactDialog, AddOrgContactDialog, ViewContactDialog, ViewOrgContactDialog.
  */
-void ContactsDialog::receiveData(bool updating)
+void ContactsDialog::receiveData(bool update)
 {
-    if (updating)
+    if (update)
     {
         queryModel->setQuery(queryModel->query().lastQuery());
 

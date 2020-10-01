@@ -464,11 +464,13 @@ void EditContactDialog::hideBackButton()
 
 /**
  * Выполняет обработку нажатий клавиш.
- * Особая обработка для клавиши Enter.
+ * Особая обработка для клавиш Esc и Enter.
  */
 void EditContactDialog::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Return)
+    if (event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else if (event->key() == Qt::Key_Return)
     {
         if (ui->comment->hasFocus())
             return;

@@ -31,12 +31,12 @@
     <message>
         <source>Отвязать</source>
         <oldsource>Удалить</oldsource>
-        <translation>Отвязать</translation>
+        <translation type="vanished">Отвязать</translation>
     </message>
     <message>
         <source>Привязать</source>
         <oldsource>Редактировать</oldsource>
-        <translation>Привязать</translation>
+        <translation type="vanished">Привязать</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -1546,11 +1546,11 @@
     </message>
     <message>
         <source>Отвязать</source>
-        <translation>Отвязать</translation>
+        <translation type="vanished">Отвязать</translation>
     </message>
     <message>
         <source>Привязать</source>
-        <translation>Привязать</translation>
+        <translation type="vanished">Привязать</translation>
     </message>
     <message>
         <source>2</source>
@@ -2520,7 +2520,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</translation>
+        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt;&lt;br&gt;%2</translation>
     </message>
     <message>
         <source>Входящий звонок от:&lt;br&gt;&lt;b&gt;%1 (%2)&lt;/b&gt;</source>
@@ -3195,7 +3195,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Русский (по умолчанию)</source>
-        <translation>Русский (по умолчанию)</translation>
+        <translation type="vanished">Русский (по умолчанию)</translation>
     </message>
     <message>
         <source>Номер</source>
@@ -3220,6 +3220,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Проверить доступные обновления</source>
         <translation>Проверить доступные обновления</translation>
+    </message>
+    <message>
+        <source>Русский</source>
+        <translation>Русский</translation>
     </message>
 </context>
 <context>

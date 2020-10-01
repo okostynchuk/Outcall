@@ -62,7 +62,7 @@ void EditReminderDialog::onChooseEmployee()
     chooseEmployee = new ChooseEmployee;
     chooseEmployee.data()->setValues(employee);
     connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
-    connect(this, &EditReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    connect(this, &EditReminderDialog::getPos, chooseEmployee.data(), &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
     chooseEmployee.data()->show();
     chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
@@ -295,6 +295,9 @@ void EditReminderDialog::onSave()
         }
     }
 
+    if (!chooseEmployee.isNull())
+        chooseEmployee.data()->close();
+
     emit sendData(true);
 
     close();
@@ -426,7 +429,7 @@ bool EditReminderDialog::eventFilter(QObject*, QEvent* event)
 
 /**
  * Выполняет обработку нажатий клавиш.
- * Особая обработка для клавиши Esc.
+ * Особая обработка для клавиш Esc и Enter.
  */
 void EditReminderDialog::keyPressEvent(QKeyEvent* event)
 {
@@ -440,7 +443,7 @@ void EditReminderDialog::keyPressEvent(QKeyEvent* event)
             onSave();
     }
     else
-        QWidget::keyPressEvent(event);
+        QDialog::keyPressEvent(event);
 }
 
 /**

@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
     QTranslator qtMain;
     QTranslator qtBase;
 
-    if (language == "Русский (по умолчанию)")
+    if (language == "Русский")
     {
         qtMain.load(":/translations/russian.qm");
         app.installTranslator(&qtMain);
