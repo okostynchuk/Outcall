@@ -74,7 +74,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 
         go = "default";
 
-        ui->lineEdit_page->setText("1");
+        page = "1";
 
         loadContacts();
     }
@@ -93,7 +93,7 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
 
     go = "default";
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 }
 
 /**
@@ -101,9 +101,6 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
  */
 void InternalContactsDialog::loadContacts()
 {
-    QString page = ui->lineEdit_page->text();
-    QString pages = ui->label_pages->text();
-
     int count = extensions.count();
 
     if (count <= ui->comboBox_list->currentText().toInt())
@@ -199,7 +196,7 @@ void InternalContactsDialog::onSearch()
 
     go = "default";
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 
     loadContacts();
 }

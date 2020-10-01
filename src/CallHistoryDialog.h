@@ -98,6 +98,7 @@ private:
     QString number;
     QString my_number;
     QString my_group;
+    QString page;
 
     int countRecords;
 

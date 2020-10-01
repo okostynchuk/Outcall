@@ -46,7 +46,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
 
     go = "default";
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -83,7 +83,7 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
 
     go = "default";
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 }
 
 /**
@@ -102,7 +102,7 @@ void CallHistoryDialog::loadCalls()
     QString queryString;
 
     if (ui->tabWidget->currentIndex() == 0)
-        queryString = "SELECT IF(src = '"+my_number+"', extfield2, extfield1), ";
+        queryString = "SELECT IF(src = '" + my_number + "', extfield2, extfield1), ";
     else if (ui->tabWidget->currentIndex() == 3)
         queryString = "SELECT extfield2, ";
     else
@@ -111,7 +111,7 @@ void CallHistoryDialog::loadCalls()
     queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ ui->comboBox_days->currentText() +"' DAY) ");
 
     if (ui->tabWidget->currentIndex() == 3)
-            queryString.append("AND src = '"+my_number+"' ");
+            queryString.append("AND src = '" + my_number + "' ");
     else
     {
         if (ui->tabWidget->currentIndex() == 0)
@@ -124,13 +124,13 @@ void CallHistoryDialog::loadCalls()
         queryString.append("AND ( ");
 
         if (ui->tabWidget->currentIndex() == 0)
-            queryString.append("dst = '"+my_group+"' OR src = '"+my_number+"' OR ");
+            queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
         if (ui->tabWidget->currentIndex() == 1)
-            queryString.append("dst = '"+my_group+"' OR ");
+            queryString.append("dst = '" + my_group + "' OR ");
 
-        queryString.append("dst = '"+my_number+"' OR dst REGEXP '^[0-9]+[(]"+my_number+"[)]$' "
-                                                    "OR dst REGEXP '^"+my_number+"[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                                                 "'^"+my_number+"[(][a-z]+ [0-9]+[(]"+my_number+"[)][)]$') ");
+        queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "
+                                                    "OR dst REGEXP '^" + my_number + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                                                 "'^" + my_number + "[(][a-z]+ [0-9]+[(]" + my_number + "[)][)]$') ");
     }
 
     queryString.append("ORDER BY datetime DESC LIMIT ");
@@ -220,7 +220,6 @@ void CallHistoryDialog::loadCalls()
  */
 void CallHistoryDialog::setPage()
 {
-    QString page = ui->lineEdit_page->text();
     QString pages = ui->label_pages->text();
 
     if (countRecords <= ui->comboBox_list->currentText().toInt())
@@ -781,7 +780,7 @@ QString CallHistoryDialog::getUpdateId(QString number)
  */
 void CallHistoryDialog::tabSelected()
 {
-    ui->lineEdit_page->setText("1");
+    page = "1";
 
     ui->tableView->setModel(NULL);
 

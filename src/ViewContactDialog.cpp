@@ -215,7 +215,7 @@ void ViewContactDialog::setValues(QString id)
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 
     updateCount();
 }
@@ -368,9 +368,6 @@ void ViewContactDialog::loadCalls()
  */
 void ViewContactDialog::setPage()
 {
-    QString page = ui->lineEdit_page->text();
-    QString pages = ui->label_pages->text();
-
     if (countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
@@ -628,7 +625,7 @@ void ViewContactDialog::tabSelected()
 {
     ui->tableView->setModel(NULL);
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 
     onUpdate();
 }

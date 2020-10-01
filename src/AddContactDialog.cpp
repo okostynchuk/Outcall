@@ -134,7 +134,6 @@ void AddContactDialog::onSave()
 
     for (int i = 0; i < phonesList.length(); ++i)
         for (int j = 0; j < phonesList.length(); ++j)
-        {
             if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
@@ -142,7 +141,6 @@ void AddContactDialog::onSave()
 
                 same_phones = true;
             }
-        }
 
     if (same_phones)
     {
@@ -219,7 +217,6 @@ void AddContactDialog::onSave()
     close();
 
     QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно добавлена!"), QMessageBox::Ok);
-
 }
 
 /**

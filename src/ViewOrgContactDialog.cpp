@@ -110,7 +110,7 @@ void ViewOrgContactDialog::tabSelected()
         onUpdateEmployees();
     else if (ui->tabWidget_2->currentIndex() == 2)
     {
-        ui->lineEdit_page->setText("1");
+        page = "1";
 
         onUpdate();
     }
@@ -348,9 +348,6 @@ void ViewOrgContactDialog::loadCalls()
  */
 void ViewOrgContactDialog::setPage()
 {
-    QString page = ui->lineEdit_page->text();
-    QString pages = ui->label_pages->text();
-
     if (countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
@@ -568,7 +565,7 @@ void ViewOrgContactDialog::callTabSelected()
 {
     ui->tableView_2->setModel(NULL);
 
-    ui->lineEdit_page->setText("1");
+    page = "1";
 
     onUpdate();
 }
