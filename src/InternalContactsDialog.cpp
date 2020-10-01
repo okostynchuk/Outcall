@@ -88,6 +88,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
     ui->lineEdit->clear();
+    ui->lineEdit->setFocus();
 
     extensions.clear();
 
@@ -197,6 +198,7 @@ void InternalContactsDialog::onSearch()
         extensions.append(itemsSearch[i]->text());
 
     ui->listWidget->clear();
+    ui->listWidget->scrollToTop();
 
     go = "default";
 

@@ -123,9 +123,18 @@ void ViewOrgContactDialog::tabSelected()
 void ViewOrgContactDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
+    {
+        if (filter)
+            ui->tableView->scrollToTop();
+
         filter = false;
+    }
     else
+    {
         filter = true;
+
+        ui->tableView->scrollToTop();
+    }
 
     onUpdateEmployees();
 }

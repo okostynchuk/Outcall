@@ -240,6 +240,9 @@ void AddPhoneNumberToContactDialog::searchFunction()
 
     if (ui->lineEdit->text().isEmpty())
     {
+        if (filter)
+            ui->tableView->scrollToTop();
+
         filter = false;
 
         onUpdate();
@@ -250,6 +253,8 @@ void AddPhoneNumberToContactDialog::searchFunction()
     filter = true;
 
     page = "1";
+
+    ui->tableView->scrollToTop();
 
     onUpdate();
 }
