@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
-        <translation>* - поля необхідні для заповнення</translation>
+        <translation type="vanished">* - поля необхідні для заповнення</translation>
     </message>
     <message>
         <source>Отчество:</source>
@@ -159,6 +159,10 @@
         <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
         <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
+    <message>
+        <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
+        <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -265,7 +269,7 @@
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
-        <translation>* - поля обов&apos;язкові для заповнення</translation>
+        <translation type="vanished">* - поля обов&apos;язкові для заповнення</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -375,6 +379,10 @@
     <message>
         <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
         <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
+        <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
 </context>
 <context>
@@ -1503,7 +1511,7 @@
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
-        <translation>* - поля обов&apos;язкові для заповнення</translation>
+        <translation type="vanished">* - поля обов&apos;язкові для заповнення</translation>
     </message>
     <message>
         <source>Отчество:</source>
@@ -1667,6 +1675,10 @@
         <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
         <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
     </message>
+    <message>
+        <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
+        <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1684,7 +1696,7 @@
     </message>
     <message>
         <source>* - поля обязательные для заполнения</source>
-        <translation>* - поля обов&apos;язкові для заповнення</translation>
+        <translation type="vanished">* - поля обов&apos;язкові для заповнення</translation>
     </message>
     <message>
         <source>Адрес:</source>
@@ -1830,6 +1842,10 @@
     <message>
         <source>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</source>
         <translation>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
+        <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
 </context>
 <context>
