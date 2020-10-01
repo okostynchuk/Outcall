@@ -69,9 +69,7 @@ private:
     QString state;
     QString my_number;
     QString phone;
-    QString loadState;
     QString page;
-    QString pages;
     QString go;
     int count;
     int remainder;

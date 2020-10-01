@@ -94,6 +94,8 @@ void AddOrgToPerson::onUpdate()
 
     count = query.value(0).toInt();
 
+    QString pages = ui->label_pages->text();
+
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else

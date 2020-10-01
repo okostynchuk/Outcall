@@ -78,6 +78,8 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 
         loadContacts();
     }
+    else
+        loadContacts();
 }
 
 /**
@@ -102,6 +104,8 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
 void InternalContactsDialog::loadContacts()
 {
     int count = extensions.count();
+
+    QString pages = ui->label_pages->text();
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -264,6 +268,18 @@ void InternalContactsDialog::onAddReminder()
     addReminderDialog->receiveEmployee(sender()->property("addReminderButton").value<QStringList>());
     addReminderDialog->show();
     addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+/**
+ * Выполняет обработку нажатий клавиш.
+ * Особая обработка для клавиши Esc.
+ */
+void InternalContactsDialog::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape)
+        QDialog::close();
+    else
+        QDialog::keyPressEvent(event);
 }
 
 /**

@@ -11,6 +11,7 @@
 #include <QSqlQueryModel>
 #include <QCheckBox>
 #include <QHBoxLayout>
+#include <QScrollBar>
 
 namespace Ui {
 class RemindersDialog;
@@ -79,10 +80,11 @@ private:
     QTimer timer;
     QString my_number;
     QString page;
-    QString pages;
     QString go;
     int oldActiveReminders;
     int oldReceivedReminders;
+    int verticalScrollBar;
+    int horizontalScrollBar;
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();

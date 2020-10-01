@@ -79,7 +79,6 @@ private:
     QString page;
     int count;
     int remainder;
-    QString pages;
     QSqlDatabase db;
     QSqlQuery query;
     QString go;

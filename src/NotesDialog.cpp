@@ -119,6 +119,8 @@ void NotesDialog::loadNotes()
 
     count = queryCount.value(0).toInt();
 
+    QString pages = ui->label_pages->text();
+
     query = new QSqlQueryModel;
 
     if (count <= ui->comboBox_list->currentText().toInt())

@@ -90,7 +90,6 @@ private:
     QString my_number;
     QString go;
     QString page;
-    QString pages;
 
     int countRecords;
 

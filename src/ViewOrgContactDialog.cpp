@@ -348,6 +348,8 @@ void ViewOrgContactDialog::loadCalls()
  */
 void ViewOrgContactDialog::setPage()
 {
+    QString pages = ui->label_pages->text();
+
     if (countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else

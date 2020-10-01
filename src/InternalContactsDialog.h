@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QKeyEvent>
 
 class AddReminderDialog;
 
@@ -38,6 +39,7 @@ private slots:
 
     void showEvent(QShowEvent*);
     void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     Ui::InternalContactsDialog *ui;
@@ -49,7 +51,6 @@ private:
     QString my_number;
     QString go;
     QString page;
-    QString pages;
 
     int countRecords;
     int remainder;

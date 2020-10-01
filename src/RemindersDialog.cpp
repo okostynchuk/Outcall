@@ -164,6 +164,9 @@ void RemindersDialog::closeEvent(QCloseEvent*)
 
     clearSelections();
 
+    verticalScrollBar = 0;
+    horizontalScrollBar = 0;
+
     ui->tabWidget->setCurrentIndex(0);
 
     go = "default";
@@ -347,6 +350,8 @@ void RemindersDialog::updateCount()
 
     int count = query.value(0).toInt();
 
+    QString pages = ui->label_pages->text();
+
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
@@ -499,6 +504,15 @@ void RemindersDialog::loadReminders()
 
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
+
+    if (verticalScrollBar != 0)
+    {
+        ui->tableView->verticalScrollBar()->setValue(verticalScrollBar);
+        ui->tableView->horizontalScrollBar()->setValue(horizontalScrollBar);
+
+        verticalScrollBar = 0;
+        horizontalScrollBar = 0;
+    }
 
     resizeCells = true;
 
@@ -917,6 +931,9 @@ void RemindersDialog::changeState()
                 resizeCells = false;
             }
         }
+
+        verticalScrollBar = ui->tableView->verticalScrollBar()->value();
+        horizontalScrollBar = ui->tableView->horizontalScrollBar()->value();
 
         go = "default";
 
