@@ -296,7 +296,7 @@ void ViewOrgContactDialog::loadCalls()
 
     ui->tableView_2->setColumnHidden(3,true);
 
-    if (ui->tabWidget->currentIndex() != 0)
+    if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
         ui->tableView_2->setColumnHidden(4, true);
 
     ui->tableView_2->setColumnHidden(7, true);
@@ -313,7 +313,7 @@ void ViewOrgContactDialog::loadCalls()
         if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
 
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentIndex() == 0 || ui->tabWidget->currentIndex() == 3)
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
         QSqlQuery query(db);
