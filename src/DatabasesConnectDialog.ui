@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>467</width>
-    <height>353</height>
+    <height>350</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>350</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Подключение к базам данных</string>
