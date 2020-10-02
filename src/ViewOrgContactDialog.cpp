@@ -47,7 +47,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
 
     my_number = global::getExtensionNumber("extensions");
 
-    if (!MSSQLopened)
+    if (!ordersDbOpened)
         ui->openAccessButton->hide();
 
     ui->comboBox_list->setVisible(false);

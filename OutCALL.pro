@@ -13,7 +13,7 @@ win32:
 {
     VERSION = 3.0.2
 
-    QMAKE_TARGET_COMPANY = Vybor
+    QMAKE_TARGET_COMPANY = Team Nonames
     QMAKE_TARGET_PRODUCT = OutCALL
 
     RC_ICONS = $$PWD/src/images/outcall-logo.ico

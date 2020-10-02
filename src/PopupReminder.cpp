@@ -120,7 +120,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
         ui->openAccessButton->hide();
     }
 
-    if (!MSSQLopened)
+    if (!ordersDbOpened)
         ui->openAccessButton->hide();
 
     QString note = m_pri.text;
