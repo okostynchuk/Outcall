@@ -165,7 +165,7 @@ void Downloader::openDownload()
         QMessageBox::critical(this, tr("Ошибка"), tr("Файл обновления не найден!"), QMessageBox::Close);
     }
 
-    QDir dir("C:\\OutCALL");
+    QDir dir(qApp->applicationDirPath());
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     int fileAmount = dir.count();
 
@@ -173,7 +173,7 @@ void Downloader::openDownload()
     namesOfDirectories = dir.entryList();
 
     for (int i = 0; i < fileAmount; ++i)
-        QFile::rename("C:\\OutCALL\\" + namesOfDirectories.at(i), "C:\\OutCALL\\" + PARTIAL_DOWN + namesOfDirectories.at(i));
+        QFile::rename(dir.canonicalPath() + "\\" + namesOfDirectories.at(i), dir.canonicalPath() + "\\" + PARTIAL_DOWN + namesOfDirectories.at(i));
 }
 
 /**

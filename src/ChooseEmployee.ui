@@ -215,8 +215,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>applyButton</zorder>
-  <zorder>lineEdit_2</zorder>
  </widget>
  <tabstops>
   <tabstop>lineEdit</tabstop>
