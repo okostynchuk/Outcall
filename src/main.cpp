@@ -31,15 +31,16 @@ int main(int argc, char* argv[])
 
     g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
     g_AppDirPath = QApplication::applicationDirPath();
+    global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
-    QDir dir(qApp->applicationDirPath());
+    QDir dir(g_AppDirPath);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     int fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    QDir oldAppDir(qApp->applicationDirPath() + "\\");
+    QDir oldAppDir(g_AppDirPath + "\\");
 
     QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder(qApp->applicationDirPath() + "\\" + namesOfDirectories.at(i));
+                QDir folder(g_AppDirPath + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }

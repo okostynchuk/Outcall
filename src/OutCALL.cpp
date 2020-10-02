@@ -51,8 +51,6 @@ OutCall::OutCall() :
 
     connect(this, &OutCall::showReminders, m_remindersDialog, &RemindersDialog::showReminders);
 
-    global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
-
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
