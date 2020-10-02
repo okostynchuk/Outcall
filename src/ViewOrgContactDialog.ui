@@ -856,6 +856,9 @@ background-color: #fffff0;
        </item>
        <item row="2" column="0">
         <widget class="QTableView" name="tableView_2">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
          </property>
@@ -1174,6 +1177,8 @@ background-color: #fffff0;
   <tabstop>comment</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
+  <tabstop>searchButton</tabstop>
+  <tabstop>addPersonToOrg</tabstop>
   <tabstop>comboBox_days</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
@@ -1184,6 +1189,7 @@ background-color: #fffff0;
   <tabstop>comboBox_list</tabstop>
   <tabstop>playAudio</tabstop>
   <tabstop>playAudioPhone</tabstop>
+  <tabstop>tableView_2</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

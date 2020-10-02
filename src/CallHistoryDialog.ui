@@ -65,6 +65,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QTableView" name="tableView">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
         </property>
@@ -601,6 +604,7 @@
  </widget>
  <tabstops>
   <tabstop>comboBox_days</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>
   <tabstop>lineEdit_page</tabstop>
@@ -610,10 +614,10 @@
   <tabstop>callButton</tabstop>
   <tabstop>addContactButton</tabstop>
   <tabstop>addOrgContactButton</tabstop>
-  <tabstop>updateButton</tabstop>
   <tabstop>addPhoneNumberButton</tabstop>
   <tabstop>playAudio</tabstop>
   <tabstop>playAudioPhone</tabstop>
+  <tabstop>updateButton</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

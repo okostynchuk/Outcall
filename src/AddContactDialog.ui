@@ -545,6 +545,8 @@
   <tabstop>thirdNumber</tabstop>
   <tabstop>fourthNumber</tabstop>
   <tabstop>fifthNumber</tabstop>
+  <tabstop>deleteOrgButton</tabstop>
+  <tabstop>addOrgButton</tabstop>
   <tabstop>city</tabstop>
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
