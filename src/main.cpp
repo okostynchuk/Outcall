@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
         databasesConnectDialog->deleteLater();
     }
 
-    opened = true;
+    dbsOpened = true;
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -216,7 +216,7 @@ int main(int argc, char* argv[])
         dbOrders.open();
 
         if (dbOrders.isOpen())
-            MSSQLopened = true;
+            ordersDbOpened = true;
         else
             QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
     }

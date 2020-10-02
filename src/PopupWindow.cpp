@@ -71,7 +71,7 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
         }
     }
 
-    if (!MSSQLopened)
+    if (!ordersDbOpened)
         ui->openAccessButton->hide();
 
     connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
@@ -660,7 +660,7 @@ void PopupWindow::receiveData(bool update)
             }
         }
 
-        if (!MSSQLopened)
+        if (!ordersDbOpened)
             ui->openAccessButton->hide();
     }
 }

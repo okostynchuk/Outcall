@@ -249,7 +249,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
         QSqlDatabase::database("Calls").open();
 
         if (!QSqlDatabase::database().isOpen() || !QSqlDatabase::database("Calls").isOpen())
-            opened = false;
+            dbsOpened = false;
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
@@ -258,7 +258,7 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         m_timer.stop();
 
-        if (!opened)
+        if (!dbsOpened)
         {
             m_systemTrayIcon->hide();
 
@@ -550,7 +550,7 @@ void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
-        if (opened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
+        if (dbsOpened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
         {
             m_placeCallDialog->showNormal();
             m_placeCallDialog->activateWindow();

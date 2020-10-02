@@ -14,8 +14,8 @@ QString g_AppDirPath = "";
 QString g_AppSettingsFolderPath = "";
 QString g_CurrentAppVersion = APP_VERSION;
 
-bool opened = false;
-bool MSSQLopened = false;
+bool dbsOpened = false;
+bool ordersDbOpened = false;
 
 QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent, QMessageBox::StandardButton defaultButton)
 {
