@@ -23,13 +23,12 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    QString appVersion = g_CurrentAppVersion;
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
-    app.setApplicationVersion(appVersion);
+    app.setApplicationVersion(APP_VERSION);
     app.setOrganizationName(ORGANIZATION_NAME);
 
-    g_AppSettingsFolderPath = QDir::homePath() + "/" + QString(APP_NAME);
+    g_AppSettingsFolderPath = QDir::homePath() + "/" + app.applicationName();
     g_AppDirPath = QApplication::applicationDirPath();
     global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
 
@@ -71,7 +70,7 @@ int main(int argc, char* argv[])
         QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
 
         if (uninstallFolder.contains("DisplayName"))
-            if (uninstallFolder.value("DisplayName").toString() == QString(APP_NAME) && uninstallFolder.value("DisplayVersion").toString() != appVersion)
+            if (uninstallFolder.value("DisplayName").toString() == app.applicationName() && uninstallFolder.value("DisplayVersion").toString() != app.applicationVersion())
             {
                 QProcess* process = new QProcess;
 
@@ -111,11 +110,11 @@ int main(int argc, char* argv[])
     tasklist.start(
           "tasklist",
           QStringList() << "/FO" << "CSV"
-                  << "/FI" << QString("IMAGENAME eq " + QString(APP_NAME) + ".exe"));
+                  << "/FI" << QString("IMAGENAME eq " + app.applicationName() + ".exe"));
     tasklist.waitForFinished();
     QString output = tasklist.readAllStandardOutput();
 
-    if (output.count(QString(APP_NAME) + ".exe") != 1)
+    if (output.count(app.applicationName() + ".exe") != 1)
         if (QCoreApplication::arguments().last() != "restart")
         {
             QMessageBox msgBox;
@@ -135,7 +134,7 @@ int main(int argc, char* argv[])
     QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
     settings.beginGroup("Shell Folders");
 
-    QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+    QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + app.applicationName() + ".lnk");
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();

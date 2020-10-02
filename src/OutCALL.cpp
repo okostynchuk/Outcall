@@ -253,8 +253,8 @@ void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
-        PopupHelloWindow::showInformationMessage(tr(APP_NAME), tr("Вы успешно вошли"));
-        m_systemTrayIcon->setToolTip(tr("") + tr("") + tr("Вы успешно вошли"));
+        PopupHelloWindow::showInformationMessage(qApp->applicationName(), tr("Вы успешно вошли"));
+        m_systemTrayIcon->setToolTip(tr("Вы успешно вошли"));
 
         m_timer.stop();
 

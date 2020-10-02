@@ -13,7 +13,6 @@
 
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
-extern QString g_CurrentAppVersion;
 extern bool dbsOpened;
 extern bool ordersDbOpened;
 

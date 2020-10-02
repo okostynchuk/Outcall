@@ -12,7 +12,6 @@
 
 QString g_AppDirPath = "";
 QString g_AppSettingsFolderPath = "";
-QString g_CurrentAppVersion = APP_VERSION;
 
 bool dbsOpened = false;
 bool ordersDbOpened = false;

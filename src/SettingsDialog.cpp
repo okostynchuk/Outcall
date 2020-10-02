@@ -70,7 +70,7 @@ SettingsDialog::~SettingsDialog()
  */
 void SettingsDialog::checkForUpdates()
 {
-    m_updater->setModuleVersion(DEFS_URL, g_CurrentAppVersion);
+    m_updater->setModuleVersion(DEFS_URL, qApp->applicationVersion());
     m_updater->setNotifyOnFinish(DEFS_URL, true);
     m_updater->setNotifyOnUpdate(DEFS_URL, true);
     m_updater->setUseCustomAppcast(DEFS_URL, false);
