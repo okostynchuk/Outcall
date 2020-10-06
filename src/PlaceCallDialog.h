@@ -24,7 +24,7 @@ public slots:
     void receiveNumber(QString);
 
 public:
-    explicit PlaceCallDialog(QWidget *parent = 0);
+    explicit PlaceCallDialog(QWidget* parent = 0);
     ~PlaceCallDialog();
 
 private slots:
@@ -34,19 +34,19 @@ private slots:
     void onUpdate();
     void clearEditText();
     void onOrgChanged();
-    void setModel(QString);
+    void setModel(const QString& queryString);
 
-    void showNumber(const QModelIndex &);
+    void showNumber(const QModelIndex& index);
 
     void on_lineEdit_returnPressed();
     void on_phoneLine_returnPressed();
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::PlaceCallDialog *ui;
+    Ui::PlaceCallDialog* ui;
 
     QSqlDatabase db;
 
@@ -59,7 +59,6 @@ private:
 
     QValidator* validator;
 
-    QString update;
     QString number;
     QString my_number;
 };

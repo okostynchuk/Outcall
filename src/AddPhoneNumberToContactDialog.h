@@ -19,19 +19,19 @@ class AddPhoneNumberToContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
+    void sendData(bool update);
 
 public:
-    explicit AddPhoneNumberToContactDialog(QWidget *parent = 0);
+    explicit AddPhoneNumberToContactDialog(QWidget* parent = 0);
     ~AddPhoneNumberToContactDialog();
 
-    void setPhoneNumber(QString);
+    void setPhoneNumber(const QString& phoneNumber);
 
 private slots:
     void deleteObjects();
     void onUpdate();
     void currentIndexChanged();
-    void addPhoneNumber(const QModelIndex &index);
+    void addPhoneNumber(const QModelIndex& index);
     void on_searchButton_clicked();
     void searchFunction();
 
@@ -43,7 +43,7 @@ private slots:
     void on_lineEdit_returnPressed();
 
 private:
-    Ui::AddPhoneNumberToContactDialog *ui;
+    Ui::AddPhoneNumberToContactDialog* ui;
 
     QSqlDatabase db;
 
@@ -55,13 +55,14 @@ private:
 
     QString phoneNumber;
     QString page;
-    qint32 count;
-    qint32 remainder;
-    QSqlQuery query;
     QString go;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
+
+    qint32 count;
+    qint32 remainder;
+
     bool filter;
 };
 

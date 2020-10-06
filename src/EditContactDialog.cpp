@@ -10,7 +10,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 
-EditContactDialog::EditContactDialog(QWidget *parent) :
+EditContactDialog::EditContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::EditContactDialog)
 {
@@ -357,7 +357,7 @@ bool EditContactDialog::isPhone(QString* str)
  * Получает и заполняет поля окна необходимыми данными.
  * Получает id контакта из классов CallHistoryDialog, ViewContactDialog.
  */
-void EditContactDialog::setValues(QString id)
+void EditContactDialog::setValues(const QString& id)
 {
     contactId = id;
 
@@ -404,7 +404,7 @@ void EditContactDialog::setValues(QString id)
  * Получает id и название организации из класса AddOrgToPerson
  * для последующей привязки к физ. лицу.
  */
-void EditContactDialog::receiveOrgName(QString id, QString name)
+void EditContactDialog::receiveOrgName(const QString& id, const QString& name)
 {
     if (!id.isNull())
     {

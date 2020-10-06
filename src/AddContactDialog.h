@@ -19,16 +19,16 @@ class AddContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
+    void sendData(bool update);
 
 public slots:
-    void receiveOrgName(QString, QString);
+    void receiveOrgName(const QString& id, const QString& name);
 
 public:
-    explicit AddContactDialog(QWidget *parent = 0);
+    explicit AddContactDialog(QWidget* parent = 0);
     ~AddContactDialog();
 
-    void setValues(QString);
+    void setValues(const QString& number);
 
 private slots:
     void onSave();
@@ -39,11 +39,11 @@ private slots:
 
     bool isPhone(QString* str);
 
-    void keyPressEvent(QKeyEvent*);
-    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
 private:
-    Ui::AddContactDialog *ui;
+    Ui::AddContactDialog* ui;
 
     QSqlDatabase db;
 

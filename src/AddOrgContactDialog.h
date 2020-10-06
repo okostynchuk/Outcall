@@ -16,13 +16,13 @@ class AddOrgContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
+    void sendData(bool update);
 
 public:
-    explicit AddOrgContactDialog(QWidget *parent = 0);
+    explicit AddOrgContactDialog(QWidget* parent = 0);
     ~AddOrgContactDialog();
 
-    void setValues(QString);
+    void setValues(const QString& number);
 
 private slots:
     void onSave();
@@ -30,10 +30,10 @@ private slots:
 
     bool isPhone(QString* str);
 
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::AddOrgContactDialog *ui;
+    Ui::AddOrgContactDialog* ui;
 
     QSqlDatabase db;
 

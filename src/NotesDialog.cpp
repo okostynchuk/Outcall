@@ -10,7 +10,7 @@
 #include <QSqlQuery>
 #include <QDateTime>
 
-NotesDialog::NotesDialog(QWidget *parent) :
+NotesDialog::NotesDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::NotesDialog)
 {
@@ -46,7 +46,7 @@ NotesDialog::~NotesDialog()
  * Получает данные заметок по звонку или номеру из классов CallHistoryDialog,
  * PopupWindow, ViewContactDialog и ViewOrgContactDialog.
  */
-void NotesDialog::setValues(QString uniqueid, QString phone)
+void NotesDialog::setValues(const QString& uniqueid, const QString& phone)
 {
     callId = uniqueid;
 

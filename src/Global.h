@@ -13,36 +13,37 @@
 
 extern QString g_AppDirPath;
 extern QString g_AppSettingsFolderPath;
+
 extern bool dbsOpened;
 extern bool ordersDbOpened;
 
-QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString &title = APP_NAME, QWidget *parent = 0,
+QMessageBox::StandardButton MsgBoxInformation(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+                                                     const QString& title = APP_NAME, QWidget* parent = 0,
                                                      QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 
-QMessageBox::StandardButton MsgBoxError(const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString &title = APP_NAME, QWidget *parent = 0,
+QMessageBox::StandardButton MsgBoxError(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+                                                     const QString& title = APP_NAME, QWidget* parent = 0,
                                                      QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 
-QMessageBox::StandardButton MsgBoxWarning(const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString &title = APP_NAME, QWidget *parent = 0,
+QMessageBox::StandardButton MsgBoxWarning(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+                                                     const QString& title = APP_NAME, QWidget* parent = 0,
                                                      QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 
 namespace global
 {
-    void setSettingsValue(const QString key, const QVariant value, const QString group = "");
+    void setSettingsValue(const QString& key, const QVariant& value, const QString& group = "");
 
-    QVariant getSettingsValue(const QString key, const QString group = "", const QVariant value = QVariant());
+    QVariant getSettingsValue(const QString& key, const QString& group = "", const QVariant& value = QVariant());
 
-    void removeSettingsKey(const QString key, const QString group = "");
+    void removeSettingsKey(const QString& key, const QString& group = "");
 
-    bool containsSettingsKey(const QString key, const QString group = "");
+    bool containsSettingsKey(const QString& key, const QString& group = "");
 
-    QStringList getSettingKeys(const QString group);
+    QStringList getSettingKeys(const QString& group);
 
-    QString getExtensionNumber(const QString group);
+    QString getExtensionNumber(const QString& group);
 
-    QString getGroupExtensionNumber(const QString group);
+    QString getGroupExtensionNumber(const QString& group);
 }
 
 #endif // GLOBAL_H

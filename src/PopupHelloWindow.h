@@ -31,10 +31,10 @@ private:
     };
 
 public:
-    PopupHelloWindow(const PWInformation& pwi, QWidget *parent = 0);
+    PopupHelloWindow(const PWInformation& pwi, QWidget* parent = 0);
     ~PopupHelloWindow();
 
-    static void showInformationMessage(QString caption, QString message, QPixmap avatar=QPixmap(), PWType type = PWInformationMessage);
+    static void showInformationMessage(const QString& caption, const QString& message, QPixmap avatar = QPixmap(), PWType type = PWInformationMessage);
     static void closeAll();
 
 private slots:
@@ -46,7 +46,7 @@ private slots:
     void mousePressEvent(QMouseEvent*);
 
 private:
-    Ui::PopupHelloWindow *ui;
+    Ui::PopupHelloWindow* ui;
 
     qint32 m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
     qint32 m_nCurrentPosX, m_nCurrentPosY;

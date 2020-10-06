@@ -26,7 +26,7 @@ class OutCall : public QWidget
     Q_OBJECT
 
 signals:
-    void showReminders(bool);
+    void showReminders(bool show);
 
 public:
     OutCall();
@@ -35,27 +35,33 @@ public:
     void show();
 
 protected slots:
-    void hideTrayIcon(bool);
-    void changeIconReminders(bool);
+    void hideTrayIcon(bool hide);
+    void setIconReminders(QColor color, qint32 activeReminders);
+    void changeIconReminders(bool change);
+    void changeIcon();
+
     void signInOut();
+
     void onSettingsDialog();
     void onContactsDialog();
     void onDebugInfo();
-    //void onActiveCalls();
     void onPlaceCall();
     void onCallHistory();
     void onRemindersDialog();
     void onInternalContactsDialog();
-    void onActivated(QSystemTrayIcon::ActivationReason reason);
-    void displayError(QAbstractSocket::SocketError socketError, const QString &msg);
-    void onStateChanged(AsteriskManager::AsteriskState state);
-    void onMessageReceived(const QString &message);
-    void onCallReceived(const QMap<QString, QVariant> &call);
+
+    void onActivated(const QSystemTrayIcon::ActivationReason& reason);
+
+    void displayError(const QAbstractSocket::SocketError& socketError, const QString& msg);
+    void onStateChanged(const AsteriskManager::AsteriskState& state);
+    void onMessageReceived(const QString& message);
+
+    void onCallReceived(const QMap<QString, QVariant>& call);
+
     void close();
-    void changeIcon();
+
     void disableActions();
     void enableActions();
-    void setIconReminders(QColor, qint32);
 
 protected:
     void automaticlySignIn();
@@ -83,8 +89,10 @@ private:
     InternalContactsDialog* m_internalContactsDialog;
 
     QTimer m_timer;
+
     bool m_switch;    
     bool show_call_popup;
+
     QString my_number;
 };
 

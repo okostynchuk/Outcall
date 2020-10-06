@@ -11,7 +11,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 
-ViewContactDialog::ViewContactDialog(QWidget *parent) :
+ViewContactDialog::ViewContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ViewContactDialog)
 {
@@ -180,7 +180,7 @@ void ViewContactDialog::onEdit()
  * Получает id контакта из классов ContactsDialog,
  * ViewOrgContactDialog, PopupWindow.
  */
-void ViewContactDialog::setValues(QString id)
+void ViewContactDialog::setValues(const QString& id)
 {
     contactId = id;
 
@@ -409,7 +409,7 @@ void ViewContactDialog::setPage()
 /**
  * Выполняет установку виджета для поля "Заметка".
  */
-QWidget* ViewContactDialog::loadNote(QString uniqueid)
+QWidget* ViewContactDialog::loadNote(const QString& uniqueid)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -461,7 +461,7 @@ QWidget* ViewContactDialog::loadNote(QString uniqueid)
 /**
  * Выполняет установку виджета для поля "Статус".
  */
-QWidget* ViewContactDialog::loadStatus(QString dialogStatus)
+QWidget* ViewContactDialog::loadStatus(const QString& dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
     QWidget* statusWgt = new QWidget;
@@ -492,7 +492,7 @@ QWidget* ViewContactDialog::loadStatus(QString dialogStatus)
 /**
  * Выполняет установку виджета для поля "Имя".
  */
-QWidget* ViewContactDialog::loadName(QString src, QString dst)
+QWidget* ViewContactDialog::loadName(const QString& src, const QString& dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
@@ -609,7 +609,7 @@ void ViewContactDialog::updateCount()
 /**
  * Выполняет открытие окна с заметками для их просмотра.
  */
-void ViewContactDialog::viewNotes(const QModelIndex &index)
+void ViewContactDialog::viewNotes(const QModelIndex& index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 
@@ -750,7 +750,7 @@ void ViewContactDialog::onPlayAudioPhone()
 /**
  * Выполняет вытягивание значений полей из записи.
  */
-void ViewContactDialog::getData(const QModelIndex &index)
+void ViewContactDialog::getData(const QModelIndex& index)
 {
     recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
 

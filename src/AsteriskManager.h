@@ -11,7 +11,7 @@ class AsteriskManager : public QObject
     Q_OBJECT
 
 public:
-    explicit AsteriskManager(const QString username, const QString secret, QObject *parent = 0);
+    explicit AsteriskManager(const QString& username, const QString& secret, QObject* parent = 0);
     ~AsteriskManager();
 
     enum CallState
@@ -46,41 +46,41 @@ public:
         QString destUniqueid;
     };
 
-    void originateCall(QString from, QString to,  QString protocol, QString callerId);
-    void originateAudio(QString number, QString protocol, QString recordpath);
+    void originateCall(const QString& from, const QString& to, const QString& protocol, const QString& callerId);
+    void originateAudio(const QString& number, const QString& protocol, QString recordpath);
 
     bool isSignedIn() const;
-    void signIn(const QString &serverName, const quint16 &port);
+    void signIn(const QString& serverName, const quint16& port);
     void signOut();
     void reconnect();
     void setAutoSignIn(bool ok);
     void onSettingsChange();
 
-    void setState(AsteriskState state);
+    void setState(const AsteriskState& state);
     void getExtensionNumbers();
 
     QMap<QString, QString> extensionNumbers;
     AsteriskState m_currentState;
 
 signals:
-    void callStart(QString);
-    void messageReceived(const QString &message);
+    void callStart(const QString& uniqueid);
+    void messageReceived(const QString& message);
     void authenticationState(bool state);
-    void callDeteceted(const QMap<QString, QVariant> &call, CallState state);
-    void callReceived(const QMap<QString, QVariant>&);
-    void error(QAbstractSocket::SocketError socketError, const QString &msg);
-    void stateChanged(AsteriskState state);
+    void callDeteceted(const QMap<QString, QVariant>& call, const CallState& state);
+    void callReceived(const QMap<QString, QVariant>& call);
+    void error(const QAbstractSocket::SocketError& socketError, const QString& msg);
+    void stateChanged(const AsteriskState& state);
 
 protected slots:
-    void onError(QAbstractSocket::SocketError socketError);
+    void onError(const QAbstractSocket::SocketError& socketError);
     void read();
     void login();
 
 protected:
-    void getEventValues(QString eventData, QMap<QString, QString> &map);
-    void parseEvent(const QString &event);
-    void asterisk_11_eventHandler(const QString &eventData);
-    void setAsteriskVersion(const QString &msg);
+    void getEventValues(const QString& eventData, QMap<QString, QString>& map);
+    void parseEvent(const QString& eventData);
+    void asterisk_11_eventHandler(const QString& eventData);
+    void setAsteriskVersion(const QString& msg);
 
 private:
     QTcpSocket* m_tcpSocket;

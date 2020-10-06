@@ -5,7 +5,7 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
-ContactsDialog::ContactsDialog(QWidget *parent) :
+ContactsDialog::ContactsDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ContactsDialog)
 {
@@ -131,7 +131,7 @@ void ContactsDialog::onAddOrg()
 /**
  * Выполняет открытие окна просмотра данных выбранного контакта.
  */
-void ContactsDialog::showCard(const QModelIndex &index)
+void ContactsDialog::showCard(const QModelIndex& index)
 {
     QString contactId = queryModel->data(queryModel->index(index.row(), 0)).toString();
     qint32 row = ui->tableView->currentIndex().row();
@@ -204,6 +204,8 @@ void ContactsDialog::loadContacts()
     }
 
     queryCountString.append(searchString);
+
+    QSqlQuery query(db);
 
     query.prepare(queryCountString);
     query.exec();

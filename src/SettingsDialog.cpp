@@ -17,7 +17,7 @@
 
 static const QString DEFS_URL = "http://192.168.0.30/definitions/updates.json";
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
+SettingsDialog::SettingsDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog),
     m_addExtensionDialog(nullptr)
@@ -85,7 +85,7 @@ void SettingsDialog::checkForUpdates()
  * Выполняет проверку соединения с Asterisk
  * для того, чтобы управлять доступом к функционалу.
  */
-void SettingsDialog::checkAsteriskState(AsteriskManager::AsteriskState state)
+void SettingsDialog::checkAsteriskState(const AsteriskManager::AsteriskState& state)
 {
     if (state == AsteriskManager::CONNECTED)
     {
@@ -337,9 +337,9 @@ void SettingsDialog::on_cancelButton_clicked()
 void SettingsDialog::applySettings()
 {
 //    if (ui->autoStartBox->isChecked())
-//        f.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+//        file.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 //    else
-//        f.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
+//        file.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 
 //    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }

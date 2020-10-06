@@ -5,7 +5,7 @@
 #include "AddOrgToPerson.h"
 #include "ui_AddOrgToPerson.h"
 
-AddOrgToPerson::AddOrgToPerson(QWidget *parent) :
+AddOrgToPerson::AddOrgToPerson(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddOrgToPerson)
 {
@@ -54,7 +54,7 @@ void AddOrgToPerson::deleteObjects()
  * Выполняет отправку id и названия выбранной организации в классы
  * AddContactDialog и EditContactDialog.
  */
-void AddOrgToPerson::getOrgName(const QModelIndex &index)
+void AddOrgToPerson::getOrgName(const QModelIndex& index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
     QString name = queryModel->data(queryModel->index(index.row(), 1)).toString();

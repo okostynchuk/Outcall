@@ -17,10 +17,10 @@ signals:
 
 public slots:
     void process();
-    void setValues(QList<QString>, QList<QDateTime>, QList<QString>);
+    void setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes);
 
 public:
-    RemindersThread(QList<QString>, QList<QDateTime>, QList<QString>);
+    RemindersThread(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes);
     ~RemindersThread();
 
 private:

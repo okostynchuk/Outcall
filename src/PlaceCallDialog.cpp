@@ -12,7 +12,7 @@
 #include <QSqlQuery>
 #include <QModelIndex>
 
-PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
+PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PlaceCallDialog)
 {
@@ -56,7 +56,7 @@ PlaceCallDialog::~PlaceCallDialog()
 /**
  * Выполняет операции для последующего выбора номера и совершения звонка.
  */
-void PlaceCallDialog::showNumber(const QModelIndex &index)
+void PlaceCallDialog::showNumber(const QModelIndex& index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
 
@@ -169,7 +169,7 @@ void PlaceCallDialog::onUpdate()
 /**
  * Выполняет установку модели таблицы.
  */
-void PlaceCallDialog::setModel(QString queryString)
+void PlaceCallDialog::setModel(const QString& queryString)
 {
     queryModel->setQuery(queryString);
 

@@ -15,14 +15,14 @@ class PlayAudioDialog : public QDialog
     Q_OBJECT
 
 public slots:
-    void openMedia(QString);
+    void openMedia(QString recordpath);
 
 public:
-    explicit PlayAudioDialog(QWidget *parent = nullptr);
+    explicit PlayAudioDialog(QWidget* parent = nullptr);
     ~PlayAudioDialog();
 
 private:
-    Ui::PlayAudioDialog *ui;
+    Ui::PlayAudioDialog* ui;
 };
 
 #endif // PLAYAUDIODIALOG_H

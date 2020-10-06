@@ -22,17 +22,17 @@ class RemindersDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void reminders(bool);
+    void reminders(bool change);
 
 public slots:
     void sendValues();
-    void receiveData(bool);
-    void showReminders(bool);
+    void receiveData(bool update);
+    void showReminders(bool show);
 
     void loadReminders();
 
 public:
-    explicit RemindersDialog(QWidget *parent = 0);
+    explicit RemindersDialog(QWidget* parent = 0);
     ~RemindersDialog();
 
     bool resizeCells;
@@ -40,10 +40,10 @@ public:
 private slots:
     void onTimer();
     void onAddReminder();
-    void onEditReminder(const QModelIndex &);
+    void onEditReminder(const QModelIndex& index);
     void deleteObjects();
     void changeState();
-    void onNotify(QString, QDateTime, QString);
+    void onNotify(const QString& id, const QDateTime& dateTime, const QString& note);
     void onUpdateTab();
     void updateCount();
     void onTabChanged();
@@ -55,12 +55,12 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::RemindersDialog *ui;
+    Ui::RemindersDialog* ui;
 
     QSqlDatabase db;
 	
@@ -77,10 +77,13 @@ private:
     QSqlQueryModelReminders* queryModel;
 
     bool showReminder;
+
     QTimer timer;
+
     QString my_number;
     QString page;
     QString go;
+
     qint32 oldActiveReminders;
     qint32 oldReceivedReminders;
     qint32 verticalScrollBar;
@@ -88,11 +91,11 @@ private:
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
-    QWidget* addWidgetContent(qint32, bool);
+    QWidget* addWidgetContent(qint32 row_index, bool url);
 
-    QWidget* addCheckBoxViewed(qint32);
-    QWidget* addCheckBoxCompleted(qint32);
-    QWidget* addCheckBoxActive(qint32);
+    QWidget* addCheckBoxViewed(qint32 row_index);
+    QWidget* addCheckBoxCompleted(qint32 row_index);
+    QWidget* addCheckBoxActive(qint32 row_index);
 
     QModelIndexList selections;
 

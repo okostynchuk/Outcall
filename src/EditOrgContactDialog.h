@@ -17,16 +17,16 @@ class EditOrgContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool, qint32, qint32);
+    void sendData(bool update, qint32 x, qint32 y);
 
 public slots:
-    void setPos(qint32, qint32);
+    void setPos(qint32 x, qint32 y);
 
 public:
-    explicit EditOrgContactDialog(QWidget *parent = 0);
+    explicit EditOrgContactDialog(QWidget* parent = 0);
     ~EditOrgContactDialog();
 
-    void setValues(QString);
+    void setValues(const QString& id);
     void hideBackButton();
 
 private slots:
@@ -37,9 +37,9 @@ private slots:
 
     bool isPhone(QString* str);
 
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent* event);
 
 private:
     Ui::EditOrgContactDialog *ui;
@@ -60,6 +60,7 @@ private:
     QString fourthNumber;
     QString fifthNumber;
     QString number;
+
     QStringList numbers;
 
     QTextCursor textCursor;

@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 
-EditOrgContactDialog::EditOrgContactDialog(QWidget *parent) :
+EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::EditOrgContactDialog)
 {
@@ -339,7 +339,7 @@ bool EditOrgContactDialog::isPhone(QString* str)
  * Получает и заполняет поля окна необходимыми данными.
  * Получает id контакта из классов CallHistoryDialog, ViewOrgContactDialog.
  */
-void EditOrgContactDialog::setValues(QString id)
+void EditOrgContactDialog::setValues(const QString& id)
 {
     contactId = id;
 

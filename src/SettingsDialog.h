@@ -20,7 +20,7 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void restart(bool);
+    void restart(bool hide);
 
 public slots:
     void checkExten();
@@ -28,17 +28,18 @@ public slots:
     void checkForUpdates();
 
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
+    explicit SettingsDialog(QWidget* parent = 0);
     ~SettingsDialog();
 
     void saveSettings();
     void loadSettings();
     void show();
+
     QString getExtension();
     QString getGroupExtension();
 
 private slots:
-    void checkAsteriskState(AsteriskManager::AsteriskState state);
+    void checkAsteriskState(const AsteriskManager::AsteriskState& state);
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onEditButtonClicked();
@@ -52,10 +53,10 @@ private slots:
     void on_cancelButton_clicked();
 
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::SettingsDialog *ui;
+    Ui::SettingsDialog* ui;
 
     QTcpSocket* m_tcpSocket;
 
@@ -63,7 +64,7 @@ private:
 
     QSimpleUpdater* m_updater;
 
-    QFile f;
+    QFile file;
     QString userName;
     QString path;
     QString exten;

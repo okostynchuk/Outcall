@@ -7,7 +7,7 @@
 
 #include <QMessageBox>
 
-CallHistoryDialog::CallHistoryDialog(QWidget *parent) :
+CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::CallHistoryDialog)
 {
@@ -321,7 +321,7 @@ bool CallHistoryDialog::isInternalPhone(QString* str)
 /**
  * Выполняет вытягивание значений полей из записи.
  */
-void CallHistoryDialog::getData(const QModelIndex &index)
+void CallHistoryDialog::getData(const QModelIndex& index)
 {
     ui->callButton->setDisabled(false);
 
@@ -385,7 +385,7 @@ void CallHistoryDialog::getData(const QModelIndex &index)
 /**
  * Выполняет установку виджета для поля "Имя".
  */
-QWidget* CallHistoryDialog::loadName(QString src, QString dst)
+QWidget* CallHistoryDialog::loadName(const QString& src, const QString& dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
@@ -412,7 +412,7 @@ QWidget* CallHistoryDialog::loadName(QString src, QString dst)
 /**
  * Выполняет установку виджета для поля "Заметка".
  */
-QWidget* CallHistoryDialog::loadNote(QString uniqueid)
+QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -465,7 +465,7 @@ QWidget* CallHistoryDialog::loadNote(QString uniqueid)
 /**
  * Выполняет установку виджета для поля "Статус".
  */
-QWidget* CallHistoryDialog::loadStatus(QString dialogStatus)
+QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
     QWidget* statusWgt = new QWidget;
@@ -592,7 +592,7 @@ void CallHistoryDialog::onAddOrgContact()
 /**
  * Выполняет открытие окна редактирования физ. лица.
  */
-void CallHistoryDialog::editContact(QString number)
+void CallHistoryDialog::editContact(const QString& number)
 {
     QSqlQuery query(db);
 
@@ -618,7 +618,7 @@ void CallHistoryDialog::editContact(QString number)
 /**
  * Выполняет открытие окна редактирования организации.
  */
-void CallHistoryDialog::editOrgContact(QString number)
+void CallHistoryDialog::editOrgContact(const QString& number)
 {
     QSqlQuery query(db);
 
@@ -718,7 +718,7 @@ void CallHistoryDialog::onPlayAudioPhone()
 /**
  * Выполняет открытие окна с заметками для их просмотра и добавления.
  */
-void CallHistoryDialog::addNote(const QModelIndex &index)
+void CallHistoryDialog::addNote(const QModelIndex& index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 
@@ -732,7 +732,7 @@ void CallHistoryDialog::addNote(const QModelIndex &index)
 /**
  * Выполняет проверку существования номера в БД.
  */
-bool CallHistoryDialog::checkNumber(QString number)
+bool CallHistoryDialog::checkNumber(const QString& number)
 {
     QSqlQuery query(db);
 
@@ -762,7 +762,7 @@ void CallHistoryDialog::receiveData(bool update)
 /**
  * Возвращает id контакта по его номеру.
  */
-QString CallHistoryDialog::getUpdateId(QString number)
+QString CallHistoryDialog::getUpdateId(const QString& number)
 {
     QSqlQuery query(db);
 

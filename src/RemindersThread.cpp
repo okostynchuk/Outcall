@@ -9,7 +9,7 @@
 #include <QThread>
 #include <QMessageBox>
 
-RemindersThread::RemindersThread(QList<QString> ids, QList<QDateTime> dateTimes, QList<QString> notes)
+RemindersThread::RemindersThread(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
@@ -24,7 +24,7 @@ RemindersThread::~RemindersThread()
 /**
  * Получает данные актуальных напоминаний из класса RemindersDialog.
  */
-void RemindersThread::setValues(QList<QString> ids, QList<QDateTime> dateTimes, QList<QString> notes)
+void RemindersThread::setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
     this->ids = ids;
     this->dateTimes = dateTimes;

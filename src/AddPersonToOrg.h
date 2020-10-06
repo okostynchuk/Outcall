@@ -18,16 +18,16 @@ signals:
     void newPerson();
 
 public:
-    explicit AddPersonToOrg(QWidget *parent = 0);
+    explicit AddPersonToOrg(QWidget* parent = 0);
     ~AddPersonToOrg();
 
-    void setOrgId(QString);
+    void setOrgId(const QString& orgId);
 
 private slots:
     void deleteObjects();
     void onUpdate();
     void currentIndexChanged();
-    void addPerson(const QModelIndex &index);
+    void addPerson(const QModelIndex& index);
     void searchFunction();
 
     void on_searchButton_clicked();
@@ -39,7 +39,7 @@ private slots:
     void on_lineEdit_returnPressed();
 
 private:
-    Ui::AddPersonToOrg *ui;
+    Ui::AddPersonToOrg* ui;
 
     QSqlQueryModel* queryModel;
 

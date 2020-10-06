@@ -25,10 +25,10 @@ class CallHistoryDialog : public QDialog
     Q_OBJECT
 
 public slots:
-    void receiveData(bool);
+    void receiveData(bool update);
 
 public:
-    explicit CallHistoryDialog(QWidget *parent = 0);
+    explicit CallHistoryDialog(QWidget* parent = 0);
     ~CallHistoryDialog();
 
 private slots:
@@ -51,13 +51,13 @@ private slots:
 
     void deleteObjects();
 
-    void editContact(QString);
-    void editOrgContact(QString);
+    void editContact(const QString& number);
+    void editOrgContact(const QString& number);
 
-    QString getUpdateId(QString);
+    QString getUpdateId(const QString& number);
 
-    void addNote(const QModelIndex &index);
-    void getData(const QModelIndex &index);
+    void addNote(const QModelIndex& index);
+    void getData(const QModelIndex& index);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -66,14 +66,14 @@ private slots:
     void on_lineEdit_page_returnPressed();
 
     bool isInternalPhone(QString* str);
-    bool checkNumber(QString);
+    bool checkNumber(const QString& number);
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::CallHistoryDialog *ui;
+    Ui::CallHistoryDialog* ui;
 
     QSqlDatabase db;
     QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
@@ -102,9 +102,9 @@ private:
 
     qint32 countRecords;
 
-    QWidget* loadStatus(QString);
-    QWidget* loadNote(QString);
-    QWidget* loadName(QString, QString);
+    QWidget* loadStatus(const QString& dialogStatus);
+    QWidget* loadNote(const QString& uniqueid);
+    QWidget* loadName(const QString& src, const QString& dst);
 
     QModelIndexList selections;
 

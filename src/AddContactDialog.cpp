@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QDebug>
 
-AddContactDialog::AddContactDialog(QWidget *parent) :
+AddContactDialog::AddContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddContactDialog)
 {
@@ -238,7 +238,7 @@ bool AddContactDialog::isPhone(QString* str)
  * Получает id и название выбранной организации из класса AddOrgToPerson
  * для последующей привязки к физ. лицу.
  */
-void AddContactDialog::receiveOrgName(QString id, QString name)
+void AddContactDialog::receiveOrgName(const QString& id, const QString& name)
 {
     if (!id.isNull())
     {
@@ -282,7 +282,7 @@ void AddContactDialog::on_deleteOrgButton_clicked()
  * Получает номер телефона неизвестного физ. лица из классов
  * CallHistoryDialog и PopupWindow.
  */
-void AddContactDialog::setValues(QString number)
+void AddContactDialog::setValues(const QString& number)
 {
     ui->firstNumber->setText(number);
 }

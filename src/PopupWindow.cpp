@@ -30,7 +30,7 @@ QList<PopupWindow*> PopupWindow::m_PopupWindows;
 #define TIME_TO_SHOW	800   // msec
 #define TIME_TO_LIVE	60000 // msec
 
-PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
+PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
     QDialog(parent),
 	ui(new Ui::PopupWindow)
 {
@@ -373,7 +373,7 @@ void PopupWindow::onTimer()
 /**
  * Реализация появления окна оповещения о звонке.
  */
-void PopupWindow::showCall(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number)
+void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number)
 {
 	PWInformation pwi;
 
@@ -732,7 +732,7 @@ void PopupWindow::keyPressEvent(QKeyEvent* event)
 /**
  * Изменение иконки на окне в случае ответа на звонок.
  */
-void PopupWindow::onCallStart(QString uniqueid)
+void PopupWindow::onCallStart(const QString& uniqueid)
 {
     if (m_pwi.uniqueid == uniqueid)
     {

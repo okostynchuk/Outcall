@@ -5,7 +5,7 @@
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
-InternalContactsDialog::InternalContactsDialog(QWidget *parent) :
+InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::InternalContactsDialog)
 {
@@ -210,7 +210,7 @@ void InternalContactsDialog::onSearch()
 /**
  * Выполняет добавление виджета для отображения кнопок осуществления звонка и создания напоминания.
  */
-QWidget* InternalContactsDialog::addWgt(QString name)
+QWidget* InternalContactsDialog::addWgt(const QString& name)
 {
     QHBoxLayout* layout = new QHBoxLayout;
     QWidget* wgt = new QWidget;

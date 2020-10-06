@@ -20,17 +20,17 @@ class EditReminderDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
-    void getPos(qint32, qint32);
+    void sendData(bool update);
+    void getPos(qint32 x, qint32 y);
 
 public slots:
-    void receiveEmployee(QStringList);
+    void receiveEmployee(const QStringList& employee);
 
 public:
-    explicit EditReminderDialog(QWidget *parent = 0);
+    explicit EditReminderDialog(QWidget* parent = 0);
     ~EditReminderDialog();
 
-    void setValues(QString, QString, QDateTime, QString);
+    void setValues(const QString& receivedId, const QString& receivedGroupId, const QDateTime& receivedDateTime, const QString& receivedNote);
 
 private slots:
     void onChooseEmployee();
@@ -43,13 +43,13 @@ private slots:
     void on_add30MinButton_clicked();
     void on_add60MinButton_clicked();
 
-    void keyPressEvent(QKeyEvent*);
-    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent* event);
 
 private:
-    Ui::EditReminderDialog *ui;
+    Ui::EditReminderDialog* ui;
 
     QSqlDatabase db;
 

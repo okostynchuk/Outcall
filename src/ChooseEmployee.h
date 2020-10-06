@@ -17,14 +17,14 @@ class ChooseEmployee : public QDialog
     Q_OBJECT
 
 signals:
-    void sendEmployee(QStringList);
+    void sendEmployee(const QStringList& employee);
 
 public slots:
-    void setValues(QStringList);
-    void setPos(qint32, qint32);
+    void setValues(const QStringList& employee);
+    void setPos(qint32 x, qint32 y);
 
 public:
-    explicit ChooseEmployee(QWidget *parent = 0);
+    explicit ChooseEmployee(QWidget* parent = 0);
     ~ChooseEmployee();
 
 private slots:
@@ -36,10 +36,10 @@ private slots:
     void on_removeAllButton_clicked();
     void on_applyButton_clicked();
 
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::ChooseEmployee *ui;
+    Ui::ChooseEmployee* ui;
 
     QStringList employee;
     QStringList extensions;

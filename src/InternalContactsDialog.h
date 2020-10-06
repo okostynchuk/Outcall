@@ -21,7 +21,7 @@ class InternalContactsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit InternalContactsDialog(QWidget *parent = 0);
+    explicit InternalContactsDialog(QWidget* parent = 0);
     ~InternalContactsDialog();
 
 private slots:
@@ -37,12 +37,12 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::InternalContactsDialog *ui;
+    Ui::InternalContactsDialog* ui;
 
     AddReminderDialog* addReminderDialog;
 
@@ -57,7 +57,7 @@ private:
     qint32 l_from;
     qint32 l_to;
 
-    QWidget* addWgt(QString);
+    QWidget* addWgt(const QString& name);
 
     QListWidget* list;
 

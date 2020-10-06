@@ -7,7 +7,7 @@
 
 #include <QMessageBox>
 
-AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
+AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddPhoneNumberToContactDialog)
 {
@@ -55,7 +55,7 @@ void AddPhoneNumberToContactDialog::deleteObjects()
 /**
  * Получает неизвестный номер из классов CallHistoryDialog и PopupWindow.
  */
-void AddPhoneNumberToContactDialog::setPhoneNumber(QString phoneNumber)
+void AddPhoneNumberToContactDialog::setPhoneNumber(const QString& phoneNumber)
 {
     this->phoneNumber = phoneNumber;
 }
@@ -151,6 +151,8 @@ void AddPhoneNumberToContactDialog::onUpdate()
     }
 
     queryCountString.append(searchString);
+
+    QSqlQuery query(db);
 
     query.prepare(queryCountString);
     query.exec();

@@ -19,7 +19,7 @@
 
 #define TIME_TO_UPDATE 5000 // msec
 
-RemindersDialog::RemindersDialog(QWidget *parent) :
+RemindersDialog::RemindersDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::RemindersDialog)
 {
@@ -991,7 +991,7 @@ void RemindersDialog::onAddReminder()
 /**
  * Выполняет открытие окна редактирования напоминания.
  */
-void RemindersDialog::onEditReminder(const QModelIndex &index)
+void RemindersDialog::onEditReminder(const QModelIndex& index)
 {
     if (ui->tabWidget->currentIndex() == 1 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
         return;
@@ -1022,7 +1022,7 @@ void RemindersDialog::onEditReminder(const QModelIndex &index)
 /**
  * Получает данные напоминания для их последующей передачи классу PopupReminder.
  */
-void RemindersDialog::onNotify(QString id, QDateTime dateTime, QString note)
+void RemindersDialog::onNotify(const QString& id, const QDateTime& dateTime, const QString& note)
 {
     if (showReminder)
         PopupReminder::showReminder(this, my_number, id, dateTime, note);

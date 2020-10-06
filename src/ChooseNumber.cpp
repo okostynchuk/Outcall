@@ -7,7 +7,7 @@
 
 #include <QSqlQuery>
 
-ChooseNumber::ChooseNumber(QWidget *parent) :
+ChooseNumber::ChooseNumber(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ChooseNumber)
 {
@@ -36,7 +36,7 @@ ChooseNumber::~ChooseNumber()
 /**
  * Выполняет операцию для последующего совершения звонка.
  */
-void ChooseNumber::onCall(QString number)
+void ChooseNumber::onCall(const QString& number)
 {
     g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
 }
@@ -45,7 +45,7 @@ void ChooseNumber::onCall(QString number)
  * Получает id контакта из классов PlaceCallDialog,
  * PopupReminder, ViewContactDialog, ViewOrgContactDialog.
  */
-void ChooseNumber::setValues(QString id)
+void ChooseNumber::setValues(const QString& id)
 {
     contactId = id;
 

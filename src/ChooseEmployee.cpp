@@ -5,7 +5,7 @@
 #include "ChooseEmployee.h"
 #include "ui_ChooseEmployee.h"
 
-ChooseEmployee::ChooseEmployee(QWidget *parent) :
+ChooseEmployee::ChooseEmployee(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ChooseEmployee)
 {
@@ -150,7 +150,7 @@ void ChooseEmployee::onSearch()
  * Получает список сотрудников из классов
  * AddReminderDialog, EditReminderDialog.
  */
-void ChooseEmployee::setValues(QStringList employee)
+void ChooseEmployee::setValues(const QStringList& employee)
 {
     this->employee = employee;
     this->employee.removeAll(my_number);

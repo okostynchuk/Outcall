@@ -7,7 +7,7 @@
 
 #include "Global.h"
 
-AddExtensionDialog::AddExtensionDialog(QWidget *parent) :
+AddExtensionDialog::AddExtensionDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddExtensionDialog)
 {
@@ -42,7 +42,7 @@ QString AddExtensionDialog::getProtocol() const
 /**
  * Выполняет установку внутреннего номера.
  */
-void AddExtensionDialog::setExtension(const QString &extension)
+void AddExtensionDialog::setExtension(const QString& extension)
 {
     ui->extenLine->setText(extension);
 }
@@ -50,7 +50,7 @@ void AddExtensionDialog::setExtension(const QString &extension)
 /**
  * Выполняет установку протокола.
  */
-void AddExtensionDialog::setProtocol(const QString &protocol)
+void AddExtensionDialog::setProtocol(const QString& protocol)
 {
     qint32 index = ui->protocol->findText(protocol);
 

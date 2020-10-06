@@ -7,7 +7,7 @@
 
 #include <QMessageBox>
 
-AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
+AddPersonToOrg::AddPersonToOrg(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddPersonToOrg)
 {
@@ -55,12 +55,12 @@ void AddPersonToOrg::deleteObjects()
 /**
  * Получает id организации из класса ViewOrgContactDialog.
  */
-void AddPersonToOrg::setOrgId(QString orgId)
+void AddPersonToOrg::setOrgId(const QString& orgId)
 {
     this->orgId = orgId;
 
     query.prepare("SELECT entry_name FROM entry WHERE id = ?");
-    query.addBindValue(orgId);
+    query.addBindValue(this->orgId);
     query.exec();
     query.next();
 

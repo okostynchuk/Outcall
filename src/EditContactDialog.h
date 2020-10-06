@@ -22,11 +22,18 @@ class EditContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool, qint32, qint32);
+    void sendData(bool update, qint32 x, qint32 y);
 
 public slots:
-    void receiveOrgName(QString, QString);
-    void setPos(qint32, qint32);
+    void receiveOrgName(const QString& id, const QString& name);
+    void setPos(qint32 x, qint32 y);
+
+public:
+    explicit EditContactDialog(QWidget* parent = 0);
+    ~EditContactDialog();
+
+    void setValues(const QString& id);
+    void hideBackButton();
 
 private slots:
     void onSave();
@@ -39,20 +46,13 @@ private slots:
 
     bool isPhone(QString* str);
 
-    void keyPressEvent(QKeyEvent*);
-    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event);
 
-    bool eventFilter(QObject*, QEvent*);
-
-public:
-    explicit EditContactDialog(QWidget *parent = 0);
-    ~EditContactDialog();
-
-    void setValues(QString);
-    void hideBackButton();
+    bool eventFilter(QObject*, QEvent* event);
 
 private:
-    Ui::EditContactDialog *ui;
+    Ui::EditContactDialog* ui;
 
     QSqlDatabase db;
 

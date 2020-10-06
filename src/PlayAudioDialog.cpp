@@ -6,7 +6,7 @@
 
 #include <QDebug>
 
-PlayAudioDialog::PlayAudioDialog(QWidget *parent) :
+PlayAudioDialog::PlayAudioDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PlayAudioDialog)
 {

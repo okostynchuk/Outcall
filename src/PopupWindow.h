@@ -28,7 +28,7 @@ class PopupWindow : public QDialog
     Q_OBJECT
 
 public slots:
-    void receiveData(bool);
+    void receiveData(bool update);
 
 public:
     enum PWType
@@ -50,10 +50,10 @@ private:
     };
 
 public:
-    PopupWindow(PWInformation& pwi, QWidget *parent = 0);
+    PopupWindow(const PWInformation& pwi, QWidget* parent = 0);
     ~PopupWindow();
 
-    static void showCall(QString dateTime, QString uniqueid, QString number, QString caller, QString my_number);
+    static void showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number);
     static void closeAll();
 
 private slots:
@@ -70,7 +70,7 @@ private slots:
     void onOpenAccess();
     void onAddReminder();
     void onViewNotes();
-    void onCallStart(QString);
+    void onCallStart(const QString& uniqueid);
     void onCursorPosChanged();
 
     void on_closeButton_clicked();
@@ -82,10 +82,10 @@ private slots:
     void mouseReleaseEvent(QMouseEvent* event);
     void keyPressEvent(QKeyEvent* event);
 
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent* event);
 
 private:
-    Ui::PopupWindow *ui;
+    Ui::PopupWindow* ui;
 
     QSqlDatabase db;
 

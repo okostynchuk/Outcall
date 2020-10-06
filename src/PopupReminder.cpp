@@ -21,7 +21,7 @@ QList<PopupReminder*> PopupReminder::m_PopupReminders;
 
 #define TIME_TO_SHOW    800 // msec
 
-PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
+PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PopupReminder)
 {
@@ -621,15 +621,15 @@ void PopupReminder::closeAll()
 /**
  * Выполняет создание окна и отображение в нём полученной информации из класса RemindersDialog.
  */
-void PopupReminder::showReminder(RemindersDialog* receivedRemindersDialog, QString receivedNumber, QString receivedId, QDateTime receivedDateTime, QString receivedNote)
+void PopupReminder::showReminder(RemindersDialog* remindersDialog, const QString& number, const QString& id, const QDateTime& dateTime, const QString& note)
 {
     PopupReminderInfo pri;
 
-    pri.remindersDialog = receivedRemindersDialog;
-    pri.my_number = receivedNumber;
-    pri.id = receivedId;
-    pri.dateTime = receivedDateTime;
-    pri.note = receivedNote;
+    pri.remindersDialog = remindersDialog;
+    pri.my_number = number;
+    pri.id = id;
+    pri.dateTime = dateTime;
+    pri.note = note;
     pri.active = true;
 
     pri.text = pri.note;

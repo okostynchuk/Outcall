@@ -22,10 +22,10 @@ class ContactsDialog : public QDialog
     Q_OBJECT
 
 public slots:
-    void receiveData(bool);
+    void receiveData(bool update);
 
 public:
-    explicit ContactsDialog(QWidget *parent = 0);
+    explicit ContactsDialog(QWidget* parent = 0);
     ~ContactsDialog();
 
 private slots:
@@ -34,7 +34,7 @@ private slots:
     void onAddPerson();
     void onAddOrg();
     void currentIndexChanged();
-    void showCard(const QModelIndex &);
+    void showCard(const QModelIndex& index);
     void searchFunction();
 
     void deleteObjects();
@@ -50,10 +50,10 @@ private slots:
 
     void showEvent(QShowEvent*);
     void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::ContactsDialog *ui;
+    Ui::ContactsDialog* ui;
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
@@ -76,15 +76,17 @@ private:
     QList<QHBoxLayout*> layouts;
     QList<QLabel*> labels;
 
-    QString page;
+    QSqlDatabase db;
+
     qint32 count;
     qint32 remainder;
-    QSqlDatabase db;
-    QSqlQuery query;
+
+    QString page;  
     QString go;
     QString entry_name;
     QString entry_phone;
     QString entry_comment;
+
     bool filter;
 };
 

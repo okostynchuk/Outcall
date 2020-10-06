@@ -21,7 +21,7 @@ QList<PopupHelloWindow*> PopupHelloWindow::m_PopupHelloWindows;
 #define TIME_TO_SHOW	800 // msec
 #define TIME_TO_LIVE	4000 // msec
 
-PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
+PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PopupHelloWindow)
 {
@@ -239,7 +239,7 @@ void PopupHelloWindow::onTimer()
 /**
  * Выполняет создание окна и отображение в нём полученной информации из класса OutCALL.
  */
-void PopupHelloWindow::showInformationMessage(QString caption, QString message, QPixmap avatar, PWType type)
+void PopupHelloWindow::showInformationMessage(const QString& caption, const QString& message, QPixmap avatar, PWType type)
 {
     PWInformation pwi;
 

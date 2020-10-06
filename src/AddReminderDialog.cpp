@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-AddReminderDialog::AddReminderDialog(QWidget *parent) :
+AddReminderDialog::AddReminderDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddReminderDialog)
 {
@@ -51,14 +51,14 @@ AddReminderDialog::~AddReminderDialog()
  * Получает список выбранных сотрудников из классов
  * ChooseEmployee и InternalContactsDialog.
  */
-void AddReminderDialog::receiveEmployee(QStringList employee)
+void AddReminderDialog::receiveEmployee(const QStringList& employee)
 {
     this->employee = employee;
 
-    if (employee.length() == 1)
-        ui->employee->setText(employee.first());
+    if (this->employee.length() == 1)
+        ui->employee->setText(this->employee.first());
     else
-        ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
+        ui->employee->setText(tr("Группа") + " (" + QString::number(this->employee.length()) + ")");
 }
 
 /**
@@ -210,7 +210,7 @@ void AddReminderDialog::onSave()
  * Получает уникальный id звонка из класса PopupWindow
  * или id контакта из классов ViewContactDialog и ViewOrgContactDialog.
  */
-void AddReminderDialog::setCallId(QString callId)
+void AddReminderDialog::setCallId(const QString& callId)
 {
     this->callId = callId;
 }

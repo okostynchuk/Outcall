@@ -7,7 +7,7 @@
 
 #include <QMessageBox>
 
-AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
+AddOrgContactDialog::AddOrgContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddOrgContactDialog)
 {
@@ -212,7 +212,7 @@ bool AddOrgContactDialog::isPhone(QString* str)
  * Получает номер телефона неизвестной организации из классов
  * CallHistoryDialog и PopupWindow.
  */
-void AddOrgContactDialog::setValues(QString number)
+void AddOrgContactDialog::setValues(const QString& number)
 {
     ui->firstNumber->setText(number);
 }

@@ -24,17 +24,17 @@ class ViewContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
-    void getPos(qint32, qint32);
+    void sendData(bool update);
+    void getPos(qint32 x, qint32 y);
 
 public slots:
-    void receiveData(bool, qint32, qint32);
+    void receiveData(bool update, qint32 x, qint32 y);
 
 public:
-    explicit ViewContactDialog(QWidget *parent = 0);
+    explicit ViewContactDialog(QWidget* parent = 0);
     ~ViewContactDialog();
 
-    void setValues(QString);
+    void setValues(const QString& id);
 
 private slots:
     void loadCalls();
@@ -53,9 +53,8 @@ private slots:
 
     void deleteObjects();
 
-    void viewNotes(const QModelIndex &index);
-
-    void getData(const QModelIndex &index);
+    void viewNotes(const QModelIndex& index);
+    void getData(const QModelIndex& index);
 
     void on_previousButton_clicked();
     void on_nextButton_clicked();
@@ -63,10 +62,10 @@ private slots:
     void on_previousStartButton_clicked();
     void on_lineEdit_page_returnPressed();
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent* event);
 
 private:
-    Ui::ViewContactDialog *ui;
+    Ui::ViewContactDialog* ui;
 
     QSqlDatabase db;
     QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
@@ -93,9 +92,9 @@ private:
 
     qint32 countRecords;
 
-    QWidget* loadStatus(QString);
-    QWidget* loadNote(QString);
-    QWidget* loadName(QString, QString);
+    QWidget* loadStatus(const QString& dialogStatus);
+    QWidget* loadNote(const QString& uniqueid);
+    QWidget* loadName(const QString& src, const QString& dst);
 
     QModelIndexList selections;
 

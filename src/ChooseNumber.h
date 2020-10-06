@@ -22,22 +22,22 @@ class ChooseNumber : public QDialog
     Q_OBJECT
 
 signals:
-    void sendNumber(QString);
+    void sendNumber(const QString& number);
 
 public:
-    explicit ChooseNumber(QWidget *parent = 0);
+    explicit ChooseNumber(QWidget* parent = 0);
     ~ChooseNumber();
 
-    void setValues(QString);
+    void setValues(const QString& id);
 
 private slots:
-    void onCall(QString);
+    void onCall(const QString& number);
 
-    void showEvent(QShowEvent*);
-    bool eventFilter(QObject*, QEvent*);
+    void showEvent(QShowEvent* event);
+    bool eventFilter(QObject* target, QEvent* event);
 
 private:
-    Ui::ChooseNumber *ui;
+    Ui::ChooseNumber* ui;
 
     QSqlDatabase db;
 

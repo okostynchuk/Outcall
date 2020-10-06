@@ -16,7 +16,7 @@
 
 AsteriskManager* g_pAsteriskManager = nullptr;
 
-AsteriskManager::AsteriskManager(const QString username, const QString secret, QObject *parent)
+AsteriskManager::AsteriskManager(const QString& username, const QString& secret, QObject* parent)
     : QObject(parent),
       m_isSignedIn(false),
       m_autoConnectingOnError(false),
@@ -43,7 +43,7 @@ AsteriskManager::~AsteriskManager()
 /**
  * Выполняет подключение к серверу Asterisk.
  */
-void AsteriskManager::signIn(const QString &serverName, const quint16 &port)
+void AsteriskManager::signIn(const QString& serverName, const quint16& port)
 {
     if (!m_isSignedIn && (m_currentState == DISCONNECTED || m_currentState == ERROR_ON_CONNECTING))
     {
@@ -75,7 +75,7 @@ void AsteriskManager::signOut()
  * Выполняет обработку события неконтролируемого
  * отключения от сервера Asterisk.
  */
-void AsteriskManager::onError(QAbstractSocket::SocketError socketError)
+void AsteriskManager::onError(const QAbstractSocket::SocketError& socketError)
 {
     if (m_currentState == CONNECTING && !m_autoConnectingOnError)
     {
@@ -127,7 +127,7 @@ void AsteriskManager::setAutoSignIn(bool ok)
 /**
  * Получает и присваивает значение состояния подключения к серверу Asterisk.
  */
-void AsteriskManager::setState(AsteriskState state)
+void AsteriskManager::setState(const AsteriskState& state)
 {
     if (state == m_currentState)
         return;
@@ -167,7 +167,7 @@ void AsteriskManager::setState(AsteriskState state)
 /**
  * Получает и присваивает значение используемой версии Asterisk.
  */
-void AsteriskManager::setAsteriskVersion(const QString &msg)
+void AsteriskManager::setAsteriskVersion(const QString& msg)
 {
     qint32 index = msg.indexOf("/") + 1;
 
@@ -238,7 +238,7 @@ void AsteriskManager::read()
 /**
  * Выполняет обработку событий, полученных в сообщении (Asterisk 13).
  */
-void AsteriskManager::parseEvent(const QString &eventData)
+void AsteriskManager::parseEvent(const QString& eventData)
 {
     if (eventData.contains("Event: Newchannel"))
     {
@@ -577,7 +577,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
 /**
  * Выполняет преобразование полученного сообщения в список пар "ключ: значение".
  */
-void AsteriskManager::getEventValues(QString eventData, QMap<QString, QString> &map)
+void AsteriskManager::getEventValues(const QString& eventData, QMap<QString, QString> &map)
 {
     QStringList list = eventData.split("\r\n");
 
@@ -625,14 +625,14 @@ void AsteriskManager::login()
 /**
  * Выполняет отправку команды для совершения звонка.
  */
-void AsteriskManager::originateCall(QString from, QString exten, QString protocol, QString callerId)
+void AsteriskManager::originateCall(const QString& from, const QString& to, const QString& protocol, const QString& callerId)
 {
     const QString channel = protocol + "/" + from;
 
     QString result;
     result =  "Action: Originate\r\n";
     result += "Channel: " + channel + "\r\n";
-    result += "Exten: " + exten + "\r\n";
+    result += "Exten: " + to + "\r\n";
     result += "Context: DLPN_DialPlan" + from + "\r\n";
     result += "Priority: 1\r\n";
     result += "CallerID: " + callerId + "\r\n";
@@ -645,7 +645,7 @@ void AsteriskManager::originateCall(QString from, QString exten, QString protoco
 /**
  * Выполняет отправку команды для аудио воспроизведения записи звонка.
  */
-void AsteriskManager::originateAudio(QString number, QString protocol, QString recordpath)
+void AsteriskManager::originateAudio(const QString& number, const QString& protocol, QString recordpath)
 {
     const QString channel = protocol + "/" + number;
 
@@ -698,7 +698,7 @@ bool AsteriskManager::isSignedIn() const
 /**
  * Выполняет обработку событий, полученных в сообщении (Asterisk 11).
  */
-void AsteriskManager::asterisk_11_eventHandler(const QString &eventData)
+void AsteriskManager::asterisk_11_eventHandler(const QString& eventData)
 {
     if (eventData.contains("Event: Newchannel"))
     {

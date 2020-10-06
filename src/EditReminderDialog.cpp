@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-EditReminderDialog::EditReminderDialog(QWidget *parent) :
+EditReminderDialog::EditReminderDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::EditReminderDialog)
 {
@@ -37,14 +37,14 @@ EditReminderDialog::~EditReminderDialog()
 /**
  * Получает список выбранных сотрудников из класса ChooseEmployee.
  */
-void EditReminderDialog::receiveEmployee(QStringList employee)
+void EditReminderDialog::receiveEmployee(const QStringList& employee)
 {
     this->employee = employee;
 
-    if (employee.length() == 1)
-        ui->employee->setText(employee.first());
+    if (this->employee.length() == 1)
+        ui->employee->setText(this->employee.first());
     else
-        ui->employee->setText(tr("Группа") + " (" + QString::number(employee.length()) + ")");
+        ui->employee->setText(tr("Группа") + " (" + QString::number(this->employee.length()) + ")");
 }
 
 /**
@@ -309,7 +309,7 @@ void EditReminderDialog::onSave()
  * Получает данные существующего напоминания из классов
  * PopupReminder и RemindersDialog.
  */
-void EditReminderDialog::setValues(QString receivedId, QString receivedGroupId, QDateTime receivedDateTime, QString receivedNote)
+void EditReminderDialog::setValues(const QString& receivedId, const QString& receivedGroupId, const QDateTime& receivedDateTime, const QString& receivedNote)
 {
     id = receivedId;
     group_id = receivedGroupId;

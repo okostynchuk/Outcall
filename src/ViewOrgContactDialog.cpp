@@ -12,7 +12,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 
-ViewOrgContactDialog::ViewOrgContactDialog(QWidget *parent) :
+ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ViewOrgContactDialog)
 {
@@ -68,7 +68,7 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
 /**
  * Получает id контакта из классов ContactsDialog, PopupWindow.
  */
-void ViewOrgContactDialog::setValues(QString id)
+void ViewOrgContactDialog::setValues(const QString& id)
 {
     contactId = id;
 
@@ -185,7 +185,7 @@ void ViewOrgContactDialog::onUpdateEmployees()
 /**
  * Выполняет открытие окна с данными сотрудника организации.
  */
-void ViewOrgContactDialog::showCard(const QModelIndex &index)
+void ViewOrgContactDialog::showCard(const QModelIndex& index)
 {
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
 
@@ -398,7 +398,7 @@ void ViewOrgContactDialog::setPage()
 /**
  * Выполняет установку виджета для поля "Заметка".
  */
-QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
+QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -450,7 +450,7 @@ QWidget* ViewOrgContactDialog::loadNote(QString uniqueid)
 /**
  * Выполняет установку виджета для поля "Статус".
  */
-QWidget* ViewOrgContactDialog::loadStatus(QString dialogStatus)
+QWidget* ViewOrgContactDialog::loadStatus(const QString& dialogStatus)
 {
     QHBoxLayout* statusLayout = new QHBoxLayout;
     QWidget* statusWgt = new QWidget;
@@ -481,7 +481,7 @@ QWidget* ViewOrgContactDialog::loadStatus(QString dialogStatus)
 /**
  * Выполняет установку виджета для поля "Имя".
  */
-QWidget* ViewOrgContactDialog::loadName(QString src, QString dst)
+QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
 {
     QHBoxLayout* nameLayout = new QHBoxLayout;
     QWidget* nameWgt = new QWidget;
@@ -544,7 +544,7 @@ void ViewOrgContactDialog::deleteObjects()
 /**
  * Выполняет вытягивание значений полей из записи.
  */
-void ViewOrgContactDialog::getData(const QModelIndex &index)
+void ViewOrgContactDialog::getData(const QModelIndex& index)
 {
     recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
 
@@ -670,7 +670,7 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 /**
  * Выполняет открытие окна с заметками для их просмотра.
  */
-void ViewOrgContactDialog::viewNotes(const QModelIndex &index)
+void ViewOrgContactDialog::viewNotes(const QModelIndex& index)
 {
     QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
 

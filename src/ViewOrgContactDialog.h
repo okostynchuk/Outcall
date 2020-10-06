@@ -27,18 +27,18 @@ class ViewOrgContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool);
-    void getPos(qint32, qint32);
+    void sendData(bool update);
+    void getPos(qint32 x, qint32 y);
 
 public slots:
-    void receiveDataPerson(bool);
-    void receiveDataOrg(bool, qint32, qint32);
+    void receiveDataPerson(bool update);
+    void receiveDataOrg(bool update, qint32 x, qint32 y);
 
 public:
-    explicit ViewOrgContactDialog(QWidget *parent = 0);
+    explicit ViewOrgContactDialog(QWidget* parent = 0);
     ~ViewOrgContactDialog();
 
-    void setValues(QString);
+    void setValues(const QString& id);
 
 private slots:
     void loadCalls();
@@ -51,8 +51,8 @@ private slots:
     void onPlayAudioPhone();
     void onCall();
     void onEdit();
-    void showCard(const QModelIndex &index);
-    void viewNotes(const QModelIndex &index);
+    void showCard(const QModelIndex& index);
+    void viewNotes(const QModelIndex& index);
     void updateCount();
     void searchFunction();
     void tabSelected();
@@ -61,7 +61,7 @@ private slots:
 
     void deleteObjects();
 
-    void getData(const QModelIndex &index);
+    void getData(const QModelIndex& index);
 
     void on_lineEdit_returnPressed();
     void on_searchButton_clicked();
@@ -73,7 +73,7 @@ private slots:
     void on_lineEdit_page_returnPressed();
 
 private:
-    Ui::ViewOrgContactDialog *ui;
+    Ui::ViewOrgContactDialog* ui;
 
     QSqlDatabase db;
     QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
@@ -105,9 +105,9 @@ private:
 
     bool filter;
 
-    QWidget* loadStatus(QString);
-    QWidget* loadNote(QString);
-    QWidget* loadName(QString, QString);
+    QWidget* loadStatus(const QString& dialogStatus);
+    QWidget* loadNote(const QString& uniqueid);
+    QWidget* loadName(const QString& src, const QString& dst);
 
     QStringList numbersList;
 

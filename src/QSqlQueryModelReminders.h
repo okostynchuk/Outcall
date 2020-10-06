@@ -12,10 +12,10 @@ class QSqlQueryModelReminders : public QSqlQueryModel
 public:
     QSqlQueryModelReminders();
 
-    void setParentTable(QTableView* p);
-    QVariant data(const QModelIndex &index, qint32 role) const;
+    void setParentTable(const QTableView* parentTable);
+    QVariant data(const QModelIndex& index, qint32 role) const;
 
-    QTableView* parentTable;
+    const QTableView* parentTable;
 };
 
 #endif // QSQLQUERYMODELREMINDERS_H

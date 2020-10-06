@@ -21,7 +21,7 @@ class PopupReminder : public QDialog
     Q_OBJECT
 
 public slots:
-    void receiveData(bool);
+    void receiveData(bool update);
 
 private:
     struct PopupReminderInfo
@@ -41,10 +41,10 @@ private:
     };
 
 public:
-    PopupReminder(PopupReminderInfo& pri, QWidget *parent = 0);
+    PopupReminder(const PopupReminderInfo& pri, QWidget* parent = 0);
     ~PopupReminder();
 
-    static void showReminder(RemindersDialog*, QString, QString, QDateTime, QString);
+    static void showReminder(RemindersDialog* remindersDialog, const QString& number, const QString& id, const QDateTime& dateTime, const QString& note);
     static void closeAll();
 
 private slots:
@@ -53,7 +53,7 @@ private slots:
     void onCall();
     void onTimer();
     void onClosePopup();
-    void onSelectTime(qint32);
+    void onSelectTime(qint32 index);
 
     bool isInternalPhone(QString* str);
 
@@ -63,7 +63,7 @@ private slots:
     void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::PopupReminder *ui;
+    Ui::PopupReminder* ui;
 
     QSqlDatabase db;
     QSqlDatabase dbCalls = QSqlDatabase::database("Calls");

@@ -187,7 +187,7 @@ void OutCall::signInOut()
 /**
  * Выполняет отображение ошибок, связанных с сервером Asterisk.
  */
-void OutCall::displayError(QAbstractSocket::SocketError socketError, const QString &msg)
+void OutCall::displayError(const QAbstractSocket::SocketError& socketError, const QString& msg)
 {
     switch (socketError)
     {
@@ -213,7 +213,7 @@ void OutCall::displayError(QAbstractSocket::SocketError socketError, const QStri
  * Получает сообщение из класса AsteriskManager
  * для его последующей передачи классу DebugInfoDialog.
  */
-void OutCall::onMessageReceived(const QString &message)
+void OutCall::onMessageReceived(const QString& message)
 {
     if (m_debugInfoDialog)
         m_debugInfoDialog->updateDebug(message);
@@ -223,7 +223,7 @@ void OutCall::onMessageReceived(const QString &message)
  * Получает данные входящего звонка из класса AsteriskManager
  * для их последующей передачи классу PopupWindow.
  */
-void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
+void OutCall::onCallReceived(const QMap<QString, QVariant>& call)
 {
     QString dateTime        = call.value("dateTime").toString();
     QString from            = call.value("from").toString();
@@ -241,7 +241,7 @@ void OutCall::onCallReceived(const QMap<QString, QVariant> &call)
 /**
  * Выполняет операции при изменении состояния подключения к Asterisk.
  */
-void OutCall::onStateChanged(AsteriskManager::AsteriskState state)
+void OutCall::onStateChanged(const AsteriskManager::AsteriskState& state)
 {
     if (state == AsteriskManager::CONNECTED)
     {
@@ -537,7 +537,7 @@ void OutCall::close()
 /**
  * Выполняет открытие контекстного меню.
  */
-void OutCall::onActivated(QSystemTrayIcon::ActivationReason reason)
+void OutCall::onActivated(const QSystemTrayIcon::ActivationReason& reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
     {

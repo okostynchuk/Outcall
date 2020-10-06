@@ -9,7 +9,7 @@
 
 #include <QDesktopServices>
 
-DebugInfoDialog::DebugInfoDialog(QWidget *parent) :
+DebugInfoDialog::DebugInfoDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::DebugInfoDialog)
 {
@@ -48,7 +48,7 @@ void DebugInfoDialog::onExit()
 /**
  * Выполняет обновление информации об отладке.
  */
-void DebugInfoDialog::updateDebug(const QString &info)
+void DebugInfoDialog::updateDebug(const QString& info)
 {
     ui->textEdit->appendPlainText(info);
 }

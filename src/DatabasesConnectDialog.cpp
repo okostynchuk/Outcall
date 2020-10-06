@@ -10,7 +10,7 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 
-DatabasesConnectDialog::DatabasesConnectDialog(QWidget *parent) :
+DatabasesConnectDialog::DatabasesConnectDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::DatabasesConnectDialog)
 {
@@ -168,7 +168,7 @@ void DatabasesConnectDialog::onClose()
 /**
  * Получает параметры баз данных из main.
  */
-void DatabasesConnectDialog::setDatabases(QSqlDatabase db, QSqlDatabase dbCalls, QString state)
+void DatabasesConnectDialog::setDatabases(const QSqlDatabase& db, const QSqlDatabase& dbCalls, const QString& state)
 {
     this->state = state;
 

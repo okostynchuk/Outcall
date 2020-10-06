@@ -15,7 +15,7 @@ class PopupNotification : public QDialog
     Q_OBJECT
 
 signals:
-    void reminders(bool);
+    void reminders(bool change);
 
 private:
     struct PopupNotificationInfo
@@ -28,10 +28,10 @@ private:
     };
 
 public:
-    PopupNotification(PopupNotificationInfo& pni, QWidget *parent = 0);
+    PopupNotification(const PopupNotificationInfo& pni, QWidget* parent = 0);
     ~PopupNotification();
 
-    static void showReminderNotification(RemindersDialog*, QString, QString, QString);
+    static void showReminderNotification(RemindersDialog* remindersDialog, const QString& id, const QString& number, const QString& note);
     static void closeAll();
 
 private slots:
@@ -47,7 +47,7 @@ private slots:
     void keyPressEvent(QKeyEvent* event);
 
 private:
-    Ui::PopupNotification *ui;
+    Ui::PopupNotification* ui;
 
     QSqlDatabase db;
 
