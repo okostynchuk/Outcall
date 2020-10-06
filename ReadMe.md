@@ -6,9 +6,10 @@ and receiving phone calls. The application includes: MYSQL contacts
 integration, incoming calls pop-up window notification, click to dial from
 phone book, creating reminders, call history.
 
-## OutCALL fatures are: ##
+## OutCALL features are: ##
 
   * Integration with one or unlimited system extensions SIP/PJSIP
+  * Contact management
   * Phone book
   * Call History
   * Creating reminders
