@@ -1,8 +1,8 @@
 ## What is OutCALL? ##
 
 OutCALL is an
-application designed for integration with MYSQL while placing
-and receiving phone calls. The application includes: MYSQL contacts
+application designed for integration with MySQL while placing
+and receiving phone calls. The application includes: MySQL contacts
 integration, incoming calls pop-up window notification, click to dial from
 phone book, creating reminders, call history.
 
@@ -14,7 +14,7 @@ phone book, creating reminders, call history.
   * Call History
   * Creating reminders
   * Real time call notifications via pop windows
-  * Placing calls within MYSQL contacts
+  * Placing calls within MySQL contacts
   * Automatic contacts data update
   * Multilingual GUI
   * Full Asterisk 11 and Asterisk 13 integration
