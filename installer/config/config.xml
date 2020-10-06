@@ -3,7 +3,7 @@
     <Name>OutCALL</Name>
     <Version>3.0.2</Version>
     <Title>OutCALL</Title>
-    <Publisher>Vybor</Publisher>
+    <Publisher>Team Nonames</Publisher>
     <StartMenuDir>OutCALL</StartMenuDir>
     <TargetDir>@RootDir@/OutCALL</TargetDir>
     <WizardStyle>Modern</WizardStyle>
