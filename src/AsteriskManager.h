@@ -88,7 +88,7 @@ private:
     AsteriskVersion m_currentVersion;
 
     QMap<QString, Call*> m_calls;
-    QMap<QString, int> m_dialedNum;
+    QMap<QString, qint32> m_dialedNum;
     QList<QString> endpoints;
 
     QString m_eventData;

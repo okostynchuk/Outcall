@@ -167,12 +167,12 @@ void Downloader::openDownload()
 
     QDir dir(qApp->applicationDirPath());
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-    int fileAmount = dir.count();
+    qint32 fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    for (int i = 0; i < fileAmount; ++i)
+    for (qint32 i = 0; i < fileAmount; ++i)
         QFile::rename(dir.canonicalPath() + "\\" + namesOfDirectories.at(i), dir.canonicalPath() + "\\" + PARTIAL_DOWN + namesOfDirectories.at(i));
 }
 
@@ -273,7 +273,7 @@ void Downloader::cancelDownload()
 /**
  * Writes the downloaded data to the disk
  */
-void Downloader::saveFile(qint64 received, qint64 total)
+void Downloader::saveFile(qint32 received, qint32 total)
 {
     Q_UNUSED(received);
     Q_UNUSED(total);
@@ -303,7 +303,7 @@ void Downloader::saveFile(qint64 received, qint64 total)
  * data and the total download size. Then, this function proceeds to update the
  * dialog controls/UI.
  */
-void Downloader::calculateSizes(qint64 received, qint64 total)
+void Downloader::calculateSizes(qint32 received, qint32 total)
 {
     QString totalSize;
     QString receivedSize;
@@ -330,7 +330,7 @@ void Downloader::calculateSizes(qint64 received, qint64 total)
  * Uses the \a received and \a total parameters to get the download progress
  * and update the progressbar value on the dialog.
  */
-void Downloader::updateProgress(qint64 received, qint64 total)
+void Downloader::updateProgress(qint32 received, qint32 total)
 {
     if (total > 0)
     {
@@ -360,9 +360,9 @@ void Downloader::updateProgress(qint64 received, qint64 total)
  * (hours, minutes or seconds) and constructs a user-friendly string, which
  * is displayed in the dialog.
  */
-void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
+void Downloader::calculateTimeRemaining(qint32 received, qint32 total)
 {
-    uint difference = QDateTime::currentDateTime().toTime_t() - m_startTime;
+    qint32 difference = QDateTime::currentDateTime().toTime_t() - m_startTime;
 
     if (difference > 0)
     {
@@ -372,7 +372,7 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
         if (timeRemaining > 7200)
         {
             timeRemaining /= 3600;
-            int hours = int(timeRemaining + 0.5);
+            qint32 hours = qint32(timeRemaining + 0.5);
 
             if (hours > 1)
                 timeString = tr("примерно %1 часа(-ов)").arg(hours);
@@ -382,7 +382,7 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
         else if (timeRemaining > 60)
         {
             timeRemaining /= 60;
-            int minutes = int(timeRemaining + 0.5);
+            qint32 minutes = qint32(timeRemaining + 0.5);
 
             if (minutes > 1)
                 timeString = tr("%1 минут(-ы)").arg(minutes);
@@ -391,7 +391,7 @@ void Downloader::calculateTimeRemaining(qint64 received, qint64 total)
         }
         else if (timeRemaining <= 60)
         {
-            int seconds = int(timeRemaining + 0.5);
+            qint32 seconds = qint32(timeRemaining + 0.5);
 
             if (seconds > 1)
                 timeString = tr("%1 секунд(-ы)").arg(seconds);

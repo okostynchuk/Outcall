@@ -157,7 +157,7 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    for (int i = 0; i < employee.length(); ++i)
+                    for (qint32 i = 0; i < employee.length(); ++i)
                     {
                         query.prepare("UPDATE reminders SET datetime = ?, content = ?, viewed = false, completed = false, active = true WHERE phone_to = ? AND group_id = ?");
                         query.addBindValue(dateTime);
@@ -181,7 +181,7 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    for (int i = 0; i < employeeInitial.length(); ++i)
+                    for (qint32 i = 0; i < employeeInitial.length(); ++i)
                     {
                         if (employee.contains(employeeInitial.at(i)))
                             continue;
@@ -216,7 +216,7 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    for (int i = 0; i < employee.length(); ++i)
+                    for (qint32 i = 0; i < employee.length(); ++i)
                     {
                         if (employeeInitial.contains(employee.at(i)))
                         {
@@ -264,7 +264,7 @@ void EditReminderDialog::onSave()
                 }
                 else
                 {
-                    for (int i = 0; i < employeeInitial.length(); ++i)
+                    for (qint32 i = 0; i < employeeInitial.length(); ++i)
                     {
                         query.prepare("UPDATE reminders SET group_id = NULL, active = false WHERE phone_to = ? AND group_id = ?");
                         query.addBindValue(employeeInitial.at(i));

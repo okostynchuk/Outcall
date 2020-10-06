@@ -13,7 +13,7 @@ public:
     QSqlQueryModelReminders();
 
     void setParentTable(QTableView* p);
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, qint32 role) const;
 
     QTableView* parentTable;
 };

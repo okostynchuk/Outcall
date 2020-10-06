@@ -23,7 +23,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget *parent) :
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     phonesValidator = new QRegularExpressionValidator(regExp, this);
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         phonesList.at(i)->setValidator(phonesValidator);
 
     regExp.setPattern("^[0-9]*$");
@@ -50,7 +50,7 @@ void AddOrgContactDialog::onSave()
 
     QStringList phonesListRegExp;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
     {
         phonesList.at(i)->setStyleSheet("border: 1px solid grey");
 
@@ -95,7 +95,7 @@ void AddOrgContactDialog::onSave()
 
     bool invalid_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
     {
         if (!phonesList.at(i)->text().isEmpty())
         {
@@ -121,8 +121,8 @@ void AddOrgContactDialog::onSave()
 
     bool same_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
-        for (int j = 0; j < phonesList.length(); ++j)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
+        for (qint32 j = 0; j < phonesList.length(); ++j)
             if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
             {
                 phonesList.at(i)->setStyleSheet("border: 1px solid red");
@@ -140,7 +140,7 @@ void AddOrgContactDialog::onSave()
 
     bool existing_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
             query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesListRegExp.at(i) + "')");
@@ -174,9 +174,9 @@ void AddOrgContactDialog::onSave()
     query.addBindValue(ui->comment->toPlainText().trimmed());
     query.exec();
 
-    int id = query.lastInsertId().toInt();
+    qint32 id = query.lastInsertId().toInt();
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
             query.prepare("INSERT INTO fones (entry_id, fone)"
@@ -198,7 +198,7 @@ void AddOrgContactDialog::onSave()
  */
 bool AddOrgContactDialog::isPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[3][8][0][0-9]{9}$|^[0][0-9]{9}$)"));
 

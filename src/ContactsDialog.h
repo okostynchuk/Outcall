@@ -68,8 +68,8 @@ private:
 
     QValidator* validator;
 
-    QWidget* addImageLabel(int);
-    QWidget* addWidgetNote(int, bool);
+    QWidget* addImageLabel(qint32);
+    QWidget* addWidgetNote(qint32, bool);
 
     QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;
@@ -77,8 +77,8 @@ private:
     QList<QLabel*> labels;
 
     QString page;
-    int count;
-    int remainder;
+    qint32 count;
+    qint32 remainder;
     QSqlDatabase db;
     QSqlQuery query;
     QString go;

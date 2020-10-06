@@ -169,7 +169,7 @@ void AsteriskManager::setState(AsteriskState state)
  */
 void AsteriskManager::setAsteriskVersion(const QString &msg)
 {
-    int index = msg.indexOf("/") + 1;
+    qint32 index = msg.indexOf("/") + 1;
 
     QString ami = msg.mid(index);
 
@@ -276,7 +276,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
 
         if (eventValues.value("Event") == "EndpointListComplete")
         {
-            for (int i = 0; i < endpoints.length(); ++i)
+            for (qint32 i = 0; i < endpoints.length(); ++i)
             {
                 QString command;
                 command   = "Action: PJSIPShowEndpoint\r\n";
@@ -334,7 +334,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
             received.insert("callerIdName", callerIdName);
             received.insert("uniqueid", uniqueid);
 
-            int counter = m_dialedNum.value(uniqueid, 0);
+            qint32 counter = m_dialedNum.value(uniqueid, 0);
 
             counter++;
 
@@ -441,7 +441,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                     received.insert("context", context);
                     received.insert("linkedid", linkedid);
 
-                    int counter = m_dialedNum.value(uniqueid, 0);
+                    qint32 counter = m_dialedNum.value(uniqueid, 0);
 
                     counter++;
 
@@ -466,7 +466,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
         QString callerIdName     = eventValues.value("CallerIDName");
         QString uniqueid         = eventValues.value("Uniqueid");
 
-        int index                = destChannel.indexOf("/");
+        qint32 index                = destChannel.indexOf("/");
         QString destProtocol     = destChannel.mid(0, index);
 
         QRegExp reg("([^/]*)(/)(\\d+)");
@@ -516,7 +516,7 @@ void AsteriskManager::parseEvent(const QString &eventData)
                 }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
                 {
-                    int counter = 0;
+                    qint32 counter = 0;
 
                     if (m_dialedNum.contains(uniqueid))
                         counter = m_dialedNum.value(uniqueid, 0);

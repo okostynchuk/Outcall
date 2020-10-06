@@ -55,8 +55,8 @@ private:
 
     QString phoneNumber;
     QString page;
-    int count;
-    int remainder;
+    qint32 count;
+    qint32 remainder;
     QSqlQuery query;
     QString go;
     QString entry_name;

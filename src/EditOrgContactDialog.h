@@ -17,10 +17,10 @@ class EditOrgContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool, int, int);
+    void sendData(bool, qint32, qint32);
 
 public slots:
-    void setPos(int, int);
+    void setPos(qint32, qint32);
 
 public:
     explicit EditOrgContactDialog(QWidget *parent = 0);
@@ -35,7 +35,7 @@ private slots:
     void onTextChanged();
     void onCursorPosChanged();
 
-    bool isPhone(QString*);
+    bool isPhone(QString* str);
 
     void keyPressEvent(QKeyEvent*);
 

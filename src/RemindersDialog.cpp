@@ -196,7 +196,7 @@ void RemindersDialog::onTimer()
     query.addBindValue(my_number);
     query.exec();
 
-    int newReceivedReminders = 0;
+    qint32 newReceivedReminders = 0;
 
     if (query.next())
         newReceivedReminders = query.value(0).toInt();
@@ -223,7 +223,7 @@ void RemindersDialog::onTimer()
         query.addBindValue(my_number);
         query.exec();
 
-        int newActiveReminders = 0;
+        qint32 newActiveReminders = 0;
 
         if (query.next())
             newActiveReminders = query.value(0).toInt();
@@ -253,19 +253,19 @@ void RemindersDialog::deleteObjects()
     if (!widgets.isEmpty())
         selections = ui->tableView->selectionModel()->selectedRows();
 
-    for (int i = 0; i < widgets.size(); ++i)
+    for (qint32 i = 0; i < widgets.size(); ++i)
         widgets[i]->deleteLater();
 
-    for (int i = 0; i < layouts.size(); ++i)
+    for (qint32 i = 0; i < layouts.size(); ++i)
         layouts[i]->deleteLater();
 
-    for (int i = 0; i < labels.size(); ++i)
+    for (qint32 i = 0; i < labels.size(); ++i)
         labels[i]->deleteLater();
 
-    for (int i = 0; i < boxes.size(); ++i)
+    for (qint32 i = 0; i < boxes.size(); ++i)
         boxes[i]->deleteLater();
 
-    for (int i = 0; i < queries.size(); ++i)
+    for (qint32 i = 0; i < queries.size(); ++i)
         queries[i]->deleteLater();
 
     queries.clear();
@@ -316,7 +316,7 @@ void RemindersDialog::receiveData(bool update)
         query.addBindValue(my_number);
         query.exec();
 
-        int newActiveReminders = 0;
+        qint32 newActiveReminders = 0;
 
         if (query.next())
             newActiveReminders = query.value(0).toInt();
@@ -348,7 +348,7 @@ void RemindersDialog::updateCount()
     query.exec(queryString);
     query.first();
 
-    int count = query.value(0).toInt();
+    qint32 count = query.value(0).toInt();
 
     QString pages = ui->label_pages->text();
 
@@ -356,7 +356,7 @@ void RemindersDialog::updateCount()
         pages = "1";
     else
     {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -458,7 +458,7 @@ void RemindersDialog::loadReminders()
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
-    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         if (ui->tabWidget->currentIndex() == 2)
         {
@@ -498,7 +498,7 @@ void RemindersDialog::loadReminders()
         ui->tableView->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
 
     if (!selections.isEmpty())
-        for (int i = 0; i < selections.length(); ++i)
+        for (qint32 i = 0; i < selections.length(); ++i)
         {
             QModelIndex index = selections.at(i);
 
@@ -522,7 +522,7 @@ void RemindersDialog::loadReminders()
 /**
  * Выполняет установку виджета для поля "Содержание".
  */
-QWidget* RemindersDialog::addWidgetContent(int row_index, bool url)
+QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -547,7 +547,7 @@ QWidget* RemindersDialog::addWidgetContent(int row_index, bool url)
 
         note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
             note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
@@ -589,7 +589,7 @@ QWidget* RemindersDialog::addWidgetActive()
 /**
  * Выполняет установку виджета для поля "Активно" в личных напоминаниях.
  */
-QWidget* RemindersDialog::addCheckBoxActive(int row_index)
+QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -656,7 +656,7 @@ QWidget* RemindersDialog::addCheckBoxActive(int row_index)
 /**
  * Выполняет установку виджета для поля "Просмотрено".
  */
-QWidget* RemindersDialog::addCheckBoxViewed(int row_index)
+QWidget* RemindersDialog::addCheckBoxViewed(qint32 row_index)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -724,7 +724,7 @@ QWidget* RemindersDialog::addWidgetCompleted()
 /**
  * Выполняет установку виджета для поля "Выполнено" в полученных напоминаниях.
  */
-QWidget* RemindersDialog::addCheckBoxCompleted(int row_index)
+QWidget* RemindersDialog::addCheckBoxCompleted(qint32 row_index)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;

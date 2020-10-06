@@ -100,7 +100,7 @@ void NotesDialog::loadNotes()
                 queryString.append("( phone_number = '" + phone + "'");
             else
             {
-                for (int i = 0; i < numbersList.size(); ++i)
+                for (qint32 i = 0; i < numbersList.size(); ++i)
                 {
                     if (i == 0)
                         queryString.append("( phone_number = '" + numbersList[i] + "'");
@@ -179,7 +179,7 @@ void NotesDialog::loadNotes()
 
     ui->tableView->setModel(query);
 
-    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query->data(query->index(row_index, 3)).toString());
 
@@ -282,7 +282,7 @@ void NotesDialog::onUpdate()
 /**
  * Выполняет добавление виджета для поля "Заметка".
  */
-QWidget* NotesDialog::addWidgetNote(int row_index, bool url)
+QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -307,7 +307,7 @@ QWidget* NotesDialog::addWidgetNote(int row_index, bool url)
 
         note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
             note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
@@ -330,13 +330,13 @@ QWidget* NotesDialog::addWidgetNote(int row_index, bool url)
  */
 void NotesDialog::deleteObjects()
 {
-    for (int i = 0; i < widgets.size(); ++i)
+    for (qint32 i = 0; i < widgets.size(); ++i)
         widgets[i]->deleteLater();
 
-    for (int i = 0; i < layouts.size(); ++i)
+    for (qint32 i = 0; i < layouts.size(); ++i)
         layouts[i]->deleteLater();
 
-    for (int i = 0; i < labels.size(); ++i)
+    for (qint32 i = 0; i < labels.size(); ++i)
         labels[i]->deleteLater();
 
     widgets.clear();
@@ -351,7 +351,7 @@ void NotesDialog::deleteObjects()
  */
 bool NotesDialog::isInternalPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
     QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));

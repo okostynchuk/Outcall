@@ -31,7 +31,7 @@ EditContactDialog::EditContactDialog(QWidget *parent) :
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     phonesValidator = new QRegularExpressionValidator(regExp, this);
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         phonesList.at(i)->setValidator(phonesValidator);
 
     regExp.setPattern("^[0-9]*$");
@@ -95,12 +95,12 @@ void EditContactDialog::onReturn()
 /**
  * Выполняет установку позиции окна в зависимости от позиции окна-родителя ViewContactDialog.
  */
-void EditContactDialog::setPos(int x, int y)
+void EditContactDialog::setPos(qint32 x, qint32 y)
 {
-    int nDesktopHeight;
-    int nDesktopWidth;
-    int nWidgetHeight = QWidget::height();
-    int nWidgetWidth = QWidget::width();
+    qint32 nDesktopHeight;
+    qint32 nDesktopWidth;
+    qint32 nWidgetHeight = QWidget::height();
+    qint32 nWidgetWidth = QWidget::width();
 
     QDesktopWidget desktop;
     QRect rcDesktop = desktop.availableGeometry(this);
@@ -154,7 +154,7 @@ void EditContactDialog::onSave()
 
     QStringList actualPhonesList;
 
-    for (int i = 0; i < phonesList.length(); i++)
+    for (qint32 i = 0; i < phonesList.length(); i++)
     {
         if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
             actualPhonesList.append(phonesList.at(i)->text());
@@ -204,13 +204,13 @@ void EditContactDialog::onSave()
 
     bool invalid_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
     {
         if (!phonesList.at(i)->text().isEmpty())
         {
             bool old_phone = false;
 
-            for (int j = 0; j < oldPhonesList.length(); ++j)
+            for (qint32 j = 0; j < oldPhonesList.length(); ++j)
                 if (phonesList.at(i)->text() == oldPhonesList.at(j))
                     old_phone = true;
 
@@ -239,8 +239,8 @@ void EditContactDialog::onSave()
 
     bool same_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
-        for (int j = 0; j < phonesList.length(); ++j)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
+        for (qint32 j = 0; j < phonesList.length(); ++j)
         {
             if (!phonesList.at(i)->text().isEmpty() && actualPhonesList.at(i) == actualPhonesList.at(j) && i != j)
             {
@@ -260,7 +260,7 @@ void EditContactDialog::onSave()
 
     bool existing_phones = false;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
             query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + actualPhonesList.at(i) + "' AND entry_id <> " + contactId + ")");
@@ -306,7 +306,7 @@ void EditContactDialog::onSave()
     query.addBindValue(contactId);
     query.exec();
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
             if (i >= oldPhonesList.length())
@@ -343,7 +343,7 @@ void EditContactDialog::onSave()
  */
 bool EditContactDialog::isPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator(QRegularExpression("(^[\\+][3][8][0][0-9]{9}$|^[3][8][0][0-9]{9}$|^[0][0-9]{9}$)"));
 
@@ -371,7 +371,7 @@ void EditContactDialog::setValues(QString id)
     while (query.next())
         oldPhonesList.append(query.value(0).toString());
 
-    for (int i = 0; i < oldPhonesList.length(); ++i)
+    for (qint32 i = 0; i < oldPhonesList.length(); ++i)
         phonesList.at(i)->setText(oldPhonesList.at(i));
 
     query.first();

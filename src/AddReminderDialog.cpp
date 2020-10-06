@@ -118,14 +118,14 @@ void AddReminderDialog::onSave()
 
             if (employee.length() > 1)
             {
-                int id = query.lastInsertId().toInt();
+                qint32 id = query.lastInsertId().toInt();
 
                 query.prepare("UPDATE reminders SET group_id = ? WHERE id = ?");
                 query.addBindValue(id);
                 query.addBindValue(id);
                 query.exec();
 
-                for (int i = 1; i < employee.length(); ++i)
+                for (qint32 i = 1; i < employee.length(); ++i)
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);
@@ -161,14 +161,14 @@ void AddReminderDialog::onSave()
 
             if (employee.length() > 1)
             {
-                int id = query.lastInsertId().toInt();
+                qint32 id = query.lastInsertId().toInt();
 
                 query.prepare("UPDATE reminders SET group_id = ? WHERE id = ?");
                 query.addBindValue(id);
                 query.addBindValue(id);
                 query.exec();
 
-                for (int i = 1; i < employee.length(); ++i)
+                for (qint32 i = 1; i < employee.length(); ++i)
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);

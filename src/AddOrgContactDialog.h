@@ -28,7 +28,7 @@ private slots:
     void onSave();
     void onTextChanged();
 
-    bool isPhone(QString*);
+    bool isPhone(QString* str);
 
     void keyPressEvent(QKeyEvent*);
 

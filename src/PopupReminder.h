@@ -53,7 +53,7 @@ private slots:
     void onCall();
     void onTimer();
     void onClosePopup();
-    void onSelectTime(int);
+    void onSelectTime(qint32);
 
     bool isInternalPhone(QString* str);
 
@@ -73,9 +73,9 @@ private:
     QPointer<EditReminderDialog> editReminderDialog;
     QPointer<ChooseNumber> chooseNumber;
 
-    int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
-    int m_nCurrentPosX, m_nCurrentPosY;
-    int m_nIncrement;
+    qint32 m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
+    qint32 m_nCurrentPosX, m_nCurrentPosY;
+    qint32 m_nIncrement;
 
     bool m_bAppearing;
 

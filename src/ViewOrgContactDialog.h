@@ -28,11 +28,11 @@ class ViewOrgContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void getPos(int, int);
+    void getPos(qint32, qint32);
 
 public slots:
     void receiveDataPerson(bool);
-    void receiveDataOrg(bool, int, int);
+    void receiveDataOrg(bool, qint32, qint32);
 
 public:
     explicit ViewOrgContactDialog(QWidget *parent = 0);
@@ -101,7 +101,7 @@ private:
     QString go;
     QString page;
 
-    int countRecords;
+    qint32 countRecords;
 
     bool filter;
 

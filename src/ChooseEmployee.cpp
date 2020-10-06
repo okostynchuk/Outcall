@@ -34,7 +34,7 @@ ChooseEmployee::~ChooseEmployee()
 /**
  * Задаёт позицию окна в зависимости от позиции окна-родителя.
  */
-void ChooseEmployee::setPos(int x, int y)
+void ChooseEmployee::setPos(qint32 x, qint32 y)
 {
     this->move(x, y);
 }
@@ -102,7 +102,7 @@ void ChooseEmployee::on_removeAllButton_clicked()
         ui->listWidget->addItems(extensions);
     else
     {
-        for (int i = 0; i < extensions.length(); ++i)
+        for (qint32 i = 0; i < extensions.length(); ++i)
         {
             QString item = extensions.at(i);
 
@@ -125,7 +125,7 @@ void ChooseEmployee::onSearch()
 {
     results.clear();
 
-    for (int i = 0; i < extensions.length(); ++i)
+    for (qint32 i = 0; i < extensions.length(); ++i)
     {
         QString item = extensions.at(i);
 
@@ -133,7 +133,7 @@ void ChooseEmployee::onSearch()
             results.append(item);
     }
 
-    for (int i = 0; i < ui->listWidget_2->count(); ++i)
+    for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
     {
         QString item = ui->listWidget_2->item(i)->text();
 
@@ -158,7 +158,7 @@ void ChooseEmployee::setValues(QStringList employee)
     ui->listWidget_2->addItems(this->employee);
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 
-    for (int i = 0; i < ui->listWidget_2->count(); ++i)
+    for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
         qDeleteAll(ui->listWidget->findItems(ui->listWidget_2->item(i)->text(), Qt::MatchFixedString));
 }
 
@@ -173,7 +173,7 @@ void ChooseEmployee::on_applyButton_clicked()
     if (ui->listWidget_2->count() == 0)
         employee << my_number;
     else
-        for (int i = 0; i < ui->listWidget_2->count(); ++i)
+        for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
             employee << ui->listWidget_2->item(i)->text();
 
     emit sendEmployee(employee);
@@ -195,7 +195,7 @@ void ChooseEmployee::keyPressEvent(QKeyEvent* event)
         if (ui->listWidget_2->count() == 0)
             employee << my_number;
         else
-            for (int i = 0; i < ui->listWidget_2->count(); ++i)
+            for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
                 employee << ui->listWidget_2->item(i)->text();
 
         emit sendEmployee(employee);

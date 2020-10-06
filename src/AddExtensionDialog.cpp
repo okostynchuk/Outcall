@@ -52,7 +52,7 @@ void AddExtensionDialog::setExtension(const QString &extension)
  */
 void AddExtensionDialog::setProtocol(const QString &protocol)
 {
-    int index = ui->protocol->findText(protocol);
+    qint32 index = ui->protocol->findText(protocol);
 
     ui->protocol->setCurrentIndex(index);
 }

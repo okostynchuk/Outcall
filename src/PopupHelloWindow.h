@@ -48,9 +48,9 @@ private slots:
 private:
     Ui::PopupHelloWindow *ui;
 
-    int m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
-    int m_nCurrentPosX, m_nCurrentPosY;
-    int m_nIncrement;
+    qint32 m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
+    qint32 m_nCurrentPosX, m_nCurrentPosY;
+    qint32 m_nIncrement;
 
     bool m_bAppearing;
 

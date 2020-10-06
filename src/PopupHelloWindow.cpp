@@ -45,10 +45,10 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
 
     connect(&m_timer, &QTimer::timeout, this, &PopupHelloWindow::onTimer);
 
-    unsigned int nDesktopHeight;
-    unsigned int nDesktopWidth;
-    unsigned int nScreenWidth;
-    unsigned int nScreenHeight;
+    quint32 nDesktopHeight;
+    quint32 nDesktopWidth;
+    quint32 nScreenWidth;
+    quint32 nScreenHeight;
 
     QDesktopWidget desktop;
     QRect rcScreen = desktop.screenGeometry(this);
@@ -63,8 +63,8 @@ PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget *parent) :
     bool bTaskbarOnLeft = nDesktopWidth < nScreenWidth && rcDesktop.left() != 0;
     bool bTaskBarOnTop = nDesktopHeight < nScreenHeight && rcDesktop.top() != 0;
 
-    int nTimeToShow = TIME_TO_SHOW;
-    int nTimerDelay;
+    qint32 nTimeToShow = TIME_TO_SHOW;
+    qint32 nTimerDelay;
 
     m_nIncrement = 2;
 
@@ -131,7 +131,7 @@ void PopupHelloWindow::startPopupWaitingTimer()
 
     m_timer.stop();
 
-    int time2live = TIME_TO_LIVE;
+    qint32 time2live = TIME_TO_LIVE;
 
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
@@ -267,7 +267,7 @@ void PopupHelloWindow::showInformationMessage(QString caption, QString message, 
  */
 void PopupHelloWindow::closeAll()
 {
-    for (int i = 0; i < m_PopupHelloWindows.size(); ++i)
+    for (qint32 i = 0; i < m_PopupHelloWindows.size(); ++i)
         m_PopupHelloWindows[i]->deleteLater();
 
     m_PopupHelloWindows.clear();

@@ -377,7 +377,7 @@ void OutCall::changeIconReminders(bool change)
     query.addBindValue(my_number);
     query.exec();
 
-    int receivedReminders = 0;
+    qint32 receivedReminders = 0;
 
     if (query.next())
         receivedReminders = query.value(0).toInt();
@@ -386,7 +386,7 @@ void OutCall::changeIconReminders(bool change)
     query.addBindValue(my_number);
     query.exec();
 
-    int activeReminders = 0;
+    qint32 activeReminders = 0;
 
     if (query.next())
         activeReminders = query.value(0).toInt();
@@ -408,7 +408,7 @@ void OutCall::changeIconReminders(bool change)
  * Выполняет установку иконки в области уведомлений
  * с количеством актуальных напоминаний.
  */
-void OutCall::setIconReminders(QColor color, int activeReminders)
+void OutCall::setIconReminders(QColor color, qint32 activeReminders)
 {
     QPixmap pixmap(22, 22);
     pixmap.fill(Qt::transparent);

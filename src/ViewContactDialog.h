@@ -25,10 +25,10 @@ class ViewContactDialog : public QDialog
 
 signals:
     void sendData(bool);
-    void getPos(int, int);
+    void getPos(qint32, qint32);
 
 public slots:
-    void receiveData(bool, int, int);
+    void receiveData(bool, qint32, qint32);
 
 public:
     explicit ViewContactDialog(QWidget *parent = 0);
@@ -91,7 +91,7 @@ private:
     QString go;
     QString page;
 
-    int countRecords;
+    qint32 countRecords;
 
     QWidget* loadStatus(QString);
     QWidget* loadNote(QString);

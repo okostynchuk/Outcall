@@ -21,7 +21,7 @@ ChooseNumber::ChooseNumber(QWidget *parent) :
 
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
     {
         phonesList.at(i)->setVisible(false);
         phonesList.at(i)->installEventFilter(this);
@@ -54,7 +54,7 @@ void ChooseNumber::setValues(QString id)
     query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
 
-    int i = 0;
+    qint32 i = 0;
 
     while (query.next())
     {
@@ -76,9 +76,9 @@ void ChooseNumber::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    int size = 31;
+    qint32 size = 31;
 
-    for (int i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < phonesList.length(); ++i)
         if (!phonesList.at(i)->text().isEmpty())
         {
             QWidget::setFixedHeight(size += 26);

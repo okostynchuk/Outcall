@@ -50,8 +50,8 @@ private:
     QString orgId;
     QString orgName;
     QString page;
-    int count;
-    int remainder;
+    qint32 count;
+    qint32 remainder;
     QSqlDatabase db;
     QSqlQuery query;
     QString go;

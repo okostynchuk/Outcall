@@ -21,7 +21,7 @@ signals:
 
 public slots:
     void setValues(QStringList);
-    void setPos(int, int);
+    void setPos(qint32, qint32);
 
 public:
     explicit ChooseEmployee(QWidget *parent = 0);

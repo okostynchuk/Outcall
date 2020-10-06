@@ -24,7 +24,7 @@ void QSqlQueryModelReminders::setParentTable(QTableView* p)
 /**
  * Выполняет закраску нужных строк таблицы (переопределение функции).
  */
-QVariant QSqlQueryModelReminders::data(const QModelIndex &index, int role) const
+QVariant QSqlQueryModelReminders::data(const QModelIndex &index, qint32 role) const
 {
     if (role == Qt::BackgroundRole && parentTable->indexWidget(index.sibling(index.row(), 1))->findChild<QCheckBox*>() == nullptr)
         return QBrush(QColor(254, 252, 196));

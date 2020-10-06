@@ -52,10 +52,10 @@ private:
     QString go;
     QString page;
 
-    int countRecords;
-    int remainder;
-    int l_from;
-    int l_to;
+    qint32 countRecords;
+    qint32 remainder;
+    qint32 l_from;
+    qint32 l_to;
 
     QWidget* addWgt(QString);
 

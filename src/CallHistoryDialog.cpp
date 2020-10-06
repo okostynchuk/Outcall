@@ -167,7 +167,7 @@ void CallHistoryDialog::loadCalls()
     ui->tableView->setColumnHidden(7, true);
     ui->tableView->setColumnHidden(8, true);
 
-    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         QString extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
         QString src = queryModel->data(queryModel->index(row_index, 1)).toString();
@@ -205,7 +205,7 @@ void CallHistoryDialog::loadCalls()
         ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
     if (!selections.isEmpty())
-        for (int i = 0; i < selections.length(); ++i)
+        for (qint32 i = 0; i < selections.length(); ++i)
         {
             QModelIndex index = selections.at(i);
 
@@ -226,7 +226,7 @@ void CallHistoryDialog::setPage()
         pages = "1";
     else
     {
-        int remainder = countRecords % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -304,7 +304,7 @@ void CallHistoryDialog::updateCount()
  */
 bool CallHistoryDialog::isInternalPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
     QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
@@ -444,7 +444,7 @@ QWidget* CallHistoryDialog::loadNote(QString uniqueid)
 
         note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
             note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
@@ -499,19 +499,19 @@ QWidget* CallHistoryDialog::loadStatus(QString dialogStatus)
 void CallHistoryDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
-        for (int i = 0; i < widgets.size(); ++i)
+        for (qint32 i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
 
     if (!layouts.isEmpty())
-        for (int i = 0; i < layouts.size(); ++i)
+        for (qint32 i = 0; i < layouts.size(); ++i)
             layouts[i]->deleteLater();
 
     if (!labels.isEmpty())
-        for (int i = 0; i < labels.size(); ++i)
+        for (qint32 i = 0; i < labels.size(); ++i)
             labels[i]->deleteLater();
 
     if (!queries.isEmpty())
-        for (int i = 0; i < queries.size(); ++i)
+        for (qint32 i = 0; i < queries.size(); ++i)
             queries[i]->deleteLater();
 
     widgets.clear();

@@ -22,11 +22,11 @@ class EditContactDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void sendData(bool, int, int);
+    void sendData(bool, qint32, qint32);
 
 public slots:
     void receiveOrgName(QString, QString);
-    void setPos(int, int);
+    void setPos(qint32, qint32);
 
 private slots:
     void onSave();
@@ -37,7 +37,7 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isPhone(QString*);
+    bool isPhone(QString* str);
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);

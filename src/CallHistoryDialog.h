@@ -100,7 +100,7 @@ private:
     QString my_group;
     QString page;
 
-    int countRecords;
+    qint32 countRecords;
 
     QWidget* loadStatus(QString);
     QWidget* loadNote(QString);

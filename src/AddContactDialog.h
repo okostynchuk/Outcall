@@ -37,7 +37,7 @@ private slots:
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
 
-    bool isPhone(QString*);
+    bool isPhone(QString* str);
 
     void keyPressEvent(QKeyEvent*);
     void closeEvent(QCloseEvent*);

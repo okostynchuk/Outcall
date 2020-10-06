@@ -134,12 +134,12 @@ void SettingsDialog::saveSettings()
     // Personal number
     global::removeSettingsKey("extensions");
 
-    int nRow = ui->treeWidget->topLevelItemCount();
+    qint32 nRow = ui->treeWidget->topLevelItemCount();
 
     if (nRow == 0)
         global::removeSettingsKey("extensions_name");
 
-    for (int i = 0; i < nRow; ++i)
+    for (qint32 i = 0; i < nRow; ++i)
     {
         QTreeWidgetItem* item = ui->treeWidget->topLevelItem(i);
         QString extension = item->text(0);
@@ -157,9 +157,9 @@ void SettingsDialog::saveSettings()
     // Group's number
     global::removeSettingsKey("group_extensions");
 
-    int nRow2 = ui->treeWidget_2->topLevelItemCount();
+    qint32 nRow2 = ui->treeWidget_2->topLevelItemCount();
 
-    for (int i = 0; i < nRow2; ++i)
+    for (qint32 i = 0; i < nRow2; ++i)
     {
         QTreeWidgetItem* group_item = ui->treeWidget_2->topLevelItem(i);
         QString group_extension = group_item->text(0);
@@ -249,9 +249,9 @@ void SettingsDialog::loadSettings()
     // Personal number
     QStringList extensions = global::getSettingKeys("extensions");
 
-    int nRows = extensions.size();
+    qint32 nRows = extensions.size();
 
-    for (int i = 0; i < nRows; ++i)
+    for (qint32 i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
         const QString protocol  = global::getSettingsValue(extension, "extensions").toString();
@@ -264,9 +264,9 @@ void SettingsDialog::loadSettings()
     // Group's number
     QStringList group_extensions = global::getSettingKeys("group_extensions");
 
-    int nRows2 = group_extensions.size();
+    qint32 nRows2 = group_extensions.size();
 
-    for (int i = 0; i < nRows2; ++i)
+    for (qint32 i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
         const QString group_protocol  = global::getSettingsValue(group_extension, "group_extensions").toString();
@@ -299,7 +299,7 @@ void SettingsDialog::on_applyButton_clicked()
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
     msgBox.setButtonText(QMessageBox::No, tr("Нет"));
-    int reply = msgBox.exec();
+    qint32 reply = msgBox.exec();
 
     switch (reply)
     {
@@ -379,9 +379,9 @@ QString SettingsDialog::getExtension()
 {
     QStringList extensions = global::getSettingKeys("extensions");
 
-    int nRows = extensions.size();
+    qint32 nRows = extensions.size();
 
-    for (int i = 0; i < nRows; ++i)
+    for (qint32 i = 0; i < nRows; ++i)
     {
         const QString extension = extensions.at(i);
 
@@ -398,9 +398,9 @@ QString SettingsDialog::getGroupExtension()
 {
     QStringList group_extensions = global::getSettingKeys("group_extensions");
 
-    int nRows2 = group_extensions.size();
+    qint32 nRows2 = group_extensions.size();
 
-    for (int i = 0; i < nRows2; ++i)
+    for (qint32 i = 0; i < nRows2; ++i)
     {
         const QString group_extension = group_extensions.at(i);
 
@@ -478,7 +478,7 @@ void SettingsDialog::onRemoveButtonClicked()
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет")); 
-        int reply = msgBox.exec();
+        qint32 reply = msgBox.exec();
 
         switch (reply)
         {
@@ -493,9 +493,9 @@ void SettingsDialog::onRemoveButtonClicked()
                 break;
         }
 
-        for (int i = 0; i < selectedItems.size(); ++i)
+        for (qint32 i = 0; i < selectedItems.size(); ++i)
         {
-            int index = ui->treeWidget->indexOfTopLevelItem(selectedItems.at(i));
+            qint32 index = ui->treeWidget->indexOfTopLevelItem(selectedItems.at(i));
             ui->treeWidget->takeTopLevelItem(index);
         }
     }
@@ -516,7 +516,7 @@ void SettingsDialog::onRemoveGroupButtonClicked()
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
-        int reply = msgBox.exec();
+        qint32 reply = msgBox.exec();
 
         switch (reply)
         {
@@ -531,9 +531,9 @@ void SettingsDialog::onRemoveGroupButtonClicked()
                 break;
         }
 
-        for (int i = 0; i < selectedItems.size(); ++i)
+        for (qint32 i = 0; i < selectedItems.size(); ++i)
         {
-            int index = ui->treeWidget_2->indexOfTopLevelItem(selectedItems.at(i));
+            qint32 index = ui->treeWidget_2->indexOfTopLevelItem(selectedItems.at(i));
             ui->treeWidget_2->takeTopLevelItem(index);
         }
     }

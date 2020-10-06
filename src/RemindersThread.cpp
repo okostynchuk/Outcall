@@ -46,7 +46,7 @@ void RemindersThread::process()
             return;
         }
 
-        for (int i = 0; i < dateTimes.count(); ++i)
+        for (qint32 i = 0; i < dateTimes.count(); ++i)
         {
             if (dateTimes.at(i) <= QDateTime::currentDateTime())
             {

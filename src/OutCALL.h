@@ -55,7 +55,7 @@ protected slots:
     void changeIcon();
     void disableActions();
     void enableActions();
-    void setIconReminders(QColor, int);
+    void setIconReminders(QColor, qint32);
 
 protected:
     void automaticlySignIn();

@@ -41,17 +41,17 @@ private slots:
     void openDownload();
     void installUpdate();
     void cancelDownload();
-    void saveFile(qint64 received, qint64 total);
-    void calculateSizes(qint64 received, qint64 total);
-    void updateProgress(qint64 received, qint64 total);
-    void calculateTimeRemaining(qint64 received, qint64 total);
+    void saveFile(qint32 received, qint32 total);
+    void calculateSizes(qint32 received, qint32 total);
+    void updateProgress(qint32 received, qint32 total);
+    void calculateTimeRemaining(qint32 received, qint32 total);
 
 private:
     qreal round(const qreal& input);
 
 private:
     QString m_url;
-    uint m_startTime;
+    qint32 m_startTime;
     QDir m_downloadDir;
     QString m_fileName;
     QString m_AppName;

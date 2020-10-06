@@ -19,7 +19,7 @@ static const QString PARTIAL_DOWN(".part");
  * Выполняет запуск программы, подключение к базам данных, загрузку языковых файлов,
  * удаление старой версии программы после обновления.
  */
-int main(int argc, char* argv[])
+qint32 main(qint32 argc, char* argv[])
 {
     QApplication app(argc, argv);
 
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
     QDir dir(g_AppDirPath);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-    int fileAmount = dir.count();
+    qint32 fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
@@ -43,11 +43,11 @@ int main(int argc, char* argv[])
 
     QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
-    int pos = 0;
+    qint32 pos = 0;
 
     if (oldAppDir.exists())
     {
-        for (int i = 0; i < fileAmount; ++i)
+        for (qint32 i = 0; i < fileAmount; ++i)
         {
             QString str = namesOfDirectories.at(i);
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion", "Uninstall");
     QStringList childFolders = uninstallFolder.childGroups();
 
-    for (int i = 0; i < childFolders.length(); ++i)
+    for (qint32 i = 0; i < childFolders.length(); ++i)
     {
         QSettings uninstallFolder("Microsoft\\Windows\\CurrentVersion\\Uninstall" , childFolders.at(i));
 

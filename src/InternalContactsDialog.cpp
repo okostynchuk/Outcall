@@ -37,13 +37,13 @@ InternalContactsDialog::~InternalContactsDialog()
  */
 void InternalContactsDialog::deleteObjects()
 {
-    for (int i = 0; i < layouts.length(); ++i)
+    for (qint32 i = 0; i < layouts.length(); ++i)
         layouts[i]->deleteLater();
 
-    for (int i = 0; i < widgets.length(); ++i)
+    for (qint32 i = 0; i < widgets.length(); ++i)
         widgets[i]->deleteLater();
 
-    for (int i = 0; i < buttons.length(); ++i)
+    for (qint32 i = 0; i < buttons.length(); ++i)
         buttons[i]->deleteLater();
 
     layouts.clear();
@@ -62,7 +62,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
     {
         extensions = g_pAsteriskManager->extensionNumbers.values();
 
-        for (int i = 0; i < extensions.count(); ++i)
+        for (qint32 i = 0; i < extensions.count(); ++i)
             if (extensions[i] == my_number)
                 extensions.removeAt(i);
 
@@ -104,7 +104,7 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
  */
 void InternalContactsDialog::loadContacts()
 {
-    int count = extensions.count();
+    qint32 count = extensions.count();
 
     QString pages = ui->label_pages->text();
 
@@ -112,7 +112,7 @@ void InternalContactsDialog::loadContacts()
         pages = "1";
     else
     {
-        int remainder = count % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -168,13 +168,13 @@ void InternalContactsDialog::loadContacts()
 
     ui->listWidget->clear();
 
-    for (int i = l_from; i < l_to; ++i)
+    for (qint32 i = l_from; i < l_to; ++i)
         ui->listWidget->addItem(extensions[i]);
 
     if (!widgets.isEmpty())
         deleteObjects();
 
-    for (int i = 0; i < ui->listWidget->count(); ++i)
+    for (qint32 i = 0; i < ui->listWidget->count(); ++i)
     {
        ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
 
@@ -194,7 +194,7 @@ void InternalContactsDialog::onSearch()
 
     extensions.clear();
 
-    for (int i = 0; i < itemsSearch.length(); i ++)
+    for (qint32 i = 0; i < itemsSearch.length(); i ++)
         extensions.append(itemsSearch[i]->text());
 
     ui->listWidget->clear();

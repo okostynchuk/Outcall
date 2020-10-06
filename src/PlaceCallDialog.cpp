@@ -31,7 +31,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget *parent) :
     connect(ui->cancelButton, &QAbstractButton::clicked, this, &PlaceCallDialog::onCancelButton);
 
     connect(ui->comboBox,   &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
-    connect(ui->comboBox_2, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
+    connect(ui->comboBox_2, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
 
     queryModel = new QSqlQueryModel;
 

@@ -24,7 +24,7 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPhoneNumberToContactDialog::addPhoneNumber);
-    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPhoneNumberToContactDialog::currentIndexChanged);
+    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &AddPhoneNumberToContactDialog::currentIndexChanged);
 
     page = "1";
 
@@ -46,7 +46,7 @@ AddPhoneNumberToContactDialog::~AddPhoneNumberToContactDialog()
  */
 void AddPhoneNumberToContactDialog::deleteObjects()
 {
-    for (int i = 0; i < queries.size(); ++i)
+    for (qint32 i = 0; i < queries.size(); ++i)
         queries[i]->deleteLater();
 
     queries.clear();
@@ -94,7 +94,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setButtonText(QMessageBox::Yes, tr("Да"));
         msgBox.setButtonText(QMessageBox::No, tr("Нет"));
-        int reply = msgBox.exec();
+        qint32 reply = msgBox.exec();
 
         switch (reply)
         {

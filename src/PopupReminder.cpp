@@ -138,7 +138,7 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
 
     note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
         note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
     ui->textBrowser->setText(note);
@@ -168,12 +168,12 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
-    connect(ui->comboBox,  static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
+    connect(ui->comboBox,  static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
 
-    unsigned int nDesktopHeight;
-    unsigned int nDesktopWidth;
-    unsigned int nScreenWidth;
-    unsigned int nScreenHeight;
+    quint32 nDesktopHeight;
+    quint32 nDesktopWidth;
+    quint32 nScreenWidth;
+    quint32 nScreenHeight;
 
     QDesktopWidget desktop;
     QRect rcScreen = desktop.screenGeometry(this);
@@ -188,8 +188,8 @@ PopupReminder::PopupReminder(PopupReminderInfo& pri, QWidget *parent) :
     bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
     bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
 
-    int nTimeToShow = TIME_TO_SHOW;
-    int nTimerDelay;
+    qint32 nTimeToShow = TIME_TO_SHOW;
+    qint32 nTimerDelay;
 
     m_nIncrement = 2;
 
@@ -296,7 +296,7 @@ void PopupReminder::mouseMoveEvent(QMouseEvent* event)
  */
 bool PopupReminder::isInternalPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
     QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
@@ -440,7 +440,7 @@ void PopupReminder::onCall()
 /**
  * Выполняет перенос напоминания на заданное время.
  */
-void PopupReminder::onSelectTime(int index)
+void PopupReminder::onSelectTime(qint32 index)
 {
     QSqlQuery query(db);
 
@@ -612,7 +612,7 @@ void PopupReminder::onClosePopup()
  */
 void PopupReminder::closeAll()
 {
-    for (int i = 0; i < m_PopupReminders.size(); ++i)
+    for (qint32 i = 0; i < m_PopupReminders.size(); ++i)
         m_PopupReminders[i]->deleteLater();
 
     m_PopupReminders.clear();

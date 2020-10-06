@@ -192,7 +192,7 @@ void ViewContactDialog::setValues(QString id)
     while (query.next())
          numbersList.append(query.value(0).toString());
 
-    for (int i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < numbersList.length(); ++i)
         phonesList.at(i)->setText(numbersList.at(i));
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, "
@@ -239,7 +239,7 @@ void ViewContactDialog::loadCalls()
     {
         queryString = "SELECT IF(";
 
-        for (int i = 0; i < numbersList.length(); ++i)
+        for (qint32 i = 0; i < numbersList.length(); ++i)
         {
             if (i > 0)
                 queryString.append(" || ");
@@ -265,7 +265,7 @@ void ViewContactDialog::loadCalls()
 
     queryString.append("AND ( ");
 
-    for (int i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < numbersList.length(); ++i)
     {
         if (ui->tabWidget->currentIndex() == 0)
         {
@@ -322,7 +322,7 @@ void ViewContactDialog::loadCalls()
     ui->tableView->setColumnHidden(7, true);
     ui->tableView->setColumnHidden(8, true);
 
-    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         QString extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
         QString src = queryModel->data(queryModel->index(row_index, 1)).toString();
@@ -374,7 +374,7 @@ void ViewContactDialog::setPage()
         pages = "1";
     else
     {
-        int remainder = countRecords % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -441,7 +441,7 @@ QWidget* ViewContactDialog::loadNote(QString uniqueid)
 
         note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
             note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 
@@ -498,9 +498,9 @@ QWidget* ViewContactDialog::loadName(QString src, QString dst)
     QWidget* nameWgt = new QWidget;
     QLabel* nameLabel = new QLabel(nameWgt);
 
-    int counter = 0;
+    qint32 counter = 0;
 
-    for (int i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < numbersList.length(); ++i)
     {
         if (src == numbersList[i])
         {
@@ -531,19 +531,19 @@ QWidget* ViewContactDialog::loadName(QString src, QString dst)
 void ViewContactDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
-        for (int i = 0; i < widgets.size(); ++i)
+        for (qint32 i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
 
     if (!layouts.isEmpty())
-        for (int i = 0; i < layouts.size(); ++i)
+        for (qint32 i = 0; i < layouts.size(); ++i)
             layouts[i]->deleteLater();
 
     if (!labels.isEmpty())
-        for (int i = 0; i < labels.size(); ++i)
+        for (qint32 i = 0; i < labels.size(); ++i)
             labels[i]->deleteLater();
 
     if (!queries.isEmpty())
-        for (int i = 0; i < queries.size(); ++i)
+        for (qint32 i = 0; i < queries.size(); ++i)
             queries[i]->deleteLater();
 
     widgets.clear();
@@ -570,7 +570,7 @@ void ViewContactDialog::updateCount()
 
     queryString.append("AND ( ");
 
-    for (int i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < numbersList.length(); ++i)
     {
         if (ui->tabWidget->currentIndex() == 0)
         {
@@ -767,12 +767,12 @@ void ViewContactDialog::getData(const QModelIndex &index)
 /**
  * Получает запрос на обновление состояния окна.
  */
-void ViewContactDialog::receiveData(bool update, int x, int y)
+void ViewContactDialog::receiveData(bool update, qint32 x, qint32 y)
 {
-    int nDesktopHeight;
-    int nDesktopWidth;
-    int nWidgetHeight = QWidget::height();
-    int nWidgetWidth = QWidget::width();
+    qint32 nDesktopHeight;
+    qint32 nDesktopWidth;
+    qint32 nWidgetHeight = QWidget::height();
+    qint32 nWidgetWidth = QWidget::width();
 
     QDesktopWidget desktop;
     QRect rcDesktop = desktop.availableGeometry(this);

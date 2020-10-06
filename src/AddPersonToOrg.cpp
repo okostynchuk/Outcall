@@ -24,7 +24,7 @@ AddPersonToOrg::AddPersonToOrg(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddPersonToOrg::addPerson);
-    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &AddPersonToOrg::currentIndexChanged);
+    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &AddPersonToOrg::currentIndexChanged);
 
     page = "1";
 
@@ -46,7 +46,7 @@ AddPersonToOrg::~AddPersonToOrg()
  */
 void AddPersonToOrg::deleteObjects()
 {
-    for (int i = 0; i < queries.size(); ++i)
+    for (qint32 i = 0; i < queries.size(); ++i)
         queries[i]->deleteLater();
 
     queries.clear();

@@ -117,10 +117,10 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
 
     connect(&m_timer, &QTimer::timeout, this, &PopupWindow::onTimer);
 
-	unsigned int nDesktopHeight;
-	unsigned int nDesktopWidth;
-	unsigned int nScreenWidth;
-	unsigned int nScreenHeight;
+    quint32 nDesktopHeight;
+    quint32 nDesktopWidth;
+    quint32 nScreenWidth;
+    quint32 nScreenHeight;
 
 	QDesktopWidget desktop;
 	QRect rcScreen = desktop.screenGeometry(this);
@@ -135,8 +135,8 @@ PopupWindow::PopupWindow(PWInformation& pwi, QWidget *parent) :
     bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
     bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
 
-	int nTimeToShow = TIME_TO_SHOW;
-	int nTimerDelay;
+	qint32 nTimeToShow = TIME_TO_SHOW;
+	qint32 nTimerDelay;
 
 	m_nIncrement = 2;
 
@@ -290,7 +290,7 @@ void PopupWindow::startPopupWaitingTimer()
 
     m_timer.stop();
 
-    int time2live = TIME_TO_LIVE;
+    qint32 time2live = TIME_TO_LIVE;
 
     QTimer::singleShot(time2live, this, SLOT(onPopupTimeout()));
 }
@@ -402,7 +402,7 @@ void PopupWindow::showCall(QString dateTime, QString uniqueid, QString number, Q
  */
 void PopupWindow::closeAll()
 {
-    for (int i = 0; i < m_PopupWindows.size(); ++i)
+    for (qint32 i = 0; i < m_PopupWindows.size(); ++i)
         m_PopupWindows[i]->deleteLater();
 
     m_PopupWindows.clear();
@@ -747,7 +747,7 @@ void PopupWindow::onCallStart(QString uniqueid)
  */
 bool PopupWindow::isInternalPhone(QString* str)
 {
-    int pos = 0;
+    qint32 pos = 0;
 
     QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
     QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));

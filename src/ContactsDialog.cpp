@@ -26,7 +26,7 @@ ContactsDialog::ContactsDialog(QWidget *parent) :
     connect(ui->addOrgButton,    &QAbstractButton::clicked, this, &ContactsDialog::onAddOrg);
     connect(ui->updateButton,    &QAbstractButton::clicked, this, &ContactsDialog::onUpdate);
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
-    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
+    connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
 
 
     filter = false;
@@ -134,7 +134,7 @@ void ContactsDialog::onAddOrg()
 void ContactsDialog::showCard(const QModelIndex &index)
 {
     QString contactId = queryModel->data(queryModel->index(index.row(), 0)).toString();
-    int row = ui->tableView->currentIndex().row();
+    qint32 row = ui->tableView->currentIndex().row();
 
     if (queryModel->data(queryModel->index(row, 1)).toString() == "person")
     {
@@ -159,16 +159,16 @@ void ContactsDialog::showCard(const QModelIndex &index)
  */
 void ContactsDialog::deleteObjects()
 {
-    for (int i = 0; i < widgets.size(); ++i)
+    for (qint32 i = 0; i < widgets.size(); ++i)
         widgets[i]->deleteLater();
 
-    for (int i = 0; i < layouts.size(); ++i)
+    for (qint32 i = 0; i < layouts.size(); ++i)
         layouts[i]->deleteLater();
 
-    for (int i = 0; i < labels.size(); ++i)
+    for (qint32 i = 0; i < labels.size(); ++i)
         labels[i]->deleteLater();
 
-    for (int i = 0; i < queries.size(); ++i)
+    for (qint32 i = 0; i < queries.size(); ++i)
         queries[i]->deleteLater();
 
     widgets.clear();
@@ -278,7 +278,7 @@ void ContactsDialog::loadContacts()
 
     ui->tableView->setModel(queryModel);
 
-    for (int row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
+    for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
         ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addImageLabel(row_index));
 
@@ -308,7 +308,7 @@ void ContactsDialog::loadContacts()
     }
 
     if (!selectionModel.isEmpty())
-        for (int i = 0; i < selectionModel.length(); ++i)
+        for (qint32 i = 0; i < selectionModel.length(); ++i)
         {
             QModelIndex index = selectionModel.at(i);
 
@@ -319,7 +319,7 @@ void ContactsDialog::loadContacts()
 /**
  * Выполняет добавление виджета для поля "Тип".
  */
-QWidget* ContactsDialog::addImageLabel(int row_index)
+QWidget* ContactsDialog::addImageLabel(qint32 row_index)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -344,7 +344,7 @@ QWidget* ContactsDialog::addImageLabel(int row_index)
 /**
  * Выполняет добавление виджета для поля "Заметка".
  */
-QWidget* ContactsDialog::addWidgetNote(int row_index, bool url)
+QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
 {
     QWidget* wgt = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout;
@@ -369,7 +369,7 @@ QWidget* ContactsDialog::addWidgetNote(int row_index, bool url)
 
         note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
             note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a> "));
     }
 

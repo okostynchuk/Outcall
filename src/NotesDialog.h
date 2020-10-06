@@ -58,7 +58,7 @@ private:
 
     QSqlQueryModel* query;
 
-    QWidget* addWidgetNote(int, bool);
+    QWidget* addWidgetNote(qint32, bool);
 
     QList<QWidget*> widgets;
     QList<QHBoxLayout*> layouts;
@@ -71,8 +71,8 @@ private:
     QString phone;
     QString page;
     QString go;
-    int count;
-    int remainder;
+    qint32 count;
+    qint32 remainder;
 };
 
 #endif // NOTESDIALOG_H

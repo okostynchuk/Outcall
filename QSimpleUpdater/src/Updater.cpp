@@ -471,12 +471,12 @@ bool Updater::compare(const QString& x, const QString& y)
     QStringList versionsX = x.split(".");
     QStringList versionsY = y.split(".");
 
-    int count = qMin(versionsX.count(), versionsY.count());
+    qint32 count = qMin(versionsX.count(), versionsY.count());
 
-    for (int i = 0; i < count; ++i)
+    for (qint32 i = 0; i < count; ++i)
     {
-        int a = QString(versionsX.at(i)).toInt();
-        int b = QString(versionsY.at(i)).toInt();
+        qint32 a = QString(versionsX.at(i)).toInt();
+        qint32 b = QString(versionsY.at(i)).toInt();
 
         if (a > b)
             return true;

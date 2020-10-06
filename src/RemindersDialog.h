@@ -81,18 +81,18 @@ private:
     QString my_number;
     QString page;
     QString go;
-    int oldActiveReminders;
-    int oldReceivedReminders;
-    int verticalScrollBar;
-    int horizontalScrollBar;
+    qint32 oldActiveReminders;
+    qint32 oldReceivedReminders;
+    qint32 verticalScrollBar;
+    qint32 horizontalScrollBar;
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
-    QWidget* addWidgetContent(int, bool);
+    QWidget* addWidgetContent(qint32, bool);
 
-    QWidget* addCheckBoxViewed(int);
-    QWidget* addCheckBoxCompleted(int);
-    QWidget* addCheckBoxActive(int);
+    QWidget* addCheckBoxViewed(qint32);
+    QWidget* addCheckBoxCompleted(qint32);
+    QWidget* addCheckBoxActive(qint32);
 
     QModelIndexList selections;
 

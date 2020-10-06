@@ -48,7 +48,7 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
         note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "( |$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a> "));
 
     ui->textBrowser->setText(note);
@@ -57,10 +57,10 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
 
     connect(&m_timer, &QTimer::timeout, this, &PopupNotification::onTimer);
 
-    unsigned int nDesktopHeight;
-    unsigned int nDesktopWidth;
-    unsigned int nScreenWidth;
-    unsigned int nScreenHeight;
+    quint32 nDesktopHeight;
+    quint32 nDesktopWidth;
+    quint32 nScreenWidth;
+    quint32 nScreenHeight;
 
     QDesktopWidget desktop;
     QRect rcScreen = desktop.screenGeometry(this);
@@ -75,8 +75,8 @@ PopupNotification::PopupNotification(PopupNotificationInfo& pni, QWidget *parent
     bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
     bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
 
-    int nTimeToShow = TIME_TO_SHOW;
-    int nTimerDelay;
+    qint32 nTimeToShow = TIME_TO_SHOW;
+    qint32 nTimerDelay;
 
     m_nIncrement = 2;
 
@@ -287,7 +287,7 @@ void PopupNotification::closeAndDestroy()
  */
 void PopupNotification::closeAll()
 {
-    for (int i = 0; i < m_PopupNotifications.size(); ++i)
+    for (qint32 i = 0; i < m_PopupNotifications.size(); ++i)
         m_PopupNotifications[i]->deleteLater();
 
     m_PopupNotifications.clear();
