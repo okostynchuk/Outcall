@@ -66,8 +66,6 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
     go = "default";
 
     updateCount();
-
-    selections = ui->tableView->selectionModel()->selectedRows();
 }
 
 /**
@@ -499,20 +497,19 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
 void CallHistoryDialog::deleteObjects()
 {
     if (!widgets.isEmpty())
-        for (qint32 i = 0; i < widgets.size(); ++i)
-            widgets[i]->deleteLater();
+        selections = ui->tableView->selectionModel()->selectedRows();
 
-    if (!layouts.isEmpty())
-        for (qint32 i = 0; i < layouts.size(); ++i)
-            layouts[i]->deleteLater();
+    for (qint32 i = 0; i < widgets.size(); ++i)
+        widgets[i]->deleteLater();
 
-    if (!labels.isEmpty())
-        for (qint32 i = 0; i < labels.size(); ++i)
-            labels[i]->deleteLater();
+    for (qint32 i = 0; i < layouts.size(); ++i)
+        layouts[i]->deleteLater();
 
-    if (!queries.isEmpty())
-        for (qint32 i = 0; i < queries.size(); ++i)
-            queries[i]->deleteLater();
+    for (qint32 i = 0; i < labels.size(); ++i)
+        labels[i]->deleteLater();
+
+    for (qint32 i = 0; i < queries.size(); ++i)
+        queries[i]->deleteLater();
 
     widgets.clear();
     layouts.clear();
