@@ -120,11 +120,11 @@ void AddPersonToOrg::onUpdate()
     if (filter == true)
     {
         if (ui->comboBox->currentIndex() == 0)
-            searchString = "AND entry_name LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "AND entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
         else if (ui->comboBox->currentIndex() == 1)
-            searchString = "AND entry_phone LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "AND entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
         else if (ui->comboBox->currentIndex() == 2)
-            searchString = "AND entry_comment LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "AND entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
     }
 
     queryCountString.append(searchString);

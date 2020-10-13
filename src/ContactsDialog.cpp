@@ -196,11 +196,11 @@ void ContactsDialog::loadContacts()
     if (filter)
     {
         if (ui->comboBox->currentIndex() == 0)
-            searchString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
+            searchString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
         else if (ui->comboBox->currentIndex() == 1)
-            searchString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text() + "%' ");
+            searchString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
         else if (ui->comboBox->currentIndex() == 2)
-            searchString.append("WHERE entry_comment LIKE '%" + ui->lineEdit->text() + "%' ");
+            searchString.append("WHERE entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
     }
 
     queryCountString.append(searchString);
@@ -262,6 +262,7 @@ void ContactsDialog::loadContacts()
 
     queryModel = new QSqlQueryModel;
 
+    qDebug() << queryString;
     queryModel->setQuery(queryString);
 
     queries.append(queryModel);

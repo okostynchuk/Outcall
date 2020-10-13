@@ -81,9 +81,9 @@ void AddOrgToPerson::onUpdate()
     if (filter == true)
     {
         if (ui->comboBox->currentIndex() == 0)
-             searchString.append("AND entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
+             searchString.append("AND entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
         else if (ui->comboBox->currentIndex() == 1)
-             searchString.append("AND entry_city LIKE '%" + ui->lineEdit->text() + "%' ");
+             searchString.append("AND entry_city LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
     }
 
     queryCountString.append(searchString);

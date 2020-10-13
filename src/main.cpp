@@ -137,33 +137,25 @@ qint32 main(qint32 argc, char* argv[])
     QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + app.applicationName() + ".lnk");
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
-    QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
-    QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
-    QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
-    QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
+    QByteArray byte_password = global::getSettingsValue("password_1", "settings").toByteArray();
+    QString password = QString(QByteArray::fromBase64(byte_password));
 
-    db.setHostName(hostName_1);
-    db.setDatabaseName(databaseName_1);
-    db.setUserName(userName_1);
-    db.setPassword(password_1);
-    db.setPort(port_1.toUInt());
+    db.setHostName(global::getSettingsValue("hostName_1", "settings").toString());
+    db.setDatabaseName(global::getSettingsValue("databaseName_1", "settings").toString());
+    db.setUserName(global::getSettingsValue("userName_1", "settings").toString());
+    db.setPassword(password);
+    db.setPort(global::getSettingsValue("port_1", "settings").toUInt());
     db.open();
 
     QSqlDatabase dbCalls = QSqlDatabase::addDatabase("QMYSQL", "Calls");
-    QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
-    QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
-    QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
-    QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
-    QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_2", "settings").toString();
+    QByteArray byte_password_2 = global::getSettingsValue("password_2", "settings").toByteArray();
+    QString password_2 = QString(QByteArray::fromBase64(byte_password_2));
 
-    dbCalls.setHostName(hostName_2);
-    dbCalls.setDatabaseName(databaseName_2);
-    dbCalls.setUserName(userName_2);
+    dbCalls.setHostName(global::getSettingsValue("hostName_2", "settings").toString());
+    dbCalls.setDatabaseName(global::getSettingsValue("databaseName_2", "settings").toString());
+    dbCalls.setUserName(global::getSettingsValue("userName_2", "settings").toString());
     dbCalls.setPassword(password_2);
-    dbCalls.setPort(port_2.toUInt());
+    dbCalls.setPort(global::getSettingsValue("port_2", "settings").toUInt());
     dbCalls.open();
 
     if (!db.isOpen() && !dbCalls.isOpen())
@@ -200,8 +192,8 @@ qint32 main(qint32 argc, char* argv[])
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
     QString userName_3 = global::getSettingsValue("userName_3", "settings").toString();
-    QByteArray password3 = global::getSettingsValue("password_3", "settings").toByteArray();
-    QString password_3 = QString(QByteArray::fromBase64(password3));
+    QByteArray byte_password_3 = global::getSettingsValue("password_3", "settings").toByteArray();
+    QString password_3 = QString(QByteArray::fromBase64(byte_password_3));
     QString port_3 = global::getSettingsValue("port_3", "settings").toString();
 
     if (!hostName_3.isEmpty() && !databaseName_3.isEmpty() && !userName_3.isEmpty() && !password_3.isEmpty() && !port_3.isEmpty())

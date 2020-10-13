@@ -143,11 +143,11 @@ void AddPhoneNumberToContactDialog::onUpdate()
     if (filter == true)
     {
         if (ui->comboBox->currentIndex() == 0)
-            searchString = "WHERE entry_name LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "WHERE entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
         else if (ui->comboBox->currentIndex() == 1)
-            searchString = "WHERE entry_phone LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "WHERE entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
         else if (ui->comboBox->currentIndex() == 2)
-            searchString = "WHERE entry_comment LIKE '%" + ui->lineEdit->text() + "%' ";
+            searchString = "WHERE entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
     }
 
     queryCountString.append(searchString);
