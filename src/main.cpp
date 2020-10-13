@@ -188,7 +188,10 @@ qint32 main(qint32 argc, char* argv[])
         databasesConnectDialog->deleteLater();
     }
 
-    dbsOpened = true;
+    if (db.isOpen() && dbCalls.isOpen())
+        dbsOpened = true;
+    else
+        return 0;
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
