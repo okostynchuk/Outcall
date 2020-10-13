@@ -90,7 +90,7 @@ void AsteriskManager::onError(const QAbstractSocket::SocketError& socketError)
         setState(DISCONNECTED);
 
         if (!m_timer.isActive() && m_autoSignIn)
-            m_timer.start(10000); // 10 sec to reconnect
+            m_timer.start(3000); // 3 sec to reconnect
     }
 
     setState(ERROR_ON_CONNECTING);
