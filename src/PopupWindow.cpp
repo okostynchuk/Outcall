@@ -706,7 +706,7 @@ void PopupWindow::onTextChanged()
         return;
     }
 
-    ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a;");
+    ui->textEdit->setStyleSheet("border: 2px solid grey; background-color: #1a1a1a; border-right-color: transparent;");
     ui->saveNoteButton->setStyleSheet("background-color: #e1e1e1; border-style: solid; border-width: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-color: grey; border-left-color: transparent;");
 }
 
