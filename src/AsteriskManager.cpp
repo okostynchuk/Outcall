@@ -364,6 +364,45 @@ void AsteriskManager::parseEvent(const QString& eventData)
             }
         }
     }
+    else if (eventData.contains("Event: DialEnd"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+
+        QString channelStateDesc = eventValues.value("ChannelStateDesc");
+        QString exten            = eventValues.value("Exten");
+        QString destChannel      = eventValues.value("DestChannel");
+        QString dialStatus       = eventValues.value("DialStatus");
+        QString uniqueid         = eventValues.value("Uniqueid");
+
+        qint32 index             = destChannel.indexOf("/");
+        QString destProtocol     = destChannel.mid(0, index);
+
+        QRegExp reg("([^/]*)(/)(\\d+)");
+        reg.indexIn(destChannel);
+        destProtocol = reg.cap(1);
+        exten = reg.cap(3);
+
+        if (channelStateDesc == "Ring" || channelStateDesc == "Up")
+        {
+            QString protocol = global::getSettingsValue(exten, "extensions").toString();
+
+            bool isProtocolOk = false;
+
+            if (protocol == destProtocol)
+                isProtocolOk = true;
+            else if (destProtocol == "PJSIP" && protocol == "SIP")
+                isProtocolOk = true;
+
+            if (global::containsSettingsKey(exten, "extensions") && isProtocolOk)
+            {
+                if (dialStatus == "ANSWER")
+                    emit callStart(uniqueid);
+                else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
+                    return;
+            }
+        }
+    }
 }
 
 /**
