@@ -179,6 +179,7 @@ void InternalContactsDialog::loadContacts()
        ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
 
        ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text())->sizeHint());
+       ui->listWidget->item(i)->setFlags(ui->listWidget->item(i)->flags() & ~Qt::ItemIsSelectable);
     }
 }
 
