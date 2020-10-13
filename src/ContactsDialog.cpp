@@ -262,7 +262,6 @@ void ContactsDialog::loadContacts()
 
     queryModel = new QSqlQueryModel;
 
-    qDebug() << queryString;
     queryModel->setQuery(queryString);
 
     queries.append(queryModel);
