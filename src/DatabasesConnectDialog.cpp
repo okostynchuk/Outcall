@@ -46,7 +46,7 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget* parent) :
     ui->port_2->setText(port_2);
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onSave);
-    connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onClose);
+    connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::close);
 }
 
 DatabasesConnectDialog::~DatabasesConnectDialog()
@@ -155,14 +155,6 @@ void DatabasesConnectDialog::setSettingsDbCalls()
     password_2.append(ui->password_2->text());
     global::setSettingsValue("password_2", password_2.toBase64(), "settings");
     global::setSettingsValue("port_2", ui->port_2->text(), "settings");
-}
-
-/**
- * Выполняет выход из приложения.
- */
-void DatabasesConnectDialog::onClose()
-{
-    qApp->quit();
 }
 
 /**
