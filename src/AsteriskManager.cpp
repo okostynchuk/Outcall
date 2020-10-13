@@ -240,34 +240,34 @@ void AsteriskManager::read()
  */
 void AsteriskManager::parseEvent(const QString& eventData)
 {
-    if (eventData.contains("Event: Newchannel"))
-    {
-        QMap<QString, QString> eventValues;
-        getEventValues(eventData, eventValues);
-        QString uniqueid     = eventValues.value("Uniqueid");
-        QString callerIdName = eventValues.value("CallerIDName");
-        QString ch           = eventValues.value("Channel");
+//    if (eventData.contains("Event: Newchannel"))
+//    {
+//        QMap<QString, QString> eventValues;
+//        getEventValues(eventData, eventValues);
+//        QString uniqueid     = eventValues.value("Uniqueid");
+//        QString callerIdName = eventValues.value("CallerIDName");
+//        QString ch           = eventValues.value("Channel");
 
-        QRegExp reg("([^/]*)(/)(\\d+)");
-        reg.indexIn(ch);
-        QString chType = reg.cap(1);
-        QString chExten = reg.cap(3);
+//        QRegExp reg("([^/]*)(/)(\\d+)");
+//        reg.indexIn(ch);
+//        QString chType = reg.cap(1);
+//        QString chExten = reg.cap(3);
 
-        if (!global::containsSettingsKey(chExten, "extensions"))
-            return;
+//        if (!global::containsSettingsKey(chExten, "extensions"))
+//            return;
 
-        QString type = global::getSettingsValue(chExten, "extensions").toString();
-        if (type == chType)
-        {
-            Call* call       = new Call;
-            call->callerName = callerIdName;
-            call->chType     = chType;
-            call->chExten    = chExten;
+//        QString type = global::getSettingsValue(chExten, "extensions").toString();
+//        if (type == chType)
+//        {
+//            Call* call       = new Call;
+//            call->callerName = callerIdName;
+//            call->chType     = chType;
+//            call->chExten    = chExten;
 
-            m_calls.insert(uniqueid, call);
-        }
-    }
-    else if (eventData.contains("Event: EndpointList"))
+//            m_calls.insert(uniqueid, call);
+//        }
+//    }
+    if (eventData.contains("Event: EndpointList"))
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
@@ -347,52 +347,52 @@ void AsteriskManager::parseEvent(const QString& eventData)
             }
         }
     }
-    else if (eventData.contains("Event: Newexten"))
-    {
-        QMap<QString, QString> eventValues;
-        getEventValues(eventData, eventValues);
+//    else if (eventData.contains("Event: Newexten"))
+//    {
+//        QMap<QString, QString> eventValues;
+//        getEventValues(eventData, eventValues);
 
-        QString exten       = eventValues.value("Exten");
-        QString uniqueid    = eventValues.value("Uniqueid");
-        QString state       = eventValues.value("ChannelStateDesc");
-        QString appData     = eventValues.value("AppData");
+//        QString exten       = eventValues.value("Exten");
+//        QString uniqueid    = eventValues.value("Uniqueid");
+//        QString state       = eventValues.value("ChannelStateDesc");
+//        QString appData     = eventValues.value("AppData");
 
-        if (exten == "s" || exten == "h" || !m_calls.contains(uniqueid) || exten.isEmpty())
-            return;
+//        if (exten == "s" || exten == "h" || !m_calls.contains(uniqueid) || exten.isEmpty())
+//            return;
 
-        if (appData == "(Outgoing Line)")
-            return;
+//        if (appData == "(Outgoing Line)")
+//            return;
 
-        Call* call = m_calls.value(uniqueid);
-        call->state = state;
+//        Call* call = m_calls.value(uniqueid);
+//        call->state = state;
 
-        if (call->exten.isEmpty())
-        {
-            QString dateTime = QDateTime::currentDateTime().toString();
+//        if (call->exten.isEmpty())
+//        {
+//            QString dateTime = QDateTime::currentDateTime().toString();
 
-            call->exten = exten;
+//            call->exten = exten;
 
-            m_calls.insert(uniqueid, call);
+//            m_calls.insert(uniqueid, call);
 
-            QMap<QString, QVariant> placed;
+//            QMap<QString, QVariant> placed;
 
-            placed.insert("from",       call->chExten);
-            placed.insert("to",         call->exten);
-            placed.insert("protocol",   call->chType);
-            placed.insert("date_time",  dateTime);
+//            placed.insert("from",       call->chExten);
+//            placed.insert("to",         call->exten);
+//            placed.insert("protocol",   call->chType);
+//            placed.insert("date_time",  dateTime);
 
-            QList<QVariant> list = global::getSettingsValue("placed", "calls", QVariantList()).toList();
+//            QList<QVariant> list = global::getSettingsValue("placed", "calls", QVariantList()).toList();
 
-            if (list.size() >= 50)
-                list.removeFirst();
+//            if (list.size() >= 50)
+//                list.removeFirst();
 
-            list.append(QVariant::fromValue(placed));
+//            list.append(QVariant::fromValue(placed));
 
-            global::setSettingsValue("placed", list, "calls");
+//            global::setSettingsValue("placed", list, "calls");
 
-            emit callDeteceted(placed, PLACED);
-        }
-    }
+//            emit callDeteceted(placed, PLACED);
+//        }
+//    }
     else if (eventData.contains("Event: DialBegin"))
     {
         QMap<QString, QString> eventValues;
@@ -453,125 +453,125 @@ void AsteriskManager::parseEvent(const QString& eventData)
             }
         }
     }
-    else if (eventData.contains("Event: DialEnd"))
-    {
-        QMap<QString, QString> eventValues;
-        getEventValues(eventData, eventValues);
+//    else if (eventData.contains("Event: DialEnd"))
+//    {
+//        QMap<QString, QString> eventValues;
+//        getEventValues(eventData, eventValues);
 
-        QString channelStateDesc = eventValues.value("ChannelStateDesc");
-        QString callerIdNum      = eventValues.value("CallerIDNum");
-        QString exten            = eventValues.value("Exten");
-        QString destChannel      = eventValues.value("DestChannel");
-        QString dialStatus       = eventValues.value("DialStatus");
-        QString callerIdName     = eventValues.value("CallerIDName");
-        QString uniqueid         = eventValues.value("Uniqueid");
+//        QString channelStateDesc = eventValues.value("ChannelStateDesc");
+//        QString callerIdNum      = eventValues.value("CallerIDNum");
+//        QString exten            = eventValues.value("Exten");
+//        QString destChannel      = eventValues.value("DestChannel");
+//        QString dialStatus       = eventValues.value("DialStatus");
+//        QString callerIdName     = eventValues.value("CallerIDName");
+//        QString uniqueid         = eventValues.value("Uniqueid");
 
-        qint32 index                = destChannel.indexOf("/");
-        QString destProtocol     = destChannel.mid(0, index);
+//        qint32 index                = destChannel.indexOf("/");
+//        QString destProtocol     = destChannel.mid(0, index);
 
-        QRegExp reg("([^/]*)(/)(\\d+)");
-        reg.indexIn(destChannel);
-        destProtocol = reg.cap(1);
-        exten = reg.cap(3);
+//        QRegExp reg("([^/]*)(/)(\\d+)");
+//        reg.indexIn(destChannel);
+//        destProtocol = reg.cap(1);
+//        exten = reg.cap(3);
 
-        if (channelStateDesc == "Ring" || channelStateDesc == "Up")
-        {
-            QString protocol = global::getSettingsValue(exten, "extensions").toString();
+//        if (channelStateDesc == "Ring" || channelStateDesc == "Up")
+//        {
+//            QString protocol = global::getSettingsValue(exten, "extensions").toString();
 
-            bool isProtocolOk = false;
+//            bool isProtocolOk = false;
 
-            if (protocol == destProtocol)
-                isProtocolOk = true;
-            else if (destProtocol == "PJSIP" && protocol == "SIP")
-                isProtocolOk = true;
+//            if (protocol == destProtocol)
+//                isProtocolOk = true;
+//            else if (destProtocol == "PJSIP" && protocol == "SIP")
+//                isProtocolOk = true;
 
-            if (global::containsSettingsKey(exten, "extensions") && isProtocolOk)
-            {
-                if (dialStatus == "ANSWER")
-                {
-                    QString dateTime = QDateTime::currentDateTime().toString();
+//            if (global::containsSettingsKey(exten, "extensions") && isProtocolOk)
+//            {
+//                if (dialStatus == "ANSWER")
+//                {
+//                    QString dateTime = QDateTime::currentDateTime().toString();
 
-                    QMap<QString, QVariant> received;
+//                    QMap<QString, QVariant> received;
 
-                    received.insert("from",         callerIdNum);
-                    received.insert("to",           exten);
-                    received.insert("protocol",     destProtocol);
-                    received.insert("date_time",    dateTime);
-                    received.insert("callerIdName", callerIdName);
+//                    received.insert("from",         callerIdNum);
+//                    received.insert("to",           exten);
+//                    received.insert("protocol",     destProtocol);
+//                    received.insert("date_time",    dateTime);
+//                    received.insert("callerIdName", callerIdName);
 
-                    QList<QVariant> list = global::getSettingsValue("received", "calls").toList();
+//                    QList<QVariant> list = global::getSettingsValue("received", "calls").toList();
 
-                    if (list.size() >= 50)
-                        list.removeFirst();
+//                    if (list.size() >= 50)
+//                        list.removeFirst();
 
-                    list.append(QVariant::fromValue(received));
+//                    list.append(QVariant::fromValue(received));
 
-                    global::setSettingsValue("received", list, "calls");
+//                    global::setSettingsValue("received", list, "calls");
 
-                    m_dialedNum.remove(uniqueid);
+//                    m_dialedNum.remove(uniqueid);
 
-                    emit callStart(uniqueid);
+//                    emit callStart(uniqueid);
 
-                    emit callDeteceted(received, RECIEVED);
-                }
-                else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
-                {
-                    qint32 counter = 0;
+//                    emit callDeteceted(received, RECIEVED);
+//                }
+//                else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
+//                {
+//                    qint32 counter = 0;
 
-                    if (m_dialedNum.contains(uniqueid))
-                        counter = m_dialedNum.value(uniqueid, 0);
-                    else
-                        return;
+//                    if (m_dialedNum.contains(uniqueid))
+//                        counter = m_dialedNum.value(uniqueid, 0);
+//                    else
+//                        return;
 
-                    if (counter > 1)
-                    {
-                        counter--;
+//                    if (counter > 1)
+//                    {
+//                        counter--;
 
-                        m_dialedNum.insert(uniqueid, counter);
+//                        m_dialedNum.insert(uniqueid, counter);
 
-                        return;
-                    }
+//                        return;
+//                    }
 
-                    m_dialedNum.remove(uniqueid);
+//                    m_dialedNum.remove(uniqueid);
 
-                    QString date = QDateTime::currentDateTime().toString();
+//                    QString date = QDateTime::currentDateTime().toString();
 
-                    QMap<QString, QVariant> missed;
+//                    QMap<QString, QVariant> missed;
 
-                    missed.insert("from",           callerIdNum);
-                    missed.insert("to",             exten);
-                    missed.insert("protocol",       destProtocol);
-                    missed.insert("date_time",      date);
-                    missed.insert("callerIdName",   callerIdName);
+//                    missed.insert("from",           callerIdNum);
+//                    missed.insert("to",             exten);
+//                    missed.insert("protocol",       destProtocol);
+//                    missed.insert("date_time",      date);
+//                    missed.insert("callerIdName",   callerIdName);
 
-                    QList<QVariant> list = global::getSettingsValue("missed", "calls", QVariantList()).toList();
+//                    QList<QVariant> list = global::getSettingsValue("missed", "calls", QVariantList()).toList();
 
-                    if (list.size() >= 50)
-                        list.removeFirst();
+//                    if (list.size() >= 50)
+//                        list.removeFirst();
 
-                    list.append(QVariant::fromValue(missed));
+//                    list.append(QVariant::fromValue(missed));
 
-                    global::setSettingsValue("missed", list, "calls");
+//                    global::setSettingsValue("missed", list, "calls");
 
-                    emit callDeteceted(missed, MISSED);
-                }
-            }
-        }
-    }
-    else if (eventData.contains("Event: Hangup"))
-    {
-        QMap<QString, QString> eventValues;
-        getEventValues(eventData, eventValues);
+//                    emit callDeteceted(missed, MISSED);
+//                }
+//            }
+//        }
+//    }
+//    else if (eventData.contains("Event: Hangup"))
+//    {
+//        QMap<QString, QString> eventValues;
+//        getEventValues(eventData, eventValues);
 
-        const QString uniqueid = eventValues.value("Uniqueid");
+//        const QString uniqueid = eventValues.value("Uniqueid");
 
-        if (m_calls.contains(uniqueid))
-        {
-            Call* call = m_calls.value(uniqueid);
-            delete call;
-            m_calls.remove(uniqueid);
-        }
-    }
+//        if (m_calls.contains(uniqueid))
+//        {
+//            Call* call = m_calls.value(uniqueid);
+//            delete call;
+//            m_calls.remove(uniqueid);
+//        }
+//    }
 }
 
 /**
