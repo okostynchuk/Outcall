@@ -14,11 +14,10 @@ public:
     explicit AsteriskManager(const QString& username, const QString& secret, QObject* parent = 0);
     ~AsteriskManager();
 
-    enum CallState
+    enum AsteriskVersion
     {
-        MISSED = 0,
-        RECIEVED = 1,
-        PLACED = 2
+        VERSION_11,
+        VERSION_13
     };
 
     enum AsteriskState
@@ -28,22 +27,6 @@ public:
         DISCONNECTED,
         AUTHENTICATION_FAILED,
         ERROR_ON_CONNECTING
-    };
-
-    enum AsteriskVersion
-    {
-        VERSION_11,
-        VERSION_13
-    };
-
-    struct Call
-    {
-        QString chExten;
-        QString chType;
-        QString exten;
-        QString state;
-        QString callerName;
-        QString destUniqueid;
     };
 
     void originateCall(const QString& from, const QString& to, const QString& protocol, const QString& callerId);
@@ -66,7 +49,6 @@ signals:
     void callStart(const QString& uniqueid);
     void messageReceived(const QString& message);
     void authenticationState(bool state);
-    void callDeteceted(const QMap<QString, QVariant>& call, const CallState& state);
     void callReceived(const QMap<QString, QVariant>& call);
     void error(const QAbstractSocket::SocketError& socketError, const QString& msg);
     void stateChanged(const AsteriskState& state);
@@ -79,7 +61,6 @@ protected slots:
 protected:
     void getEventValues(const QString& eventData, QMap<QString, QString>& map);
     void parseEvent(const QString& eventData);
-    void asterisk_11_eventHandler(const QString& eventData);
     void setAsteriskVersion(const QString& msg);
 
 private:
@@ -87,19 +68,20 @@ private:
 
     AsteriskVersion m_currentVersion;
 
-    QMap<QString, Call*> m_calls;
-    QMap<QString, qint32> m_dialedNum;
     QList<QString> endpoints;
 
-    QString m_eventData;
     bool m_isSignedIn;
     bool m_autoConnectingOnError;
+    bool m_autoSignIn;
+
+    QString m_eventData;
     QString m_username;
     QString m_secret;
     QString m_server;
+
     quint16 m_port;
+
     QTimer m_timer;
-    bool m_autoSignIn;
 };
 
 extern AsteriskManager* g_pAsteriskManager;
