@@ -21,7 +21,7 @@ phone book, creating reminders, call history.
 
 ## Building Notes ##
 
-  * We used Qt 5.5.1 and MinGW 32 bit to compile the project
+  * We used Qt 5.5.1 and MinGW 4.9.2 32 bit to compile the project. It is available for download from [Qt Downloads](https://download.qt.io/archive/qt/5.1/5.1.1/)
 
 ## Binaries ##
 
