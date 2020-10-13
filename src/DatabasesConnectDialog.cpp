@@ -19,31 +19,21 @@ DatabasesConnectDialog::DatabasesConnectDialog(QWidget* parent) :
     setWindowFlags(windowFlags() ^ Qt::WindowCloseButtonHint);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    QString hostName_1 = global::getSettingsValue("hostName_1", "settings").toString();
-    QString databaseName_1 = global::getSettingsValue("databaseName_1", "settings").toString();
-    QString userName_1 = global::getSettingsValue("userName_1", "settings").toString();
-    QByteArray password1 = global::getSettingsValue("password_1", "settings").toByteArray();
-    QString password_1 = QString(QByteArray::fromBase64(password1));
-    QString port_1 = global::getSettingsValue("port_1", "settings").toString();
-
-    QString hostName_2 = global::getSettingsValue("hostName_2", "settings").toString();
-    QString databaseName_2 = global::getSettingsValue("databaseName_2", "settings").toString();
-    QString userName_2 = global::getSettingsValue("userName_2", "settings").toString();
-    QByteArray password2 = global::getSettingsValue("password_2", "settings").toByteArray();
-    QString password_2 = QString(QByteArray::fromBase64(password2));
-    QString port_2 = global::getSettingsValue("port_1", "settings").toString();
-
-    ui->hostName_1->setText(hostName_1);
-    ui->databaseName_1->setText(databaseName_1);
-    ui->userName_1->setText(userName_1);
+    QByteArray byte_password_1 = global::getSettingsValue("password_1", "settings").toByteArray();
+    QString password_1 = QString(QByteArray::fromBase64(byte_password_1));
+    ui->hostName_1->setText(global::getSettingsValue("hostName_1", "settings").toString());
+    ui->databaseName_1->setText(global::getSettingsValue("databaseName_1", "settings").toString());
+    ui->userName_1->setText(global::getSettingsValue("userName_1", "settings").toString());
     ui->password_1->setText(password_1);
-    ui->port_1->setText(port_1);
+    ui->port_1->setText(global::getSettingsValue("port_1", "settings").toString());
 
-    ui->hostName_2->setText(hostName_2);
-    ui->databaseName_2->setText(databaseName_2);
-    ui->userName_2->setText(userName_2);
+    QByteArray byte_password_2 = global::getSettingsValue("password_2", "settings").toByteArray();
+    QString password_2 = QString(QByteArray::fromBase64(byte_password_2));
+    ui->hostName_2->setText(global::getSettingsValue("hostName_2", "settings").toString());
+    ui->databaseName_2->setText(global::getSettingsValue("databaseName_2", "settings").toString());
+    ui->userName_2->setText(global::getSettingsValue("userName_2", "settings").toString());
     ui->password_2->setText(password_2);
-    ui->port_2->setText(port_2);
+    ui->port_2->setText(global::getSettingsValue("port_1", "settings").toString());
 
     connect(ui->saveButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::onSave);
     connect(ui->closeButton, &QAbstractButton::clicked, this, &DatabasesConnectDialog::close);
