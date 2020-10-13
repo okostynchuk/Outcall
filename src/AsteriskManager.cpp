@@ -307,8 +307,17 @@ void AsteriskManager::parseEvent(const QString& eventData)
             received.insert("callerIdName", callerIdName);
             received.insert("uniqueid", uniqueid);
 
-            emit callReceived(received);
-            emit callStart(uniqueid);
+            qint32 counter = m_dialedNum.value(uniqueid, 0);
+
+            counter++;
+
+            m_dialedNum.insert(uniqueid, counter);
+
+            if (counter == 1)
+            {
+                emit callReceived(received);
+                emit callStart(uniqueid);
+            }
         }
     }
     else if (eventData.contains("Event: DialBegin"))
@@ -359,7 +368,14 @@ void AsteriskManager::parseEvent(const QString& eventData)
                     received.insert("context", context);
                     received.insert("linkedid", linkedid);
 
-                    emit callReceived(received);
+                    qint32 counter = m_dialedNum.value(uniqueid, 0);
+
+                    counter++;
+
+                    m_dialedNum.insert(uniqueid, counter);
+
+                    if (counter == 1)
+                        emit callReceived(received);
                 }
             }
         }
@@ -397,7 +413,11 @@ void AsteriskManager::parseEvent(const QString& eventData)
             if (global::containsSettingsKey(exten, "extensions") && isProtocolOk)
             {
                 if (dialStatus == "ANSWER")
+                {
+                    m_dialedNum.remove(uniqueid);
+
                     emit callStart(uniqueid);
+                }
                 else if (dialStatus == "CANCEL" || dialStatus == "BUSY" || dialStatus == "NOANSWER")
                     return;
             }

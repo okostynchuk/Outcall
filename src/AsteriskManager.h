@@ -68,6 +68,8 @@ private:
 
     AsteriskVersion m_currentVersion;
 
+    QMap<QString, qint32> m_dialedNum;
+
     QList<QString> endpoints;
 
     bool m_isSignedIn;
