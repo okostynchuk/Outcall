@@ -21,7 +21,6 @@ public:
 
 private slots:
     void onSave();
-    void onClose();
     void setSettingsDb();
     void setSettingsDbCalls();
     void openDb();

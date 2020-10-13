@@ -6,7 +6,5 @@
         <file>translations/english.qm</file>
         <file>translations/russian.qm</file>
         <file>translations/ukrainian.qm</file>
-        <file>translations/qtbase_ru.qm</file>
-        <file>translations/qtbase_uk.qm</file>
     </qresource>
 </RCC>

@@ -82,23 +82,16 @@ qint32 main(qint32 argc, char* argv[])
 
     QString language = global::getSettingsValue("language", "settings").toString();
     QTranslator qtMain;
-    QTranslator qtBase;
 
     if (language == "Русский")
     {
         qtMain.load(":/translations/russian.qm");
         app.installTranslator(&qtMain);
-
-        qtBase.load(":/translations/qtbase_ru.qm");
-        app.installTranslator(&qtBase);
     }
     else if (language == "Українська")
     {
         qtMain.load(":/translations/ukrainian.qm");
         app.installTranslator(&qtMain);
-
-        qtBase.load(":/translations/qtbase_uk.qm");
-        app.installTranslator(&qtBase);
     }
     else if (language == "English")
     {
@@ -187,7 +180,10 @@ qint32 main(qint32 argc, char* argv[])
         databasesConnectDialog->deleteLater();
     }
 
-    dbsOpened = true;
+    if (db.isOpen() && dbCalls.isOpen())
+        dbsOpened = true;
+    else
+        return 0;
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
