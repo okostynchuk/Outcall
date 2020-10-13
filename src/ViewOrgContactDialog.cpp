@@ -88,12 +88,19 @@ void ViewOrgContactDialog::setValues(const QString& id)
     query.next();
 
     ui->orgName->setText(query.value(0).toString());
+
     ui->city->setText(query.value(1).toString());
     ui->city->QWidget::setToolTip(query.value(1).toString());
+    ui->city->setCursorPosition(0);
+
     ui->address->setText(query.value(2).toString());
     ui->address->QWidget::setToolTip(query.value(2).toString());
+    ui->address->setCursorPosition(0);
+
     ui->email->setText(query.value(3).toString());
     ui->email->QWidget::setToolTip(query.value(3).toString());
+    ui->email->setCursorPosition(0);
+
     ui->vyborId->setText(query.value(4).toString());
     ui->comment->setText(query.value(5).toString());
 

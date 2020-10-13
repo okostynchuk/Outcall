@@ -72,7 +72,11 @@ void ViewContactDialog::showEvent(QShowEvent* event)
     query.exec();
 
     if (query.first())
+    {
         ui->organization->setText(query.value(0).toString());
+        ui->organization->QWidget::setToolTip(query.value(0).toString());
+        ui->organization->setCursorPosition(0);
+    }
 }
 
 /**
@@ -203,13 +207,21 @@ void ViewContactDialog::setValues(const QString& id)
     ui->firstName->setText(query.value(0).toString());
     ui->patronymic->setText(query.value(1).toString());
     ui->lastName->setText(query.value(2).toString());
+
     ui->city->setText(query.value(3).toString());
     ui->city->QWidget::setToolTip(query.value(3).toString());
+    ui->city->setCursorPosition(0);
+
     ui->address->setText(query.value(4).toString());
     ui->address->QWidget::setToolTip(query.value(4).toString());
+    ui->address->setCursorPosition(0);
+
     ui->email->setText(query.value(5).toString());
     ui->email->QWidget::setToolTip(query.value(5).toString());
+    ui->email->setCursorPosition(0);
+
     ui->vyborId->setText(query.value(6).toString());
+
     ui->comment->setText(query.value(7).toString());
 
     if (ui->vyborId->text() == "0")
