@@ -142,7 +142,7 @@
      <item>
       <widget class="QTableView" name="tableView">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>

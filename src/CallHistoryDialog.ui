@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>714</width>
-    <height>523</height>
+    <height>506</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -66,7 +66,7 @@
       <item row="2" column="0">
        <widget class="QTableView" name="tableView">
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>

@@ -740,7 +740,7 @@ background-color: #fffff0;
                </size>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::ClickFocus</enum>
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>
@@ -857,7 +857,7 @@ background-color: #fffff0;
        <item row="2" column="0">
         <widget class="QTableView" name="tableView_2">
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">QTableView { selection-color: black; selection-background-color: #18B7FF; }</string>

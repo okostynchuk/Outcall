@@ -56,6 +56,8 @@ void ContactsDialog::receiveData(bool update)
     {
         queryModel->setQuery(queryModel->query().lastQuery());
 
+        go = "default";
+
         onUpdate();
     }
 }

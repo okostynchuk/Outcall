@@ -192,7 +192,7 @@ void CallHistoryDialog::loadCalls()
             ui->tableView->resizeRowToContents(row_index);
         }
         else
-            ui->tableView->setRowHeight(row_index, 33);
+            ui->tableView->setRowHeight(row_index, 34);
     }
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
