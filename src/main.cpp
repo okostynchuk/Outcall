@@ -127,7 +127,7 @@ qint32 main(qint32 argc, char* argv[])
     QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
     settings.beginGroup("Shell Folders");
 
-    QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + app.applicationName() + ".lnk");
+    //QFile::link(QApplication::applicationFilePath(), settings.value("Startup").toString().replace("/", "\\") + "/" + app.applicationName() + ".lnk");
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QByteArray byte_password = global::getSettingsValue("password_1", "settings").toByteArray();
