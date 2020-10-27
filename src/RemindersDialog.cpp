@@ -102,6 +102,10 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
     remindersThread->start();
 
     timer.setInterval(TIME_TO_UPDATE);
+
+    loadReminders();
+
+    ui->tableView->scrollToTop();
 }
 
 RemindersDialog::~RemindersDialog()
@@ -431,8 +435,7 @@ void RemindersDialog::loadReminders()
 
     if (ui->tabWidget->currentIndex() == 2)
         ui->tableView->setColumnHidden(2, true);
-
-    if (ui->tabWidget->currentIndex() != 2)
+    else
     {
         ui->tableView->setColumnHidden(3, true);
         ui->tableView->setColumnHidden(10, true);
