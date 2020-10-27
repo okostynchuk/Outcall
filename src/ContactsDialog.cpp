@@ -28,7 +28,6 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
 
-
     filter = false;
 
     page = "1";
@@ -40,9 +39,6 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
 
 ContactsDialog::~ContactsDialog()
 {
-    deleteObjects();
-
-    delete validator;
     delete ui;
 }
 
@@ -84,6 +80,7 @@ void ContactsDialog::closeEvent(QCloseEvent*)
     selectionModel.clear();
 
     ui->tableView->clearSelection();
+    ui->tableView->scrollToTop();
 
     ui->lineEdit->clear();
 
@@ -161,22 +158,15 @@ void ContactsDialog::showCard(const QModelIndex& index)
  */
 void ContactsDialog::deleteObjects()
 {
-    for (qint32 i = 0; i < widgets.size(); ++i)
-        widgets[i]->deleteLater();
+    if (!queryModel.isNull())
+    {
+        for (qint32 i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
 
-    for (qint32 i = 0; i < layouts.size(); ++i)
-        layouts[i]->deleteLater();
+        widgets.clear();
 
-    for (qint32 i = 0; i < labels.size(); ++i)
-        labels[i]->deleteLater();
-
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    widgets.clear();
-    layouts.clear();
-    labels.clear();
-    queries.clear();
+        queryModel->deleteLater();
+    }
 }
 
 /**
@@ -184,8 +174,9 @@ void ContactsDialog::deleteObjects()
  */
 void ContactsDialog::loadContacts()
 {
-    if (!queries.isEmpty())
-        deleteObjects();
+    deleteObjects();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT entry_id, entry_type, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                           "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, "
@@ -262,11 +253,7 @@ void ContactsDialog::loadContacts()
                                                 ui->comboBox_list->currentText().toInt()) + " , "
                            + QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel = new QSqlQueryModel;
-
     queryModel->setQuery(queryString);
-
-    queries.append(queryModel);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
     queryModel->insertColumn(2);
@@ -325,9 +312,9 @@ void ContactsDialog::loadContacts()
  */
 QWidget* ContactsDialog::addImageLabel(qint32 row_index)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* imageLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* imageLabel = new QLabel(widget);
 
     layout->addWidget(imageLabel, 0, Qt::AlignCenter);
 
@@ -336,13 +323,9 @@ QWidget* ContactsDialog::addImageLabel(qint32 row_index)
     else
         imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(imageLabel);
-
-    return wgt;
+    return widget;
 }
 
 /**
@@ -350,9 +333,9 @@ QWidget* ContactsDialog::addImageLabel(qint32 row_index)
  */
 QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* noteLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* noteLabel = new QLabel(widget);
 
     layout->addWidget(noteLabel);
 
@@ -383,13 +366,9 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(noteLabel);
-
-    return wgt;
+    return widget;
 }
 
 /**

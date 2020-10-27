@@ -417,12 +417,12 @@ void PopupReminder::onCall()
         if (m_pri.numbers.length() > 1)
         {
             if (!chooseNumber.isNull())
-                chooseNumber.data()->close();
+                chooseNumber->close();
 
             chooseNumber = new ChooseNumber;
-            chooseNumber.data()->setValues(m_pri.call_id);
-            chooseNumber.data()->show();
-            chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
+            chooseNumber->setValues(m_pri.call_id);
+            chooseNumber->show();
+            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }
         else
         {
@@ -450,13 +450,13 @@ void PopupReminder::onSelectTime(qint32 index)
     {
     case 1:
         if (!editReminderDialog.isNull())
-            editReminderDialog.data()->close();
+            editReminderDialog->close();
 
         editReminderDialog = new EditReminderDialog;
-        editReminderDialog.data()->setValues(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
-        connect(editReminderDialog.data(), &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
-        editReminderDialog.data()->show();
-        editReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+        editReminderDialog->setValues(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
+        connect(editReminderDialog, &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
+        editReminderDialog->show();
+        editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 
         ui->comboBox->setCurrentIndex(0);
         break;
@@ -471,7 +471,7 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
-            editReminderDialog.data()->close();
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -486,7 +486,7 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
-            editReminderDialog.data()->close();
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -501,7 +501,7 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
-            editReminderDialog.data()->close();
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -516,7 +516,7 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->loadReminders();
 
         if (!editReminderDialog.isNull())
-            editReminderDialog.data()->close();
+            editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -603,7 +603,7 @@ void PopupReminder::onClosePopup()
     m_pri.remindersDialog->loadReminders();
 
     if (!editReminderDialog.isNull())
-        editReminderDialog.data()->close();
+        editReminderDialog->close();
 
     if (isVisible())
         m_timer.start();

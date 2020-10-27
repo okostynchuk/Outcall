@@ -30,26 +30,12 @@ AddPersonToOrg::AddPersonToOrg(QWidget* parent) :
 
     go = "default";
 
-    onUpdate();
+    loadPersons();
 }
 
 AddPersonToOrg::~AddPersonToOrg()
 {
-    deleteObjects();
-
-    delete validator;
     delete ui;
-}
-
-/**
- * Выполняет удаление объектов класса.
- */
-void AddPersonToOrg::deleteObjects()
-{
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    queries.clear();
 }
 
 /**
@@ -58,6 +44,8 @@ void AddPersonToOrg::deleteObjects()
 void AddPersonToOrg::setOrgId(const QString& orgId)
 {
     this->orgId = orgId;
+
+    QSqlQuery query(db);
 
     query.prepare("SELECT entry_name FROM entry WHERE id = ?");
     query.addBindValue(this->orgId);
@@ -75,6 +63,8 @@ void AddPersonToOrg::setOrgId(const QString& orgId)
 void AddPersonToOrg::addPerson(const QModelIndex &index)
 {
     QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
+
+    QSqlQuery query(db);
 
     query.prepare("SELECT EXISTS (SELECT id FROM entry WHERE id = ?)");
     query.addBindValue(orgId);
@@ -95,7 +85,7 @@ void AddPersonToOrg::addPerson(const QModelIndex &index)
 
     emit newPerson();
 
-    onUpdate();
+    loadPersons();
 
     QMessageBox::information(this, tr("Уведомление"), tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
 }
@@ -104,9 +94,12 @@ void AddPersonToOrg::addPerson(const QModelIndex &index)
  * Выполняет вывод и обновление списка физ. лиц,
  * не привязанных к какой-либо организации, с и без фильтра.
  */
-void AddPersonToOrg::onUpdate()
+void AddPersonToOrg::loadPersons()
 {
-    deleteObjects();
+    if (!queryModel.isNull())
+        queryModel->deleteLater();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString =  "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                                "ORDER BY entry_id SEPARATOR '\n'), entry_comment FROM entry_phone "
@@ -128,6 +121,8 @@ void AddPersonToOrg::onUpdate()
     }
 
     queryCountString.append(searchString);
+
+    QSqlQuery query(db);
 
     query.prepare(queryCountString);
     query.exec();
@@ -171,8 +166,6 @@ void AddPersonToOrg::onUpdate()
 
     ui->label_pages->setText(tr("из ") + pages);
 
-    queryModel = new QSqlQueryModel;
-
     queryString.append(searchString);
     queryString.append("GROUP BY entry_id ORDER BY entry_name ASC LIMIT ");
 
@@ -193,8 +186,6 @@ void AddPersonToOrg::onUpdate()
     queryModel->setHeaderData(3, Qt::Horizontal, tr("Заметка"));
 
     ui->tableView->setModel(queryModel);
-
-    queries.append(queryModel);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -222,7 +213,7 @@ void AddPersonToOrg::searchFunction()
 
         filter = false;
 
-        onUpdate();
+        loadPersons();
 
         return;
     }
@@ -233,7 +224,7 @@ void AddPersonToOrg::searchFunction()
 
     ui->tableView->scrollToTop();
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -243,7 +234,7 @@ void AddPersonToOrg::currentIndexChanged()
 {
     go = "default";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -255,7 +246,7 @@ void AddPersonToOrg::on_previousButton_clicked()
 
     go = "previous";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -267,7 +258,7 @@ void AddPersonToOrg::on_nextButton_clicked()
 
     go = "next";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -279,7 +270,7 @@ void AddPersonToOrg::on_previousStartButton_clicked()
 
     go = "previousStart";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -291,7 +282,7 @@ void AddPersonToOrg::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**
@@ -303,7 +294,7 @@ void AddPersonToOrg::on_lineEdit_page_returnPressed()
 
     go = "enter";
 
-    onUpdate();
+    loadPersons();
 }
 
 /**

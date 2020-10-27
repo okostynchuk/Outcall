@@ -57,15 +57,15 @@ void EditReminderDialog::onChooseEmployee()
         employee = employeeInitial;
 
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee.data()->setValues(employee);
-    connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
-    connect(this, &EditReminderDialog::getPos, chooseEmployee.data(), &ChooseEmployee::setPos);
+    chooseEmployee->setValues(employee);
+    connect(chooseEmployee, &ChooseEmployee::sendEmployee, this, &EditReminderDialog::receiveEmployee);
+    connect(this, &EditReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-    chooseEmployee.data()->show();
-    chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
+    chooseEmployee->show();
+    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -296,7 +296,7 @@ void EditReminderDialog::onSave()
     }
 
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 
     emit sendData(true);
 
@@ -379,7 +379,7 @@ void EditReminderDialog::closeEvent(QCloseEvent* event)
     QDialog::closeEvent(event);
 
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 }
 
 /**

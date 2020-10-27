@@ -9,7 +9,7 @@ QT += axcontainer
 
 include ($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
-win32:
+win32
 {
     VERSION = 1.0.0
 
@@ -17,6 +17,10 @@ win32:
     QMAKE_TARGET_COMPANY = Team Nonames
 
     RC_ICONS = $$PWD/src/images/outcall-logo.ico
+}
+win32-g++
+{
+   QMAKE_CXXFLAGS += -Werror
 }
 
 TARGET = OutCALL
@@ -55,12 +59,13 @@ SOURCES += \
     AddPhoneNumberToContactDialog.cpp \
     AddPersonToOrg.cpp \
     RemindersDialog.cpp \
-    RemindersThread.cpp \
+    RemindersThreadManager.cpp \
     NotesDialog.cpp \
     EditReminderDialog.cpp \
     PopupReminder.cpp \
     ChooseEmployee.cpp \
-    InternalContactsDialog.cpp
+    InternalContactsDialog.cpp \
+    QCustomWidget.cpp
 
 HEADERS += \
     AddReminderDialog.h \
@@ -90,12 +95,13 @@ HEADERS += \
     AddPhoneNumberToContactDialog.h \
     AddPersonToOrg.h \
     RemindersDialog.h \
-    RemindersThread.h \
+    RemindersThreadManager.h \
     NotesDialog.h \
     EditReminderDialog.h \
     PopupReminder.h \
     ChooseEmployee.h \
-    InternalContactsDialog.h
+    InternalContactsDialog.h \
+    QCustomWidget.h
 
 FORMS += \
     AddExtensionDialog.ui \

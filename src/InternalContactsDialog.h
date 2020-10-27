@@ -57,13 +57,11 @@ private:
     qint32 l_from;
     qint32 l_to;
 
-    QWidget* addWgt(const QString& name);
+    QWidget* addButtonsWidget(const QString& name);
 
     QListWidget* list;
 
     QList<QListWidgetItem*> itemsSearch;
-    QList<QPushButton*> buttons;
-    QList<QHBoxLayout*> layouts;
     QList<QWidget*> widgets;
 
     QStringList extensions;

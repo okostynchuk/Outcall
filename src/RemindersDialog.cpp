@@ -9,6 +9,7 @@
 #include "PopupNotification.h"
 #include "Global.h"
 #include "QSqlQueryModelReminders.h"
+#include "QCustomWidget.h"
 
 #include <QDebug>
 #include <QThread>
@@ -88,14 +89,14 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
     }
 
     remindersThread = new QThread;
-    remindersThreadManager = new RemindersThread(ids, dateTimes, notes);
+    remindersThreadManager = new RemindersThreadManager(ids, dateTimes, notes);
 
     remindersThreadManager->moveToThread(remindersThread);
 
-    connect(remindersThread, &QThread::started, remindersThreadManager, &RemindersThread::process);
-    connect(remindersThreadManager, &RemindersThread::notify, this, &RemindersDialog::onNotify);
-    connect(remindersThreadManager, &RemindersThread::finished, remindersThread, &QThread::quit);
-    connect(remindersThreadManager, &RemindersThread::finished, remindersThreadManager, &QObject::deleteLater);
+    connect(remindersThread, &QThread::started, remindersThreadManager, &RemindersThreadManager::process);
+    connect(remindersThreadManager, &RemindersThreadManager::notify, this, &RemindersDialog::onNotify);
+    connect(remindersThreadManager, &RemindersThreadManager::finished, remindersThread, &QThread::quit);
+    connect(remindersThreadManager, &RemindersThreadManager::finished, remindersThreadManager, &QObject::deleteLater);
     connect(remindersThread, &QThread::finished, remindersThread, &QObject::deleteLater);
 
     remindersThread->start();
@@ -172,6 +173,8 @@ void RemindersDialog::closeEvent(QCloseEvent*)
     go = "default";
 
     page = "1";
+
+    ui->tableView->scrollToTop();
 }
 
 /**
@@ -179,7 +182,7 @@ void RemindersDialog::closeEvent(QCloseEvent*)
  */
 void RemindersDialog::clearSelections()
 {
-    selections.clear();;
+    selections.clear();
 
     ui->tableView->clearSelection();
 }
@@ -250,33 +253,21 @@ void RemindersDialog::onTimer()
  */
 void RemindersDialog::deleteObjects()
 {
-    if (!widgets.isEmpty())
+    if (!queryModel.isNull())
+    {
         selections = ui->tableView->selectionModel()->selectedRows();
 
-    for (qint32 i = 0; i < widgets.size(); ++i)
-        widgets[i]->deleteLater();
+        for (qint32 i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
 
-    for (qint32 i = 0; i < layouts.size(); ++i)
-        layouts[i]->deleteLater();
+        widgets.clear();
 
-    for (qint32 i = 0; i < labels.size(); ++i)
-        labels[i]->deleteLater();
-
-    for (qint32 i = 0; i < boxes.size(); ++i)
-        boxes[i]->deleteLater();
-
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    queries.clear();
-    widgets.clear();
-    layouts.clear();
-    boxes.clear();
-    labels.clear();
+        queryModel->deleteLater();
+    }
 }
 
 /**
- * Выполняет отправку данных актуальных напоминаний в класс RemindersThread.
+ * Выполняет отправку данных актуальных напоминаний в класс RemindersThreadManager.
  */
 void RemindersDialog::sendValues()
 {
@@ -325,7 +316,7 @@ void RemindersDialog::receiveData(bool update)
 
         go = "default";
 
-        onUpdateTab();
+        onUpdate();
     }
 }
 
@@ -397,9 +388,7 @@ void RemindersDialog::loadReminders()
 
     updateCount();
 
-    queryModel = new QSqlQueryModelReminders;
-
-    queries.append(queryModel);
+    queryModel = new QSqlQueryModelReminders(this);
 
     QString queryString = "SELECT id, phone_from, phone_to, datetime, content, active, viewed, completed, group_id FROM reminders WHERE ";
 
@@ -408,9 +397,8 @@ void RemindersDialog::loadReminders()
     else if (ui->tabWidget->currentIndex() == 1)
          queryString.append("phone_to = '" + my_number + "' AND active = false ");
     else if (ui->tabWidget->currentIndex() == 2)
-        queryString = "SELECT id, phone_from, IF(group_id IS NULL, phone_to, '" + tr("Группа") + "'), datetime, content, active, viewed, completed, group_id FROM reminders WHERE "
+        queryString = "SELECT id, phone_from, IF(group_id IS NULL, phone_to, NULL), datetime, content, active, viewed, completed, group_id FROM reminders WHERE "
                                            "phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END";
-
 
     queryString.append(" ORDER BY datetime DESC LIMIT ");
 
@@ -462,6 +450,9 @@ void RemindersDialog::loadReminders()
     {
         if (ui->tabWidget->currentIndex() == 2)
         {
+            if (ui->tableView->model()->index(row_index, 3).data(Qt::EditRole).toString().isEmpty())
+                ui->tableView->setIndexWidget(queryModel->index(row_index, 3), addPushButtonGroup(row_index));
+
             ui->tableView->setIndexWidget(queryModel->index(row_index, 1),  addCheckBoxActive(row_index));
             ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addCheckBoxViewed(row_index));
             ui->tableView->setIndexWidget(queryModel->index(row_index, 11), addCheckBoxCompleted(row_index));
@@ -524,9 +515,9 @@ void RemindersDialog::loadReminders()
  */
 QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* contentLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* contentLabel = new QLabel(widget);
 
     layout->addWidget(contentLabel);
 
@@ -557,13 +548,69 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
     contentLabel->setOpenExternalLinks(true);
     contentLabel->setWordWrap(true);
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(contentLabel);
+    return widget;
+}
 
-    return wgt;
+/**
+ *
+ */
+QWidget* RemindersDialog::addPushButtonGroup(qint32 row_index)
+{
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QPushButton* pushButton = new QPushButton(tr("Группа"), widget);
+
+    layout->addWidget(pushButton, 0, Qt::AlignCenter);
+
+    connect(pushButton, &QPushButton::clicked, this, [=]()
+    {
+        QCustomWidget* customWidget = new QCustomWidget(this);
+        QHBoxLayout* gridLayout = new QHBoxLayout(customWidget);
+        QListWidget* listWidget = new QListWidget(customWidget);
+
+        qint32 size = 60;
+
+        customWidget->setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+        customWidget->setFixedSize(250, size);
+
+        gridLayout->addWidget(listWidget, 0, Qt::AlignCenter);
+
+        QString group_id = queryModel->data(queryModel->index(row_index, 12), Qt::EditRole).toString();
+
+        QSqlQuery query(db);
+
+        query.prepare("SELECT phone_to FROM reminders WHERE group_id = ?");
+        query.addBindValue(group_id);
+        query.exec();
+
+        while (query.next())
+        {
+            listWidget->addItem(query.value(0).toString());
+
+            if (listWidget->count() > 2 && customWidget->height() < 170)
+                customWidget->setFixedHeight(size += 17);
+        }
+
+        for (qint32 i = 0; i < listWidget->count(); ++i)
+           listWidget->item(i)->setFlags(listWidget->item(i)->flags() & ~Qt::ItemIsSelectable);
+
+        customWidget->setWindowTitle(tr("Группа") + " (" + QString::number(listWidget->count()) + ")");
+        customWidget->show();
+        customWidget->setAttribute(Qt::WA_DeleteOnClose);
+
+        verticalScrollBar = ui->tableView->verticalScrollBar()->value();
+        horizontalScrollBar = ui->tableView->horizontalScrollBar()->value();
+
+        go = "default";
+
+        onUpdate();
+    });
+
+    widgets.append(widget);
+
+    return widget;
 }
 
 /**
@@ -571,21 +618,17 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
  */
 QWidget* RemindersDialog::addWidgetActive()
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* imageLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* imageLabel = new QLabel(widget);
 
     layout->addWidget(imageLabel, 0, Qt::AlignCenter);
 
     imageLabel->setPixmap(QPixmap(":/images/incomingNotification.png").scaled(15, 15, Qt::IgnoreAspectRatio));
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(imageLabel);
-
-    return wgt;
+    return widget;
 }
 
 /**
@@ -593,9 +636,9 @@ QWidget* RemindersDialog::addWidgetActive()
  */
 QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QCheckBox* checkBox = new QCheckBox(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QCheckBox* checkBox = new QCheckBox(widget);
 
     layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
@@ -633,18 +676,12 @@ QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
             checkBox->setChecked(false);
     }
 
-    wgt->setLayout(layout);
-
-    widgets.append(wgt);
-    layouts.append(layout);
-    boxes.append(checkBox);
-
     QString column = "active";
     QString id = queryModel->data(queryModel->index(row_index, 0), Qt::EditRole).toString();
 
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::checkBoxStateChanged);
 
     checkBox->setProperty("id",       QVariant::fromValue(id));
     checkBox->setProperty("column",   QVariant::fromValue(column));
@@ -652,7 +689,9 @@ QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
     checkBox->setProperty("group_id", QVariant::fromValue(group_id));
     checkBox->setProperty("dateTime", QVariant::fromValue(dateTime));
 
-    return wgt;
+    widgets.append(widget);
+
+    return widget;
 }
 
 /**
@@ -660,9 +699,9 @@ QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
  */
 QWidget* RemindersDialog::addCheckBoxViewed(qint32 row_index)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QCheckBox* checkBox = new QCheckBox(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QCheckBox* checkBox = new QCheckBox(widget);
 
     layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
@@ -690,25 +729,21 @@ QWidget* RemindersDialog::addCheckBoxViewed(qint32 row_index)
                 checkBox->setChecked(false);
     }
 
-    wgt->setLayout(layout);
-
-    widgets.append(wgt);
-    layouts.append(layout);
-    boxes.append(checkBox);
-
     QString column = "viewed";
     QString id = queryModel->data(queryModel->index(row_index, 0), Qt::EditRole).toString();
 
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::checkBoxStateChanged);
 
     checkBox->setProperty("id",       QVariant::fromValue(id));
     checkBox->setProperty("column",   QVariant::fromValue(column));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
     checkBox->setProperty("dateTime", QVariant::fromValue(dateTime));
 
-    return wgt;
+    widgets.append(widget);
+
+    return widget;
 }
 
 /**
@@ -716,11 +751,11 @@ QWidget* RemindersDialog::addCheckBoxViewed(qint32 row_index)
  */
 QWidget* RemindersDialog::addWidgetCompleted()
 {
-    QWidget* wgt = new QWidget;
+    QWidget* widget = new QWidget(this);
 
-    widgets.append(wgt);
+    widgets.append(widget);
 
-    return wgt;
+    return widget;
 }
 
 /**
@@ -728,9 +763,9 @@ QWidget* RemindersDialog::addWidgetCompleted()
  */
 QWidget* RemindersDialog::addCheckBoxCompleted(qint32 row_index)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QCheckBox* checkBox = new QCheckBox(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QCheckBox* checkBox = new QCheckBox(widget);
 
     layout->addWidget(checkBox, 0, Qt::AlignCenter);
 
@@ -770,31 +805,27 @@ QWidget* RemindersDialog::addCheckBoxCompleted(qint32 row_index)
             checkBox->setChecked(false);
     }
 
-    wgt->setLayout(layout);
-
-    widgets.append(wgt);
-    layouts.append(layout);
-    boxes.append(checkBox);
-
     QString column = "completed";
     QString id = queryModel->data(queryModel->index(row_index, 0), Qt::EditRole).toString();
 
     QDateTime dateTime = queryModel->data(queryModel->index(row_index, 4), Qt::EditRole).toDateTime();
 
-    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::changeState);
+    connect(checkBox, &QAbstractButton::pressed, this, &RemindersDialog::checkBoxStateChanged);
 
     checkBox->setProperty("id",       QVariant::fromValue(id));
     checkBox->setProperty("column",   QVariant::fromValue(column));
     checkBox->setProperty("checkBox", QVariant::fromValue(checkBox));
     checkBox->setProperty("dateTime", QVariant::fromValue(dateTime));
 
-    return wgt;
+    widgets.append(widget);
+
+    return widget;
 }
 
 /**
  * Выполняет обработку смены состояния чекбокса.
  */
-void RemindersDialog::changeState()
+void RemindersDialog::checkBoxStateChanged()
 {
     QString id = sender()->property("id").value<QString>();
     QString column = sender()->property("column").value<QString>();
@@ -809,6 +840,8 @@ void RemindersDialog::changeState()
     if (!checkBox->isChecked() && dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
     {
         checkBox->setChecked(false);
+
+        resizeCells = false;
 
         QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
     }
@@ -933,14 +966,14 @@ void RemindersDialog::changeState()
                 resizeCells = false;
             }
         }
-
-        verticalScrollBar = ui->tableView->verticalScrollBar()->value();
-        horizontalScrollBar = ui->tableView->horizontalScrollBar()->value();
-
-        go = "default";
-
-        onUpdateTab();
     }
+
+    verticalScrollBar = ui->tableView->verticalScrollBar()->value();
+    horizontalScrollBar = ui->tableView->horizontalScrollBar()->value();
+
+    go = "default";
+
+    onUpdate();
 }
 
 /**
@@ -954,13 +987,13 @@ void RemindersDialog::onTabChanged()
 
     page = "1";
 
-    onUpdateTab();
+    onUpdate();
 }
 
 /**
  * Выполняет операции для последующего обновления списка напоминаний.
  */
-void RemindersDialog::onUpdateTab()
+void RemindersDialog::onUpdate()
 {
     clearSelections();
 
@@ -1039,7 +1072,7 @@ void RemindersDialog::on_previousButton_clicked()
 
     go = "previous";
 
-    onUpdateTab();
+    onUpdate();
 }
 
 /**
@@ -1051,7 +1084,7 @@ void RemindersDialog::on_nextButton_clicked()
 
     go = "next";
 
-    onUpdateTab();
+    onUpdate();
 }
 
 /**
@@ -1063,7 +1096,7 @@ void RemindersDialog::on_previousStartButton_clicked()
 
     go = "previousStart";
 
-    onUpdateTab();
+    onUpdate();
 }
 
 /**
@@ -1075,7 +1108,7 @@ void RemindersDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdateTab();;
+    onUpdate();;
 }
 
 /**
@@ -1087,7 +1120,7 @@ void RemindersDialog::on_lineEdit_page_returnPressed()
 
     go = "enter";
 
-    onUpdateTab();
+    onUpdate();
 }
 
 /**

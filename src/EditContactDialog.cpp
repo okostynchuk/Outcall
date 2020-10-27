@@ -42,8 +42,6 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
 
 EditContactDialog::~EditContactDialog()
 {
-    delete phonesValidator;
-    delete vyborIdValidator;
     delete ui;
 }
 
@@ -329,7 +327,7 @@ void EditContactDialog::onSave()
         }
 
     if (!addOrgToPerson.isNull())
-        addOrgToPerson.data()->close();
+        addOrgToPerson->close();
 
     emit sendData(true, this->pos().x(), this->pos().y());
 
@@ -426,12 +424,12 @@ void EditContactDialog::receiveOrgName(const QString& id, const QString& name)
 void EditContactDialog::on_addOrgButton_clicked()
 {
     if (!addOrgToPerson.isNull())
-        addOrgToPerson.data()->close();
+        addOrgToPerson->close();
 
     addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson.data(), &AddOrgToPerson::sendOrgName, this, &EditContactDialog::receiveOrgName);
-    addOrgToPerson.data()->show();
-    addOrgToPerson.data()->setAttribute(Qt::WA_DeleteOnClose);
+    connect(addOrgToPerson, &AddOrgToPerson::sendOrgName, this, &EditContactDialog::receiveOrgName);
+    addOrgToPerson->show();
+    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -489,5 +487,5 @@ void EditContactDialog::closeEvent(QCloseEvent* event)
     QDialog::closeEvent(event);
 
     if (!addOrgToPerson.isNull())
-        addOrgToPerson.data()->close();
+        addOrgToPerson->close();
 }

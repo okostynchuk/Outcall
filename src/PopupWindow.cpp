@@ -424,13 +424,13 @@ void PopupWindow::onAddPerson()
     m_pwi.stopTimer = true;
 
     if (!addContactDialog.isNull())
-        addContactDialog.data()->close();
+        addContactDialog->close();
 
     addContactDialog = new AddContactDialog;
-    addContactDialog.data()->setValues(m_pwi.number);
-    connect(addContactDialog.data(), &AddContactDialog::sendData, this, &PopupWindow::receiveData);
-    addContactDialog.data()->show();
-    addContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addContactDialog->setValues(m_pwi.number);
+    connect(addContactDialog, &AddContactDialog::sendData, this, &PopupWindow::receiveData);
+    addContactDialog->show();
+    addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -441,13 +441,13 @@ void PopupWindow::onAddOrg()
     m_pwi.stopTimer = true;
 
     if (!addOrgContactDialog.isNull())
-        addOrgContactDialog.data()->close();
+        addOrgContactDialog->close();
 
     addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog.data()->setValues(m_pwi.number);
-    connect(addOrgContactDialog.data(), &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
-    addOrgContactDialog.data()->show();
-    addOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addOrgContactDialog->setValues(m_pwi.number);
+    connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
+    addOrgContactDialog->show();
+    addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -458,13 +458,13 @@ void PopupWindow::onAddPhoneNumberToContact()
     m_pwi.stopTimer = true;
 
     if (!addPhoneNumberToContactDialog.isNull())
-        addPhoneNumberToContactDialog.data()->close();
+        addPhoneNumberToContactDialog->close();
 
     addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-    addPhoneNumberToContactDialog.data()->setPhoneNumber(m_pwi.number);
-    connect(addPhoneNumberToContactDialog.data(), &AddPhoneNumberToContactDialog::sendData, this, &PopupWindow::receiveData);
-    addPhoneNumberToContactDialog.data()->show();
-    addPhoneNumberToContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addPhoneNumberToContactDialog->setPhoneNumber(m_pwi.number);
+    connect(addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &PopupWindow::receiveData);
+    addPhoneNumberToContactDialog->show();
+    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -485,24 +485,24 @@ void PopupWindow::onShowCard()
     if (query.value(1).toString() == "person")
     {
         if (!viewContactDialog.isNull())
-            viewContactDialog.data()->close();
+            viewContactDialog->close();
 
         viewContactDialog = new ViewContactDialog;
-        viewContactDialog.data()->setValues(contactId);
-        connect(viewContactDialog.data(), &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
-        viewContactDialog.data()->show();
-        viewContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+        viewContactDialog->setValues(contactId);
+        connect(viewContactDialog, &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
+        viewContactDialog->show();
+        viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
         if (!viewOrgContactDialog.isNull())
-            viewOrgContactDialog.data()->close();
+            viewOrgContactDialog->close();
 
         viewOrgContactDialog = new ViewOrgContactDialog;
-        viewOrgContactDialog.data()->setValues(contactId);
-        connect(viewOrgContactDialog.data(), &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
-        viewOrgContactDialog.data()->show();
-        viewOrgContactDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+        viewOrgContactDialog->setValues(contactId);
+        connect(viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
+        viewOrgContactDialog->show();
+        viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -514,12 +514,12 @@ void PopupWindow::onAddReminder()
     m_pwi.stopTimer = true;
 
     if (!addReminderDialog.isNull())
-        addReminderDialog.data()->close();
+        addReminderDialog->close();
 
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog.data()->setCallId(m_pwi.uniqueid);
-    addReminderDialog.data()->show();
-    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addReminderDialog->setCallId(m_pwi.uniqueid);
+    addReminderDialog->show();
+    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -530,13 +530,13 @@ void PopupWindow::onViewNotes()
     m_pwi.stopTimer = true;
 
     if (!notesDialog.isNull())
-        notesDialog.data()->close();
+        notesDialog->close();
 
     notesDialog = new NotesDialog;
-    notesDialog.data()->setValues(m_pwi.uniqueid, m_pwi.number);
-    notesDialog.data()->hideAddNote();
-    notesDialog.data()->show();
-    notesDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    notesDialog->setValues(m_pwi.uniqueid, m_pwi.number);
+    notesDialog->hideAddNote();
+    notesDialog->show();
+    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -617,13 +617,13 @@ void PopupWindow::receiveData(bool update)
             if (query.next())
             {
                 if (!addContactDialog.isNull())
-                    addContactDialog.data()->close();
+                    addContactDialog->close();
 
                 if (!addOrgContactDialog.isNull())
-                    addOrgContactDialog.data()->close();
+                    addOrgContactDialog->close();
 
                 if (!addPhoneNumberToContactDialog.isNull())
-                    addPhoneNumberToContactDialog.data()->close();
+                    addPhoneNumberToContactDialog->close();
 
                 ui->addPersonButton->hide();
                 ui->addOrgButton->hide();
@@ -643,10 +643,10 @@ void PopupWindow::receiveData(bool update)
             else
             {
                 if (!viewContactDialog.isNull())
-                    viewContactDialog.data()->close();
+                    viewContactDialog->close();
 
                 if (!viewOrgContactDialog.isNull())
-                    viewOrgContactDialog.data()->close();
+                    viewOrgContactDialog->close();
 
                 ui->openAccessButton->hide();
                 ui->showCardButton->hide();

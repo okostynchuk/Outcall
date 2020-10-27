@@ -37,8 +37,6 @@ NotesDialog::NotesDialog(QWidget* parent) :
 
 NotesDialog::~NotesDialog()
 {
-    deleteObjects();
-
     delete ui;
 }
 
@@ -76,6 +74,8 @@ void NotesDialog::hideAddNote()
  */
 void NotesDialog::loadNotes()
 {
+    queryModel = new QSqlQueryModel(this);
+
     QSqlQuery queryCount(db);
 
     QString queryString = "SELECT COUNT(*) FROM calls WHERE ";
@@ -120,8 +120,6 @@ void NotesDialog::loadNotes()
     count = queryCount.value(0).toInt();
 
     QString pages = ui->label_pages->text();
-
-    query = new QSqlQueryModel;
 
     if (count <= ui->comboBox_list->currentText().toInt())
         pages = "1";
@@ -170,23 +168,23 @@ void NotesDialog::loadNotes()
                                                 ui->comboBox_list->currentText().toInt()) + " , " +
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
-    query->setQuery(queryString);
+    queryModel->setQuery(queryString);
 
-    query->setHeaderData(0, Qt::Horizontal, tr("Дата и время"));
-    query->setHeaderData(1, Qt::Horizontal, tr("Автор"));
-    query->insertColumn(2);
-    query->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
+    queryModel->setHeaderData(0, Qt::Horizontal, tr("Дата и время"));
+    queryModel->setHeaderData(1, Qt::Horizontal, tr("Автор"));
+    queryModel->insertColumn(2);
+    queryModel->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
 
-    ui->tableView->setModel(query);
+    ui->tableView->setModel(queryModel);
 
     for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(query->data(query->index(row_index, 3)).toString());
+        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(queryModel->data(queryModel->index(row_index, 3)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, true));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(query->index(row_index, 2), addWidgetNote(row_index, false));
+            ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(3, true);
@@ -284,13 +282,13 @@ void NotesDialog::onUpdate()
  */
 QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* noteLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* noteLabel = new QLabel(widget);
 
     layout->addWidget(noteLabel);
 
-    QString note = query->data(query->index(row_index, 3)).toString();
+    QString note = queryModel->data(queryModel->index(row_index, 3)).toString();
 
     if (url)
     {
@@ -318,13 +316,9 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(noteLabel);
-
-    return wgt;
+    return widget;
 }
 
 /**
@@ -332,20 +326,15 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
  */
 void NotesDialog::deleteObjects()
 {
-    for (qint32 i = 0; i < widgets.size(); ++i)
-        widgets[i]->deleteLater();
+    if (!queryModel.isNull())
+    {
+        for (qint32 i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
 
-    for (qint32 i = 0; i < layouts.size(); ++i)
-        layouts[i]->deleteLater();
+        widgets.clear();
 
-    for (qint32 i = 0; i < labels.size(); ++i)
-        labels[i]->deleteLater();
-
-    widgets.clear();
-    layouts.clear();
-    labels.clear();
-
-    delete query;
+        queryModel->deleteLater();
+    }
 }
 
 /**

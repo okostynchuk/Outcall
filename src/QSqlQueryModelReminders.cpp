@@ -9,7 +9,7 @@
 #include <QPainter>
 #include <QCheckBox>
 
-QSqlQueryModelReminders::QSqlQueryModelReminders()
+QSqlQueryModelReminders::QSqlQueryModelReminders(QObject* parent) : QSqlQueryModel(parent)
 {
 }
 

@@ -1,5 +1,5 @@
-#ifndef REMINDERSTHREAD_H
-#define REMINDERSTHREAD_H
+#ifndef REMINDERSTHREADMANAGER_H
+#define REMINDERSTHREADMANAGER_H
 
 #include "Global.h"
 
@@ -7,7 +7,7 @@
 #include <QTime>
 #include <QDate>
 
-class RemindersThread : public QObject
+class RemindersThreadManager : public QObject
 {
     Q_OBJECT
 
@@ -20,8 +20,8 @@ public slots:
     void setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes);
 
 public:
-    RemindersThread(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes);
-    ~RemindersThread();
+    RemindersThreadManager(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes);
+    ~RemindersThreadManager();
 
 private:
     QList<QString> ids;
@@ -31,4 +31,4 @@ private:
     QString my_number;
 };
 
-#endif // REMINDERSTHREAD_H
+#endif // REMINDERSTHREADMANAGER_H

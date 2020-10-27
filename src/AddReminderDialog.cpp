@@ -68,15 +68,15 @@ void AddReminderDialog::receiveEmployee(const QStringList& employee)
 void AddReminderDialog::onChooseEmployee()
 {
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 
     chooseEmployee = new ChooseEmployee;
-    chooseEmployee.data()->setValues(employee);
-    connect(chooseEmployee.data(), &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
-    connect(this, &AddReminderDialog::getPos, chooseEmployee.data(), &ChooseEmployee::setPos);
+    chooseEmployee->setValues(employee);
+    connect(chooseEmployee, &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
+    connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-    chooseEmployee.data()->show();
-    chooseEmployee.data()->setAttribute(Qt::WA_DeleteOnClose);
+    chooseEmployee->show();
+    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -194,7 +194,7 @@ void AddReminderDialog::onSave()
     }
 
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 
     emit sendData(true);
 
@@ -252,7 +252,7 @@ void AddReminderDialog::closeEvent(QCloseEvent* event)
     QDialog::closeEvent(event);
 
     if (!chooseEmployee.isNull())
-        chooseEmployee.data()->close();
+        chooseEmployee->close();
 }
 
 /**

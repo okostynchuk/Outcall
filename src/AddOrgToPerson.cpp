@@ -28,26 +28,12 @@ AddOrgToPerson::AddOrgToPerson(QWidget* parent) :
 
     go = "default";
 
-    onUpdate();
+    loadOrgs();
 }
 
 AddOrgToPerson::~AddOrgToPerson()
 {
-    deleteObjects();
-
-    delete validator;
     delete ui;
-}
-
-/**
- * Выполняет удаление объектов класса.
- */
-void AddOrgToPerson::deleteObjects()
-{
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    queries.clear();
 }
 
 /**
@@ -67,10 +53,12 @@ void AddOrgToPerson::getOrgName(const QModelIndex& index)
 /**
  * Выполняет вывод и обновление списка организаций с и без фильтра.
  */
-void AddOrgToPerson::onUpdate()
+void AddOrgToPerson::loadOrgs()
 {
-    if (!queries.isEmpty())
-        deleteObjects();
+    if (!queryModel.isNull())
+        queryModel->deleteLater();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' ";
 
@@ -87,6 +75,8 @@ void AddOrgToPerson::onUpdate()
     }
 
     queryCountString.append(searchString);
+
+    QSqlQuery query(db);
 
     query.prepare(queryCountString);
     query.exec();
@@ -130,8 +120,6 @@ void AddOrgToPerson::onUpdate()
 
     ui->label_pages->setText(tr("из ") + pages);
 
-    queryModel = new QSqlQueryModel;
-
     queryString.append(searchString);
     queryString.append("GROUP BY entry_id ORDER BY entry_name ASC LIMIT ");
 
@@ -152,8 +140,6 @@ void AddOrgToPerson::onUpdate()
     queryModel->setHeaderData(3, Qt::Horizontal, tr("Адрес"));
 
     ui->tableView->setModel(queryModel);
-
-    queries.append(queryModel);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -181,7 +167,7 @@ void AddOrgToPerson::searchFunction()
 
         filter = false;
 
-        onUpdate();
+        loadOrgs();
 
         return;
     }
@@ -192,7 +178,7 @@ void AddOrgToPerson::searchFunction()
 
     ui->tableView->scrollToTop();
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -202,7 +188,7 @@ void AddOrgToPerson::currentIndexChanged()
 {
     go = "default";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -214,7 +200,7 @@ void AddOrgToPerson::on_previousButton_clicked()
 
     go = "previous";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -226,7 +212,7 @@ void AddOrgToPerson::on_nextButton_clicked()
 
     go = "next";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -238,7 +224,7 @@ void AddOrgToPerson::on_previousStartButton_clicked()
 
     go = "previousStart";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -250,7 +236,7 @@ void AddOrgToPerson::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**
@@ -262,7 +248,7 @@ void AddOrgToPerson::on_lineEdit_page_returnPressed()
 
     go = "enter";
 
-    onUpdate();
+    loadOrgs();
 }
 
 /**

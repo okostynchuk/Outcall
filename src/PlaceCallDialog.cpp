@@ -33,7 +33,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     connect(ui->comboBox,   &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
     connect(ui->comboBox_2, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
 
-    queryModel = new QSqlQueryModel;
+    queryModel = new QSqlQueryModel(this);
 
     ui->orgLabel->hide();
     ui->comboBox_2->hide();
@@ -49,8 +49,6 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
 PlaceCallDialog::~PlaceCallDialog()
 {
     delete ui;
-    delete queryModel;
-    delete validator;
 }
 
 /**

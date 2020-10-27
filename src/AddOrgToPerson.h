@@ -5,6 +5,7 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QValidator>
+#include <QPointer>
 
 namespace Ui {
 class AddOrgToPerson;
@@ -22,8 +23,8 @@ public:
     ~AddOrgToPerson();
 
 private slots:
-    void deleteObjects();
-    void onUpdate();
+    void loadOrgs();
+
     void currentIndexChanged();
     void getOrgName(const QModelIndex& index);
     void searchFunction();
@@ -39,20 +40,20 @@ private slots:
 private:
     Ui::AddOrgToPerson* ui;
 
-    QSqlQueryModel* queryModel;
+    QPointer<QSqlQueryModel> queryModel;
 
     QValidator* validator;
 
-    QList<QSqlQueryModel*> queries;
+    QSqlDatabase db;
 
     QString page;
-    qint32 count;
-    qint32 remainder;
-    QSqlDatabase db;
-    QSqlQuery query;
     QString go;
     QString entry_name;
     QString entry_city;
+
+    qint32 count;
+    qint32 remainder;
+
     bool filter;
 };
 

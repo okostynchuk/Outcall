@@ -59,7 +59,7 @@ private:
 
     QModelIndexList selectionModel;
 
-    QSqlQueryModel* queryModel;
+    QPointer<QSqlQueryModel> queryModel;
 
     AddContactDialog* addContactDialog;
     AddOrgContactDialog* addOrgContactDialog;
@@ -71,10 +71,7 @@ private:
     QWidget* addImageLabel(qint32);
     QWidget* addWidgetNote(qint32, bool);
 
-    QList<QSqlQueryModel*> queries;
     QList<QWidget*> widgets;
-    QList<QHBoxLayout*> layouts;
-    QList<QLabel*> labels;
 
     QSqlDatabase db;
 

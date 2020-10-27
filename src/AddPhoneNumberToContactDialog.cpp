@@ -30,26 +30,12 @@ AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget* parent) :
 
     go = "default";
 
-    onUpdate();
+    loadContacts();
 }
 
 AddPhoneNumberToContactDialog::~AddPhoneNumberToContactDialog()
 {
-    deleteObjects();
-
-    delete validator;
     delete ui;
-}
-
-/**
- * Выполняет удаление объектов класса.
- */
-void AddPhoneNumberToContactDialog::deleteObjects()
-{
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    queries.clear();
 }
 
 /**
@@ -128,10 +114,12 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
  * Выполняет вывод и обновление списка контактов,
  * к которым привязано не более 5 номеров, с и без фильтра.
  */
-void AddPhoneNumberToContactDialog::onUpdate()
+void AddPhoneNumberToContactDialog::loadContacts()
 {
-    if (!queries.isEmpty())
-        deleteObjects();
+    if (!queryModel.isNull())
+        queryModel->deleteLater();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                           "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_comment FROM entry_phone ";
@@ -195,8 +183,6 @@ void AddPhoneNumberToContactDialog::onUpdate()
 
     ui->label_pages->setText(tr("из ") + pages);
 
-    queryModel = new QSqlQueryModel;
-
     queryString.append(searchString);
     queryString.append("GROUP BY entry_id HAVING COUNT(entry_phone) <> 5 ORDER BY entry_name ASC LIMIT ");
 
@@ -210,8 +196,6 @@ void AddPhoneNumberToContactDialog::onUpdate()
                            + QString::number(ui->comboBox_list->currentText().toInt()));
 
     queryModel->setQuery(queryString);
-
-    queries.append(queryModel);
 
     queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
     queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
@@ -247,7 +231,7 @@ void AddPhoneNumberToContactDialog::searchFunction()
 
         filter = false;
 
-        onUpdate();
+        loadContacts();
 
         return;
     }
@@ -258,7 +242,7 @@ void AddPhoneNumberToContactDialog::searchFunction()
 
     ui->tableView->scrollToTop();
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -268,7 +252,7 @@ void AddPhoneNumberToContactDialog::currentIndexChanged()
 {
     go = "default";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -280,7 +264,7 @@ void AddPhoneNumberToContactDialog::on_previousButton_clicked()
 
     go = "previous";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -292,7 +276,7 @@ void AddPhoneNumberToContactDialog::on_nextButton_clicked()
 
     go = "next";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -304,7 +288,7 @@ void AddPhoneNumberToContactDialog::on_previousStartButton_clicked()
 
     go = "previousStart";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -316,7 +300,7 @@ void AddPhoneNumberToContactDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**
@@ -328,7 +312,7 @@ void AddPhoneNumberToContactDialog::on_lineEdit_page_returnPressed()
 
     go = "enter";
 
-    onUpdate();
+    loadContacts();
 }
 
 /**

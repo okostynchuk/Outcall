@@ -51,8 +51,6 @@ CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
 
 CallHistoryDialog::~CallHistoryDialog()
 {
-    deleteObjects();
-
     delete ui;
 }
 
@@ -82,6 +80,8 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
     go = "default";
 
     page = "1";
+
+    ui->tableView->scrollToTop();
 }
 
 /**
@@ -91,11 +91,9 @@ void CallHistoryDialog::loadCalls()
 {
     deleteObjects();
 
-    queryModel = new QSqlQueryModel;
-
-    queries.append(queryModel);
-
     setPage();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString;
 
@@ -385,26 +383,21 @@ void CallHistoryDialog::getData(const QModelIndex& index)
  */
 QWidget* CallHistoryDialog::loadName(const QString& src, const QString& dst)
 {
-    QHBoxLayout* nameLayout = new QHBoxLayout;
-    QWidget* nameWgt = new QWidget;
-    QLabel* nameLabel = new QLabel(nameWgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* nameLabel = new QLabel(widget);
 
     if (src == my_number)
         nameLabel->setText(dst);
     else
         nameLabel->setText(src);
 
-    nameLayout->addWidget(nameLabel);
+    layout->addWidget(nameLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
 
-    nameLayout->setContentsMargins(3, 0, 0, 0);
+    widgets.append(widget);
 
-    nameWgt->setLayout(nameLayout);
-
-    layouts.append(nameLayout);
-    widgets.append(nameWgt);
-    labels.append(nameLabel);
-
-    return nameWgt;
+    return widget;
 }
 
 /**
@@ -412,9 +405,9 @@ QWidget* CallHistoryDialog::loadName(const QString& src, const QString& dst)
  */
 QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* noteLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* noteLabel = new QLabel(widget);
 
     layout->addWidget(noteLabel);
 
@@ -452,14 +445,11 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    wgt->setMinimumHeight(33);
-    wgt->setLayout(layout);
+    widget->setMinimumHeight(33);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(noteLabel);
+    widgets.append(widget);
 
-    return wgt;
+    return widget;
 }
 
 /**
@@ -467,9 +457,9 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
  */
 QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
 {
-    QHBoxLayout* statusLayout = new QHBoxLayout;
-    QWidget* statusWgt = new QWidget;
-    QLabel* statusLabel = new QLabel(statusWgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* statusLabel = new QLabel(widget);
 
     if (dialogStatus == "NO ANSWER")
         statusLabel->setText(tr("Пропущенный") + " ");
@@ -480,17 +470,12 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
     else if (dialogStatus == "ANSWERED")
         statusLabel->setText(tr("Принятый") + " ");
 
-    statusLayout->addWidget(statusLabel);
+    layout->addWidget(statusLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
 
-    statusLayout->setContentsMargins(3, 0, 0, 0);
+    widgets.append(widget);
 
-    statusWgt->setLayout(statusLayout);
-
-    layouts.append(statusLayout);
-    widgets.append(statusWgt);
-    labels.append(statusLabel);
-
-    return statusWgt;
+    return widget;
 }
 
 /**
@@ -498,25 +483,17 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
  */
 void CallHistoryDialog::deleteObjects()
 {
-    if (!widgets.isEmpty())
+    if (!queryModel.isNull())
+    {
         selections = ui->tableView->selectionModel()->selectedRows();
 
-    for (qint32 i = 0; i < widgets.size(); ++i)
-        widgets[i]->deleteLater();
+        for (qint32 i = 0; i < widgets.size(); ++i)
+            widgets[i]->deleteLater();
 
-    for (qint32 i = 0; i < layouts.size(); ++i)
-        layouts[i]->deleteLater();
+        widgets.clear();
 
-    for (qint32 i = 0; i < labels.size(); ++i)
-        labels[i]->deleteLater();
-
-    for (qint32 i = 0; i < queries.size(); ++i)
-        queries[i]->deleteLater();
-
-    widgets.clear();
-    layouts.clear();
-    labels.clear();
-    queries.clear();
+        queryModel->deleteLater();
+    }
 }
 
 /**
@@ -685,12 +662,12 @@ void CallHistoryDialog::onPlayAudio()
     if (!recordpath.isEmpty())
     {
         if (!playAudioDialog.isNull())
-            playAudioDialog.data()->close();
+            playAudioDialog->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog.data()->openMedia(recordpath);
-        playAudioDialog.data()->show();
-        playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+        playAudioDialog->openMedia(recordpath);
+        playAudioDialog->show();
+        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 

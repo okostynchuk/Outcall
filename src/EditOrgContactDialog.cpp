@@ -41,8 +41,6 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
 EditOrgContactDialog::~EditOrgContactDialog()
 {
-    delete phonesValidator;
-    delete vyborIdValidator;
     delete ui;
 }
 

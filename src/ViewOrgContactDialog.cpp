@@ -60,8 +60,6 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
 {
-    deleteObjects();
-
     delete ui;
 }
 
@@ -114,7 +112,7 @@ void ViewOrgContactDialog::setValues(const QString& id)
 void ViewOrgContactDialog::tabSelected()
 {
     if (ui->tabWidget_2->currentIndex() == 1)
-        onUpdateEmployees();
+        loadEmployees();
     else if (ui->tabWidget_2->currentIndex() == 2)
     {
         page = "1";
@@ -143,14 +141,16 @@ void ViewOrgContactDialog::searchFunction()
         ui->tableView->scrollToTop();
     }
 
-    onUpdateEmployees();
+    loadEmployees();
 }
 
 /**
  * Выполняет вывод и обновление списка сотрудников организации.
  */
-void ViewOrgContactDialog::onUpdateEmployees()
+void ViewOrgContactDialog::loadEmployees()
 {
+    deleteObjects();
+
     query_model = new QSqlQueryModel;
 
     QString queryString = "SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment "
@@ -212,7 +212,7 @@ void ViewOrgContactDialog::receiveDataPerson(bool update)
     {
         emit sendData(true);
 
-        onUpdateEmployees();
+        loadEmployees();
     }
 }
 
@@ -223,11 +223,9 @@ void ViewOrgContactDialog::loadCalls()
 {
     deleteObjects();
 
-    queryModel = new QSqlQueryModel;
-
-    queries.append(queryModel);
-
     setPage();
+
+    queryModel = new QSqlQueryModel(this);
 
     QString queryString;
 
@@ -407,9 +405,9 @@ void ViewOrgContactDialog::setPage()
  */
 QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
 {
-    QWidget* wgt = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    QLabel* noteLabel = new QLabel(wgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* noteLabel = new QLabel(widget);
 
     layout->addWidget(noteLabel);
 
@@ -447,13 +445,9 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    wgt->setLayout(layout);
+    widgets.append(widget);
 
-    widgets.append(wgt);
-    layouts.append(layout);
-    labels.append(noteLabel);
-
-    return wgt;
+    return widget;
 }
 
 /**
@@ -461,30 +455,25 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
  */
 QWidget* ViewOrgContactDialog::loadStatus(const QString& dialogStatus)
 {
-    QHBoxLayout* statusLayout = new QHBoxLayout;
-    QWidget* statusWgt = new QWidget;
-    QLabel* statusLabel = new QLabel(statusWgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* statusLabel = new QLabel(widget);
 
     if (dialogStatus == "NO ANSWER")
-        statusLabel->setText(tr("Пропущенный "));
+        statusLabel->setText(tr("Пропущенный") + " ");
     else if (dialogStatus == "BUSY")
-        statusLabel->setText(tr("Занято "));
+        statusLabel->setText(tr("Занято") + " ");
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отклонено "));
+        statusLabel->setText(tr("Отколено") + " ");
     else if (dialogStatus == "ANSWERED")
-        statusLabel->setText(tr("Принятый "));
+        statusLabel->setText(tr("Принятый") + " ");
 
-    statusLayout->addWidget(statusLabel);
+    layout->addWidget(statusLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
 
-    statusLayout->setContentsMargins(3, 0, 0, 0);
+    widgets.append(widget);
 
-    statusWgt->setLayout(statusLayout);
-
-    layouts.append(statusLayout);
-    widgets.append(statusWgt);
-    labels.append(statusLabel);
-
-    return statusWgt;
+    return widget;
 }
 
 /**
@@ -492,9 +481,9 @@ QWidget* ViewOrgContactDialog::loadStatus(const QString& dialogStatus)
  */
 QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
 {
-    QHBoxLayout* nameLayout = new QHBoxLayout;
-    QWidget* nameWgt = new QWidget;
-    QLabel* nameLabel = new QLabel(nameWgt);
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QLabel* nameLabel = new QLabel(widget);
 
     qint32 counter = 0;
 
@@ -510,17 +499,12 @@ QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
     if (counter == 0)
         nameLabel->setText(src);
 
-    nameLayout->addWidget(nameLabel);
+    layout->addWidget(nameLabel);
+    layout->setContentsMargins(3, 0, 0, 0);
 
-    nameLayout->setContentsMargins(3, 0, 0, 0);
+    widgets.append(widget);
 
-    nameWgt->setLayout(nameLayout);
-
-    layouts.append(nameLayout);
-    widgets.append(nameWgt);
-    labels.append(nameLabel);
-
-    return nameWgt;
+    return widget;
 }
 
 /**
@@ -528,26 +512,17 @@ QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
  */
 void ViewOrgContactDialog::deleteObjects()
 {
-    if (!widgets.isEmpty())
+    if (ui->tabWidget_2->currentIndex() == 1 && !query_model.isNull())
+        query_model->deleteLater();
+    else if (ui->tabWidget_2->currentIndex() == 2 && !queryModel.isNull())
+    {
         for (qint32 i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
 
-    if (!layouts.isEmpty())
-        for (qint32 i = 0; i < layouts.size(); ++i)
-            layouts[i]->deleteLater();
+        widgets.clear();
 
-    if (!labels.isEmpty())
-        for (qint32 i = 0; i < labels.size(); ++i)
-            labels[i]->deleteLater();
-
-    if (!queries.isEmpty())
-        for (qint32 i = 0; i < queries.size(); ++i)
-            queries[i]->deleteLater();
-
-    widgets.clear();
-    layouts.clear();
-    labels.clear();
-    queries.clear();
+        queryModel->deleteLater();
+    }
 }
 
 /**
@@ -667,13 +642,13 @@ void ViewOrgContactDialog::on_lineEdit_returnPressed()
 void ViewOrgContactDialog::on_addPersonToOrg_clicked()
 {
     if (!addPersonToOrg.isNull())
-        addPersonToOrg.data()->close();
+        addPersonToOrg->close();
 
     addPersonToOrg = new AddPersonToOrg;
-    addPersonToOrg.data()->setOrgId(contactId);
-    connect(addPersonToOrg.data(), &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::onUpdateEmployees);
-    addPersonToOrg.data()->show();
-    addPersonToOrg.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addPersonToOrg->setOrgId(contactId);
+    connect(addPersonToOrg, &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::loadEmployees);
+    addPersonToOrg->show();
+    addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -744,12 +719,12 @@ void ViewOrgContactDialog::onPlayAudio()
     if (!recordpath.isEmpty())
     {
         if (!playAudioDialog.isNull())
-            playAudioDialog.data()->close();
+            playAudioDialog->close();
 
         playAudioDialog = new PlayAudioDialog;
-        playAudioDialog.data()->openMedia(recordpath);
-        playAudioDialog.data()->show();
-        playAudioDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+        playAudioDialog->openMedia(recordpath);
+        playAudioDialog->show();
+        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -796,12 +771,12 @@ void ViewOrgContactDialog::onCall()
     else
     {
         if (!chooseNumber.isNull())
-            chooseNumber.data()->close();
+            chooseNumber->close();
 
         chooseNumber = new ChooseNumber;
-        chooseNumber.data()->setValues(contactId);
-        chooseNumber.data()->show();
-        chooseNumber.data()->setAttribute(Qt::WA_DeleteOnClose);
+        chooseNumber->setValues(contactId);
+        chooseNumber->show();
+        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -827,12 +802,12 @@ void ViewOrgContactDialog::onEdit()
 void ViewOrgContactDialog::onAddReminder()
 {
     if (!addReminderDialog.isNull())
-        addReminderDialog.data()->close();
+        addReminderDialog->close();
 
     addReminderDialog = new AddReminderDialog;
-    addReminderDialog.data()->setCallId(contactId);
-    addReminderDialog.data()->show();
-    addReminderDialog.data()->setAttribute(Qt::WA_DeleteOnClose);
+    addReminderDialog->setCallId(contactId);
+    addReminderDialog->show();
+    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**

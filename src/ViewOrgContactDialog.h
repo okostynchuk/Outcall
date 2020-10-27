@@ -42,11 +42,11 @@ public:
 
 private slots:
     void loadCalls();
+    void loadEmployees();
 
     void setPage();
     void onAddReminder();
     void onOpenAccess();
-    void onUpdateEmployees();
     void onPlayAudio();
     void onPlayAudioPhone();
     void onCall();
@@ -80,6 +80,9 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
+    QPointer<QSqlQueryModel> query_model;
+    QPointer<QSqlQueryModel> queryModel;
+
     QPointer<AddPersonToOrg> addPersonToOrg;
     QPointer<PlayAudioDialog> playAudioDialog;
     QPointer<ChooseNumber> chooseNumber;
@@ -88,11 +91,6 @@ private:
     ViewContactDialog* viewContactDialog;
     NotesDialog* notesDialog;
     EditOrgContactDialog* editOrgContactDialog;
-
-    QSqlQueryModel* query_model;
-    QSqlQueryModel* queryModel;
-
-    QValidator* validator;
 
     QString recordpath;
     QString userId;
@@ -114,14 +112,7 @@ private:
     QModelIndexList selections;
 
     QList<QLineEdit*> phonesList;
-
-    QList<QSqlQueryModel*> queries;
-
-    QList<QHBoxLayout*> layouts;
-
     QList<QWidget*> widgets;
-
-    QList<QLabel*> labels;
 };
 
 #endif // VIEWORGCONTACTDIALOG_H

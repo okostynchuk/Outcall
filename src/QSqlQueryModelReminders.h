@@ -10,7 +10,7 @@ class QSqlQueryModelReminders : public QSqlQueryModel
     Q_OBJECT
 
 public:
-    QSqlQueryModelReminders();
+    explicit QSqlQueryModelReminders(QObject* parent = 0);
 
     void setParentTable(const QTableView* parentTable);
     QVariant data(const QModelIndex& index, qint32 role) const;

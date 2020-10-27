@@ -34,8 +34,6 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget* parent) :
 
 AddOrgContactDialog::~AddOrgContactDialog()
 {
-    delete phonesValidator;
-    delete vyborIdValidator;
     delete ui;
 }
 

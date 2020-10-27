@@ -79,9 +79,7 @@ private:
     EditContactDialog* editContactDialog;
     NotesDialog* notesDialog;
 
-    QSqlQueryModel* queryModel;
-
-    QValidator* validator;
+    QPointer<QSqlQueryModel> queryModel;
 
     QString recordpath;
     QString userId;
@@ -101,14 +99,7 @@ private:
     QStringList numbersList;
 
     QList<QLineEdit*> phonesList;
-
-    QList<QSqlQueryModel*> queries;
-
-    QList<QHBoxLayout*> layouts;
-
     QList<QWidget*> widgets;
-
-    QList<QLabel*> labels;
 };
 
 #endif // VIEWCONTACTDIALOG_H

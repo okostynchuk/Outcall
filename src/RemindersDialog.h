@@ -1,7 +1,7 @@
 #ifndef REMINDERSDIALOG_H
 #define REMINDERSDIALOG_H
 
-#include "RemindersThread.h"
+#include "RemindersThreadManager.h"
 #include "AddReminderDialog.h"
 #include "EditReminderDialog.h"
 #include "AsteriskManager.h"
@@ -42,9 +42,9 @@ private slots:
     void onAddReminder();
     void onEditReminder(const QModelIndex& index);
     void deleteObjects();
-    void changeState();
+    void checkBoxStateChanged();
     void onNotify(const QString& id, const QDateTime& dateTime, const QString& note);
-    void onUpdateTab();
+    void onUpdate();
     void updateCount();
     void onTabChanged();
     void clearSelections();
@@ -69,12 +69,12 @@ private:
     QValidator* validator;
 
     QThread* remindersThread;
-    RemindersThread* remindersThreadManager;
+    RemindersThreadManager* remindersThreadManager;
 
     AddReminderDialog* addReminderDialog;
     EditReminderDialog* editReminderDialog;
 
-    QSqlQueryModelReminders* queryModel;
+    QPointer<QSqlQueryModelReminders> queryModel;
 
     bool showReminder;
 
@@ -97,14 +97,11 @@ private:
     QWidget* addCheckBoxCompleted(qint32 row_index);
     QWidget* addCheckBoxActive(qint32 row_index);
 
+    QWidget* addPushButtonGroup(qint32 row_index);
+
     QModelIndexList selections;
 
-    QList<QSqlQueryModelReminders*> queries;
-
     QList<QWidget*> widgets;
-    QList<QHBoxLayout*> layouts;
-    QList<QCheckBox*> boxes;
-    QList<QLabel*> labels;
 };
 
 #endif // REMINDERSDIALOG_H

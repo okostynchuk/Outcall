@@ -27,8 +27,6 @@ InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
 
 InternalContactsDialog::~InternalContactsDialog()
 {
-    deleteObjects();
-
     delete ui;
 }
 
@@ -37,18 +35,13 @@ InternalContactsDialog::~InternalContactsDialog()
  */
 void InternalContactsDialog::deleteObjects()
 {
-    for (qint32 i = 0; i < layouts.length(); ++i)
-        layouts[i]->deleteLater();
+    if (!widgets.isEmpty())
+    {
+        for (qint32 i = 0; i < widgets.length(); ++i)
+            widgets[i]->deleteLater();
 
-    for (qint32 i = 0; i < widgets.length(); ++i)
-        widgets[i]->deleteLater();
-
-    for (qint32 i = 0; i < buttons.length(); ++i)
-        buttons[i]->deleteLater();
-
-    layouts.clear();
-    widgets.clear();
-    buttons.clear();
+        widgets.clear();
+    }
 }
 
 /**
@@ -68,7 +61,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 
         extensions_full = extensions;
 
-        list = new QListWidget;
+        list = new QListWidget(this);
 
         list->addItems(extensions);
 
@@ -171,14 +164,13 @@ void InternalContactsDialog::loadContacts()
     for (qint32 i = l_from; i < l_to; ++i)
         ui->listWidget->addItem(extensions[i]);
 
-    if (!widgets.isEmpty())
-        deleteObjects();
+    deleteObjects();
 
     for (qint32 i = 0; i < ui->listWidget->count(); ++i)
     {
-       ui->listWidget->setItemWidget(ui->listWidget->item(i), addWgt(ui->listWidget->item(i)->text()));
+       ui->listWidget->setItemWidget(ui->listWidget->item(i), addButtonsWidget(ui->listWidget->item(i)->text()));
 
-       ui->listWidget->item(i)->setSizeHint(addWgt(ui->listWidget->item(i)->text())->sizeHint());
+       ui->listWidget->item(i)->setSizeHint(addButtonsWidget(ui->listWidget->item(i)->text())->sizeHint());
        ui->listWidget->item(i)->setFlags(ui->listWidget->item(i)->flags() & ~Qt::ItemIsSelectable);
     }
 }
@@ -211,12 +203,12 @@ void InternalContactsDialog::onSearch()
 /**
  * Выполняет добавление виджета для отображения кнопок осуществления звонка и создания напоминания.
  */
-QWidget* InternalContactsDialog::addWgt(const QString& name)
+QWidget* InternalContactsDialog::addButtonsWidget(const QString& name)
 {
-    QHBoxLayout* layout = new QHBoxLayout;
-    QWidget* wgt = new QWidget;
+    QWidget* widget = new QWidget(this);
+    QHBoxLayout* layout = new QHBoxLayout(widget);
 
-    QPushButton* callButton = new QPushButton();
+    QPushButton* callButton = new QPushButton(widget);
     callButton->setAutoDefault(false);
     callButton->setFocusPolicy(Qt::ClickFocus);
     callButton->setIcon(QIcon(":/images/makeCall.png"));
@@ -225,7 +217,7 @@ QWidget* InternalContactsDialog::addWgt(const QString& name)
     connect(callButton, &QAbstractButton::clicked, this, &InternalContactsDialog::onCall);
     callButton->setProperty("callButton", QVariant::fromValue(name));
 
-    QPushButton* addReminderButton = new QPushButton();
+    QPushButton* addReminderButton = new QPushButton(widget);
     addReminderButton->setAutoDefault(false);
     addReminderButton->setFocusPolicy(Qt::ClickFocus);
     addReminderButton->setIcon(QIcon(":/images/reminders.png"));
@@ -237,17 +229,12 @@ QWidget* InternalContactsDialog::addWgt(const QString& name)
     layout->addWidget(callButton);
     layout->addWidget(addReminderButton);
 
-    wgt->setLayout(layout);
-
-    wgt->setContentsMargins(130, 2, 2, 2);
+    widget->setContentsMargins(130, 2, 2, 2);
     layout->setContentsMargins(130, 2, 2, 2);
 
-    layouts.append(layout);
-    widgets.append(wgt);
-    buttons.append(callButton);
-    buttons.append(addReminderButton);
+    widgets.append(widget);
 
-    return wgt;
+    return widget;
 }
 
 /**

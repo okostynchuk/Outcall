@@ -3,13 +3,13 @@
  * когда должно появиться окно напоминания.
  */
 
-#include "RemindersThread.h"
+#include "RemindersThreadManager.h"
 
 #include <QDebug>
 #include <QThread>
 #include <QMessageBox>
 
-RemindersThread::RemindersThread(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
+RemindersThreadManager::RemindersThreadManager(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
@@ -18,13 +18,13 @@ RemindersThread::RemindersThread(const QList<QString>& ids, const QList<QDateTim
     this->notes = notes;
 }
 
-RemindersThread::~RemindersThread()
+RemindersThreadManager::~RemindersThreadManager()
 {}
 
 /**
  * Получает данные актуальных напоминаний из класса RemindersDialog.
  */
-void RemindersThread::setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
+void RemindersThreadManager::setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
     this->ids = ids;
     this->dateTimes = dateTimes;
@@ -35,7 +35,7 @@ void RemindersThread::setValues(const QList<QString>& ids, const QList<QDateTime
  * Выполняет сравнения текущего времени с временем актуальных напоминаний.
  * Когда приходит время напоминания, происходит отправка его данных в класс RemindersDialog.
  */
-void RemindersThread::process()
+void RemindersThreadManager::process()
 {
     forever
     {

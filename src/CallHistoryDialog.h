@@ -80,7 +80,7 @@ private:
 
     QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QSqlQueryModel* queryModel;
+    QPointer<QSqlQueryModel> queryModel;
 
     QValidator* validator;
 
@@ -108,13 +108,7 @@ private:
 
     QModelIndexList selections;
 
-    QList<QSqlQueryModel*> queries;
-
-    QList<QHBoxLayout*> layouts;
-
     QList<QWidget*> widgets;
-
-    QList<QLabel*> labels;
 };
 
 #endif // CALLHISTORYDIALOG_H

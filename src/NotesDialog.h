@@ -11,6 +11,7 @@
 #include <QRegularExpression>
 #include <QValidator>
 #include <QSqlDatabase>
+#include <QPointer>
 
 namespace Ui {
 class NotesDialog;
@@ -56,13 +57,11 @@ private:
 
     QValidator* validator;
 
-    QSqlQueryModel* query;
+    QPointer<QSqlQueryModel> queryModel;
 
     QWidget* addWidgetNote(qint32 row_index, bool url);
 
     QList<QWidget*> widgets;
-    QList<QHBoxLayout*> layouts;
-    QList<QLabel*> labels;
 
     qint32 count;
     qint32 remainder;
