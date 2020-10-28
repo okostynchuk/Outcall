@@ -140,8 +140,25 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
 
     note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
+    qint32 index = 0;
+    QStringList strList;
+
     for (qint32 i = 0; i < hrefs.length(); ++i)
-        note.replace(QRegularExpression("(^| )" + QRegularExpression::escape(hrefs.at(i)) + "(|$)"), QString(" <a href='" + hrefs.at(i) + "' style='color: #ffb64f'>" + hrefs.at(i) + "</a>"));
+    {
+        if (i == 0)
+            index = note.indexOf(hrefs.at(i));
+        else
+            index = note.indexOf(hrefs.at(i), index + hrefs.at(i-1).size());
+
+        if (index > 0)
+            strList << note.at(index - 1);
+        else
+            strList << "";
+    }
+
+    for (qint32 i = 0; i < hrefs.length(); ++i)
+        note.replace(note.indexOf(QRegularExpression("(^| |\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\})" + QRegularExpression::escape(hrefs.at(i)) + "(|$)")),
+                     hrefs.at(i).size()+1, QString(strList.at(i) + "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
 
     ui->textBrowser->setText(note);
 
