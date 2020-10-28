@@ -1101,6 +1101,13 @@
     </message>
 </context>
 <context>
+    <name>CloseButton</name>
+    <message>
+        <source>Close Tab</source>
+        <translation type="vanished">Закрыть вкладку</translation>
+    </message>
+</context>
+<context>
     <name>ContactsDialog</name>
     <message>
         <source>Контакты</source>
@@ -3551,19 +3558,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Пропущенный </translation>
+        <translation type="vanished">Пропущенный </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Занято </translation>
+        <translation type="vanished">Занято </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Отклонено </translation>
+        <translation type="vanished">Отклонено </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Принятый </translation>
+        <translation type="vanished">Принятый </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3600,6 +3607,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Выберите одну запись!</source>
         <translation>Выберите одну запись!</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Пропущенный</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Занято</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Отколено</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Принятый</translation>
     </message>
 </context>
 <context>
@@ -3790,19 +3813,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Пропущенный </translation>
+        <translation type="vanished">Пропущенный </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Занято </translation>
+        <translation type="vanished">Занято </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Отклонено </translation>
+        <translation type="vanished">Отклонено </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Принятый </translation>
+        <translation type="vanished">Принятый </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3852,12 +3875,21 @@ p, li { white-space: pre-wrap; }
         <source>Выберите одну запись!</source>
         <translation>Выберите одну запись!</translation>
     </message>
-</context>
-<context>
-    <name>CloseButton</name>
     <message>
-        <source>Close Tab</source>
-        <translation>Закрыть вкладку</translation>
+        <source>Пропущенный</source>
+        <translation>Пропущенный</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Занято</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Отколено</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Принятый</translation>
     </message>
 </context>
 <context>

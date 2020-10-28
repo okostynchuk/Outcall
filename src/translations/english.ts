@@ -3572,19 +3572,19 @@ The app will be restarted!</translation>
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Missed </translation>
+        <translation type="vanished">Missed </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Busy </translation>
+        <translation type="vanished">Busy </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Rejected </translation>
+        <translation type="vanished">Rejected </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Answered </translation>
+        <translation type="vanished">Answered </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3621,6 +3621,22 @@ The app will be restarted!</translation>
     <message>
         <source>Выберите одну запись!</source>
         <translation>Choose one element!</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Missed</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Busy</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Canceled</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Accepted</translation>
     </message>
 </context>
 <context>
@@ -3811,19 +3827,19 @@ The app will be restarted!</translation>
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Missed </translation>
+        <translation type="vanished">Missed </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Busy </translation>
+        <translation type="vanished">Busy </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Rejected </translation>
+        <translation type="vanished">Rejected </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Answered </translation>
+        <translation type="vanished">Answered </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3872,6 +3888,22 @@ The app will be restarted!</translation>
     <message>
         <source>Выберите одну запись!</source>
         <translation>Choose one element!</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Missed</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Busy</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Canceled</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Accepted</translation>
     </message>
 </context>
 </TS>

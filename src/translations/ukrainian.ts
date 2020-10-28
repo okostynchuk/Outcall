@@ -3545,19 +3545,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Пропущений </translation>
+        <translation type="vanished">Пропущений </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Зайнято </translation>
+        <translation type="vanished">Зайнято </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Відхилено </translation>
+        <translation type="vanished">Відхилено </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Прийнятий </translation>
+        <translation type="vanished">Прийнятий </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3594,6 +3594,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Выберите одну запись!</source>
         <translation>Виберіть один запис!</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Пропущений</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Зайнято</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Відхилено</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Прийнятий</translation>
     </message>
 </context>
 <context>
@@ -3784,19 +3800,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Пропущенный </source>
-        <translation>Пропущений </translation>
+        <translation type="vanished">Пропущений </translation>
     </message>
     <message>
         <source>Занято </source>
-        <translation>Зайнято </translation>
+        <translation type="vanished">Зайнято </translation>
     </message>
     <message>
         <source>Отклонено </source>
-        <translation>Відхилено </translation>
+        <translation type="vanished">Відхилено </translation>
     </message>
     <message>
         <source>Принятый </source>
-        <translation>Прийнятий </translation>
+        <translation type="vanished">Прийнятий </translation>
     </message>
     <message>
         <source>Добавить напоминание</source>
@@ -3845,6 +3861,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Выберите одну запись!</source>
         <translation>Виберіть один запис!</translation>
+    </message>
+    <message>
+        <source>Пропущенный</source>
+        <translation>Пропущений</translation>
+    </message>
+    <message>
+        <source>Занято</source>
+        <translation>Зайнято</translation>
+    </message>
+    <message>
+        <source>Отколено</source>
+        <translation>Відхилено</translation>
+    </message>
+    <message>
+        <source>Принятый</source>
+        <translation>Прийнятий</translation>
     </message>
 </context>
 <context>
