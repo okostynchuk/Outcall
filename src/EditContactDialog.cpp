@@ -280,7 +280,7 @@ void EditContactDialog::onSave()
         return;
     }
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
+    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ?, entry_employe = ? WHERE id = ?");
     query.addBindValue("person");
 
     if (ui->lastName->text().isEmpty())
@@ -301,6 +301,7 @@ void EditContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
+    query.addBindValue(ui->employe->text());
     query.addBindValue(contactId);
     query.exec();
 

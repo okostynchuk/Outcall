@@ -2,6 +2,7 @@
 #define POPUPWINDOW_H
 
 #include "Global.h"
+#include "AsteriskManager.h"
 #include "OutCALL.h"
 #include "CallHistoryDialog.h"
 #include "PlaceCallDialog.h"
@@ -100,6 +101,8 @@ private:
     QPoint position;
 
     QTextCursor textCursor;
+
+    QStringList extensions = g_pAsteriskManager->extensionNumbers.values();;
 
     QString userId;
     QString author;

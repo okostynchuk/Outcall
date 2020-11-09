@@ -52,7 +52,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
     }
     else
     {
-        query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
+        query.prepare("SELECT id, entry_vybor_id, entry_employe FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
         query.exec();
 
         if (query.next())
@@ -63,6 +63,12 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
 
             if (query.value(1) == 0)
                 ui->openAccessButton->hide();
+
+            QString employee = query.value(2).toString();
+
+            if (employee != "0")
+                if(g_pAsteriskManager->extensionNumbers.contains(employee))
+                    ui->employe->setText(QString(g_pAsteriskManager->extensionNumbers.value(employee)));
         }
         else
         {
@@ -218,7 +224,7 @@ bool PopupWindow::eventFilter(QObject*, QEvent* event)
             return true;
         }
     }
-    else if (event->type() == QEvent::WindowActivate)
+    else if (event && event->type() == QEvent::WindowActivate)
     {
         if (ui->textEdit->toPlainText().trimmed().isEmpty())
             ui->textEdit->setFocus();

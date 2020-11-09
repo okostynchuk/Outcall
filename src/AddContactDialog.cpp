@@ -171,8 +171,8 @@ void AddContactDialog::onSave()
         return;
     }
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employe)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("person");
 
     if (ui->lastName->text().isEmpty())
@@ -193,6 +193,7 @@ void AddContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
+    query.addBindValue(ui->employe->text());
     query.exec();
 
     qint32 id = query.lastInsertId().toInt();

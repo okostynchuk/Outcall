@@ -4338,6 +4338,19 @@ border-right-color: transparent;
     <string>Комментарий к звонку</string>
    </property>
   </widget>
+  <widget class="QLabel" name="employe">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>220</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>textEdit</tabstop>

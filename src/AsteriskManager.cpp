@@ -270,6 +270,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
             return;
 
         const QString callerId = eventValues.value("Callerid");
+
         QString name;
         QString number;
 

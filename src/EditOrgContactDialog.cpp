@@ -278,7 +278,7 @@ void EditOrgContactDialog::onSave()
     }
 
     query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_city = ?, entry_address = ?, "
-                  "entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
+                  "entry_email = ?, entry_vybor_id = ?, entry_comment = ?, entry_employe = ? WHERE id = ?");
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);
@@ -287,6 +287,7 @@ void EditOrgContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
+    query.addBindValue(ui->employe->text());
     query.addBindValue(contactId);
     query.exec();
 

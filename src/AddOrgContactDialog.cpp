@@ -160,8 +160,8 @@ void AddOrgContactDialog::onSave()
         return;
     }
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employe)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);
@@ -170,6 +170,7 @@ void AddOrgContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
+    query.addBindValue(ui->employe->text());
     query.exec();
 
     qint32 id = query.lastInsertId().toInt();

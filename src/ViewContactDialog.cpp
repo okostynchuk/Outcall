@@ -198,7 +198,7 @@ void ViewContactDialog::setValues(const QString& id)
         phonesList.at(i)->setText(numbersList.at(i));
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, "
-                  "entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
+                  "entry_address, entry_email, entry_vybor_id, entry_comment, entry_employe FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
@@ -221,6 +221,8 @@ void ViewContactDialog::setValues(const QString& id)
     ui->vyborId->setText(query.value(6).toString());
 
     ui->comment->setText(query.value(7).toString());
+
+    ui->employe->setText(query.value(8).toString());
 
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
