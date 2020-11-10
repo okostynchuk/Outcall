@@ -4347,6 +4347,11 @@ border-right-color: transparent;
      <height>31</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string/>
    </property>

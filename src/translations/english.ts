@@ -172,6 +172,10 @@
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -392,6 +396,10 @@
     <message>
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
     </message>
 </context>
 <context>
@@ -1249,6 +1257,10 @@
         <source>Заметка</source>
         <translation>Note</translation>
     </message>
+    <message>
+        <source>Менеджер</source>
+        <translation>Manager</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
@@ -1695,6 +1707,10 @@
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1862,6 +1878,10 @@
     <message>
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
     </message>
 </context>
 <context>
@@ -3638,6 +3658,10 @@ The app will be restarted!</translation>
         <source>Принятый</source>
         <translation>Accepted</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -3904,6 +3928,10 @@ The app will be restarted!</translation>
     <message>
         <source>Принятый</source>
         <translation>Accepted</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Manager:</translation>
     </message>
 </context>
 </TS>

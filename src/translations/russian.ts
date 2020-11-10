@@ -164,6 +164,10 @@
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -385,6 +389,10 @@
     <message>
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
     </message>
 </context>
 <context>
@@ -1249,6 +1257,10 @@
         <source>Заметка</source>
         <translation>Заметка</translation>
     </message>
+    <message>
+        <source>Менеджер</source>
+        <translation>Менеджер</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
@@ -1689,6 +1701,10 @@
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1857,6 +1873,10 @@
     <message>
         <source>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</source>
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обязательные для заполнения</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
     </message>
 </context>
 <context>
@@ -3624,6 +3644,10 @@ p, li { white-space: pre-wrap; }
         <source>Принятый</source>
         <translation>Принятый</translation>
     </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -3890,6 +3914,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Принятый</source>
         <translation>Принятый</translation>
+    </message>
+    <message>
+        <source>Менеджер:</source>
+        <translation>Менеджер:</translation>
     </message>
 </context>
 <context>
