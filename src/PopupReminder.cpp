@@ -125,40 +125,65 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
 
     QString note = m_pri.text;
 
+
     QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
-    QStringList hrefs;
+    QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
+
+    note.replace("<", "&lt;").replace(">", "&gt;");
 
     while (hrefIterator.hasNext())
     {
         QRegularExpressionMatch match = hrefIterator.next();
         QString href = match.captured(1);
 
-        href.remove(QRegularExpression("[\\,\\.\\;\\:\\'\\\"\\-\\!\\?\\<\\>\\(\\)\\[\\]\\{\\}]+$"));
-
         hrefs << href;
+        href.remove(QRegularExpression("[\\,\\.\\;\\:\\'\\\"\\-\\!\\?\\^\\`\\~\\*\\№\\%\\&\\$\\#\\<\\>\\(\\)\\[\\]\\{\\}]+$"));
+        hrefsNoCharacters << href;
+    }
+
+    QStringList firstCharList, lastCharList;
+
+    for (int i = 0; i < hrefs.length(); ++i)
+    {
+        QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
+        hrefsReplaceCharacters << hrefReplaceCharacters;
+        hrefReplaceCharacters = hrefReplaceCharacters.remove(hrefsNoCharacters.at(i));
+
+        if (hrefReplaceCharacters.isEmpty())
+            lastCharList << " ";
+        else
+            lastCharList << hrefReplaceCharacters;
     }
 
     note.replace(QRegularExpression("\\n"), QString(" <br> "));
 
     qint32 index = 0;
-    QStringList strList;
 
-    for (qint32 i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefsReplaceCharacters.length(); ++i)
     {
         if (i == 0)
-            index = note.indexOf(hrefs.at(i));
+            index = note.indexOf(hrefsReplaceCharacters.at(i));
         else
-            index = note.indexOf(hrefs.at(i), index + hrefs.at(i-1).size());
+            index = note.indexOf(hrefsReplaceCharacters.at(i), index + hrefsReplaceCharacters.at(i - 1).size());
 
         if (index > 0)
-            strList << note.at(index - 1);
+            firstCharList << note.at(index - 1);
         else
-            strList << "";
+            firstCharList << "";
     }
 
     for (qint32 i = 0; i < hrefs.length(); ++i)
-        note.replace(note.indexOf(QRegularExpression("(^| |\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\})" + QRegularExpression::escape(hrefs.at(i)) + "(|$)")),
-                     hrefs.at(i).size()+1, QString(strList.at(i) + "<a href='" + hrefs.at(i) + "'>" + hrefs.at(i) + "</a>"));
+    {
+        qint32 size;
+
+        if (firstCharList.at(i) == "")
+            size = hrefsReplaceCharacters.at(i).size();
+        else
+            size = hrefsReplaceCharacters.at(i).size() + 1;
+
+        note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
+                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
+    }
 
     ui->textBrowser->setText(note);
 

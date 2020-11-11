@@ -378,8 +378,10 @@
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
+  <tabstop>employee</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>saveButton</tabstop>
+  <tabstop>backButton</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

@@ -1066,6 +1066,7 @@ background-color: #fffff0;
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
+  <tabstop>employee</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>comboBox_days</tabstop>
   <tabstop>tabWidget</tabstop>

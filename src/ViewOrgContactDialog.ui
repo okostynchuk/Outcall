@@ -349,6 +349,9 @@ background-color: #fffff8;
          </item>
          <item row="5" column="3">
           <widget class="QLineEdit" name="email">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff8;
@@ -1194,6 +1197,7 @@ background-color: #fffff0;
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
+  <tabstop>employee</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
@@ -1209,7 +1213,6 @@ background-color: #fffff0;
   <tabstop>comboBox_list</tabstop>
   <tabstop>playAudio</tabstop>
   <tabstop>playAudioPhone</tabstop>
-  <tabstop>tableView_2</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

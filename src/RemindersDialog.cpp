@@ -539,7 +539,7 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
             QString href = match.captured(1);
 
             hrefs << href;
-            href.remove(QRegularExpression("[\\,\\.\\;\\:\\'\\\"\\-\\!\\?\\<\\>\\(\\)\\[\\]\\{\\}]+$"));
+            href.remove(QRegularExpression("[\\,\\.\\;\\:\\'\\\"\\-\\!\\?\\^\\`\\~\\*\\№\\%\\&\\$\\#\\<\\>\\(\\)\\[\\]\\{\\}]+$"));
             hrefsNoCharacters << href;
         }
 
@@ -583,7 +583,7 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
             else
                 size = hrefsReplaceCharacters.at(i).size() + 1;
 
-            note.replace(note.indexOf(QRegularExpression("( |^|\\.|\\,|\\!|\\?|\\%|\\$|\\№|\\&|\\#|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"||[a-zA-Z0-9])" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
+            note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
                         size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
         }
     }
