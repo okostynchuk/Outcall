@@ -56,7 +56,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
         extensions = g_pAsteriskManager->extensionNumbers.values();
 
         for (qint32 i = 0; i < extensions.count(); ++i)
-            if (extensions[i] == my_number)
+            if (extensions[i] == "" || extensions[i] == my_number)
                 extensions.removeAt(i);
 
         extensions_full = extensions;
@@ -317,7 +317,7 @@ void InternalContactsDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    loadContacts();;
+    loadContacts();
 }
 
 /**

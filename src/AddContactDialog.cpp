@@ -195,7 +195,7 @@ void AddContactDialog::onSave()
 
     if (invalid_employee)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Указанный номер не зарегестрирован!"), QMessageBox::Ok);
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указанный номер не зарегистрирован!"), QMessageBox::Ok);
 
         return;
     }

@@ -1152,7 +1152,7 @@ void RemindersDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdate();;
+    onUpdate();
 }
 
 /**

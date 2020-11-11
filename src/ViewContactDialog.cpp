@@ -692,7 +692,7 @@ void ViewContactDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    loadCalls();;
+    loadCalls();
 }
 
 /**

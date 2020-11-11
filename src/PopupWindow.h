@@ -102,7 +102,7 @@ private:
 
     QTextCursor textCursor;
 
-    QStringList extensions = g_pAsteriskManager->extensionNumbers.values();;
+    QStringList extensions = g_pAsteriskManager->extensionNumbers.values();
 
     QString userId;
     QString author;

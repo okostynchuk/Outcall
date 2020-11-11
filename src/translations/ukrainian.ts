@@ -167,6 +167,10 @@
         <source>Менеджер:</source>
         <translation>Менеджер:</translation>
     </message>
+    <message>
+        <source>Указанный номер не зарегистрирован!</source>
+        <translation>Зазначений номер не зареєстрований!</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -391,6 +395,10 @@
     <message>
         <source>Менеджер:</source>
         <translation>Менеджер:</translation>
+    </message>
+    <message>
+        <source>Указанный номер не зарегистрирован!</source>
+        <translation>Зазначений номер не зареєстрований!</translation>
     </message>
 </context>
 <context>
@@ -1695,6 +1703,10 @@
         <source>Менеджер:</source>
         <translation>Менеджер:</translation>
     </message>
+    <message>
+        <source>Указанный номер не зарегистрирован!</source>
+        <translation>Зазначений номер не зареєстрований!</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1866,6 +1878,10 @@
     <message>
         <source>Менеджер:</source>
         <translation>Менеджер:</translation>
+    </message>
+    <message>
+        <source>Указанный номер не зарегистрирован!</source>
+        <translation>Зазначений номер не зареєстрований!</translation>
     </message>
 </context>
 <context>

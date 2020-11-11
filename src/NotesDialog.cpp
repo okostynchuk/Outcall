@@ -418,7 +418,7 @@ void NotesDialog::on_nextEndButton_clicked()
 
     go = "nextEnd";
 
-    onUpdate();;
+    onUpdate();
 }
 
 /**
