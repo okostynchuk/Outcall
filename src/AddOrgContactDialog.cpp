@@ -4,6 +4,7 @@
 
 #include "AddOrgContactDialog.h"
 #include "ui_AddOrgContactDialog.h"
+#include "AsteriskManager.h"
 
 #include <QMessageBox>
 
@@ -21,15 +22,21 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget* parent) :
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    phonesValidator = new QRegularExpressionValidator(regExp, this);
+    Validator = new QRegularExpressionValidator(regExp, this);
 
     for (qint32 i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setValidator(phonesValidator);
+        phonesList.at(i)->setValidator(Validator);
 
     regExp.setPattern("^[0-9]*$");
-    vyborIdValidator = new QRegularExpressionValidator(regExp, this);
+    Validator = new QRegularExpressionValidator(regExp, this);
 
-    ui->vyborId->setValidator(vyborIdValidator);
+    ui->vyborId->setValidator(Validator);
+
+    regExp.setPattern("^[0-9]{3,4}$");
+    Validator = new QRegularExpressionValidator(regExp, this);
+    ui->employee->setValidator(Validator);
+
+    g_pAsteriskManager->groupNumbers.removeDuplicates();
 }
 
 AddOrgContactDialog::~AddOrgContactDialog()
@@ -160,7 +167,30 @@ void AddOrgContactDialog::onSave()
         return;
     }
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employe)"
+    bool invalid_employee = false;
+
+    QString employee = ui->employee->text();
+
+    if (!ui->employee->text().isEmpty())
+    {
+        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
+            ui->employee->setStyleSheet("border: 1px solid grey");
+        else
+        {
+            ui->employee->setStyleSheet("border: 1px solid red");
+
+            invalid_employee = true;
+        }
+    }
+
+    if (invalid_employee)
+    {
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указанный номер не зарегестрирован!"), QMessageBox::Ok);
+
+        return;
+    }
+
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employee)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("org");
     query.addBindValue(orgName);
@@ -170,7 +200,7 @@ void AddOrgContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
-    query.addBindValue(ui->employe->text());
+    query.addBindValue(ui->employee->text());
     query.exec();
 
     qint32 id = query.lastInsertId().toInt();

@@ -128,7 +128,7 @@
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="6" column="3">
-      <widget class="QLineEdit" name="employe"/>
+      <widget class="QLineEdit" name="employee"/>
      </item>
      <item row="2" column="2">
       <widget class="QLabel" name="label_9">

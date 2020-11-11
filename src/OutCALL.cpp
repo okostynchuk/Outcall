@@ -519,7 +519,7 @@ void OutCall::onRemindersDialog()
     query.addBindValue(my_number);
     query.exec();
 
-    m_remindersDialog->reminders(false);
+    emit m_remindersDialog->reminders(false);
 }
 
 /**

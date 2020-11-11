@@ -180,7 +180,7 @@ void ContactsDialog::loadContacts()
 
     QString queryString = "SELECT entry_id, entry_type, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                           "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, "
-                          "entry_vybor_id, entry_comment, entry_employe FROM entry_phone ";
+                          "entry_vybor_id, entry_comment, entry_employee FROM entry_phone ";
 
     QString queryCountString = "SELECT COUNT(DISTINCT entry_id) FROM entry_phone ";
 

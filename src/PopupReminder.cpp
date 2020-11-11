@@ -414,7 +414,7 @@ void PopupReminder::receiveData(bool update)
 {
     if (update)
     {
-        m_pri.remindersDialog->reminders(false);
+        emit m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
@@ -483,7 +483,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.addBindValue(m_pri.id);
         query.exec();
 
-        m_pri.remindersDialog->reminders(false);
+        emit m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
@@ -498,7 +498,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.addBindValue(m_pri.id);
         query.exec();
 
-        m_pri.remindersDialog->reminders(false);
+        emit m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
@@ -513,7 +513,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.addBindValue(m_pri.id);
         query.exec();
 
-        m_pri.remindersDialog->reminders(false);
+        emit m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
@@ -528,7 +528,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.addBindValue(m_pri.id);
         query.exec();
 
-        m_pri.remindersDialog->reminders(false);
+        emit m_pri.remindersDialog->reminders(false);
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
@@ -615,7 +615,7 @@ void PopupReminder::onClosePopup()
         query.exec();
     }
 
-    m_pri.remindersDialog->reminders(false);
+    emit m_pri.remindersDialog->reminders(false);
     m_pri.remindersDialog->resizeCells = false;
     m_pri.remindersDialog->loadReminders();
 

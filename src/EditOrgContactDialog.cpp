@@ -4,6 +4,7 @@
 
 #include "EditOrgContactDialog.h"
 #include "ui_EditOrgContactDialog.h"
+#include "AsteriskManager.h"
 
 #include <QSqlQuery>
 #include <QMessageBox>
@@ -28,15 +29,21 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    phonesValidator = new QRegularExpressionValidator(regExp, this);
+    Validator = new QRegularExpressionValidator(regExp, this);
 
     for (qint32 i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setValidator(phonesValidator);
+        phonesList.at(i)->setValidator(Validator);
 
     regExp.setPattern("^[0-9]*$");
-    vyborIdValidator = new QRegularExpressionValidator(regExp, this);
+    Validator = new QRegularExpressionValidator(regExp, this);
 
-    ui->vyborId->setValidator(vyborIdValidator);
+    ui->vyborId->setValidator(Validator);
+
+    regExp.setPattern("^[0-9]{3,4}$");
+    Validator = new QRegularExpressionValidator(regExp, this);
+    ui->employee->setValidator(Validator);
+
+    g_pAsteriskManager->groupNumbers.removeDuplicates();
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()
@@ -277,8 +284,31 @@ void EditOrgContactDialog::onSave()
         return;
     }
 
+    bool invalid_employee = false;
+
+    QString employee = ui->employee->text();
+
+    if (!ui->employee->text().isEmpty())
+    {
+        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
+            ui->employee->setStyleSheet("border: 1px solid grey");
+        else
+        {
+            ui->employee->setStyleSheet("border: 1px solid red");
+
+            invalid_employee = true;
+        }
+    }
+
+    if (invalid_employee)
+    {
+        QMessageBox::critical(this, tr("Ошибка"), tr("Указанный номер не зарегестрирован!"), QMessageBox::Ok);
+
+        return;
+    }
+
     query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_city = ?, entry_address = ?, "
-                  "entry_email = ?, entry_vybor_id = ?, entry_comment = ?, entry_employe = ? WHERE id = ?");
+                  "entry_email = ?, entry_vybor_id = ?, entry_comment = ?, entry_employee = ? WHERE id = ?");
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);
@@ -287,7 +317,7 @@ void EditOrgContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
-    query.addBindValue(ui->employe->text());
+    query.addBindValue(ui->employee->text());
     query.addBindValue(contactId);
     query.exec();
 
@@ -354,7 +384,7 @@ void EditOrgContactDialog::setValues(const QString& id)
         phonesList.at(i)->setText(oldPhonesList.at(i));
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, "
-                  "entry_comment FROM entry WHERE id = " + contactId);
+                  "entry_comment, entry_employee FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
@@ -364,6 +394,7 @@ void EditOrgContactDialog::setValues(const QString& id)
     ui->email->setText(query.value(3).toString());
     ui->vyborId->setText(query.value(4).toString());
     ui->comment->setText(query.value(5).toString());
+    ui->employee->setText(query.value(6).toString());
 }
 
 /**

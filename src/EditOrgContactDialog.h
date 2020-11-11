@@ -50,8 +50,7 @@ private:
 
     QStringList oldPhonesList;
 
-    QValidator* phonesValidator;
-    QValidator* vyborIdValidator;
+    QValidator* Validator;
 
     QString contactId;
     QString firstNumber;

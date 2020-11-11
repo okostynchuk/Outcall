@@ -108,7 +108,7 @@ qint32 main(qint32 argc, char* argv[])
     QString output = tasklist.readAllStandardOutput();
 
     if (output.count(app.applicationName() + ".exe") != 1)
-        if (QCoreApplication::arguments().last() != "restart")
+        if (QCoreApplication::arguments().QList::last() != "restart")
         {
             QMessageBox msgBox;
             msgBox.setIcon(QMessageBox::Warning);
@@ -158,7 +158,7 @@ qint32 main(qint32 argc, char* argv[])
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "twoDbs");
         databasesConnectDialog->exec();
-        databasesConnectDialog->deleteLater();
+        databasesConnectDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else if (!db.isOpen())
     {
@@ -167,7 +167,7 @@ qint32 main(qint32 argc, char* argv[])
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "db");
         databasesConnectDialog->exec();
-        databasesConnectDialog->deleteLater();
+        databasesConnectDialog->setAttribute(Qt::WA_DeleteOnClose);
 
     }
     else if (!dbCalls.isOpen())
@@ -177,7 +177,7 @@ qint32 main(qint32 argc, char* argv[])
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "dbCalls");
         databasesConnectDialog->exec();
-        databasesConnectDialog->deleteLater();
+        databasesConnectDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 
     if (db.isOpen() && dbCalls.isOpen())

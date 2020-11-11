@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
+    <width>566</width>
     <height>470</height>
    </rect>
   </property>
@@ -536,7 +536,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="employe"/>
+        <widget class="QLineEdit" name="employee"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_8">

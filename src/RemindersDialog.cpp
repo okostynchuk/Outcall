@@ -543,7 +543,7 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
             hrefsNoCharacters << href;
         }
 
-        QStringList firsCharList, lastCharList;
+        QStringList firstCharList, lastCharList;
 
         for (int i = 0; i < hrefs.length(); ++i)
         {
@@ -551,7 +551,7 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
             hrefsReplaceCharacters << hrefReplaceCharacters;
             hrefReplaceCharacters = hrefReplaceCharacters.remove(hrefsNoCharacters.at(i));
 
-            if(hrefReplaceCharacters.isEmpty())
+            if (hrefReplaceCharacters.isEmpty())
                 lastCharList << " ";
             else
                 lastCharList << hrefReplaceCharacters;
@@ -569,22 +569,22 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
                 index = note.indexOf(hrefsReplaceCharacters.at(i), index + hrefsReplaceCharacters.at(i - 1).size());
 
             if (index > 0)
-                firsCharList << note.at(index - 1);
+                firstCharList << note.at(index - 1);
             else
-                firsCharList << "";
+                firstCharList << "";
         }
 
         for (qint32 i = 0; i < hrefs.length(); ++i)
         {
             qint32 size;
 
-            if (firsCharList.at(i) == "")
+            if (firstCharList.at(i) == "")
                 size = hrefsReplaceCharacters.at(i).size();
             else
                 size = hrefsReplaceCharacters.at(i).size() + 1;
 
-            note.replace(note.indexOf(QRegularExpression("( |^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\")" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
-                        size, QString(firsCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
+            note.replace(note.indexOf(QRegularExpression("( |^|\\.|\\,|\\!|\\?|\\%|\\$|\\№|\\&|\\#|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"||[a-zA-Z0-9])" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
+                        size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
         }
     }
 

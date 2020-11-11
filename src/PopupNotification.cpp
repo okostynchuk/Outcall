@@ -294,7 +294,7 @@ void PopupNotification::closeAndDestroy()
     m_timer.stop();
 
     if (m_PopupNotifications.length() == 1)
-        m_pni.remindersDialog->reminders(false);
+        emit m_pni.remindersDialog->reminders(false);
 
     m_PopupNotifications.removeOne(this);
 

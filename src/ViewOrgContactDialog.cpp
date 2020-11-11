@@ -81,7 +81,7 @@ void ViewOrgContactDialog::setValues(const QString& id)
     for (qint32 i = 0; i < numbersList.length(); ++i)
         phonesList.at(i)->setText(numbersList.at(i));
 
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employe FROM entry WHERE id = " + contactId);
+    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employee FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
@@ -102,7 +102,7 @@ void ViewOrgContactDialog::setValues(const QString& id)
     ui->vyborId->setText(query.value(4).toString());
     ui->comment->setText(query.value(5).toString());
 
-    ui->employe->setText(query.value(6).toString());
+    ui->employee->setText(query.value(6).toString());
 
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();

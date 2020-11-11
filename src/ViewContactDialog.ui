@@ -436,7 +436,7 @@ background-color: #fffff8;
           </widget>
          </item>
          <item row="6" column="4">
-          <widget class="QLineEdit" name="employe">
+          <widget class="QLineEdit" name="employee">
            <property name="font">
             <font>
              <pointsize>10</pointsize>

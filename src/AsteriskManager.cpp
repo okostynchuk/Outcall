@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QtGlobal>
 #include <QDebug>
+#include <QRegularExpressionValidator>
 
 AsteriskManager* g_pAsteriskManager = nullptr;
 
@@ -261,6 +262,20 @@ void AsteriskManager::parseEvent(const QString& eventData)
             }
         }
     }
+    else if (eventData.contains("ActionID: Groups"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+
+        QString context = eventValues.value("Context");
+        if (isGroup(&context))
+        {
+            QString str = eventValues.value("Extension");
+            if (isInternalPhone(&str))
+                groupNumbers << str;
+        }
+
+    }
     else if (eventData.contains("Event: EndpointDetail"))
     {
         QMap<QString, QString> eventValues;
@@ -336,6 +351,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
         const QString linkedid          = eventValues.value("Linkedid");
         QString destProtocol;
 
+        //qDebug() << eventData;
         QString dateTime = QTime::currentTime().toString();
 
         QRegExp reg("([^/]*)(/)(\\d+)");
@@ -426,6 +442,18 @@ void AsteriskManager::parseEvent(const QString& eventData)
     }
 }
 
+bool AsteriskManager::isGroup(QString* str)
+{
+    qint32 pos = 0;
+
+    QRegularExpressionValidator validator(QRegularExpression("ringgroup_[0-9]{4}"));
+
+    if (validator.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
+}
+
 /**
  * Выполняет преобразование полученного сообщения в список пар "ключ: значение".
  */
@@ -457,6 +485,19 @@ void AsteriskManager::getExtensionNumbers()
     m_tcpSocket->flush();
 }
 
+
+void AsteriskManager::getGroups()
+{
+    groupNumbers.clear();
+
+    QString command;
+    command = "Action: ShowDialPlan\r\n";
+    command += "ActionID: Groups\r\n";
+    m_tcpSocket->write(command.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
 /**
  * Выполняет отправку команды для входа в аккаунт.
  */
@@ -472,6 +513,7 @@ void AsteriskManager::login()
     m_tcpSocket->flush();
 
     getExtensionNumbers();
+    getGroups();
 }
 
 /**
@@ -546,3 +588,23 @@ bool AsteriskManager::isSignedIn() const
 {
     return m_isSignedIn;
 }
+
+/**
+ * Выполняет проверку номера на соотвествие шаблону внутреннего номера.
+ */
+bool AsteriskManager::isInternalPhone(QString* str)
+{
+    qint32 pos = 0;
+
+    QRegularExpressionValidator validator1(QRegularExpression("^[0-9]{4}$"));
+    QRegularExpressionValidator validator2(QRegularExpression("^[2][0-9]{2}$"));
+
+    if (validator1.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    if (validator2.validate(*str, pos) == QValidator::Acceptable)
+        return true;
+
+    return false;
+}
+

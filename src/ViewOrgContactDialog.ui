@@ -408,7 +408,7 @@ background-color: #fffff8;
           </widget>
          </item>
          <item row="6" column="3">
-          <widget class="QLineEdit" name="employe">
+          <widget class="QLineEdit" name="employee">
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff8;
