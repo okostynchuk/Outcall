@@ -388,8 +388,22 @@ void EditReminderDialog::closeEvent(QCloseEvent* event)
  */
 void EditReminderDialog::onTextChanged()
 {
-    if (ui->textEdit->toPlainText().trimmed().length() > 255)
-        ui->textEdit->textCursor().deletePreviousChar();
+    int m_maxDescriptionLength = 255;
+
+    if (ui->textEdit->toPlainText().length() > m_maxDescriptionLength)
+    {
+        int diff = ui->textEdit->toPlainText().length() - m_maxDescriptionLength;
+
+        QString newStr = ui->textEdit->toPlainText();
+        newStr.chop(diff);
+
+        ui->textEdit->setText(newStr);
+
+        QTextCursor cursor(ui->textEdit->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+
+        ui->textEdit->setTextCursor(cursor);
+    }
 }
 
 /**

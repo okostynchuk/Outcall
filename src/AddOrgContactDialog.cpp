@@ -252,8 +252,22 @@ void AddOrgContactDialog::setValues(const QString& number)
  */
 void AddOrgContactDialog::onTextChanged()
 {
-    if (ui->comment->toPlainText().trimmed().length() > 255)
-        ui->comment->textCursor().deletePreviousChar();
+    int m_maxDescriptionLength = 255;
+
+    if (ui->comment->toPlainText().length() > m_maxDescriptionLength)
+    {
+        int diff = ui->comment->toPlainText().length() - m_maxDescriptionLength;
+
+        QString newStr = ui->comment->toPlainText();
+        newStr.chop(diff);
+
+        ui->comment->setText(newStr);
+
+        QTextCursor cursor(ui->comment->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+
+        ui->comment->setTextCursor(cursor);
+    }
 }
 
 /**
