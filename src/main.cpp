@@ -82,16 +82,21 @@ qint32 main(qint32 argc, char* argv[])
 
     QString language = global::getSettingsValue("language", "settings").toString();
     QTranslator translator;
+    QTranslator contextTranslator;
 
     if (language == "Русский")
     {
         translator.load(":/translations/russian.qm");
+        contextTranslator.load(":/translations/russianContext.qm");
         app.installTranslator(&translator);
+        app.installTranslator(&contextTranslator);
     }
     else if (language == "Українська")
-    {
+    {        
         translator.load(":/translations/ukrainian.qm");
+        contextTranslator.load(":/translations/ukrainianContext.qm");
         app.installTranslator(&translator);
+        app.installTranslator(&contextTranslator);
     }
     else if (language == "English")
     {

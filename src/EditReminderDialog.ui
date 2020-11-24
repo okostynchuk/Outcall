@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Редактирование напоминания</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/outcall-logo.png</normaloff>:/images/outcall-logo.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
@@ -304,6 +308,8 @@
   <tabstop>chooseEmployeeButton</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

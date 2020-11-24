@@ -219,7 +219,7 @@
             <widget class="QLineEdit" name="orgName">
              <property name="minimumSize">
               <size>
-               <width>368</width>
+               <width>370</width>
                <height>0</height>
               </size>
              </property>
@@ -227,6 +227,15 @@
               <string notr="true">*{
 background-color: #fffff8;
 }</string>
+             </property>
+             <property name="frame">
+              <bool>true</bool>
+             </property>
+             <property name="cursorPosition">
+              <number>0</number>
+             </property>
+             <property name="dragEnabled">
+              <bool>false</bool>
              </property>
              <property name="readOnly">
               <bool>true</bool>

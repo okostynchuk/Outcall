@@ -67,7 +67,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
             QString employee = query.value(2).toString();
 
             if (employee != "0")
-                if(g_pAsteriskManager->extensionNumbers.contains(employee))
+                if (g_pAsteriskManager->extensionNumbers.contains(employee))
                     ui->employe->setText(QString(g_pAsteriskManager->extensionNumbers.value(employee)));
         }
         else

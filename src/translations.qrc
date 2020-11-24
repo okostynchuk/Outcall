@@ -6,5 +6,9 @@
         <file>translations/english.qm</file>
         <file>translations/russian.qm</file>
         <file>translations/ukrainian.qm</file>
+        <file>translations/russianContext.qm</file>
+        <file>translations/russianContext.ts</file>
+        <file>translations/ukrainianContext.qm</file>
+        <file>translations/ukrainianContext.ts</file>
     </qresource>
 </RCC>

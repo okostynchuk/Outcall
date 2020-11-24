@@ -21,7 +21,7 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
     connect(ui->comment, &QTextEdit::textChanged, this, &AddContactDialog::onTextChanged);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddContactDialog::onSave);
 
-//    for(qint32 i = 0; i < ui->phonesLayout->count(); ++i)
+//    for (qint32 i = 0; i < ui->phonesLayout->count(); ++i)
 //    {
 //        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(ui->phonesLayout->itemAt(i)->widget());
 //           if (lineEdit)

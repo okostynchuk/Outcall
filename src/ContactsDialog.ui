@@ -23,8 +23,8 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
@@ -32,8 +32,8 @@
        <height>450</height>
       </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="bottomMargin">
          <number>6</number>
@@ -545,7 +545,7 @@
         </item>
        </layout>
       </item>
-      <item>
+      <item row="1" column="0">
        <widget class="QTableView" name="tableView">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
