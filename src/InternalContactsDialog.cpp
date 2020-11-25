@@ -44,7 +44,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 
         loadContacts();
 
-        connect(g_pAsteriskManager, AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
+        connect(g_pAsteriskManager, &AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
     }
 
     if (!ui->listWidget->isItemSelected(ui->listWidget->currentItem()))
