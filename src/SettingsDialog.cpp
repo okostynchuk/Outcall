@@ -379,16 +379,12 @@ QString SettingsDialog::getExtension()
 {
     QStringList extensions = global::getSettingKeys("extensions");
 
-    qint32 nRows = extensions.size();
+    const QString extension = extensions.at(0);
 
-    for (qint32 i = 0; i < nRows; ++i)
-    {
-        const QString extension = extensions.at(i);
-
+    if (!extension.isEmpty())
         return extension;
-    }
-
-    return NULL;
+    else
+        return nullptr;
 }
 
 /**
@@ -407,7 +403,7 @@ QString SettingsDialog::getGroupExtension()
         return group_extension;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -488,7 +484,6 @@ void SettingsDialog::onRemoveButtonClicked()
             case QMessageBox::No:
                 msgBox.close();
                 return;
-                break;
             default:
                 break;
         }
@@ -526,7 +521,6 @@ void SettingsDialog::onRemoveGroupButtonClicked()
             case QMessageBox::No:
                 msgBox.close();
                 return;
-                break;
             default:
                 break;
         }
@@ -608,7 +602,7 @@ void SettingsDialog::checkExten()
 {
     exten = getExtension();
 
-    if (exten != 0)
+    if (exten != nullptr)
         ui->addButton->setEnabled(false);
     else
         ui->addButton->setEnabled(true);
@@ -621,7 +615,7 @@ void SettingsDialog::checkGroupExten()
 {
     group_exten = getGroupExtension();
 
-    if (group_exten != 0)
+    if (group_exten != nullptr)
         ui->addButton_2->setEnabled(false);
     else
         ui->addButton_2->setEnabled(true);

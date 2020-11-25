@@ -262,6 +262,24 @@ void AsteriskManager::parseEvent(const QString& eventData)
             }
         }
     }
+    if (eventData.contains("Event: ExtensionStatus"))
+    {
+        QMap<QString, QString> eventValues;
+        getEventValues(eventData, eventValues);
+        if (eventValues.value("Context") == "hintextens")
+        {
+            const QString exten  = eventValues.value("Exten");
+            const QString status = eventValues.value("Status");
+
+            if (eventValues.value("ActionID") == "getStateList")
+                stateList.insert(exten, status);
+            else
+            {
+                emit extenStatusChanged(exten, status);
+                stateList.insert(exten, status);
+            }
+        }
+    }
     else if (eventData.contains("ActionID: Groups"))
     {
         QMap<QString, QString> eventValues;
@@ -272,9 +290,9 @@ void AsteriskManager::parseEvent(const QString& eventData)
         {
             QString str = eventValues.value("Extension");
             if (isInternalPhone(&str))
-                groupNumbers << str;
+                if (eventValues.value("ActionID") == "")
+                    groupNumbers << str;
         }
-
     }
     else if (eventData.contains("Event: EndpointDetail"))
     {
@@ -351,7 +369,6 @@ void AsteriskManager::parseEvent(const QString& eventData)
         const QString linkedid          = eventValues.value("Linkedid");
         QString destProtocol;
 
-        //qDebug() << eventData;
         QString dateTime = QTime::currentTime().toString();
 
         QRegExp reg("([^/]*)(/)(\\d+)");
@@ -493,6 +510,20 @@ void AsteriskManager::getGroups()
     QString command;
     command = "Action: ShowDialPlan\r\n";
     command += "ActionID: Groups\r\n";
+
+    m_tcpSocket->write(command.toLatin1().data());
+    m_tcpSocket->write("\r\n");
+    m_tcpSocket->flush();
+}
+
+void AsteriskManager::getExtensionsStateList()
+{
+    stateList.clear();
+
+    QString command;
+    command = "Action: ExtensionStateList\r\n";
+    command += "ActionID: getStateList\r\n";
+
     m_tcpSocket->write(command.toLatin1().data());
     m_tcpSocket->write("\r\n");
     m_tcpSocket->flush();
@@ -514,6 +545,7 @@ void AsteriskManager::login()
 
     getExtensionNumbers();
     getGroups();
+    getExtensionsStateList();
 }
 
 /**

@@ -42,11 +42,13 @@ public:
     void setState(const AsteriskState& state);
     void getExtensionNumbers();
     void getGroups();
+    void getExtensionsStateList();
 
     bool isGroup(QString* str);
     bool isInternalPhone(QString* str);
 
     QMap<QString, QString> extensionNumbers;
+    QMap<QString, QString> stateList;
 
     QStringList groupNumbers;
 
@@ -59,6 +61,7 @@ signals:
     void callReceived(const QMap<QString, QVariant>& call);
     void error(const QAbstractSocket::SocketError& socketError, const QString& msg);
     void stateChanged(const AsteriskManager::AsteriskState& state);
+    void extenStatusChanged(const QString&, const QString&);
 
 protected slots:
     void onError(const QAbstractSocket::SocketError& socketError);
