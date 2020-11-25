@@ -1,4 +1,4 @@
-#include "OutCALL.h"
+#include "Outcall.h"
 #include "Global.h"
 #include "Windows.h"
 #include "DatabasesConnectDialog.h"
@@ -224,7 +224,7 @@ qint32 main(qint32 argc, char* argv[])
                       "QMenu::item:disabled          {background-color: #F2F2F2; color: #A9A9A9;}"
                       "QMenu::item:disabled:selected {background-color: #F2F2F2; color: #A9A9A9;}");
 
-    OutCall outcall;
+    Outcall outcall;
     outcall.show();
 
     return app.exec();
