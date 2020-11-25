@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>OutCALL</Name>
+    <Name>Outcall</Name>
     <Version>1.0.0</Version>
-    <Title>OutCALL</Title>
+    <Title>Outcall</Title>
     <Publisher>Team Nonames</Publisher>
-    <StartMenuDir>OutCALL</StartMenuDir>
-    <TargetDir>@RootDir@/OutCALL</TargetDir>
+    <StartMenuDir>Outcall</StartMenuDir>
+    <TargetDir>@RootDir@/Outcall</TargetDir>
     <WizardStyle>Modern</WizardStyle>
     <TitleColor>#FFFFFF</TitleColor>
     <ControlScript>controllerInstaller.qs</ControlScript>
     <!-- -->
-    <RunProgram>@TargetDir@/OutCALL.exe</RunProgram>
-    <RunProgramDescription>Запустить OutCALL после установки</RunProgramDescription>
+    <RunProgram>@TargetDir@/Outcall.exe</RunProgram>
+    <RunProgramDescription>Запустить Outcall после установки</RunProgramDescription>
 </Installer>
