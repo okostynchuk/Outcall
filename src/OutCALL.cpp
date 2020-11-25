@@ -451,7 +451,7 @@ void Outcall::changeIcon()
 /**
  * Выполняет открытие переданного окна.
  */
-void OutCall::showDialog(QDialog* dialog)
+void Outcall::showDialog(QDialog* dialog)
 {
     if (dialog->isVisible())
     {
