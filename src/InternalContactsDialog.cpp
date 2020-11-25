@@ -5,6 +5,7 @@
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
+#include <QDesktopWidget>
 #include <QMap>
 
 InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
@@ -15,6 +16,8 @@ InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     my_exten = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
     my_number = global::getExtensionNumber("extensions");
@@ -59,6 +62,11 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
  */
 void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
+
     ui->listWidget->clearSelection();
     ui->listWidget->scrollToTop();
 }

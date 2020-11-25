@@ -237,7 +237,7 @@ void PopupHelloWindow::onTimer()
 }
 
 /**
- * Выполняет создание окна и отображение в нём полученной информации из класса OutCALL.
+ * Выполняет создание окна и отображение в нём полученной информации из класса Outcall.
  */
 void PopupHelloWindow::showInformationMessage(const QString& caption, const QString& message, QPixmap avatar, PWType type)
 {

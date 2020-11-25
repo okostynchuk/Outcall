@@ -1529,31 +1529,39 @@
     </message>
     <message>
         <source>Поиск</source>
-        <translation>Search</translation>
+        <translation type="vanished">Search</translation>
     </message>
     <message>
         <source>◄◄</source>
-        <translation>◄◄</translation>
+        <translation type="vanished">◄◄</translation>
     </message>
     <message>
         <source>◄</source>
-        <translation>◄</translation>
+        <translation type="vanished">◄</translation>
     </message>
     <message>
         <source>►</source>
-        <translation>►</translation>
+        <translation type="vanished">►</translation>
     </message>
     <message>
         <source>►►</source>
-        <translation>►►</translation>
+        <translation type="vanished">►►</translation>
     </message>
     <message>
         <source>10</source>
-        <translation>10</translation>
+        <translation type="vanished">10</translation>
     </message>
     <message>
         <source>из </source>
-        <translation>from </translation>
+        <translation type="vanished">from </translation>
+    </message>
+    <message>
+        <source>Позвонить</source>
+        <translation>Call</translation>
+    </message>
+    <message>
+        <source>Добавить напоминание</source>
+        <translation>Add reminder</translation>
     </message>
 </context>
 <context>
@@ -1640,7 +1648,7 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>OutCall</name>
+    <name>Outcall</name>
     <message>
         <source>Выход</source>
         <translation>Exit</translation>

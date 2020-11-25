@@ -10,7 +10,7 @@
 #include "SettingsDialog.h"
 #include "PlayAudioDialog.h"
 #include "NotesDialog.h"
-#include "OutCALL.h"
+#include "Outcall.h"
 #include "Global.h"
 
 #include <QDialog>
@@ -109,6 +109,8 @@ private:
     QModelIndexList selections;
 
     QList<QWidget*> widgets;
+
+    QByteArray geometry;
 };
 
 #endif // CALLHISTORYDIALOG_H

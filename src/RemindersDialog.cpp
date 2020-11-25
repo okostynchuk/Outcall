@@ -17,6 +17,7 @@
 #include <QSqlQuery>
 #include <QLabel>
 #include <QRegularExpression>
+#include <QDesktopWidget>
 
 #define TIME_TO_UPDATE 5000 // msec
 
@@ -28,6 +29,8 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -165,6 +168,8 @@ void RemindersDialog::showEvent(QShowEvent* event)
  */
 void RemindersDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     QDialog::clearFocus();
 
     clearSelections();
@@ -179,6 +184,11 @@ void RemindersDialog::closeEvent(QCloseEvent*)
     page = "1";
 
     ui->tableView->scrollToTop();
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

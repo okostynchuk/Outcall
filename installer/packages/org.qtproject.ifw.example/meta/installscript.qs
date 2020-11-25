@@ -11,35 +11,35 @@ Component.prototype.createOperations = function()
         if (installer.value("os") === "win")
 	{
 	component.addOperation("CreateShortcut", 
-                            "@TargetDir@/OutCALL.exe",// target
-			    "@StartMenuDir@/OutCALL.lnk",
+                            "@TargetDir@/Outcall.exe",// target
+			    "@StartMenuDir@/Outcall.lnk",
                             "workingDirectory=@TargetDir@",// working-dir
-                            "iconPath=@TargetDir@/OutCALL.exe", "iconId=0",// icon
-                            "description=Запустить OutCALL");// description
+                            "iconPath=@TargetDir@/Outcall.exe", "iconId=0",// icon
+                            "description=Запустить Outcall");// description
 	component.addOperation("CreateShortcut",
-				"@TargetDir@/OutCALL.exe",
-				"@DesktopDir@/OutCALL.lnk",
+				"@TargetDir@/Outcall.exe",
+				"@DesktopDir@/Outcall.lnk",
 				"workingDirectory=@TargetDir@",
-				"iconPath=@TargetDir@/OutCALL.exe",
-				"description=Запустить OutCALL");
+				"iconPath=@TargetDir@/Outcall.exe",
+				"description=Запустить Outcall");
 	if (systemInfo.productVersion === "10" || systemInfo.productVersion === "8.1" || systemInfo.productVersion === "7")
 	{
 		component.addOperation("CreateShortcut",
-			"@TargetDir@/OutCALL.exe",
-			"@UserStartMenuProgramsPath@/Startup/OutCALL.lnk",
+			"@TargetDir@/Outcall.exe",
+			"@UserStartMenuProgramsPath@/Startup/Outcall.lnk",
 			"workingDirectory=@TargetDir@",
-			"iconPath=@TargetDir@/OutCALL.exe",
-			"description=Запустить OutCALL");
+			"iconPath=@TargetDir@/Outcall.exe",
+			"description=Запустить Outcall");
 	}
 	
 	if (systemInfo.productVersion != "8.1")
 	{
 		component.addOperation("CreateShortcut",
-			"@TargetDir@/OutCALL.exe",
-			"@UserStartMenuProgramsPath@/Автозагрузка/OutCALL.lnk",
+			"@TargetDir@/Outcall.exe",
+			"@UserStartMenuProgramsPath@/Автозагрузка/Outcall.lnk",
 			"workingDirectory=@TargetDir@",
-			"iconPath=@TargetDir@/OutCALL.exe",
-			"description=Запустить OutCALL");
+			"iconPath=@TargetDir@/Outcall.exe",
+			"description=Запустить Outcall");
 	}
 
 // Check if redistributable is installed

@@ -6,6 +6,7 @@
 #include "ui_CallHistoryDialog.h"
 
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
     QDialog(parent),
@@ -15,6 +16,8 @@ CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -71,6 +74,8 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
  */
 void CallHistoryDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     ui->comboBox_days->setCurrentIndex(0);
 
     ui->tabWidget->setCurrentIndex(0);
@@ -82,6 +87,11 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
     page = "1";
 
     ui->tableView->scrollToTop();
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

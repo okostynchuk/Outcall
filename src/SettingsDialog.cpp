@@ -8,12 +8,13 @@
 
 #include "AddExtensionDialog.h"
 #include "Global.h"
-#include "OutCALL.h"
+#include "Outcall.h"
 
 #include <QSettings>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QProcess>
+#include <QDesktopWidget>
 
 static const QString DEFS_URL = "http://192.168.0.30/definitions/updates.json";
 
@@ -24,11 +25,13 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    ui->autoSignIn->hide();
-    ui->autoStartBox->hide();
-
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
+
+    ui->autoSignIn->hide();
+    ui->autoStartBox->hide();
 
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
@@ -104,6 +107,8 @@ void SettingsDialog::checkAsteriskState(const AsteriskManager::AsteriskState& st
  */
 void SettingsDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     QDialog::clearFocus();
 
     ui->tabWidget->setCurrentIndex(0);
@@ -111,6 +116,11 @@ void SettingsDialog::closeEvent(QCloseEvent*)
     ui->tabWidget_3->setCurrentIndex(0);
 
     ui->languageList->setCurrentText(global::getSettingsValue("language", "settings").toString());
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

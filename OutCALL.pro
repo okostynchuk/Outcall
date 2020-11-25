@@ -13,7 +13,7 @@ win32
 {
     VERSION = 1.0.0
 
-    QMAKE_TARGET_PRODUCT = OutCALL
+    QMAKE_TARGET_PRODUCT = Outcall
     QMAKE_TARGET_COMPANY = Team Nonames
 
     RC_ICONS = $$PWD/src/images/outcall-logo.ico
@@ -23,7 +23,7 @@ win32-g++
    QMAKE_CXXFLAGS += -Werror
 }
 
-TARGET = OutCALL
+TARGET = Outcall
 TEMPLATE = app
 
 CONFIG += c++11
@@ -38,7 +38,7 @@ SOURCES += \
     AsteriskManager.cpp \
     CallHistoryDialog.cpp \
     Global.cpp \
-    OutCALL.cpp \
+    Outcall.cpp \
     PlaceCallDialog.cpp \
     PlayAudioDialog.cpp \
     PopupNotification.cpp \
@@ -73,7 +73,7 @@ HEADERS += \
     AsteriskManager.h \
     CallHistoryDialog.h \
     Global.h \
-    OutCALL.h \
+    Outcall.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
     PlayAudioDialog.h \
