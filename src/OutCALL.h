@@ -42,6 +42,8 @@ protected slots:
 
     void signInOut();
 
+    void showDialog(QDialog* dialog);
+
     void onSettingsDialog();
     void onContactsDialog();
     void onDebugInfo();

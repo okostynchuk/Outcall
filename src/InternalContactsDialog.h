@@ -66,6 +66,8 @@ private:
 
     QStringList extensions;
     QStringList extensions_full;
+
+    QByteArray geometry;
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

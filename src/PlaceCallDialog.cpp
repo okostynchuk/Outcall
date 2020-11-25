@@ -11,6 +11,7 @@
 #include <QHeaderView>
 #include <QSqlQuery>
 #include <QModelIndex>
+#include <QDesktopWidget>
 
 PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     QDialog(parent),
@@ -20,6 +21,8 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -246,6 +249,8 @@ void PlaceCallDialog::showEvent(QShowEvent* event)
  */
 void PlaceCallDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     ui->comboBox->setCurrentIndex(0);
 
     ui->lineEdit->clear();
@@ -255,6 +260,11 @@ void PlaceCallDialog::closeEvent(QCloseEvent*)
     ui->phoneLine->clear();
 
     ui->tableView->setModel(NULL);
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

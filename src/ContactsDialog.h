@@ -85,6 +85,8 @@ private:
     QString entry_comment;
 
     bool filter;
+
+    QByteArray geometry;
 };
 
 #endif // CONTACTSDIALOG_H

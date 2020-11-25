@@ -109,6 +109,8 @@ private:
     QModelIndexList selections;
 
     QList<QWidget*> widgets;
+
+    QByteArray geometry;
 };
 
 #endif // CALLHISTORYDIALOG_H

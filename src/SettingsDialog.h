@@ -72,6 +72,8 @@ private:
     QStringList m_countries;
 
     QList<QWidget*> widgetsList;
+
+    QByteArray geometry;
 };
 
 #endif // SETTINGSDIALOG_H

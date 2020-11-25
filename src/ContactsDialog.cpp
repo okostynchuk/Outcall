@@ -5,6 +5,8 @@
 #include "ContactsDialog.h"
 #include "ui_ContactsDialog.h"
 
+#include <QDesktopWidget>
+
 ContactsDialog::ContactsDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ContactsDialog)
@@ -13,6 +15,8 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -77,6 +81,8 @@ void ContactsDialog::showEvent(QShowEvent*)
  */
 void ContactsDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     selectionModel.clear();
 
     ui->tableView->clearSelection();
@@ -91,6 +97,11 @@ void ContactsDialog::closeEvent(QCloseEvent*)
     page = "1";
 
     go = "default";
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

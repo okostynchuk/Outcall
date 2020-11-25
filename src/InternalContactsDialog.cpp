@@ -5,6 +5,8 @@
 #include "InternalContactsDialog.h"
 #include "ui_InternalContactsDialog.h"
 
+#include <QDesktopWidget>
+
 InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::InternalContactsDialog)
@@ -13,6 +15,8 @@ InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+
+    geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -80,6 +84,8 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
  */
 void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     ui->lineEdit->clear();
     ui->lineEdit->setFocus();
 
@@ -90,6 +96,11 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
     go = "default";
 
     page = "1";
+
+    restoreGeometry(geometry);
+
+    QRect scr = QApplication::desktop()->screenGeometry();
+    move(scr.center() - rect().center());
 }
 
 /**

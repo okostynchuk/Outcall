@@ -61,6 +61,8 @@ private:
 
     QString number;
     QString my_number;
+
+    QByteArray geometry;
 };
 
 #endif // PLACECALLDIALOG_H

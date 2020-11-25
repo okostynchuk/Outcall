@@ -449,12 +449,37 @@ void OutCall::changeIcon()
 }
 
 /**
+ * Выполняет открытие переданного окна.
+ */
+void OutCall::showDialog(QDialog* dialog)
+{
+    if (dialog->isVisible())
+    {
+        if (dialog->isMaximized())
+            dialog->showMaximized();
+        else
+            dialog->showNormal();
+    }
+    else
+    {
+        if (dialog->objectName() == "ContactsDialog")
+        {
+            dialog->showNormal();
+            dialog->showMaximized();
+        }
+        else
+            dialog->showNormal();
+    }
+
+    dialog->raise();
+}
+
+/**
  * Выполняет открытие окна с историей звонков.
  */
 void OutCall::onCallHistory()
 {
-    m_callHistoryDialog->showNormal();
-    m_callHistoryDialog->raise();
+    showDialog(m_callHistoryDialog);
 }
 
 /**
@@ -464,8 +489,7 @@ void OutCall::onSettingsDialog()
 {
 //    SettingsDialog dialog;
 //    dialog.exec();
-    m_settingsDialog->showNormal();
-    m_settingsDialog->raise();
+    showDialog(m_settingsDialog);
 }
 
 /**
@@ -473,8 +497,7 @@ void OutCall::onSettingsDialog()
  */
 void OutCall::onDebugInfo()
 {
-    m_debugInfoDialog->showNormal();
-    m_debugInfoDialog->raise();
+    showDialog(m_debugInfoDialog);
 }
 
 /**
@@ -482,8 +505,7 @@ void OutCall::onDebugInfo()
  */
 void OutCall::onPlaceCall()
 {
-    m_placeCallDialog->showNormal();
-    m_placeCallDialog->raise();
+    showDialog(m_placeCallDialog);
 }
 
 /**
@@ -491,8 +513,7 @@ void OutCall::onPlaceCall()
  */
 void OutCall::onContactsDialog()
 {
-    m_contactsDialog->showMaximized();
-    m_contactsDialog->raise();
+    showDialog(m_contactsDialog);
 }
 
 /**
@@ -500,8 +521,7 @@ void OutCall::onContactsDialog()
  */
 void OutCall::onInternalContactsDialog()
 {
-    m_internalContactsDialog->showNormal();
-    m_internalContactsDialog->raise();
+    showDialog(m_internalContactsDialog);
 }
 
 /**
@@ -509,8 +529,7 @@ void OutCall::onInternalContactsDialog()
  */
 void OutCall::onRemindersDialog()
 {
-    m_remindersDialog->showNormal();
-    m_remindersDialog->raise();
+    showDialog(m_remindersDialog);
 
     QSqlQuery query(db);
 
@@ -551,10 +570,7 @@ void OutCall::onActivated(const QSystemTrayIcon::ActivationReason& reason)
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
         if (dbsOpened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
-        {
-            m_placeCallDialog->showNormal();
-            m_placeCallDialog->activateWindow();
-        }
+            showDialog(m_placeCallDialog);
     }
 }
 
