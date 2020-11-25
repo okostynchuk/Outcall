@@ -21,7 +21,7 @@ class PlaceCallDialog;
 class RemindersDialog;
 class InternalContactsDialog;
 
-class OutCall : public QWidget
+class Outcall : public QWidget
 {
     Q_OBJECT
 
@@ -29,8 +29,8 @@ signals:
     void showReminders(bool show);
 
 public:
-    OutCall();
-    ~OutCall();
+    Outcall();
+    ~Outcall();
 
     void show();
 

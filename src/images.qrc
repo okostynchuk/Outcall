@@ -32,5 +32,10 @@
         <file>images/addList.png</file>
         <file>images/deleteList.png</file>
         <file>images/exitFromApp.png</file>
+        <file>images/presence-idle.png</file>
+        <file>images/presence-unavial.png</file>
+        <file>images/presence-busy.png</file>
+        <file>images/presence-hold.png</file>
+        <file>images/presence-dnd.png</file>
     </qresource>
 </RCC>

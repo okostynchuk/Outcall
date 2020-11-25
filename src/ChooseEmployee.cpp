@@ -18,6 +18,7 @@ ChooseEmployee::ChooseEmployee(QWidget* parent) :
     extensions = g_pAsteriskManager->extensionNumbers.values();
 
     extensions.removeAll(my_number);
+    extensions.removeOne("");
 
     ui->listWidget->addItems(extensions);
 

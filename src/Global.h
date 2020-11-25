@@ -4,7 +4,7 @@
 #define LOG_ERROR				0
 #define LOG_WARNING				1
 #define LOG_INFORMATION			2
-#define APP_NAME                "OutCALL"
+#define APP_NAME                "Outcall"
 #define ORGANIZATION_NAME       "Team Nonames"
 #define APP_VERSION             "1.0.0"
 

@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QKeyEvent>
+#include <QDebug>
 
 class AddReminderDialog;
 
@@ -25,21 +26,16 @@ public:
     ~InternalContactsDialog();
 
 private slots:
-    void onCall();
-    void onAddReminder();
-    void onSearch();
-    void deleteObjects();
     void loadContacts();
-
-    void on_previousButton_clicked();
-    void on_nextButton_clicked();
-    void on_nextEndButton_clicked();
-    void on_previousStartButton_clicked();
-    void on_lineEdit_page_returnPressed();
+    void onExtenStatusChanged(QString exten, QString state);
 
     void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
     void keyPressEvent(QKeyEvent* event);
+
+    void on_callButton_clicked();
+    void on_addReminderButton_clicked();
+    void on_listWidget_clicked();
 
 private:
     Ui::InternalContactsDialog* ui;
@@ -49,25 +45,15 @@ private:
     QValidator* validator;
 
     QString my_number;
-    QString go;
-    QString page;
-
-    qint32 countRecords;
-    qint32 remainder;
-    qint32 l_from;
-    qint32 l_to;
-
-    QWidget* addButtonsWidget(const QString& name);
-
-    QListWidget* list;
-
-    QList<QListWidgetItem*> itemsSearch;
-    QList<QWidget*> widgets;
+    QString my_exten;
 
     QStringList extensions;
-    QStringList extensions_full;
 
     QByteArray geometry;
+
+    QMap<QString, QString> stateList;
+    QMap<QString, int> indexes;
+
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

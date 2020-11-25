@@ -46,6 +46,9 @@
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
+         <property name="inputMask">
+          <string/>
+         </property>
         </widget>
        </item>
        <item row="2" column="0">
