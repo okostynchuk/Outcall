@@ -9,7 +9,7 @@
 #include "AddPersonToOrg.h"
 #include "NotesDialog.h"
 #include "AddReminderDialog.h"
-#include "PlayAudioDialog.h"
+#include "Player.h"
 
 #include <QHeaderView>
 #include <QSqlQueryModel>
@@ -84,7 +84,7 @@ private:
     QPointer<QSqlQueryModel> queryModel;
 
     QPointer<AddPersonToOrg> addPersonToOrg;
-    QPointer<PlayAudioDialog> playAudioDialog;
+    QPointer<Player> player;
     QPointer<ChooseNumber> chooseNumber;
     QPointer<AddReminderDialog> addReminderDialog;
 

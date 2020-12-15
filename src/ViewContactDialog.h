@@ -7,7 +7,7 @@
 #include "ChooseNumber.h"
 #include "NotesDialog.h"
 #include "AddReminderDialog.h"
-#include "PlayAudioDialog.h"
+#include "Player.h"
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -74,7 +74,7 @@ private:
 
     QPointer<AddReminderDialog> addReminderDialog;
     QPointer<ChooseNumber> chooseNumber;
-    QPointer<PlayAudioDialog> playAudioDialog;
+    QPointer<Player> player;
 
     EditContactDialog* editContactDialog;
     NotesDialog* notesDialog;

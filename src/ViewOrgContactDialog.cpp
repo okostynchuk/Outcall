@@ -757,13 +757,13 @@ void ViewOrgContactDialog::onPlayAudio()
 
     if (!recordpath.isEmpty())
     {
-        if (!playAudioDialog.isNull())
-            playAudioDialog->close();
+        if (!player.isNull())
+            player->close();
 
-        playAudioDialog = new PlayAudioDialog;
-        playAudioDialog->openMedia(recordpath);
-        playAudioDialog->show();
-        playAudioDialog->setAttribute(Qt::WA_DeleteOnClose);
+        player = new Player;
+        player->openMedia(recordpath);
+        player->show();
+        player->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 

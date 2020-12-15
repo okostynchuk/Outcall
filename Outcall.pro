@@ -40,7 +40,6 @@ SOURCES += \
     Global.cpp \
     Outcall.cpp \
     PlaceCallDialog.cpp \
-    PlayAudioDialog.cpp \
     PopupNotification.cpp \
     QSqlQueryModelReminders.cpp \
     SettingsDialog.cpp \
@@ -65,7 +64,8 @@ SOURCES += \
     PopupReminder.cpp \
     ChooseEmployee.cpp \
     InternalContactsDialog.cpp \
-    QCustomWidget.cpp
+    QCustomWidget.cpp \
+    src/Player.cpp
 
 HEADERS += \
     AddReminderDialog.h \
@@ -76,7 +76,6 @@ HEADERS += \
     Outcall.h \
     PlaceCallDialog.h \
     AddExtensionDialog.h \
-    PlayAudioDialog.h \
     PopupNotification.h \
     QSqlQueryModelReminders.h \
     SettingsDialog.h \
@@ -101,7 +100,8 @@ HEADERS += \
     PopupReminder.h \
     ChooseEmployee.h \
     InternalContactsDialog.h \
-    QCustomWidget.h
+    QCustomWidget.h \
+    src/Player.h
 
 FORMS += \
     AddExtensionDialog.ui \
@@ -109,7 +109,6 @@ FORMS += \
     CallHistoryDialog.ui \
     DebugInfoDialog.ui \
     PlaceCallDialog.ui \
-    PlayAudioDialog.ui \
     PopupNotification.ui \
     SettingsDialog.ui \
     PopupWindow.ui \
@@ -131,8 +130,11 @@ FORMS += \
     EditReminderDialog.ui \
     PopupReminder.ui \
     ChooseEmployee.ui \
-    InternalContactsDialog.ui
+    InternalContactsDialog.ui \
+    src/Player.ui
 
 RESOURCES += \
     images.qrc \
     translations.qrc \
+
+DISTFILES +=

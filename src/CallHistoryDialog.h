@@ -8,7 +8,7 @@
 #include "EditOrgContactDialog.h"
 #include "AddPhoneNumberToContactDialog.h"
 #include "SettingsDialog.h"
-#include "PlayAudioDialog.h"
+#include "Player.h"
 #include "NotesDialog.h"
 #include "Outcall.h"
 #include "Global.h"
@@ -84,7 +84,7 @@ private:
 
     QValidator* validator;
 
-    QPointer<PlayAudioDialog> playAudioDialog;
+    QPointer<Player> player;
 
     AddContactDialog* addContactDialog;
     AddOrgContactDialog* addOrgContactDialog;
