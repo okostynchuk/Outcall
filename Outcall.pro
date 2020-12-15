@@ -1,22 +1,21 @@
-QT += core
-QT += gui
-QT += network
-QT += sql
-QT += widgets
-QT += multimedia
-QT += winextras
-QT += axcontainer
+QT += \
+    core \
+    gui \
+    network \
+    sql \
+    widgets \
+    multimedia
 
 include ($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
+VERSION = 1.0.0
+
+QMAKE_TARGET_PRODUCT = Outcall
+QMAKE_TARGET_COMPANY = Team Nonames
+
 win32
 {
-    VERSION = 1.0.0
-
-    QMAKE_TARGET_PRODUCT = Outcall
-    QMAKE_TARGET_COMPANY = Team Nonames
-
-    RC_ICONS = $$PWD/src/images/outcall-logo.ico
+   RC_ICONS = $$PWD/src/images/outcall-logo.ico
 }
 win32-g++
 {

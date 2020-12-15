@@ -1,33 +1,26 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define LOG_ERROR				0
-#define LOG_WARNING				1
-#define LOG_INFORMATION			2
-#define APP_NAME                "Outcall"
-#define ORGANIZATION_NAME       "Team Nonames"
-#define APP_VERSION             "1.0.0"
+#define APP_NAME            "Outcall"
+#define ORGANIZATION_NAME   "Team Nonames"
+#define APP_VERSION         "1.0.0"
 
 #include <QVariant>
 #include <QMessageBox>
 
-extern QString g_AppDirPath;
-extern QString g_AppSettingsFolderPath;
+extern QString g_appDirPath;
+extern QString g_appSettingsFolderPath;
 
-extern bool dbsOpened;
-extern bool ordersDbOpened;
+extern bool g_dbsOpened;
+extern bool g_ordersDbOpened;
 
-QMessageBox::StandardButton MsgBoxInformation(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString& title = APP_NAME, QWidget* parent = 0,
-                                                     QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+int MsgBoxInformation(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
-QMessageBox::StandardButton MsgBoxError(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString& title = APP_NAME, QWidget* parent = 0,
-                                                     QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+int MsgBoxError(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
-QMessageBox::StandardButton MsgBoxWarning(const QString& text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-                                                     const QString& title = APP_NAME, QWidget* parent = 0,
-                                                     QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+int MsgBoxWarning(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
+
+int MsgBoxQuestion(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
 namespace global
 {
@@ -39,11 +32,11 @@ namespace global
 
     bool containsSettingsKey(const QString& key, const QString& group = "");
 
-    QStringList getSettingKeys(const QString& group);
+    QStringList getSettingKeys(const QString& group = "");
 
-    QString getExtensionNumber(const QString& group);
+    QString getExtensionNumber(const QString& group = "");
 
-    QString getGroupExtensionNumber(const QString& group);
+    QString getGroupExtensionNumber(const QString& group = "");
 }
 
 #endif // GLOBAL_H

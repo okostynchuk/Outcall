@@ -897,7 +897,7 @@ void RemindersDialog::checkBoxStateChanged()
 
         resizeCells = false;
 
-        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
+        MsgBoxError(tr("Указано прошедшее время!"));
     }
     else
     {

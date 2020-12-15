@@ -58,13 +58,13 @@ void DatabasesConnectDialog::onSave()
         openDbCalls();
 
         if (!db.isOpen() && !dbCalls.isOpen())
-            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение не создано!"), QMessageBox::Ok);
+            MsgBoxError(tr("Подключение не создано!"));
         else if (!db.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
 
-            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
+            MsgBoxError(tr("Подключение к базе контактов не создано!"));
 
             setSettingsDbCalls();
         }
@@ -73,7 +73,7 @@ void DatabasesConnectDialog::onSave()
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
 
-            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
+            MsgBoxError(tr("Подключение к базе звонков не создано!"));
 
             setSettingsDb();
         }
@@ -82,7 +82,7 @@ void DatabasesConnectDialog::onSave()
             setSettingsDb();
             setSettingsDbCalls();
 
-            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+            MsgBoxInformation(tr("Подключение успешно создано!"));
 
             close();
         }
@@ -92,12 +92,12 @@ void DatabasesConnectDialog::onSave()
         openDb();
 
         if (!db.isOpen())
-            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе контактов не создано!"), QMessageBox::Ok);
+            MsgBoxError(tr("Подключение к базе контактов не создано!"));
         else
         {
             setSettingsDb();
 
-            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+            MsgBoxInformation(tr("Подключение успешно создано!"));
 
             close();
         }
@@ -107,12 +107,12 @@ void DatabasesConnectDialog::onSave()
         openDbCalls();
 
         if (!dbCalls.isOpen())
-            QMessageBox::critical(nullptr, tr("Ошибка"), tr("Подключение к базе звонков не создано!"), QMessageBox::Ok);
+            MsgBoxError(tr("Подключение к базе звонков не создано!"));
         else
         {
             setSettingsDbCalls();
 
-            QMessageBox::information(nullptr, tr("Уведомление"), tr("Подключение успешно создано!"), QMessageBox::Ok);
+            MsgBoxInformation(tr("Подключение успешно создано!"));
 
             close();
         }

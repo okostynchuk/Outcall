@@ -159,30 +159,30 @@ void PopupHelloWindow::onTimer()
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY>(m_nStartPosY-height()))
-                    m_nCurrentPosY-=m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_TOP:
-                if ((m_nCurrentPosY-m_nStartPosY)<height())
-                    m_nCurrentPosY+=m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_LEFT:
-                if ((m_nCurrentPosX-m_nStartPosX)<width())
-                    m_nCurrentPosX+=m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX>(m_nStartPosX-width()))
-                    m_nCurrentPosX-=m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
+        case TASKBAR_ON_BOTTOM:
+            if (m_nCurrentPosY>(m_nStartPosY-height()))
+                m_nCurrentPosY-=m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_TOP:
+            if ((m_nCurrentPosY-m_nStartPosY)<height())
+                m_nCurrentPosY+=m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_LEFT:
+            if ((m_nCurrentPosX-m_nStartPosX)<width())
+                m_nCurrentPosX+=m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_RIGHT:
+            if (m_nCurrentPosX>(m_nStartPosX-width()))
+                m_nCurrentPosX-=m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
         }
     }
 
@@ -190,46 +190,46 @@ void PopupHelloWindow::onTimer()
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY < m_nStartPosY)
-                    m_nCurrentPosY += m_nIncrement;
-                else
-                {
-                    closeAndDestroy();
+        case TASKBAR_ON_BOTTOM:
+            if (m_nCurrentPosY < m_nStartPosY)
+                m_nCurrentPosY += m_nIncrement;
+            else
+            {
+                closeAndDestroy();
 
-                    return;
-                }
-                break;
-            case TASKBAR_ON_TOP:
-                if (m_nCurrentPosY > m_nStartPosY)
-                    m_nCurrentPosY -= m_nIncrement;
-                else
-                {
-                    closeAndDestroy();
+                return;
+            }
+            break;
+        case TASKBAR_ON_TOP:
+            if (m_nCurrentPosY > m_nStartPosY)
+                m_nCurrentPosY -= m_nIncrement;
+            else
+            {
+                closeAndDestroy();
 
-                    return;
-                }
-                break;
-            case TASKBAR_ON_LEFT:
-                if (m_nCurrentPosX > m_nStartPosX)
-                    m_nCurrentPosX -= m_nIncrement;
-                else
-                {
-                    closeAndDestroy();
+                return;
+            }
+            break;
+        case TASKBAR_ON_LEFT:
+            if (m_nCurrentPosX > m_nStartPosX)
+                m_nCurrentPosX -= m_nIncrement;
+            else
+            {
+                closeAndDestroy();
 
-                    return;
-                }
-                break;
-            case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX < m_nStartPosX)
-                    m_nCurrentPosX += m_nIncrement;
-                else
-                {
-                    closeAndDestroy();
+                return;
+            }
+            break;
+        case TASKBAR_ON_RIGHT:
+            if (m_nCurrentPosX < m_nStartPosX)
+                m_nCurrentPosX += m_nIncrement;
+            else
+            {
+                closeAndDestroy();
 
-                    return;
-                }
-                break;
+                return;
+            }
+            break;
         }
     }
 

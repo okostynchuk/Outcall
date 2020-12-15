@@ -5,6 +5,8 @@
 #include "AddPhoneNumberToContactDialog.h"
 #include "ui_AddPhoneNumberToContactDialog.h"
 
+#include "Global.h"
+
 #include <QMessageBox>
 
 AddPhoneNumberToContactDialog::AddPhoneNumberToContactDialog(QWidget* parent) :
@@ -60,7 +62,7 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
     if (query.value(0) != 0)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Данный номер уже привязан к контакту!"), QMessageBox::Ok);
+        MsgBoxError(tr("Данный номер уже привязан к контакту!"));
 
         return;
     }
@@ -84,30 +86,30 @@ void AddPhoneNumberToContactDialog::addPhoneNumber(const QModelIndex &index)
 
         switch (reply)
         {
-            case QMessageBox::Yes:
-                query.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
-                query.addBindValue(id);
-                query.addBindValue(phoneNumber);
-                query.exec();
+        case QMessageBox::Yes:
+            query.prepare("INSERT INTO fones (entry_id, fone)"
+                           "VALUES(?, ?)");
+            query.addBindValue(id);
+            query.addBindValue(phoneNumber);
+            query.exec();
 
-                emit sendData(true);
+            emit sendData(true);
 
-                close();
+            close();
 
-                msgBox.close();
+            msgBox.close();
 
-                QMessageBox::information(this, tr("Уведомление"), tr("Номер успешно добавлен!"), QMessageBox::Ok);
-                break;
-            case QMessageBox::No:
-                msgBox.close();
-                break;
-            default:
-                break;
+            MsgBoxInformation(tr("Номер успешно добавлен!"));
+            break;
+        case QMessageBox::No:
+            msgBox.close();
+            break;
+        default:
+            break;
         }
     }
     else
-        QMessageBox::critical(this, tr("Ошибка"), tr("Контакту не может быть присвоено больше 5 номеров!"), QMessageBox::Ok);
+        MsgBoxError(tr("Контакту не может быть присвоено больше 5 номеров!"));
 }
 
 /**

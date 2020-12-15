@@ -78,14 +78,14 @@ void EditReminderDialog::onSave()
 
     if (dateTime < QDateTime::currentDateTime())
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
+        MsgBoxError(tr("Указано прошедшее время!"));
 
         return;
     }
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+        MsgBoxError(tr("Содержание напоминания не может быть пустым!"));
 
         return;
     }
@@ -95,7 +95,7 @@ void EditReminderDialog::onSave()
 
     if (ui->chooseEmployeeButton->isHidden() && employee.first() == my_number && dateTime == oldDateTime && note == oldNote && employee == employeeInitial)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Для сохранения требуется внести изменения!"), QMessageBox::Ok);
+        MsgBoxError(tr("Для сохранения требуется внести изменения!"));
 
         return;
     }
@@ -302,7 +302,7 @@ void EditReminderDialog::onSave()
 
     close();
 
-    QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно изменено!"), QMessageBox::Ok);
+    MsgBoxInformation(tr("Напоминание успешно изменено!"));
 }
 
 /**

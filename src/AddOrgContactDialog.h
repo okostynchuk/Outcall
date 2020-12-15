@@ -39,7 +39,7 @@ private:
 
     QList<QLineEdit*> phonesList;
 
-    QValidator* Validator;
+    QValidator* validator;
 
     QStringList numbers;
 };

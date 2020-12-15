@@ -7,6 +7,8 @@
 
 #include "Global.h"
 
+#include <QMessageBox>
+
 AddExtensionDialog::AddExtensionDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddExtensionDialog)
@@ -63,12 +65,12 @@ void AddExtensionDialog::setProtocol(const QString& protocol)
 void AddExtensionDialog::on_applyButton_pressed()
 {
     if (ui->extenLine->text().isEmpty())
-        MsgBoxWarning(tr("Неверный номер!"));
+        MsgBoxError(tr("Номер не соответствует формату!"));
     else
     {
-         QDialog::accept();
+        QDialog::accept();
 
-         emit addExten();
+        emit addExten();
     }
 }
 

@@ -77,7 +77,7 @@ PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
         }
     }
 
-    if (!ordersDbOpened)
+    if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
     connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
@@ -324,52 +324,52 @@ void PopupWindow::onTimer()
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY > (m_nStartPosY - height()))
-                    m_nCurrentPosY -= m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_TOP:
-                if ((m_nCurrentPosY - m_nStartPosY) < height())
-                    m_nCurrentPosY += m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_LEFT:
-                if ((m_nCurrentPosX - m_nStartPosX) < width())
-                    m_nCurrentPosX += m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
-            case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX > (m_nStartPosX - width()))
-                    m_nCurrentPosX -= m_nIncrement;
-                else
-                    startPopupWaitingTimer();
-                break;
+        case TASKBAR_ON_BOTTOM:
+            if (m_nCurrentPosY > (m_nStartPosY - height()))
+                m_nCurrentPosY -= m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_TOP:
+            if ((m_nCurrentPosY - m_nStartPosY) < height())
+                m_nCurrentPosY += m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_LEFT:
+            if ((m_nCurrentPosX - m_nStartPosX) < width())
+                m_nCurrentPosX += m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
+        case TASKBAR_ON_RIGHT:
+            if (m_nCurrentPosX > (m_nStartPosX - width()))
+                m_nCurrentPosX -= m_nIncrement;
+            else
+                startPopupWaitingTimer();
+            break;
         }
     }
     else // DISSAPPEARING
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_TOP:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_LEFT:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_RIGHT:
-                closeAndDestroy();
-                return;
-                break;
+        case TASKBAR_ON_BOTTOM:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_TOP:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_LEFT:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_RIGHT:
+            closeAndDestroy();
+            return;
+            break;
         }
     }
 
@@ -594,7 +594,7 @@ void PopupWindow::onOpenAccess()
     {
         setStyleSheet("QMessageBox{ color: #000000; }");
 
-        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        MsgBoxError(tr("Отсутствует подключение к базе заказов!"));
     }
 }
 
@@ -666,7 +666,7 @@ void PopupWindow::receiveData(bool update)
             }
         }
 
-        if (!ordersDbOpened)
+        if (!g_ordersDbOpened)
             ui->openAccessButton->hide();
     }
 }

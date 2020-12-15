@@ -40,7 +40,7 @@ ViewContactDialog::ViewContactDialog(QWidget* parent) :
 
     my_number = global::getExtensionNumber("extensions");
 
-    if (!ordersDbOpened)
+    if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
     ui->comboBox_list->setVisible(false);
@@ -127,7 +127,7 @@ void ViewContactDialog::onOpenAccess()
         dbOrders.close();
     }
     else
-        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        MsgBoxError(tr("Отсутствует подключение к базе заказов!"));
 }
 
 /**
@@ -734,7 +734,7 @@ void ViewContactDialog::onPlayAudio()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -758,7 +758,7 @@ void ViewContactDialog::onPlayAudioPhone()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }

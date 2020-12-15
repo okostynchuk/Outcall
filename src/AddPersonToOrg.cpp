@@ -5,6 +5,8 @@
 #include "AddPersonToOrg.h"
 #include "ui_AddPersonToOrg.h"
 
+#include "Global.h"
+
 #include <QMessageBox>
 
 AddPersonToOrg::AddPersonToOrg(QWidget* parent) :
@@ -73,7 +75,7 @@ void AddPersonToOrg::addPerson(const QModelIndex &index)
 
     if (query.value(0) == 0)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Организации не существует или она была изменена!"), QMessageBox::Ok);
+        MsgBoxError(tr("Организации не существует или она была изменена!"));
 
         return;
     }
@@ -87,7 +89,7 @@ void AddPersonToOrg::addPerson(const QModelIndex &index)
 
     loadPersons();
 
-    QMessageBox::information(this, tr("Уведомление"), tr("Сотрудник успешно добавлен!"), QMessageBox::Ok);
+    MsgBoxInformation(tr("Сотрудник успешно добавлен!"));
 }
 
 /**

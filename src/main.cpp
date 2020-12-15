@@ -28,18 +28,18 @@ qint32 main(qint32 argc, char* argv[])
     app.setApplicationVersion(APP_VERSION);
     app.setOrganizationName(ORGANIZATION_NAME);
 
-    g_AppSettingsFolderPath = QDir::homePath() + "/" + app.applicationName();
-    g_AppDirPath = QApplication::applicationDirPath();
-    global::setSettingsValue("InstallDir", g_AppDirPath.replace("/", "\\"));
+    g_appSettingsFolderPath = QDir::homePath() + "/" + app.applicationName();
+    g_appDirPath = QApplication::applicationDirPath();
+    global::setSettingsValue("InstallDir", g_appDirPath.replace("/", "\\"));
 
-    QDir dir(g_AppDirPath);
+    QDir dir(g_appDirPath);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     qint32 fileAmount = dir.count();
 
     QStringList namesOfDirectories;
     namesOfDirectories = dir.entryList();
 
-    QDir oldAppDir(g_AppDirPath + "\\");
+    QDir oldAppDir(g_appDirPath + "\\");
 
     QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
     QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
@@ -56,7 +56,7 @@ qint32 main(qint32 argc, char* argv[])
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder(g_AppDirPath + "\\" + namesOfDirectories.at(i));
+                QDir folder(g_appDirPath + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }
@@ -158,7 +158,7 @@ qint32 main(qint32 argc, char* argv[])
 
     if (!db.isOpen() && !dbCalls.isOpen())
     {
-        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базам данных!"), QMessageBox::Ok);
+        MsgBoxError(QObject::tr("Отсутствует подключение к базам данных!"));
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "twoDbs");
@@ -167,7 +167,7 @@ qint32 main(qint32 argc, char* argv[])
     }
     else if (!db.isOpen())
     {
-        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе контактов!"), QMessageBox::Ok);
+        MsgBoxError(QObject::tr("Отсутствует подключение к базе контактов!"));
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "db");
@@ -177,7 +177,7 @@ qint32 main(qint32 argc, char* argv[])
     }
     else if (!dbCalls.isOpen())
     {
-        QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе звонков!"), QMessageBox::Ok);
+        MsgBoxError(QObject::tr("Отсутствует подключение к базе звонков!"));
 
         DatabasesConnectDialog* databasesConnectDialog = new DatabasesConnectDialog;
         databasesConnectDialog->setDatabases(db, dbCalls, "dbCalls");
@@ -186,7 +186,7 @@ qint32 main(qint32 argc, char* argv[])
     }
 
     if (db.isOpen() && dbCalls.isOpen())
-        dbsOpened = true;
+        g_dbsOpened = true;
     else
         return 0;
 
@@ -208,9 +208,9 @@ qint32 main(qint32 argc, char* argv[])
         dbOrders.open();
 
         if (dbOrders.isOpen())
-            ordersDbOpened = true;
+            g_ordersDbOpened = true;
         else
-            QMessageBox::critical(nullptr, QObject::tr("Ошибка"), QObject::tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+            MsgBoxError(QObject::tr("Отсутствует подключение к базе заказов!"));
     }
 
     QString username  = global::getSettingsValue("username", "settings").toString();

@@ -51,9 +51,8 @@ private:
 
     QList<QLineEdit*> phonesList;
 
-    QValidator* Validator;
+    QValidator* validator;
     QValidator* vyborIdValidator;
-    //QValidator* vyborIdValidator;
 
     QString orgId;
 };

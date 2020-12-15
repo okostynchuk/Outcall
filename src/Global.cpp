@@ -4,31 +4,64 @@
 
 #include "Global.h"
 
-#include <Windows.h>
-#include <TCHAR.H>
-#include <shlobj.h>
-
 #include <QSettings>
 
-QString g_AppDirPath = "";
-QString g_AppSettingsFolderPath = "";
+QString g_appDirPath = "";
+QString g_appSettingsFolderPath = "";
 
-bool dbsOpened = false;
-bool ordersDbOpened = false;
+bool g_dbsOpened = false;
+bool g_ordersDbOpened = false;
 
-QMessageBox::StandardButton MsgBoxInformation(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent, QMessageBox::StandardButton defaultButton)
+/**
+ * Возвращает окно сообщения с информацией.
+ */
+int MsgBoxInformation(const QString& text, const QString& title, QWidget* parent)
 {
-    return QMessageBox::information(parent, title, text, buttons, defaultButton);
+    QMessageBox msgBox;
+    msgBox.setParent(parent);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(text);
+    msgBox.setIconPixmap(QPixmap(":/images/information.png"));
+    return msgBox.exec();
 }
 
-QMessageBox::StandardButton MsgBoxError(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent, QMessageBox::StandardButton defaultButton)
+/**
+ * Возвращает окно сообщения с ошибкой.
+ */
+int MsgBoxError(const QString& text, const QString& title, QWidget* parent)
 {
-    return QMessageBox::critical(parent, title, text, buttons, defaultButton);
+    QMessageBox msgBox;
+    msgBox.setParent(parent);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(text);
+    msgBox.setIconPixmap(QPixmap(":/images/error.png"));
+    return msgBox.exec();
 }
 
-QMessageBox::StandardButton MsgBoxWarning(const QString &text, QMessageBox::StandardButtons buttons, const QString &title, QWidget *parent, QMessageBox::StandardButton defaultButton)
+/**
+ * Возвращает окно сообщения с предупреждением.
+ */
+int MsgBoxWarning(const QString& text, const QString& title, QWidget* parent)
 {
-    return QMessageBox::warning(parent, title, text, buttons, defaultButton);
+    QMessageBox msgBox;
+    msgBox.setParent(parent);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(text);
+    msgBox.setIconPixmap(QPixmap(":/images/warning.png"));
+    return msgBox.exec();
+}
+
+/**
+ * Возвращает окно сообщения с вопросом.
+ */
+int MsgBoxQuestion(const QString& text, const QString& title, QWidget* parent)
+{
+    QMessageBox msgBox;
+    msgBox.setParent(parent);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(text);
+    msgBox.setIconPixmap(QPixmap(":/images/question.png"));
+    return msgBox.exec();
 }
 
 /**

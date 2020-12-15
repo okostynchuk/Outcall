@@ -550,7 +550,7 @@ void CallHistoryDialog::onCallClicked()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -570,7 +570,7 @@ void CallHistoryDialog::onAddContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -595,7 +595,7 @@ void CallHistoryDialog::onAddOrgContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -635,7 +635,7 @@ void CallHistoryDialog::editContact(const QString& number)
         editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит организации!"), QMessageBox::Ok);
+        MsgBoxError(tr("Данный контакт принадлежит организации!"));
 }
 
 /**
@@ -661,7 +661,7 @@ void CallHistoryDialog::editOrgContact(const QString& number)
         editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, tr("Ошибка"), tr("Данный контакт принадлежит физ. лицу!"), QMessageBox::Ok);
+        MsgBoxError(tr("Данный контакт принадлежит физ. лицу!"));
 }
 
 /**
@@ -671,7 +671,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -691,7 +691,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        QMessageBox::critical(this, tr("Ошибка"), tr("Данный номер уже принадлежит контакту!"), QMessageBox::Ok);
+        MsgBoxError(tr("Данный номер уже принадлежит контакту!"));
 }
 
 /**
@@ -701,7 +701,7 @@ void CallHistoryDialog::onPlayAudio()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }
@@ -725,7 +725,7 @@ void CallHistoryDialog::onPlayAudioPhone()
 {
     if (ui->tableView->selectionModel()->selectedRows().count() != 1)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Выберите одну запись!"), QMessageBox::Ok);
+        MsgBoxError(tr("Выберите одну запись!"));
 
         return;
     }

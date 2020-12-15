@@ -6,6 +6,7 @@
 #include "ui_AddReminderDialog.h"
 
 #include <QDebug>
+#include <QMessageBox>
 
 AddReminderDialog::AddReminderDialog(QWidget* parent) :
     QDialog(parent),
@@ -91,14 +92,14 @@ void AddReminderDialog::onSave()
 
     if (dateTime < QDateTime::currentDateTime())
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Указано прошедшее время!"), QMessageBox::Ok);
+        MsgBoxError(tr("Указано прошедшее время!"));
 
         return;
     }
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание напоминания не может быть пустым!"), QMessageBox::Ok);
+        MsgBoxError(tr("Содержание напоминания не может быть пустым!"));
 
         return;
     }
@@ -201,9 +202,9 @@ void AddReminderDialog::onSave()
     close();
 
     if (ui->employee->text() != my_number)
-        QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно отправлено!"), QMessageBox::Ok);
+        MsgBoxInformation(tr("Напоминание успешно отправлено!"));
     else
-        QMessageBox::information(this, tr("Уведомление"), tr("Напоминание успешно добавлено!"), QMessageBox::Ok);
+        MsgBoxInformation(tr("Напоминание успешно добавлено!"));
 }
 
 /**

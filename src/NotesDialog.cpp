@@ -217,7 +217,7 @@ void NotesDialog::onSave()
 
     if (note.isEmpty())
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Содержание заметки не может быть пустым!"), QMessageBox::Ok);
+        MsgBoxError(tr("Содержание заметки не может быть пустым!"));
 
         return;
     }
@@ -238,7 +238,7 @@ void NotesDialog::onSave()
 
     onUpdate();
 
-    //QMessageBox::information(this, tr("Уведомление"), tr("Заметка успешно добавлена!"), QMessageBox::Ok);
+    //MsgBoxInformation(tr("Заметка успешно добавлена!"));
 }
 
 /**

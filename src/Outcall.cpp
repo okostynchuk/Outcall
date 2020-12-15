@@ -191,21 +191,21 @@ void Outcall::displayError(const QAbstractSocket::SocketError& socketError, cons
 {
     switch (socketError)
     {
-        case QAbstractSocket::RemoteHostClosedError:
-            MsgBoxInformation(tr("Удаленный хост закрыл соединение"));
-            break;
-        case QAbstractSocket::HostNotFoundError:
-            MsgBoxInformation(tr("Хост не был найден. Пожалуйста, проверьте имя хоста "
-                             "и настройки порта"));
-            break;
-        case QAbstractSocket::ConnectionRefusedError:
-            MsgBoxInformation(tr("Соединение было отклонено узлом. "
-                             "Убедитесь, что сервер работает, "
-                             "и проверьте правильность имени хоста "
-                             "и настроек порта"));
-            break;
-        default:
-            MsgBoxInformation(msg);
+    case QAbstractSocket::RemoteHostClosedError:
+        MsgBoxInformation(tr("Удаленный хост закрыл соединение"));
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        MsgBoxInformation(tr("Хост не был найден. Пожалуйста, проверьте имя хоста "
+                         "и настройки порта"));
+        break;
+    case QAbstractSocket::ConnectionRefusedError:
+        MsgBoxInformation(tr("Соединение было отклонено узлом. "
+                         "Убедитесь, что сервер работает, "
+                         "и проверьте правильность имени хоста "
+                         "и настроек порта"));
+        break;
+    default:
+        MsgBoxInformation(msg);
     }
 }
 
@@ -249,7 +249,7 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
         QSqlDatabase::database("Calls").open();
 
         if (!QSqlDatabase::database().isOpen() || !QSqlDatabase::database("Calls").isOpen())
-            dbsOpened = false;
+            g_dbsOpened = false;
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
@@ -258,7 +258,7 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
 
         m_timer.stop();
 
-        if (!dbsOpened)
+        if (!g_dbsOpened)
         {
             m_systemTrayIcon->hide();
 
@@ -569,7 +569,7 @@ void Outcall::onActivated(const QSystemTrayIcon::ActivationReason& reason)
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
-        if (dbsOpened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
+        if (g_dbsOpened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
             showDialog(m_placeCallDialog);
     }
 }

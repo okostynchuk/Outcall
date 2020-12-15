@@ -313,22 +313,22 @@ void SettingsDialog::on_applyButton_clicked()
 
     switch (reply)
     {
-        case QMessageBox::Yes:
-            saveSettings();
-            applySettings();
+    case QMessageBox::Yes:
+        saveSettings();
+        applySettings();
 
-            emit restart(true);
+        emit restart(true);
 
-            qApp->closeAllWindows();
-            qApp->quit();
+        qApp->closeAllWindows();
+        qApp->quit();
 
-            QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
-            break;
-        case QMessageBox::No:
-            msgBox.close();
-            break;
-        default:
-            break;
+        QProcess::startDetached(qApp->arguments()[0], QStringList() << "restart");
+        break;
+    case QMessageBox::No:
+        msgBox.close();
+        break;
+    default:
+        break;
     }
 }
 
@@ -488,14 +488,14 @@ void SettingsDialog::onRemoveButtonClicked()
 
         switch (reply)
         {
-            case QMessageBox::Yes:
-                ui->addButton->setEnabled(true);
-                break;
-            case QMessageBox::No:
-                msgBox.close();
-                return;
-            default:
-                break;
+        case QMessageBox::Yes:
+            ui->addButton->setEnabled(true);
+            break;
+        case QMessageBox::No:
+            msgBox.close();
+            return;
+        default:
+            break;
         }
 
         for (qint32 i = 0; i < selectedItems.size(); ++i)
@@ -525,14 +525,14 @@ void SettingsDialog::onRemoveGroupButtonClicked()
 
         switch (reply)
         {
-            case QMessageBox::Yes:
-                ui->addButton_2->setEnabled(true);
-                break;
-            case QMessageBox::No:
-                msgBox.close();
-                return;
-            default:
-                break;
+        case QMessageBox::Yes:
+            ui->addButton_2->setEnabled(true);
+            break;
+        case QMessageBox::No:
+            msgBox.close();
+            return;
+        default:
+            break;
         }
 
         for (qint32 i = 0; i < selectedItems.size(); ++i)

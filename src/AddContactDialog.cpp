@@ -4,6 +4,8 @@
 
 #include "AddContactDialog.h"
 #include "ui_AddContactDialog.h"
+
+#include "Global.h"
 #include "AsteriskManager.h"
 
 #include <QMessageBox>
@@ -31,18 +33,18 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    Validator = new QRegularExpressionValidator(regExp, this);
+    validator = new QRegularExpressionValidator(regExp, this);
 
     for (qint32 i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setValidator(Validator);
+        phonesList.at(i)->setValidator(validator);
 
     regExp.setPattern("^[0-9]*$");
-    Validator = new QRegularExpressionValidator(regExp, this);
-    ui->vyborId->setValidator(Validator);
+    validator = new QRegularExpressionValidator(regExp, this);
+    ui->vyborId->setValidator(validator);
 
     regExp.setPattern("^[0-9]{3,4}$");
-    Validator = new QRegularExpressionValidator(regExp, this);
-    ui->employee->setValidator(Validator);
+    validator = new QRegularExpressionValidator(regExp, this);
+    ui->employee->setValidator(validator);
 
     g_pAsteriskManager->groupNumbers.removeDuplicates();
 }
@@ -129,7 +131,7 @@ void AddContactDialog::onSave()
 
     if (invalid_phones)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Номер не соответствует формату!"), QMessageBox::Ok);
+        MsgBoxError(tr("Номер не соответствует формату!"));
 
         return;
     }
@@ -148,7 +150,7 @@ void AddContactDialog::onSave()
 
     if (same_phones)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Присутсвуют одинаковые номера!"), QMessageBox::Ok);
+        MsgBoxError(tr("Присутсвуют одинаковые номера!"));
 
         return;
     }
@@ -172,7 +174,7 @@ void AddContactDialog::onSave()
 
     if (existing_phones)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Введены существующие номера!"), QMessageBox::Ok);
+        MsgBoxError(tr("Введены существующие номера!"));
 
         return;
     }
@@ -195,7 +197,7 @@ void AddContactDialog::onSave()
 
     if (invalid_employee)
     {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Указанный номер не зарегистрирован!"), QMessageBox::Ok);
+        MsgBoxError(tr("Указанный номер не зарегистрирован!"));
 
         return;
     }
@@ -244,7 +246,7 @@ void AddContactDialog::onSave()
 
     close();
 
-    QMessageBox::information(this, tr("Уведомление"), tr("Запись успешно добавлена!"), QMessageBox::Ok);
+    MsgBoxInformation(tr("Запись успешно добавлена!"));
 }
 
 /**

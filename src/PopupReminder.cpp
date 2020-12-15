@@ -120,7 +120,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
         ui->openAccessButton->hide();
     }
 
-    if (!ordersDbOpened)
+    if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
     QString note = m_pri.text;
@@ -363,68 +363,68 @@ void PopupReminder::onTimer()
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                if (m_nCurrentPosY > (m_nStartPosY - height()))
-                    m_nCurrentPosY -= m_nIncrement;
-                else
-                {
-                    m_bAppearing = false;
+        case TASKBAR_ON_BOTTOM:
+            if (m_nCurrentPosY > (m_nStartPosY - height()))
+                m_nCurrentPosY -= m_nIncrement;
+            else
+            {
+                m_bAppearing = false;
 
-                    m_timer.stop();
-                }
-                break;
-            case TASKBAR_ON_TOP:
-                if ((m_nCurrentPosY - m_nStartPosY) < height())
-                    m_nCurrentPosY += m_nIncrement;
-                else
-                {
-                    m_bAppearing = false;
+                m_timer.stop();
+            }
+            break;
+        case TASKBAR_ON_TOP:
+            if ((m_nCurrentPosY - m_nStartPosY) < height())
+                m_nCurrentPosY += m_nIncrement;
+            else
+            {
+                m_bAppearing = false;
 
-                    m_timer.stop();
-                }
-                break;
-            case TASKBAR_ON_LEFT:
-                if ((m_nCurrentPosX - m_nStartPosX) < width())
-                    m_nCurrentPosX += m_nIncrement;
-                else
-                {
-                    m_bAppearing = false;
+                m_timer.stop();
+            }
+            break;
+        case TASKBAR_ON_LEFT:
+            if ((m_nCurrentPosX - m_nStartPosX) < width())
+                m_nCurrentPosX += m_nIncrement;
+            else
+            {
+                m_bAppearing = false;
 
-                    m_timer.stop();
-                }
-                break;
-            case TASKBAR_ON_RIGHT:
-                if (m_nCurrentPosX > (m_nStartPosX - width()))
-                    m_nCurrentPosX -= m_nIncrement;
-                else
-                {
-                    m_bAppearing = false;
+                m_timer.stop();
+            }
+            break;
+        case TASKBAR_ON_RIGHT:
+            if (m_nCurrentPosX > (m_nStartPosX - width()))
+                m_nCurrentPosX -= m_nIncrement;
+            else
+            {
+                m_bAppearing = false;
 
-                    m_timer.stop();
-                }
-                break;
+                m_timer.stop();
+            }
+            break;
         }
     }
     else // DISSAPPEARING
     {
         switch (m_nTaskbarPlacement)
         {
-            case TASKBAR_ON_BOTTOM:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_TOP:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_LEFT:
-                closeAndDestroy();
-                return;
-                break;
-            case TASKBAR_ON_RIGHT:
-                closeAndDestroy();
-                return;
-                break;
+        case TASKBAR_ON_BOTTOM:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_TOP:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_LEFT:
+            closeAndDestroy();
+            return;
+            break;
+        case TASKBAR_ON_RIGHT:
+            closeAndDestroy();
+            return;
+            break;
         }
     }
 
@@ -615,7 +615,7 @@ void PopupReminder::onOpenAccess()
     {
         setStyleSheet("QMessageBox { color: #000000; }");
 
-        QMessageBox::critical(this, tr("Ошибка"), tr("Отсутствует подключение к базе заказов!"), QMessageBox::Ok);
+        MsgBoxError(tr("Отсутствует подключение к базе заказов!"));
     }
 }
 

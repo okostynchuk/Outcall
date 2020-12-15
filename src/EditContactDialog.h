@@ -62,7 +62,7 @@ private:
 
     QStringList oldPhonesList;
 
-    QValidator* Validator;
+    QValidator* validator;
 
     QString contactId;
     QString orgId;
