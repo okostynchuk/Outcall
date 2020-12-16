@@ -52,7 +52,7 @@
    </property>
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/mute.png</normaloff>:/images/mute.png</iconset>
+     <normaloff>:/images/volume.png</normaloff>:/images/volume.png</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="play">
@@ -89,6 +89,19 @@
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="duration">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>40</y>
+     <width>101</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

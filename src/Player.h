@@ -20,11 +20,15 @@ public slots:
     void openMedia(QString recordpath);
 
 private slots:
+    void updateTime();
+
     void on_play_clicked();
 
-    void on_volume_sliderMoved(int position);
-
     void on_mute_clicked();
+
+    void stateChanged();
+
+    void durationChanged(qint64 duration);
 
     bool eventFilter(QObject* watched, QEvent* event);
 
@@ -33,7 +37,7 @@ private:
 
     QMediaPlayer* player;
 
-    bool play = true;
+    qint32 duration;
 };
 
 #endif // PLAYER_H
