@@ -69,14 +69,6 @@
         <translation>Відсутня</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
-    </message>
-    <message>
         <source>Запись успешно добавлена!</source>
         <translation>Запис успішно доданий!</translation>
     </message>
@@ -148,16 +140,16 @@
         <translation>SIP</translation>
     </message>
     <message>
-        <source>Неверный номер!</source>
-        <translation>Невірний номер!</translation>
-    </message>
-    <message>
         <source>Применить</source>
         <translation>Застосувати</translation>
     </message>
     <message>
         <source>Отмена</source>
         <translation>Скасувати</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Номер не відповідає формату!</translation>
     </message>
 </context>
 <context>
@@ -209,14 +201,6 @@
     <message>
         <source>Сохранить данные</source>
         <translation>Зберегти дані</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -389,10 +373,6 @@
         <translation>з </translation>
     </message>
     <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
-    </message>
-    <message>
         <source>Сотрудник успешно добавлен!</source>
         <translation>Співробітник успішно доданий!</translation>
     </message>
@@ -431,10 +411,6 @@
     <message>
         <source>Перейти в конец</source>
         <translation>Перейти на кінець</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Организации не существует или она была изменена!</source>
@@ -508,16 +484,8 @@
         <translation>Ні</translation>
     </message>
     <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
-    </message>
-    <message>
         <source>Номер успешно добавлен!</source>
         <translation>Номер успішно доданий!</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Контакту не может быть присвоено больше 5 номеров!</source>
@@ -655,20 +623,12 @@
         <translation>Група</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Указано прошедшее время!</source>
         <translation>Вказано минулий час!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
         <translation>Зміст нагадування не може бути пустим!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Напоминание успешно отправлено!</source>
@@ -732,10 +692,6 @@
     <message>
         <source>Добавить / изменить организацию</source>
         <translation>Додати / змінити організацію</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Выберите одну запись!</source>
@@ -1059,10 +1015,6 @@
         <translation>Налаштування бази дзвінків</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Подключение не создано!</source>
         <translation>Підключення не створено!</translation>
     </message>
@@ -1073,10 +1025,6 @@
     <message>
         <source>Подключение к базе звонков не создано!</source>
         <translation>Підключення до бази дзвінків не створено!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Подключение успешно создано!</source>
@@ -1269,14 +1217,6 @@
         <translation>Коментар:</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
-    </message>
-    <message>
         <source>Запись успешно изменена!</source>
         <translation>Запис успішно змінений!</translation>
     </message>
@@ -1388,14 +1328,6 @@
         <translation>Зберегти дані</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
-    </message>
-    <message>
         <source>Запись успешно изменена!</source>
         <translation>Запис успішно змінений!</translation>
     </message>
@@ -1455,20 +1387,12 @@
         <translation>Зберегти</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Указано прошедшее время!</source>
         <translation>Вказано минулий час!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
         <translation>Зміст нагадування не може бути пустим!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>Напоминание успешно изменено!</source>
@@ -1530,34 +1454,6 @@
         <translation>Внутрішні контакти</translation>
     </message>
     <message>
-        <source>Поиск</source>
-        <translation type="vanished">Пошук</translation>
-    </message>
-    <message>
-        <source>◄◄</source>
-        <translation type="vanished">◄◄</translation>
-    </message>
-    <message>
-        <source>◄</source>
-        <translation type="vanished">◄</translation>
-    </message>
-    <message>
-        <source>►</source>
-        <translation type="vanished">►</translation>
-    </message>
-    <message>
-        <source>►►</source>
-        <translation type="vanished">►►</translation>
-    </message>
-    <message>
-        <source>10</source>
-        <translation type="vanished">10</translation>
-    </message>
-    <message>
-        <source>из </source>
-        <translation type="vanished">з </translation>
-    </message>
-    <message>
         <source>Позвонить</source>
         <translation>Дзвінок</translation>
     </message>
@@ -1603,10 +1499,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заметка</source>
         <translation>Коментар</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Содержание заметки не может быть пустым!</source>
@@ -1808,14 +1700,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>PlayAudioDialog</name>
+    <name>Player</name>
     <message>
-        <source>Запись разговора</source>
-        <translation>Запис розмови</translation>
+        <source>Плеер</source>
+        <translation>Плеєр</translation>
     </message>
     <message>
-        <source>{6bf52a52-394a-11d3-b153-00c04f79faa6}</source>
-        <translation></translation>
+        <source>00:00/00:00</source>
+        <translation>00:00/00:00</translation>
     </message>
 </context>
 <context>
@@ -1919,10 +1811,6 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Відсутнє підключення до бази замовлень!</translation>
     </message>
@@ -1956,10 +1844,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заказы</source>
         <translation>Замовлення</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;1031&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2009,10 +1893,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Отсутствует подключение к базам данных!</source>
         <translation>Відсутнє підключення до баз даних!</translation>
     </message>
@@ -2046,10 +1926,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Актуальные</source>
         <translation>Актуальні</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Указано прошедшее время!</source>
@@ -2452,10 +2328,6 @@ p, li { white-space: pre-wrap; }
         <translation>Замовлення</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
-    </message>
-    <message>
         <source>Редактировать контакт</source>
         <translation>Редагувати контакт</translation>
     </message>
@@ -2685,10 +2557,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заказы</source>
         <translation>Замовлення</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Помилка</translation>
     </message>
     <message>
         <source>Редактировать контакт</source>

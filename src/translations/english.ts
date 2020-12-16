@@ -60,14 +60,6 @@
         <translation>Note:</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
-    </message>
-    <message>
         <source>Запись успешно добавлена!</source>
         <translation>Success!</translation>
     </message>
@@ -147,16 +139,16 @@
         <translation>SIP</translation>
     </message>
     <message>
-        <source>Неверный номер!</source>
-        <translation>Incorrect number!</translation>
-    </message>
-    <message>
         <source>Применить</source>
         <translation>Apply</translation>
     </message>
     <message>
         <source>Отмена</source>
         <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Номер не соответствует формату!</source>
+        <translation>Phone number is not formatted!</translation>
     </message>
 </context>
 <context>
@@ -208,14 +200,6 @@
     <message>
         <source>Сохранить данные</source>
         <translation>Save</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
     </message>
     <message>
         <source>Запись успешно добавлена!</source>
@@ -388,10 +372,6 @@
         <translation>from </translation>
     </message>
     <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
-    </message>
-    <message>
         <source>Сотрудник успешно добавлен!</source>
         <translation>Employee added successfully!</translation>
     </message>
@@ -430,10 +410,6 @@
     <message>
         <source>Перейти в конец</source>
         <translation>Go to the end</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Организации не существует или она была изменена!</source>
@@ -507,16 +483,8 @@
         <translation>No</translation>
     </message>
     <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
-    </message>
-    <message>
         <source>Номер успешно добавлен!</source>
         <translation>Number added successfully!</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Контакту не может быть присвоено больше 5 номеров!</source>
@@ -654,20 +622,12 @@
         <translation>Group</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Указано прошедшее время!</source>
         <translation>Past time is indicated!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
         <translation>The content of the reminder cannot be empty!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
     </message>
     <message>
         <source>Напоминание успешно отправлено!</source>
@@ -711,10 +671,6 @@
     <message>
         <source>Добавить / изменить организацию</source>
         <translation>Add / edit the organization</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Выберите одну запись!</source>
@@ -1058,10 +1014,6 @@
         <translation> Port:</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Подключение не создано!</source>
         <translation>Connection not created!</translation>
     </message>
@@ -1072,10 +1024,6 @@
     <message>
         <source>Подключение к базе звонков не создано!</source>
         <translation>Connection to call database not created!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
     </message>
     <message>
         <source>Подключение успешно создано!</source>
@@ -1263,14 +1211,6 @@
         <translation>Note:</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
-    </message>
-    <message>
         <source>Запись успешно изменена!</source>
         <translation>Success!</translation>
     </message>
@@ -1386,14 +1326,6 @@
         <translation>Save</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
-    </message>
-    <message>
         <source>Запись успешно изменена!</source>
         <translation>Success!</translation>
     </message>
@@ -1453,20 +1385,12 @@
         <translation>Save</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Указано прошедшее время!</source>
         <translation>Past time is indicated!</translation>
     </message>
     <message>
         <source>Содержание напоминания не может быть пустым!</source>
         <translation>The content of the reminder cannot be empty!</translation>
-    </message>
-    <message>
-        <source>Уведомление</source>
-        <translation>Notification</translation>
     </message>
     <message>
         <source>Напоминание успешно изменено!</source>
@@ -1528,34 +1452,6 @@
         <translation>Internal contacts</translation>
     </message>
     <message>
-        <source>Поиск</source>
-        <translation type="vanished">Search</translation>
-    </message>
-    <message>
-        <source>◄◄</source>
-        <translation type="vanished">◄◄</translation>
-    </message>
-    <message>
-        <source>◄</source>
-        <translation type="vanished">◄</translation>
-    </message>
-    <message>
-        <source>►</source>
-        <translation type="vanished">►</translation>
-    </message>
-    <message>
-        <source>►►</source>
-        <translation type="vanished">►►</translation>
-    </message>
-    <message>
-        <source>10</source>
-        <translation type="vanished">10</translation>
-    </message>
-    <message>
-        <source>из </source>
-        <translation type="vanished">from </translation>
-    </message>
-    <message>
         <source>Позвонить</source>
         <translation>Call</translation>
     </message>
@@ -1601,10 +1497,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заметка</source>
         <translation>Note</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Содержание заметки не может быть пустым!</source>
@@ -1806,14 +1698,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>PlayAudioDialog</name>
+    <name>Player</name>
     <message>
-        <source>Запись разговора</source>
-        <translation>Conversation record</translation>
+        <source>Плеер</source>
+        <translation>Player</translation>
     </message>
     <message>
-        <source>{6bf52a52-394a-11d3-b153-00c04f79faa6}</source>
-        <translation></translation>
+        <source>00:00/00:00</source>
+        <translation>00:00/00:00</translation>
     </message>
 </context>
 <context>
@@ -1917,10 +1809,6 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;font size = 1&gt;%1&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Connection to orders database not created!</translation>
     </message>
@@ -1954,10 +1842,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Заказы</source>
         <translation>Orders</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;1031&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Денис Комадарик&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2007,10 +1891,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Отсутствует подключение к базам данных!</source>
         <translation>Connection to databases  not created!</translation>
     </message>
@@ -2044,10 +1924,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Актуальные</source>
         <translation>Relevant</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Указано прошедшее время!</source>
@@ -2450,10 +2326,6 @@ The app will be restarted!</translation>
         <translation>Orders</translation>
     </message>
     <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>Редактировать контакт</source>
         <translation>Edit the contact</translation>
     </message>
@@ -2683,10 +2555,6 @@ The app will be restarted!</translation>
     <message>
         <source>Заказы</source>
         <translation>Orders</translation>
-    </message>
-    <message>
-        <source>Ошибка</source>
-        <translation>Error</translation>
     </message>
     <message>
         <source>Редактировать контакт</source>

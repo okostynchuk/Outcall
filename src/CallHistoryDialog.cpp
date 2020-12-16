@@ -927,5 +927,4 @@ void CallHistoryDialog::disableButtons()
     ui->addContactButton->setDisabled(true);
     ui->addOrgContactButton->setDisabled(true);
     ui->addPhoneNumberButton->setDisabled(true);
-
 }

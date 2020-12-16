@@ -10,6 +10,8 @@ Player::Player(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     ui->slider->installEventFilter(this);
     ui->volume->installEventFilter(this);
 
