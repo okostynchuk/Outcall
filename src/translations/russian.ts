@@ -2105,7 +2105,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Применение настроек</source>
-        <translation>Применить настройки</translation>
+        <translation>Применение настроек</translation>
     </message>
     <message>
         <source>Для применения изменений требуется перезапуск приложения. Подтвердить внесенные изменения?</source>
