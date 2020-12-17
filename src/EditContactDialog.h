@@ -8,7 +8,6 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QPointer>
-#include <QLineEdit>
 #include <QTextCursor>
 
 class ViewContactDialog;
@@ -66,7 +65,6 @@ private:
 
     QString contactId;
     QString orgId;
-    QString number;
 
     QTextCursor textCursor;
 };

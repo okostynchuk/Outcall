@@ -59,11 +59,11 @@ private:
     QStringList employee;
 
     QString my_number;
-    QString callId;
     QString id;
     QString group_id;
-    QDateTime oldDateTime;
     QString oldNote;
+
+    QDateTime oldDateTime;  
 
     QTextCursor textCursor;
 };

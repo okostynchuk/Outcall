@@ -13,7 +13,7 @@ class Player : public QDialog
     Q_OBJECT
 
 public:
-    explicit Player(QWidget *parent = 0);
+    explicit Player(QWidget* parent = 0);
     ~Player();
 
 public slots:
@@ -23,17 +23,15 @@ private slots:
     void updateTime();
 
     void on_play_clicked();
-
     void on_mute_clicked();
 
     void stateChanged();
-
-    void durationChanged(qint64 duration);
+    void durationChanged(qint32 duration);
 
     bool eventFilter(QObject* watched, QEvent* event);
 
 private:
-    Ui::Player *ui;
+    Ui::Player* ui;
 
     QMediaPlayer* player;
 

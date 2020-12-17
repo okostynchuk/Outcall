@@ -40,8 +40,6 @@ private:
     QList<QLineEdit*> phonesList;
 
     QValidator* validator;
-
-    QStringList numbers;
 };
 
 #endif // ADDORGCONTACTDIALOG_H

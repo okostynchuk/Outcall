@@ -53,14 +53,6 @@ private:
     QValidator* validator;
 
     QString contactId;
-    QString firstNumber;
-    QString secondNumber;
-    QString thirdNumber;
-    QString fourthNumber;
-    QString fifthNumber;
-    QString number;
-
-    QStringList numbers;
 
     QTextCursor textCursor;
 };

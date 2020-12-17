@@ -62,6 +62,8 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
  */
 void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
+    hide();
+
     restoreGeometry(geometry);
 
     QRect scr = QApplication::desktop()->screenGeometry();

@@ -68,21 +68,15 @@ private:
 
     QValidator* validator;
 
-    QWidget* addImageLabel(qint32);
-    QWidget* addWidgetNote(qint32, bool);
+    QWidget* addImageLabel(qint32 row_index);
+    QWidget* addWidgetNote(qint32 row_index, bool url);
 
     QList<QWidget*> widgets;
 
     QSqlDatabase db;
 
-    qint32 count;
-    qint32 remainder;
-
     QString page;  
     QString go;
-    QString entry_name;
-    QString entry_phone;
-    QString entry_comment;
 
     bool filter;
 

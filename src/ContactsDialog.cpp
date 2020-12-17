@@ -215,7 +215,7 @@ void ContactsDialog::loadContacts()
     query.exec();
     query.first();
 
-    count = query.value(0).toInt();
+    qint32 count = query.value(0).toInt();
 
     QString pages = ui->label_pages->text();
 
@@ -223,7 +223,7 @@ void ContactsDialog::loadContacts()
         pages = "1";
     else
     {
-        remainder = count % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;

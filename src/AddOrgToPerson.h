@@ -48,11 +48,6 @@ private:
 
     QString page;
     QString go;
-    QString entry_name;
-    QString entry_city;
-
-    qint32 count;
-    qint32 remainder;
 
     bool filter;
 };

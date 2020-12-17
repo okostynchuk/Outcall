@@ -45,10 +45,8 @@ void ChooseNumber::onCall(const QString& number)
  * Получает id контакта из классов PlaceCallDialog,
  * PopupReminder, ViewContactDialog, ViewOrgContactDialog.
  */
-void ChooseNumber::setValues(const QString& id)
+void ChooseNumber::setValues(const QString& contactId)
 {
-    contactId = id;
-
     QSqlQuery query(db);
 
     query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);

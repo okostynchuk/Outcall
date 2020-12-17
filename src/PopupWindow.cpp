@@ -30,7 +30,7 @@ QList<PopupWindow*> PopupWindow::m_PopupWindows;
 #define TIME_TO_SHOW	800   // msec
 #define TIME_TO_LIVE	60000 // msec
 
-PopupWindow::PopupWindow(const PWInformation& pwi, QWidget* parent) :
+PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
     QDialog(parent),
 	ui(new Ui::PopupWindow)
 {
@@ -381,9 +381,8 @@ void PopupWindow::onTimer()
  */
 void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number)
 {
-	PWInformation pwi;
+    PopupWindowInfo pwi;
 
-	pwi.type = PWPhoneCall;
     pwi.text = caller;
     pwi.uniqueid = uniqueid;
     pwi.number = number;

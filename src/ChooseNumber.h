@@ -28,7 +28,7 @@ public:
     explicit ChooseNumber(QWidget* parent = 0);
     ~ChooseNumber();
 
-    void setValues(const QString& id);
+    void setValues(const QString& contactId);
 
 private slots:
     void onCall(const QString& number);
@@ -49,7 +49,6 @@ private:
 
     QString my_number;
     QString protocol;
-    QString contactId;
 };
 
 #endif // CHOOSENUMBER_H

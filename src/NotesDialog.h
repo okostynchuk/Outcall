@@ -36,6 +36,7 @@ private slots:
     void onTextChanged();
     void onUpdate();
     void loadNotes();
+
     void deleteObjects();
 
     bool isInternalPhone(QString* str);
@@ -63,13 +64,9 @@ private:
 
     QList<QWidget*> widgets;
 
-    qint32 count;
-    qint32 remainder;
-
     QStringList numbersList;
 
     QString callId;
-    QString state;
     QString my_number;
     QString phone;
     QString page;

@@ -2,14 +2,12 @@
 #define SETTINGSDIALOG_H
 
 #include "AsteriskManager.h"
-#include <QSimpleUpdater.h>
+#include "AddExtensionDialog.h"
+#include "QSimpleUpdater.h"
 
 #include <QDialog>
 #include <QFile>
-
-class QTcpSocket;
-class AddExtensionDialog;
-class QTreeWidgetItem;
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class SettingsDialog;
@@ -58,20 +56,15 @@ private slots:
 private:
     Ui::SettingsDialog* ui;
 
-    QTcpSocket* m_tcpSocket;
-
     AddExtensionDialog* m_addExtensionDialog;
 
     QSimpleUpdater* m_updater;
 
     QFile file;
-    QString userName;
+
     QString path;
     QString exten;
     QString group_exten;
-    QStringList m_countries;
-
-    QList<QWidget*> widgetsList;
 
     QByteArray geometry;
 };

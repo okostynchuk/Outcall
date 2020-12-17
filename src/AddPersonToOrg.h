@@ -49,12 +49,8 @@ private:
     QSqlDatabase db;
 
     QString orgId;
-    QString orgName;
     QString page;
     QString go;
-
-    qint32 count;
-    qint32 remainder;
 
     bool filter;
 };

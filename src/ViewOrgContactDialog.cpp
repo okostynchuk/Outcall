@@ -18,8 +18,6 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    userId = global::getSettingsValue("user_login", "settings").toString();
-
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
@@ -46,6 +44,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
 
     my_number = global::getExtensionNumber("extensions");
+    userId = global::getSettingsValue("user_login", "settings").toString();
 
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();

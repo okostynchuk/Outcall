@@ -117,7 +117,7 @@ void NotesDialog::loadNotes()
     queryCount.exec();
     queryCount.first();
 
-    count = queryCount.value(0).toInt();
+    qint32 count = queryCount.value(0).toInt();
 
     QString pages = ui->label_pages->text();
 
@@ -125,7 +125,7 @@ void NotesDialog::loadNotes()
         pages = "1";
     else
     {
-        remainder = count % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
@@ -196,13 +196,6 @@ void NotesDialog::loadNotes()
 
     if (ui->tableView->model()->columnCount() != 0)
         ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-
-    if (state == "save_disable")
-    {
-       ui->label->setDisabled(true);
-       ui->textEdit->setDisabled(true);
-       ui->saveButton->setDisabled(true);
-    }
 }
 
 /**

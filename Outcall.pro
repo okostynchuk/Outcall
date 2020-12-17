@@ -64,7 +64,7 @@ SOURCES += \
     ChooseEmployee.cpp \
     InternalContactsDialog.cpp \
     QCustomWidget.cpp \
-    src/Player.cpp
+    Player.cpp
 
 HEADERS += \
     AddReminderDialog.h \
@@ -100,7 +100,7 @@ HEADERS += \
     ChooseEmployee.h \
     InternalContactsDialog.h \
     QCustomWidget.h \
-    src/Player.h
+    Player.h
 
 FORMS += \
     AddExtensionDialog.ui \
@@ -130,7 +130,7 @@ FORMS += \
     PopupReminder.ui \
     ChooseEmployee.ui \
     InternalContactsDialog.ui \
-    src/Player.ui
+    Player.ui
 
 RESOURCES += \
     images.qrc \

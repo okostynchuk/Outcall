@@ -18,25 +18,25 @@ QList<PopupHelloWindow*> PopupHelloWindow::m_PopupHelloWindows;
 #define TASKBAR_ON_RIGHT	3
 #define TASKBAR_ON_BOTTOM	4
 
-#define TIME_TO_SHOW	800 // msec
-#define TIME_TO_LIVE	4000 // msec
+#define TIME_TO_SHOW    800 // msec
+#define TIME_TO_LIVE    4000 // msec
 
-PopupHelloWindow::PopupHelloWindow(const PWInformation& pwi, QWidget* parent) :
+PopupHelloWindow::PopupHelloWindow(const PopupHelloWindowInfo& phwi, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PopupHelloWindow)
 {
-    m_pwi = pwi;
+    m_phwi = phwi;
 
     ui->setupUi(this);
 
     setAttribute(Qt::WA_TranslucentBackground);
 
-    ui->lblText->setText(pwi.text);
+    ui->lblText->setText(phwi.text);
 
-    if (!pwi.avatar.isNull())
+    if (!phwi.avatar.isNull())
     {
         ui->lblAvatar->setScaledContents(true);
-        ui->lblAvatar->setPixmap(pwi.avatar);
+        ui->lblAvatar->setPixmap(phwi.avatar);
     }
 
     ui->lblText->resize(ui->lblText->width(), 60);
@@ -239,23 +239,21 @@ void PopupHelloWindow::onTimer()
 /**
  * Выполняет создание окна и отображение в нём полученной информации из класса Outcall.
  */
-void PopupHelloWindow::showInformationMessage(const QString& caption, const QString& message, QPixmap avatar, PWType type)
+void PopupHelloWindow::showInformationMessage(const QString& caption, const QString& message, QPixmap avatar)
 {
-    PWInformation pwi;
-
-    pwi.type = type;
+    PopupHelloWindowInfo phwi;
 
     if (caption != "")
-        pwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
+        phwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
     else
-        pwi.text = message;
+        phwi.text = message;
 
     if (avatar.isNull())
         avatar = QPixmap(":/images/outcall-logo.png");
 
-    pwi.avatar = avatar;
+    phwi.avatar = avatar;
 
-    PopupHelloWindow* popup = new PopupHelloWindow(pwi);
+    PopupHelloWindow* popup = new PopupHelloWindow(phwi);
 
     popup->show();
 

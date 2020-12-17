@@ -1,6 +1,5 @@
 #include "Outcall.h"
 #include "Global.h"
-#include "Windows.h"
 #include "DatabasesConnectDialog.h"
 
 #include <QApplication>

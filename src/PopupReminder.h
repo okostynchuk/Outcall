@@ -26,17 +26,20 @@ public slots:
 private:
     struct PopupReminderInfo
     {
-        QString text;
         RemindersDialog* remindersDialog;
+
+        QString text;
         QString my_number;
         QString name;
         QString number;
         QStringList numbers;
         QString id;
         QString group_id;
-        QDateTime dateTime;
         QString note;
         QString call_id;
+
+        QDateTime dateTime;
+
         bool active;
     };
 

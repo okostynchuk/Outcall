@@ -53,7 +53,6 @@ private:
 
     QMap<QString, QString> stateList;
     QMap<QString, int> indexes;
-
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

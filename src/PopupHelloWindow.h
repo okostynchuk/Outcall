@@ -14,27 +14,20 @@ class PopupHelloWindow : public QDialog
 {
     Q_OBJECT
 
-public:
-    enum PWType
-    {
-        PWPhoneCall,
-        PWInformationMessage
-    };
-
 private:
-    struct PWInformation
+    struct PopupHelloWindowInfo
     {
-        PWType type;
         QString text;
-        QPixmap avatar;
         QString extension;
+
+        QPixmap avatar;
     };
 
 public:
-    PopupHelloWindow(const PWInformation& pwi, QWidget* parent = 0);
+    PopupHelloWindow(const PopupHelloWindowInfo& phwi, QWidget* parent = 0);
     ~PopupHelloWindow();
 
-    static void showInformationMessage(const QString& caption, const QString& message, QPixmap avatar = QPixmap(), PWType type = PWInformationMessage);
+    static void showInformationMessage(const QString& caption, const QString& message, QPixmap avatar = QPixmap());
     static void closeAll();
 
 private slots:
@@ -56,7 +49,7 @@ private:
 
     QTimer m_timer;
 
-    PWInformation m_pwi;
+    PopupHelloWindowInfo m_phwi;
 
     static QList<PopupHelloWindow*> m_PopupHelloWindows;
 };

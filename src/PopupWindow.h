@@ -31,27 +31,21 @@ class PopupWindow : public QDialog
 public slots:
     void receiveData(bool update);
 
-public:
-    enum PWType
-    {
-        PWPhoneCall,
-        PWInformationMessage
-    };
-
 private:
-    struct PWInformation
+    struct PopupWindowInfo
     {
-        PWType type;
         QString text;
-        QPixmap avatar;
         QString uniqueid;
         QString number;
         QString my_number;
+
+        QPixmap avatar;
+
         bool stopTimer = false;
     };
 
 public:
-    PopupWindow(const PWInformation& pwi, QWidget* parent = 0);
+    PopupWindow(const PopupWindowInfo& pwi, QWidget* parent = 0);
     ~PopupWindow();
 
     static void showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number);
@@ -62,15 +56,17 @@ private slots:
     void closeAndDestroy();
     void onPopupTimeout();
     void onTimer();
+
     void onAddPerson();
     void onAddOrg();
     void onAddPhoneNumberToContact();
+    void onAddReminder();
     void onShowCard();
     void onSaveNote();
-    void onTextChanged();
     void onOpenAccess();
-    void onAddReminder();
     void onViewNotes();
+
+    void onTextChanged();     
     void onCallStart(const QString& uniqueid);
     void onCursorPosChanged();
 
@@ -115,7 +111,7 @@ private:
 
 	QTimer m_timer;
 
-	PWInformation m_pwi;
+    PopupWindowInfo m_pwi;
 
     static QList<PopupWindow*> m_PopupWindows;
 };

@@ -47,10 +47,6 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
     connect(ui->pushUpdateButton, &QAbstractButton::clicked, this, &SettingsDialog::checkForUpdates);
 
     // General
-    QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
-    settings.beginGroup("Shell Folders");
-    path = settings.value("Startup").toString();
-
     ui->tabWidget->setCurrentIndex(0);
 
     loadLanguages();
@@ -346,6 +342,9 @@ void SettingsDialog::on_cancelButton_clicked()
  */
 void SettingsDialog::applySettings()
 {
+//    QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
+//    settings.beginGroup("Shell Folders");
+//    path = settings.value("Startup").toString();
 //    if (ui->autoStartBox->isChecked())
 //        file.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 //    else

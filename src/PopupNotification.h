@@ -21,6 +21,7 @@ private:
     struct PopupNotificationInfo
     {
         RemindersDialog* remindersDialog;
+
         QString id;
         QString number;
         QString note;

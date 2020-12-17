@@ -54,7 +54,7 @@ void AddPersonToOrg::setOrgId(const QString& orgId)
     query.exec();
     query.next();
 
-    orgName = query.value(0).toString();
+    QString orgName = query.value(0).toString();
 
     setWindowTitle(tr("Добавление сотрудников к организации") + " \"" + orgName + "\"");
 }
@@ -130,7 +130,7 @@ void AddPersonToOrg::loadPersons()
     query.exec();
     query.first();
 
-    count = query.value(0).toInt();
+    qint32 count = query.value(0).toInt();
 
     QString pages = ui->label_pages->text();
 
@@ -138,7 +138,7 @@ void AddPersonToOrg::loadPersons()
         pages = "1";
     else
     {
-        remainder = count % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = count % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;

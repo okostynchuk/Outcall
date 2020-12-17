@@ -407,7 +407,7 @@ void Updater::setUpdateAvailable(const bool available)
 
     QMessageBox box;
     box.setTextFormat(Qt::RichText);
-    box.setIcon(QMessageBox::Information);
+    box.setIconPixmap(QPixmap(":/images/information.png"));
 
     if (updateAvailable() && (notifyOnUpdate() || notifyOnFinish()))
     {

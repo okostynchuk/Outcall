@@ -59,7 +59,6 @@ private:
 
     QValidator* validator;
 
-    QString number;
     QString my_number;
 
     QByteArray geometry;

@@ -54,12 +54,6 @@ private:
     QString phoneNumber;
     QString page;
     QString go;
-    QString entry_name;
-    QString entry_phone;
-    QString entry_comment;
-
-    qint32 count;
-    qint32 remainder;
 
     bool filter;
 };

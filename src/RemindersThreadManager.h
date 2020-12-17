@@ -12,7 +12,7 @@ class RemindersThreadManager : public QObject
     Q_OBJECT
 
 signals:
-    void notify(QString, QDateTime, QString);
+    void notify(QString id, QDateTime dateTime, QString note);
     void finished();
 
 public slots:
