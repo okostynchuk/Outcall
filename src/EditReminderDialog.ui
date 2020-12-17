@@ -303,8 +303,8 @@
   <tabstop>add10MinButton</tabstop>
   <tabstop>add30MinButton</tabstop>
   <tabstop>add60MinButton</tabstop>
-  <tabstop>dateTimeEdit</tabstop>
   <tabstop>textEdit</tabstop>
+  <tabstop>dateTimeEdit</tabstop>
   <tabstop>chooseEmployeeButton</tabstop>
   <tabstop>saveButton</tabstop>
  </tabstops>
