@@ -50,7 +50,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
         connect(g_pAsteriskManager, &AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
     }
 
-    if (!ui->listWidget->isItemSelected(ui->listWidget->currentItem()))
+    if (!ui->listWidget->currentItem()->isSelected())
     {
         ui->callButton->setDisabled(true);
         ui->addReminderButton->setDisabled(true);
@@ -66,7 +66,8 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
 
     restoreGeometry(geometry);
 
-    QRect scr = QApplication::desktop()->screenGeometry();
+    QDesktopWidget desktop;
+    QRect scr = desktop.screenGeometry(this);
     move(scr.center() - rect().center());
 
     ui->listWidget->clearSelection();

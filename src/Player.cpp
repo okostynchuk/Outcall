@@ -3,6 +3,7 @@
 
 #include <QMouseEvent>
 #include <QTime>
+#include <QStyle>
 
 Player::Player(QWidget *parent) :
     QDialog(parent),
@@ -16,7 +17,7 @@ Player::Player(QWidget *parent) :
     ui->volume->installEventFilter(this);
 
     player = new QMediaPlayer(this);
-    player->setVolume(100);
+    player->setVolume(80);
 
     connect(player, &QMediaPlayer::durationChanged, ui->slider, &QSlider::setMaximum);
     connect(player, &QMediaPlayer::positionChanged, ui->slider, &QSlider::setValue);

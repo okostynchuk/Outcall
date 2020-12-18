@@ -100,7 +100,9 @@ void ContactsDialog::closeEvent(QCloseEvent*)
 
     restoreGeometry(geometry);
 
-    QRect scr = QApplication::desktop()->screenGeometry();
+    QDesktopWidget desktop;
+    QRect scr = desktop.screenGeometry(this);
+
     move(scr.center() - rect().center());
 }
 

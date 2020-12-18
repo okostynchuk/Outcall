@@ -73,7 +73,11 @@ qint32 main(qint32 argc, char* argv[])
             {
                 QProcess* process = new QProcess;
 
-                process->start("cmd.exe /C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + childFolders.at(i) + " /f");
+                QString program = "cmd.exe";
+                QStringList args;
+                args << "/C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + childFolders.at(i) + " /f";
+
+                process->start(program, args);
 
                 process->deleteLater();
             }

@@ -128,7 +128,7 @@ void DatabasesConnectDialog::setSettingsDb()
     global::setSettingsValue("databaseName_1",   ui->databaseName_1->text(), "settings");
     global::setSettingsValue("userName_1",   ui->userName_1->text(), "settings");
     QByteArray password_1;
-    password_1.append(ui->password_1->text());
+    password_1.append(ui->password_1->text().toLatin1());
     global::setSettingsValue("password_1", password_1.toBase64(), "settings");
     global::setSettingsValue("port_1", ui->port_1->text(), "settings");
 }
@@ -142,7 +142,7 @@ void DatabasesConnectDialog::setSettingsDbCalls()
     global::setSettingsValue("databaseName_2", ui->databaseName_2->text(), "settings");
     global::setSettingsValue("userName_2", ui->userName_2->text(), "settings");
     QByteArray password_2;
-    password_2.append(ui->password_2->text());
+    password_2.append(ui->password_2->text().toLatin1());
     global::setSettingsValue("password_2", password_2.toBase64(), "settings");
     global::setSettingsValue("port_2", ui->port_2->text(), "settings");
 }
