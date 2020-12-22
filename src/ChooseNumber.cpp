@@ -17,14 +17,13 @@ ChooseNumber::ChooseNumber(QWidget* parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     my_number = global::getExtensionNumber("extensions");
-    protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
     {
-        phonesList.at(i)->setVisible(false);
-        phonesList.at(i)->installEventFilter(this);
+        m_phones.at(i)->setVisible(false);
+        m_phones.at(i)->installEventFilter(this);
     }
 }
 
@@ -38,7 +37,9 @@ ChooseNumber::~ChooseNumber()
  */
 void ChooseNumber::onCall(const QString& number)
 {
-    g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
+    QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+
+    g_asteriskManager->originateCall(my_number, number, protocol, my_number);
 }
 
 /**
@@ -47,7 +48,7 @@ void ChooseNumber::onCall(const QString& number)
  */
 void ChooseNumber::setValues(const QString& contactId)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);
     query.exec();
@@ -56,7 +57,7 @@ void ChooseNumber::setValues(const QString& contactId)
 
     while (query.next())
     {
-        phonesList.at(i)->setText(query.value(0).toString());
+        m_phones.at(i)->setText(query.value(0).toString());
 
         ++i;
     }
@@ -76,12 +77,12 @@ void ChooseNumber::showEvent(QShowEvent* event)
 
     qint32 size = 31;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        if (!phonesList.at(i)->text().isEmpty())
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
         {
             QWidget::setFixedHeight(size += 26);
 
-            phonesList.at(i)->setVisible(true);
+            m_phones.at(i)->setVisible(true);
         }
 
     QWidget::setFixedHeight(size += 10);

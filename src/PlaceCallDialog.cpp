@@ -22,10 +22,10 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    geometry = saveGeometry();
+    m_geometry = saveGeometry();
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->phoneLine->setValidator(validator);
 
     connect(ui->tableView, &QAbstractItemView::clicked, this, &PlaceCallDialog::showNumber);
@@ -36,7 +36,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     connect(ui->comboBox,   &QComboBox::currentTextChanged,  this, &PlaceCallDialog::clearEditText);
     connect(ui->comboBox_2, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PlaceCallDialog::onOrgChanged);
 
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
     ui->orgLabel->hide();
     ui->comboBox_2->hide();
@@ -59,9 +59,9 @@ PlaceCallDialog::~PlaceCallDialog()
  */
 void PlaceCallDialog::showNumber(const QModelIndex& index)
 {
-    QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
+    QString id = m_queryModel->data(m_queryModel->index(index.row(), 0)).toString();
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
     query.addBindValue(id);
@@ -74,17 +74,17 @@ void PlaceCallDialog::showNumber(const QModelIndex& index)
         QString number = query.value(0).toString();
         QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
+        g_asteriskManager->originateCall(my_number, number, protocol, my_number);
 
         ui->phoneLine->setText(number);
     }
     else
     {
-        chooseNumber = new ChooseNumber;
-        chooseNumber->setValues(id);
-        connect(chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
-        chooseNumber->show();
-        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        m_chooseNumber = new ChooseNumber;
+        m_chooseNumber->setValues(id);
+        connect(m_chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
+        m_chooseNumber->show();
+        m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -94,7 +94,7 @@ void PlaceCallDialog::showNumber(const QModelIndex& index)
 void PlaceCallDialog::onOrgChanged()
 {
     QString queryString = "SELECT entry_id, entry_name, GROUP_CONCAT(DISTINCT entry_phone ORDER BY entry_id SEPARATOR '\n'), entry_type FROM entry_phone "
-                          "WHERE entry_person_org_id = '" + orgsId.at(ui->comboBox_2->currentIndex()) + "' "
+                          "WHERE entry_person_org_id = '" + m_orgsId.at(ui->comboBox_2->currentIndex()) + "' "
                           "GROUP BY entry_id ORDER BY entry_name ASC";
 
     setModel(queryString);
@@ -121,26 +121,26 @@ void PlaceCallDialog::onUpdate()
         queryString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text().trimmed() + "%' ");
     else if (ui->comboBox->currentIndex() == 2)
     {
-        QSqlQuery query(db);
+        QSqlQuery query(m_db);
 
         query.prepare("SELECT entry_id, entry_name FROM entry_phone WHERE entry_type = 'org' AND entry_name LIKE '%" + ui->lineEdit->text().trimmed() + "%' GROUP BY entry_id");
         query.exec();
 
-        if (!orgsId.isEmpty())
+        if (!m_orgsId.isEmpty())
         {
-           orgsId.clear();
-           orgsName.clear();
+           m_orgsId.clear();
+           m_orgsName.clear();
         }
 
         while (query.next())
         {
-            orgsId.append(query.value(0).toString());
-            orgsName.append(query.value(1).toString());
+            m_orgsId.append(query.value(0).toString());
+            m_orgsName.append(query.value(1).toString());
         }
 
-        if (!orgsId.isEmpty())
+        if (!m_orgsId.isEmpty())
         {
-            queryString.append("WHERE entry_person_org_id = " + orgsId.at(0) + " ");
+            queryString.append("WHERE entry_person_org_id = " + m_orgsId.at(0) + " ");
 
             ui->orgLabel->show();
             ui->orgLabel->setText(tr("Сотрудники организации"));
@@ -148,7 +148,7 @@ void PlaceCallDialog::onUpdate()
             ui->comboBox_2->blockSignals(true);
 
             ui->comboBox_2->clear();
-            ui->comboBox_2->addItems(orgsName);
+            ui->comboBox_2->addItems(m_orgsName);
             ui->comboBox_2->show();
 
             ui->comboBox_2->blockSignals(false);
@@ -172,14 +172,14 @@ void PlaceCallDialog::onUpdate()
  */
 void PlaceCallDialog::setModel(const QString& queryString)
 {
-    queryModel->setQuery(queryString);
+    m_queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    m_queryModel->setHeaderData(1, Qt::Horizontal, tr("ФИО / Название"));
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Телефон"));
 
     ui->tableView->setModel(NULL);
-    ui->tableView->setModel(queryModel);
+    ui->tableView->setModel(m_queryModel);
 
     ui->tableView->setColumnHidden(3, true);
 
@@ -261,12 +261,12 @@ void PlaceCallDialog::closeEvent(QCloseEvent*)
 
     ui->tableView->setModel(NULL);
 
-    restoreGeometry(geometry);
+    restoreGeometry(m_geometry);
 
-    QDesktopWidget desktop;
-    QRect scr = desktop.screenGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
 
-    move(scr.center() - rect().center());
+    move(screen.center() - rect().center());
 }
 
 /**
@@ -280,7 +280,7 @@ void PlaceCallDialog::onCallButton()
         QString from = my_number;
         QString protocol = global::getSettingsValue(from, "extensions").toString();
 
-        g_pAsteriskManager->originateCall(from, to, protocol, from);
+        g_asteriskManager->originateCall(from, to, protocol, from);
     }
 }
 

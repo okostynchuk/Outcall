@@ -44,19 +44,18 @@ private slots:
 private:
     Ui::EditOrgContactDialog *ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QList<QLineEdit*> phonesList;
-    QMap<QString, QLineEdit*> employeesPhonesList;
+    QList<QLineEdit*> m_phones;
 
-    QStringList oldPhonesList;
-    QMap<QString, QString> oldPhonesEmployeesList;
+    QStringList m_oldPhones;
 
-    QValidator* validator;
+    QMap<QString, QLineEdit*> m_managers;
+    QMap<QString, QString> m_oldManagers;
 
-    QString contactId;
+    QString m_contactId;
 
-    QTextCursor textCursor;
+    QTextCursor m_textCursor;
 };
 
 #endif // EDITORGCONTACTDIALOG_H

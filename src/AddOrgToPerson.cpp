@@ -15,7 +15,7 @@ AddOrgToPerson::AddOrgToPerson(QWidget* parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     QRegularExpression regExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
@@ -24,9 +24,9 @@ AddOrgToPerson::AddOrgToPerson(QWidget* parent) :
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &AddOrgToPerson::getOrgName);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &AddOrgToPerson::currentIndexChanged);
 
-    page = "1";
+    m_page = "1";
 
-    go = "default";
+    m_go = "default";
 
     loadOrgs();
 }
@@ -42,10 +42,10 @@ AddOrgToPerson::~AddOrgToPerson()
  */
 void AddOrgToPerson::getOrgName(const QModelIndex& index)
 {
-    QString id = queryModel->data(queryModel->index(index.row(), 0)).toString();
-    QString name = queryModel->data(queryModel->index(index.row(), 1)).toString();
+    QString id = m_queryModel->data(m_queryModel->index(index.row(), 0)).toString();
+    QString name = m_queryModel->data(m_queryModel->index(index.row(), 1)).toString();
 
-    emit sendOrgName(id, name);
+    emit sendOrg(id, name);
 
     close();
 }
@@ -55,10 +55,10 @@ void AddOrgToPerson::getOrgName(const QModelIndex& index)
  */
 void AddOrgToPerson::loadOrgs()
 {
-    if (!queryModel.isNull())
-        queryModel->deleteLater();
+    if (!m_queryModel.isNull())
+        m_queryModel->deleteLater();
 
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT entry_id, entry_name, entry_city, entry_address FROM entry_phone WHERE entry_type = 'org' ";
 
@@ -66,7 +66,7 @@ void AddOrgToPerson::loadOrgs()
 
     QString searchString;
 
-    if (filter == true)
+    if (m_filter == true)
     {
         if (ui->comboBox->currentIndex() == 0)
              searchString.append("AND entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
@@ -76,7 +76,7 @@ void AddOrgToPerson::loadOrgs()
 
     queryCountString.append(searchString);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare(queryCountString);
     query.exec();
@@ -100,23 +100,23 @@ void AddOrgToPerson::loadOrgs()
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
+    if (m_go == "previous" && m_page != "1")
+        m_page = QString::number(m_page.toInt() - 1);
+    else if (m_go == "previousStart" && m_page != "1")
+        m_page = "1";
+    else if (m_go == "next" && m_page.toInt() < pages.toInt())
+        m_page = QString::number(m_page.toInt() + 1);
+    else if (m_go == "next" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "nextEnd" && m_page.toInt() < pages.toInt())
+        m_page = pages;
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        m_page = ui->lineEdit_page->text();
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (m_go == "default" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
 
-    ui->lineEdit_page->setText(page);
+    ui->lineEdit_page->setText(m_page);
 
     ui->label_pages->setText(tr("из ") + pages);
 
@@ -132,14 +132,14 @@ void AddOrgToPerson::loadOrgs()
                                                 ui->comboBox_list->currentText().toInt()) + " , "
                            + QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString);
+    m_queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Название"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Город"));
-    queryModel->setHeaderData(3, Qt::Horizontal, tr("Адрес"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    m_queryModel->setHeaderData(1, Qt::Horizontal, tr("Название"));
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Город"));
+    m_queryModel->setHeaderData(3, Qt::Horizontal, tr("Адрес"));
 
-    ui->tableView->setModel(queryModel);
+    ui->tableView->setModel(m_queryModel);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -158,23 +158,23 @@ void AddOrgToPerson::loadOrgs()
  */
 void AddOrgToPerson::searchFunction()
 {
-    go = "default";
+    m_go = "default";
 
     if (ui->lineEdit->text().isEmpty())
     {
-        if (filter)
+        if (m_filter)
             ui->tableView->scrollToTop();
 
-        filter = false;
+        m_filter = false;
 
         loadOrgs();
 
         return;
     }
 
-    filter = true;
+    m_filter = true;
 
-    page = "1";
+    m_page = "1";
 
     ui->tableView->scrollToTop();
 
@@ -186,7 +186,7 @@ void AddOrgToPerson::searchFunction()
  */
 void AddOrgToPerson::currentIndexChanged()
 {
-    go = "default";
+    m_go = "default";
 
     loadOrgs();
 }
@@ -198,7 +198,7 @@ void AddOrgToPerson::on_previousButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previous";
+    m_go = "previous";
 
     loadOrgs();
 }
@@ -210,7 +210,7 @@ void AddOrgToPerson::on_nextButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "next";
+    m_go = "next";
 
     loadOrgs();
 }
@@ -222,7 +222,7 @@ void AddOrgToPerson::on_previousStartButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previousStart";
+    m_go = "previousStart";
 
     loadOrgs();
 }
@@ -234,7 +234,7 @@ void AddOrgToPerson::on_nextEndButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "nextEnd";
+    m_go = "nextEnd";
 
     loadOrgs();
 }
@@ -246,7 +246,7 @@ void AddOrgToPerson::on_lineEdit_page_returnPressed()
 {
     ui->tableView->scrollToTop();
 
-    go = "enter";
+    m_go = "enter";
 
     loadOrgs();
 }

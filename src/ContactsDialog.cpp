@@ -16,10 +16,10 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    geometry = saveGeometry();
+    m_geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
@@ -32,11 +32,11 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
     connect(ui->addPersonButton, &QAbstractButton::clicked, this, &ContactsDialog::onAddPerson);
     connect(ui->comboBox_list, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &ContactsDialog::currentIndexChanged);
 
-    filter = false;
+    m_filter = false;
 
-    page = "1";
+    m_page = "1";
 
-    go = "default";
+    m_go = "default";
 
     loadContacts();
 }
@@ -54,9 +54,9 @@ void ContactsDialog::receiveData(bool update)
 {
     if (update)
     {
-        queryModel->setQuery(queryModel->query().lastQuery());
+        m_queryModel->setQuery(m_queryModel->query().lastQuery());
 
-        go = "default";
+        m_go = "default";
 
         onUpdate();
     }
@@ -67,11 +67,11 @@ void ContactsDialog::receiveData(bool update)
  */
 void ContactsDialog::showEvent(QShowEvent*)
 {
-    selectionModel = ui->tableView->selectionModel()->selectedRows();
+    m_selections = ui->tableView->selectionModel()->selectedRows();
 
     ui->lineEdit->setFocus();
 
-    go = "default";
+    m_go = "default";
 
     loadContacts();
 }
@@ -83,7 +83,7 @@ void ContactsDialog::closeEvent(QCloseEvent*)
 {
     hide();
 
-    selectionModel.clear();
+    m_selections.clear();
 
     ui->tableView->clearSelection();
     ui->tableView->scrollToTop();
@@ -94,16 +94,16 @@ void ContactsDialog::closeEvent(QCloseEvent*)
 
     ui->comboBox_list->setCurrentIndex(0);
 
-    page = "1";
+    m_page = "1";
 
-    go = "default";
+    m_go = "default";
 
-    restoreGeometry(geometry);
+    restoreGeometry(m_geometry);
 
-    QDesktopWidget desktop;
-    QRect scr = desktop.screenGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
 
-    move(scr.center() - rect().center());
+    move(screen.center() - rect().center());
 }
 
 /**
@@ -111,7 +111,7 @@ void ContactsDialog::closeEvent(QCloseEvent*)
  */
 void ContactsDialog::onUpdate()
 {
-    selectionModel.clear();
+    m_selections.clear();
 
     ui->tableView->clearSelection();
 
@@ -123,10 +123,10 @@ void ContactsDialog::onUpdate()
  */
 void ContactsDialog::onAddPerson()
 {
-    addContactDialog = new AddContactDialog;
-    connect(addContactDialog, &AddContactDialog::sendData, this, &ContactsDialog::receiveData);
-    addContactDialog->show();
-    addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addContactDialog = new AddContactDialog;
+    connect(m_addContactDialog, &AddContactDialog::sendData, this, &ContactsDialog::receiveData);
+    m_addContactDialog->show();
+    m_addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -134,10 +134,10 @@ void ContactsDialog::onAddPerson()
  */
 void ContactsDialog::onAddOrg()
 {
-    addOrgContactDialog = new AddOrgContactDialog;
-    connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
-    addOrgContactDialog->show();
-    addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addOrgContactDialog = new AddOrgContactDialog;
+    connect(m_addOrgContactDialog, &AddOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
+    m_addOrgContactDialog->show();
+    m_addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -145,24 +145,24 @@ void ContactsDialog::onAddOrg()
  */
 void ContactsDialog::showCard(const QModelIndex& index)
 {
-    QString contactId = queryModel->data(queryModel->index(index.row(), 0)).toString();
+    QString contactId = m_queryModel->data(m_queryModel->index(index.row(), 0)).toString();
     qint32 row = ui->tableView->currentIndex().row();
 
-    if (queryModel->data(queryModel->index(row, 1)).toString() == "person")
+    if (m_queryModel->data(m_queryModel->index(row, 1)).toString() == "person")
     {
-         viewContactDialog = new ViewContactDialog;
-         viewContactDialog->setValues(contactId);
-         connect(viewContactDialog, &ViewContactDialog::sendData, this, &ContactsDialog::receiveData);
-         viewContactDialog->show();
-         viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+         m_viewContactDialog = new ViewContactDialog;
+         m_viewContactDialog->setValues(contactId);
+         connect(m_viewContactDialog, &ViewContactDialog::sendData, this, &ContactsDialog::receiveData);
+         m_viewContactDialog->show();
+         m_viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
-        viewOrgContactDialog = new ViewOrgContactDialog;
-        viewOrgContactDialog->setValues(contactId);
-        connect(viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
-        viewOrgContactDialog->show();
-        viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_viewOrgContactDialog = new ViewOrgContactDialog;
+        m_viewOrgContactDialog->setValues(contactId);
+        connect(m_viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &ContactsDialog::receiveData);
+        m_viewOrgContactDialog->show();
+        m_viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -171,14 +171,14 @@ void ContactsDialog::showCard(const QModelIndex& index)
  */
 void ContactsDialog::deleteObjects()
 {
-    if (!queryModel.isNull())
+    if (!m_queryModel.isNull())
     {
-        for (qint32 i = 0; i < widgets.size(); ++i)
-            widgets[i]->deleteLater();
+        for (qint32 i = 0; i < m_widgets.size(); ++i)
+            m_widgets[i]->deleteLater();
 
-        widgets.clear();
+        m_widgets.clear();
 
-        queryModel->deleteLater();
+        m_queryModel->deleteLater();
     }
 }
 
@@ -189,7 +189,7 @@ void ContactsDialog::loadContacts()
 {
     deleteObjects();
 
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT entry_id, entry_type, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                           "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, "
@@ -199,7 +199,7 @@ void ContactsDialog::loadContacts()
 
     QString searchString;
 
-    if (filter)
+    if (m_filter)
     {
         if (ui->comboBox->currentIndex() == 0)
             searchString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
@@ -211,7 +211,7 @@ void ContactsDialog::loadContacts()
 
     queryCountString.append(searchString);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare(queryCountString);
     query.exec();
@@ -235,23 +235,23 @@ void ContactsDialog::loadContacts()
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
+    if (m_go == "previous" && m_page != "1")
+        m_page = QString::number(m_page.toInt() - 1);
+    else if (m_go == "previousStart" && m_page != "1")
+        m_page = "1";
+    else if (m_go == "next" && m_page.toInt() < pages.toInt())
+        m_page = QString::number(m_page.toInt() + 1);
+    else if (m_go == "next" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "nextEnd" && m_page.toInt() < pages.toInt())
+        m_page = pages;
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        m_page = ui->lineEdit_page->text();
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (m_go == "default" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
 
-    ui->lineEdit_page->setText(page);
+    ui->lineEdit_page->setText(m_page);
     ui->label_pages->setText(tr("из ") + pages);
 
     queryString.append(searchString);
@@ -266,33 +266,33 @@ void ContactsDialog::loadContacts()
                                                 ui->comboBox_list->currentText().toInt()) + " , "
                            + QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString);
+    m_queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    queryModel->insertColumn(2);
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Тип"));
-    queryModel->setHeaderData(3, Qt::Horizontal, tr("ФИО / Название"));
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Телефон"));
-    queryModel->setHeaderData(5, Qt::Horizontal, tr("Город"));
-    queryModel->setHeaderData(6, Qt::Horizontal, tr("Адрес"));
-    queryModel->setHeaderData(7, Qt::Horizontal, tr("Email"));
-    queryModel->setHeaderData(8, Qt::Horizontal, tr("VyborID"));
-    queryModel->insertColumn(10);
-    queryModel->setHeaderData(10, Qt::Horizontal, tr("Заметка"));
-    queryModel->setHeaderData(11, Qt::Horizontal, tr("Менеджер"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    m_queryModel->insertColumn(2);
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Тип"));
+    m_queryModel->setHeaderData(3, Qt::Horizontal, tr("ФИО / Название"));
+    m_queryModel->setHeaderData(4, Qt::Horizontal, tr("Телефон"));
+    m_queryModel->setHeaderData(5, Qt::Horizontal, tr("Город"));
+    m_queryModel->setHeaderData(6, Qt::Horizontal, tr("Адрес"));
+    m_queryModel->setHeaderData(7, Qt::Horizontal, tr("Email"));
+    m_queryModel->setHeaderData(8, Qt::Horizontal, tr("VyborID"));
+    m_queryModel->insertColumn(10);
+    m_queryModel->setHeaderData(10, Qt::Horizontal, tr("Заметка"));
+    m_queryModel->setHeaderData(11, Qt::Horizontal, tr("Менеджер"));
 
-    ui->tableView->setModel(queryModel);
+    ui->tableView->setModel(m_queryModel);
 
     for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addImageLabel(row_index));
+        ui->tableView->setIndexWidget(m_queryModel->index(row_index, 2), addImageLabel(row_index));
 
-        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(queryModel->data(queryModel->index(row_index, 9)).toString());
+        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(m_queryModel->data(m_queryModel->index(row_index, 9)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, true));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 10), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 10), addWidgetNote(row_index, false));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 10), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(1, true);
@@ -312,10 +312,10 @@ void ContactsDialog::loadContacts()
         ui->tableView->horizontalHeader()->setSectionResizeMode(10, QHeaderView::Stretch);
     }
 
-    if (!selectionModel.isEmpty())
-        for (qint32 i = 0; i < selectionModel.length(); ++i)
+    if (!m_selections.isEmpty())
+        for (qint32 i = 0; i < m_selections.length(); ++i)
         {
-            QModelIndex index = selectionModel.at(i);
+            QModelIndex index = m_selections.at(i);
 
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
@@ -332,12 +332,12 @@ QWidget* ContactsDialog::addImageLabel(qint32 row_index)
 
     layout->addWidget(imageLabel, 0, Qt::AlignCenter);
 
-    if (queryModel->data(queryModel->index(row_index, 1)).toString() == "person")
+    if (m_queryModel->data(m_queryModel->index(row_index, 1)).toString() == "person")
         imageLabel->setPixmap(QPixmap(":/images/person.png").scaled(30, 30, Qt::KeepAspectRatio));
     else
         imageLabel->setPixmap(QPixmap(":/images/org.png").scaled(30, 30, Qt::KeepAspectRatio));
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -353,11 +353,11 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
 
     layout->addWidget(noteLabel);
 
-    QString note = queryModel->data(queryModel->index(row_index, 9)).toString();
+    QString note = m_queryModel->data(m_queryModel->index(row_index, 9)).toString();
 
     if (url)
     {
-        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
         QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
         note.replace("<", "&lt;").replace(">", "&gt;");
@@ -374,7 +374,7 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
 
         QStringList firstCharList, lastCharList;
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
         {
             QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
             hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -421,7 +421,7 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -431,23 +431,23 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
  */
 void ContactsDialog::searchFunction()
 {
-    go = "default";
+    m_go = "default";
 
     if (ui->lineEdit->text().isEmpty())
     {
-        if (filter)
+        if (m_filter)
             ui->tableView->scrollToTop();
 
-        filter = false;
+        m_filter = false;
 
         onUpdate();
 
         return;
     }
 
-    filter = true;
+    m_filter = true;
 
-    page = "1";
+    m_page = "1";
 
     ui->tableView->scrollToTop();
 
@@ -459,7 +459,7 @@ void ContactsDialog::searchFunction()
  */
 void ContactsDialog::currentIndexChanged()
 {
-    go = "default";
+    m_go = "default";
 
     onUpdate();
 }
@@ -469,7 +469,7 @@ void ContactsDialog::currentIndexChanged()
  */
 void ContactsDialog::on_updateButton_clicked()
 {
-    go = "default";
+    m_go = "default";
 
     onUpdate();
 }
@@ -481,7 +481,7 @@ void ContactsDialog::on_previousButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previous";
+    m_go = "previous";
 
     onUpdate();
 }
@@ -493,7 +493,7 @@ void ContactsDialog::on_nextButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "next";
+    m_go = "next";
 
     onUpdate();
 }
@@ -505,7 +505,7 @@ void ContactsDialog::on_previousStartButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previousStart";
+    m_go = "previousStart";
 
     onUpdate();
 }
@@ -517,7 +517,7 @@ void ContactsDialog::on_nextEndButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "nextEnd";
+    m_go = "nextEnd";
 
     onUpdate();
 }
@@ -529,7 +529,7 @@ void ContactsDialog::on_lineEdit_page_returnPressed()
 {
     ui->tableView->scrollToTop();
 
-    go = "enter";
+    m_go = "enter";
 
     onUpdate();
 }

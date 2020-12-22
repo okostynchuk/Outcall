@@ -22,7 +22,7 @@ signals:
     void sendData(bool update);
 
 public slots:
-    void receiveOrgName(const QString& id, const QString& name);
+    void receiveOrg(const QString& id, const QString& name);
 
 public:
     explicit AddContactDialog(QWidget* parent = 0);
@@ -45,17 +45,15 @@ private slots:
 private:
     Ui::AddContactDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<AddOrgToPerson> addOrgToPerson;
+    QPointer<AddOrgToPerson> m_addOrgToPerson;
 
-    QList<QLineEdit*> phonesList;
-    QMap<QString, QLineEdit*> employeesPhonesList;
+    QList<QLineEdit*> m_phones;
 
-    QValidator* validator;
-    QValidator* vyborIdValidator;
+    QMap<QString, QLineEdit*> m_managers;
 
-    QString orgId;
+    QString m_orgId;
 };
 
 #endif // ADDCONTACTDIALOG_H

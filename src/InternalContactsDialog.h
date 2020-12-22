@@ -27,32 +27,30 @@ public:
 
 private slots:
     void loadContacts();
-    void onExtenStatusChanged(QString exten, QString state);
-
-    void showEvent(QShowEvent* event);
-    void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent* event);
+    void onExtenStatusChanged(const QString& exten, const QString& state);
 
     void on_callButton_clicked();
     void on_addReminderButton_clicked();
     void on_listWidget_clicked();
 
+    void showEvent(QShowEvent* event);
+    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent* event);
+
 private:
     Ui::InternalContactsDialog* ui;
 
-    AddReminderDialog* addReminderDialog;
-
-    QValidator* validator;
+    AddReminderDialog* m_addReminderDialog;
 
     QString my_number;
     QString my_exten;
 
-    QStringList extensions;
+    QStringList m_extensions;
 
-    QByteArray geometry;
+    QByteArray m_geometry;
 
-    QMap<QString, QString> stateList;
-    QMap<QString, int> indexes;
+    QMap<QString, QString> m_states;
+    QMap<QString, qint32> m_indexes;
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

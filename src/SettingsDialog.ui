@@ -105,7 +105,7 @@
             </property>
             <layout class="QGridLayout" name="gridLayout_11">
              <item row="0" column="0">
-              <widget class="QPushButton" name="pushUpdateButton">
+              <widget class="QPushButton" name="updateButton">
                <property name="text">
                 <string>Проверить доступные обновления</string>
                </property>
@@ -730,7 +730,7 @@
   <tabstop>autoSignIn</tabstop>
   <tabstop>autoStartBox</tabstop>
   <tabstop>languageList</tabstop>
-  <tabstop>pushUpdateButton</tabstop>
+  <tabstop>updateButton</tabstop>
   <tabstop>serverName</tabstop>
   <tabstop>userName</tabstop>
   <tabstop>password</tabstop>

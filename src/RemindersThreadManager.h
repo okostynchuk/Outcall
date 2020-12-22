@@ -24,9 +24,9 @@ public:
     ~RemindersThreadManager();
 
 private:
-    QList<QString> ids;
-    QList<QDateTime> dateTimes;
-    QList<QString> notes;
+    QList<QString> m_ids;
+    QList<QDateTime> m_dateTimes;
+    QList<QString> m_notes;
 
     QString my_number;
 };

@@ -26,16 +26,16 @@ private slots:
     void on_mute_clicked();
 
     void stateChanged();
-    void durationChanged(qint32 duration);
+    void durationChanged(const qint32 duration);
 
     bool eventFilter(QObject* watched, QEvent* event);
 
 private:
     Ui::Player* ui;
 
-    QMediaPlayer* player;
+    QMediaPlayer* m_mediaPlayer;
 
-    qint32 duration;
+    qint32 m_duration;
 };
 
 #endif // PLAYER_H

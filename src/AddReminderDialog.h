@@ -47,14 +47,14 @@ private slots:
 private:
     Ui::AddReminderDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<ChooseEmployee> chooseEmployee;
+    QPointer<ChooseEmployee> m_chooseEmployee;
 
-    QStringList employee;
+    QStringList m_employee;
 
     QString my_number;
-    QString callId;
+    QString m_callId;
 };
 
 #endif // ADDREMINDERDIALOG_H

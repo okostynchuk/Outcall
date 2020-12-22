@@ -27,21 +27,20 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 //    {
 //        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(ui->phonesLayout->itemAt(i)->widget());
 //           if (lineEdit)
-//               phonesList.append(lineEdit);
+//               m_phones.append(lineEdit);
 //    }
 
+    m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
-
-    employeesPhonesList.insert("6203", ui->group_6203);
-    employeesPhonesList.insert("6204", ui->group_6204);
-    employeesPhonesList.insert("6207", ui->group_6207);
+    m_managers.insert("6203", ui->group_6203);
+    m_managers.insert("6204", ui->group_6204);
+    m_managers.insert("6207", ui->group_6207);
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setValidator(validator);
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        m_phones.at(i)->setValidator(validator);
 
     regExp.setPattern("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -49,10 +48,10 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 
     regExp.setPattern("^[0-9]{3}$");
     validator = new QRegularExpressionValidator(regExp, this);
-    foreach (QString key, employeesPhonesList.keys())
-        employeesPhonesList.value(key)->setValidator(validator);
+    foreach (QString key, m_managers.keys())
+        m_managers.value(key)->setValidator(validator);
 
-    g_pAsteriskManager->groupNumbers.removeDuplicates();
+    g_asteriskManager->m_groupNumbers.removeDuplicates();
 }
 
 AddContactDialog::~AddContactDialog()
@@ -65,7 +64,7 @@ AddContactDialog::~AddContactDialog()
  */
 void AddContactDialog::onSave()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString lastName = ui->lastName->text();
     QString firstName = ui->firstName->text();
@@ -73,11 +72,11 @@ void AddContactDialog::onSave()
 
     QStringList phonesListRegExp;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
     {
-        phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+        m_phones.at(i)->setStyleSheet("border: 1px solid grey");
 
-        phonesListRegExp.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+        phonesListRegExp.append(m_phones.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
     }
 
     bool empty_field = false;
@@ -118,17 +117,17 @@ void AddContactDialog::onSave()
 
     bool invalid_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
     {
-        if (!phonesList.at(i)->text().isEmpty())
+        if (!m_phones.at(i)->text().isEmpty())
         {
-            QString phone = phonesList.at(i)->text();
+            QString phone = m_phones.at(i)->text();
 
             if (isPhone(&phone))
-                phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+                m_phones.at(i)->setStyleSheet("border: 1px solid grey");
             else
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                m_phones.at(i)->setStyleSheet("border: 1px solid red");
 
                 invalid_phones = true;
             }
@@ -144,12 +143,12 @@ void AddContactDialog::onSave()
 
     bool same_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        for (qint32 j = 0; j < phonesList.length(); ++j)
-            if (!phonesList.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        for (qint32 j = 0; j < m_phones.length(); ++j)
+            if (!m_phones.at(i)->text().isEmpty() && phonesListRegExp.at(i) == phonesListRegExp.at(j) && i != j)
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
-                phonesList.at(j)->setStyleSheet("border: 1px solid red");
+                m_phones.at(i)->setStyleSheet("border: 1px solid red");
+                m_phones.at(j)->setStyleSheet("border: 1px solid red");
 
                 same_phones = true;
             }
@@ -163,8 +162,8 @@ void AddContactDialog::onSave()
 
     bool existing_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        if (!phonesList.at(i)->text().isEmpty())
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
         {
             query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + phonesListRegExp.at(i) + "')");
             query.exec();
@@ -172,7 +171,7 @@ void AddContactDialog::onSave()
 
             if (query.value(0) != 0)
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                m_phones.at(i)->setStyleSheet("border: 1px solid red");
 
                 existing_phones = true;
             }
@@ -191,7 +190,7 @@ void AddContactDialog::onSave()
 
 //    if (!ui->employee->text().isEmpty())
 //    {
-//        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
+//        if (g_asteriskManager->m_extensionNumbers.contains(employee) || g_asteriskManager->m_groupNumbers.contains(employee))
 //            ui->employee->setStyleSheet("border: 1px solid grey");
 //        else
 //        {
@@ -217,8 +216,8 @@ void AddContactDialog::onSave()
     else
         query.addBindValue(lastName + ' ' + firstName + ' ' + patronymic);
 
-    if (!orgId.isNull())
-        query.addBindValue(orgId);
+    if (!m_orgId.isNull())
+        query.addBindValue(m_orgId);
     else
         query.addBindValue(QVariant(QVariant::Int));
 
@@ -234,8 +233,8 @@ void AddContactDialog::onSave()
 
     qint32 id = query.lastInsertId().toInt();
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        if (!phonesList.at(i)->text().isEmpty())
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
         {
             query.prepare("INSERT INTO fones (entry_id, fone)"
                            "VALUES(?, ?)");
@@ -244,21 +243,21 @@ void AddContactDialog::onSave()
             query.exec();
         }
 
-    foreach (QString key, employeesPhonesList.keys())
+    foreach (QString key, m_managers.keys())
     {
-        if (!employeesPhonesList.value(key)->text().isEmpty())
+        if (!m_managers.value(key)->text().isEmpty())
         {
             query.prepare("INSERT INTO managers (id_client, group_number, manager_number)"
                            "VALUES(?, ?, ?)");
             query.addBindValue(id);
             query.addBindValue(key);
-            query.addBindValue(employeesPhonesList.value(key)->text());
+            query.addBindValue(m_managers.value(key)->text());
             query.exec();
         }
     }
 
-    if (!addOrgToPerson.isNull())
-        addOrgToPerson->close();
+    if (!m_addOrgToPerson.isNull())
+        m_addOrgToPerson->close();
 
     emit sendData(true);
 
@@ -286,19 +285,19 @@ bool AddContactDialog::isPhone(QString* str)
  * Получает id и название выбранной организации из класса AddOrgToPerson
  * для последующей привязки к физ. лицу.
  */
-void AddContactDialog::receiveOrgName(const QString& id, const QString& name)
+void AddContactDialog::receiveOrg(const QString& id, const QString& name)
 {
     if (!id.isNull())
     {
         ui->label_org->setText(name);
 
-        orgId = id;
+        m_orgId = id;
     }
     else
     {
         ui->label_org->setText(tr("Нет"));
 
-        orgId = "0";
+        m_orgId = "0";
     }
 }
 
@@ -307,13 +306,13 @@ void AddContactDialog::receiveOrgName(const QString& id, const QString& name)
  */
 void AddContactDialog::on_addOrgButton_clicked()
 {
-    if (!addOrgToPerson.isNull())
-        addOrgToPerson->close();
+    if (!m_addOrgToPerson.isNull())
+        m_addOrgToPerson->close();
 
-    addOrgToPerson = new AddOrgToPerson;
-    connect(addOrgToPerson, &AddOrgToPerson::sendOrgName, this, &AddContactDialog::receiveOrgName);
-    addOrgToPerson->show();
-    addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
+    m_addOrgToPerson = new AddOrgToPerson;
+    connect(m_addOrgToPerson, &AddOrgToPerson::sendOrg, this, &AddContactDialog::receiveOrg);
+    m_addOrgToPerson->show();
+    m_addOrgToPerson->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -323,7 +322,7 @@ void AddContactDialog::on_deleteOrgButton_clicked()
 {
     ui->label_org->setText(tr("Нет"));
 
-    orgId = "0";
+    m_orgId = "0";
 }
 
 /**
@@ -341,11 +340,11 @@ void AddContactDialog::setValues(const QString& number)
  */
 void AddContactDialog::onTextChanged()
 {
-    int m_maxDescriptionLength = 255;
+    qint32 maxTextLength = 255;
 
-    if (ui->comment->toPlainText().length() > m_maxDescriptionLength)
+    if (ui->comment->toPlainText().length() > maxTextLength)
     {
-        int diff = ui->comment->toPlainText().length() - m_maxDescriptionLength;
+        qint32 diff = ui->comment->toPlainText().length() - maxTextLength;
 
         QString newStr = ui->comment->toPlainText();
         newStr.chop(diff);
@@ -385,6 +384,6 @@ void AddContactDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
-    if (!addOrgToPerson.isNull())
-        addOrgToPerson->close();
+    if (!m_addOrgToPerson.isNull())
+        m_addOrgToPerson->close();
 }

@@ -19,7 +19,7 @@ AddReminderDialog::AddReminderDialog(QWidget* parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    employee.append(my_number);
+    m_employee.append(my_number);
 
     ui->employee->setText(my_number);
 
@@ -54,12 +54,12 @@ AddReminderDialog::~AddReminderDialog()
  */
 void AddReminderDialog::receiveEmployee(const QStringList& employee)
 {
-    this->employee = employee;
+    m_employee = employee;
 
-    if (this->employee.length() == 1)
-        ui->employee->setText(this->employee.first());
+    if (m_employee.length() == 1)
+        ui->employee->setText(m_employee.first());
     else
-        ui->employee->setText(tr("Группа") + " (" + QString::number(this->employee.length()) + ")");
+        ui->employee->setText(tr("Группа") + " (" + QString::number(m_employee.length()) + ")");
 }
 
 /**
@@ -68,16 +68,16 @@ void AddReminderDialog::receiveEmployee(const QStringList& employee)
  */
 void AddReminderDialog::onChooseEmployee()
 {
-    if (!chooseEmployee.isNull())
-        chooseEmployee->close();
+    if (!m_chooseEmployee.isNull())
+        m_chooseEmployee->close();
 
-    chooseEmployee = new ChooseEmployee;
-    chooseEmployee->setValues(employee);
-    connect(chooseEmployee, &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
-    connect(this, &AddReminderDialog::getPos, chooseEmployee, &ChooseEmployee::setPos);
+    m_chooseEmployee = new ChooseEmployee;
+    m_chooseEmployee->setValues(m_employee);
+    connect(m_chooseEmployee, &ChooseEmployee::sendEmployee, this, &AddReminderDialog::receiveEmployee);
+    connect(this, &AddReminderDialog::getPos, m_chooseEmployee, &ChooseEmployee::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-    chooseEmployee->show();
-    chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
+    m_chooseEmployee->show();
+    m_chooseEmployee->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -104,20 +104,20 @@ void AddReminderDialog::onSave()
         return;
     }
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
-    if (callId.isEmpty())
+    if (m_callId.isEmpty())
     {
         if (ui->employee->text() != my_number)
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
-            query.addBindValue(employee.first());
+            query.addBindValue(m_employee.first());
             query.addBindValue(dateTime);
             query.addBindValue(note);
             query.exec();
 
-            if (employee.length() > 1)
+            if (m_employee.length() > 1)
             {
                 qint32 id = query.lastInsertId().toInt();
 
@@ -126,12 +126,12 @@ void AddReminderDialog::onSave()
                 query.addBindValue(id);
                 query.exec();
 
-                for (qint32 i = 1; i < employee.length(); ++i)
+                for (qint32 i = 1; i < m_employee.length(); ++i)
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);
                     query.addBindValue(my_number);
-                    query.addBindValue(employee.at(i));
+                    query.addBindValue(m_employee.at(i));
                     query.addBindValue(dateTime);
                     query.addBindValue(note);
                     query.exec();
@@ -154,13 +154,13 @@ void AddReminderDialog::onSave()
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
             query.addBindValue(my_number);
-            query.addBindValue(employee.first());
+            query.addBindValue(m_employee.first());
             query.addBindValue(dateTime);
             query.addBindValue(note);
-            query.addBindValue(callId);
+            query.addBindValue(m_callId);
             query.exec();
 
-            if (employee.length() > 1)
+            if (m_employee.length() > 1)
             {
                 qint32 id = query.lastInsertId().toInt();
 
@@ -169,15 +169,15 @@ void AddReminderDialog::onSave()
                 query.addBindValue(id);
                 query.exec();
 
-                for (qint32 i = 1; i < employee.length(); ++i)
+                for (qint32 i = 1; i < m_employee.length(); ++i)
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);
                     query.addBindValue(my_number);
-                    query.addBindValue(employee.at(i));
+                    query.addBindValue(m_employee.at(i));
                     query.addBindValue(dateTime);
                     query.addBindValue(note);
-                    query.addBindValue(callId);
+                    query.addBindValue(m_callId);
                     query.exec();
                 }
             }
@@ -189,13 +189,13 @@ void AddReminderDialog::onSave()
             query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
-            query.addBindValue(callId);
+            query.addBindValue(m_callId);
             query.exec();
         }
     }
 
-    if (!chooseEmployee.isNull())
-        chooseEmployee->close();
+    if (!m_chooseEmployee.isNull())
+        m_chooseEmployee->close();
 
     emit sendData(true);
 
@@ -213,7 +213,7 @@ void AddReminderDialog::onSave()
  */
 void AddReminderDialog::setCallId(const QString& callId)
 {
-    this->callId = callId;
+    m_callId = callId;
 }
 
 /**
@@ -222,11 +222,11 @@ void AddReminderDialog::setCallId(const QString& callId)
  */
 void AddReminderDialog::onTextChanged()
 {
-    int m_maxDescriptionLength = 255;
+    qint32 maxTextLength = 255;
 
-    if (ui->textEdit->toPlainText().length() > m_maxDescriptionLength)
+    if (ui->textEdit->toPlainText().length() > maxTextLength)
     {
-        int diff = ui->textEdit->toPlainText().length() - m_maxDescriptionLength;
+        qint32 diff = ui->textEdit->toPlainText().length() - maxTextLength;
 
         QString newStr = ui->textEdit->toPlainText();
         newStr.chop(diff);
@@ -266,8 +266,8 @@ void AddReminderDialog::closeEvent(QCloseEvent* event)
 {
     QDialog::closeEvent(event);
 
-    if (!chooseEmployee.isNull())
-        chooseEmployee->close();
+    if (!m_chooseEmployee.isNull())
+        m_chooseEmployee->close();
 }
 
 /**

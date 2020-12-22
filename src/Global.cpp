@@ -15,7 +15,7 @@ bool g_ordersDbOpened = false;
 /**
  * Возвращает окно сообщения с информацией.
  */
-int MsgBoxInformation(const QString& text, const QString& title, QWidget* parent)
+qint32 MsgBoxInformation(const QString& text, const QString& title, QWidget* parent)
 {
     QMessageBox msgBox;
     msgBox.setParent(parent);
@@ -28,7 +28,7 @@ int MsgBoxInformation(const QString& text, const QString& title, QWidget* parent
 /**
  * Возвращает окно сообщения с ошибкой.
  */
-int MsgBoxError(const QString& text, const QString& title, QWidget* parent)
+qint32 MsgBoxError(const QString& text, const QString& title, QWidget* parent)
 {
     QMessageBox msgBox;
     msgBox.setParent(parent);
@@ -41,7 +41,7 @@ int MsgBoxError(const QString& text, const QString& title, QWidget* parent)
 /**
  * Возвращает окно сообщения с предупреждением.
  */
-int MsgBoxWarning(const QString& text, const QString& title, QWidget* parent)
+qint32 MsgBoxWarning(const QString& text, const QString& title, QWidget* parent)
 {
     QMessageBox msgBox;
     msgBox.setParent(parent);
@@ -54,7 +54,7 @@ int MsgBoxWarning(const QString& text, const QString& title, QWidget* parent)
 /**
  * Возвращает окно сообщения с вопросом.
  */
-int MsgBoxQuestion(const QString& text, const QString& title, QWidget* parent)
+qint32 MsgBoxQuestion(const QString& text, const QString& title, QWidget* parent)
 {
     QMessageBox msgBox;
     msgBox.setParent(parent);

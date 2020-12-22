@@ -17,7 +17,7 @@ InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    geometry = saveGeometry();
+    m_geometry = saveGeometry();
 
     my_exten = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
     my_number = global::getExtensionNumber("extensions");
@@ -35,19 +35,19 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    stateList = g_pAsteriskManager->stateList;
+    m_states = g_asteriskManager->m_states;
 
-    if (extensions.isEmpty())
+    if (m_extensions.isEmpty())
     {
-        extensions = g_pAsteriskManager->extensionNumbers.values();
+        m_extensions = g_asteriskManager->m_extensionNumbers.values();
 
-        for (qint32 i = 0; i < extensions.count(); ++i)
-            if (extensions[i] == "" || extensions[i] == my_exten)
-                extensions.removeAt(i);
+        for (qint32 i = 0; i < m_extensions.count(); ++i)
+            if (m_extensions[i] == "" || m_extensions[i] == my_exten)
+                m_extensions.removeAt(i);
 
         loadContacts();
 
-        connect(g_pAsteriskManager, &AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
+        connect(g_asteriskManager, &AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
     }
 
     ui->callButton->setDisabled(true);
@@ -68,11 +68,11 @@ void InternalContactsDialog::closeEvent(QCloseEvent*)
 {
     hide();
 
-    restoreGeometry(geometry);
+    restoreGeometry(m_geometry);
 
-    QDesktopWidget desktop;
-    QRect scr = desktop.screenGeometry(this);
-    move(scr.center() - rect().center());
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    move(screen.center() - rect().center());
 
     ui->listWidget->clearSelection();
     ui->listWidget->scrollToTop();
@@ -85,11 +85,11 @@ void InternalContactsDialog::loadContacts()
 {
     ui->listWidget->clear();
 
-    ui->listWidget->addItems(extensions);
+    ui->listWidget->addItems(m_extensions);
 
-    for (int i = 0; i < ui->listWidget->count(); ++i)
+    for (qint32 i = 0; i < ui->listWidget->count(); ++i)
     {
-        QString state = stateList.value(ui->listWidget->item(i)->text().remove(3, ui->listWidget->item(i)->text().length()));
+        QString state = m_states.value(ui->listWidget->item(i)->text().remove(3, ui->listWidget->item(i)->text().length()));
 
         if (state == "0")
             ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-idle.png"));
@@ -103,25 +103,25 @@ void InternalContactsDialog::loadContacts()
             ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-hold.png"));
     }
 
-    if (indexes.isEmpty())
+    if (m_indexes.isEmpty())
         for (qint32 i = 0; i < ui->listWidget->count(); ++i)
-            indexes.insert(ui->listWidget->item(i)->text().remove(QRegularExpression(" .+")), i);
+            m_indexes.insert(ui->listWidget->item(i)->text().remove(QRegularExpression(" .+")), i);
 }
 
-void InternalContactsDialog::onExtenStatusChanged(QString exten, QString state)
+void InternalContactsDialog::onExtenStatusChanged(const QString& exten, const QString& state)
 {
     if (exten != my_number)
     {
         if (state == "0")
-            ui->listWidget->item(indexes.value(exten))->setIcon(QIcon(":/images/presence-idle.png"));
+            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-idle.png"));
         else if (state == "1" || state == "2" || state == "8" ||state == "9")
-            ui->listWidget->item(indexes.value(exten))->setIcon(QIcon(":/images/presence-busy.png"));
+            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-busy.png"));
         else if (state == "4")
-            ui->listWidget->item(indexes.value(exten))->setIcon(QIcon(":/images/presence-unavial.png"));
+            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-unavial.png"));
         else if (state == "-2" || state == "-1")
-            ui->listWidget->item(indexes.value(exten))->setIcon(QIcon(":/images/presence-dnd.png"));
+            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-dnd.png"));
         else if (state == "16" || state == "17")
-            ui->listWidget->item(indexes.value(exten))->setIcon(QIcon(":/images/presence-hold.png"));
+            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-hold.png"));
     }
 }
 
@@ -146,7 +146,7 @@ void InternalContactsDialog::on_callButton_clicked()
     QString to = ui->listWidget->currentItem()->text().remove(QRegExp(" .+"));
     QString protocol = global::getSettingsValue(from, "extensions").toString();
 
-    g_pAsteriskManager->originateCall(from, to, protocol, from);
+    g_asteriskManager->originateCall(from, to, protocol, from);
 }
 
 /**
@@ -157,10 +157,10 @@ void InternalContactsDialog::on_addReminderButton_clicked()
     QStringList employee;
     employee << ui->listWidget->currentItem()->text();
 
-    addReminderDialog = new AddReminderDialog;
-    addReminderDialog->receiveEmployee(employee);
-    addReminderDialog->show();
-    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addReminderDialog = new AddReminderDialog;
+    m_addReminderDialog->receiveEmployee(employee);
+    m_addReminderDialog->show();
+    m_addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void InternalContactsDialog::on_listWidget_clicked()

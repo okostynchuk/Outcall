@@ -35,12 +35,11 @@ private slots:
 private:
     Ui::AddOrgContactDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QList<QLineEdit*> phonesList;
-    QMap<QString, QLineEdit*> employeesPhonesList;
+    QList<QLineEdit*> m_phones;
 
-    QValidator* validator;
+    QMap<QString, QLineEdit*> m_managers;
 };
 
 #endif // ADDORGCONTACTDIALOG_H

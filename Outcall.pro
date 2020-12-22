@@ -1,10 +1,9 @@
-QT += \
-    core \
-    gui \
-    network \
-    sql \
-    widgets \
-    multimedia
+QT += core
+QT += gui
+QT += sql
+QT += network
+QT += widgets
+QT += multimedia
 
 include ($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
@@ -133,7 +132,5 @@ FORMS += \
     Player.ui
 
 RESOURCES += \
-    images.qrc \
-    translations.qrc \
-
-DISTFILES +=
+    src/images.qrc \
+    src/translations.qrc \

@@ -34,21 +34,17 @@ private slots:
     void onCall(const QString& number);
 
     void showEvent(QShowEvent* event);
+
     bool eventFilter(QObject* target, QEvent* event);
 
 private:
     Ui::ChooseNumber* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    PlaceCallDialog* placeCallDialog;
-
-    QValidator* validator;
-
-    QList<QLineEdit*> phonesList;
+    QList<QLineEdit*> m_phones;
 
     QString my_number;
-    QString protocol;
 };
 
 #endif // CHOOSENUMBER_H

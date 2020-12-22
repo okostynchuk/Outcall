@@ -13,9 +13,9 @@ RemindersThreadManager::RemindersThreadManager(const QList<QString>& ids, const 
 {
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    this->ids = ids;
-    this->dateTimes = dateTimes;
-    this->notes = notes;
+    m_ids = ids;
+    m_dateTimes = dateTimes;
+    m_notes = notes;
 }
 
 RemindersThreadManager::~RemindersThreadManager()
@@ -26,9 +26,9 @@ RemindersThreadManager::~RemindersThreadManager()
  */
 void RemindersThreadManager::setValues(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
-    this->ids = ids;
-    this->dateTimes = dateTimes;
-    this->notes = notes;
+    m_ids = ids;
+    m_dateTimes = dateTimes;
+    m_notes = notes;
 }
 
 /**
@@ -46,15 +46,15 @@ void RemindersThreadManager::process()
             return;
         }
 
-        for (qint32 i = 0; i < dateTimes.count(); ++i)
+        for (qint32 i = 0; i < m_dateTimes.count(); ++i)
         {
-            if (dateTimes.at(i) <= QDateTime::currentDateTime())
+            if (m_dateTimes.at(i) <= QDateTime::currentDateTime())
             {
-                emit notify(ids.at(i), dateTimes.at(i), notes.at(i));
+                emit notify(m_ids.at(i), m_dateTimes.at(i), m_notes.at(i));
 
-                ids.removeAt(i);
-                dateTimes.removeAt(i);
-                notes.removeAt(i);
+                m_ids.removeAt(i);
+                m_dateTimes.removeAt(i);
+                m_notes.removeAt(i);
             }
         }
 

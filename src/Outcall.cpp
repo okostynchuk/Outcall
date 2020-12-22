@@ -40,10 +40,10 @@ Outcall::Outcall() :
 
     connect(m_systemTrayIcon,   &QSystemTrayIcon::activated,            this, &Outcall::onActivated);
 
-    connect(g_pAsteriskManager, &AsteriskManager::messageReceived,      this, &Outcall::onMessageReceived);
-    connect(g_pAsteriskManager, &AsteriskManager::callReceived,         this, &Outcall::onCallReceived);
-    connect(g_pAsteriskManager, &AsteriskManager::error,                this, &Outcall::displayError);
-    connect(g_pAsteriskManager, &AsteriskManager::stateChanged,         this, &Outcall::onStateChanged);
+    connect(g_asteriskManager, &AsteriskManager::messageReceived,      this, &Outcall::onMessageReceived);
+    connect(g_asteriskManager, &AsteriskManager::callReceived,         this, &Outcall::onCallReceived);
+    connect(g_asteriskManager, &AsteriskManager::error,                this, &Outcall::displayError);
+    connect(g_asteriskManager, &AsteriskManager::stateChanged,         this, &Outcall::onStateChanged);
     connect(&m_timer,           &QTimer::timeout,                       this, &Outcall::changeIcon);
 
     connect(m_remindersDialog, &RemindersDialog::reminders, this, &Outcall::changeIconReminders);
@@ -53,7 +53,7 @@ Outcall::Outcall() :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
+    m_show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
 
     createContextMenu();
 
@@ -62,7 +62,7 @@ Outcall::Outcall() :
     QString path(":/images/disconnected.png");
     m_systemTrayIcon->setIcon(QIcon(path));
 
-    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
+    g_asteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 
     automaticlySignIn();
 }
@@ -99,20 +99,20 @@ void Outcall::createContextMenu()
     connect(debugInfoAction, &QAction::triggered, this, &Outcall::onDebugInfo);
 
     // Contacts
-    contactsAction = new QAction(tr("Контакты"), m_menu);
-    connect(contactsAction, &QAction::triggered, this, &Outcall::onContactsDialog);
+    m_contactsAction = new QAction(tr("Контакты"), m_menu);
+    connect(m_contactsAction, &QAction::triggered, this, &Outcall::onContactsDialog);
 
     // Internal Contacts
-    internalContactsAction = new QAction(tr("Внутренние"), m_menu);
-    connect(internalContactsAction, &QAction::triggered, this, &Outcall::onInternalContactsDialog);
+    m_internalContactsAction = new QAction(tr("Внутренние"), m_menu);
+    connect(m_internalContactsAction, &QAction::triggered, this, &Outcall::onInternalContactsDialog);
 
     // Call History
-    callHistoryAction = new QAction(tr("История звонков"), m_menu);
-    connect(callHistoryAction, &QAction::triggered, this, &Outcall::onCallHistory);
+    m_callHistoryAction = new QAction(tr("История звонков"), m_menu);
+    connect(m_callHistoryAction, &QAction::triggered, this, &Outcall::onCallHistory);
 
     // Reminders
-    remindersAction = new QAction(tr("Напоминания"), m_menu);
-    connect(remindersAction, &QAction::triggered, this, &Outcall::onRemindersDialog);
+    m_remindersAction = new QAction(tr("Напоминания"), m_menu);
+    connect(m_remindersAction, &QAction::triggered, this, &Outcall::onRemindersDialog);
 
     // Place a Call
     m_placeCall = new QAction(tr("Позвонить"), 0);
@@ -125,12 +125,12 @@ void Outcall::createContextMenu()
     m_menu->addSeparator();
 
     m_menu->addAction(m_placeCall);
-    m_menu->addAction(callHistoryAction);
-    m_menu->addAction(contactsAction);
-    m_menu->addAction(internalContactsAction);
+    m_menu->addAction(m_callHistoryAction);
+    m_menu->addAction(m_contactsAction);
+    m_menu->addAction(m_internalContactsAction);
     m_menu->addSeparator();
 
-    m_menu->addAction(remindersAction);
+    m_menu->addAction(m_remindersAction);
     m_menu->addSeparator();
 
     m_menu->addAction(settingsAction);
@@ -168,20 +168,20 @@ void Outcall::signInOut()
 {
     if (m_signIn->text() == tr("Выйти из аккаунта") || m_signIn->text() == tr("Отменить вход"))
     {
-        g_pAsteriskManager->signOut();
+        g_asteriskManager->signOut();
 
         return;
     }
 
-    if (g_pAsteriskManager->isSignedIn() == false)
+    if (g_asteriskManager->isSignedIn() == false)
     {
         QString server = global::getSettingsValue("servername", "settings").toString();
         QString port = global::getSettingsValue("port", "settings").toString();
 
-        g_pAsteriskManager->signIn(server, port.toUInt());
+        g_asteriskManager->signIn(server, port.toUInt());
     }
     else
-        g_pAsteriskManager->signOut();
+        g_asteriskManager->signOut();
 }
 
 /**
@@ -234,7 +234,7 @@ void Outcall::onCallReceived(const QMap<QString, QVariant>& call)
     if (from == callerIdName)
         callerIdName = tr("Неизвестный");
 
-    if (show_call_popup)
+    if (m_show_call_popup)
         PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName), my_number);
 }
 
@@ -337,10 +337,10 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
 void Outcall::disableActions()
 {
     m_placeCall->setEnabled(false);
-    callHistoryAction->setEnabled(false);
-    contactsAction->setEnabled(false);
-    internalContactsAction->setEnabled(false);
-    remindersAction->setEnabled(false);
+    m_callHistoryAction->setEnabled(false);
+    m_contactsAction->setEnabled(false);
+    m_internalContactsAction->setEnabled(false);
+    m_remindersAction->setEnabled(false);
 }
 
 /**
@@ -349,10 +349,10 @@ void Outcall::disableActions()
 void Outcall::enableActions()
 {
     m_placeCall->setEnabled(true);
-    callHistoryAction->setEnabled(true);
-    contactsAction->setEnabled(true);
-    internalContactsAction->setEnabled(true);
-    remindersAction->setEnabled(true);
+    m_callHistoryAction->setEnabled(true);
+    m_contactsAction->setEnabled(true);
+    m_internalContactsAction->setEnabled(true);
+    m_remindersAction->setEnabled(true);
 }
 
 /**
@@ -370,7 +370,7 @@ void Outcall::hideTrayIcon(bool hide)
  */
 void Outcall::changeIconReminders(bool change)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
     query.addBindValue(my_number);
@@ -531,7 +531,7 @@ void Outcall::onRemindersDialog()
 {
     showDialog(m_remindersDialog);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ?");
     query.addBindValue(my_number);
@@ -546,7 +546,7 @@ void Outcall::onRemindersDialog()
  */
 void Outcall::close()
 {
-    g_pAsteriskManager->signOut();
+    g_asteriskManager->signOut();
 
     m_systemTrayIcon->hide();
 
@@ -569,7 +569,7 @@ void Outcall::onActivated(const QSystemTrayIcon::ActivationReason& reason)
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
-        if (g_dbsOpened && g_pAsteriskManager->m_currentState == AsteriskManager::CONNECTED)
+        if (g_dbsOpened && g_asteriskManager->m_currentState == AsteriskManager::CONNECTED)
             showDialog(m_placeCallDialog);
     }
 }

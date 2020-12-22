@@ -31,10 +31,10 @@ private slots:
 private:
     Ui::DatabasesConnectDialog* ui;
 
-    QSqlDatabase db;
-    QSqlDatabase dbCalls;
+    QSqlDatabase m_db;
+    QSqlDatabase m_dbCalls;
 
-    QString state;
+    QString m_state;
 };
 
 #endif // DATABASESCONNECTDIALOG_H

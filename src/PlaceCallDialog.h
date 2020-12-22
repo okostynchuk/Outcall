@@ -48,20 +48,18 @@ private slots:
 private:
     Ui::PlaceCallDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QStringList orgsId;
-    QStringList orgsName;
+    QStringList m_orgsId;
+    QStringList m_orgsName;
 
-    ChooseNumber* chooseNumber;
+    ChooseNumber* m_chooseNumber;
 
-    QSqlQueryModel* queryModel;
-
-    QValidator* validator;
+    QSqlQueryModel* m_queryModel;
 
     QString my_number;
 
-    QByteArray geometry;
+    QByteArray m_geometry;
 };
 
 #endif // PLACECALLDIALOG_H

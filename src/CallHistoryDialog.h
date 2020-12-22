@@ -75,42 +75,39 @@ private slots:
 private:
     Ui::CallHistoryDialog* ui;
 
-    QSqlDatabase db;
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+    QSqlDatabase m_db;
+    QSqlDatabase m_dbCalls = QSqlDatabase::database("Calls");
 
-    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+    QRegularExpression m_hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QPointer<QSqlQueryModel> queryModel;
+    QPointer<QSqlQueryModel> m_queryModel;
+    QPointer<Player> m_player;
 
-    QValidator* validator;
+    AddContactDialog* m_addContactDialog;
+    AddOrgContactDialog* m_addOrgContactDialog;
+    EditContactDialog* m_editContactDialog;
+    EditOrgContactDialog* m_editOrgContactDialog;
+    AddPhoneNumberToContactDialog* m_addPhoneNumberToContactDialog;
+    NotesDialog* m_notesDialog;
 
-    QPointer<Player> player;
-
-    AddContactDialog* addContactDialog;
-    AddOrgContactDialog* addOrgContactDialog;
-    EditContactDialog* editContactDialog;
-    EditOrgContactDialog* editOrgContactDialog;
-    AddPhoneNumberToContactDialog* addPhoneNumberToContactDialog;
-    NotesDialog* notesDialog;
-
-    QString recordpath;
-    QString go;
-    QString number;
+    QString m_recordpath;
+    QString m_go;
+    QString m_number;
     QString my_number;
     QString my_group;
-    QString page;
+    QString m_page;
 
-    qint32 countRecords;
+    qint32 m_countRecords;
 
     QWidget* loadStatus(const QString& dialogStatus);
     QWidget* loadNote(const QString& uniqueid);
     QWidget* loadName(const QString& src, const QString& dst);
 
-    QModelIndexList selections;
+    QModelIndexList m_selections;
 
-    QList<QWidget*> widgets;
+    QList<QWidget*> m_widgets;
 
-    QByteArray geometry;
+    QByteArray m_geometry;
 };
 
 #endif // CALLHISTORYDIALOG_H

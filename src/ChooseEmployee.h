@@ -20,7 +20,7 @@ signals:
     void sendEmployee(const QStringList& employee);
 
 public slots:
-    void setValues(const QStringList& employee);
+    void setValues(QStringList& employee);
     void setPos(qint32 x, qint32 y);
 
 public:
@@ -41,9 +41,8 @@ private slots:
 private:
     Ui::ChooseEmployee* ui;
 
-    QStringList employee;
-    QStringList extensions;
-    QStringList results;
+    QStringList m_extensions;
+    QStringList m_results;
 
     QString my_number;
 };

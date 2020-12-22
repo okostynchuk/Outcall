@@ -359,7 +359,7 @@ background-color: #fffff8;
             </font>
            </property>
            <property name="text">
-            <string>Регионы (6203)</string>
+            <string>Распил (6203)</string>
            </property>
           </widget>
          </item>
@@ -383,7 +383,7 @@ background-color: #fffff8;
             </font>
            </property>
            <property name="text">
-            <string>Call-center (6207)</string>
+            <string>Колл-центр (6207)</string>
            </property>
           </widget>
          </item>

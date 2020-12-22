@@ -42,17 +42,15 @@ private slots:
 private:
     Ui::AddPersonToOrg* ui;
 
-    QPointer<QSqlQueryModel> queryModel;
+    QPointer<QSqlQueryModel> m_queryModel;
 
-    QValidator* validator;
+    QSqlDatabase m_db;
 
-    QSqlDatabase db;
+    QString m_orgId;
+    QString m_page;
+    QString m_go;
 
-    QString orgId;
-    QString page;
-    QString go;
-
-    bool filter;
+    bool m_filter;
 };
 
 #endif // ADDPERSONTOORG_H

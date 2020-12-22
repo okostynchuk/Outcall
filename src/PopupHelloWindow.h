@@ -41,17 +41,20 @@ private slots:
 private:
     Ui::PopupHelloWindow* ui;
 
-    qint32 m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
-    qint32 m_nCurrentPosX, m_nCurrentPosY;
-    qint32 m_nIncrement;
+    qint32 m_startPosX;
+    qint32 m_startPosY;
+    qint32 m_taskbarPlacement;
+    qint32 m_currentPosX;
+    qint32 m_currentPosY;
+    qint32 m_increment;
 
-    bool m_bAppearing;
+    bool m_appearing;
 
     QTimer m_timer;
 
     PopupHelloWindowInfo m_phwi;
 
-    static QList<PopupHelloWindow*> m_PopupHelloWindows;
+    static QList<PopupHelloWindow*> s_popupHelloWindows;
 };
 
 #endif // POPUPWINDOW_H

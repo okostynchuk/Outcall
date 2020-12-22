@@ -16,20 +16,20 @@ Player::Player(QWidget *parent) :
     ui->slider->installEventFilter(this);
     ui->volume->installEventFilter(this);
 
-    player = new QMediaPlayer(this);
-    player->setVolume(80);
+    m_mediaPlayer = new QMediaPlayer(this);
+    m_mediaPlayer->setVolume(80);
 
-    connect(player, &QMediaPlayer::durationChanged, ui->slider, &QSlider::setMaximum);
-    connect(player, &QMediaPlayer::positionChanged, ui->slider, &QSlider::setValue);
+    connect(m_mediaPlayer, &QMediaPlayer::durationChanged, ui->slider, &QSlider::setMaximum);
+    connect(m_mediaPlayer, &QMediaPlayer::positionChanged, ui->slider, &QSlider::setValue);
 
-    connect(player, &QMediaPlayer::volumeChanged,   ui->volume, &QSlider::setValue);
+    connect(m_mediaPlayer, &QMediaPlayer::volumeChanged,   ui->volume, &QSlider::setValue);
 
-    connect(player, &QMediaPlayer::durationChanged, this, &Player::durationChanged);
-    connect(player, &QMediaPlayer::positionChanged, this, &Player::updateTime);
-    connect(player, &QMediaPlayer::stateChanged,    this, &Player::stateChanged);
+    connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &Player::durationChanged);
+    connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &Player::updateTime);
+    connect(m_mediaPlayer, &QMediaPlayer::stateChanged,    this, &Player::stateChanged);
 
-    connect(ui->slider, &QSlider::sliderMoved, player, &QMediaPlayer::setPosition);
-    connect(ui->volume, &QSlider::sliderMoved, player, &QMediaPlayer::setVolume);
+    connect(ui->slider, &QSlider::sliderMoved, m_mediaPlayer, &QMediaPlayer::setPosition);
+    connect(ui->volume, &QSlider::sliderMoved, m_mediaPlayer, &QMediaPlayer::setVolume);
 }
 
 Player::~Player()
@@ -41,37 +41,37 @@ void Player::openMedia(QString recordpath)
 {
     QString path = "ftp://support:Lvp^^ej0@192.168.0.8/ftp_media/usb/" + recordpath.remove(0, 16);
 
-    player->setMedia(QUrl(path));
-    player->play();
+    m_mediaPlayer->setMedia(QUrl(path));
+    m_mediaPlayer->play();
 }
 
-void Player::durationChanged(qint32 duration)
+void Player::durationChanged(const qint32 duration)
 {
-    this->duration = duration / 1000;
+    m_duration = duration / 1000;
 }
 
 void Player::updateTime()
 {
-    ui->duration->setText(QDateTime::fromTime_t(player->position() / 1000).toUTC().toString("mm:ss") + " / " + QDateTime::fromTime_t(duration).toUTC().toString("mm:ss"));
+    ui->duration->setText(QDateTime::fromTime_t(m_mediaPlayer->position() / 1000).toUTC().toString("mm:ss") + " / " + QDateTime::fromTime_t(m_duration).toUTC().toString("mm:ss"));
 }
 
 void Player::stateChanged()
 {
-    if (player->state() == QMediaPlayer::StoppedState)
+    if (m_mediaPlayer->state() == QMediaPlayer::StoppedState)
         ui->play->setIcon(QIcon(":/images/play.png"));
 }
 
 void Player::on_play_clicked()
 {
-    if (player->state() == QMediaPlayer::PlayingState)
+    if (m_mediaPlayer->state() == QMediaPlayer::PlayingState)
     {
-        player->pause();
+        m_mediaPlayer->pause();
 
         ui->play->setIcon(QIcon(":/images/play.png"));
     }
     else
     {
-        player->play();
+        m_mediaPlayer->play();
 
         ui->play->setIcon(QIcon(":/images/pause.png"));
     }
@@ -79,15 +79,15 @@ void Player::on_play_clicked()
 
 void Player::on_mute_clicked()
 {
-    if (player->isMuted())
+    if (m_mediaPlayer->isMuted())
     {
-        player->setMuted(false);
+        m_mediaPlayer->setMuted(false);
 
         ui->mute->setIcon(QIcon(":/images/volume.png"));
     }
     else
     {
-        player->setMuted(true);
+        m_mediaPlayer->setMuted(true);
 
         ui->mute->setIcon(QIcon(":/images/mute.png"));
     }
@@ -99,18 +99,18 @@ bool Player::eventFilter(QObject* watched, QEvent* event)
     {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
 
-        player->setPosition(QStyle::sliderValueFromPosition(ui->slider->minimum(), ui->slider->maximum(), mouseEvent->x(), ui->slider->width()));
+        m_mediaPlayer->setPosition(QStyle::sliderValueFromPosition(ui->slider->minimum(), ui->slider->maximum(), mouseEvent->x(), ui->slider->width()));
     }
 
     if (watched == ui->volume && event->type() == QEvent::MouseButtonRelease)
     {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
 
-        player->setVolume(QStyle::sliderValueFromPosition(ui->volume->minimum(), ui->volume->maximum(), mouseEvent->x(), ui->volume->width()));
+        m_mediaPlayer->setVolume(QStyle::sliderValueFromPosition(ui->volume->minimum(), ui->volume->maximum(), mouseEvent->x(), ui->volume->width()));
 
-        if (player->isMuted())
+        if (m_mediaPlayer->isMuted())
         {
-            player->setMuted(false);
+            m_mediaPlayer->setMuted(false);
 
             ui->mute->setIcon(QIcon(":/images/volume.png"));
         }

@@ -75,46 +75,44 @@ private slots:
 private:
     Ui::ViewOrgContactDialog* ui;
 
-    QSqlDatabase db;
-    QSqlDatabase dbCalls = QSqlDatabase::database("Calls");
+    QSqlDatabase m_db;
+    QSqlDatabase m_dbCalls = QSqlDatabase::database("Calls");
 
-    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+    QRegularExpression m_hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
     QPointer<QSqlQueryModel> query_model;
-    QPointer<QSqlQueryModel> queryModel;
+    QPointer<QSqlQueryModel> m_queryModel;
 
     QPointer<AddPersonToOrg> addPersonToOrg;
-    QPointer<Player> player;
-    QPointer<ChooseNumber> chooseNumber;
-    QPointer<AddReminderDialog> addReminderDialog;
+    QPointer<Player> m_player;
+    QPointer<ChooseNumber> m_chooseNumber;
+    QPointer<AddReminderDialog> m_addReminderDialog;
 
-    ViewContactDialog* viewContactDialog;
-    NotesDialog* notesDialog;
-    EditOrgContactDialog* editOrgContactDialog;
+    ViewContactDialog* m_viewContactDialog;
+    NotesDialog* m_notesDialog;
+    EditOrgContactDialog* m_editOrgContactDialog;
 
-    QString recordpath;
-    QString userId;
-    QString contactId;
+    QString m_recordpath;
+    QString m_contactId;
     QString my_number;
-    QString go;
-    QString page;
+    QString m_go;
+    QString m_page;
 
-    qint32 countRecords;
+    qint32 m_countRecords;
 
-    bool filter;
+    bool m_filter;
 
     QWidget* loadStatus(const QString& dialogStatus);
     QWidget* loadNote(const QString& uniqueid);
     QWidget* loadName(const QString& src, const QString& dst);
 
-    QStringList numbersList;
+    QStringList m_numbers;
 
-    QModelIndexList selections;
+    QMap<QString, QLineEdit*> m_managers;
 
-    QList<QLineEdit*> phonesList;
-    QList<QWidget*> widgets;
+    QList<QLineEdit*> m_phones;
 
-    QMap<QString, QLineEdit*> employeesPhonesList;
+    QList<QWidget*> m_widgets;
 };
 
 #endif // VIEWORGCONTACTDIALOG_H

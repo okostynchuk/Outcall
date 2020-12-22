@@ -12,7 +12,7 @@
 #include <QDebug>
 #include <QLineEdit>
 
-QList<PopupReminder*> PopupReminder::m_PopupReminders;
+QList<PopupReminder*> PopupReminder::s_popupReminders;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -31,7 +31,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
 
     setAttribute(Qt::WA_TranslucentBackground);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT call_id, phone_from, group_id FROM reminders WHERE id = ?");
     query.addBindValue(m_pri.id);
@@ -44,7 +44,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     {
         m_pri.call_id = query.value(0).toString();
 
-        QSqlQuery query(dbCalls);
+        QSqlQuery query(m_dbCalls);
 
         query.prepare("SELECT src, extfield1 FROM cdr WHERE uniqueid = ?");
         query.addBindValue(m_pri.call_id);
@@ -62,7 +62,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
             }
             else
             {
-                QSqlQuery query(db);
+                QSqlQuery query(m_db);
 
                 query.prepare("SELECT entry_name, entry_vybor_id FROM entry_phone WHERE entry_phone = ?");
                 query.addBindValue(m_pri.number);
@@ -84,7 +84,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
         }
         else
         {
-            QSqlQuery query(db);
+            QSqlQuery query(m_db);
 
             query.prepare("SELECT entry_name, entry_phone, entry_vybor_id FROM entry_phone WHERE entry_id = ?");
             query.addBindValue(m_pri.call_id);
@@ -126,7 +126,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     QString note = m_pri.text;
 
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+    QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
     QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
     note.replace("<", "&lt;").replace(">", "&gt;");
@@ -143,7 +143,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
 
     QStringList firstCharList, lastCharList;
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
     {
         QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
         hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -182,7 +182,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
             size = hrefsReplaceCharacters.at(i).size() + 1;
 
         note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
-                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
+                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "' style='color: #ffb64f'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
     }
 
     ui->textBrowser->setText(note);
@@ -214,68 +214,68 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
     connect(ui->comboBox,  static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
 
-    quint32 nDesktopHeight;
-    quint32 nDesktopWidth;
-    quint32 nScreenWidth;
-    quint32 nScreenHeight;
+    quint32 desktopHeight;
+    quint32 desktopWidth;
+    quint32 screenWidth;
+    quint32 screenHeight;
 
-    QDesktopWidget desktop;
-    QRect rcScreen = desktop.screenGeometry(this);
-    QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-    nScreenWidth = rcScreen.width();
-    nScreenHeight = rcScreen.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
+    screenWidth = screen.width();
+    screenHeight = screen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth <= nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
+    bool isTaskbarOnRight = desktopWidth <= screenWidth && desktop.left() == 0;
+    bool isTaskbarOnLeft = desktopWidth <= screenWidth && desktop.left() != 0;
+    bool isTaskBarOnTop = desktopHeight <= screenHeight && desktop.top() != 0;
 
-    qint32 nTimeToShow = TIME_TO_SHOW;
-    qint32 nTimerDelay;
+    qint32 timeToShow = TIME_TO_SHOW;
+    qint32 timerDelay;
 
-    m_nIncrement = 2;
+    m_increment = 2;
 
-    if (bTaskbarOnRight)
+    if (isTaskbarOnRight)
     {
-        m_nStartPosX = (rcDesktop.right());
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = (desktop.right());
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_RIGHT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskbarOnLeft)
+    else if (isTaskbarOnLeft)
     {
-        m_nStartPosX = (rcDesktop.left() - width());
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = (desktop.left() - width());
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_LEFT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskBarOnTop)
+    else if (isTaskBarOnTop)
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = (rcDesktop.top() - height());
-        m_nTaskbarPlacement = TASKBAR_ON_TOP;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = (desktop.top() - height());
+        m_taskbarPlacement = TASKBAR_ON_TOP;
+        timerDelay = timeToShow / (height() / m_increment);
     }
     else
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = rcDesktop.bottom();
-        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = desktop.bottom();
+        m_taskbarPlacement = TASKBAR_ON_BOTTOM;
+        timerDelay = timeToShow / (height() / m_increment);
     }
 
-    m_nCurrentPosX = m_nStartPosX;
-    m_nCurrentPosY = m_nStartPosY;
+    m_currentPosX = m_startPosX;
+    m_currentPosY = m_startPosY;
 
-    position = QPoint();
+    m_position = QPoint();
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 
-    m_bAppearing = true;
+    m_appearing = true;
 
-    m_timer.setInterval(nTimerDelay);
+    m_timer.setInterval(timerDelay);
     m_timer.start();
 }
 
@@ -293,7 +293,7 @@ void PopupReminder::closeAndDestroy()
 
     m_timer.stop();
 
-    m_PopupReminders.removeOne(this);
+    s_popupReminders.removeOne(this);
 
     delete this;
 }
@@ -303,7 +303,7 @@ void PopupReminder::closeAndDestroy()
  */
 void PopupReminder::mousePressEvent(QMouseEvent* event)
 {
-    position = event->globalPos();
+    m_position = event->globalPos();
 }
 
 /**
@@ -312,7 +312,7 @@ void PopupReminder::mousePressEvent(QMouseEvent* event)
 void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
-    position = QPoint();
+    m_position = QPoint();
 }
 
 /**
@@ -320,17 +320,17 @@ void PopupReminder::mouseReleaseEvent(QMouseEvent* event)
  */
 void PopupReminder::mouseMoveEvent(QMouseEvent* event)
 {
-    if (!position.isNull())
+    if (!m_position.isNull())
     {
-        QPoint delta = event->globalPos() - position;
+        QPoint delta = event->globalPos() - m_position;
 
-        if (position.x() > this->x() + this->width() - 10
-                || position.y() > this->y() + this->height() - 10)
+        if (m_position.x() > this->x() + this->width() - 10
+                || m_position.y() > this->y() + this->height() - 10)
         {}
         else
         {
             move(this->x() + delta.x(), this->y() + delta.y());
-            position = event->globalPos();
+            m_position = event->globalPos();
         }
     }
 }
@@ -359,55 +359,51 @@ bool PopupReminder::isInternalPhone(QString* str)
  */
 void PopupReminder::onTimer()
 {
-    if (m_bAppearing) // APPEARING
+    if (m_appearing)
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY > (m_nStartPosY - height()))
-                m_nCurrentPosY -= m_nIncrement;
+            if (m_currentPosY > (m_startPosY - height()))
+                m_currentPosY -= m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY - m_nStartPosY) < height())
-                m_nCurrentPosY += m_nIncrement;
+            if ((m_currentPosY - m_startPosY) < height())
+                m_currentPosY += m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX - m_nStartPosX) < width())
-                m_nCurrentPosX += m_nIncrement;
+            if ((m_currentPosX - m_startPosX) < width())
+                m_currentPosX += m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX > (m_nStartPosX - width()))
-                m_nCurrentPosX -= m_nIncrement;
+            if (m_currentPosX > (m_startPosX - width()))
+                m_currentPosX -= m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         }
     }
-    else // DISSAPPEARING
+    else
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
             closeAndDestroy();
@@ -428,7 +424,7 @@ void PopupReminder::onTimer()
         }
     }
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 }
 
 /**
@@ -458,26 +454,26 @@ void PopupReminder::onCall()
     {
         if (m_pri.numbers.length() > 1)
         {
-            if (!chooseNumber.isNull())
-                chooseNumber->close();
+            if (!m_chooseNumber.isNull())
+                m_chooseNumber->close();
 
-            chooseNumber = new ChooseNumber;
-            chooseNumber->setValues(m_pri.call_id);
-            chooseNumber->show();
-            chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+            m_chooseNumber = new ChooseNumber;
+            m_chooseNumber->setValues(m_pri.call_id);
+            m_chooseNumber->show();
+            m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }
         else
         {
             QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-            g_pAsteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
+            g_asteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
         }
     }
     else
     {
         QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        g_pAsteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
+        g_asteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
     }
 }
 
@@ -486,19 +482,19 @@ void PopupReminder::onCall()
  */
 void PopupReminder::onSelectTime(qint32 index)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     switch (index)
     {
     case 1:
-        if (!editReminderDialog.isNull())
-            editReminderDialog->close();
+        if (!m_editReminderDialog.isNull())
+            m_editReminderDialog->close();
 
-        editReminderDialog = new EditReminderDialog;
-        editReminderDialog->setValues(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
-        connect(editReminderDialog, &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
-        editReminderDialog->show();
-        editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_editReminderDialog = new EditReminderDialog;
+        m_editReminderDialog->setValues(m_pri.id, m_pri.group_id, m_pri.dateTime, m_pri.note);
+        connect(m_editReminderDialog, &EditReminderDialog::sendData, this, &PopupReminder::receiveData);
+        m_editReminderDialog->show();
+        m_editReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 
         ui->comboBox->setCurrentIndex(0);
         break;
@@ -512,8 +508,8 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
-        if (!editReminderDialog.isNull())
-            editReminderDialog->close();
+        if (!m_editReminderDialog.isNull())
+            m_editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -527,8 +523,8 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
-        if (!editReminderDialog.isNull())
-            editReminderDialog->close();
+        if (!m_editReminderDialog.isNull())
+            m_editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -542,8 +538,8 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
-        if (!editReminderDialog.isNull())
-            editReminderDialog->close();
+        if (!m_editReminderDialog.isNull())
+            m_editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -557,8 +553,8 @@ void PopupReminder::onSelectTime(qint32 index)
         m_pri.remindersDialog->resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
-        if (!editReminderDialog.isNull())
-            editReminderDialog->close();
+        if (!m_editReminderDialog.isNull())
+            m_editReminderDialog->close();
 
         closeAndDestroy();
         break;
@@ -572,14 +568,11 @@ void PopupReminder::onSelectTime(qint32 index)
  */
 void PopupReminder::onOpenAccess()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pri.number + "')");
     query.exec();
     query.first();
-
-    QString vyborId = query.value(0).toString();
-    QString userId = global::getSettingsValue("user_login", "settings").toString();
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -599,6 +592,9 @@ void PopupReminder::onOpenAccess()
 
     if (dbOrders.isOpen())
     {
+        QString userId = global::getSettingsValue("user_login", "settings").toString();
+        QString vyborId = query.value(0).toString();
+
         QSqlQuery query1(dbOrders);
 
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
@@ -625,7 +621,7 @@ void PopupReminder::onOpenAccess()
  */
 void PopupReminder::onClosePopup()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     if (m_pri.my_number == m_pri.number)
     {
@@ -641,11 +637,12 @@ void PopupReminder::onClosePopup()
     }
 
     emit m_pri.remindersDialog->reminders(false);
+
     m_pri.remindersDialog->resizeCells = false;
     m_pri.remindersDialog->loadReminders();
 
-    if (!editReminderDialog.isNull())
-        editReminderDialog->close();
+    if (!m_editReminderDialog.isNull())
+        m_editReminderDialog->close();
 
     if (isVisible())
         m_timer.start();
@@ -656,10 +653,10 @@ void PopupReminder::onClosePopup()
  */
 void PopupReminder::closeAll()
 {
-    for (qint32 i = 0; i < m_PopupReminders.size(); ++i)
-        m_PopupReminders[i]->deleteLater();
+    for (qint32 i = 0; i < s_popupReminders.size(); ++i)
+        s_popupReminders[i]->deleteLater();
 
-    m_PopupReminders.clear();
+    s_popupReminders.clear();
 }
 
 /**
@@ -685,7 +682,7 @@ void PopupReminder::showReminder(RemindersDialog* remindersDialog, const QString
     reminder->ui->labelTime->setText(tr("<font size = 1>%1</font>").arg(pri.dateTime.toString("dd.MM.yy hh:mm")));
     reminder->ui->labelTime->setStyleSheet("*{color: white; font-weight:bold}");
 
-    m_PopupReminders.append(reminder);
+    s_popupReminders.append(reminder);
 }
 
 /**

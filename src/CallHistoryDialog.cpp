@@ -17,10 +17,10 @@ CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    geometry = saveGeometry();
+    m_geometry = saveGeometry();
 
     QRegularExpression regExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     my_number = global::getExtensionNumber("extensions");
@@ -47,9 +47,9 @@ CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    go = "default";
+    m_go = "default";
 
-    page = "1";
+    m_page = "1";
 }
 
 CallHistoryDialog::~CallHistoryDialog()
@@ -64,7 +64,7 @@ void CallHistoryDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
 
-    go = "default";
+    m_go = "default";
 
     updateCount();
 }
@@ -82,17 +82,17 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
 
     clearSelections();
 
-    go = "default";
+    m_go = "default";
 
-    page = "1";
+    m_page = "1";
 
     ui->tableView->scrollToTop();
 
-    restoreGeometry(geometry);
+    restoreGeometry(m_geometry);
 
-    QDesktopWidget desktop;
-    QRect scr = desktop.screenGeometry(this);
-    move(scr.center() - rect().center());
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    move(screen.center() - rect().center());
 }
 
 /**
@@ -104,7 +104,7 @@ void CallHistoryDialog::loadCalls()
 
     setPage();
 
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
     QString queryString;
 
@@ -150,18 +150,18 @@ void CallHistoryDialog::loadCalls()
                                            - ui->comboBox_list->currentText().toInt()) + " , " +
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString, dbCalls);
+    m_queryModel->setQuery(queryString, m_dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
-    queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
-    queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
-    queryModel->insertColumn(6);
-    queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    m_queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    m_queryModel->insertColumn(4);
+    m_queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
+    m_queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
+    m_queryModel->insertColumn(6);
+    m_queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
-    ui->tableView->setModel(queryModel);
+    ui->tableView->setModel(m_queryModel);
 
     if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
         ui->tableView->setColumnHidden(1, true);
@@ -176,19 +176,19 @@ void CallHistoryDialog::loadCalls()
 
     for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        QString extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        QString src = queryModel->data(queryModel->index(row_index, 1)).toString();
-        QString dst = queryModel->data(queryModel->index(row_index, 2)).toString();
-        QString dialogStatus = queryModel->data(queryModel->index(row_index, 3)).toString();
-        QString uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
+        QString extfield = m_queryModel->data(m_queryModel->index(row_index, 0)).toString();
+        QString src = m_queryModel->data(m_queryModel->index(row_index, 1)).toString();
+        QString dst = m_queryModel->data(m_queryModel->index(row_index, 2)).toString();
+        QString dialogStatus = m_queryModel->data(m_queryModel->index(row_index, 3)).toString();
+        QString uniqueid = m_queryModel->data(m_queryModel->index(row_index, 7)).toString();
 
         if (extfield.isEmpty())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 0), loadName(src, dst));
 
         if (ui->tabWidget->currentWidget()->objectName() == "allCalls" || ui->tabWidget->currentWidget()->objectName() == "placedCalls")
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
-        QSqlQuery query(db);
+        QSqlQuery query(m_db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = "+uniqueid+")");
         query.exec();
@@ -196,7 +196,7 @@ void CallHistoryDialog::loadCalls()
 
         if (query.value(0).toBool())
         {
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 6), loadNote(uniqueid));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 6), loadNote(uniqueid));
 
             ui->tableView->resizeRowToContents(row_index);
         }
@@ -211,10 +211,10 @@ void CallHistoryDialog::loadCalls()
     if (ui->tableView->model()->columnCount() != 0)
         ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    if (!selections.isEmpty())
-        for (qint32 i = 0; i < selections.length(); ++i)
+    if (!m_selections.isEmpty())
+        for (qint32 i = 0; i < m_selections.length(); ++i)
         {
-            QModelIndex index = selections.at(i);
+            QModelIndex index = m_selections.at(i);
 
             ui->tableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
@@ -229,39 +229,39 @@ void CallHistoryDialog::setPage()
 {
     QString pages = ui->label_pages->text();
 
-    if (countRecords <= ui->comboBox_list->currentText().toInt())
+    if (m_countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
-        qint32 remainder = countRecords % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = m_countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
 
-        pages = QString::number(countRecords / ui->comboBox_list->currentText().toInt() + remainder);
+        pages = QString::number(m_countRecords / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
+    if (m_go == "previous" && m_page != "1")
+        m_page = QString::number(m_page.toInt() - 1);
+    else if (m_go == "previousStart" && m_page != "1")
+        m_page = "1";
+    else if (m_go == "next" && m_page.toInt() < pages.toInt())
+        m_page = QString::number(m_page.toInt() + 1);
+    else if (m_go == "next" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "nextEnd" && m_page.toInt() < pages.toInt())
+        m_page = pages;
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        m_page = ui->lineEdit_page->text();
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (m_go == "default" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "default" && m_page == "1")
+        m_page = "1";
 
-    ui->lineEdit_page->setText(page);
+    ui->lineEdit_page->setText(m_page);
     ui->label_pages->setText(tr("из ") + pages);
 }
 
@@ -270,7 +270,7 @@ void CallHistoryDialog::setPage()
  */
 void CallHistoryDialog::updateCount()
 {
-    QSqlQuery query(dbCalls);
+    QSqlQuery query(m_dbCalls);
 
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
@@ -301,7 +301,7 @@ void CallHistoryDialog::updateCount()
     query.exec();
     query.first();
 
-    countRecords = query.value(0).toInt();
+    m_countRecords = query.value(0).toInt();
 
     loadCalls();
 }
@@ -332,23 +332,23 @@ void CallHistoryDialog::getData(const QModelIndex& index)
 {
     ui->callButton->setDisabled(false);
 
-    number = queryModel->data(queryModel->index(index.row(), 1)).toString();
+    m_number = m_queryModel->data(m_queryModel->index(index.row(), 1)).toString();
 
-    if (number == my_number)
+    if (m_number == my_number)
     {
-        number = queryModel->data(queryModel->index(index.row(), 2)).toString();
-        number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
+        m_number = m_queryModel->data(m_queryModel->index(index.row(), 2)).toString();
+        m_number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
     }
 
-    if (!isInternalPhone(&number))
+    if (!isInternalPhone(&m_number))
     {
-        QSqlQuery query(db);
+        QSqlQuery query(m_db);
 
         ui->addContactButton->setDisabled(true);
         ui->addOrgContactButton->setDisabled(true);
         ui->addPhoneNumberButton->setDisabled(true);
 
-        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + number + "')");
+        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + m_number + "')");
         query.exec();
         query.next();
 
@@ -360,7 +360,7 @@ void CallHistoryDialog::getData(const QModelIndex& index)
         }
         else
         {
-            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + number);
+            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + m_number);
             query.exec();
             query.next();
 
@@ -380,9 +380,9 @@ void CallHistoryDialog::getData(const QModelIndex& index)
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
+    m_recordpath = m_queryModel->data(m_queryModel->index(index.row(), 8)).toString();
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
         ui->playAudio->setDisabled(false);
         ui->playAudioPhone->setDisabled(false);
@@ -406,7 +406,7 @@ QWidget* CallHistoryDialog::loadName(const QString& src, const QString& dst)
     layout->addWidget(nameLabel);
     layout->setContentsMargins(3, 0, 0, 0);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -422,7 +422,7 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 
     layout->addWidget(noteLabel);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
@@ -430,7 +430,7 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 
     QString note = query.value(0).toString();
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+    QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
     QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
     note.replace("<", "&lt;").replace(">", "&gt;");
@@ -447,7 +447,7 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 
     QStringList firstCharList, lastCharList;
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
     {
         QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
         hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -495,7 +495,7 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
 
     widget->setMinimumHeight(33);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -521,7 +521,7 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
     layout->addWidget(statusLabel);
     layout->setContentsMargins(3, 0, 0, 0);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -531,16 +531,16 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
  */
 void CallHistoryDialog::deleteObjects()
 {
-    if (!queryModel.isNull())
+    if (!m_queryModel.isNull())
     {
-        selections = ui->tableView->selectionModel()->selectedRows();
+        m_selections = ui->tableView->selectionModel()->selectedRows();
 
-        for (qint32 i = 0; i < widgets.size(); ++i)
-            widgets[i]->deleteLater();
+        for (qint32 i = 0; i < m_widgets.size(); ++i)
+            m_widgets[i]->deleteLater();
 
-        widgets.clear();
+        m_widgets.clear();
 
-        queryModel->deleteLater();
+        m_queryModel->deleteLater();
     }
 }
 
@@ -557,10 +557,10 @@ void CallHistoryDialog::onCallClicked()
     }
 
     QString from = my_number;
-    QString to = number;
+    QString to = m_number;
     QString protocol = global::getSettingsValue(from, "extensions").toString();
 
-    g_pAsteriskManager->originateCall(from, to, protocol, from);
+    g_asteriskManager->originateCall(from, to, protocol, from);
 }
 
 /**
@@ -576,16 +576,16 @@ void CallHistoryDialog::onAddContact()
         return;
     }
 
-    if (checkNumber(number))
+    if (checkNumber(m_number))
     {
-        addContactDialog = new AddContactDialog;
-        addContactDialog->setValues(number);
-        connect(addContactDialog, &AddContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        addContactDialog->show();
-        addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_addContactDialog = new AddContactDialog;
+        m_addContactDialog->setValues(m_number);
+        connect(m_addContactDialog, &AddContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_addContactDialog->show();
+        m_addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        editContact(number);
+        editContact(m_number);
 }
 
 /**
@@ -601,16 +601,16 @@ void CallHistoryDialog::onAddOrgContact()
         return;
     }
 
-    if (checkNumber(number))
+    if (checkNumber(m_number))
     {
-        addOrgContactDialog = new AddOrgContactDialog;
-        addOrgContactDialog->setValues(number);
-        connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        addOrgContactDialog->show();
-        addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_addOrgContactDialog = new AddOrgContactDialog;
+        m_addOrgContactDialog->setValues(m_number);
+        connect(m_addOrgContactDialog, &AddOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_addOrgContactDialog->show();
+        m_addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        editOrgContact(number);
+        editOrgContact(m_number);
 }
 
 /**
@@ -618,7 +618,7 @@ void CallHistoryDialog::onAddOrgContact()
  */
 void CallHistoryDialog::editContact(const QString& number)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString contactId = getUpdateId(number);
 
@@ -628,12 +628,12 @@ void CallHistoryDialog::editContact(const QString& number)
 
     if (query.value(0).toString() == "person")
     {
-        editContactDialog = new EditContactDialog;
-        editContactDialog->setValues(contactId);
-        editContactDialog->hideBackButton();
-        connect(editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        editContactDialog->show();
-        editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_editContactDialog = new EditContactDialog;
+        m_editContactDialog->setValues(contactId);
+        m_editContactDialog->hideBackButton();
+        connect(m_editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_editContactDialog->show();
+        m_editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
         MsgBoxError(tr("Данный контакт принадлежит организации!"));
@@ -644,7 +644,7 @@ void CallHistoryDialog::editContact(const QString& number)
  */
 void CallHistoryDialog::editOrgContact(const QString& number)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString contactId = getUpdateId(number);
 
@@ -654,12 +654,12 @@ void CallHistoryDialog::editOrgContact(const QString& number)
 
     if (query.value(0).toString() == "org")
     {
-        editOrgContactDialog = new EditOrgContactDialog;
-        editOrgContactDialog->setValues(contactId);
-        editOrgContactDialog->hideBackButton();
-        connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        editOrgContactDialog->show();
-        editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_editOrgContactDialog = new EditOrgContactDialog;
+        m_editOrgContactDialog->setValues(contactId);
+        m_editOrgContactDialog->hideBackButton();
+        connect(m_editOrgContactDialog, &EditOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_editOrgContactDialog->show();
+        m_editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
         MsgBoxError(tr("Данный контакт принадлежит физ. лицу!"));
@@ -677,19 +677,19 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         return;
     }
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
+    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + m_number + "')");
     query.exec();
     query.next();
 
     if (query.value(0) == 0)
     {
-        addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-        addPhoneNumberToContactDialog->setPhoneNumber(number);
-        connect(addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        addPhoneNumberToContactDialog->show();
-        addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+        m_addPhoneNumberToContactDialog->setPhoneNumber(m_number);
+        connect(m_addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_addPhoneNumberToContactDialog->show();
+        m_addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
         MsgBoxError(tr("Данный номер уже принадлежит контакту!"));
@@ -707,15 +707,15 @@ void CallHistoryDialog::onPlayAudio()
         return;
     }
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
-        if (!player.isNull())
-            player->close();
+        if (!m_player.isNull())
+            m_player->close();
 
-        player = new Player;
-        player->openMedia(recordpath);
-        player->show();
-        player->setAttribute(Qt::WA_DeleteOnClose);
+        m_player = new Player;
+        m_player->openMedia(m_recordpath);
+        m_player->show();
+        m_player->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -731,11 +731,11 @@ void CallHistoryDialog::onPlayAudioPhone()
         return;
     }
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
         QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
+        g_asteriskManager->originateAudio(my_number, protocol, m_recordpath);
     }
 }
 
@@ -744,13 +744,13 @@ void CallHistoryDialog::onPlayAudioPhone()
  */
 void CallHistoryDialog::addNote(const QModelIndex& index)
 {
-    QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
+    QString uniqueid = m_queryModel->data(m_queryModel->index(index.row(), 7)).toString();
 
-    notesDialog = new NotesDialog;
-    notesDialog->setValues(uniqueid, "");
-    connect(notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
-    notesDialog->show();
-    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_notesDialog = new NotesDialog;
+    m_notesDialog->setValues(uniqueid, "");
+    connect(m_notesDialog, &NotesDialog::sendData, this, &CallHistoryDialog::onUpdate);
+    m_notesDialog->show();
+    m_notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -758,7 +758,7 @@ void CallHistoryDialog::addNote(const QModelIndex& index)
  */
 bool CallHistoryDialog::checkNumber(const QString& number)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + number + "')");
     query.exec();
@@ -788,7 +788,7 @@ void CallHistoryDialog::receiveData(bool update)
  */
 QString CallHistoryDialog::getUpdateId(const QString& number)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
     query.exec();
@@ -804,7 +804,7 @@ QString CallHistoryDialog::getUpdateId(const QString& number)
  */
 void CallHistoryDialog::tabSelected()
 {
-    page = "1";
+    m_page = "1";
 
     ui->tableView->setModel(NULL);
 
@@ -819,7 +819,7 @@ void CallHistoryDialog::onUpdate()
 {
     clearSelections();
 
-    go = "default";
+    m_go = "default";
 
     updateCount();
 }
@@ -840,7 +840,7 @@ void CallHistoryDialog::updateDefault()
  */
 void CallHistoryDialog::clearSelections()
 {
-    selections.clear();
+    m_selections.clear();
 
     ui->tableView->clearSelection();
 }
@@ -852,7 +852,7 @@ void CallHistoryDialog::on_previousButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previous";
+    m_go = "previous";
 
     updateDefault();
 }
@@ -864,7 +864,7 @@ void CallHistoryDialog::on_nextButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "next";
+    m_go = "next";
 
     updateDefault();
 }
@@ -876,7 +876,7 @@ void CallHistoryDialog::on_previousStartButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previousStart";
+    m_go = "previousStart";
 
     updateDefault();
 }
@@ -888,7 +888,7 @@ void CallHistoryDialog::on_nextEndButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "nextEnd";
+    m_go = "nextEnd";
 
     updateDefault();
 }
@@ -900,7 +900,7 @@ void CallHistoryDialog::on_lineEdit_page_returnPressed()
 {
     ui->tableView->scrollToTop();
 
-    go = "enter";
+    m_go = "enter";
 
     updateDefault();
 }

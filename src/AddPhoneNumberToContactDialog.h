@@ -45,17 +45,15 @@ private slots:
 private:
     Ui::AddPhoneNumberToContactDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<QSqlQueryModel> queryModel;
+    QPointer<QSqlQueryModel> m_queryModel;
 
-    QValidator* validator;
+    QString m_phoneNumber;
+    QString m_page;
+    QString m_go;
 
-    QString phoneNumber;
-    QString page;
-    QString go;
-
-    bool filter;
+    bool m_filter;
 };
 
 #endif // ADDPHONENUMBERTOCONTACTDIALOG_H

@@ -40,17 +40,11 @@ public:
     void onSettingsChange();
 
     void setState(const AsteriskState& state);
-    void getExtensionNumbers();
-    void getGroups();
-    void getExtensionsStateList();
 
-    bool isGroup(QString* str);
-    bool isInternalPhone(QString* str);
+    QMap<QString, QString> m_extensionNumbers;
+    QMap<QString, QString> m_states;
 
-    QMap<QString, QString> extensionNumbers;
-    QMap<QString, QString> stateList;
-
-    QStringList groupNumbers;
+    QStringList m_groupNumbers;
 
     AsteriskState m_currentState;
 
@@ -61,17 +55,23 @@ signals:
     void callReceived(const QMap<QString, QVariant>& call);
     void error(const QAbstractSocket::SocketError& socketError, const QString& msg);
     void stateChanged(const AsteriskManager::AsteriskState& state);
-    void extenStatusChanged(const QString&, const QString&);
+    void extenStatusChanged(const QString& exten, const QString& status);
 
-protected slots:
-    void onError(const QAbstractSocket::SocketError& socketError);
-    void read();
+private slots:
     void login();
+    void read();
 
-protected:
     void getEventValues(const QString& eventData, QMap<QString, QString>& map);
     void parseEvent(const QString& eventData);
     void setAsteriskVersion(const QString& msg);
+    void onError(const QAbstractSocket::SocketError& socketError);
+
+    void getExtensionNumbers();
+    void getGroups();
+    void getExtensionsStateList();
+
+    bool isGroup(QString* str);
+    bool isInternalPhone(QString* str);
 
 private:
     QTcpSocket* m_tcpSocket;
@@ -80,7 +80,7 @@ private:
 
     QMap<QString, qint32> m_dialedNum;
 
-    QList<QString> endpoints;
+    QList<QString> m_endpoints;
 
     bool m_isSignedIn;
     bool m_autoConnectingOnError;
@@ -96,6 +96,6 @@ private:
     QTimer m_timer;
 };
 
-extern AsteriskManager* g_pAsteriskManager;
+extern AsteriskManager* g_asteriskManager;
 
 #endif // ASTERISKMANAGER_H

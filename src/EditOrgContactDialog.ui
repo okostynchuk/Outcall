@@ -243,7 +243,7 @@
      <item row="8" column="2">
       <widget class="QLabel" name="label_16">
        <property name="text">
-        <string>Call-center (6207)</string>
+        <string>Колл-центр (6207)</string>
        </property>
       </widget>
      </item>

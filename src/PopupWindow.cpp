@@ -20,7 +20,7 @@
 #include <QTextCursor>
 #include <QMessageBox>
 
-QList<PopupWindow*> PopupWindow::m_PopupWindows;
+QList<PopupWindow*> PopupWindow::s_popupWindows;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -40,7 +40,7 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     this->installEventFilter(this);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     if (isInternalPhone(&m_pwi.number))
     {
@@ -67,8 +67,8 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
             QString employee = query.value(2).toString();
 
             if (employee != "0")
-                if (g_pAsteriskManager->extensionNumbers.contains(employee))
-                    ui->employe->setText(QString(g_pAsteriskManager->extensionNumbers.value(employee)));
+                if (g_asteriskManager->m_extensionNumbers.contains(employee))
+                    ui->employe->setText(QString(g_asteriskManager->m_extensionNumbers.value(employee)));
         }
         else
         {
@@ -80,7 +80,7 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
-    connect(g_pAsteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
+    connect(g_asteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
 
     connect(ui->textEdit,             &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
     connect(ui->textEdit,             &QTextEdit::cursorPositionChanged, this, &PopupWindow::onCursorPosChanged);
@@ -94,7 +94,6 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
     connect(ui->addReminderButton,    &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
 
-    userId = global::getSettingsValue("user_login", "settings").toString();
     author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     QString note;
@@ -123,68 +122,68 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     connect(&m_timer, &QTimer::timeout, this, &PopupWindow::onTimer);
 
-    quint32 nDesktopHeight;
-    quint32 nDesktopWidth;
-    quint32 nScreenWidth;
-    quint32 nScreenHeight;
+    quint32 desktopHeight;
+    quint32 desktopWidth;
+    quint32 screenWidth;
+    quint32 screenHeight;
 
-	QDesktopWidget desktop;
-	QRect rcScreen = desktop.screenGeometry(this);
-	QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-    nScreenWidth = rcScreen.width();
-    nScreenHeight = rcScreen.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
+    screenWidth = screen.width();
+    screenHeight = screen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth <= nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
+    bool isTaskbarOnRight = desktopWidth <= screenWidth && desktop.left() == 0;
+    bool isTaskbarOnLeft = desktopWidth <= screenWidth && desktop.left() != 0;
+    bool isTaskBarOnTop = desktopHeight <= screenHeight && desktop.top() != 0;
 
-	qint32 nTimeToShow = TIME_TO_SHOW;
-	qint32 nTimerDelay;
+    qint32 timeToShow = TIME_TO_SHOW;
+    qint32 timerDelay;
 
-	m_nIncrement = 2;
+	m_increment = 2;
 
-    if (bTaskbarOnRight)
+    if (isTaskbarOnRight)
     {
-        m_nStartPosX = (rcDesktop.right());
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = (desktop.right());
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_RIGHT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskbarOnLeft)
+    else if (isTaskbarOnLeft)
     {
-        m_nStartPosX = (rcDesktop.left() - width());
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = (desktop.left() - width());
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_LEFT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskBarOnTop)
+    else if (isTaskBarOnTop)
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = (rcDesktop.top() - height());
-        m_nTaskbarPlacement = TASKBAR_ON_TOP;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = (desktop.top() - height());
+        m_taskbarPlacement = TASKBAR_ON_TOP;
+        timerDelay = timeToShow / (height() / m_increment);
     }
     else
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = rcDesktop.bottom();
-        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = desktop.bottom();
+        m_taskbarPlacement = TASKBAR_ON_BOTTOM;
+        timerDelay = timeToShow / (height() / m_increment);
     }
 
-    m_nCurrentPosX = m_nStartPosX;
-    m_nCurrentPosY = m_nStartPosY;
+    m_currentPosX = m_startPosX;
+    m_currentPosY = m_startPosY;
 
-    position = QPoint();
+    m_position = QPoint();
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 
-    m_bAppearing = true;
+    m_appearing = true;
 
-    m_timer.setInterval(nTimerDelay);
+    m_timer.setInterval(timerDelay);
     m_timer.start();
 }
 
@@ -198,13 +197,13 @@ PopupWindow::~PopupWindow()
  */
 void PopupWindow::onCursorPosChanged()
 {
-    if (textCursor.isNull())
+    if (m_textCursor.isNull())
     {
-        textCursor = ui->textEdit->textCursor();
-        textCursor.movePosition(QTextCursor::End);
+        m_textCursor = ui->textEdit->textCursor();
+        m_textCursor.movePosition(QTextCursor::End);
     }
     else
-        textCursor = ui->textEdit->textCursor();
+        m_textCursor = ui->textEdit->textCursor();
 }
 
 /**
@@ -219,7 +218,7 @@ bool PopupWindow::eventFilter(QObject*, QEvent* event)
         if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
         {
             if (ui->textEdit->hasFocus())
-                ui->textEdit->setTextCursor(textCursor);
+                ui->textEdit->setTextCursor(m_textCursor);
 
             return true;
         }
@@ -244,7 +243,7 @@ void PopupWindow::mousePressEvent(QMouseEvent* event)
 {
     m_pwi.stopTimer = true;
 
-    position = event->globalPos();
+    m_position = event->globalPos();
 }
 
 /**
@@ -253,7 +252,7 @@ void PopupWindow::mousePressEvent(QMouseEvent* event)
 void PopupWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
-    position = QPoint();
+    m_position = QPoint();
 }
 
 /**
@@ -263,17 +262,17 @@ void PopupWindow::mouseMoveEvent(QMouseEvent* event)
 {
     m_pwi.stopTimer = true;
 
-    if (!position.isNull())
+    if (!m_position.isNull())
     {
-        QPoint delta = event->globalPos() - position;
+        QPoint delta = event->globalPos() - m_position;
 
-        if (position.x() > this->x() + this->width() - 10
-                || position.y() > this->y() + this->height() - 10)
+        if (m_position.x() > this->x() + this->width() - 10
+                || m_position.y() > this->y() + this->height() - 10)
         {}
         else
         {
             move(this->x() + delta.x(), this->y() + delta.y());
-            position = event->globalPos();
+            m_position = event->globalPos();
         }
     }
 }
@@ -292,7 +291,7 @@ void PopupWindow::onPopupTimeout()
  */
 void PopupWindow::startPopupWaitingTimer()
 {
-    m_bAppearing = false;
+    m_appearing = false;
 
     m_timer.stop();
 
@@ -310,7 +309,7 @@ void PopupWindow::closeAndDestroy()
 
     m_timer.stop();
 
-    m_PopupWindows.removeOne(this);
+    s_popupWindows.removeOne(this);
 
     delete this;
 }
@@ -320,39 +319,39 @@ void PopupWindow::closeAndDestroy()
  */
 void PopupWindow::onTimer()
 {
-    if (m_bAppearing) // APPEARING
+    if (m_appearing)
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY > (m_nStartPosY - height()))
-                m_nCurrentPosY -= m_nIncrement;
+            if (m_currentPosY > (m_startPosY - height()))
+                m_currentPosY -= m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY - m_nStartPosY) < height())
-                m_nCurrentPosY += m_nIncrement;
+            if ((m_currentPosY - m_startPosY) < height())
+                m_currentPosY += m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX - m_nStartPosX) < width())
-                m_nCurrentPosX += m_nIncrement;
+            if ((m_currentPosX - m_startPosX) < width())
+                m_currentPosX += m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX > (m_nStartPosX - width()))
-                m_nCurrentPosX -= m_nIncrement;
+            if (m_currentPosX > (m_startPosX - width()))
+                m_currentPosX -= m_increment;
             else
                 startPopupWaitingTimer();
             break;
         }
     }
-    else // DISSAPPEARING
+    else
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
             closeAndDestroy();
@@ -373,7 +372,7 @@ void PopupWindow::onTimer()
         }
     }
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 }
 
 /**
@@ -399,7 +398,7 @@ void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, con
 
     popup->show();
 
-	m_PopupWindows.append(popup);
+    s_popupWindows.append(popup);
 }
 
 /**
@@ -407,10 +406,10 @@ void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, con
  */
 void PopupWindow::closeAll()
 {
-    for (qint32 i = 0; i < m_PopupWindows.size(); ++i)
-        m_PopupWindows[i]->deleteLater();
+    for (qint32 i = 0; i < s_popupWindows.size(); ++i)
+        s_popupWindows[i]->deleteLater();
 
-    m_PopupWindows.clear();
+    s_popupWindows.clear();
 }
 
 /**
@@ -428,14 +427,14 @@ void PopupWindow::onAddPerson()
 {
     m_pwi.stopTimer = true;
 
-    if (!addContactDialog.isNull())
-        addContactDialog->close();
+    if (!m_addContactDialog.isNull())
+        m_addContactDialog->close();
 
-    addContactDialog = new AddContactDialog;
-    addContactDialog->setValues(m_pwi.number);
-    connect(addContactDialog, &AddContactDialog::sendData, this, &PopupWindow::receiveData);
-    addContactDialog->show();
-    addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addContactDialog = new AddContactDialog;
+    m_addContactDialog->setValues(m_pwi.number);
+    connect(m_addContactDialog, &AddContactDialog::sendData, this, &PopupWindow::receiveData);
+    m_addContactDialog->show();
+    m_addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -445,14 +444,14 @@ void PopupWindow::onAddOrg()
 {
     m_pwi.stopTimer = true;
 
-    if (!addOrgContactDialog.isNull())
-        addOrgContactDialog->close();
+    if (!m_addOrgContactDialog.isNull())
+        m_addOrgContactDialog->close();
 
-    addOrgContactDialog = new AddOrgContactDialog;
-    addOrgContactDialog->setValues(m_pwi.number);
-    connect(addOrgContactDialog, &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
-    addOrgContactDialog->show();
-    addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addOrgContactDialog = new AddOrgContactDialog;
+    m_addOrgContactDialog->setValues(m_pwi.number);
+    connect(m_addOrgContactDialog, &AddOrgContactDialog::sendData, this, &PopupWindow::receiveData);
+    m_addOrgContactDialog->show();
+    m_addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -462,14 +461,14 @@ void PopupWindow::onAddPhoneNumberToContact()
 {
     m_pwi.stopTimer = true;
 
-    if (!addPhoneNumberToContactDialog.isNull())
-        addPhoneNumberToContactDialog->close();
+    if (!m_addPhoneNumberToContactDialog.isNull())
+        m_addPhoneNumberToContactDialog->close();
 
-    addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
-    addPhoneNumberToContactDialog->setPhoneNumber(m_pwi.number);
-    connect(addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &PopupWindow::receiveData);
-    addPhoneNumberToContactDialog->show();
-    addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
+    m_addPhoneNumberToContactDialog->setPhoneNumber(m_pwi.number);
+    connect(m_addPhoneNumberToContactDialog, &AddPhoneNumberToContactDialog::sendData, this, &PopupWindow::receiveData);
+    m_addPhoneNumberToContactDialog->show();
+    m_addPhoneNumberToContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -479,7 +478,7 @@ void PopupWindow::onShowCard()
 {
     m_pwi.stopTimer = true;
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT id, entry_type, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
     query.exec();
@@ -489,25 +488,25 @@ void PopupWindow::onShowCard()
 
     if (query.value(1).toString() == "person")
     {
-        if (!viewContactDialog.isNull())
-            viewContactDialog->close();
+        if (!m_viewContactDialog.isNull())
+            m_viewContactDialog->close();
 
-        viewContactDialog = new ViewContactDialog;
-        viewContactDialog->setValues(contactId);
-        connect(viewContactDialog, &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
-        viewContactDialog->show();
-        viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_viewContactDialog = new ViewContactDialog;
+        m_viewContactDialog->setValues(contactId);
+        connect(m_viewContactDialog, &ViewContactDialog::sendData, this, &PopupWindow::receiveData);
+        m_viewContactDialog->show();
+        m_viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
     {
-        if (!viewOrgContactDialog.isNull())
-            viewOrgContactDialog->close();
+        if (!m_viewOrgContactDialog.isNull())
+            m_viewOrgContactDialog->close();
 
-        viewOrgContactDialog = new ViewOrgContactDialog;
-        viewOrgContactDialog->setValues(contactId);
-        connect(viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
-        viewOrgContactDialog->show();
-        viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_viewOrgContactDialog = new ViewOrgContactDialog;
+        m_viewOrgContactDialog->setValues(contactId);
+        connect(m_viewOrgContactDialog, &ViewOrgContactDialog::sendData, this, &PopupWindow::receiveData);
+        m_viewOrgContactDialog->show();
+        m_viewOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -518,13 +517,13 @@ void PopupWindow::onAddReminder()
 {
     m_pwi.stopTimer = true;
 
-    if (!addReminderDialog.isNull())
-        addReminderDialog->close();
+    if (!m_addReminderDialog.isNull())
+        m_addReminderDialog->close();
 
-    addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setCallId(m_pwi.uniqueid);
-    addReminderDialog->show();
-    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addReminderDialog = new AddReminderDialog;
+    m_addReminderDialog->setCallId(m_pwi.uniqueid);
+    m_addReminderDialog->show();
+    m_addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -534,14 +533,14 @@ void PopupWindow::onViewNotes()
 {
     m_pwi.stopTimer = true;
 
-    if (!notesDialog.isNull())
-        notesDialog->close();
+    if (!m_notesDialog.isNull())
+        m_notesDialog->close();
 
-    notesDialog = new NotesDialog;
-    notesDialog->setValues(m_pwi.uniqueid, m_pwi.number);
-    notesDialog->hideAddNote();
-    notesDialog->show();
-    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_notesDialog = new NotesDialog;
+    m_notesDialog->setValues(m_pwi.uniqueid, m_pwi.number);
+    m_notesDialog->hideAddNote();
+    m_notesDialog->show();
+    m_notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -551,13 +550,11 @@ void PopupWindow::onOpenAccess()
 {
     m_pwi.stopTimer = true;
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
     query.exec();
     query.first();
-
-    QString vyborId = query.value(0).toString();
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();
@@ -577,6 +574,9 @@ void PopupWindow::onOpenAccess()
 
     if (dbOrders.isOpen())
     {
+        QString userId = global::getSettingsValue("user_login", "settings").toString();
+        QString vyborId = query.value(0).toString();
+
         QSqlQuery query1(dbOrders);
 
         query1.prepare("INSERT INTO CallTable (UserID, ClientID)"
@@ -614,21 +614,21 @@ void PopupWindow::receiveData(bool update)
         }
         else
         {
-            QSqlQuery query(db);
+            QSqlQuery query(m_db);
 
             query.prepare("SELECT id, entry_name, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
             query.exec();
 
             if (query.next())
             {
-                if (!addContactDialog.isNull())
-                    addContactDialog->close();
+                if (!m_addContactDialog.isNull())
+                    m_addContactDialog->close();
 
-                if (!addOrgContactDialog.isNull())
-                    addOrgContactDialog->close();
+                if (!m_addOrgContactDialog.isNull())
+                    m_addOrgContactDialog->close();
 
-                if (!addPhoneNumberToContactDialog.isNull())
-                    addPhoneNumberToContactDialog->close();
+                if (!m_addPhoneNumberToContactDialog.isNull())
+                    m_addPhoneNumberToContactDialog->close();
 
                 ui->addPersonButton->hide();
                 ui->addOrgButton->hide();
@@ -647,11 +647,11 @@ void PopupWindow::receiveData(bool update)
             }
             else
             {
-                if (!viewContactDialog.isNull())
-                    viewContactDialog->close();
+                if (!m_viewContactDialog.isNull())
+                    m_viewContactDialog->close();
 
-                if (!viewOrgContactDialog.isNull())
-                    viewOrgContactDialog->close();
+                if (!m_viewOrgContactDialog.isNull())
+                    m_viewOrgContactDialog->close();
 
                 ui->openAccessButton->hide();
                 ui->showCardButton->hide();
@@ -677,7 +677,7 @@ void PopupWindow::onSaveNote()
 {
     m_pwi.stopTimer = true;
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
@@ -704,11 +704,11 @@ void PopupWindow::onTextChanged()
 {
     m_pwi.stopTimer = true;
 
-    int m_maxDescriptionLength = 255;
+    qint32 maxTextLength = 255;
 
-    if (ui->textEdit->toPlainText().length() > m_maxDescriptionLength)
+    if (ui->textEdit->toPlainText().length() > maxTextLength)
     {
-        int diff = ui->textEdit->toPlainText().length() - m_maxDescriptionLength;
+        qint32 diff = ui->textEdit->toPlainText().length() - maxTextLength;
 
         QString newStr = ui->textEdit->toPlainText();
         newStr.chop(diff);

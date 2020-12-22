@@ -52,25 +52,23 @@ private slots:
 private:
     Ui::NotesDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+    QRegularExpression m_hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QValidator* validator;
-
-    QPointer<QSqlQueryModel> queryModel;
+    QPointer<QSqlQueryModel> m_queryModel;
 
     QWidget* addWidgetNote(qint32 row_index, bool url);
 
-    QList<QWidget*> widgets;
+    QList<QWidget*> m_widgets;
 
-    QStringList numbersList;
+    QStringList m_numbers;
 
-    QString callId;
+    QString m_callId;
     QString my_number;
-    QString phone;
-    QString page;
-    QString go;
+    QString m_phone;
+    QString m_page;
+    QString m_go;
 };
 
 #endif // NOTESDIALOG_H

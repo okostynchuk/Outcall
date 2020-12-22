@@ -28,17 +28,17 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 
-    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    employeesPhonesList.insert("6203", ui->group_6203);
-    employeesPhonesList.insert("6204", ui->group_6204);
-    employeesPhonesList.insert("6207", ui->group_6207);
+    m_managers.insert("6203", ui->group_6203);
+    m_managers.insert("6204", ui->group_6204);
+    m_managers.insert("6207", ui->group_6207);
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        phonesList.at(i)->setValidator(validator);
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        m_phones.at(i)->setValidator(validator);
 
     regExp.setPattern("^[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -46,10 +46,10 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
     regExp.setPattern("^[0-9]{3}$");
     validator = new QRegularExpressionValidator(regExp, this);
-    foreach (QString key, employeesPhonesList.keys())
-        employeesPhonesList.value(key)->setValidator(validator);
+    foreach (QString key, m_managers.keys())
+        m_managers.value(key)->setValidator(validator);
 
-    g_pAsteriskManager->groupNumbers.removeDuplicates();
+    g_asteriskManager->m_groupNumbers.removeDuplicates();
 }
 
 EditOrgContactDialog::~EditOrgContactDialog()
@@ -62,13 +62,13 @@ EditOrgContactDialog::~EditOrgContactDialog()
  */
 void EditOrgContactDialog::onCursorPosChanged()
 {
-    if (textCursor.isNull())
+    if (m_textCursor.isNull())
     {
-        textCursor = ui->comment->textCursor();
-        textCursor.movePosition(QTextCursor::End);
+        m_textCursor = ui->comment->textCursor();
+        m_textCursor.movePosition(QTextCursor::End);
     }
     else
-        textCursor = ui->comment->textCursor();
+        m_textCursor = ui->comment->textCursor();
 }
 
 /**
@@ -83,7 +83,7 @@ bool EditOrgContactDialog::eventFilter(QObject*, QEvent* event)
         if (keyEvent && (keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab))
         {
             if (ui->comment->hasFocus())
-                ui->comment->setTextCursor(textCursor);
+                ui->comment->setTextCursor(m_textCursor);
 
             return true;
         }
@@ -107,40 +107,40 @@ void EditOrgContactDialog::onReturn()
  */
 void EditOrgContactDialog::setPos(qint32 x, qint32 y)
 {
-    qint32 nDesktopHeight;
-    qint32 nDesktopWidth;
+    qint32 desktopHeight;
+    qint32 desktopWidth;
     qint32 nWidgetHeight = QWidget::height();
     qint32 nWidgetWidth = QWidget::width();
 
-    QDesktopWidget desktop;
-    QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
 
-    if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+    if (x < 0 && (desktopHeight - y) > nWidgetHeight)
     {
         x = 0;
         this->move(x, y);
     }
-    else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+    else if (x < 0 && ((desktopHeight - y) < nWidgetHeight))
     {
         x = 0;
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
+    else if ((desktopWidth - x) < nWidgetWidth && (desktopHeight - y) > nWidgetHeight)
     {
         x = nWidgetWidth;
         this->move(x, y);
     }
-    else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+    else if ((desktopWidth - x) < nWidgetWidth && ((desktopHeight - y) < nWidgetHeight))
     {
         x = nWidgetWidth;
         y = nWidgetHeight;
         this->move(x, y);
     }
-    else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+    else if (x > 0 && ((desktopHeight - y) < nWidgetHeight))
     {
         y = nWidgetHeight;
         this->move(x, y);
@@ -156,21 +156,21 @@ void EditOrgContactDialog::setPos(qint32 x, qint32 y)
  */
 void EditOrgContactDialog::onSave()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString orgName = ui->orgName->text();
 
     QStringList actualPhonesList;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
     {
-        if (i < oldPhonesList.length() && phonesList.at(i)->text() == oldPhonesList.at(i))
-            actualPhonesList.append(phonesList.at(i)->text());
+        if (i < m_oldPhones.length() && m_phones.at(i)->text() == m_oldPhones.at(i))
+            actualPhonesList.append(m_phones.at(i)->text());
         else
         {
-            phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+            m_phones.at(i)->setStyleSheet("border: 1px solid grey");
 
-            actualPhonesList.append(phonesList.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+            actualPhonesList.append(m_phones.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
         }
     }
 
@@ -212,25 +212,25 @@ void EditOrgContactDialog::onSave()
 
     bool invalid_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
     {
-        if (!phonesList.at(i)->text().isEmpty())
+        if (!m_phones.at(i)->text().isEmpty())
         {
             bool old_phone = false;
 
-            for (qint32 j = 0; j < oldPhonesList.length(); ++j)
-                if (phonesList.at(i)->text() == oldPhonesList.at(j))
+            for (qint32 j = 0; j < m_oldPhones.length(); ++j)
+                if (m_phones.at(i)->text() == m_oldPhones.at(j))
                     old_phone = true;
 
             if (!old_phone)
             {
-                QString phone = phonesList.at(i)->text();
+                QString phone = m_phones.at(i)->text();
 
                 if (isPhone(&phone))
-                    phonesList.at(i)->setStyleSheet("border: 1px solid grey");
+                    m_phones.at(i)->setStyleSheet("border: 1px solid grey");
                 else
                 {
-                    phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                    m_phones.at(i)->setStyleSheet("border: 1px solid red");
 
                     invalid_phones = true;
                 }
@@ -247,13 +247,13 @@ void EditOrgContactDialog::onSave()
 
     bool same_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        for (qint32 j = 0; j < phonesList.length(); ++j)
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        for (qint32 j = 0; j < m_phones.length(); ++j)
         {
-            if (!phonesList.at(i)->text().isEmpty() && actualPhonesList.at(i) == actualPhonesList.at(j) && i != j)
+            if (!m_phones.at(i)->text().isEmpty() && actualPhonesList.at(i) == actualPhonesList.at(j) && i != j)
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
-                phonesList.at(j)->setStyleSheet("border: 1px solid red");
+                m_phones.at(i)->setStyleSheet("border: 1px solid red");
+                m_phones.at(j)->setStyleSheet("border: 1px solid red");
 
                 same_phones = true;
             }
@@ -268,16 +268,16 @@ void EditOrgContactDialog::onSave()
 
     bool existing_phones = false;
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        if (!phonesList.at(i)->text().isEmpty())
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
         {
-            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + actualPhonesList.at(i) + "' AND entry_id <> " + contactId + ")");
+            query.prepare("SELECT EXISTS (SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + actualPhonesList.at(i) + "' AND entry_id <> " + m_contactId + ")");
             query.exec();
             query.next();
 
             if (query.value(0) != 0)
             {
-                phonesList.at(i)->setStyleSheet("border: 1px solid red");
+                m_phones.at(i)->setStyleSheet("border: 1px solid red");
 
                 existing_phones = true;
             }
@@ -296,7 +296,7 @@ void EditOrgContactDialog::onSave()
 
 //    if (!ui->employee->text().isEmpty())
 //    {
-//        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
+//        if (g_asteriskManager->m_extensionNumbers.contains(employee) || g_asteriskManager->m_groupNumbers.contains(employee))
 //            ui->employee->setStyleSheet("border: 1px solid grey");
 //        else
 //        {
@@ -323,17 +323,17 @@ void EditOrgContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
-    query.addBindValue(contactId);
+    query.addBindValue(m_contactId);
     query.exec();
 
-    for (qint32 i = 0; i < phonesList.length(); ++i)
-        if (!phonesList.at(i)->text().isEmpty())
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
         {
-            if (i >= oldPhonesList.length())
+            if (i >= m_oldPhones.length())
             {
                 query.prepare("INSERT INTO fones (entry_id, fone)"
                                "VALUES(?, ?)");
-                query.addBindValue(contactId);
+                query.addBindValue(m_contactId);
                 query.addBindValue(actualPhonesList.at(i));
                 query.exec();
             }
@@ -341,42 +341,42 @@ void EditOrgContactDialog::onSave()
             {
                 query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
                 query.addBindValue(actualPhonesList.at(i));
-                query.addBindValue(contactId);
-                query.addBindValue(oldPhonesList.at(i));
+                query.addBindValue(m_contactId);
+                query.addBindValue(m_oldPhones.at(i));
                 query.exec();
             }
         }
 
-    foreach (QString key, employeesPhonesList.keys())
+    foreach (QString key, m_managers.keys())
     {
-        if (!oldPhonesEmployeesList.keys().contains(key))
+        if (!m_oldManagers.keys().contains(key))
         {
-            if (!employeesPhonesList.value(key)->text().isEmpty())
+            if (!m_managers.value(key)->text().isEmpty())
             {
                 query.prepare("INSERT INTO managers (id_client, group_number, manager_number)"
                               "VALUES(?, ?, ?)");
-                query.addBindValue(contactId);
+                query.addBindValue(m_contactId);
                 query.addBindValue(key);
-                query.addBindValue(employeesPhonesList.value(key)->text());
+                query.addBindValue(m_managers.value(key)->text());
                 query.exec();
             }
         }
         else
         {
-            if (employeesPhonesList.value(key)->text() != oldPhonesEmployeesList.value(key))
+            if (m_managers.value(key)->text() != m_oldManagers.value(key))
             {
-                if (employeesPhonesList.value(key)->text().isEmpty())
+                if (m_managers.value(key)->text().isEmpty())
                 {
                     query.prepare("DELETE FROM managers WHERE id_client = ? AND group_number = ?");
-                    query.addBindValue(contactId);
+                    query.addBindValue(m_contactId);
                     query.addBindValue(key);
                     query.exec();
                 }
                 else
                 {
                     query.prepare("UPDATE managers SET manager_number = ? WHERE id_client = ? AND group_number = ?");
-                    query.addBindValue(employeesPhonesList.value(key)->text());
-                    query.addBindValue(contactId);
+                    query.addBindValue(m_managers.value(key)->text());
+                    query.addBindValue(m_contactId);
                     query.addBindValue(key);
                     query.exec();
                 }
@@ -412,31 +412,31 @@ bool EditOrgContactDialog::isPhone(QString* str)
  */
 void EditOrgContactDialog::setValues(const QString& id)
 {
-    contactId = id;
+    m_contactId = id;
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
+    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + m_contactId);
     query.exec();
 
     while (query.next())
-        oldPhonesList.append(query.value(0).toString());
+        m_oldPhones.append(query.value(0).toString());
 
-    for (qint32 i = 0; i < oldPhonesList.length(); ++i)
-        phonesList.at(i)->setText(oldPhonesList.at(i));
+    for (qint32 i = 0; i < m_oldPhones.length(); ++i)
+        m_phones.at(i)->setText(m_oldPhones.at(i));
 
-    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + contactId);
+    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + m_contactId);
     query.exec();
 
     while (query.next())
     {
-        oldPhonesEmployeesList.insert(query.value(0).toString(), query.value(1).toString());
+        m_oldManagers.insert(query.value(0).toString(), query.value(1).toString());
 
-        employeesPhonesList.value(query.value(0).toString())->setText(query.value(1).toString());
+        m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
     }
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, "
-                  "entry_comment FROM entry WHERE id = " + contactId);
+                  "entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
 
@@ -454,11 +454,11 @@ void EditOrgContactDialog::setValues(const QString& id)
  */
 void EditOrgContactDialog::onTextChanged()
 {
-    int m_maxDescriptionLength = 255;
+    qint32 maxTextLength = 255;
 
-    if (ui->comment->toPlainText().length() > m_maxDescriptionLength)
+    if (ui->comment->toPlainText().length() > maxTextLength)
     {
-        int diff = ui->comment->toPlainText().length() - m_maxDescriptionLength;
+        qint32 diff = ui->comment->toPlainText().length() - maxTextLength;
 
         QString newStr = ui->comment->toPlainText();
         newStr.chop(diff);

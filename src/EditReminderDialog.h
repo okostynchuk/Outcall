@@ -30,7 +30,7 @@ public:
     explicit EditReminderDialog(QWidget* parent = 0);
     ~EditReminderDialog();
 
-    void setValues(const QString& receivedId, const QString& receivedGroupId, const QDateTime& receivedDateTime, const QString& receivedNote);
+    void setValues(const QString& id, const QString& groupId, const QDateTime& dateTime, const QString& note);
 
 private slots:
     void onChooseEmployee();
@@ -51,21 +51,21 @@ private slots:
 private:
     Ui::EditReminderDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<ChooseEmployee> chooseEmployee;
+    QPointer<ChooseEmployee> m_chooseEmployee;
 
-    QStringList employeeInitial;
-    QStringList employee;
+    QStringList m_employeeInitial;
+    QStringList m_employee;
 
     QString my_number;
-    QString id;
-    QString group_id;
-    QString oldNote;
+    QString m_id;
+    QString m_groupId;
+    QString m_oldNote;
 
-    QDateTime oldDateTime;  
+    QDateTime m_oldDateTime;
 
-    QTextCursor textCursor;
+    QTextCursor m_textCursor;
 };
 
 #endif // EDITREMINDERDIALOG_H

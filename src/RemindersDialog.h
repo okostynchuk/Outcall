@@ -62,32 +62,30 @@ private slots:
 private:
     Ui::RemindersDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 	
-    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
-	
-    QValidator* validator;
+    QRegularExpression m_hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QThread* remindersThread;
-    RemindersThreadManager* remindersThreadManager;
+    QThread* m_remindersThread;
+    RemindersThreadManager* m_remindersThreadManager;
 
-    AddReminderDialog* addReminderDialog;
-    EditReminderDialog* editReminderDialog;
+    AddReminderDialog* m_addReminderDialog;
+    EditReminderDialog* m_editReminderDialog;
 
-    QPointer<QSqlQueryModelReminders> queryModel;
+    QPointer<QSqlQueryModelReminders> m_queryModel;
 
-    bool showReminder;
+    bool m_showReminder;
 
-    QTimer timer;
+    QTimer m_timer;
 
     QString my_number;
-    QString page;
-    QString go;
+    QString m_page;
+    QString m_go;
 
-    qint32 oldActiveReminders;
-    qint32 oldReceivedReminders;
-    qint32 verticalScrollBar;
-    qint32 horizontalScrollBar;
+    qint32 m_oldActiveReminders;
+    qint32 m_oldReceivedReminders;
+    qint32 m_verticalScrollBar;
+    qint32 m_horizontalScrollBar;
 
     QWidget* addWidgetActive();
     QWidget* addWidgetCompleted();
@@ -99,11 +97,11 @@ private:
 
     QWidget* addPushButtonGroup(qint32 row_index);
 
-    QModelIndexList selections;
+    QModelIndexList m_selections;
 
-    QList<QWidget*> widgets;
+    QList<QWidget*> m_widgets;
 
-    QByteArray geometry;
+    QByteArray m_geometry;
 };
 
 #endif // REMINDERSDIALOG_H

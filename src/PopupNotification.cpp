@@ -12,7 +12,7 @@
 #include <QMouseEvent>
 #include <QSqlQuery>
 
-QList<PopupNotification*> PopupNotification::m_PopupNotifications;
+QList<PopupNotification*> PopupNotification::s_popupNotifications;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -36,7 +36,7 @@ PopupNotification::PopupNotification(const PopupNotificationInfo& pni, QWidget* 
     QString note = m_pni.text;
 
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+    QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
     QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
     note.replace("<", "&lt;").replace(">", "&gt;");
@@ -53,7 +53,7 @@ PopupNotification::PopupNotification(const PopupNotificationInfo& pni, QWidget* 
 
     QStringList firstCharList, lastCharList;
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
     {
         QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
         hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -92,7 +92,7 @@ PopupNotification::PopupNotification(const PopupNotificationInfo& pni, QWidget* 
             size = hrefsReplaceCharacters.at(i).size() + 1;
 
         note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
-                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
+                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "' style='color: #ffb64f'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
     }
 
     ui->textBrowser->setText(note);
@@ -101,68 +101,68 @@ PopupNotification::PopupNotification(const PopupNotificationInfo& pni, QWidget* 
 
     connect(&m_timer, &QTimer::timeout, this, &PopupNotification::onTimer);
 
-    quint32 nDesktopHeight;
-    quint32 nDesktopWidth;
-    quint32 nScreenWidth;
-    quint32 nScreenHeight;
+    quint32 desktopHeight;
+    quint32 desktopWidth;
+    quint32 screenWidth;
+    quint32 screenHeight;
 
-    QDesktopWidget desktop;
-    QRect rcScreen = desktop.screenGeometry(this);
-    QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-    nScreenWidth = rcScreen.width();
-    nScreenHeight = rcScreen.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
+    screenWidth = screen.width();
+    screenHeight = screen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth <= nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth <= nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight <= nScreenHeight && rcDesktop.top() != 0;
+    bool isTaskbarOnRight = desktopWidth <= screenWidth && desktop.left() == 0;
+    bool isTaskbarOnLeft = desktopWidth <= screenWidth && desktop.left() != 0;
+    bool isTaskBarOnTop = desktopHeight <= screenHeight && desktop.top() != 0;
 
-    qint32 nTimeToShow = TIME_TO_SHOW;
-    qint32 nTimerDelay;
+    qint32 timeToShow = TIME_TO_SHOW;
+    qint32 timerDelay;
 
-    m_nIncrement = 2;
+    m_increment = 2;
 
-    if (bTaskbarOnRight)
+    if (isTaskbarOnRight)
     {
-        m_nStartPosX = rcDesktop.right();
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = desktop.right();
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_RIGHT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskbarOnLeft)
+    else if (isTaskbarOnLeft)
     {
-        m_nStartPosX = (rcDesktop.left() - width());
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = (desktop.left() - width());
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_LEFT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskBarOnTop)
+    else if (isTaskBarOnTop)
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = (rcDesktop.top() - height());
-        m_nTaskbarPlacement = TASKBAR_ON_TOP;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = (desktop.top() - height());
+        m_taskbarPlacement = TASKBAR_ON_TOP;
+        timerDelay = timeToShow / (height() / m_increment);
     }
     else
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = rcDesktop.bottom();
-        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = desktop.bottom();
+        m_taskbarPlacement = TASKBAR_ON_BOTTOM;
+        timerDelay = timeToShow / (height() / m_increment);
     }
 
-    m_nCurrentPosX = m_nStartPosX;
-    m_nCurrentPosY = m_nStartPosY;
+    m_currentPosX = m_startPosX;
+    m_currentPosY = m_startPosY;
 
-    position = QPoint();
+    m_position = QPoint();
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 
-    m_bAppearing = true;
+    m_appearing = true;
 
-    m_timer.setInterval(nTimerDelay);
+    m_timer.setInterval(timerDelay);
     m_timer.start();
 }
 
@@ -176,7 +176,7 @@ PopupNotification::~PopupNotification()
  */
 void PopupNotification::mousePressEvent(QMouseEvent* event)
 {
-    position = event->globalPos();
+    m_position = event->globalPos();
 }
 
 /**
@@ -186,7 +186,7 @@ void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
 {
     (void) event;
 
-    position = QPoint();
+    m_position = QPoint();
 }
 
 /**
@@ -194,17 +194,17 @@ void PopupNotification::mouseReleaseEvent(QMouseEvent* event)
  */
 void PopupNotification::mouseMoveEvent(QMouseEvent* event)
 {
-    if (!position.isNull())
+    if (!m_position.isNull())
     {
-        QPoint delta = event->globalPos() - position;
+        QPoint delta = event->globalPos() - m_position;
 
-        if (position.x() > this->x() + this->width() - 10
-                || position.y() > this->y() + this->height() - 10)
+        if (m_position.x() > this->x() + this->width() - 10
+                || m_position.y() > this->y() + this->height() - 10)
         {}
         else
         {
             move(this->x() + delta.x(), this->y() + delta.y());
-            position = event->globalPos();
+            m_position = event->globalPos();
         }
     }
 }
@@ -222,55 +222,51 @@ void PopupNotification::on_pushButton_close_clicked()
  */
 void PopupNotification::onTimer()
 {
-    if (m_bAppearing) // APPEARING
+    if (m_appearing)
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
+            if (m_currentPosY > (m_startPosY - height()))
+                m_currentPosY -= m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
+            if ((m_currentPosY - m_startPosY) < height())
+                m_currentPosY += m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
+            if ((m_currentPosX - m_startPosX) < width())
+                m_currentPosX += m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
+            if (m_currentPosX > (m_startPosX - width()))
+                m_currentPosX -= m_increment;
             else
             {
-                m_bAppearing = false;
-
+                m_appearing = false;
                 m_timer.stop();
             }
             break;
         }
     }
-    else // DISSAPPEARING
+    else
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
             closeAndDestroy();
@@ -291,7 +287,7 @@ void PopupNotification::onTimer()
         }
     }
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 }
 
 /**
@@ -299,7 +295,7 @@ void PopupNotification::onTimer()
  */
 void PopupNotification::onClosePopup()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE id = ?");
     query.addBindValue(m_pni.id);
@@ -318,10 +314,10 @@ void PopupNotification::closeAndDestroy()
 
     m_timer.stop();
 
-    if (m_PopupNotifications.length() == 1)
+    if (s_popupNotifications.length() == 1)
         emit m_pni.remindersDialog->reminders(false);
 
-    m_PopupNotifications.removeOne(this);
+    s_popupNotifications.removeOne(this);
 
     delete this;
 }
@@ -331,10 +327,10 @@ void PopupNotification::closeAndDestroy()
  */
 void PopupNotification::closeAll()
 {
-    for (qint32 i = 0; i < m_PopupNotifications.size(); ++i)
-        m_PopupNotifications[i]->deleteLater();
+    for (qint32 i = 0; i < s_popupNotifications.size(); ++i)
+        s_popupNotifications[i]->deleteLater();
 
-    m_PopupNotifications.clear();
+    s_popupNotifications.clear();
 }
 
 /**
@@ -355,7 +351,7 @@ void PopupNotification::showReminderNotification(RemindersDialog* remindersDialo
 
     notification->show();
 
-    m_PopupNotifications.append(notification);
+    s_popupNotifications.append(notification);
 }
 
 /**

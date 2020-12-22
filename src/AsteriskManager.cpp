@@ -15,7 +15,7 @@
 #include <QDebug>
 #include <QRegularExpressionValidator>
 
-AsteriskManager* g_pAsteriskManager = nullptr;
+AsteriskManager* g_asteriskManager = nullptr;
 
 AsteriskManager::AsteriskManager(const QString& username, const QString& secret, QObject* parent)
     : QObject(parent),
@@ -24,7 +24,7 @@ AsteriskManager::AsteriskManager(const QString& username, const QString& secret,
       m_username(username),
       m_secret(secret)
 {
-    g_pAsteriskManager = this;
+    g_asteriskManager = this;
 
     m_tcpSocket = new QTcpSocket(this);
 
@@ -246,15 +246,15 @@ void AsteriskManager::parseEvent(const QString& eventData)
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
 
-        endpoints.append(eventValues.value("Aor"));
+        m_endpoints.append(eventValues.value("Aor"));
 
         if (eventValues.value("Event") == "EndpointListComplete")
         {
-            for (qint32 i = 0; i < endpoints.length(); ++i)
+            for (qint32 i = 0; i < m_endpoints.length(); ++i)
             {
                 QString command;
                 command   = "Action: PJSIPShowEndpoint\r\n";
-                command  += "Endpoint: " + endpoints.at(i) + "\r\n";
+                command  += "Endpoint: " + m_endpoints.at(i) + "\r\n";
 
                 m_tcpSocket->write(command.toLatin1().data());
                 m_tcpSocket->write("\r\n");
@@ -272,11 +272,11 @@ void AsteriskManager::parseEvent(const QString& eventData)
             const QString status = eventValues.value("Status");
 
             if (eventValues.value("ActionID") == "StateList")
-                stateList.insert(exten, status);
+                m_states.insert(exten, status);
             else
             {
                 emit extenStatusChanged(exten, status);
-                stateList.insert(exten, status);
+                m_states.insert(exten, status);
             }
         }
     }
@@ -290,8 +290,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
         {
             QString str = eventValues.value("Extension");
             if (isInternalPhone(&str))
-                if (eventValues.value("ActionID") == "")
-                    groupNumbers << str;
+                m_groupNumbers << str;
         }
     }
     else if (eventData.contains("Event: EndpointDetail"))
@@ -312,7 +311,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
         name = reg.cap(2);
         number = reg.cap(4);
 
-        extensionNumbers.insert(number, name);
+        m_extensionNumbers.insert(number, name);
     }
     else if (eventData.contains("Event: BlindTransfer"))
     {
@@ -474,7 +473,7 @@ bool AsteriskManager::isGroup(QString* str)
 /**
  * Выполняет преобразование полученного сообщения в список пар "ключ: значение".
  */
-void AsteriskManager::getEventValues(const QString& eventData, QMap<QString, QString> &map)
+void AsteriskManager::getEventValues(const QString& eventData, QMap<QString, QString>& map)
 {
     QStringList list = eventData.split("\r\n");
 
@@ -492,7 +491,7 @@ void AsteriskManager::getEventValues(const QString& eventData, QMap<QString, QSt
  */
 void AsteriskManager::getExtensionNumbers()
 {
-    extensionNumbers.clear();
+    m_extensionNumbers.clear();
 
     QString command;
     command = "Action: PJSIPShowEndpoints\r\n";
@@ -505,7 +504,7 @@ void AsteriskManager::getExtensionNumbers()
 
 void AsteriskManager::getGroups()
 {
-    groupNumbers.clear();
+    m_groupNumbers.clear();
 
     QString command;
     command = "Action: ShowDialPlan\r\n";
@@ -518,7 +517,7 @@ void AsteriskManager::getGroups()
 
 void AsteriskManager::getExtensionsStateList()
 {
-    stateList.clear();
+    m_states.clear();
 
     QString command;
     command = "Action: ExtensionStateList\r\n";

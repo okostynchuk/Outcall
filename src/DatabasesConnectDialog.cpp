@@ -52,14 +52,14 @@ void DatabasesConnectDialog::onSave()
     setSettingsDb();
     setSettingsDbCalls();
 
-    if (state == "twoDbs")
+    if (m_state == "twoDbs")
     {
         openDb();
         openDbCalls();
 
-        if (!db.isOpen() && !dbCalls.isOpen())
+        if (!m_db.isOpen() && !m_dbCalls.isOpen())
             MsgBoxError(tr("Подключение не создано!"));
-        else if (!db.isOpen())
+        else if (!m_db.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(0);
             ui->tabWidget_2->setTabEnabled(1, false);
@@ -68,7 +68,7 @@ void DatabasesConnectDialog::onSave()
 
             setSettingsDbCalls();
         }
-        else if (!dbCalls.isOpen())
+        else if (!m_dbCalls.isOpen())
         {
             ui->tabWidget_2->setCurrentIndex(1);
             ui->tabWidget_2->setTabEnabled(0, false);
@@ -77,7 +77,7 @@ void DatabasesConnectDialog::onSave()
 
             setSettingsDb();
         }
-        else if (db.isOpen() && dbCalls.isOpen())
+        else if (m_db.isOpen() && m_dbCalls.isOpen())
         {
             setSettingsDb();
             setSettingsDbCalls();
@@ -87,11 +87,11 @@ void DatabasesConnectDialog::onSave()
             close();
         }
     }
-    else if (state == "db")
+    else if (m_state == "db")
     {
         openDb();
 
-        if (!db.isOpen())
+        if (!m_db.isOpen())
             MsgBoxError(tr("Подключение к базе контактов не создано!"));
         else
         {
@@ -102,11 +102,11 @@ void DatabasesConnectDialog::onSave()
             close();
         }
     }
-    else if (state == "dbCalls")
+    else if (m_state == "dbCalls")
     {
         openDbCalls();
 
-        if (!dbCalls.isOpen())
+        if (!m_dbCalls.isOpen())
             MsgBoxError(tr("Подключение к базе звонков не создано!"));
         else
         {
@@ -152,21 +152,21 @@ void DatabasesConnectDialog::setSettingsDbCalls()
  */
 void DatabasesConnectDialog::setDatabases(const QSqlDatabase& db, const QSqlDatabase& dbCalls, const QString& state)
 {
-    this->state = state;
+    m_state = state;
 
-    if (this->state == "db")
+    if (m_state == "db")
     {
         ui->tabWidget_2->setCurrentIndex(0);
         ui->tabWidget_2->setTabEnabled(1, false);
     }
-    else if (this->state == "dbCalls")
+    else if (m_state == "dbCalls")
     {
         ui->tabWidget_2->setCurrentIndex(1);
         ui->tabWidget_2->setTabEnabled(0, false);
     }
 
-    this->db = db;
-    this->dbCalls = dbCalls;
+    m_db = db;
+    m_dbCalls = dbCalls;
 }
 
 /**
@@ -174,12 +174,12 @@ void DatabasesConnectDialog::setDatabases(const QSqlDatabase& db, const QSqlData
  */
 void DatabasesConnectDialog::openDb()
 {
-    db.setHostName(ui->hostName_1->text());
-    db.setDatabaseName(ui->databaseName_1->text());
-    db.setUserName(ui->userName_1->text());
-    db.setPassword(ui->password_1->text());
-    db.setPort(ui->port_1->text().toUInt());
-    db.open();
+    m_db.setHostName(ui->hostName_1->text());
+    m_db.setDatabaseName(ui->databaseName_1->text());
+    m_db.setUserName(ui->userName_1->text());
+    m_db.setPassword(ui->password_1->text());
+    m_db.setPort(ui->port_1->text().toUInt());
+    m_db.open();
 }
 
 /**
@@ -187,12 +187,12 @@ void DatabasesConnectDialog::openDb()
  */
 void DatabasesConnectDialog::openDbCalls()
 {
-    dbCalls.setHostName(ui->hostName_2->text());
-    dbCalls.setDatabaseName(ui->databaseName_2->text());
-    dbCalls.setUserName(ui->userName_2->text());
-    dbCalls.setPassword(ui->password_2->text());
-    dbCalls.setPort(ui->port_2->text().toUInt());
-    dbCalls.open();
+    m_dbCalls.setHostName(ui->hostName_2->text());
+    m_dbCalls.setDatabaseName(ui->databaseName_2->text());
+    m_dbCalls.setUserName(ui->userName_2->text());
+    m_dbCalls.setPassword(ui->password_2->text());
+    m_dbCalls.setPort(ui->port_2->text().toUInt());
+    m_dbCalls.open();
 }
 
 /**

@@ -14,13 +14,13 @@ extern QString g_appSettingsFolderPath;
 extern bool g_dbsOpened;
 extern bool g_ordersDbOpened;
 
-int MsgBoxInformation(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
+qint32 MsgBoxInformation(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
-int MsgBoxError(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
+qint32 MsgBoxError(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
-int MsgBoxWarning(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
+qint32 MsgBoxWarning(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
-int MsgBoxQuestion(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
+qint32 MsgBoxQuestion(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 
 namespace global
 {

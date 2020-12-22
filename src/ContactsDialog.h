@@ -55,32 +55,30 @@ private slots:
 private:
     Ui::ContactsDialog* ui;
 
-    QRegularExpression hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
+    QSqlDatabase m_db;
 
-    QModelIndexList selectionModel;
+    QRegularExpression m_hrefRegExp = QRegularExpression("(https?:\\/\\/\\S+)");
 
-    QPointer<QSqlQueryModel> queryModel;
+    QModelIndexList m_selections;
 
-    AddContactDialog* addContactDialog;
-    AddOrgContactDialog* addOrgContactDialog;
-    ViewContactDialog* viewContactDialog;
-    ViewOrgContactDialog* viewOrgContactDialog;
+    QPointer<QSqlQueryModel> m_queryModel;
 
-    QValidator* validator;
+    AddContactDialog* m_addContactDialog;
+    AddOrgContactDialog* m_addOrgContactDialog;
+    ViewContactDialog* m_viewContactDialog;
+    ViewOrgContactDialog* m_viewOrgContactDialog;
 
     QWidget* addImageLabel(qint32 row_index);
     QWidget* addWidgetNote(qint32 row_index, bool url);
 
-    QList<QWidget*> widgets;
+    QList<QWidget*> m_widgets;
 
-    QSqlDatabase db;
+    QString m_page;  
+    QString m_go;
 
-    QString page;  
-    QString go;
+    bool m_filter;
 
-    bool filter;
-
-    QByteArray geometry;
+    QByteArray m_geometry;
 };
 
 #endif // CONTACTSDIALOG_H

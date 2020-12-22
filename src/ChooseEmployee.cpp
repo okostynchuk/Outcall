@@ -15,12 +15,12 @@ ChooseEmployee::ChooseEmployee(QWidget* parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    extensions = g_pAsteriskManager->extensionNumbers.values();
+    m_extensions = g_asteriskManager->m_extensionNumbers.values();
 
-    extensions.removeAll(my_number);
-    extensions.removeOne("");
+    m_extensions.removeAll(my_number);
+    m_extensions.removeOne("");
 
-    ui->listWidget->addItems(extensions);
+    ui->listWidget->addItems(m_extensions);
 
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &ChooseEmployee::onSearch);
     connect(ui->listWidget, &QListWidget::itemClicked, this, &ChooseEmployee::onChoose);
@@ -48,7 +48,7 @@ void ChooseEmployee::onChoose(QListWidgetItem* item)
     ui->listWidget_2->addItem(ui->listWidget->takeItem(ui->listWidget->row(item)));
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 
-    results.removeAll(item->text());
+    m_results.removeAll(item->text());
 }
 
 /**
@@ -59,12 +59,12 @@ void ChooseEmployee::on_chooseAllButton_clicked()
     if (ui->listWidget->count() == 0)
         return;
 
-    results.clear();
+    m_results.clear();
 
     ui->listWidget->clear();
 
     ui->listWidget_2->clear();
-    ui->listWidget_2->addItems(extensions);
+    ui->listWidget_2->addItems(m_extensions);
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 }
 
@@ -80,10 +80,10 @@ void ChooseEmployee::onRemove(QListWidgetItem* item)
         ui->listWidget_2->takeItem(ui->listWidget_2->row(item));
 
         if (item->text().contains(ui->lineEdit->text(), Qt::CaseInsensitive))
-            results.append(item->text());
+            m_results.append(item->text());
 
         ui->listWidget->clear();
-        ui->listWidget->addItems(results);
+        ui->listWidget->addItems(m_results);
     }
 
     ui->listWidget->sortItems(Qt::AscendingOrder);
@@ -100,18 +100,18 @@ void ChooseEmployee::on_removeAllButton_clicked()
     ui->listWidget->clear();
 
     if (ui->lineEdit->text().isEmpty())
-        ui->listWidget->addItems(extensions);
+        ui->listWidget->addItems(m_extensions);
     else
     {
-        for (qint32 i = 0; i < extensions.length(); ++i)
+        for (qint32 i = 0; i < m_extensions.length(); ++i)
         {
-            QString item = extensions.at(i);
+            QString item = m_extensions.at(i);
 
             if (item.contains(ui->lineEdit->text(), Qt::CaseInsensitive))
-                results.append(item);
+                m_results.append(item);
         }
 
-        ui->listWidget->addItems(results);
+        ui->listWidget->addItems(m_results);
     }
 
     ui->listWidget->sortItems(Qt::AscendingOrder);
@@ -124,14 +124,14 @@ void ChooseEmployee::on_removeAllButton_clicked()
  */
 void ChooseEmployee::onSearch()
 {
-    results.clear();
+    m_results.clear();
 
-    for (qint32 i = 0; i < extensions.length(); ++i)
+    for (qint32 i = 0; i < m_extensions.length(); ++i)
     {
-        QString item = extensions.at(i);
+        QString item = m_extensions.at(i);
 
         if (item.contains(ui->lineEdit->text(), Qt::CaseInsensitive))
-            results.append(item);
+            m_results.append(item);
     }
 
     for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
@@ -139,11 +139,11 @@ void ChooseEmployee::onSearch()
         QString item = ui->listWidget_2->item(i)->text();
 
         if (item.contains(ui->lineEdit->text(), Qt::CaseInsensitive))
-            results.removeAll(item);
+            m_results.removeAll(item);
     }
 
     ui->listWidget->clear();
-    ui->listWidget->addItems(results);
+    ui->listWidget->addItems(m_results);
     ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
@@ -151,12 +151,11 @@ void ChooseEmployee::onSearch()
  * Получает список сотрудников из классов
  * AddReminderDialog, EditReminderDialog.
  */
-void ChooseEmployee::setValues(const QStringList& employee)
+void ChooseEmployee::setValues(QStringList& employee)
 {
-    this->employee = employee;
-    this->employee.removeAll(my_number);
+    employee.removeAll(my_number);
 
-    ui->listWidget_2->addItems(this->employee);
+    ui->listWidget_2->addItems(employee);
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
 
     for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)

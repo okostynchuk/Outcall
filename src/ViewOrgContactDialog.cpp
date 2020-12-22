@@ -44,7 +44,6 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     connect(ui->tableView_2, &QAbstractItemView::doubleClicked, this, &ViewOrgContactDialog::viewNotes);
 
     my_number = global::getExtensionNumber("extensions");
-    userId = global::getSettingsValue("user_login", "settings").toString();
 
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
@@ -54,11 +53,11 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    employeesPhonesList.insert("6203", ui->group_6203);
-    employeesPhonesList.insert("6204", ui->group_6204);
-    employeesPhonesList.insert("6207", ui->group_6207);
+    m_managers.insert("6203", ui->group_6203);
+    m_managers.insert("6204", ui->group_6204);
+    m_managers.insert("6207", ui->group_6207);
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -71,26 +70,26 @@ ViewOrgContactDialog::~ViewOrgContactDialog()
  */
 void ViewOrgContactDialog::setValues(const QString& id)
 {
-    contactId = id;
+    m_contactId = id;
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + contactId);
+    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + m_contactId);
     query.exec();
 
     while (query.next())
-         numbersList.append(query.value(0).toString());
+         m_numbers.append(query.value(0).toString());
 
-    for (qint32 i = 0; i < numbersList.length(); ++i)
-        phonesList.at(i)->setText(numbersList.at(i));
+    for (qint32 i = 0; i < m_numbers.length(); ++i)
+        m_phones.at(i)->setText(m_numbers.at(i));
 
-    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + contactId);
+    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + m_contactId);
     query.exec();
 
     while (query.next())
-        employeesPhonesList.value(query.value(0).toString())->setText(query.value(1).toString());
+        m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
 
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
+    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
 
@@ -124,7 +123,7 @@ void ViewOrgContactDialog::tabSelected()
         loadEmployees();
     else if (ui->mainTabWidget->currentWidget()->objectName() == "calls")
     {
-        page = "1";
+        m_page = "1";
 
         onUpdate();
     }
@@ -138,14 +137,14 @@ void ViewOrgContactDialog::searchFunction()
 {
     if (ui->lineEdit->text().isEmpty())
     {
-        if (filter)
+        if (m_filter)
             ui->tableView->scrollToTop();
 
-        filter = false;
+        m_filter = false;
     }
     else
     {
-        filter = true;
+        m_filter = true;
 
         ui->tableView->scrollToTop();
     }
@@ -163,9 +162,9 @@ void ViewOrgContactDialog::loadEmployees()
     query_model = new QSqlQueryModel;
 
     QString queryString = "SELECT ep.entry_id, ep.entry_name, GROUP_CONCAT(DISTINCT ep.entry_phone ORDER BY ep.entry_id SEPARATOR '\n'), ep.entry_comment "
-                          "FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + contactId + "' ";
+                          "FROM entry_phone ep WHERE ep.entry_type = 'person' AND ep.entry_person_org_id = '" + m_contactId + "' ";
 
-    if (filter)
+    if (m_filter)
     {
         if (ui->comboBox->currentIndex() == 0)
              queryString.append("AND ep.entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
@@ -205,11 +204,11 @@ void ViewOrgContactDialog::showCard(const QModelIndex& index)
 {
     QString id = query_model->data(query_model->index(index.row(), 0)).toString();
 
-    viewContactDialog = new ViewContactDialog;
-    viewContactDialog->setValues(id);
-    connect(viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
-    viewContactDialog->show();
-    viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_viewContactDialog = new ViewContactDialog;
+    m_viewContactDialog->setValues(id);
+    connect(m_viewContactDialog, &ViewContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataPerson);
+    m_viewContactDialog->show();
+    m_viewContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -234,7 +233,7 @@ void ViewOrgContactDialog::loadCalls()
 
     setPage();
 
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
     QString queryString;
 
@@ -242,12 +241,12 @@ void ViewOrgContactDialog::loadCalls()
     {
         queryString = "SELECT IF(";
 
-        for (qint32 i = 0; i < numbersList.length(); ++i)
+        for (qint32 i = 0; i < m_numbers.length(); ++i)
         {
             if (i > 0)
                 queryString.append(" || ");
 
-            queryString.append("src = '"+numbersList[i]+"'");
+            queryString.append("src = '"+m_numbers[i]+"'");
         }
 
         queryString.append(", extfield2, extfield1), ");
@@ -268,28 +267,28 @@ void ViewOrgContactDialog::loadCalls()
 
     queryString.append("AND ( ");
 
-    for (qint32 i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < m_numbers.length(); ++i)
     {
         if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + m_numbers[i] + "' OR dst = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + m_numbers[i] + "' OR dst = '" + m_numbers[i] + "'");
         }
         else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls" || ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + m_numbers[i] + "'");
         }
         else if (ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
         {
             if (i == 0)
-                queryString.append(" dst = '" + numbersList[i] + "'");
+                queryString.append(" dst = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR dst = '" + m_numbers[i] + "'");
         }
     }
 
@@ -304,18 +303,18 @@ void ViewOrgContactDialog::loadCalls()
                                           ui->comboBox_list->currentText().toInt()) + " , " +
                           QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString, dbCalls);
+    m_queryModel->setQuery(queryString, m_dbCalls);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
-    queryModel->insertColumn(4);
-    queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
-    queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
-    queryModel->insertColumn(6);
-    queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    m_queryModel->setHeaderData(1, Qt::Horizontal, tr("Откуда"));
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Кому"));
+    m_queryModel->insertColumn(4);
+    m_queryModel->setHeaderData(4, Qt::Horizontal, tr("Статус"));
+    m_queryModel->setHeaderData(5, Qt::Horizontal, tr("Дата и время"));
+    m_queryModel->insertColumn(6);
+    m_queryModel->setHeaderData(6, Qt::Horizontal, tr("Заметка"));
 
-    ui->tableView_2->setModel(queryModel);
+    ui->tableView_2->setModel(m_queryModel);
 
     ui->tableView_2->setColumnHidden(3,true);
 
@@ -327,19 +326,19 @@ void ViewOrgContactDialog::loadCalls()
 
     for (qint32 row_index = 0; row_index < ui->tableView_2->model()->rowCount(); ++row_index)
     {
-        QString extfield = queryModel->data(queryModel->index(row_index, 0)).toString();
-        QString src = queryModel->data(queryModel->index(row_index, 1)).toString();
-        QString dst = queryModel->data(queryModel->index(row_index, 2)).toString();
-        QString uniqueid = queryModel->data(queryModel->index(row_index, 7)).toString();
-        QString dialogStatus = queryModel->data(queryModel->index(row_index, 3)).toString();
+        QString extfield = m_queryModel->data(m_queryModel->index(row_index, 0)).toString();
+        QString src = m_queryModel->data(m_queryModel->index(row_index, 1)).toString();
+        QString dst = m_queryModel->data(m_queryModel->index(row_index, 2)).toString();
+        QString uniqueid = m_queryModel->data(m_queryModel->index(row_index, 7)).toString();
+        QString dialogStatus = m_queryModel->data(m_queryModel->index(row_index, 3)).toString();
 
         if (extfield.isEmpty())
-            ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
+            ui->tableView_2->setIndexWidget(m_queryModel->index(row_index, 0), loadName(src, dst));
 
         if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls" || ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
-            ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
+            ui->tableView_2->setIndexWidget(m_queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
-        QSqlQuery query(db);
+        QSqlQuery query(m_db);
 
         query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = " + uniqueid + ")");
         query.exec();
@@ -347,7 +346,7 @@ void ViewOrgContactDialog::loadCalls()
 
         if (query.value(0) != 0)
         {
-            ui->tableView_2->setIndexWidget(queryModel->index(row_index, 6), loadNote(uniqueid));
+            ui->tableView_2->setIndexWidget(m_queryModel->index(row_index, 6), loadNote(uniqueid));
 
             ui->tableView_2->resizeRowToContents(row_index);
         }
@@ -373,39 +372,39 @@ void ViewOrgContactDialog::setPage()
 {
     QString pages = ui->label_pages->text();
 
-    if (countRecords <= ui->comboBox_list->currentText().toInt())
+    if (m_countRecords <= ui->comboBox_list->currentText().toInt())
         pages = "1";
     else
     {
-        qint32 remainder = countRecords % ui->comboBox_list->currentText().toInt();
+        qint32 remainder = m_countRecords % ui->comboBox_list->currentText().toInt();
 
         if (remainder)
             remainder = 1;
         else
             remainder = 0;
 
-        pages = QString::number(countRecords / ui->comboBox_list->currentText().toInt() + remainder);
+        pages = QString::number(m_countRecords / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
+    if (m_go == "previous" && m_page != "1")
+        m_page = QString::number(m_page.toInt() - 1);
+    else if (m_go == "previousStart" && m_page != "1")
+        m_page = "1";
+    else if (m_go == "next" && m_page.toInt() < pages.toInt())
+        m_page = QString::number(m_page.toInt() + 1);
+    else if (m_go == "next" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "nextEnd" && m_page.toInt() < pages.toInt())
+        m_page = pages;
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        m_page = ui->lineEdit_page->text();
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (m_go == "default" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "default" && m_page == "1")
+        m_page = "1";
 
-    ui->lineEdit_page->setText(page);
+    ui->lineEdit_page->setText(m_page);
     ui->label_pages->setText(tr("из ") + pages);
 }
 
@@ -420,7 +419,7 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
 
     layout->addWidget(noteLabel);
 
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT note FROM calls WHERE uniqueid = '" + uniqueid + "' ORDER BY datetime DESC");
     query.exec();
@@ -428,7 +427,7 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
 
     QString note = query.value(0).toString();
 
-    QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+    QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
     QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
     note.replace("<", "&lt;").replace(">", "&gt;");
@@ -445,7 +444,7 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
 
     QStringList firstCharList, lastCharList;
 
-    for (int i = 0; i < hrefs.length(); ++i)
+    for (qint32 i = 0; i < hrefs.length(); ++i)
     {
         QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
         hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -491,7 +490,7 @@ QWidget* ViewOrgContactDialog::loadNote(const QString& uniqueid)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -517,7 +516,7 @@ QWidget* ViewOrgContactDialog::loadStatus(const QString& dialogStatus)
     layout->addWidget(statusLabel);
     layout->setContentsMargins(3, 0, 0, 0);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -533,9 +532,9 @@ QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
 
     qint32 counter = 0;
 
-    for (qint32 i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < m_numbers.length(); ++i)
     {
-        if (src == numbersList[i])
+        if (src == m_numbers[i])
         {
             nameLabel->setText(dst);
             counter++;
@@ -548,7 +547,7 @@ QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
     layout->addWidget(nameLabel);
     layout->setContentsMargins(3, 0, 0, 0);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -560,14 +559,14 @@ void ViewOrgContactDialog::deleteObjects()
 {
     if (ui->mainTabWidget->currentWidget()->objectName() == "employees" && !query_model.isNull())
         query_model->deleteLater();
-    else if (ui->mainTabWidget->currentWidget()->objectName() == "calls" && !queryModel.isNull())
+    else if (ui->mainTabWidget->currentWidget()->objectName() == "calls" && !m_queryModel.isNull())
     {
-        for (qint32 i = 0; i < widgets.size(); ++i)
-            widgets[i]->deleteLater();
+        for (qint32 i = 0; i < m_widgets.size(); ++i)
+            m_widgets[i]->deleteLater();
 
-        widgets.clear();
+        m_widgets.clear();
 
-        queryModel->deleteLater();
+        m_queryModel->deleteLater();
     }
 }
 
@@ -576,12 +575,12 @@ void ViewOrgContactDialog::deleteObjects()
  */
 void ViewOrgContactDialog::getData(const QModelIndex& index)
 {
-    recordpath = queryModel->data(queryModel->index(index.row(), 8)).toString();
+    m_recordpath = m_queryModel->data(m_queryModel->index(index.row(), 8)).toString();
 
     ui->playAudio->setDisabled(true);
     ui->playAudioPhone->setDisabled(true);
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
         ui->playAudio->setDisabled(false);
         ui->playAudioPhone->setDisabled(false);
@@ -594,7 +593,7 @@ void ViewOrgContactDialog::getData(const QModelIndex& index)
  */
 void ViewOrgContactDialog::onUpdate()
 {
-     go = "default";
+     m_go = "default";
 
      updateCount();
 }
@@ -606,7 +605,7 @@ void ViewOrgContactDialog::callTabSelected()
 {
     ui->tableView_2->setModel(NULL);
 
-    page = "1";
+    m_page = "1";
 
     onUpdate();
 }
@@ -616,7 +615,7 @@ void ViewOrgContactDialog::callTabSelected()
  */
 void ViewOrgContactDialog::updateCount()
 {
-    QSqlQuery query(dbCalls);
+    QSqlQuery query(m_dbCalls);
 
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
@@ -629,28 +628,28 @@ void ViewOrgContactDialog::updateCount()
 
     queryString.append("AND ( ");
 
-    for (qint32 i = 0; i < numbersList.length(); ++i)
+    for (qint32 i = 0; i < m_numbers.length(); ++i)
     {
         if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + m_numbers[i] + "' OR dst = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + m_numbers[i] + "' OR dst = '" + m_numbers[i] + "'");
         }
         else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls" || ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         {
             if (i == 0)
-                queryString.append(" src = '" + numbersList[i] + "'");
+                queryString.append(" src = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR src = '" + numbersList[i] + "'");
+                queryString.append(" OR src = '" + m_numbers[i] + "'");
         }
         else if (ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
         {
             if (i == 0)
-                queryString.append(" dst = '" + numbersList[i] + "'");
+                queryString.append(" dst = '" + m_numbers[i] + "'");
             else
-                queryString.append(" OR dst = '" + numbersList[i] + "'");
+                queryString.append(" OR dst = '" + m_numbers[i] + "'");
         }
     }
 
@@ -660,7 +659,7 @@ void ViewOrgContactDialog::updateCount()
     query.exec();
     query.first();
 
-    countRecords = query.value(0).toInt();
+    m_countRecords = query.value(0).toInt();
 
     loadCalls();
 }
@@ -691,7 +690,7 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
         addPersonToOrg->close();
 
     addPersonToOrg = new AddPersonToOrg;
-    addPersonToOrg->setOrgId(contactId);
+    addPersonToOrg->setOrgId(m_contactId);
     connect(addPersonToOrg, &AddPersonToOrg::newPerson, this, &ViewOrgContactDialog::loadEmployees);
     addPersonToOrg->show();
     addPersonToOrg->setAttribute(Qt::WA_DeleteOnClose);
@@ -702,13 +701,13 @@ void ViewOrgContactDialog::on_addPersonToOrg_clicked()
  */
 void ViewOrgContactDialog::viewNotes(const QModelIndex& index)
 {
-    QString uniqueid = queryModel->data(queryModel->index(index.row(), 7)).toString();
+    QString uniqueid = m_queryModel->data(m_queryModel->index(index.row(), 7)).toString();
 
-    notesDialog = new NotesDialog;
-    notesDialog->setValues(uniqueid, "");
-    notesDialog->hideAddNote();
-    notesDialog->show();
-    notesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_notesDialog = new NotesDialog;
+    m_notesDialog->setValues(uniqueid, "");
+    m_notesDialog->hideAddNote();
+    m_notesDialog->show();
+    m_notesDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -734,6 +733,8 @@ void ViewOrgContactDialog::onOpenAccess()
 
     if (dbOrders.isOpen())
     {
+        QString userId = global::getSettingsValue("user_login", "settings").toString();
+
         QSqlQuery query(dbOrders);
 
         query.prepare("INSERT INTO CallTable (UserID, ClientID)"
@@ -762,15 +763,15 @@ void ViewOrgContactDialog::onPlayAudio()
         return;
     }
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
-        if (!player.isNull())
-            player->close();
+        if (!m_player.isNull())
+            m_player->close();
 
-        player = new Player;
-        player->openMedia(recordpath);
-        player->show();
-        player->setAttribute(Qt::WA_DeleteOnClose);
+        m_player = new Player;
+        m_player->openMedia(m_recordpath);
+        m_player->show();
+        m_player->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -786,11 +787,11 @@ void ViewOrgContactDialog::onPlayAudioPhone()
         return;
     }
 
-    if (!recordpath.isEmpty())
+    if (!m_recordpath.isEmpty())
     {
         QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        g_pAsteriskManager->originateAudio(my_number, protocol, recordpath);
+        g_asteriskManager->originateAudio(my_number, protocol, m_recordpath);
     }
 }
 
@@ -799,10 +800,10 @@ void ViewOrgContactDialog::onPlayAudioPhone()
  */
 void ViewOrgContactDialog::onCall()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
-    query.addBindValue(contactId);
+    query.addBindValue(m_contactId);
     query.exec();
 
     if (query.size() == 1)
@@ -812,17 +813,17 @@ void ViewOrgContactDialog::onCall()
         QString number = query.value(0).toString();
         QString protocol = global::getSettingsValue(my_number, "extensions").toString();
 
-        g_pAsteriskManager->originateCall(my_number, number, protocol, my_number);
+        g_asteriskManager->originateCall(my_number, number, protocol, my_number);
     }
     else
     {
-        if (!chooseNumber.isNull())
-            chooseNumber->close();
+        if (!m_chooseNumber.isNull())
+            m_chooseNumber->close();
 
-        chooseNumber = new ChooseNumber;
-        chooseNumber->setValues(contactId);
-        chooseNumber->show();
-        chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+        m_chooseNumber = new ChooseNumber;
+        m_chooseNumber->setValues(m_contactId);
+        m_chooseNumber->show();
+        m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }
 }
 
@@ -833,13 +834,13 @@ void ViewOrgContactDialog::onEdit()
 {
     hide();
 
-    editOrgContactDialog = new EditOrgContactDialog;
-    editOrgContactDialog->setValues(contactId);
-    connect(editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
-    connect(this, &ViewOrgContactDialog::getPos, editOrgContactDialog, &EditOrgContactDialog::setPos);
+    m_editOrgContactDialog = new EditOrgContactDialog;
+    m_editOrgContactDialog->setValues(m_contactId);
+    connect(m_editOrgContactDialog, &EditOrgContactDialog::sendData, this, &ViewOrgContactDialog::receiveDataOrg);
+    connect(this, &ViewOrgContactDialog::getPos, m_editOrgContactDialog, &EditOrgContactDialog::setPos);
     emit getPos(this->pos().x(), this->pos().y());
-    editOrgContactDialog->show();
-    editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_editOrgContactDialog->show();
+    m_editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -847,13 +848,13 @@ void ViewOrgContactDialog::onEdit()
  */
 void ViewOrgContactDialog::onAddReminder()
 {
-    if (!addReminderDialog.isNull())
-        addReminderDialog->close();
+    if (!m_addReminderDialog.isNull())
+        m_addReminderDialog->close();
 
-    addReminderDialog = new AddReminderDialog;
-    addReminderDialog->setCallId(contactId);
-    addReminderDialog->show();
-    addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_addReminderDialog = new AddReminderDialog;
+    m_addReminderDialog->setCallId(m_contactId);
+    m_addReminderDialog->show();
+    m_addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -863,7 +864,7 @@ void ViewOrgContactDialog::on_previousButton_clicked()
 {
     ui->tableView_2->scrollToTop();
 
-    go = "previous";
+    m_go = "previous";
 
     loadCalls();
 }
@@ -875,7 +876,7 @@ void ViewOrgContactDialog::on_nextButton_clicked()
 {
     ui->tableView_2->scrollToTop();
 
-    go = "next";
+    m_go = "next";
 
     loadCalls();
 }
@@ -887,7 +888,7 @@ void ViewOrgContactDialog::on_previousStartButton_clicked()
 {
     ui->tableView_2->scrollToTop();
 
-    go = "previousStart";
+    m_go = "previousStart";
 
     loadCalls();
 }
@@ -899,7 +900,7 @@ void ViewOrgContactDialog::on_nextEndButton_clicked()
 {
     ui->tableView_2->scrollToTop();
 
-    go = "nextEnd";
+    m_go = "nextEnd";
 
     loadCalls();
 }
@@ -911,7 +912,7 @@ void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
 {
     ui->tableView_2->scrollToTop();
 
-    go = "enter";
+    m_go = "enter";
 
     loadCalls();
 }
@@ -921,16 +922,16 @@ void ViewOrgContactDialog::on_lineEdit_page_returnPressed()
  */
 void ViewOrgContactDialog::receiveDataOrg(bool update, qint32 x, qint32 y)
 {
-    qint32 nDesktopHeight;
-    qint32 nDesktopWidth;
+    qint32 desktopHeight;
+    qint32 desktopWidth;
     qint32 nWidgetHeight = QWidget::height();
     qint32 nWidgetWidth = QWidget::width();
 
-    QDesktopWidget desktop;
-    QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
 
     if (update)
     {
@@ -940,29 +941,29 @@ void ViewOrgContactDialog::receiveDataOrg(bool update, qint32 x, qint32 y)
     }
     else
     {
-        if (x < 0 && (nDesktopHeight - y) > nWidgetHeight)
+        if (x < 0 && (desktopHeight - y) > nWidgetHeight)
         {
             x = 0;
             this->move(x, y);
         }
-        else if (x < 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        else if (x < 0 && ((desktopHeight - y) < nWidgetHeight))
         {
             x = 0;
             y = nWidgetHeight;
             this->move(x, y);
         }
-        else if ((nDesktopWidth - x) < nWidgetWidth && (nDesktopHeight - y) > nWidgetHeight)
+        else if ((desktopWidth - x) < nWidgetWidth && (desktopHeight - y) > nWidgetHeight)
         {
             x = nWidgetWidth * 0.9;
             this->move(x, y);
         }
-        else if ((nDesktopWidth - x) < nWidgetWidth && ((nDesktopHeight - y) < nWidgetHeight))
+        else if ((desktopWidth - x) < nWidgetWidth && ((desktopHeight - y) < nWidgetHeight))
         {
             x = nWidgetWidth * 0.9;
             y = nWidgetHeight * 0.9;
             this->move(x, y);
         }
-        else if (x > 0 && ((nDesktopHeight - y) < nWidgetHeight))
+        else if (x > 0 && ((desktopHeight - y) < nWidgetHeight))
         {
             y = nWidgetHeight * 0.9;
             this->move(x, y);

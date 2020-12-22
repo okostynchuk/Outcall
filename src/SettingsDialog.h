@@ -2,7 +2,6 @@
 #define SETTINGSDIALOG_H
 
 #include "AsteriskManager.h"
-#include "AddExtensionDialog.h"
 #include "QSimpleUpdater.h"
 
 #include <QDialog>
@@ -20,23 +19,17 @@ class SettingsDialog : public QDialog
 signals:
     void restart(bool hide);
 
-public slots:
-    void checkExten();
-    void checkGroupExten();
-    void checkForUpdates();
-
 public:
     explicit SettingsDialog(QWidget* parent = 0);
     ~SettingsDialog();
 
-    void saveSettings();
-    void loadSettings();
-    void show();
-
-    QString getExtension();
-    QString getGroupExtension();
-
 private slots:
+    void loadLanguages();
+    void loadSettings();
+    void saveSettings();
+    void applySettings();
+
+    void checkForUpdates();
     void checkAsteriskState(const AsteriskManager::AsteriskState& state);
     void onAddButtonClicked();
     void onRemoveButtonClicked();
@@ -44,8 +37,6 @@ private slots:
     void onAddGroupButtonClicked();
     void onRemoveGroupButtonClicked();
     void onEditGroupButtonClicked();
-    void applySettings();
-    void loadLanguages();
 
     void on_applyButton_clicked();
     void on_cancelButton_clicked();
@@ -56,17 +47,9 @@ private slots:
 private:
     Ui::SettingsDialog* ui;
 
-    AddExtensionDialog* m_addExtensionDialog;
-
     QSimpleUpdater* m_updater;
 
-    QFile file;
-
-    QString path;
-    QString exten;
-    QString group_exten;
-
-    QByteArray geometry;
+    QByteArray m_geometry;
 };
 
 #endif // SETTINGSDIALOG_H

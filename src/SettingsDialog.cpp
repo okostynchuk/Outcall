@@ -20,42 +20,32 @@ static const QString DEFS_URL = "http://192.168.0.30/definitions/updates.json";
 
 SettingsDialog::SettingsDialog(QWidget* parent) :
     QDialog(parent),
-    ui(new Ui::SettingsDialog),
-    m_addExtensionDialog(nullptr)
+    ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    geometry = saveGeometry();
+    m_geometry = saveGeometry();
 
     ui->autoSignIn->hide();
     ui->autoStartBox->hide();
 
     ui->port->setValidator(new QIntValidator(0, 65535, this));
 
-    connect(g_pAsteriskManager, &AsteriskManager::stateChanged, this, &SettingsDialog::checkAsteriskState);
-
-    // Extensions
-    connect(ui->addButton,      &QAbstractButton::clicked, this, &SettingsDialog::onAddButtonClicked);
-    connect(ui->addButton_2,    &QAbstractButton::clicked, this, &SettingsDialog::onAddGroupButtonClicked);
-    connect(ui->editButton,     &QAbstractButton::clicked, this, &SettingsDialog::onEditButtonClicked);
-    connect(ui->editButton_2,   &QAbstractButton::clicked, this, &SettingsDialog::onEditGroupButtonClicked);
-    connect(ui->removeButton,   &QAbstractButton::clicked, this, &SettingsDialog::onRemoveButtonClicked);
-    connect(ui->removeButton_2, &QAbstractButton::clicked, this, &SettingsDialog::onRemoveGroupButtonClicked);
-    connect(ui->pushUpdateButton, &QAbstractButton::clicked, this, &SettingsDialog::checkForUpdates);
-
-    // General
-    ui->tabWidget->setCurrentIndex(0);
+    connect(g_asteriskManager,  &AsteriskManager::stateChanged, this, &SettingsDialog::checkAsteriskState);
+    connect(ui->addButton,      &QAbstractButton::clicked,      this, &SettingsDialog::onAddButtonClicked);
+    connect(ui->addButton_2,    &QAbstractButton::clicked,      this, &SettingsDialog::onAddGroupButtonClicked);
+    connect(ui->editButton,     &QAbstractButton::clicked,      this, &SettingsDialog::onEditButtonClicked);
+    connect(ui->editButton_2,   &QAbstractButton::clicked,      this, &SettingsDialog::onEditGroupButtonClicked);
+    connect(ui->removeButton,   &QAbstractButton::clicked,      this, &SettingsDialog::onRemoveButtonClicked);
+    connect(ui->removeButton_2, &QAbstractButton::clicked,      this, &SettingsDialog::onRemoveGroupButtonClicked);
+    connect(ui->updateButton,   &QAbstractButton::clicked,      this, &SettingsDialog::checkForUpdates);
 
     loadLanguages();
     loadSettings();
 
-    checkExten();
-    checkGroupExten();
-
-    /* QSimpleUpdater is single-instance */
     m_updater = QSimpleUpdater::getInstance();
 }
 
@@ -75,8 +65,6 @@ void SettingsDialog::checkForUpdates()
     m_updater->setUseCustomAppcast(DEFS_URL, false);
     m_updater->setDownloaderEnabled(DEFS_URL, true);
     m_updater->setMandatoryUpdate(DEFS_URL, false);
-
-    /* Check for updates */
     m_updater->checkForUpdates(DEFS_URL);
 }
 
@@ -89,12 +77,12 @@ void SettingsDialog::checkAsteriskState(const AsteriskManager::AsteriskState& st
     if (state == AsteriskManager::CONNECTED)
     {
         ui->tabWidget->setTabEnabled(3, true);
-        ui->pushUpdateButton->setDisabled(false);
+        ui->updateButton->setDisabled(false);
     }
     else
     {
         ui->tabWidget->setTabEnabled(3, false);
-        ui->pushUpdateButton->setDisabled(true);
+        ui->updateButton->setDisabled(true);
     }
 }
 
@@ -113,12 +101,11 @@ void SettingsDialog::closeEvent(QCloseEvent*)
 
     ui->languageList->setCurrentText(global::getSettingsValue("language", "settings").toString());
 
-    restoreGeometry(geometry);
+    restoreGeometry(m_geometry);
 
-    QDesktopWidget desktop;
-    QRect scr = desktop.screenGeometry(this);
-
-    move(scr.center() - rect().center());
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    move(screen.center() - rect().center());
 }
 
 /**
@@ -138,43 +125,6 @@ void SettingsDialog::saveSettings()
     ba.append(ui->password->text().toLatin1());
     global::setSettingsValue("password", ba.toBase64(), "settings");
     global::setSettingsValue("port", ui->port->text(), "settings");
-
-    // Personal number
-    global::removeSettingsKey("extensions");
-
-    qint32 nRow = ui->treeWidget->topLevelItemCount();
-
-    if (nRow == 0)
-        global::removeSettingsKey("extensions_name");
-
-    for (qint32 i = 0; i < nRow; ++i)
-    {
-        QTreeWidgetItem* item = ui->treeWidget->topLevelItem(i);
-        QString extension = item->text(0);
-        QString protocol = item->text(1);
-
-        global::setSettingsValue(extension, protocol, "extensions");
-
-        if (g_pAsteriskManager->isSignedIn())
-        {
-            global::removeSettingsKey("extensions_name");
-            global::setSettingsValue(extension, g_pAsteriskManager->extensionNumbers.value(extension), "extensions_name");
-        }
-    }
-
-    // Group's number
-    global::removeSettingsKey("group_extensions");
-
-    qint32 nRow2 = ui->treeWidget_2->topLevelItemCount();
-
-    for (qint32 i = 0; i < nRow2; ++i)
-    {
-        QTreeWidgetItem* group_item = ui->treeWidget_2->topLevelItem(i);
-        QString group_extension = group_item->text(0);
-        QString group_protocol = group_item->text(1);
-
-        global::setSettingsValue(group_extension, group_protocol, "group_extensions");
-    }
 
     // Databases
         // Contact Base
@@ -205,6 +155,42 @@ void SettingsDialog::saveSettings()
     global::setSettingsValue("port_3", ui->port_3->text(), "settings");
     global::setSettingsValue("user_login", ui->user_login->text(), "settings");
 
+    // Personal number
+    global::removeSettingsKey("extensions");
+
+    qint32 rows = ui->treeWidget->topLevelItemCount();
+
+    if (rows == 0)
+        global::removeSettingsKey("extensions_name");
+
+    for (qint32 i = 0; i < rows; ++i)
+    {
+        QTreeWidgetItem* item = ui->treeWidget->topLevelItem(i);
+        QString extension = item->text(0);
+        QString protocol = item->text(1);
+
+        global::setSettingsValue(extension, protocol, "extensions");
+
+        if (g_asteriskManager->isSignedIn())
+        {
+            global::removeSettingsKey("extensions_name");
+            global::setSettingsValue(extension, g_asteriskManager->m_extensionNumbers.value(extension), "extensions_name");
+        }
+    }
+
+    // Group's number
+    global::removeSettingsKey("group_extensions");
+
+    rows = ui->treeWidget_2->topLevelItemCount();
+
+    for (qint32 i = 0; i < rows; ++i)
+    {
+        QTreeWidgetItem* group_item = ui->treeWidget_2->topLevelItem(i);
+        QString group_extension = group_item->text(0);
+        QString group_protocol = group_item->text(1);
+
+        global::setSettingsValue(group_extension, group_protocol, "group_extensions");
+    }
 }
 
 /**
@@ -218,7 +204,7 @@ void SettingsDialog::loadSettings()
     ui->languageList->setCurrentText(global::getSettingsValue("language", "settings").toString());
     bool autoSignIn = global::getSettingsValue("auto_sign_in", "general", true).toBool();
     ui->autoSignIn->setChecked(autoSignIn);
-    g_pAsteriskManager->setAutoSignIn(autoSignIn);
+    g_asteriskManager->setAutoSignIn(autoSignIn);
 
     // Server
     ui->serverName->setText(global::getSettingsValue("servername", "settings").toString());
@@ -257,42 +243,42 @@ void SettingsDialog::loadSettings()
     // Personal number
     QStringList extensions = global::getSettingKeys("extensions");
 
-    qint32 nRows = extensions.size();
-
-    for (qint32 i = 0; i < nRows; ++i)
+    if (extensions.size() == 0)
+        ui->addButton->setEnabled(true);
+    else
     {
-        const QString extension = extensions.at(i);
-        const QString protocol  = global::getSettingsValue(extension, "extensions").toString();
+        ui->addButton->setEnabled(false);
 
-        QTreeWidgetItem* extensionItem = new QTreeWidgetItem(ui->treeWidget);
-        extensionItem->setText(0, extension);
-        extensionItem->setText(1, protocol);
+        for (qint32 i = 0; i < extensions.size(); ++i)
+        {
+            const QString extension = extensions.at(i);
+            const QString protocol  = global::getSettingsValue(extension, "extensions").toString();
+
+            QTreeWidgetItem* extensionItem = new QTreeWidgetItem(ui->treeWidget);
+            extensionItem->setText(0, extension);
+            extensionItem->setText(1, protocol);
+        }
     }
 
     // Group's number
     QStringList group_extensions = global::getSettingKeys("group_extensions");
 
-    qint32 nRows2 = group_extensions.size();
-
-    for (qint32 i = 0; i < nRows2; ++i)
+    if (group_extensions.size() == 0)
+        ui->addButton_2->setEnabled(true);
+    else
     {
-        const QString group_extension = group_extensions.at(i);
-        const QString group_protocol  = global::getSettingsValue(group_extension, "group_extensions").toString();
+        ui->addButton_2->setEnabled(false);
 
-        QTreeWidgetItem* group_extensionItem = new QTreeWidgetItem(ui->treeWidget_2);
-        group_extensionItem->setText(0, group_extension);
-        group_extensionItem->setText(1, group_protocol);
+        for (qint32 i = 0; i < group_extensions.size(); ++i)
+        {
+            const QString group_extension = group_extensions.at(i);
+            const QString group_protocol  = global::getSettingsValue(group_extension, "group_extensions").toString();
+
+            QTreeWidgetItem* group_extensionItem = new QTreeWidgetItem(ui->treeWidget_2);
+            group_extensionItem->setText(0, group_extension);
+            group_extensionItem->setText(1, group_protocol);
+        }
     }
-}
-
-/**
- * Выполняет открытие окна.
- */
-void SettingsDialog::show()
-{
-    ui->tabWidget->setCurrentIndex(0);
-
-    QDialog::show();
 }
 
 /**
@@ -344,15 +330,16 @@ void SettingsDialog::on_cancelButton_clicked()
  */
 void SettingsDialog::applySettings()
 {
+//    QFile file;
 //    QSettings settings("Microsoft\\Windows\\CurrentVersion", "Explorer");
 //    settings.beginGroup("Shell Folders");
-//    path = settings.value("Startup").toString();
+//    QFile path = settings.value("Startup").toString();
 //    if (ui->autoStartBox->isChecked())
 //        file.link(QApplication::applicationFilePath(), path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 //    else
 //        file.remove(path.replace("/", "\\") + "/" + QString(APP_NAME) + ".lnk");
 
-//    g_pAsteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
+//    g_asteriskManager->setAutoSignIn(global::getSettingsValue("auto_sign_in", "general", true).toBool());
 }
 
 /**
@@ -377,6 +364,7 @@ void SettingsDialog::loadLanguages()
     ui->languageList->addItem(ukIcon, ukLabel);
 
     QString lang = global::getSettingsValue("language", "settings").toString();
+
     if (lang == "")
         ui->languageList->setCurrentIndex(0);
     else
@@ -384,53 +372,19 @@ void SettingsDialog::loadLanguages()
 }
 
 /**
- * Возвращает личный номер пользователя.
- */
-QString SettingsDialog::getExtension()
-{
-    QStringList extensions = global::getSettingKeys("extensions");
-
-    const QString extension = extensions.at(0);
-
-    if (!extension.isEmpty())
-        return extension;
-    else
-        return nullptr;
-}
-
-/**
- * Возвращает номер группы пользователя.
- */
-QString SettingsDialog::getGroupExtension()
-{
-    QStringList group_extensions = global::getSettingKeys("group_extensions");
-
-    qint32 nRows2 = group_extensions.size();
-
-    for (qint32 i = 0; i < nRows2; ++i)
-    {
-        const QString group_extension = group_extensions.at(i);
-
-        return group_extension;
-    }
-
-    return nullptr;
-}
-
-/**
  * Выполняет добавление личного номера.
  */
 void SettingsDialog::onAddButtonClicked()
 {
-    m_addExtensionDialog = new AddExtensionDialog;
-    m_addExtensionDialog->setWindowTitle(tr("Добавление"));
+    AddExtensionDialog* addExtensionDialog = new AddExtensionDialog;
+    addExtensionDialog->setWindowTitle(tr("Добавление"));
 
-    if (m_addExtensionDialog->exec())
+    if (addExtensionDialog->exec())
     {
         ui->addButton->setEnabled(false);
 
-        QString extension = m_addExtensionDialog->getExtension();
-        QString protocol = m_addExtensionDialog->getProtocol();
+        QString extension = addExtensionDialog->getExtension();
+        QString protocol = addExtensionDialog->getProtocol();
 
         QTreeWidgetItem* extensionItem = new QTreeWidgetItem();
         extensionItem->setText(0, extension);
@@ -440,7 +394,7 @@ void SettingsDialog::onAddButtonClicked()
         ui->treeWidget->addTopLevelItem(extensionItem);
     }
 
-    m_addExtensionDialog->deleteLater();
+    addExtensionDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -448,16 +402,15 @@ void SettingsDialog::onAddButtonClicked()
  */
 void SettingsDialog::onAddGroupButtonClicked()
 {
-    m_addExtensionDialog = new AddExtensionDialog;
+    AddExtensionDialog* addExtensionDialog = new AddExtensionDialog;
+    addExtensionDialog->setWindowTitle(tr("Добавление"));
 
-    m_addExtensionDialog->setWindowTitle(tr("Добавление"));
-
-    if (m_addExtensionDialog->exec())
+    if (addExtensionDialog->exec())
     {
         ui->addButton_2->setEnabled(false);
 
-        QString group_extension = m_addExtensionDialog->getExtension();
-        QString group_protocol = m_addExtensionDialog->getProtocol();
+        QString group_extension = addExtensionDialog->getExtension();
+        QString group_protocol = addExtensionDialog->getProtocol();
 
         QTreeWidgetItem *group_extensionItem = new QTreeWidgetItem();
         group_extensionItem->setText(0, group_extension);
@@ -467,7 +420,7 @@ void SettingsDialog::onAddGroupButtonClicked()
         ui->treeWidget_2->addTopLevelItem(group_extensionItem);
     }
 
-    m_addExtensionDialog->deleteLater();
+    addExtensionDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -550,7 +503,6 @@ void SettingsDialog::onRemoveGroupButtonClicked()
 void SettingsDialog::onEditButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
-
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
 
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
@@ -581,7 +533,6 @@ void SettingsDialog::onEditButtonClicked()
 void SettingsDialog::onEditGroupButtonClicked()
 {
     AddExtensionDialog editExtensionDialog;
-
     editExtensionDialog.setWindowTitle(tr("Редактирование"));
 
     QList<QTreeWidgetItem*> selectedItems = ui->treeWidget_2->selectedItems();
@@ -604,32 +555,6 @@ void SettingsDialog::onEditGroupButtonClicked()
             item->setText(1, newProtocol);
         }
     }
-}
-
-/**
- * Выполняет проверку на наличие личного номера.
- */
-void SettingsDialog::checkExten()
-{
-    exten = getExtension();
-
-    if (exten != nullptr)
-        ui->addButton->setEnabled(false);
-    else
-        ui->addButton->setEnabled(true);
-}
-
-/**
- * Выполняет проверку на наличие номера группы.
- */
-void SettingsDialog::checkGroupExten()
-{
-    group_exten = getGroupExtension();
-
-    if (group_exten != nullptr)
-        ui->addButton_2->setEnabled(false);
-    else
-        ui->addButton_2->setEnabled(true);
 }
 
 /**

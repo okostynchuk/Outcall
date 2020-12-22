@@ -84,36 +84,36 @@ private slots:
 private:
     Ui::PopupWindow* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<AddContactDialog> addContactDialog;
-    QPointer<AddOrgContactDialog> addOrgContactDialog;
-    QPointer<AddPhoneNumberToContactDialog> addPhoneNumberToContactDialog;
-    QPointer<ViewContactDialog> viewContactDialog;
-    QPointer<ViewOrgContactDialog> viewOrgContactDialog;
-    QPointer<AddReminderDialog> addReminderDialog;
-    QPointer<NotesDialog> notesDialog;
+    QPointer<AddContactDialog> m_addContactDialog;
+    QPointer<AddOrgContactDialog> m_addOrgContactDialog;
+    QPointer<AddPhoneNumberToContactDialog> m_addPhoneNumberToContactDialog;
+    QPointer<ViewContactDialog> m_viewContactDialog;
+    QPointer<ViewOrgContactDialog> m_viewOrgContactDialog;
+    QPointer<AddReminderDialog> m_addReminderDialog;
+    QPointer<NotesDialog> m_notesDialog;
 
-    QPoint position;
+    QPoint m_position;
 
-    QTextCursor textCursor;
+    QTextCursor m_textCursor;
 
-    QStringList extensions = g_pAsteriskManager->extensionNumbers.values();
-
-    QString userId;
     QString author;
 
-	qint32 m_nStartPosX, m_nStartPosY, m_nTaskbarPlacement;
-	qint32 m_nCurrentPosX, m_nCurrentPosY;
-    qint32 m_nIncrement;
+    qint32 m_startPosX;
+    qint32 m_startPosY;
+    qint32 m_taskbarPlacement;
+    qint32 m_currentPosX;
+    qint32 m_currentPosY;
+    qint32 m_increment;
 
-	bool m_bAppearing;
+	bool m_appearing;
 
 	QTimer m_timer;
 
     PopupWindowInfo m_pwi;
 
-    static QList<PopupWindow*> m_PopupWindows;
+    static QList<PopupWindow*> s_popupWindows;
 };
 
 #endif // POPUPWINDOW_H

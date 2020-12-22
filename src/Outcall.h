@@ -34,7 +34,7 @@ public:
 
     void show();
 
-protected slots:
+private slots:
     void hideTrayIcon(bool hide);
     void setIconReminders(QColor color, qint32 activeReminders);
     void changeIconReminders(bool change);
@@ -65,21 +65,20 @@ protected slots:
     void disableActions();
     void enableActions();
 
-protected:
     void automaticlySignIn();
     void createContextMenu();
 
 private:
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
     QMenu* m_menu;
 
     QAction* m_signIn;
     QAction* m_placeCall;
-    QAction* contactsAction;
-    QAction* callHistoryAction;
-    QAction* remindersAction;
-    QAction* internalContactsAction;
+    QAction* m_contactsAction;
+    QAction* m_callHistoryAction;
+    QAction* m_remindersAction;
+    QAction* m_internalContactsAction;
 
     QSystemTrayIcon* m_systemTrayIcon;
     DebugInfoDialog* m_debugInfoDialog;
@@ -93,7 +92,7 @@ private:
     QTimer m_timer;
 
     bool m_switch;    
-    bool show_call_popup;
+    bool m_show_call_popup;
 
     QString my_number;
 };

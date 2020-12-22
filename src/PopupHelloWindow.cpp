@@ -11,7 +11,7 @@
 #include <QDesktopWidget>
 #include <QMouseEvent>
 
-QList<PopupHelloWindow*> PopupHelloWindow::m_PopupHelloWindows;
+QList<PopupHelloWindow*> PopupHelloWindow::s_popupHelloWindows;
 
 #define TASKBAR_ON_TOP		1
 #define TASKBAR_ON_LEFT		2
@@ -45,66 +45,66 @@ PopupHelloWindow::PopupHelloWindow(const PopupHelloWindowInfo& phwi, QWidget* pa
 
     connect(&m_timer, &QTimer::timeout, this, &PopupHelloWindow::onTimer);
 
-    quint32 nDesktopHeight;
-    quint32 nDesktopWidth;
-    quint32 nScreenWidth;
-    quint32 nScreenHeight;
+    quint32 desktopHeight;
+    quint32 desktopWidth;
+    quint32 screenWidth;
+    quint32 screenHeight;
 
-    QDesktopWidget desktop;
-    QRect rcScreen = desktop.screenGeometry(this);
-    QRect rcDesktop = desktop.availableGeometry(this);
+    QDesktopWidget desktopWidget;
+    QRect screen = desktopWidget.screenGeometry(this);
+    QRect desktop = desktopWidget.availableGeometry(this);
 
-    nDesktopWidth = rcDesktop.width();
-    nDesktopHeight = rcDesktop.height();
-    nScreenWidth = rcScreen.width();
-    nScreenHeight = rcScreen.height();
+    desktopWidth = desktop.width();
+    desktopHeight = desktop.height();
+    screenWidth = screen.width();
+    screenHeight = screen.height();
 
-    bool bTaskbarOnRight = nDesktopWidth < nScreenWidth && rcDesktop.left() == 0;
-    bool bTaskbarOnLeft = nDesktopWidth < nScreenWidth && rcDesktop.left() != 0;
-    bool bTaskBarOnTop = nDesktopHeight < nScreenHeight && rcDesktop.top() != 0;
+    bool isTaskbarOnRight = desktopWidth < screenWidth && desktop.left() == 0;
+    bool isTaskbarOnLeft = desktopWidth < screenWidth && desktop.left() != 0;
+    bool isTaskBarOnTop = desktopHeight < screenHeight && desktop.top() != 0;
 
-    qint32 nTimeToShow = TIME_TO_SHOW;
-    qint32 nTimerDelay;
+    qint32 timeToShow = TIME_TO_SHOW;
+    qint32 timerDelay;
 
-    m_nIncrement = 2;
+    m_increment = 2;
 
-    if (bTaskbarOnRight)
+    if (isTaskbarOnRight)
     {
-        m_nStartPosX = rcDesktop.right();
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_RIGHT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = desktop.right();
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_RIGHT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskbarOnLeft)
+    else if (isTaskbarOnLeft)
     {
-        m_nStartPosX = rcDesktop.left() - width();
-        m_nStartPosY = rcDesktop.bottom() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_LEFT;
-        nTimerDelay = nTimeToShow / (width() / m_nIncrement);
+        m_startPosX = desktop.left() - width();
+        m_startPosY = desktop.bottom() - height();
+        m_taskbarPlacement = TASKBAR_ON_LEFT;
+        timerDelay = timeToShow / (width() / m_increment);
     }
-    else if (bTaskBarOnTop)
+    else if (isTaskBarOnTop)
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = rcDesktop.top() - height();
-        m_nTaskbarPlacement = TASKBAR_ON_TOP;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = desktop.top() - height();
+        m_taskbarPlacement = TASKBAR_ON_TOP;
+        timerDelay = timeToShow / (height() / m_increment);
     }
     else
     {
-        m_nStartPosX = rcDesktop.right() - width();
-        m_nStartPosY = rcDesktop.bottom();
-        m_nTaskbarPlacement = TASKBAR_ON_BOTTOM;
-        nTimerDelay = nTimeToShow / (height() / m_nIncrement);
+        m_startPosX = desktop.right() - width();
+        m_startPosY = desktop.bottom();
+        m_taskbarPlacement = TASKBAR_ON_BOTTOM;
+        timerDelay = timeToShow / (height() / m_increment);
     }
 
-    m_nCurrentPosX = m_nStartPosX;
-    m_nCurrentPosY = m_nStartPosY;
+    m_currentPosX = m_startPosX;
+    m_currentPosY = m_startPosY;
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 
-    m_bAppearing = true;
+    m_appearing = true;
 
-    m_timer.setInterval(nTimerDelay);
+    m_timer.setInterval(timerDelay);
     m_timer.start();
 }
 
@@ -127,7 +127,7 @@ void PopupHelloWindow::onPopupTimeout()
  */
 void PopupHelloWindow::startPopupWaitingTimer()
 {
-    m_bAppearing = false;
+    m_appearing = false;
 
     m_timer.stop();
 
@@ -145,7 +145,7 @@ void PopupHelloWindow::closeAndDestroy()
 
     m_timer.stop();
 
-    m_PopupHelloWindows.removeOne(this);
+    s_popupHelloWindows.removeOne(this);
 
     delete this;
 }
@@ -155,85 +155,80 @@ void PopupHelloWindow::closeAndDestroy()
  */
 void PopupHelloWindow::onTimer()
 {
-    if (m_bAppearing) // APPEARING
+    if (m_appearing)
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY>(m_nStartPosY-height()))
-                m_nCurrentPosY-=m_nIncrement;
+            if (m_currentPosY > (m_startPosY - height()))
+                m_currentPosY -= m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_TOP:
-            if ((m_nCurrentPosY-m_nStartPosY)<height())
-                m_nCurrentPosY+=m_nIncrement;
+            if ((m_currentPosY - m_startPosY) < height())
+                m_currentPosY += m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_LEFT:
-            if ((m_nCurrentPosX-m_nStartPosX)<width())
-                m_nCurrentPosX+=m_nIncrement;
+            if ((m_currentPosX - m_startPosX) < width())
+                m_currentPosX += m_increment;
             else
                 startPopupWaitingTimer();
             break;
         case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX>(m_nStartPosX-width()))
-                m_nCurrentPosX-=m_nIncrement;
+            if (m_currentPosX > (m_startPosX - width()))
+                m_currentPosX -= m_increment;
             else
                 startPopupWaitingTimer();
             break;
         }
     }
-
-    else // DISSAPPEARING
+    else
     {
-        switch (m_nTaskbarPlacement)
+        switch (m_taskbarPlacement)
         {
         case TASKBAR_ON_BOTTOM:
-            if (m_nCurrentPosY < m_nStartPosY)
-                m_nCurrentPosY += m_nIncrement;
+            if (m_currentPosY < m_startPosY)
+                m_currentPosY += m_increment;
             else
             {
                 closeAndDestroy();
-
                 return;
             }
             break;
         case TASKBAR_ON_TOP:
-            if (m_nCurrentPosY > m_nStartPosY)
-                m_nCurrentPosY -= m_nIncrement;
+            if (m_currentPosY > m_startPosY)
+                m_currentPosY -= m_increment;
             else
             {
                 closeAndDestroy();
-
                 return;
             }
             break;
         case TASKBAR_ON_LEFT:
-            if (m_nCurrentPosX > m_nStartPosX)
-                m_nCurrentPosX -= m_nIncrement;
+            if (m_currentPosX > m_startPosX)
+                m_currentPosX -= m_increment;
             else
             {
                 closeAndDestroy();
-
                 return;
             }
             break;
         case TASKBAR_ON_RIGHT:
-            if (m_nCurrentPosX < m_nStartPosX)
-                m_nCurrentPosX += m_nIncrement;
+            if (m_currentPosX < m_startPosX)
+                m_currentPosX += m_increment;
             else
             {
                 closeAndDestroy();
-
                 return;
             }
             break;
         }
     }
 
-    move(m_nCurrentPosX, m_nCurrentPosY);
+    move(m_currentPosX, m_currentPosY);
 }
 
 /**
@@ -257,7 +252,7 @@ void PopupHelloWindow::showInformationMessage(const QString& caption, const QStr
 
     popup->show();
 
-    m_PopupHelloWindows.append(popup);
+    s_popupHelloWindows.append(popup);
 }
 
 /**
@@ -265,10 +260,10 @@ void PopupHelloWindow::showInformationMessage(const QString& caption, const QStr
  */
 void PopupHelloWindow::closeAll()
 {
-    for (qint32 i = 0; i < m_PopupHelloWindows.size(); ++i)
-        m_PopupHelloWindows[i]->deleteLater();
+    for (qint32 i = 0; i < s_popupHelloWindows.size(); ++i)
+        s_popupHelloWindows[i]->deleteLater();
 
-    m_PopupHelloWindows.clear();
+    s_popupHelloWindows.clear();
 }
 
 /**
@@ -276,7 +271,7 @@ void PopupHelloWindow::closeAll()
  */
 void PopupHelloWindow::mousePressEvent(QMouseEvent*)
 {
-    m_bAppearing = false;
+    m_appearing = false;
 
     m_timer.start();
 }

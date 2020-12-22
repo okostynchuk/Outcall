@@ -15,7 +15,7 @@ public:
     void setParentTable(const QTableView* parentTable);
     QVariant data(const QModelIndex& index, qint32 role) const;
 
-    const QTableView* parentTable;
+    const QTableView* m_parentTable;
 };
 
 #endif // QSQLQUERYMODELREMINDERS_H

@@ -24,7 +24,7 @@ signals:
     void sendData(bool update, qint32 x, qint32 y);
 
 public slots:
-    void receiveOrgName(const QString& id, const QString& name);
+    void receiveOrg(const QString& id, const QString& name);
     void setPos(qint32 x, qint32 y);
 
 public:
@@ -53,22 +53,21 @@ private slots:
 private:
     Ui::EditContactDialog* ui;
 
-    QSqlDatabase db;
+    QSqlDatabase m_db;
 
-    QPointer<AddOrgToPerson> addOrgToPerson;
+    QPointer<AddOrgToPerson> m_addOrgToPerson;
 
-    QList<QLineEdit*> phonesList;
-    QMap<QString, QLineEdit*> employeesPhonesList;
+    QList<QLineEdit*> m_phones;
 
-    QStringList oldPhonesList;
-    QMap<QString, QString> oldPhonesEmployeesList;
+    QStringList m_oldPhones;
 
-    QValidator* validator;
+    QMap<QString, QLineEdit*> m_managers;
+    QMap<QString, QString> m_oldManagers;
 
-    QString contactId;
-    QString orgId;
+    QString m_contactId;
+    QString m_orgId;
 
-    QTextCursor textCursor;
+    QTextCursor m_textCursor;
 };
 
 #endif // EDITCONTACTDIALOG_H

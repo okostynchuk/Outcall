@@ -17,7 +17,7 @@ NotesDialog::NotesDialog(QWidget* parent) :
     ui->setupUi(this);
 
     QRegularExpression regExp("^[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
+    QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
     ui->comboBox_list->hide();
@@ -46,13 +46,13 @@ NotesDialog::~NotesDialog()
  */
 void NotesDialog::setValues(const QString& uniqueid, const QString& phone)
 {
-    callId = uniqueid;
+    m_callId = uniqueid;
 
-    this->phone = phone;
+    m_phone = phone;
 
-    go = "default";
+    m_go = "default";
 
-    page = "1";
+    m_page = "1";
 
     loadNotes();
 }
@@ -74,38 +74,38 @@ void NotesDialog::hideAddNote()
  */
 void NotesDialog::loadNotes()
 {
-    queryModel = new QSqlQueryModel(this);
+    m_queryModel = new QSqlQueryModel(this);
 
-    QSqlQuery queryCount(db);
+    QSqlQuery queryCount(m_db);
 
     QString queryString = "SELECT COUNT(*) FROM calls WHERE ";
 
-    if (phone.isEmpty())
-        queryString.append("uniqueid = '" + callId + "' ");
+    if (m_phone.isEmpty())
+        queryString.append("uniqueid = '" + m_callId + "' ");
     else
     {
-        if (isInternalPhone(&phone))
-            queryString.append("phone_number = '" + phone + "' AND author = '" + my_number +"'");
+        if (isInternalPhone(&m_phone))
+            queryString.append("phone_number = '" + m_phone + "' AND author = '" + my_number +"'");
         else
         {
-            QSqlQuery query(db);
+            QSqlQuery query(m_db);
 
-            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + phone + "')");
+            query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = (SELECT entry_id FROM entry_phone WHERE entry_phone = '" + m_phone + "')");
             query.exec();
 
             while (query.next())
-                numbersList.append(query.value(0).toString());
+                m_numbers.append(query.value(0).toString());
 
-            if (numbersList.isEmpty())
-                queryString.append("( phone_number = '" + phone + "'");
+            if (m_numbers.isEmpty())
+                queryString.append("( phone_number = '" + m_phone + "'");
             else
             {
-                for (qint32 i = 0; i < numbersList.size(); ++i)
+                for (qint32 i = 0; i < m_numbers.size(); ++i)
                 {
                     if (i == 0)
-                        queryString.append("( phone_number = '" + numbersList[i] + "'");
+                        queryString.append("( phone_number = '" + m_numbers[i] + "'");
                     else
-                        queryString.append(" OR phone_number = '" + numbersList[i] + "'");
+                        queryString.append(" OR phone_number = '" + m_numbers[i] + "'");
                 }
             }
 
@@ -135,25 +135,25 @@ void NotesDialog::loadNotes()
         pages = QString::number(count / ui->comboBox_list->currentText().toInt() + remainder);
     }
 
-    if (go == "previous" && page != "1")
-        page = QString::number(page.toInt() - 1);
-    else if (go == "previousStart" && page != "1")
-        page = "1";
-    else if (go == "next" && page.toInt() < pages.toInt())
-        page = QString::number(page.toInt() + 1);
-    else if (go == "next" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "nextEnd" && page.toInt() < pages.toInt())
-        page = pages;
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
-        page = ui->lineEdit_page->text();
-    else if (go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
-    else if (go == "default" && page.toInt() >= pages.toInt())
-        page = pages;
-    else if (go == "default" && page == "1")
-        page = "1";
+    if (m_go == "previous" && m_page != "1")
+        m_page = QString::number(m_page.toInt() - 1);
+    else if (m_go == "previousStart" && m_page != "1")
+        m_page = "1";
+    else if (m_go == "next" && m_page.toInt() < pages.toInt())
+        m_page = QString::number(m_page.toInt() + 1);
+    else if (m_go == "next" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "nextEnd" && m_page.toInt() < pages.toInt())
+        m_page = pages;
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > 0 && ui->lineEdit_page->text().toInt() <= pages.toInt())
+        m_page = ui->lineEdit_page->text();
+    else if (m_go == "enter" && ui->lineEdit_page->text().toInt() > pages.toInt()) {}
+    else if (m_go == "default" && m_page.toInt() >= pages.toInt())
+        m_page = pages;
+    else if (m_go == "default" && m_page == "1")
+        m_page = "1";
 
-    ui->lineEdit_page->setText(page);
+    ui->lineEdit_page->setText(m_page);
     ui->label_pages->setText(tr("из ") + pages);
 
     queryString.replace("COUNT(*)", "datetime, author, note");
@@ -168,23 +168,23 @@ void NotesDialog::loadNotes()
                                                 ui->comboBox_list->currentText().toInt()) + " , " +
                            QString::number(ui->comboBox_list->currentText().toInt()));
 
-    queryModel->setQuery(queryString);
+    m_queryModel->setQuery(queryString);
 
-    queryModel->setHeaderData(0, Qt::Horizontal, tr("Дата и время"));
-    queryModel->setHeaderData(1, Qt::Horizontal, tr("Автор"));
-    queryModel->insertColumn(2);
-    queryModel->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
+    m_queryModel->setHeaderData(0, Qt::Horizontal, tr("Дата и время"));
+    m_queryModel->setHeaderData(1, Qt::Horizontal, tr("Автор"));
+    m_queryModel->insertColumn(2);
+    m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Заметка"));
 
-    ui->tableView->setModel(queryModel);
+    ui->tableView->setModel(m_queryModel);
 
     for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(queryModel->data(queryModel->index(row_index, 3)).toString());
+        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(m_queryModel->data(m_queryModel->index(row_index, 3)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addWidgetNote(row_index, true));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 2), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(queryModel->index(row_index, 2), addWidgetNote(row_index, false));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 2), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(3, true);
@@ -203,7 +203,7 @@ void NotesDialog::loadNotes()
  */
 void NotesDialog::onSave()
 {
-    QSqlQuery query(db);
+    QSqlQuery query(m_db);
 
     QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     QString note = ui->textEdit->toPlainText().trimmed();
@@ -216,16 +216,16 @@ void NotesDialog::onSave()
     }
 
     query.prepare("INSERT INTO calls (uniqueid, datetime, note, author, phone_number) VALUES(?, ?, ?, ?, ?)");
-    query.addBindValue(callId);
+    query.addBindValue(m_callId);
     query.addBindValue(dateTime);
     query.addBindValue(note);
     query.addBindValue(my_number);
-    query.addBindValue(phone);
+    query.addBindValue(m_phone);
     query.exec();
 
     emit sendData();
 
-    go = "default";
+    m_go = "default";
 
     ui->textEdit->clear();
 
@@ -240,11 +240,11 @@ void NotesDialog::onSave()
  */
 void NotesDialog::onTextChanged()
 {
-    int m_maxDescriptionLength = 255;
+    qint32 maxTextLength = 255;
 
-    if (ui->textEdit->toPlainText().length() > m_maxDescriptionLength)
+    if (ui->textEdit->toPlainText().length() > maxTextLength)
     {
-        int diff = ui->textEdit->toPlainText().length() - m_maxDescriptionLength;
+        qint32 diff = ui->textEdit->toPlainText().length() - maxTextLength;
 
         QString newStr = ui->textEdit->toPlainText();
         newStr.chop(diff);
@@ -303,11 +303,11 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
 
     layout->addWidget(noteLabel);
 
-    QString note = queryModel->data(queryModel->index(row_index, 3)).toString();
+    QString note = m_queryModel->data(m_queryModel->index(row_index, 3)).toString();
 
     if (url)
     {
-        QRegularExpressionMatchIterator hrefIterator = hrefRegExp.globalMatch(note);
+        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(note);
         QStringList hrefs, hrefsNoCharacters, hrefsReplaceCharacters;
 
         note.replace("<", "&lt;").replace(">", "&gt;");
@@ -324,7 +324,7 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
 
         QStringList firstCharList, lastCharList;
 
-        for (int i = 0; i < hrefs.length(); ++i)
+        for (qint32 i = 0; i < hrefs.length(); ++i)
         {
             QString hrefReplaceCharacters = QString(hrefs.at(i)).replace("<", "&lt;").replace(">", "&gt;");
             hrefsReplaceCharacters << hrefReplaceCharacters;
@@ -372,7 +372,7 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
     noteLabel->setOpenExternalLinks(true);
     noteLabel->setWordWrap(true);
 
-    widgets.append(widget);
+    m_widgets.append(widget);
 
     return widget;
 }
@@ -382,14 +382,14 @@ QWidget* NotesDialog::addWidgetNote(qint32 row_index, bool url)
  */
 void NotesDialog::deleteObjects()
 {
-    if (!queryModel.isNull())
+    if (!m_queryModel.isNull())
     {
-        for (qint32 i = 0; i < widgets.size(); ++i)
-            widgets[i]->deleteLater();
+        for (qint32 i = 0; i < m_widgets.size(); ++i)
+            m_widgets[i]->deleteLater();
 
-        widgets.clear();
+        m_widgets.clear();
 
-        queryModel->deleteLater();
+        m_queryModel->deleteLater();
     }
 }
 
@@ -419,7 +419,7 @@ void NotesDialog::on_previousButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previous";
+    m_go = "previous";
 
     onUpdate();
 }
@@ -431,7 +431,7 @@ void NotesDialog::on_nextButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "next";
+    m_go = "next";
 
     onUpdate();
 }
@@ -443,7 +443,7 @@ void NotesDialog::on_previousStartButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "previousStart";
+    m_go = "previousStart";
 
     onUpdate();
 }
@@ -455,7 +455,7 @@ void NotesDialog::on_nextEndButton_clicked()
 {
     ui->tableView->scrollToTop();
 
-    go = "nextEnd";
+    m_go = "nextEnd";
 
     onUpdate();
 }
@@ -467,7 +467,7 @@ void NotesDialog::on_lineEdit_page_returnPressed()
 {
     ui->tableView->scrollToTop();
 
-    go = "enter";
+    m_go = "enter";
 
     onUpdate();
 }
