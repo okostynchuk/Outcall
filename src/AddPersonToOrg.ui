@@ -51,7 +51,10 @@
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
         <property name="verticalScrollMode">
-         <enum>QAbstractItemView::ScrollPerItem</enum>
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
         <property name="sortingEnabled">
          <bool>false</bool>

@@ -499,6 +499,9 @@
                 <property name="selectionMode">
                  <enum>QAbstractItemView::ContiguousSelection</enum>
                 </property>
+                <property name="verticalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerPixel</enum>
+                </property>
                 <property name="rootIsDecorated">
                  <bool>false</bool>
                 </property>
@@ -577,6 +580,9 @@
                  <widget class="QTreeWidget" name="treeWidget_2">
                   <property name="selectionMode">
                    <enum>QAbstractItemView::ContiguousSelection</enum>
+                  </property>
+                  <property name="verticalScrollMode">
+                   <enum>QAbstractItemView::ScrollPerPixel</enum>
                   </property>
                   <property name="rootIsDecorated">
                    <bool>false</bool>
