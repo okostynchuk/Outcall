@@ -30,7 +30,12 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 //               phonesList.append(lineEdit);
 //    }
 
+
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+
+    employeesPhonesList.insert("6203", ui->group_6203);
+    employeesPhonesList.insert("6204", ui->group_6204);
+    employeesPhonesList.insert("6207", ui->group_6207);
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     validator = new QRegularExpressionValidator(regExp, this);
@@ -42,9 +47,10 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
     validator = new QRegularExpressionValidator(regExp, this);
     ui->vyborId->setValidator(validator);
 
-    regExp.setPattern("^[0-9]{3,4}$");
+    regExp.setPattern("^[0-9]{3}$");
     validator = new QRegularExpressionValidator(regExp, this);
-    ui->employee->setValidator(validator);
+    foreach (QString key, employeesPhonesList.keys())
+        employeesPhonesList.value(key)->setValidator(validator);
 
     g_pAsteriskManager->groupNumbers.removeDuplicates();
 }
@@ -179,31 +185,31 @@ void AddContactDialog::onSave()
         return;
     }
 
-    bool invalid_employee = false;
+   // bool invalid_employee = false;
 
-    QString employee = ui->employee->text();
+   // QString employee = ui->employee->text();
 
-    if (!ui->employee->text().isEmpty())
-    {
-        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
-            ui->employee->setStyleSheet("border: 1px solid grey");
-        else
-        {
-            ui->employee->setStyleSheet("border: 1px solid red");
+//    if (!ui->employee->text().isEmpty())
+//    {
+//        if (g_pAsteriskManager->extensionNumbers.contains(employee) || g_pAsteriskManager->groupNumbers.contains(employee))
+//            ui->employee->setStyleSheet("border: 1px solid grey");
+//        else
+//        {
+//            ui->employee->setStyleSheet("border: 1px solid red");
 
-            invalid_employee = true;
-        }
-    }
+//            invalid_employee = true;
+//        }
+//    }
 
-    if (invalid_employee)
-    {
-        MsgBoxError(tr("Указанный номер не зарегистрирован!"));
+//    if (invalid_employee)
+//    {
+//        MsgBoxError(tr("Указанный номер не зарегистрирован!"));
 
-        return;
-    }
+//        return;
+//    }
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employee)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("person");
 
     if (ui->lastName->text().isEmpty())
@@ -224,7 +230,6 @@ void AddContactDialog::onSave()
     query.addBindValue(ui->email->text());
     query.addBindValue(ui->vyborId->text());
     query.addBindValue(ui->comment->toPlainText().trimmed());
-    query.addBindValue(ui->employee->text());
     query.exec();
 
     qint32 id = query.lastInsertId().toInt();
@@ -238,6 +243,19 @@ void AddContactDialog::onSave()
             query.addBindValue(phonesListRegExp.at(i));
             query.exec();
         }
+
+    foreach (QString key, employeesPhonesList.keys())
+    {
+        if (!employeesPhonesList.value(key)->text().isEmpty())
+        {
+            query.prepare("INSERT INTO managers (id_client, group_number, manager_number)"
+                           "VALUES(?, ?, ?)");
+            query.addBindValue(id);
+            query.addBindValue(key);
+            query.addBindValue(employeesPhonesList.value(key)->text());
+            query.exec();
+        }
+    }
 
     if (!addOrgToPerson.isNull())
         addOrgToPerson->close();

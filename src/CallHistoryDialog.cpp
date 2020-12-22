@@ -78,7 +78,7 @@ void CallHistoryDialog::closeEvent(QCloseEvent*)
 
     ui->comboBox_days->setCurrentIndex(0);
 
-    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget->setCurrentWidget(ui->tabWidget->findChild<QWidget*>(QString("allCalls")));
 
     clearSelections();
 
@@ -108,31 +108,31 @@ void CallHistoryDialog::loadCalls()
 
     QString queryString;
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
         queryString = "SELECT IF(src = '" + my_number + "', extfield2, extfield1), ";
-    else if (ui->tabWidget->currentIndex() == 3)
+    else if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
         queryString = "SELECT extfield2, ";
     else
         queryString = "SELECT extfield1, ";
 
     queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ ui->comboBox_days->currentText() +"' DAY) ");
 
-    if (ui->tabWidget->currentIndex() == 3)
+    if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
             queryString.append("AND src = '" + my_number + "' ");
     else
     {
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
             queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-        else if (ui->tabWidget->currentIndex() == 1)
+        else if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
-        else if (ui->tabWidget->currentIndex() == 2)
+        else if (ui->tabWidget->currentWidget()->objectName() == "answeredCalls")
             queryString.append("AND disposition = 'ANSWERED' ");
 
         queryString.append("AND ( ");
 
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
             queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
-        if (ui->tabWidget->currentIndex() == 1)
+        if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("dst = '" + my_group + "' OR ");
 
         queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "
@@ -163,12 +163,12 @@ void CallHistoryDialog::loadCalls()
 
     ui->tableView->setModel(queryModel);
 
-    if (ui->tabWidget->currentIndex() == 3)
+    if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
         ui->tableView->setColumnHidden(1, true);
 
     ui->tableView->setColumnHidden(3, true);
 
-    if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget->currentWidget()->objectName() == "missedCalls" || ui->tabWidget->currentWidget()->objectName() == "answeredCalls")
         ui->tableView->setColumnHidden(4, true);
 
     ui->tableView->setColumnHidden(7, true);
@@ -185,7 +185,7 @@ void CallHistoryDialog::loadCalls()
         if (extfield.isEmpty())
             ui->tableView->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
 
-        if (ui->tabWidget->currentIndex() == 0 || ui->tabWidget->currentIndex() == 3)
+        if (ui->tabWidget->currentWidget()->objectName() == "allCalls" || ui->tabWidget->currentWidget()->objectName() == "placedCalls")
             ui->tableView->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
         QSqlQuery query(db);
@@ -274,22 +274,22 @@ void CallHistoryDialog::updateCount()
 
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
-    if (ui->tabWidget->currentIndex() == 3)
+    if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
             queryString.append("AND src = '" + my_number + "' ");
     else
     {
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
             queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-        else if (ui->tabWidget->currentIndex() == 1)
+        else if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
-        else if (ui->tabWidget->currentIndex() == 2)
+        else if (ui->tabWidget->currentWidget()->objectName() == "answeredCalls")
             queryString.append("AND disposition = 'ANSWERED' ");
 
         queryString.append("AND ( ");
 
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
             queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
-        if (ui->tabWidget->currentIndex() == 1)
+        if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("dst = '" + my_group + "' OR ");
 
         queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "

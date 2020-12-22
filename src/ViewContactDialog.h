@@ -100,6 +100,8 @@ private:
 
     QList<QLineEdit*> phonesList;
     QList<QWidget*> widgets;
+
+    QMap<QString, QLineEdit*> employeesPhonesList;
 };
 
 #endif // VIEWCONTACTDIALOG_H

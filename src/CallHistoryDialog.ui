@@ -32,6 +32,12 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
        <widget class="QTabWidget" name="tabWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -41,22 +47,22 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="tab_1">
+        <widget class="QWidget" name="allCalls">
          <attribute name="title">
           <string>Все</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="tab_2">
+        <widget class="QWidget" name="missedCalls">
          <attribute name="title">
           <string>Пропущенные</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="tab_3">
+        <widget class="QWidget" name="answeredCalls">
          <attribute name="title">
           <string>Принятые</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="tab_4">
+        <widget class="QWidget" name="placedCalls">
          <attribute name="title">
           <string>Исходящие</string>
          </attribute>

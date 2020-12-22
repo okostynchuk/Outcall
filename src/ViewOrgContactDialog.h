@@ -113,6 +113,8 @@ private:
 
     QList<QLineEdit*> phonesList;
     QList<QWidget*> widgets;
+
+    QMap<QString, QLineEdit*> employeesPhonesList;
 };
 
 #endif // VIEWORGCONTACTDIALOG_H

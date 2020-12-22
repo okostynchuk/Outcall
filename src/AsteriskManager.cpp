@@ -271,7 +271,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
             const QString exten  = eventValues.value("Exten");
             const QString status = eventValues.value("Status");
 
-            if (eventValues.value("ActionID") == "getStateList")
+            if (eventValues.value("ActionID") == "StateList")
                 stateList.insert(exten, status);
             else
             {
@@ -522,7 +522,7 @@ void AsteriskManager::getExtensionsStateList()
 
     QString command;
     command = "Action: ExtensionStateList\r\n";
-    command += "ActionID: getStateList\r\n";
+    command += "ActionID: StateList\r\n";
 
     m_tcpSocket->write(command.toLatin1().data());
     m_tcpSocket->write("\r\n");

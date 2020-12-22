@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>420</height>
+    <width>541</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,13 @@
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout">
+     <item row="3" column="2">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Адрес:</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="3">
       <widget class="QLineEdit" name="city">
        <property name="minimumSize">
@@ -36,10 +43,10 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="label_10">
+     <item row="1" column="2" colspan="2">
+      <widget class="QLabel" name="label_14">
        <property name="text">
-        <string>Адрес:</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -50,32 +57,41 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="3">
-      <widget class="QLineEdit" name="employee">
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="secondNumber">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>20</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="2" colspan="2">
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string/>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
      </item>
-     <item row="6" column="2">
-      <widget class="QLabel" name="label">
+     <item row="5" column="2">
+      <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>Менеджер:</string>
+        <string>Email:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="secondNumber">
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="thirdNumber">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="fifthNumber">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -94,36 +110,10 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="2">
-      <widget class="QLabel" name="label_12">
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_11">
        <property name="text">
-        <string>Email:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="fifthNumber">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="thirdNumber">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
+        <string>VyborID:</string>
        </property>
       </widget>
      </item>
@@ -134,10 +124,10 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="label_11">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>VyborID:</string>
+        <string>Номера:</string>
        </property>
       </widget>
      </item>
@@ -154,13 +144,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0" colspan="2">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Номера:</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_18">
        <property name="text">
@@ -168,8 +151,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="3">
-      <widget class="QLineEdit" name="address">
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="fourthNumber">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -181,8 +164,28 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="fourthNumber">
+     <item row="5" column="3">
+      <widget class="QLineEdit" name="email">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Город:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="firstNumber">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -201,36 +204,46 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QLabel" name="label_9">
+     <item row="3" column="3">
+      <widget class="QLineEdit" name="address">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="QLineEdit" name="group_6203"/>
+     </item>
+     <item row="7" column="3">
+      <widget class="QLineEdit" name="group_6204"/>
+     </item>
+     <item row="8" column="3">
+      <widget class="QLineEdit" name="group_6207"/>
+     </item>
+     <item row="7" column="2">
+      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Город:</string>
+        <string>Регионы (6204)</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="3">
-      <widget class="QLineEdit" name="email">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
+     <item row="6" column="2">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Распил (6203)</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="firstNumber">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
+     <item row="8" column="2">
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>Call-center (6207)</string>
        </property>
       </widget>
      </item>
@@ -378,7 +391,9 @@
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
-  <tabstop>employee</tabstop>
+  <tabstop>group_6203</tabstop>
+  <tabstop>group_6204</tabstop>
+  <tabstop>group_6207</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>backButton</tabstop>

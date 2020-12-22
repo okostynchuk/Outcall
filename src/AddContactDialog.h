@@ -50,6 +50,7 @@ private:
     QPointer<AddOrgToPerson> addOrgToPerson;
 
     QList<QLineEdit*> phonesList;
+    QMap<QString, QLineEdit*> employeesPhonesList;
 
     QValidator* validator;
     QValidator* vyborIdValidator;

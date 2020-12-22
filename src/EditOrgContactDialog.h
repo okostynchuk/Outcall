@@ -47,8 +47,10 @@ private:
     QSqlDatabase db;
 
     QList<QLineEdit*> phonesList;
+    QMap<QString, QLineEdit*> employeesPhonesList;
 
     QStringList oldPhonesList;
+    QMap<QString, QString> oldPhonesEmployeesList;
 
     QValidator* validator;
 

@@ -26,8 +26,8 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     ui->tableView_2->verticalHeader()->setSectionsClickable(false);
     ui->tableView_2->horizontalHeader()->setSectionsClickable(false);
 
-    connect(ui->tabWidget,   &QTabWidget::currentChanged, this, &ViewOrgContactDialog::callTabSelected);
-    connect(ui->tabWidget_2, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
+    connect(ui->callsTabWidget, &QTabWidget::currentChanged, this, &ViewOrgContactDialog::callTabSelected);
+    connect(ui->mainTabWidget,  &QTabWidget::currentChanged, this, &ViewOrgContactDialog::tabSelected);
 
     connect(ui->comboBox_days,  &QComboBox::currentTextChanged, this, &ViewOrgContactDialog::onUpdate);
 
@@ -55,6 +55,10 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     ui->playAudioPhone->setDisabled(true);
 
     phonesList = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+
+    employeesPhonesList.insert("6203", ui->group_6203);
+    employeesPhonesList.insert("6204", ui->group_6204);
+    employeesPhonesList.insert("6207", ui->group_6207);
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -80,7 +84,13 @@ void ViewOrgContactDialog::setValues(const QString& id)
     for (qint32 i = 0; i < numbersList.length(); ++i)
         phonesList.at(i)->setText(numbersList.at(i));
 
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_employee FROM entry WHERE id = " + contactId);
+    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + contactId);
+    query.exec();
+
+    while (query.next())
+        employeesPhonesList.value(query.value(0).toString())->setText(query.value(1).toString());
+
+    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + contactId);
     query.exec();
     query.next();
 
@@ -101,8 +111,6 @@ void ViewOrgContactDialog::setValues(const QString& id)
     ui->vyborId->setText(query.value(4).toString());
     ui->comment->setText(query.value(5).toString());
 
-    ui->employee->setText(query.value(6).toString());
-
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
 }
@@ -112,9 +120,9 @@ void ViewOrgContactDialog::setValues(const QString& id)
  */
 void ViewOrgContactDialog::tabSelected()
 {
-    if (ui->tabWidget_2->currentIndex() == 1)
+    if (ui->mainTabWidget->currentWidget()->objectName() == "employees")
         loadEmployees();
-    else if (ui->tabWidget_2->currentIndex() == 2)
+    else if (ui->mainTabWidget->currentWidget()->objectName() == "calls")
     {
         page = "1";
 
@@ -230,7 +238,7 @@ void ViewOrgContactDialog::loadCalls()
 
     QString queryString;
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
     {
         queryString = "SELECT IF(";
 
@@ -244,39 +252,39 @@ void ViewOrgContactDialog::loadCalls()
 
         queryString.append(", extfield2, extfield1), ");
     }
-    else if (ui->tabWidget->currentIndex() == 3)
+    else if (ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
         queryString = "SELECT extfield1, ";
     else
         queryString = "SELECT extfield2, ";
 
     queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ");
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-    else if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
-    else if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         queryString.append("AND disposition = 'ANSWERED' ");
 
     queryString.append("AND ( ");
 
     for (qint32 i = 0; i < numbersList.length(); ++i)
     {
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
         }
-        else if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
+        else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls" || ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
         }
-        else if (ui->tabWidget->currentIndex() == 3)
+        else if (ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "'");
@@ -311,7 +319,7 @@ void ViewOrgContactDialog::loadCalls()
 
     ui->tableView_2->setColumnHidden(3,true);
 
-    if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
+    if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls" || ui->callsTabWidget->currentWidget()->objectName() == "anweredCalls")
         ui->tableView_2->setColumnHidden(4, true);
 
     ui->tableView_2->setColumnHidden(7, true);
@@ -328,7 +336,7 @@ void ViewOrgContactDialog::loadCalls()
         if (extfield.isEmpty())
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 0), loadName(src, dst));
 
-        if (ui->tabWidget->currentIndex() == 0 || ui->tabWidget->currentIndex() == 3)
+        if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls" || ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
             ui->tableView_2->setIndexWidget(queryModel->index(row_index, 4), loadStatus(dialogStatus));
 
         QSqlQuery query(db);
@@ -550,9 +558,9 @@ QWidget* ViewOrgContactDialog::loadName(const QString& src, const QString& dst)
  */
 void ViewOrgContactDialog::deleteObjects()
 {
-    if (ui->tabWidget_2->currentIndex() == 1 && !query_model.isNull())
+    if (ui->mainTabWidget->currentWidget()->objectName() == "employees" && !query_model.isNull())
         query_model->deleteLater();
-    else if (ui->tabWidget_2->currentIndex() == 2 && !queryModel.isNull())
+    else if (ui->mainTabWidget->currentWidget()->objectName() == "calls" && !queryModel.isNull())
     {
         for (qint32 i = 0; i < widgets.size(); ++i)
             widgets[i]->deleteLater();
@@ -612,32 +620,32 @@ void ViewOrgContactDialog::updateCount()
 
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-    else if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
         queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
-    else if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         queryString.append("AND disposition = 'ANSWERED' ");
 
     queryString.append("AND ( ");
 
     for (qint32 i = 0; i < numbersList.length(); ++i)
     {
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "' OR dst = '" + numbersList[i] + "'");
         }
-        else if (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2)
+        else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls" || ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         {
             if (i == 0)
                 queryString.append(" src = '" + numbersList[i] + "'");
             else
                 queryString.append(" OR src = '" + numbersList[i] + "'");
         }
-        else if (ui->tabWidget->currentIndex() == 3)
+        else if (ui->callsTabWidget->currentWidget()->objectName() == "placedCalls")
         {
             if (i == 0)
                 queryString.append(" dst = '" + numbersList[i] + "'");

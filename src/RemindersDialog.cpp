@@ -48,8 +48,6 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
 
     my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
-    ui->tabWidget->setCurrentIndex(0);
-
     resizeCells = true;
 
     go = "default";
@@ -177,7 +175,7 @@ void RemindersDialog::closeEvent(QCloseEvent*)
     verticalScrollBar = 0;
     horizontalScrollBar = 0;
 
-    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget->setCurrentWidget(ui->tabWidget->findChild<QWidget*>(QString("relevant")));
 
     go = "default";
 
@@ -345,11 +343,11 @@ void RemindersDialog::updateCount()
 
     QString queryString;
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->tabWidget->currentWidget()->objectName() == "relevant")
         queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = true";
-    if (ui->tabWidget->currentIndex() == 1)
+    if (ui->tabWidget->currentWidget()->objectName() == "irrelevant")
          queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = false";
-    if (ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget->currentWidget()->objectName() == "delegated")
          queryString = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END) reminders";
 
     query.exec(queryString);
@@ -408,11 +406,11 @@ void RemindersDialog::loadReminders()
 
     QString queryString = "SELECT id, phone_from, phone_to, datetime, content, active, viewed, completed, group_id FROM reminders WHERE ";
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->tabWidget->currentWidget()->objectName() == "relevant")
          queryString.append("phone_to = '" + my_number + "' AND active = true ");
-    else if (ui->tabWidget->currentIndex() == 1)
+    else if (ui->tabWidget->currentWidget()->objectName() == "irrelevant")
          queryString.append("phone_to = '" + my_number + "' AND active = false ");
-    else if (ui->tabWidget->currentIndex() == 2)
+    else if (ui->tabWidget->currentWidget()->objectName() == "delegated")
         queryString = "SELECT id, phone_from, IF(group_id IS NULL, phone_to, NULL), datetime, content, active, viewed, completed, group_id FROM reminders WHERE "
                                            "phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END";
 
@@ -445,7 +443,7 @@ void RemindersDialog::loadReminders()
 
     ui->tableView->setColumnHidden(0, true);
 
-    if (ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget->currentWidget()->objectName() == "delegated")
         ui->tableView->setColumnHidden(2, true);
     else
     {
@@ -463,7 +461,7 @@ void RemindersDialog::loadReminders()
 
     for (qint32 row_index = 0; row_index < ui->tableView->model()->rowCount(); ++row_index)
     {
-        if (ui->tabWidget->currentIndex() == 2)
+        if (ui->tabWidget->currentWidget()->objectName() == "delegated")
         {
             if (ui->tableView->model()->index(row_index, 3).data(Qt::EditRole).toString().isEmpty())
                 ui->tableView->setIndexWidget(queryModel->index(row_index, 3), addPushButtonGroup(row_index));
@@ -700,7 +698,7 @@ QWidget* RemindersDialog::addCheckBoxActive(qint32 row_index)
 
     QString group_id = queryModel->data(queryModel->index(row_index, 12), Qt::EditRole).toString();
 
-    if (ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget->currentWidget()->objectName() == "delegated")
     {
         if (group_id == "0")
         {
@@ -827,7 +825,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(qint32 row_index)
 
     QString group_id = queryModel->data(queryModel->index(row_index, 12), Qt::EditRole).toString();
 
-    if (ui->tabWidget->currentIndex() == 2)
+    if (ui->tabWidget->currentWidget()->objectName() == "delegated")
     {
 
 
@@ -893,7 +891,7 @@ void RemindersDialog::checkBoxStateChanged()
     if (column == "active")
         group_id = sender()->property("group_id").value<QString>();
 
-    if (!checkBox->isChecked() && dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentIndex() == 1 || ui->tabWidget->currentIndex() == 2) && column == "active")
+    if (!checkBox->isChecked() && dateTime < QDateTime::currentDateTime() && (ui->tabWidget->currentWidget()->objectName() == "irrelevant" || ui->tabWidget->currentWidget()->objectName() == "delegated") && column == "active")
     {
         checkBox->setChecked(false);
 
@@ -905,7 +903,7 @@ void RemindersDialog::checkBoxStateChanged()
     {
         QSqlQuery query(db);
 
-        if (ui->tabWidget->currentIndex() == 0)
+        if (ui->tabWidget->currentWidget()->objectName() == "relevant")
         {
             if (checkBox->isChecked() && column == "active")
             {
@@ -932,7 +930,7 @@ void RemindersDialog::checkBoxStateChanged()
                 emit reminders(false);
             }
         }
-        else if (ui->tabWidget->currentIndex() == 1)
+        else if (ui->tabWidget->currentWidget()->objectName() == "irrelevant")
         {
             if (!checkBox->isChecked() && column == "active")
             {
@@ -953,7 +951,7 @@ void RemindersDialog::checkBoxStateChanged()
                 resizeCells = false;
             }
         }
-        else if (ui->tabWidget->currentIndex() == 2)
+        else if (ui->tabWidget->currentWidget()->objectName() == "delegated")
         {
             if (checkBox->isChecked() && column == "active")
             {
@@ -1055,7 +1053,7 @@ void RemindersDialog::onUpdate()
 
     loadReminders();
 
-    if (ui->tabWidget->currentIndex() == 0)
+    if (ui->tabWidget->currentWidget()->objectName() == "relevant")
     {
         QSqlQuery query(db);
 
@@ -1084,7 +1082,7 @@ void RemindersDialog::onAddReminder()
  */
 void RemindersDialog::onEditReminder(const QModelIndex& index)
 {
-    if (ui->tabWidget->currentIndex() == 1 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
+    if (ui->tabWidget->currentWidget()->objectName() == "irrelevant" && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
         return;
 
     QString id = queryModel->data(queryModel->index(index.row(), 0), Qt::EditRole).toString();
@@ -1092,7 +1090,7 @@ void RemindersDialog::onEditReminder(const QModelIndex& index)
     QString note = queryModel->data(queryModel->index(index.row(), 5), Qt::EditRole).toString();
     QString group_id = queryModel->data(queryModel->index(index.row(), 12), Qt::EditRole).toString();
 
-    if (ui->tabWidget->currentIndex() == 0 && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
+    if (ui->tabWidget->currentWidget()->objectName() == "relevant" && queryModel->data(queryModel->index(index.row(), 2), Qt::EditRole).toString() != queryModel->data(queryModel->index(index.row(), 3), Qt::EditRole).toString())
     {
         QSqlQuery query(db);
 

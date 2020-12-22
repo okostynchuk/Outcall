@@ -38,19 +38,19 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="relevant">
       <attribute name="title">
        <string>Актуальные</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4"/>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="irrelevant">
       <attribute name="title">
        <string>Неактуальные</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3"/>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="delegated">
       <attribute name="title">
        <string>Делегированные</string>
       </attribute>

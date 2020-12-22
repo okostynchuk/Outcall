@@ -50,11 +50,15 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
         connect(g_pAsteriskManager, &AsteriskManager::extenStatusChanged, this, &InternalContactsDialog::onExtenStatusChanged);
     }
 
-    if (!ui->listWidget->currentItem()->isSelected())
-    {
-        ui->callButton->setDisabled(true);
-        ui->addReminderButton->setDisabled(true);
-    }
+    ui->callButton->setDisabled(true);
+    ui->addReminderButton->setDisabled(true);
+
+    if (ui->listWidget->currentItem())
+        if (ui->listWidget->currentItem()->isSelected())
+        {
+            ui->callButton->setDisabled(false);
+            ui->addReminderButton->setDisabled(false);
+        }
 }
 
 /**

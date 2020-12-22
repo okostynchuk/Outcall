@@ -31,7 +31,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_10">
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget_2">
+    <widget class="QTabWidget" name="mainTabWidget">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -44,7 +44,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="summary">
       <attribute name="title">
        <string>Резюме организации</string>
       </attribute>
@@ -260,15 +260,75 @@ background-color: #fffff8;
        </item>
        <item row="1" column="0">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="3" column="2">
-          <widget class="QLabel" name="label_10">
+         <item row="6" column="3">
+          <widget class="QLineEdit" name="group_6203">
+           <property name="styleSheet">
+            <string notr="true">*{
+background-color: #fffff8;
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QLineEdit" name="group_6207">
+           <property name="styleSheet">
+            <string notr="true">*{
+background-color: #fffff8;
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLabel" name="label">
            <property name="font">
             <font>
              <pointsize>10</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>Адрес:</string>
+            <string>Распил (6203)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="3">
+          <widget class="QLineEdit" name="group_6204">
+           <property name="styleSheet">
+            <string notr="true">*{
+background-color: #fffff8;
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Регионы (6204)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QLabel" name="label_4">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Регионы (6207)</string>
            </property>
           </widget>
          </item>
@@ -281,6 +341,30 @@ background-color: #fffff8;
            </property>
            <property name="readOnly">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="label_10">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Адрес:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="label_12">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Email:</string>
            </property>
           </widget>
          </item>
@@ -308,18 +392,6 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="5" column="2">
-          <widget class="QLabel" name="label_12">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Email:</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="3">
           <widget class="QLineEdit" name="city">
            <property name="styleSheet">
@@ -344,23 +416,8 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label_5">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Номера:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="3">
-          <widget class="QLineEdit" name="email">
-           <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
-           </property>
+         <item row="4" column="3">
+          <widget class="QLineEdit" name="vyborId">
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff8;
@@ -371,8 +428,11 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="4" column="3">
-          <widget class="QLineEdit" name="vyborId">
+         <item row="5" column="3">
+          <widget class="QLineEdit" name="email">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff8;
@@ -395,15 +455,15 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="secondNumber">
-           <property name="styleSheet">
-            <string notr="true">*{
-background-color: #fffff8;
-}</string>
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="label_5">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="text">
+            <string>Номера:</string>
            </property>
           </widget>
          </item>
@@ -419,8 +479,8 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="6" column="3">
-          <widget class="QLineEdit" name="employee">
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="secondNumber">
            <property name="styleSheet">
             <string notr="true">*{
 background-color: #fffff8;
@@ -440,6 +500,18 @@ background-color: #fffff8;
            </property>
            <property name="text">
             <string>3</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>2</string>
            </property>
           </widget>
          </item>
@@ -467,18 +539,6 @@ background-color: #fffff8;
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>2</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="firstNumber">
            <property name="styleSheet">
@@ -488,18 +548,6 @@ background-color: #fffff8;
            </property>
            <property name="readOnly">
             <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="2">
-          <widget class="QLabel" name="label_15">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Менеджер:</string>
            </property>
           </widget>
          </item>
@@ -553,7 +601,7 @@ background-color: #fffff0;
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="employees">
       <attribute name="title">
        <string>Сотрудники</string>
       </attribute>
@@ -792,7 +840,7 @@ background-color: #fffff0;
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="calls">
       <attribute name="title">
        <string>Журнал звонков</string>
       </attribute>
@@ -848,7 +896,7 @@ background-color: #fffff0;
         </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QTabWidget" name="tabWidget">
+        <widget class="QTabWidget" name="callsTabWidget">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -864,22 +912,22 @@ background-color: #fffff0;
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="tab_4">
+         <widget class="QWidget" name="allCalls">
           <attribute name="title">
            <string>Все звонки</string>
           </attribute>
          </widget>
-         <widget class="QWidget" name="tab_5">
+         <widget class="QWidget" name="missedCalls">
           <attribute name="title">
            <string>Пропущенные</string>
           </attribute>
          </widget>
-         <widget class="QWidget" name="tab_6">
+         <widget class="QWidget" name="answeredCalls">
           <attribute name="title">
            <string>Входящие</string>
           </attribute>
          </widget>
-         <widget class="QWidget" name="tab_7">
+         <widget class="QWidget" name="placedCalls">
           <attribute name="title">
            <string>Исходящие</string>
           </attribute>
@@ -1191,7 +1239,7 @@ background-color: #fffff0;
   </layout>
  </widget>
  <tabstops>
-  <tabstop>tabWidget_2</tabstop>
+  <tabstop>mainTabWidget</tabstop>
   <tabstop>orgName</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>openAccessButton</tabstop>
@@ -1206,14 +1254,13 @@ background-color: #fffff0;
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
-  <tabstop>employee</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>lineEdit</tabstop>
   <tabstop>searchButton</tabstop>
   <tabstop>addPersonToOrg</tabstop>
   <tabstop>comboBox_days</tabstop>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>callsTabWidget</tabstop>
   <tabstop>previousStartButton</tabstop>
   <tabstop>previousButton</tabstop>
   <tabstop>lineEdit_page</tabstop>
