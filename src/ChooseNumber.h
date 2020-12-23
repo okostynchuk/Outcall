@@ -43,8 +43,6 @@ private:
     QSqlDatabase m_db;
 
     QList<QLineEdit*> m_phones;
-
-    QString my_number;
 };
 
 #endif // CHOOSENUMBER_H

@@ -53,7 +53,6 @@ private:
 
     QStringList m_employee;
 
-    QString my_number;
     QString m_callId;
 };
 

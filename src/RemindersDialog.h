@@ -78,7 +78,6 @@ private:
 
     QTimer m_timer;
 
-    QString my_number;
     QString m_page;
     QString m_go;
 

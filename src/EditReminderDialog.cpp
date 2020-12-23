@@ -21,8 +21,6 @@ EditReminderDialog::EditReminderDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     connect(ui->textEdit, &QTextEdit::textChanged, this, &EditReminderDialog::onTextChanged);
     connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this, &EditReminderDialog::onCursorPosChanged);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditReminderDialog::onSave);
@@ -93,7 +91,7 @@ void EditReminderDialog::onSave()
     if (m_employee.isEmpty())
         m_employee = m_employeeInitial;
 
-    if (ui->chooseEmployeeButton->isHidden() && m_employee.first() == my_number && dateTime == m_oldDateTime && note == m_oldNote && m_employee == m_employeeInitial)
+    if (ui->chooseEmployeeButton->isHidden() && m_employee.first() == g_personalNumberName && dateTime == m_oldDateTime && note == m_oldNote && m_employee == m_employeeInitial)
     {
         MsgBoxError(tr("Для сохранения требуется внести изменения!"));
 
@@ -143,7 +141,7 @@ void EditReminderDialog::onSave()
             m_groupId = query.value(0).toString();
         }
 
-        if (ui->employee->text() != my_number)
+        if (ui->employee->text() != g_personalNumberName)
         {
             if (m_employee == m_employeeInitial)
             {
@@ -207,7 +205,7 @@ void EditReminderDialog::onSave()
                     else
                     {
                         query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
-                        query.addBindValue(my_number);
+                        query.addBindValue(g_personalNumberName);
                         query.addBindValue(m_employee.first());
                         query.addBindValue(dateTime);
                         query.addBindValue(note);
@@ -231,7 +229,7 @@ void EditReminderDialog::onSave()
                         {
                             query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
                             query.addBindValue(m_groupId);
-                            query.addBindValue(my_number);
+                            query.addBindValue(g_personalNumberName);
                             query.addBindValue(m_employee.at(i));
                             query.addBindValue(dateTime);
                             query.addBindValue(note);
@@ -335,7 +333,7 @@ void EditReminderDialog::setValues(const QString& id, const QString& groupId, co
 
         ui->employee->setText(phone_to);
 
-        if (phone_from != phone_to && phone_from != my_number)
+        if (phone_from != phone_to && phone_from != g_personalNumberName)
         {
             ui->chooseEmployeeButton->hide();
 
@@ -357,14 +355,14 @@ void EditReminderDialog::setValues(const QString& id, const QString& groupId, co
         query.exec();
         query.next();
 
-        if (query.value(0).toString() != my_number)
+        if (query.value(0).toString() != g_personalNumberName)
         {
             ui->chooseEmployeeButton->hide();
 
             ui->textEdit->setReadOnly(true);
             ui->textEdit->setStyleSheet("QTextEdit {background-color: #fffff0;}");
 
-            ui->employee->setText(my_number);
+            ui->employee->setText(g_personalNumberName);
         }
         else
             ui->employee->setText(tr("Группа") + " (" + QString::number(m_employeeInitial.length()) + ")");

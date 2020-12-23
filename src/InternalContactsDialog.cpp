@@ -18,9 +18,6 @@ InternalContactsDialog::InternalContactsDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     m_geometry = saveGeometry();
-
-    my_exten = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-    my_number = global::getExtensionNumber("extensions");
 }
 
 InternalContactsDialog::~InternalContactsDialog()
@@ -42,7 +39,7 @@ void InternalContactsDialog::showEvent(QShowEvent* event)
         m_extensions = g_asteriskManager->m_extensionNumbers.values();
 
         for (qint32 i = 0; i < m_extensions.count(); ++i)
-            if (m_extensions[i] == "" || m_extensions[i] == my_exten)
+            if (m_extensions[i] == "" || m_extensions[i] == g_personalNumberName)
                 m_extensions.removeAt(i);
 
         loadContacts();
@@ -110,7 +107,7 @@ void InternalContactsDialog::loadContacts()
 
 void InternalContactsDialog::onExtenStatusChanged(const QString& exten, const QString& state)
 {
-    if (exten != my_number)
+    if (exten != g_personalNumber)
     {
         if (state == "0")
             ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-idle.png"));
@@ -142,7 +139,7 @@ void InternalContactsDialog::keyPressEvent(QKeyEvent* event)
  */
 void InternalContactsDialog::on_callButton_clicked()
 {
-    QString from = my_number;
+    QString from = g_personalNumber;
     QString to = ui->listWidget->currentItem()->text().remove(QRegExp(" .+"));
     QString protocol = global::getSettingsValue(from, "extensions").toString();
 

@@ -57,8 +57,6 @@ private:
 
     QSqlQueryModel* m_queryModel;
 
-    QString my_number;
-
     QByteArray m_geometry;
 };
 

@@ -65,7 +65,6 @@ private:
     QStringList m_numbers;
 
     QString m_callId;
-    QString my_number;
     QString m_phone;
     QString m_page;
     QString m_go;

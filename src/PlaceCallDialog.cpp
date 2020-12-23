@@ -44,9 +44,7 @@ PlaceCallDialog::PlaceCallDialog(QWidget* parent) :
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
 
-    my_number = global::getExtensionNumber("extensions");
-
-    ui->number->setText(my_number);
+    ui->number->setText(g_personalNumber);
 }
 
 PlaceCallDialog::~PlaceCallDialog()
@@ -72,9 +70,9 @@ void PlaceCallDialog::showNumber(const QModelIndex& index)
         query.next();
 
         QString number = query.value(0).toString();
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-        g_asteriskManager->originateCall(my_number, number, protocol, my_number);
+        g_asteriskManager->originateCall(g_personalNumber, number, protocol, g_personalNumber);
 
         ui->phoneLine->setText(number);
     }
@@ -277,7 +275,7 @@ void PlaceCallDialog::onCallButton()
     if (!ui->phoneLine->text().isEmpty())
     {
         QString to = ui->phoneLine->text();
-        QString from = my_number;
+        QString from = g_personalNumber;
         QString protocol = global::getSettingsValue(from, "extensions").toString();
 
         g_asteriskManager->originateCall(from, to, protocol, from);

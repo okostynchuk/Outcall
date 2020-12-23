@@ -105,9 +105,9 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
             ui->callButton->setText(m_pri.name);
         }
     }
-    else if (query.value(0).toString() == NULL && query.value(1).toString() == m_pri.my_number)
+    else if (query.value(0).toString() == NULL && query.value(1).toString() == g_personalNumberName)
     {
-        m_pri.number = m_pri.my_number;
+        m_pri.number = g_personalNumberName;
 
         ui->callButton->hide();
         ui->openAccessButton->hide();
@@ -448,8 +448,6 @@ void PopupReminder::receiveData(bool update)
  */
 void PopupReminder::onCall()
 {
-    QString my_number = m_pri.my_number.remove(QRegularExpression(" .+"));
-
     if (!m_pri.numbers.isEmpty())
     {
         if (m_pri.numbers.length() > 1)
@@ -464,16 +462,16 @@ void PopupReminder::onCall()
         }
         else
         {
-            QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+            QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-            g_asteriskManager->originateCall(my_number, m_pri.numbers.at(0), protocol, my_number);
+            g_asteriskManager->originateCall(g_personalNumber, m_pri.numbers.at(0), protocol, g_personalNumber);
         }
     }
     else
     {
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-        g_asteriskManager->originateCall(my_number, m_pri.number, protocol, my_number);
+        g_asteriskManager->originateCall(g_personalNumber, m_pri.number, protocol, g_personalNumber);
     }
 }
 
@@ -623,7 +621,7 @@ void PopupReminder::onClosePopup()
 {
     QSqlQuery query(m_db);
 
-    if (m_pri.my_number == m_pri.number)
+    if (g_personalNumberName == m_pri.number)
     {
         query.prepare("UPDATE reminders SET active = false WHERE id = ?");
         query.addBindValue(m_pri.id);
@@ -662,12 +660,11 @@ void PopupReminder::closeAll()
 /**
  * Выполняет создание окна и отображение в нём полученной информации из класса RemindersDialog.
  */
-void PopupReminder::showReminder(RemindersDialog* remindersDialog, const QString& number, const QString& id, const QDateTime& dateTime, const QString& note)
+void PopupReminder::showReminder(RemindersDialog* remindersDialog, const QString& id, const QDateTime& dateTime, const QString& note)
 {
     PopupReminderInfo pri;
 
     pri.remindersDialog = remindersDialog;
-    pri.my_number = number;
     pri.id = id;
     pri.dateTime = dateTime;
     pri.note = note;

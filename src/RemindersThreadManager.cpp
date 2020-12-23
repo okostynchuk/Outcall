@@ -11,8 +11,6 @@
 
 RemindersThreadManager::RemindersThreadManager(const QList<QString>& ids, const QList<QDateTime>& dateTimes, const QList<QString>& notes)
 {
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     m_ids = ids;
     m_dateTimes = dateTimes;
     m_notes = notes;

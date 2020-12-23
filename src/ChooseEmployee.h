@@ -43,8 +43,6 @@ private:
 
     QStringList m_extensions;
     QStringList m_results;
-
-    QString my_number;
 };
 
 #endif // CHOOSEEMPLOYEE_H

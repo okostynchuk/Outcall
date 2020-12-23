@@ -11,6 +11,10 @@
 extern QString g_appDirPath;
 extern QString g_appSettingsFolderPath;
 
+extern QString g_personalNumber;
+extern QString g_personalNumberName;
+extern QString g_groupNumber;
+
 extern bool g_dbsOpened;
 extern bool g_ordersDbOpened;
 

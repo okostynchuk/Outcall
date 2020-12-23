@@ -16,8 +16,6 @@ ChooseNumber::ChooseNumber(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    my_number = global::getExtensionNumber("extensions");
-
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
     for (qint32 i = 0; i < m_phones.length(); ++i)
@@ -37,9 +35,9 @@ ChooseNumber::~ChooseNumber()
  */
 void ChooseNumber::onCall(const QString& number)
 {
-    QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+    QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-    g_asteriskManager->originateCall(my_number, number, protocol, my_number);
+    g_asteriskManager->originateCall(g_personalNumber, number, protocol, g_personalNumber);
 }
 
 /**

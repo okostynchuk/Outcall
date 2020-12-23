@@ -93,8 +93,6 @@ private:
 
     bool m_switch;    
     bool m_show_call_popup;
-
-    QString my_number;
 };
 
 #endif // OUTCALL_H

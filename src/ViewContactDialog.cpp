@@ -36,8 +36,6 @@ ViewContactDialog::ViewContactDialog(QWidget* parent) :
     connect(ui->tableView, &QAbstractItemView::clicked,       this, &ViewContactDialog::getData);
     connect(ui->tableView, &QAbstractItemView::doubleClicked, this, &ViewContactDialog::viewNotes);
 
-    my_number = global::getExtensionNumber("extensions");
-
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
@@ -150,9 +148,9 @@ void ViewContactDialog::onCall()
         query.next();
 
         QString number = query.value(0).toString();
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-        g_asteriskManager->originateCall(my_number, number, protocol, my_number);
+        g_asteriskManager->originateCall(g_personalNumber, number, protocol, g_personalNumber);
     }
     else
     {
@@ -773,9 +771,9 @@ void ViewContactDialog::onPlayAudioPhone()
 
     if (!m_recordpath.isEmpty())
     {
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
-        g_asteriskManager->originateAudio(my_number, protocol, m_recordpath);
+        g_asteriskManager->originateAudio(g_personalNumber, protocol, m_recordpath);
     }
 }
 

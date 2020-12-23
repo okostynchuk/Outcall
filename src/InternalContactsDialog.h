@@ -42,9 +42,6 @@ private:
 
     AddReminderDialog* m_addReminderDialog;
 
-    QString my_number;
-    QString my_exten;
-
     QStringList m_extensions;
 
     QByteArray m_geometry;

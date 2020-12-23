@@ -23,10 +23,7 @@ CallHistoryDialog::CallHistoryDialog(QWidget* parent) :
     QValidator* validator = new QRegularExpressionValidator(regExp, this);
     ui->lineEdit_page->setValidator(validator);
 
-    my_number = global::getExtensionNumber("extensions");
-    my_group = global::getGroupExtensionNumber("group_extensions");
-
-    setWindowTitle(tr("История звонков по номеру:") + " " + my_number);
+    setWindowTitle(tr("История звонков по номеру:") + " " + g_personalNumberName);
 
     ui->tableView->verticalHeader()->setSectionsClickable(false);
     ui->tableView->horizontalHeader()->setSectionsClickable(false);
@@ -109,7 +106,7 @@ void CallHistoryDialog::loadCalls()
     QString queryString;
 
     if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
-        queryString = "SELECT IF(src = '" + my_number + "', extfield2, extfield1), ";
+        queryString = "SELECT IF(src = '" + g_personalNumberName + "', extfield2, extfield1), ";
     else if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
         queryString = "SELECT extfield2, ";
     else
@@ -118,7 +115,7 @@ void CallHistoryDialog::loadCalls()
     queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '"+ ui->comboBox_days->currentText() +"' DAY) ");
 
     if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
-            queryString.append("AND src = '" + my_number + "' ");
+            queryString.append("AND src = '" + g_personalNumberName + "' ");
     else
     {
         if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
@@ -131,13 +128,13 @@ void CallHistoryDialog::loadCalls()
         queryString.append("AND ( ");
 
         if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
-            queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
+            queryString.append("dst = '" + g_groupNumber + "' OR src = '" + g_personalNumberName + "' OR ");
         if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
-            queryString.append("dst = '" + my_group + "' OR ");
+            queryString.append("dst = '" + g_groupNumber + "' OR ");
 
-        queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "
-                                                    "OR dst REGEXP '^" + my_number + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                                                 "'^" + my_number + "[(][a-z]+ [0-9]+[(]" + my_number + "[)][)]$') ");
+        queryString.append("dst = '" + g_personalNumberName + "' OR dst REGEXP '^[0-9]+[(]" + g_personalNumberName + "[)]$' "
+                                                    "OR dst REGEXP '^" + g_personalNumberName + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                                                 "'^" + g_personalNumberName + "[(][a-z]+ [0-9]+[(]" + g_personalNumberName + "[)][)]$') ");
     }
 
     queryString.append("ORDER BY datetime DESC LIMIT ");
@@ -275,7 +272,7 @@ void CallHistoryDialog::updateCount()
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
     if (ui->tabWidget->currentWidget()->objectName() == "placedCalls")
-            queryString.append("AND src = '" + my_number + "' ");
+            queryString.append("AND src = '" + g_personalNumberName + "' ");
     else
     {
         if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
@@ -288,13 +285,13 @@ void CallHistoryDialog::updateCount()
         queryString.append("AND ( ");
 
         if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
-            queryString.append("dst = '" + my_group + "' OR src = '" + my_number + "' OR ");
+            queryString.append("dst = '" + g_groupNumber + "' OR src = '" + g_personalNumberName + "' OR ");
         if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
-            queryString.append("dst = '" + my_group + "' OR ");
+            queryString.append("dst = '" + g_groupNumber + "' OR ");
 
-        queryString.append("dst = '" + my_number + "' OR dst REGEXP '^[0-9]+[(]" + my_number + "[)]$' "
-                                                    "OR dst REGEXP '^" + my_number + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                                                 "'^" + my_number + "[(][a-z]+ [0-9]+[(]" + my_number + "[)][)]$') ");
+        queryString.append("dst = '" + g_personalNumberName + "' OR dst REGEXP '^[0-9]+[(]" + g_personalNumberName + "[)]$' "
+                                                    "OR dst REGEXP '^" + g_personalNumberName + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
+                                                                                 "'^" + g_personalNumberName + "[(][a-z]+ [0-9]+[(]" + g_personalNumberName + "[)][)]$') ");
     }
 
     query.prepare(queryString);
@@ -334,7 +331,7 @@ void CallHistoryDialog::getData(const QModelIndex& index)
 
     m_number = m_queryModel->data(m_queryModel->index(index.row(), 1)).toString();
 
-    if (m_number == my_number)
+    if (m_number == g_personalNumberName)
     {
         m_number = m_queryModel->data(m_queryModel->index(index.row(), 2)).toString();
         m_number.remove(QRegularExpression("[(][a-z]+ [0-9]+[)]"));
@@ -398,7 +395,7 @@ QWidget* CallHistoryDialog::loadName(const QString& src, const QString& dst)
     QHBoxLayout* layout = new QHBoxLayout(widget);
     QLabel* nameLabel = new QLabel(widget);
 
-    if (src == my_number)
+    if (src == g_personalNumberName)
         nameLabel->setText(dst);
     else
         nameLabel->setText(src);
@@ -556,7 +553,7 @@ void CallHistoryDialog::onCallClicked()
         return;
     }
 
-    QString from = my_number;
+    QString from = g_personalNumberName;
     QString to = m_number;
     QString protocol = global::getSettingsValue(from, "extensions").toString();
 
@@ -733,9 +730,9 @@ void CallHistoryDialog::onPlayAudioPhone()
 
     if (!m_recordpath.isEmpty())
     {
-        QString protocol = global::getSettingsValue(my_number, "extensions").toString();
+        QString protocol = global::getSettingsValue(g_personalNumberName, "extensions").toString();
 
-        g_asteriskManager->originateAudio(my_number, protocol, m_recordpath);
+        g_asteriskManager->originateAudio(g_personalNumberName, protocol, m_recordpath);
     }
 }
 

@@ -58,7 +58,6 @@ private:
     QStringList m_employeeInitial;
     QStringList m_employee;
 
-    QString my_number;
     QString m_id;
     QString m_groupId;
     QString m_oldNote;

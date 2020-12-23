@@ -46,8 +46,6 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     resizeCells = true;
 
     m_go = "default";
@@ -57,7 +55,7 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
     QSqlQuery query(m_db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     m_oldActiveReminders = 0;
@@ -66,8 +64,8 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
         m_oldActiveReminders = query.value(0).toInt();
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false ORDER BY id DESC");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     m_oldReceivedReminders = 0;
@@ -79,7 +77,7 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
     QList<QDateTime> dateTimes;
     QList<QString> notes;
 
-    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + g_personalNumberName + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
     query.exec();
 
     while (query.next())
@@ -148,8 +146,8 @@ void RemindersDialog::showEvent(QShowEvent* event)
     QSqlQuery query(m_db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     emit reminders(false);
@@ -209,8 +207,8 @@ void RemindersDialog::onTimer()
     QSqlQuery query(m_db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false ORDER BY id DESC");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     qint32 newReceivedReminders = 0;
@@ -221,8 +219,8 @@ void RemindersDialog::onTimer()
     if (newReceivedReminders > m_oldReceivedReminders)
     {
         query.prepare("SELECT id, phone_from, content FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false ORDER BY id DESC LIMIT 0,?");
-        query.addBindValue(my_number);
-        query.addBindValue(my_number);
+        query.addBindValue(g_personalNumberName);
+        query.addBindValue(g_personalNumberName);
         query.addBindValue(newReceivedReminders - m_oldReceivedReminders);
         query.exec();
 
@@ -237,7 +235,7 @@ void RemindersDialog::onTimer()
     else
     {
         query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
-        query.addBindValue(my_number);
+        query.addBindValue(g_personalNumberName);
         query.exec();
 
         qint32 newActiveReminders = 0;
@@ -291,7 +289,7 @@ void RemindersDialog::sendValues()
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + my_number + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + g_personalNumberName + "' AND datetime > '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
     query.exec();
 
     while (query.next())
@@ -318,7 +316,7 @@ void RemindersDialog::receiveData(bool update)
         QSqlQuery query(m_db);
 
         query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
-        query.addBindValue(my_number);
+        query.addBindValue(g_personalNumberName);
         query.exec();
 
         qint32 newActiveReminders = 0;
@@ -344,11 +342,11 @@ void RemindersDialog::updateCount()
     QString queryString;
 
     if (ui->tabWidget->currentWidget()->objectName() == "relevant")
-        queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = true";
+        queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + g_personalNumberName + "' AND active = true";
     if (ui->tabWidget->currentWidget()->objectName() == "irrelevant")
-         queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + my_number + "' AND active = false";
+         queryString = "SELECT COUNT(*) FROM reminders WHERE phone_to = '" + g_personalNumberName + "' AND active = false";
     if (ui->tabWidget->currentWidget()->objectName() == "delegated")
-         queryString = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM reminders WHERE phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END) reminders";
+         queryString = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM reminders WHERE phone_from = '" + g_personalNumberName + "' AND phone_to <> '" + g_personalNumberName + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END) reminders";
 
     query.exec(queryString);
     query.first();
@@ -407,12 +405,12 @@ void RemindersDialog::loadReminders()
     QString queryString = "SELECT id, phone_from, phone_to, datetime, content, active, viewed, completed, group_id FROM reminders WHERE ";
 
     if (ui->tabWidget->currentWidget()->objectName() == "relevant")
-         queryString.append("phone_to = '" + my_number + "' AND active = true ");
+         queryString.append("phone_to = '" + g_personalNumberName + "' AND active = true ");
     else if (ui->tabWidget->currentWidget()->objectName() == "irrelevant")
-         queryString.append("phone_to = '" + my_number + "' AND active = false ");
+         queryString.append("phone_to = '" + g_personalNumberName + "' AND active = false ");
     else if (ui->tabWidget->currentWidget()->objectName() == "delegated")
         queryString = "SELECT id, phone_from, IF(group_id IS NULL, phone_to, NULL), datetime, content, active, viewed, completed, group_id FROM reminders WHERE "
-                                           "phone_from = '" + my_number + "' AND phone_to <> '" + my_number + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END";
+                                           "phone_from = '" + g_personalNumberName + "' AND phone_to <> '" + g_personalNumberName + "' GROUP BY CASE WHEN group_id IS NOT NULL THEN group_id ELSE id END";
 
     queryString.append(" ORDER BY datetime DESC LIMIT ");
 
@@ -779,7 +777,7 @@ QWidget* RemindersDialog::addCheckBoxViewed(qint32 row_index)
         checkBox->setChecked(true);
 
         while (query.next())
-            if (query.value(0).toBool() == false && query.value(1).toString() != my_number)
+            if (query.value(0).toBool() == false && query.value(1).toString() != g_personalNumberName)
                 checkBox->setChecked(false);
     }
 
@@ -847,7 +845,7 @@ QWidget* RemindersDialog::addCheckBoxCompleted(qint32 row_index)
             checkBox->setChecked(true);
 
             while (query.next())
-                if (query.value(0).toBool() == false && query.value(1).toString() != my_number)
+                if (query.value(0).toBool() == false && query.value(1).toString() != g_personalNumberName)
                     checkBox->setChecked(false);
         }
     }
@@ -1058,8 +1056,8 @@ void RemindersDialog::onUpdate()
         QSqlQuery query(m_db);
 
         query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ? AND active = true");
-        query.addBindValue(my_number);
-        query.addBindValue(my_number);
+        query.addBindValue(g_personalNumberName);
+        query.addBindValue(g_personalNumberName);
         query.exec();
 
         emit reminders(false);
@@ -1114,7 +1112,7 @@ void RemindersDialog::onEditReminder(const QModelIndex& index)
 void RemindersDialog::onNotify(const QString& id, const QDateTime& dateTime, const QString& note)
 {
     if (m_showReminder)
-        PopupReminder::showReminder(this, my_number, id, dateTime, note);
+        PopupReminder::showReminder(this, id, dateTime, note);
 }
 
 /**

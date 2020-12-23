@@ -29,7 +29,6 @@ private:
         RemindersDialog* remindersDialog;
 
         QString text;
-        QString my_number;
         QString name;
         QString number;
         QStringList numbers;
@@ -47,7 +46,7 @@ public:
     PopupReminder(const PopupReminderInfo& pri, QWidget* parent = 0);
     ~PopupReminder();
 
-    static void showReminder(RemindersDialog* remindersDialog, const QString& number, const QString& id, const QDateTime& dateTime, const QString& note);
+    static void showReminder(RemindersDialog* remindersDialog, const QString& id, const QDateTime& dateTime, const QString& note);
     static void closeAll();
 
 private slots:

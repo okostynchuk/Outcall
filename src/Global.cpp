@@ -9,6 +9,10 @@
 QString g_appDirPath = "";
 QString g_appSettingsFolderPath = "";
 
+QString g_personalNumber = global::getExtensionNumber("extensions");
+QString g_personalNumberName = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+QString g_groupNumber = global::getGroupExtensionNumber("group_extensions");
+
 bool g_dbsOpened = false;
 bool g_ordersDbOpened = false;
 

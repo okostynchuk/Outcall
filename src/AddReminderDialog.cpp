@@ -15,13 +15,11 @@ AddReminderDialog::AddReminderDialog(QWidget* parent) :
     ui->setupUi(this);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
+    setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);    
 
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+    m_employee.append(g_personalNumberName);
 
-    m_employee.append(my_number);
-
-    ui->employee->setText(my_number);
+    ui->employee->setText(g_personalNumberName);
 
     QString language = global::getSettingsValue("language", "settings").toString();
 
@@ -108,10 +106,10 @@ void AddReminderDialog::onSave()
 
     if (m_callId.isEmpty())
     {
-        if (ui->employee->text() != my_number)
+        if (ui->employee->text() != g_personalNumberName)
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, false, false, true)");
-            query.addBindValue(my_number);
+            query.addBindValue(g_personalNumberName);
             query.addBindValue(m_employee.first());
             query.addBindValue(dateTime);
             query.addBindValue(note);
@@ -130,7 +128,7 @@ void AddReminderDialog::onSave()
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);
-                    query.addBindValue(my_number);
+                    query.addBindValue(g_personalNumberName);
                     query.addBindValue(m_employee.at(i));
                     query.addBindValue(dateTime);
                     query.addBindValue(note);
@@ -141,7 +139,7 @@ void AddReminderDialog::onSave()
         else
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, active) VALUES(?, ?, ?, ?, true)");
-            query.addBindValue(my_number);
+            query.addBindValue(g_personalNumberName);
             query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
@@ -150,10 +148,10 @@ void AddReminderDialog::onSave()
     }
     else
     {
-        if (ui->employee->text() != my_number)
+        if (ui->employee->text() != g_personalNumberName)
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, false, false, true)");
-            query.addBindValue(my_number);
+            query.addBindValue(g_personalNumberName);
             query.addBindValue(m_employee.first());
             query.addBindValue(dateTime);
             query.addBindValue(note);
@@ -173,7 +171,7 @@ void AddReminderDialog::onSave()
                 {
                     query.prepare("INSERT INTO reminders (group_id, phone_from, phone_to, datetime, content, call_id, viewed, completed, active) VALUES(?, ?, ?, ?, ?, ?, false, false, true)");
                     query.addBindValue(id);
-                    query.addBindValue(my_number);
+                    query.addBindValue(g_personalNumberName);
                     query.addBindValue(m_employee.at(i));
                     query.addBindValue(dateTime);
                     query.addBindValue(note);
@@ -185,7 +183,7 @@ void AddReminderDialog::onSave()
         else
         {
             query.prepare("INSERT INTO reminders (phone_from, phone_to, datetime, content, call_id, active) VALUES(?, ?, ?, ?, ?, true)");
-            query.addBindValue(my_number);
+            query.addBindValue(g_personalNumberName);
             query.addBindValue(ui->employee->text());
             query.addBindValue(dateTime);
             query.addBindValue(note);
@@ -201,7 +199,7 @@ void AddReminderDialog::onSave()
 
     close();
 
-    if (ui->employee->text() != my_number)
+    if (ui->employee->text() != g_personalNumberName)
         MsgBoxInformation(tr("Напоминание успешно отправлено!"));
     else
         MsgBoxInformation(tr("Напоминание успешно добавлено!"));

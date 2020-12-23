@@ -44,14 +44,12 @@ Outcall::Outcall() :
     connect(g_asteriskManager, &AsteriskManager::callReceived,         this, &Outcall::onCallReceived);
     connect(g_asteriskManager, &AsteriskManager::error,                this, &Outcall::displayError);
     connect(g_asteriskManager, &AsteriskManager::stateChanged,         this, &Outcall::onStateChanged);
-    connect(&m_timer,           &QTimer::timeout,                       this, &Outcall::changeIcon);
+    connect(&m_timer,          &QTimer::timeout,                       this, &Outcall::changeIcon);
 
     connect(m_remindersDialog, &RemindersDialog::reminders, this, &Outcall::changeIconReminders);
     connect(m_settingsDialog, &SettingsDialog::restart, this, &Outcall::hideTrayIcon);
 
     connect(this, &Outcall::showReminders, m_remindersDialog, &RemindersDialog::showReminders);
-
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 
     m_show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
 
@@ -229,13 +227,12 @@ void Outcall::onCallReceived(const QMap<QString, QVariant>& call)
     QString from            = call.value("from").toString();
     QString callerIdName    = call.value("callerIdName").toString();
     QString uniqueid        = call.value("uniqueid").toString();
-    QString my_number       = call.value("to").toString();
 
     if (from == callerIdName)
         callerIdName = tr("Неизвестный");
 
     if (m_show_call_popup)
-        PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName), my_number);
+        PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName));
 }
 
 /**
@@ -329,6 +326,9 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
 
         m_timer.stop();
     }
+
+    if (g_personalNumber.isEmpty())
+        disableActions();
 }
 
 /**
@@ -373,8 +373,8 @@ void Outcall::changeIconReminders(bool change)
     QSqlQuery query(m_db);
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_from <> ? AND phone_to = ? AND active = true AND viewed = false");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     qint32 receivedReminders = 0;
@@ -383,7 +383,7 @@ void Outcall::changeIconReminders(bool change)
         receivedReminders = query.value(0).toInt();
 
     query.prepare("SELECT COUNT(*) FROM reminders WHERE phone_to = ? AND active = true");
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     qint32 activeReminders = 0;
@@ -534,8 +534,8 @@ void Outcall::onRemindersDialog()
     QSqlQuery query(m_db);
 
     query.prepare("UPDATE reminders SET viewed = true WHERE phone_from <> ? AND phone_to = ?");
-    query.addBindValue(my_number);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
+    query.addBindValue(g_personalNumberName);
     query.exec();
 
     emit m_remindersDialog->reminders(false);

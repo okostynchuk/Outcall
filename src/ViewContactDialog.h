@@ -83,7 +83,6 @@ private:
 
     QString m_recordpath;
     QString m_contactId;
-    QString my_number;
     QString m_go;
     QString m_page;
 

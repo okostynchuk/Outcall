@@ -94,8 +94,6 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
     connect(ui->addReminderButton,    &QAbstractButton::clicked, this, &PopupWindow::onAddReminder);
     connect(ui->addPhoneNumberButton, &QAbstractButton::clicked, this, &PopupWindow::onAddPhoneNumberToContact);
 
-    author = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     QString note;
 
     query.prepare("SELECT note FROM calls WHERE uniqueid = " + m_pwi.uniqueid);
@@ -378,14 +376,13 @@ void PopupWindow::onTimer()
 /**
  * Реализация появления окна оповещения о звонке.
  */
-void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number)
+void PopupWindow::showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller)
 {
     PopupWindowInfo pwi;
 
     pwi.text = caller;
     pwi.uniqueid = uniqueid;
     pwi.number = number;
-    pwi.my_number = my_number;
 
     QPixmap avatar;
 
@@ -688,7 +685,7 @@ void PopupWindow::onSaveNote()
     query.addBindValue(m_pwi.uniqueid);
     query.addBindValue(dateTime);
     query.addBindValue(ui->textEdit->toPlainText().trimmed());
-    query.addBindValue(author);
+    query.addBindValue(g_personalNumberName);
     query.addBindValue(m_pwi.number);
     query.exec();
 

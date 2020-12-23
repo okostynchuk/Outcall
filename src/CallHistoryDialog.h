@@ -93,8 +93,6 @@ private:
     QString m_recordpath;
     QString m_go;
     QString m_number;
-    QString my_number;
-    QString my_group;
     QString m_page;
 
     qint32 m_countRecords;

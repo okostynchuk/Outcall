@@ -22,8 +22,6 @@ NotesDialog::NotesDialog(QWidget* parent) :
 
     ui->comboBox_list->hide();
 
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     connect(ui->textEdit,     &QTextEdit::textChanged,   this, &NotesDialog::onTextChanged);
     connect(ui->saveButton,   &QAbstractButton::clicked, this, &NotesDialog::onSave);
     connect(ui->updateButton, &QAbstractButton::clicked, this, &NotesDialog::onUpdate);
@@ -85,7 +83,7 @@ void NotesDialog::loadNotes()
     else
     {
         if (isInternalPhone(&m_phone))
-            queryString.append("phone_number = '" + m_phone + "' AND author = '" + my_number +"'");
+            queryString.append("phone_number = '" + m_phone + "' AND author = '" + g_personalNumberName +"'");
         else
         {
             QSqlQuery query(m_db);
@@ -109,7 +107,7 @@ void NotesDialog::loadNotes()
                 }
             }
 
-            queryString.append(") AND author = '" + my_number + "'");
+            queryString.append(") AND author = '" + g_personalNumberName + "'");
         }
     }
 
@@ -219,7 +217,7 @@ void NotesDialog::onSave()
     query.addBindValue(m_callId);
     query.addBindValue(dateTime);
     query.addBindValue(note);
-    query.addBindValue(my_number);
+    query.addBindValue(g_personalNumberName);
     query.addBindValue(m_phone);
     query.exec();
 

@@ -13,11 +13,9 @@ ChooseEmployee::ChooseEmployee(QWidget* parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    my_number = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-
     m_extensions = g_asteriskManager->m_extensionNumbers.values();
 
-    m_extensions.removeAll(my_number);
+    m_extensions.removeAll(g_personalNumberName);
     m_extensions.removeOne("");
 
     ui->listWidget->addItems(m_extensions);
@@ -153,7 +151,7 @@ void ChooseEmployee::onSearch()
  */
 void ChooseEmployee::setValues(QStringList& employee)
 {
-    employee.removeAll(my_number);
+    employee.removeAll(g_personalNumberName);
 
     ui->listWidget_2->addItems(employee);
     ui->listWidget_2->sortItems(Qt::AscendingOrder);
@@ -171,7 +169,7 @@ void ChooseEmployee::on_applyButton_clicked()
     QStringList employee;
 
     if (ui->listWidget_2->count() == 0)
-        employee << my_number;
+        employee << g_personalNumberName;
     else
         for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
             employee << ui->listWidget_2->item(i)->text();
@@ -193,7 +191,7 @@ void ChooseEmployee::keyPressEvent(QKeyEvent* event)
         QStringList employee;
 
         if (ui->listWidget_2->count() == 0)
-            employee << my_number;
+            employee << g_personalNumberName;
         else
             for (qint32 i = 0; i < ui->listWidget_2->count(); ++i)
                 employee << ui->listWidget_2->item(i)->text();

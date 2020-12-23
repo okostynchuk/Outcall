@@ -37,7 +37,6 @@ private:
         QString text;
         QString uniqueid;
         QString number;
-        QString my_number;
 
         QPixmap avatar;
 
@@ -48,7 +47,7 @@ public:
     PopupWindow(const PopupWindowInfo& pwi, QWidget* parent = 0);
     ~PopupWindow();
 
-    static void showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller, const QString& my_number);
+    static void showCall(const QString& dateTime, const QString& uniqueid, const QString& number, const QString& caller);
     static void closeAll();
 
 private slots:
@@ -97,8 +96,6 @@ private:
     QPoint m_position;
 
     QTextCursor m_textCursor;
-
-    QString author;
 
     qint32 m_startPosX;
     qint32 m_startPosY;

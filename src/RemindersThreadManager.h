@@ -27,8 +27,6 @@ private:
     QList<QString> m_ids;
     QList<QDateTime> m_dateTimes;
     QList<QString> m_notes;
-
-    QString my_number;
 };
 
 #endif // REMINDERSTHREADMANAGER_H
