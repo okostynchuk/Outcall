@@ -309,7 +309,7 @@ void PopupWindow::closeAndDestroy()
 
     s_popupWindows.removeOne(this);
 
-    delete this;
+    this->deleteLater();
 }
 
 /**

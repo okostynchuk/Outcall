@@ -91,8 +91,8 @@ private:
 
     QTimer m_timer;
 
-    bool m_switch;    
-    bool m_show_call_popup;
+    bool m_switch;
+    bool m_showCallPopup;
 };
 
 #endif // OUTCALL_H

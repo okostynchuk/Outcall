@@ -51,7 +51,7 @@ Outcall::Outcall() :
 
     connect(this, &Outcall::showReminders, m_remindersDialog, &RemindersDialog::showReminders);
 
-    m_show_call_popup = global::getSettingsValue("show_call_popup", "general", true).toBool();
+    m_showCallPopup = global::getSettingsValue("show_call_popup", "general", true).toBool();
 
     createContextMenu();
 
@@ -231,7 +231,7 @@ void Outcall::onCallReceived(const QMap<QString, QVariant>& call)
     if (from == callerIdName)
         callerIdName = tr("Неизвестный");
 
-    if (m_show_call_popup)
+    if (m_showCallPopup)
         PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName));
 }
 

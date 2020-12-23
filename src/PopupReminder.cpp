@@ -212,7 +212,7 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     connect(&m_timer, &QTimer::timeout, this, &PopupReminder::onTimer);
     connect(ui->okButton, &QAbstractButton::clicked, this, &PopupReminder::onClosePopup);
     connect(ui->openAccessButton, &QAbstractButton::clicked, this, &PopupReminder::onOpenAccess);
-    connect(ui->comboBox,  static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
+    connect(ui->comboBox, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &PopupReminder::onSelectTime);
 
     quint32 desktopHeight;
     quint32 desktopWidth;
@@ -295,7 +295,7 @@ void PopupReminder::closeAndDestroy()
 
     s_popupReminders.removeOne(this);
 
-    delete this;
+    this->deleteLater();
 }
 
 /**
@@ -436,7 +436,7 @@ void PopupReminder::receiveData(bool update)
     if (update)
     {
         emit m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeCells = false;
+        m_pri.remindersDialog->m_resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
         closeAndDestroy();
@@ -503,7 +503,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.exec();
 
         emit m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeCells = false;
+        m_pri.remindersDialog->m_resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
         if (!m_editReminderDialog.isNull())
@@ -518,7 +518,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.exec();
 
         emit m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeCells = false;
+        m_pri.remindersDialog->m_resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
         if (!m_editReminderDialog.isNull())
@@ -533,7 +533,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.exec();
 
         emit m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeCells = false;
+        m_pri.remindersDialog->m_resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
         if (!m_editReminderDialog.isNull())
@@ -548,7 +548,7 @@ void PopupReminder::onSelectTime(qint32 index)
         query.exec();
 
         emit m_pri.remindersDialog->reminders(false);
-        m_pri.remindersDialog->resizeCells = false;
+        m_pri.remindersDialog->m_resizeCells = false;
         m_pri.remindersDialog->loadReminders();
 
         if (!m_editReminderDialog.isNull())
@@ -636,7 +636,7 @@ void PopupReminder::onClosePopup()
 
     emit m_pri.remindersDialog->reminders(false);
 
-    m_pri.remindersDialog->resizeCells = false;
+    m_pri.remindersDialog->m_resizeCells = false;
     m_pri.remindersDialog->loadReminders();
 
     if (!m_editReminderDialog.isNull())

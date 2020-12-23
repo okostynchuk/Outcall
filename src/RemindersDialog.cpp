@@ -46,7 +46,7 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
 
     ui->comboBox_list->setVisible(false);
 
-    resizeCells = true;
+    m_resizeCells = true;
 
     m_go = "default";
 
@@ -152,7 +152,7 @@ void RemindersDialog::showEvent(QShowEvent* event)
 
     emit reminders(false);
 
-    resizeCells = false;
+    m_resizeCells = false;
 
     m_go = "default";
 
@@ -244,9 +244,9 @@ void RemindersDialog::onTimer()
             newActiveReminders = query.value(0).toInt();
 
         if (newActiveReminders > m_oldActiveReminders)
-            resizeCells = true;
+            m_resizeCells = true;
         else
-            resizeCells = false;
+            m_resizeCells = false;
 
         m_oldActiveReminders = newActiveReminders;
     }
@@ -490,7 +490,7 @@ void RemindersDialog::loadReminders()
             ui->tableView->setIndexWidget(m_queryModel->index(row_index, 9), addWidgetContent(row_index, false));
     }
 
-    if (resizeCells)
+    if (m_resizeCells)
     {
         ui->tableView->resizeRowsToContents();
         ui->tableView->resizeColumnsToContents();
@@ -516,7 +516,7 @@ void RemindersDialog::loadReminders()
         m_horizontalScrollBar = 0;
     }
 
-    resizeCells = true;
+    m_resizeCells = true;
 
     emit reminders(false);
 }
@@ -893,7 +893,7 @@ void RemindersDialog::checkBoxStateChanged()
     {
         checkBox->setChecked(false);
 
-        resizeCells = false;
+        m_resizeCells = false;
 
         MsgBoxError(tr("Указано прошедшее время!"));
     }
@@ -911,7 +911,7 @@ void RemindersDialog::checkBoxStateChanged()
                 query.addBindValue(id);
                 query.exec();
 
-                resizeCells = true;
+                m_resizeCells = true;
 
                 emit reminders(false);
             }
@@ -923,7 +923,7 @@ void RemindersDialog::checkBoxStateChanged()
                 query.addBindValue(id);
                 query.exec();
 
-                resizeCells = true;
+                m_resizeCells = true;
 
                 emit reminders(false);
             }
@@ -938,7 +938,7 @@ void RemindersDialog::checkBoxStateChanged()
                 query.addBindValue(id);
                 query.exec();
 
-                resizeCells = true;
+                m_resizeCells = true;
 
                 emit reminders(false);
             }
@@ -946,7 +946,7 @@ void RemindersDialog::checkBoxStateChanged()
             {
                 checkBox->setChecked(true);
 
-                resizeCells = false;
+                m_resizeCells = false;
             }
         }
         else if (ui->tabWidget->currentWidget()->objectName() == "delegated")
@@ -968,7 +968,7 @@ void RemindersDialog::checkBoxStateChanged()
                     query.exec();
                 }
 
-                resizeCells = false;
+                m_resizeCells = false;
 
                 emit reminders(false);
             }
@@ -989,7 +989,7 @@ void RemindersDialog::checkBoxStateChanged()
                     query.exec();
                 }
 
-                resizeCells = false;
+                m_resizeCells = false;
 
                 emit reminders(false);
             }
@@ -997,25 +997,25 @@ void RemindersDialog::checkBoxStateChanged()
             {
                 checkBox->setChecked(true);
 
-                resizeCells = false;
+                m_resizeCells = false;
             }
             else if (!checkBox->isChecked() && column == "completed")
             {
                 checkBox->setChecked(false);
 
-                resizeCells = false;
+                m_resizeCells = false;
             }
             else if (checkBox->isChecked() && column == "viewed")
             {
                 checkBox->setChecked(true);
 
-                resizeCells = false;
+                m_resizeCells = false;
             }
             else if (!checkBox->isChecked() && column == "viewed")
             {
                 checkBox->setChecked(false);
 
-                resizeCells = false;
+                m_resizeCells = false;
             }
         }
     }

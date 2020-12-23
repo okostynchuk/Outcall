@@ -35,7 +35,7 @@ public:
     explicit RemindersDialog(QWidget* parent = 0);
     ~RemindersDialog();
 
-    bool resizeCells;
+    bool m_resizeCells;
 
 private slots:
     void onTimer();
