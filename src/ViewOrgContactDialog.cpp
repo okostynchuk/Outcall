@@ -924,8 +924,8 @@ void ViewOrgContactDialog::receiveDataOrg(bool update, qint32 x, qint32 y)
 {
     qint32 desktopHeight;
     qint32 desktopWidth;
-    qint32 nWidgetHeight = QWidget::height();
-    qint32 nWidgetWidth = QWidget::width();
+    qint32 widgetHeight = QWidget::height();
+    qint32 widgetWidth = QWidget::width();
 
     QDesktopWidget desktopWidget;
     QRect desktop = desktopWidget.availableGeometry(this);
@@ -941,31 +941,31 @@ void ViewOrgContactDialog::receiveDataOrg(bool update, qint32 x, qint32 y)
     }
     else
     {
-        if (x < 0 && (desktopHeight - y) > nWidgetHeight)
+        if (x < 0 && (desktopHeight - y) > widgetHeight)
         {
             x = 0;
             this->move(x, y);
         }
-        else if (x < 0 && ((desktopHeight - y) < nWidgetHeight))
+        else if (x < 0 && ((desktopHeight - y) < widgetHeight))
         {
             x = 0;
-            y = nWidgetHeight;
+            y = widgetHeight;
             this->move(x, y);
         }
-        else if ((desktopWidth - x) < nWidgetWidth && (desktopHeight - y) > nWidgetHeight)
+        else if ((desktopWidth - x) < widgetWidth && (desktopHeight - y) > widgetHeight)
         {
-            x = nWidgetWidth * 0.9;
+            x = widgetWidth * 0.9;
             this->move(x, y);
         }
-        else if ((desktopWidth - x) < nWidgetWidth && ((desktopHeight - y) < nWidgetHeight))
+        else if ((desktopWidth - x) < widgetWidth && ((desktopHeight - y) < widgetHeight))
         {
-            x = nWidgetWidth * 0.9;
-            y = nWidgetHeight * 0.9;
+            x = widgetWidth * 0.9;
+            y = widgetHeight * 0.9;
             this->move(x, y);
         }
-        else if (x > 0 && ((desktopHeight - y) < nWidgetHeight))
+        else if (x > 0 && ((desktopHeight - y) < widgetHeight))
         {
-            y = nWidgetHeight * 0.9;
+            y = widgetHeight * 0.9;
             this->move(x, y);
         }
         else

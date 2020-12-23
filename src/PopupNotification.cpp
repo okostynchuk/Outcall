@@ -319,7 +319,7 @@ void PopupNotification::closeAndDestroy()
 
     s_popupNotifications.removeOne(this);
 
-    delete this;
+    this->deleteLater();
 }
 
 /**

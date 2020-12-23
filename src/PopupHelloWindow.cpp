@@ -147,7 +147,7 @@ void PopupHelloWindow::closeAndDestroy()
 
     s_popupHelloWindows.removeOne(this);
 
-    delete this;
+    this->deleteLater();
 }
 
 /**
