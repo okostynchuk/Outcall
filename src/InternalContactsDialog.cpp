@@ -88,16 +88,7 @@ void InternalContactsDialog::loadContacts()
     {
         QString state = m_states.value(ui->listWidget->item(i)->text().remove(3, ui->listWidget->item(i)->text().length()));
 
-        if (state == "0")
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-idle.png"));
-        else if (state == "1" || state == "2" || state == "8" ||state == "9")
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-busy.png"));
-        else if (state == "4")
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-unavial.png"));
-        else if (state == "-2" || state == "-1")
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-dnd.png"));
-        else if (state == "16" || state == "17")
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/presence-hold.png"));
+        setIcon(i, state);
     }
 
     if (m_indexes.isEmpty())
@@ -108,18 +99,25 @@ void InternalContactsDialog::loadContacts()
 void InternalContactsDialog::onExtenStatusChanged(const QString& exten, const QString& state)
 {
     if (exten != g_personalNumber)
-    {
-        if (state == "0")
-            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-idle.png"));
-        else if (state == "1" || state == "2" || state == "8" ||state == "9")
-            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-busy.png"));
-        else if (state == "4")
-            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-unavial.png"));
-        else if (state == "-2" || state == "-1")
-            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-dnd.png"));
-        else if (state == "16" || state == "17")
-            ui->listWidget->item(m_indexes.value(exten))->setIcon(QIcon(":/images/presence-hold.png"));
-    }
+        setIcon(qint32(m_indexes.value(exten)), state);
+}
+
+void InternalContactsDialog::setIcon(qint32 index, QString state)
+{
+    QString path;
+
+    if (state == "0")
+        path = ":/images/presence-idle.png";
+    else if (state == "1" || state == "2" || state == "8" ||state == "9")
+        path = ":/images/presence-busy.png";
+    else if (state == "4")
+        path = ":/images/presence-unavial.png";
+    else if (state == "-2" || state == "-1")
+        path = ":/images/presence-dnd.png";
+    else if (state == "16" || state == "17")
+        path = ":/images/presence-hold.png";
+
+    ui->listWidget->item(index)->setIcon(QIcon(path));
 }
 
 /**

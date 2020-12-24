@@ -345,7 +345,7 @@ void PopupNotification::showReminderNotification(RemindersDialog* remindersDialo
     pni.number = number;
     pni.note = note;
 
-    pni.text = "<b> " + pni.note + " </b>";
+    pni.text = pni.note;
 
     PopupNotification* notification = new PopupNotification(pni);
 

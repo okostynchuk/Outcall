@@ -198,7 +198,7 @@ void AddOrgContactDialog::onSave()
 //    }
 
     query.prepare("INSERT INTO entry (entry_type, entry_name, entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);

@@ -32,7 +32,7 @@ private slots:
     void on_callButton_clicked();
     void on_addReminderButton_clicked();
     void on_listWidget_clicked();
-
+    void setIcon(qint32 index, QString state);
     void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
     void keyPressEvent(QKeyEvent* event);
