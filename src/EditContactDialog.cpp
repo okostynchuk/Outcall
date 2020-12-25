@@ -33,19 +33,15 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
     m_managers.insert("6207", ui->group_6207);
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
-    QValidator* validator = new QRegularExpressionValidator(regExp, this);
-
     for (qint32 i = 0; i < m_phones.length(); ++i)
-        m_phones.at(i)->setValidator(validator);
+        m_phones.at(i)->setValidator(new QRegularExpressionValidator(regExp, this));
 
     regExp.setPattern("^[0-9]*$");
-    validator = new QRegularExpressionValidator(regExp, this);
-    ui->vyborId->setValidator(validator);
+    ui->vyborId->setValidator(new QRegularExpressionValidator(regExp, this));
 
     regExp.setPattern("^[0-9]{3}$");
-    validator = new QRegularExpressionValidator(regExp, this);
     foreach (QString key, m_managers.keys())
-        m_managers.value(key)->setValidator(validator);
+        m_managers.value(key)->setValidator(new QRegularExpressionValidator(regExp, this));
 
     g_asteriskManager->m_groupNumbers.removeDuplicates();
 }

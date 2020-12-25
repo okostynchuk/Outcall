@@ -239,7 +239,7 @@ void PopupHelloWindow::showInformationMessage(const QString& caption, const QStr
     PopupHelloWindowInfo phwi;
 
     if (caption != "")
-        phwi.text = tr("<b>%1</b><br>%2").arg(caption).arg(message);
+        phwi.text = tr("<b>%1</b><br>%2").arg(caption, message);
     else
         phwi.text = message;
 

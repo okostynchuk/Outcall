@@ -5,17 +5,17 @@
 #include "Updater.h"
 #include "QSimpleUpdater.h"
 
-static QList<QString> URLS;
-static QList<Updater*> UPDATERS;
+static QList<QString> s_urls;
+static QList<Updater*> s_updaters;
 
 QSimpleUpdater::~QSimpleUpdater()
 {
-    URLS.clear();
+    s_urls.clear();
 
-    foreach (Updater* updater, UPDATERS)
+    foreach (Updater* updater, s_updaters)
         updater->deleteLater();
 
-    UPDATERS.clear();
+    s_updaters.clear();
 }
 
 /**
@@ -369,18 +369,18 @@ void QSimpleUpdater::setMandatoryUpdate(const QString& url,
  */
 Updater* QSimpleUpdater::getUpdater(const QString& url) const
 {
-    if (!URLS.contains(url))
+    if (!s_urls.contains(url))
     {
         Updater* updater = new Updater;
         updater->setUrl(url);
 
-        URLS.append(url);
-        UPDATERS.append(updater);
+        s_urls.append(url);
+        s_updaters.append(updater);
 
         connect(updater, &Updater::checkingFinished, this, &QSimpleUpdater::checkingFinished);
         connect(updater, &Updater::downloadFinished, this, &QSimpleUpdater::downloadFinished);
         connect(updater, &Updater::appcastDownloaded, this, &QSimpleUpdater::appcastDownloaded);
     }
 
-    return UPDATERS.at(URLS.indexOf(url));
+    return s_updaters.at(s_urls.indexOf(url));
 }

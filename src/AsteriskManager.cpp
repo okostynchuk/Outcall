@@ -15,8 +15,6 @@
 #include <QDebug>
 #include <QRegularExpressionValidator>
 
-AsteriskManager* g_asteriskManager = nullptr;
-
 AsteriskManager::AsteriskManager(const QString& username, const QString& secret, QObject* parent)
     : QObject(parent),
       m_isSignedIn(false),
@@ -28,7 +26,11 @@ AsteriskManager::AsteriskManager(const QString& username, const QString& secret,
 
     m_tcpSocket = new QTcpSocket(this);
 
-    void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::error;
+    #if QT_VERSION > QT_VERSION_CHECK(5, 6, 3)
+        void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::errorOccurred;
+    #else
+        void (QAbstractSocket:: *sig)(QAbstractSocket::SocketError) = &QAbstractSocket::error;
+    #endif
 
     connect(m_tcpSocket, &QIODevice::readyRead,       this, &AsteriskManager::read);
     connect(m_tcpSocket, &QAbstractSocket::connected, this, &AsteriskManager::login);

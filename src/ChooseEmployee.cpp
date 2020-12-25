@@ -203,12 +203,12 @@ void ChooseEmployee::keyPressEvent(QKeyEvent* event)
     else if (event->key() == Qt::Key_Left)
     {
         if (ui->listWidget_2->hasFocus())
-            ui->listWidget_2->QListWidget::itemClicked(ui->listWidget_2->currentItem());
+            emit ui->listWidget_2->QListWidget::itemClicked(ui->listWidget_2->currentItem());
     }
     else if (event->key() == Qt::Key_Right)
     {
         if (ui->listWidget->hasFocus())
-            ui->listWidget->QListWidget::itemClicked(ui->listWidget->currentItem());
+            emit ui->listWidget->QListWidget::itemClicked(ui->listWidget->currentItem());
     }
     else if (event->key() == Qt::Key_Escape)
         QDialog::close();

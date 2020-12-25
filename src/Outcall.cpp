@@ -81,43 +81,41 @@ Outcall::~Outcall()
  */
 void Outcall::createContextMenu()
 {
-    // Exit action
-    QAction* exitAction = new QAction(tr("Выход"), m_menu);
-    connect(exitAction, &QAction::triggered, this, &Outcall::close);
+    // Place a call
+    m_placeCall = new QAction(tr("Позвонить"), m_menu);
+    connect(m_placeCall, &QAction::triggered, this, &Outcall::onPlaceCall);
 
-    // Sign In
-    m_signIn  = new QAction(tr("Войти в аккаунт"), m_menu);
-    connect(m_signIn, &QAction::triggered, this, &Outcall::signInOut);
-
-    // Settings
-    QAction* settingsAction = new QAction(tr("Настройки"), m_menu);
-    connect(settingsAction, &QAction::triggered, this, &Outcall::onSettingsDialog);
-
-    QAction* debugInfoAction = new QAction(tr("Отладка"), m_menu);
-    connect(debugInfoAction, &QAction::triggered, this, &Outcall::onDebugInfo);
+    // Call history
+    m_callHistoryAction = new QAction(tr("История звонков"), m_menu);
+    connect(m_callHistoryAction, &QAction::triggered, this, &Outcall::onCallHistory);
 
     // Contacts
     m_contactsAction = new QAction(tr("Контакты"), m_menu);
     connect(m_contactsAction, &QAction::triggered, this, &Outcall::onContactsDialog);
 
-    // Internal Contacts
+    // Internal contacts
     m_internalContactsAction = new QAction(tr("Внутренние"), m_menu);
     connect(m_internalContactsAction, &QAction::triggered, this, &Outcall::onInternalContactsDialog);
-
-    // Call History
-    m_callHistoryAction = new QAction(tr("История звонков"), m_menu);
-    connect(m_callHistoryAction, &QAction::triggered, this, &Outcall::onCallHistory);
 
     // Reminders
     m_remindersAction = new QAction(tr("Напоминания"), m_menu);
     connect(m_remindersAction, &QAction::triggered, this, &Outcall::onRemindersDialog);
 
-    // Place a Call
-    m_placeCall = new QAction(tr("Позвонить"), 0);
-    QFont font = m_placeCall->font();
-    font.setBold(true);
-    m_placeCall->setFont(font);
-    connect(m_placeCall, &QAction::triggered, this, &Outcall::onPlaceCall);
+    // Settings
+    QAction* settingsAction = new QAction(tr("Настройки"), m_menu);
+    connect(settingsAction, &QAction::triggered, this, &Outcall::onSettingsDialog);
+
+    // Debug info
+    QAction* debugInfoAction = new QAction(tr("Отладка"), m_menu);
+    connect(debugInfoAction, &QAction::triggered, this, &Outcall::onDebugInfo);
+
+    // Sign in / sign out
+    m_signIn  = new QAction(tr("Войти в аккаунт"), m_menu);
+    connect(m_signIn, &QAction::triggered, this, &Outcall::signInOut);
+
+    // Exit action
+    QAction* exitAction = new QAction(tr("Выйти из") + " " + QApplication::applicationDisplayName(), m_menu);
+    connect(exitAction, &QAction::triggered, this, &Outcall::close);
 
     // Add actions
     m_menu->addSeparator();
@@ -232,7 +230,7 @@ void Outcall::onCallReceived(const QMap<QString, QVariant>& call)
         callerIdName = tr("Неизвестный");
 
     if (m_showCallPopup)
-        PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from).arg(callerIdName));
+        PopupWindow::showCall(dateTime, uniqueid, from, QString("<b style='color:white'>%1</b><br><b>%2</b>").arg(from, callerIdName));
 }
 
 /**
@@ -246,7 +244,7 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
         QSqlDatabase::database("Calls").open();
 
         if (!QSqlDatabase::database().isOpen() || !QSqlDatabase::database("Calls").isOpen())
-            g_dbsOpened = false;
+            g_mainDbsOpened = false;
 
         m_signIn->setText(tr("Выйти из аккаунта"));
 
@@ -255,7 +253,7 @@ void Outcall::onStateChanged(const AsteriskManager::AsteriskState& state)
 
         m_timer.stop();
 
-        if (!g_dbsOpened)
+        if (!g_mainDbsOpened)
         {
             m_systemTrayIcon->hide();
 
@@ -569,7 +567,7 @@ void Outcall::onActivated(const QSystemTrayIcon::ActivationReason& reason)
     }
     else if (reason == QSystemTrayIcon::DoubleClick)
     {
-        if (g_dbsOpened && g_asteriskManager->m_currentState == AsteriskManager::CONNECTED)
+        if (g_mainDbsOpened && g_asteriskManager->m_currentState == AsteriskManager::CONNECTED)
             showDialog(m_placeCallDialog);
     }
 }

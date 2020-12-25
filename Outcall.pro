@@ -5,19 +5,17 @@ QT += network
 QT += widgets
 QT += multimedia
 
-include ($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
+include($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
 VERSION = 1.0.0
 
 QMAKE_TARGET_PRODUCT = Outcall
 QMAKE_TARGET_COMPANY = Team Nonames
 
-win32
-{
+win32 {
    RC_ICONS = $$PWD/src/images/outcall-logo.ico
 }
-win32-g++
-{
+win32-g++ {
    QMAKE_CXXFLAGS += -Werror
 }
 

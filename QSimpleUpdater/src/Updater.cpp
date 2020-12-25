@@ -417,7 +417,7 @@ void Updater::setUpdateAvailable(const bool available)
             text = tr("Хотите скачать обновление сейчас (это обязательное обновление)? Приложение будет перезапущено!");
         }    
 
-        QString title = "<h3>" + tr("Версия %1 %2 была выпущена!").arg(latestVersion()).arg(moduleName()) + "</h3>";
+        QString title = "<h3>" + tr("Версия %1 %2 была выпущена!").arg(latestVersion(), moduleName()) + "</h3>";
 
         QString logChanges = tr("Список изменений:");
 

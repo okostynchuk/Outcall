@@ -96,6 +96,4 @@ private:
     QTimer m_timer;
 };
 
-extern AsteriskManager* g_asteriskManager;
-
 #endif // ASTERISKMANAGER_H

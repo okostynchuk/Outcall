@@ -1,22 +1,23 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define APP_NAME            "Outcall"
-#define ORGANIZATION_NAME   "Team Nonames"
-#define APP_VERSION         "1.0.0"
+#include "AsteriskManager.h"
 
 #include <QVariant>
 #include <QMessageBox>
 
-extern QString g_appDirPath;
-extern QString g_appSettingsFolderPath;
+#define APP_NAME            "Outcall"
+#define ORGANIZATION_NAME   "Team Nonames"
+#define APP_VERSION         "1.0.0"
 
-extern QString g_personalNumber;
-extern QString g_personalNumberName;
-extern QString g_groupNumber;
+extern AsteriskManager* g_asteriskManager;
 
-extern bool g_dbsOpened;
+extern bool g_mainDbsOpened;
 extern bool g_ordersDbOpened;
+
+extern const QString g_personalNumber;
+extern const QString g_personalNumberName;
+extern const QString g_groupNumber;
 
 qint32 MsgBoxInformation(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 

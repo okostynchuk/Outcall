@@ -12,8 +12,6 @@
 #include <QRegularExpressionValidator>
 #include <QSettings>
 
-static const QString PARTIAL_DOWN(".part");
-
 /**
  * Выполняет запуск программы, подключение к базам данных, загрузку языковых файлов,
  * удаление старой версии программы после обновления.
@@ -24,38 +22,35 @@ qint32 main(qint32 argc, char* argv[])
 
     app.setQuitOnLastWindowClosed(false);
     app.setApplicationName(APP_NAME);
-    app.setApplicationVersion(APP_VERSION);
     app.setOrganizationName(ORGANIZATION_NAME);
+    app.setApplicationVersion(APP_VERSION);
 
-    g_appSettingsFolderPath = QDir::homePath() + "/" + app.applicationName();
-    g_appDirPath = QApplication::applicationDirPath();
-    global::setSettingsValue("InstallDir", g_appDirPath.replace("/", "\\"));
+    QString appDirPath = QApplication::applicationDirPath();
+    global::setSettingsValue("InstallDir", appDirPath.replace("/", "\\"));
+    QDir appDir(appDirPath + "\\");
 
-    QDir dir(g_appDirPath);
-    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-    qint32 fileAmount = dir.count();
-
-    QStringList namesOfDirectories;
-    namesOfDirectories = dir.entryList();
-
-    QDir oldAppDir(g_appDirPath + "\\");
-
-    QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
-    QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
-    qint32 pos = 0;
-
-    if (oldAppDir.exists())
+    if (appDir.exists())
     {
+        QDir dir(appDirPath);
+        dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+        qint32 fileAmount = dir.count();
+
+        QStringList namesOfDirectories = dir.entryList();
+
+        QRegularExpressionValidator folderValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*"));
+        QRegularExpressionValidator fileValidator(QRegularExpression("\\.part[A-Za-z0-9-_\\.\\+]*\\.[A-Za-z0-9]*"));
+        qint32 pos = 0;
+
         for (qint32 i = 0; i < fileAmount; ++i)
         {
             QString str = namesOfDirectories.at(i);
 
             if (fileValidator.validate(str, pos) == QValidator::Acceptable)
-                oldAppDir.remove(namesOfDirectories.at(i));
+                appDir.remove(namesOfDirectories.at(i));
 
             if (folderValidator.validate(str, pos) == QValidator::Acceptable)
             {
-                QDir folder(g_appDirPath + "\\" + namesOfDirectories.at(i));
+                QDir folder(appDirPath + "\\" + namesOfDirectories.at(i));
                 folder.removeRecursively();
             }
         }
@@ -71,14 +66,12 @@ qint32 main(qint32 argc, char* argv[])
         if (uninstallFolder.contains("DisplayName"))
             if (uninstallFolder.value("DisplayName").toString() == app.applicationName() && uninstallFolder.value("DisplayVersion").toString() != app.applicationVersion())
             {
-                QProcess* process = new QProcess;
-
                 QString program = "cmd.exe";
                 QStringList args;
                 args << "/C start REG DELETE HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + childFolders.at(i) + " /f";
 
+                QProcess* process = new QProcess;
                 process->start(program, args);
-
                 process->deleteLater();
             }
     }
@@ -118,11 +111,7 @@ qint32 main(qint32 argc, char* argv[])
     if (output.count(app.applicationName() + ".exe") != 1)
         if (QCoreApplication::arguments().QList::last() != "restart")
         {
-            QMessageBox msgBox;
-            msgBox.setIcon(QMessageBox::Warning);
-            msgBox.setText(QObject::tr("Приложение уже запущено!"));
-            msgBox.exec();
-            msgBox.deleteLater();
+            MsgBoxWarning(QObject::tr("Приложение уже запущено!"));
             return 1;
         }
 
@@ -189,9 +178,9 @@ qint32 main(qint32 argc, char* argv[])
     }
 
     if (db.isOpen() && dbCalls.isOpen())
-        g_dbsOpened = true;
+        g_mainDbsOpened = true;
     else
-        return 0;
+        return 2;
 
     QString hostName_3 = global::getSettingsValue("hostName_3", "settings").toString();
     QString databaseName_3 = global::getSettingsValue("databaseName_3", "settings").toString();

@@ -95,7 +95,7 @@ void Downloader::startDownload(const QUrl& url)
 
     /* Start download */
     m_reply = m_manager->get(request);
-    m_startTime = QDateTime::currentDateTime().toTime_t();
+    m_startTime = QDateTime::currentDateTimeUtc().toTime_t();
 
     /* Ensure that downloads directory exists */
     if (!m_downloadDir.exists())
@@ -348,7 +348,7 @@ void Downloader::updateProgress(qint32 received, qint32 total)
         m_ui->progressBar->setMaximum(0);
         m_ui->progressBar->setValue(-1);
         m_ui->downloadLabel->setText(tr("Скачивание обновлений") + "...");
-        m_ui->timeLabel->setText(QString("%1: %2").arg(tr("Времени осталось")).arg(tr("Неизвестно")));
+        m_ui->timeLabel->setText(QString("%1: %2").arg(tr("Времени осталось"), tr("Неизвестно")));
     }
 }
 
@@ -362,7 +362,7 @@ void Downloader::updateProgress(qint32 received, qint32 total)
  */
 void Downloader::calculateTimeRemaining(qint32 received, qint32 total)
 {
-    qint32 difference = QDateTime::currentDateTime().toTime_t() - m_startTime;
+    qint32 difference = QDateTime::currentDateTimeUtc().toTime_t() - m_startTime;
 
     if (difference > 0)
     {

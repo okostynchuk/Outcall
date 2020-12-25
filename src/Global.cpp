@@ -6,15 +6,14 @@
 
 #include <QSettings>
 
-QString g_appDirPath = "";
-QString g_appSettingsFolderPath = "";
+AsteriskManager* g_asteriskManager = nullptr;
 
-QString g_personalNumber = global::getExtensionNumber("extensions");
-QString g_personalNumberName = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
-QString g_groupNumber = global::getGroupExtensionNumber("group_extensions");
-
-bool g_dbsOpened = false;
+bool g_mainDbsOpened = false;
 bool g_ordersDbOpened = false;
+
+const QString g_personalNumber = global::getExtensionNumber("extensions");
+const QString g_personalNumberName = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
+const QString g_groupNumber = global::getGroupExtensionNumber("group_extensions");
 
 /**
  * Возвращает окно сообщения с информацией.
