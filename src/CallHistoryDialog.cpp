@@ -118,10 +118,8 @@ void CallHistoryDialog::loadCalls()
             queryString.append("AND src = '" + g_personalNumber + "' ");
     else
     {
-        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
-            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-        else if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
-            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+        if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
+            queryString.append("AND disposition <> 'ANSWERED' ");
         else if (ui->tabWidget->currentWidget()->objectName() == "answeredCalls")
             queryString.append("AND disposition = 'ANSWERED' ");
 
@@ -132,9 +130,8 @@ void CallHistoryDialog::loadCalls()
         if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("dst = '" + g_groupNumber + "' OR ");
 
-        queryString.append("dst = '" + g_personalNumber + "' OR dst REGEXP '^[0-9]+[(]" + g_personalNumber + "[)]$' "
-                                                    "OR dst REGEXP '^" + g_personalNumber + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                                                 "'^" + g_personalNumber + "[(][a-z]+ [0-9]+[(]" + g_personalNumber + "[)][)]$') ");
+        queryString.append("dst = '" + g_personalNumber + "' OR dst REGEXP '[(]" + g_personalNumber + "[)]' "
+                                                            "OR dst REGEXP '^" + g_personalNumber + "[(]')");
     }
 
     queryString.append("ORDER BY datetime DESC LIMIT ");
@@ -187,7 +184,7 @@ void CallHistoryDialog::loadCalls()
 
         QSqlQuery query(m_db);
 
-        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = "+uniqueid+")");
+        query.prepare("SELECT EXISTS(SELECT note FROM calls WHERE uniqueid = " + uniqueid + ")");
         query.exec();
         query.first();
 
@@ -275,10 +272,8 @@ void CallHistoryDialog::updateCount()
             queryString.append("AND src = '" + g_personalNumber + "' ");
     else
     {
-        if (ui->tabWidget->currentWidget()->objectName() == "allCalls")
-            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-        else if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
-            queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+        if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
+            queryString.append("AND disposition <> 'ANSWERED' ");
         else if (ui->tabWidget->currentWidget()->objectName() == "answeredCalls")
             queryString.append("AND disposition = 'ANSWERED' ");
 
@@ -289,10 +284,10 @@ void CallHistoryDialog::updateCount()
         if (ui->tabWidget->currentWidget()->objectName() == "missedCalls")
             queryString.append("dst = '" + g_groupNumber + "' OR ");
 
-        queryString.append("dst = '" + g_personalNumber + "' OR dst REGEXP '^[0-9]+[(]" + g_personalNumber + "[)]$' "
-                                                    "OR dst REGEXP '^" + g_personalNumber + "[(][a-z]+ [0-9]+[)]$' OR dst REGEXP "
-                                                                                 "'^" + g_personalNumber + "[(][a-z]+ [0-9]+[(]" + g_personalNumber + "[)][)]$') ");
-    }
+        queryString.append("dst = '" + g_personalNumber + "' OR dst REGEXP '[(]" + g_personalNumber + "[)]' "
+                                                            "OR dst REGEXP '^" + g_personalNumber + "[(]')");
+
+}
 
     query.prepare(queryString);
     query.exec();
@@ -482,7 +477,8 @@ QWidget* CallHistoryDialog::loadNote(const QString& uniqueid)
         else
             size = hrefsReplaceCharacters.at(i).size() + 1;
 
-        note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)" + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
+        note.replace(note.indexOf(QRegularExpression("( |^|\\^|\\.|\\,|\\(|\\)|\\[|\\]|\\{|\\}|\\;|\\'|\\\"|[a-zA-Z0-9а-яА-Я]|\\`|\\~|\\%|\\$|\\#|\\№|\\@|\\&|\\/|\\\\|\\!|\\*)"
+                                                     + QRegularExpression::escape(hrefsReplaceCharacters.at(i)) + "( |$)")),
                     size, QString(firstCharList.at(i) + "<a href='" + hrefsNoCharacters.at(i) + "'>" + hrefsNoCharacters.at(i) + "</a>" + lastCharList.at(i)));
     }
 
@@ -506,14 +502,18 @@ QWidget* CallHistoryDialog::loadStatus(const QString& dialogStatus)
     QHBoxLayout* layout = new QHBoxLayout(widget);
     QLabel* statusLabel = new QLabel(widget);
 
+    QString statusText;
+
     if (dialogStatus == "NO ANSWER")
-        statusLabel->setText(tr("Пропущенный") + " ");
+        statusText = tr("Пропущенный") + " ";
     else if (dialogStatus == "BUSY")
-        statusLabel->setText(tr("Занято") + " ");
+        statusText = tr("Занято") + " ";
     else if (dialogStatus == "CANCEL")
-        statusLabel->setText(tr("Отколено") + " ");
+        statusText = tr("Отколено") + " ";
     else if (dialogStatus == "ANSWERED")
-        statusLabel->setText(tr("Принятый") + " ");
+        statusText = tr("Принятый") + " ";
+
+    statusLabel->setText(statusText);
 
     layout->addWidget(statusLabel);
     layout->setContentsMargins(3, 0, 0, 0);

@@ -272,10 +272,8 @@ void ViewContactDialog::loadCalls()
 
     queryString.append("src, dst, disposition, datetime, uniqueid, recordpath FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ");
 
-    if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
-        queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-    else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
-        queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+    if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
+        queryString.append("AND disposition <> 'ANSWERED' ");
     else if (ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         queryString.append("AND disposition = 'ANSWERED' ");
 
@@ -591,10 +589,8 @@ void ViewContactDialog::updateCount()
 
     QString queryString = "SELECT COUNT(*) FROM cdr WHERE datetime >= DATE_SUB(CURRENT_DATE, INTERVAL '" + ui->comboBox_days->currentText() + "' DAY) ";
 
-    if (ui->callsTabWidget->currentWidget()->objectName() == "allCalls")
-        queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL' OR disposition = 'ANSWERED') ");
-    else if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
-        queryString.append("AND (disposition = 'NO ANSWER' OR disposition = 'BUSY' OR disposition = 'CANCEL') ");
+    if (ui->callsTabWidget->currentWidget()->objectName() == "missedCalls")
+        queryString.append("AND disposition <> 'ANSWERED') ");
     else if (ui->callsTabWidget->currentWidget()->objectName() == "answeredCalls")
         queryString.append("AND disposition = 'ANSWERED' ");
 
