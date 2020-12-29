@@ -340,26 +340,23 @@ void CallHistoryDialog::getData(const QModelIndex& index)
         ui->addOrgContactButton->setDisabled(true);
         ui->addPhoneNumberButton->setDisabled(true);
 
-        query.prepare("SELECT EXISTS(SELECT entry_phone FROM entry_phone WHERE entry_phone = '" + m_number + "')");
+        query.prepare("SELECT entry_id, entry_type FROM entry_phone WHERE entry_phone = " + m_number);
         query.exec();
-        query.next();
 
-        if (!query.value(0).toBool())
+        if (query.next())
+        {
+            m_contactId = query.value(0).toString();
+
+            if (query.value(1).toString() == "person")
+                ui->addContactButton->setDisabled(false);
+            else
+                ui->addOrgContactButton->setDisabled(false);
+        }
+        else
         {
             ui->addContactButton->setDisabled(false);
             ui->addOrgContactButton->setDisabled(false);
             ui->addPhoneNumberButton->setDisabled(false);
-        }
-        else
-        {
-            query.prepare("SELECT entry_type FROM entry_phone WHERE entry_phone = " + m_number);
-            query.exec();
-            query.next();
-
-            if (query.value(0).toString() == "person")
-                ui->addContactButton->setDisabled(false);
-            else
-                ui->addOrgContactButton->setDisabled(false);
         }
     }
     else
@@ -582,7 +579,14 @@ void CallHistoryDialog::onAddContact()
         m_addContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        editContact(m_number);
+    {
+        m_editContactDialog = new EditContactDialog;
+        m_editContactDialog->setValues(m_contactId);
+        m_editContactDialog->hideBackButton();
+        connect(m_editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
+        m_editContactDialog->show();
+        m_editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
+    }
 }
 
 /**
@@ -607,59 +611,14 @@ void CallHistoryDialog::onAddOrgContact()
         m_addOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
     else
-        editOrgContact(m_number);
-}
-
-/**
- * Выполняет открытие окна редактирования физ. лица.
- */
-void CallHistoryDialog::editContact(const QString& number)
-{
-    QSqlQuery query(m_db);
-
-    QString contactId = getUpdateId(number);
-
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
-    query.exec();
-    query.first();
-
-    if (query.value(0).toString() == "person")
-    {
-        m_editContactDialog = new EditContactDialog;
-        m_editContactDialog->setValues(contactId);
-        m_editContactDialog->hideBackButton();
-        connect(m_editContactDialog, &EditContactDialog::sendData, this, &CallHistoryDialog::receiveData);
-        m_editContactDialog->show();
-        m_editContactDialog->setAttribute(Qt::WA_DeleteOnClose);
-    }
-    else
-        MsgBoxError(tr("Данный контакт принадлежит организации!"));
-}
-
-/**
- * Выполняет открытие окна редактирования организации.
- */
-void CallHistoryDialog::editOrgContact(const QString& number)
-{
-    QSqlQuery query(m_db);
-
-    QString contactId = getUpdateId(number);
-
-    query.prepare("SELECT entry_type FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
-    query.exec();
-    query.first();
-
-    if (query.value(0).toString() == "org")
     {
         m_editOrgContactDialog = new EditOrgContactDialog;
-        m_editOrgContactDialog->setValues(contactId);
+        m_editOrgContactDialog->setValues(m_contactId);
         m_editOrgContactDialog->hideBackButton();
         connect(m_editOrgContactDialog, &EditOrgContactDialog::sendData, this, &CallHistoryDialog::receiveData);
         m_editOrgContactDialog->show();
         m_editOrgContactDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
-    else
-        MsgBoxError(tr("Данный контакт принадлежит физ. лицу!"));
 }
 
 /**
@@ -674,13 +633,7 @@ void CallHistoryDialog::onAddPhoneNumberToContact()
         return;
     }
 
-    QSqlQuery query(m_db);
-
-    query.prepare("SELECT EXISTS(SELECT fone FROM fones WHERE fone = '" + m_number + "')");
-    query.exec();
-    query.next();
-
-    if (query.value(0) == 0)
+    if (checkNumber(m_number))
     {
         m_addPhoneNumberToContactDialog = new AddPhoneNumberToContactDialog;
         m_addPhoneNumberToContactDialog->setPhoneNumber(m_number);
@@ -778,22 +731,6 @@ void CallHistoryDialog::receiveData(bool update)
 
         disableButtons();
     }
-}
-
-/**
- * Возвращает id контакта по его номеру.
- */
-QString CallHistoryDialog::getUpdateId(const QString& number)
-{
-    QSqlQuery query(m_db);
-
-    query.prepare("SELECT id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + number + "')");
-    query.exec();
-    query.first();
-
-    QString contactId = query.value(0).toString();
-
-    return contactId;
 }
 
 /**

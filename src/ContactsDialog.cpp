@@ -193,7 +193,8 @@ void ContactsDialog::loadContacts()
 
     QString queryString = "SELECT entry_id, entry_type, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
                           "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, "
-                          "entry_vybor_id, entry_comment, entry_employee FROM entry_phone ";
+                          "entry_vybor_id, entry_comment, (SELECT GROUP_CONCAT(manager_number SEPARATOR '\n') FROM managers "
+                          "WHERE id_client = entry_id) FROM entry_phone ";
 
     QString queryCountString = "SELECT COUNT(DISTINCT entry_id) FROM entry_phone ";
 
@@ -279,7 +280,7 @@ void ContactsDialog::loadContacts()
     m_queryModel->setHeaderData(8, Qt::Horizontal, tr("VyborID"));
     m_queryModel->insertColumn(10);
     m_queryModel->setHeaderData(10, Qt::Horizontal, tr("Заметка"));
-    m_queryModel->setHeaderData(11, Qt::Horizontal, tr("Менеджер"));
+    m_queryModel->setHeaderData(11, Qt::Horizontal, tr("Менеджеры"));
 
     ui->tableView->setModel(m_queryModel);
 

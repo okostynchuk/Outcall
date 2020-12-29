@@ -51,11 +51,6 @@ private slots:
 
     void deleteObjects();
 
-    void editContact(const QString& number);
-    void editOrgContact(const QString& number);
-
-    QString getUpdateId(const QString& number);
-
     void addNote(const QModelIndex& index);
     void getData(const QModelIndex& index);
 
@@ -94,6 +89,7 @@ private:
     QString m_go;
     QString m_number;
     QString m_page;
+    QString m_contactId;
 
     qint32 m_countRecords;
 
