@@ -112,12 +112,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
     </message>
     <message>
-        <source>Указанный номер не зарегистрирован!</source>
-        <translation>The specified number is not registered!</translation>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
+    </message>
+    <message>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
     </message>
 </context>
 <context>
@@ -238,12 +242,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
     </message>
     <message>
-        <source>Указанный номер не зарегистрирован!</source>
-        <translation>The specified number is not registered!</translation>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
+    </message>
+    <message>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
     </message>
 </context>
 <context>
@@ -677,14 +685,6 @@
         <translation>Choose one element!</translation>
     </message>
     <message>
-        <source>Данный контакт принадлежит организации!</source>
-        <translation>This contact belongs to the organization!</translation>
-    </message>
-    <message>
-        <source>Данный контакт принадлежит физ. лицу!</source>
-        <translation>This contact belongs to the private!</translation>
-    </message>
-    <message>
         <source>Имя</source>
         <translation>Name</translation>
     </message>
@@ -970,8 +970,8 @@
         <translation>Note</translation>
     </message>
     <message>
-        <source>Менеджер</source>
-        <translation>Manager</translation>
+        <source>Менеджеры</source>
+        <translation>Managers</translation>
     </message>
 </context>
 <context>
@@ -1267,12 +1267,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
     </message>
     <message>
-        <source>Указанный номер не зарегистрирован!</source>
-        <translation>The specified number is not registered!</translation>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
+    </message>
+    <message>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
     </message>
 </context>
 <context>
@@ -1366,12 +1370,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
     </message>
     <message>
-        <source>Указанный номер не зарегистрирован!</source>
-        <translation>The specified number is not registered!</translation>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
+    </message>
+    <message>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
     </message>
 </context>
 <context>
@@ -1542,10 +1550,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Outcall</name>
     <message>
-        <source>Выход</source>
-        <translation>Exit</translation>
-    </message>
-    <message>
         <source>Войти в аккаунт</source>
         <translation>Sign in</translation>
     </message>
@@ -1624,6 +1628,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Неизвестный</source>
         <translation>Unknown</translation>
+    </message>
+    <message>
+        <source>Выйти из</source>
+        <translation>Quit</translation>
     </message>
 </context>
 <context>
@@ -2422,8 +2430,16 @@ The app will be restarted!</translation>
         <translation>Accepted</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
+    </message>
+    <message>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
+    </message>
+    <message>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
     </message>
 </context>
 <context>
@@ -2661,8 +2677,16 @@ The app will be restarted!</translation>
         <translation>Accepted</translation>
     </message>
     <message>
-        <source>Менеджер:</source>
-        <translation>Manager:</translation>
+        <source>Распил (6203):</source>
+        <translation>Cutting (6203):</translation>
+    </message>
+    <message>
+        <source>Регионы (6204):</source>
+        <translation>Regions (6204):</translation>
+    </message>
+    <message>
+        <source>Колл-центр (6207):</source>
+        <translation>Call Center (6207):</translation>
     </message>
 </context>
 </TS>
