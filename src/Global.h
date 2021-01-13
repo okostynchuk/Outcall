@@ -8,7 +8,7 @@
 
 #define APP_NAME            "Outcall"
 #define ORGANIZATION_NAME   "Team Nonames"
-#define APP_VERSION         "1.0.1"
+#define APP_VERSION         "1.0.2"
 
 extern AsteriskManager* g_asteriskManager;
 
