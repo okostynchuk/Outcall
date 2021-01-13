@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
+    <width>607</width>
     <height>544</height>
    </rect>
   </property>
@@ -315,7 +315,7 @@
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
@@ -426,20 +426,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="email">
-         <property name="minimumSize">
-          <size>
-           <width>235</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-        </widget>
-       </item>
+      <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="1">
         <widget class="QLineEdit" name="city">
          <property name="minimumSize">
@@ -453,16 +440,16 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label_14">
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="email">
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>235</width>
            <height>20</height>
           </size>
          </property>
-         <property name="text">
-          <string/>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
@@ -492,33 +479,16 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="group_6203"/>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="group_6204"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Регионы (6204):</string>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_14">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="group_6207"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>Распил (6203):</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>Колл-центр (6207):</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -532,16 +502,6 @@
          </property>
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Адрес:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -564,6 +524,29 @@
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Адрес:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
@@ -638,9 +621,6 @@
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>
   <tabstop>email</tabstop>
-  <tabstop>group_6203</tabstop>
-  <tabstop>group_6204</tabstop>
-  <tabstop>group_6207</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>backButton</tabstop>

@@ -40,19 +40,35 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     this->installEventFilter(this);
 
+    //QList<QLabel*> employees;
+    QMap<QString, QLabel*> m_managers;
+
     QSqlQuery query(m_db);
 
-    if (isInternalPhone(&m_pwi.number))
+    query.prepare("SELECT * FROM groups");
+    query.exec();
+
+    while(query.next())
     {
-        ui->addPersonButton->hide();
-        ui->addOrgButton->hide();
-        ui->showCardButton->hide();
-        ui->addPhoneNumberButton->hide();
-        ui->openAccessButton->hide();
+        QLabel* label = new QLabel;
+
+        m_managers.insert(query.value(0).toString(), label);
+        label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "): ");
+
+        ui->verticalLayout->addWidget(label);
     }
-    else
-    {
-        query.prepare("SELECT id, entry_vybor_id, entry_employe FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
+
+//    if (isInternalPhone(&m_pwi.number))
+//    {
+//        ui->addPersonButton->hide();
+//        ui->addOrgButton->hide();
+//        ui->showCardButton->hide();
+//        ui->addPhoneNumberButton->hide();
+//        ui->openAccessButton->hide();
+//    }
+//    else
+//    {
+        query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
         query.exec();
 
         if (query.next())
@@ -64,18 +80,24 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
             if (query.value(1) == 0)
                 ui->openAccessButton->hide();
 
-            QString employee = query.value(2).toString();
+            query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = '" + query.value(0).toString() + "' ORDER BY group_number");
+            query.exec();
 
-            if (employee != "0")
-                if (g_asteriskManager->m_extensionNumbers.contains(employee))
-                    ui->employe->setText(QString(g_asteriskManager->m_extensionNumbers.value(employee)));
+            while (query.next())
+                if (m_managers.keys().contains(query.value(0).toString()))
+                {
+                    QString str = m_managers.value(query.value(0).toString())->text();
+                    str.append(query.value(1).toString());
+                    m_managers.value(query.value(0).toString())->setText(str);
+                    //m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
+                }
         }
         else
         {
             ui->openAccessButton->hide();
             ui->showCardButton->hide();
         }
-    }
+    //}
 
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();

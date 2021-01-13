@@ -106,7 +106,7 @@ private:
 
 	bool m_appearing;
 
-	QTimer m_timer;
+    QTimer m_timer;
 
     PopupWindowInfo m_pwi;
 

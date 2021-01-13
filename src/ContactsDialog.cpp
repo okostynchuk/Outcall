@@ -191,23 +191,23 @@ void ContactsDialog::loadContacts()
 
     m_queryModel = new QSqlQueryModel(this);
 
-    QString queryString = "SELECT entry_id, entry_type, entry_name, GROUP_CONCAT(DISTINCT entry_phone "
-                          "ORDER BY entry_id SEPARATOR '\n'), entry_city, entry_address, entry_email, "
-                          "entry_vybor_id, entry_comment, (SELECT GROUP_CONCAT(manager_number SEPARATOR '\n') FROM managers "
-                          "WHERE id_client = entry_id) FROM entry_phone ";
+    QString queryString = "SELECT e.entry_id, e.entry_type, e.entry_name, GROUP_CONCAT(DISTINCT e.entry_phone "
+                          "ORDER BY e.entry_id SEPARATOR '\n'), e.entry_city, e.entry_address, e.entry_email, "
+                          "e.entry_vybor_id, e.entry_comment, (SELECT GROUP_CONCAT(manager_number SEPARATOR '\n') FROM managers m "
+                          "WHERE m.entry_id = e.entry_id) FROM entry_phone e ";
 
-    QString queryCountString = "SELECT COUNT(DISTINCT entry_id) FROM entry_phone ";
+    QString queryCountString = "SELECT COUNT(DISTINCT e.entry_id) FROM entry_phone e ";
 
     QString searchString;
 
     if (m_filter)
     {
         if (ui->comboBox->currentIndex() == 0)
-            searchString.append("WHERE entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
+            searchString.append("WHERE e.entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
         else if (ui->comboBox->currentIndex() == 1)
-            searchString.append("WHERE entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
+            searchString.append("WHERE e.entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
         else if (ui->comboBox->currentIndex() == 2)
-            searchString.append("WHERE entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
+            searchString.append("WHERE e.entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
     }
 
     queryCountString.append(searchString);
@@ -256,7 +256,7 @@ void ContactsDialog::loadContacts()
     ui->label_pages->setText(tr("из ") + pages);
 
     queryString.append(searchString);
-    queryString.append("GROUP BY entry_id ORDER BY entry_name ASC LIMIT ");
+    queryString.append("GROUP BY e.entry_id ORDER BY e.entry_name ASC LIMIT ");
 
     if (ui->lineEdit_page->text() == "1")
         queryString.append("0," + QString::number(ui->lineEdit_page->text().toInt() *

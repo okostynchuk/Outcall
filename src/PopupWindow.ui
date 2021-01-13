@@ -4338,23 +4338,16 @@ border-right-color: transparent;
     <string>Комментарий к звонку</string>
    </property>
   </widget>
-  <widget class="QLabel" name="employe">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>220</y>
-     <width>161</width>
-     <height>31</height>
+     <width>160</width>
+     <height>80</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>9</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
  </widget>
  <tabstops>

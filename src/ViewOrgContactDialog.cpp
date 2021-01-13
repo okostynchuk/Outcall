@@ -53,9 +53,25 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    m_managers.insert("6203", ui->group_6203);
-    m_managers.insert("6204", ui->group_6204);
-    m_managers.insert("6207", ui->group_6207);
+    QSqlQuery query(m_db);
+
+    query.prepare("SELECT * FROM groups");
+    query.exec();
+
+    while(query.next())
+    {
+        QLineEdit* line = new QLineEdit;
+        line->setReadOnly(true);
+        line->setStyleSheet("*{ background-color: #fffff8;}");
+
+        QLabel* label = new QLabel;
+
+        m_managers.insert(query.value(0).toString(), line);
+        label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
+
+        ui->gridLayout->addWidget(label);
+        ui->gridLayout->addWidget(line);
+    }
 }
 
 ViewOrgContactDialog::~ViewOrgContactDialog()
@@ -81,11 +97,12 @@ void ViewOrgContactDialog::setValues(const QString& id)
     for (qint32 i = 0; i < m_numbers.length(); ++i)
         m_phones.at(i)->setText(m_numbers.at(i));
 
-    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + m_contactId);
+    query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();
 
     while (query.next())
-        m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
+        if (m_managers.keys().contains(query.value(0).toString()))
+            m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();

@@ -30,9 +30,22 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
-    m_managers.insert("6203", ui->group_6203);
-    m_managers.insert("6204", ui->group_6204);
-    m_managers.insert("6207", ui->group_6207);
+    QSqlQuery query(m_db);
+
+    query.prepare("SELECT * FROM groups");
+    query.exec();
+
+    while(query.next())
+    {
+        QLineEdit* line = new QLineEdit;
+        QLabel* label = new QLabel;
+
+        m_managers.insert(query.value(0).toString(), line);
+        label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
+
+        ui->gridLayout->addWidget(label);
+        ui->gridLayout->addWidget(line);
+    }
 
     QRegularExpression regExp("^[\\+]?[0-9]*$");
     for (qint32 i = 0; i < m_phones.length(); ++i)
@@ -286,28 +299,45 @@ void EditOrgContactDialog::onSave()
         return;
     }
 
-//    bool invalid_employee = false;
+    foreach (QString key, m_managers.keys())
+        m_managers.value(key)->setStyleSheet("border: 1px solid grey");
 
-//    QString employee = ui->employee->text();
+    bool existing_managers = false;
 
-//    if (!ui->employee->text().isEmpty())
-//    {
-//        if (g_asteriskManager->m_extensionNumbers.contains(employee) || g_asteriskManager->m_groupNumbers.contains(employee))
-//            ui->employee->setStyleSheet("border: 1px solid grey");
-//        else
-//        {
-//            ui->employee->setStyleSheet("border: 1px solid red");
+    foreach (QString key, m_managers.keys())
+        if (!m_managers.value(key)->text().isEmpty())
+            if (!g_asteriskManager->m_extensionNumbers.keys().contains(m_managers.value(key)->text()))
+            {
+               m_managers.value(key)->setStyleSheet("border: 1px solid red");
 
-//            invalid_employee = true;
-//        }
-//    }
+                existing_managers = true;
+            }
 
-//    if (invalid_employee)
-//    {
-//        MsgBoxError(tr("Указанный номер не зарегистрирован!"));
+    if (existing_managers)
+    {
+        MsgBoxError(tr("Указанный номер менеджера не зарегистрирован!"));
 
-//        return;
-//    }
+        return;
+    }
+
+    bool same_managers = false;
+
+    foreach (QString key_i, m_managers.keys())
+        foreach (QString key_j, m_managers.keys())
+            if (!m_managers.value(key_i)->text().isEmpty() &&  m_managers.value(key_i)->text() == m_managers.value(key_j)->text() && key_i != key_j)
+            {
+                m_managers.value(key_i)->setStyleSheet("border: 1px solid red");
+                m_managers.value(key_j)->setStyleSheet("border: 1px solid red");
+
+                same_managers = true;
+            }
+
+    if (same_managers)
+    {
+        MsgBoxError(tr("Присутсвуют одинаковые номера менеджеров!"));
+
+        return;
+    }
 
     query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_city = ?, entry_address = ?, "
                   "entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
@@ -349,7 +379,7 @@ void EditOrgContactDialog::onSave()
         {
             if (!m_managers.value(key)->text().isEmpty())
             {
-                query.prepare("INSERT INTO managers (id_client, group_number, manager_number)"
+                query.prepare("INSERT INTO managers (entry_id, group_number, manager_number)"
                               "VALUES(?, ?, ?)");
                 query.addBindValue(m_contactId);
                 query.addBindValue(key);
@@ -363,14 +393,14 @@ void EditOrgContactDialog::onSave()
             {
                 if (m_managers.value(key)->text().isEmpty())
                 {
-                    query.prepare("DELETE FROM managers WHERE id_client = ? AND group_number = ?");
+                    query.prepare("DELETE FROM managers WHERE entry_id = ? AND group_number = ?");
                     query.addBindValue(m_contactId);
                     query.addBindValue(key);
                     query.exec();
                 }
                 else
                 {
-                    query.prepare("UPDATE managers SET manager_number = ? WHERE id_client = ? AND group_number = ?");
+                    query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
                     query.addBindValue(m_managers.value(key)->text());
                     query.addBindValue(m_contactId);
                     query.addBindValue(key);
@@ -421,7 +451,7 @@ void EditOrgContactDialog::setValues(const QString& id)
     for (qint32 i = 0; i < m_oldPhones.length(); ++i)
         m_phones.at(i)->setText(m_oldPhones.at(i));
 
-    query.prepare("SELECT group_number, manager_number FROM managers WHERE id_client = " + m_contactId);
+    query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();
 
     while (query.next())
