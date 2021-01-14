@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
+    <width>588</width>
     <height>515</height>
    </rect>
   </property>
@@ -267,25 +267,36 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>4</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="secondNumber">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="thirdNumber">
              <property name="minimumSize">
               <size>
-               <width>220</width>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="firstNumber">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>20</height>
               </size>
              </property>
@@ -301,24 +312,17 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="firstNumber">
-             <property name="minimumSize">
-              <size>
-               <width>220</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="1">
             <widget class="QLineEdit" name="fourthNumber">
              <property name="minimumSize">
               <size>
-               <width>220</width>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>20</height>
               </size>
              </property>
@@ -334,6 +338,58 @@
              </property>
             </widget>
            </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="fifthNumber">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="secondNumber">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
@@ -341,53 +397,26 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="thirdNumber">
-             <property name="minimumSize">
-              <size>
-               <width>220</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="fifthNumber">
-             <property name="minimumSize">
-              <size>
-               <width>220</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLabel" name="label_21">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="label_14">
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="vyborId">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>235</width>
                <height>20</height>
               </size>
              </property>
-             <property name="text">
-              <string/>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
              </property>
             </widget>
            </item>
@@ -398,68 +427,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>VyborID:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="email">
-             <property name="minimumSize">
-              <size>
-               <width>235</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="city">
-             <property name="minimumSize">
-              <size>
-               <width>235</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="address">
-             <property name="minimumSize">
-              <size>
-               <width>235</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="vyborId">
-             <property name="minimumSize">
-              <size>
-               <width>235</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
              </property>
             </widget>
            </item>
@@ -483,18 +450,91 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="email">
+             <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>40</height>
+               <width>235</width>
+               <height>20</height>
               </size>
              </property>
-            </spacer>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>VyborID:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_14">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="city">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="address">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>654</width>
-    <height>508</height>
+    <width>685</width>
+    <height>513</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -269,7 +269,13 @@
              <property name="minimumSize">
               <size>
                <width>160</width>
-               <height>0</height>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -290,7 +296,13 @@ background-color: #fffff8;
              <property name="minimumSize">
               <size>
                <width>160</width>
-               <height>0</height>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -308,7 +320,13 @@ background-color: #fffff8;
              <property name="minimumSize">
               <size>
                <width>160</width>
-               <height>0</height>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -341,8 +359,44 @@ background-color: #fffff8;
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <layout class="QGridLayout" name="gridLayout_11">
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="thirdNumber">
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="fourthNumber">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="fifthNumber">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff8;
@@ -365,15 +419,15 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="firstNumber">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
+             <property name="text">
+              <string>4</string>
              </property>
             </widget>
            </item>
@@ -389,18 +443,6 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="secondNumber">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_8">
              <property name="font">
@@ -413,20 +455,20 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="thirdNumber">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
              </property>
-             <property name="text">
-              <string>4</string>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
              </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="fourthNumber">
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff8;
@@ -449,8 +491,20 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="fifthNumber">
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="secondNumber">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff8;
@@ -461,25 +515,168 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="firstNumber">
+             <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>40</height>
+               <width>245</width>
+               <height>20</height>
               </size>
              </property>
-            </spacer>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Email:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Организация:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="city">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QLineEdit" name="organization">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>VyborID:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Адрес:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="vyborId">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="address">
+             <property name="minimumSize">
+              <size>
+               <width>245</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff8;
@@ -504,112 +701,27 @@ background-color: #fffff8;
            </item>
            <item row="4" column="1">
             <widget class="QLineEdit" name="email">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_12">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Email:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>VyborID:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="address">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="city">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Организация:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Адрес:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="vyborId">
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
+             <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>40</height>
+               <width>245</width>
+               <height>20</height>
               </size>
              </property>
-            </spacer>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
