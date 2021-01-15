@@ -40,34 +40,43 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     this->installEventFilter(this);
 
-    //QList<QLabel*> employees;
-    QMap<QString, QLabel*> m_managers;
-
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT * FROM groups");
+    query.prepare(QueryStringGetGroups());
     query.exec();
+
+    qint32 i = 0;
 
     while(query.next())
     {
-        QLabel* label = new QLabel;
+        QLabel* label = new QLabel(this);
+        QLabel* label2 = new QLabel(this);
 
-        m_managers.insert(query.value(0).toString(), label);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "): ");
 
-        ui->verticalLayout->addWidget(label);
+        managers.insert(query.value(0).toString(), label);
+        labels.insert(query.value(0).toString(), label2);
+
+        ui->gridLayout->addWidget(label, i, 0, Qt::AlignRight);
+
+        ui->gridLayout->addWidget(label2, i, 1);
+
+        i++;
     }
 
-//    if (isInternalPhone(&m_pwi.number))
-//    {
-//        ui->addPersonButton->hide();
-//        ui->addOrgButton->hide();
-//        ui->showCardButton->hide();
-//        ui->addPhoneNumberButton->hide();
-//        ui->openAccessButton->hide();
-//    }
-//    else
-//    {
+    if (isInternalPhone(&m_pwi.number))
+    {
+        ui->addPersonButton->hide();
+        ui->addOrgButton->hide();
+        ui->showCardButton->hide();
+        ui->addPhoneNumberButton->hide();
+        ui->openAccessButton->hide();
+        foreach (QString key, managers.keys()) {
+            managers.value(key)->hide();
+        }
+    }
+    else
+    {
         query.prepare("SELECT id, entry_vybor_id FROM entry WHERE id IN (SELECT entry_id FROM fones WHERE fone = '" + m_pwi.number + "')");
         query.exec();
 
@@ -77,6 +86,8 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
             ui->addOrgButton->hide();
             ui->addPhoneNumberButton->hide();
 
+            qint32 id = query.value(0).toInt();
+
             if (query.value(1) == 0)
                 ui->openAccessButton->hide();
 
@@ -84,28 +95,45 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
             query.exec();
 
             while (query.next())
-                if (m_managers.keys().contains(query.value(0).toString()))
+                if (managers.keys().contains(query.value(0).toString()))
                 {
-                    QString str = m_managers.value(query.value(0).toString())->text();
-                    str.append(query.value(1).toString());
-                    m_managers.value(query.value(0).toString())->setText(str);
-                    //m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
+                    QLabel* label = labels.value(query.value(0).toString());
+                    label->setText(g_asteriskManager->m_extensionNumbers.value(query.value(1).toString()));
+
+                    ui->gridLayout->addWidget(label, std::distance(managers.begin(), managers.find(query.value(0).toString())), 1);
+                }
+
+            if (labels.keys().contains(g_groupNumber))
+                if (labels.value(g_groupNumber)->text().isEmpty())
+                {
+                    QPushButton* button = new QPushButton(this);
+                    button->setText(tr("Привязать"));
+                    connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
+
+                    button->setProperty("id", QVariant::fromValue(id));
+                    button->setProperty("widget", QVariant::fromValue(button));
+
+                    ui->gridLayout->addWidget(button, std::distance(managers.begin(), managers.find(g_groupNumber)), 1);
                 }
         }
         else
         {
             ui->openAccessButton->hide();
             ui->showCardButton->hide();
+
+            foreach (QString key, managers.keys()) {
+                managers.value(key)->hide();
+            }
         }
-    //}
+    }
 
     if (!g_ordersDbOpened)
         ui->openAccessButton->hide();
 
-    connect(g_asteriskManager,       &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
+    connect(g_asteriskManager, &AsteriskManager::callStart, this, &PopupWindow::onCallStart);
 
-    connect(ui->textEdit,             &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
-    connect(ui->textEdit,             &QTextEdit::cursorPositionChanged, this, &PopupWindow::onCursorPosChanged);
+    connect(ui->textEdit, &QTextEdit::textChanged,   this, &PopupWindow::onTextChanged);
+    connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this, &PopupWindow::onCursorPosChanged);
 
     connect(ui->addOrgButton,         &QAbstractButton::clicked, this, &PopupWindow::onAddOrg);
     connect(ui->saveNoteButton,       &QAbstractButton::clicked, this, &PopupWindow::onSaveNote);
@@ -205,6 +233,47 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     m_timer.setInterval(timerDelay);
     m_timer.start();
+}
+
+void PopupWindow::onLinkButton()
+{
+    qint32 id = sender()->property("id").value<qint32>();
+
+    QPushButton* button = sender()->property("widget").value<QPushButton*>();
+    button->hide();
+
+    QSqlQuery query(m_db);
+
+    query.prepare("SELECT manager_number FROM managers WHERE entry_id = ? AND group_number = ?");
+    query.addBindValue(id);
+    query.addBindValue(g_groupNumber);
+    query.exec();
+
+    if (query.next())
+    {
+        if (query.value(0).toString().isEmpty())
+        {
+            query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
+            query.addBindValue(g_personalNumber);
+            query.addBindValue(id);
+            query.addBindValue(g_groupNumber);
+            query.exec();
+        }
+        else
+            MsgBoxInformation(tr("За данным контактом уже закреплен менеджер!"));
+    }
+    else
+    {
+        query.prepare("INSERT INTO managers (entry_id, group_number, manager_number)"
+                       "VALUES(?, ?, ?)");
+        query.addBindValue(id);
+        query.addBindValue(g_groupNumber);
+        query.addBindValue(g_personalNumber);
+        if (!query.exec())
+            MsgBoxError(tr("Произошла ошибка!"));
+    }
+
+    receiveData(true);
 }
 
 PopupWindow::~PopupWindow()
@@ -640,6 +709,7 @@ void PopupWindow::receiveData(bool update)
 
             if (query.next())
             {
+                qint32 id = query.value(0).toInt();
                 if (!m_addContactDialog.isNull())
                     m_addContactDialog->close();
 
@@ -663,6 +733,34 @@ void PopupWindow::receiveData(bool update)
 
                 ui->lblText->setText("<b style='color:white'>" + m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
                 m_pwi.text = ("<b style='color:white'>" + m_pwi.number + "</b><br><b>" + query.value(1).toString() + "</b>");
+
+                foreach (QString key, managers.keys()) {
+                    managers.value(key)->show();
+                }
+
+                query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = '" + query.value(0).toString() + "' ORDER BY group_number");
+                query.exec();
+
+                while (query.next())
+                    if (managers.keys().contains(query.value(0).toString()))
+                    {
+                        QLabel* label = labels.value(query.value(0).toString());
+                        label->setText(g_asteriskManager->m_extensionNumbers.value(query.value(1).toString()));
+
+                        ui->gridLayout->addWidget(label, std::distance(managers.begin(), managers.find(query.value(0).toString())), 1);
+                    }
+
+                if (labels.keys().contains(g_groupNumber))
+                    if (labels.value(g_groupNumber)->text().isEmpty())
+                    {
+                        QPushButton* button = new QPushButton(this);
+                        button->setText(tr("Привязать"));
+                        connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
+
+                        button->setProperty("id", QVariant::fromValue(id));
+                        button->setProperty("widget", QVariant::fromValue(button));
+                        ui->gridLayout->addWidget(button, std::distance(managers.begin(), managers.find(g_groupNumber)), 1);
+                    }
             }
             else
             {

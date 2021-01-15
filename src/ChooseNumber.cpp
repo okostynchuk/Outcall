@@ -44,26 +44,10 @@ void ChooseNumber::onCall(const QString& number)
  * Получает id контакта из классов PlaceCallDialog,
  * PopupReminder, ViewContactDialog, ViewOrgContactDialog.
  */
-void ChooseNumber::setValues(const QString& contactId)
+void ChooseNumber::setValues(const QStringList& numbers)
 {
-    QSqlQuery query(m_db);
-
-    query.prepare("SELECT entry_phone, entry_name FROM entry_phone WHERE entry_id = " + contactId);
-    query.exec();
-
-    qint32 i = 0;
-
-    while (query.next())
-    {
-        m_phones.at(i)->setText(query.value(0).toString());
-
-        ++i;
-    }
-
-    query.first();
-
-    ui->label->show();
-    ui->label->setText(tr("Номерa") + " \"" + query.value(1).toString() + "\"");
+    for(qint32 i = 0; i < numbers.count(); i++)
+        m_phones.at(i)->setText(numbers.at(i));
 }
 
 /**

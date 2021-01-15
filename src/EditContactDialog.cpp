@@ -30,7 +30,7 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT * FROM groups");
+    query.prepare(QueryStringGetGroups());
     query.exec();
 
     while(query.next())
@@ -320,25 +320,6 @@ void EditContactDialog::onSave()
         return;
     }
 
-    bool same_managers = false;
-
-    foreach (QString key_i, m_managers.keys())
-        foreach (QString key_j, m_managers.keys())
-            if (!m_managers.value(key_i)->text().isEmpty() &&  m_managers.value(key_i)->text() == m_managers.value(key_j)->text() && key_i != key_j)
-            {
-                m_managers.value(key_i)->setStyleSheet("border: 1px solid red");
-                m_managers.value(key_j)->setStyleSheet("border: 1px solid red");
-
-                same_managers = true;
-            }
-
-    if (same_managers)
-    {
-        MsgBoxError(tr("Присутсвуют одинаковые номера менеджеров!"));
-
-        return;
-    }
-
     query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
     query.addBindValue("person");
 
@@ -403,21 +384,11 @@ void EditContactDialog::onSave()
         {
             if (m_managers.value(key)->text() != m_oldManagers.value(key))
             {
-                if (m_managers.value(key)->text().isEmpty())
-                {
-                    query.prepare("DELETE FROM managers WHERE entry_id = ? AND group_number = ?");
-                    query.addBindValue(m_contactId);
-                    query.addBindValue(key);
-                    query.exec();
-                }
-                else
-                {
-                    query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
-                    query.addBindValue(m_managers.value(key)->text());
-                    query.addBindValue(m_contactId);
-                    query.addBindValue(key);
-                    query.exec();
-                }
+                query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
+                query.addBindValue(m_managers.value(key)->text());
+                query.addBindValue(m_contactId);
+                query.addBindValue(key);
+                query.exec();
             }
         }
     }

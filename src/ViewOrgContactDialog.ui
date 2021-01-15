@@ -316,6 +316,30 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>2</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>1</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="1">
             <widget class="QLineEdit" name="thirdNumber">
              <property name="minimumSize">
@@ -337,18 +361,6 @@ background-color: #fffff8;
              </property>
              <property name="readOnly">
               <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>1</string>
              </property>
             </widget>
            </item>
@@ -388,30 +400,6 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>2</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>4</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="secondNumber">
              <property name="minimumSize">
@@ -433,6 +421,18 @@ background-color: #fffff8;
              </property>
              <property name="readOnly">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>4</string>
              </property>
             </widget>
            </item>
@@ -459,6 +459,19 @@ background-color: #fffff8;
               <bool>true</bool>
              </property>
             </widget>
+           </item>
+           <item row="5" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>

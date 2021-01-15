@@ -28,7 +28,7 @@ public:
     explicit ChooseNumber(QWidget* parent = 0);
     ~ChooseNumber();
 
-    void setValues(const QString& contactId);
+    void setValues(const QStringList &numbers);
 
 private slots:
     void onCall(const QString& number);

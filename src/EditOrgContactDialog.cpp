@@ -32,7 +32,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT * FROM groups");
+    query.prepare(QueryStringGetGroups());
     query.exec();
 
     while(query.next())
@@ -320,25 +320,6 @@ void EditOrgContactDialog::onSave()
         return;
     }
 
-    bool same_managers = false;
-
-    foreach (QString key_i, m_managers.keys())
-        foreach (QString key_j, m_managers.keys())
-            if (!m_managers.value(key_i)->text().isEmpty() &&  m_managers.value(key_i)->text() == m_managers.value(key_j)->text() && key_i != key_j)
-            {
-                m_managers.value(key_i)->setStyleSheet("border: 1px solid red");
-                m_managers.value(key_j)->setStyleSheet("border: 1px solid red");
-
-                same_managers = true;
-            }
-
-    if (same_managers)
-    {
-        MsgBoxError(tr("Присутсвуют одинаковые номера менеджеров!"));
-
-        return;
-    }
-
     query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_city = ?, entry_address = ?, "
                   "entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
     query.addBindValue("org");
@@ -391,21 +372,11 @@ void EditOrgContactDialog::onSave()
         {
             if (m_managers.value(key)->text() != m_oldManagers.value(key))
             {
-                if (m_managers.value(key)->text().isEmpty())
-                {
-                    query.prepare("DELETE FROM managers WHERE entry_id = ? AND group_number = ?");
-                    query.addBindValue(m_contactId);
-                    query.addBindValue(key);
-                    query.exec();
-                }
-                else
-                {
-                    query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
-                    query.addBindValue(m_managers.value(key)->text());
-                    query.addBindValue(m_contactId);
-                    query.addBindValue(key);
-                    query.exec();
-                }
+                query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
+                query.addBindValue(m_managers.value(key)->text());
+                query.addBindValue(m_contactId);
+                query.addBindValue(key);
+                query.exec();
             }
         }
     }
@@ -456,9 +427,12 @@ void EditOrgContactDialog::setValues(const QString& id)
 
     while (query.next())
     {
-        m_oldManagers.insert(query.value(0).toString(), query.value(1).toString());
+        if (m_managers.keys().contains(query.value(0).toString()))
+        {
+            m_oldManagers.insert(query.value(0).toString(), query.value(1).toString());
 
-        m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
+            m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
+        }
     }
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, "

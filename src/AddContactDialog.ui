@@ -267,27 +267,8 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="thirdNumber">
-             <property name="minimumSize">
-              <size>
-               <width>235</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="firstNumber">
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="fifthNumber">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -312,8 +293,8 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="fourthNumber">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="firstNumber">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -338,8 +319,8 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="fifthNumber">
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="fourthNumber">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -357,10 +338,24 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>3</string>
+             </property>
+            </widget>
+           </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_18">
              <property name="text">
               <string>4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</string>
              </property>
             </widget>
            </item>
@@ -383,19 +378,37 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>1&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt;</string>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="thirdNumber">
+             <property name="minimumSize">
+              <size>
+               <width>235</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>3</string>
+           <item row="5" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -420,20 +433,20 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_9">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Город:</string>
+              <string>Адрес:</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_10">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_9">
              <property name="text">
-              <string>Адрес:</string>
+              <string>Город:</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -469,16 +482,6 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>VyborID:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label_14">
              <property name="minimumSize">
@@ -498,8 +501,8 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="city">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="address">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -517,8 +520,18 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="address">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>VyborID:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="city">
              <property name="minimumSize">
               <size>
                <width>235</width>

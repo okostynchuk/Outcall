@@ -64,6 +64,7 @@ private slots:
     void onSaveNote();
     void onOpenAccess();
     void onViewNotes();
+    void onLinkButton();
 
     void onTextChanged();     
     void onCallStart(const QString& uniqueid);
@@ -109,6 +110,9 @@ private:
     QTimer m_timer;
 
     PopupWindowInfo m_pwi;
+
+    QMap<QString, QLabel*> managers;
+    QMap<QString, QLabel*> labels;
 
     static QList<PopupWindow*> s_popupWindows;
 };

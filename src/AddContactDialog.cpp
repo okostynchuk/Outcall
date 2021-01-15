@@ -34,7 +34,7 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT * FROM groups");
+    query.prepare(QueryStringGetGroups());
     query.exec();
 
     while(query.next())
@@ -210,25 +210,6 @@ void AddContactDialog::onSave()
     if (existing_managers)
     {
         MsgBoxError(tr("Указанный номер менеджера не зарегистрирован!"));
-
-        return;
-    }
-
-    bool same_managers = false;
-
-    foreach (QString key_i, m_managers.keys())
-        foreach (QString key_j, m_managers.keys())
-            if (!m_managers.value(key_i)->text().isEmpty() &&  m_managers.value(key_i)->text() == m_managers.value(key_j)->text() && key_i != key_j)
-            {
-                m_managers.value(key_i)->setStyleSheet("border: 1px solid red");
-                m_managers.value(key_j)->setStyleSheet("border: 1px solid red");
-
-                same_managers = true;
-            }
-
-    if (same_managers)
-    {
-        MsgBoxError(tr("Присутсвуют одинаковые номера менеджеров!"));
 
         return;
     }

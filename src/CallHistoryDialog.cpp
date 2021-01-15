@@ -286,8 +286,7 @@ void CallHistoryDialog::updateCount()
 
         queryString.append("dst = '" + g_personalNumber + "' OR dst REGEXP '[(]" + g_personalNumber + "[)]' "
                                                             "OR dst REGEXP '^" + g_personalNumber + "[(]')");
-
-}
+    }
 
     query.prepare(queryString);
     query.exec();

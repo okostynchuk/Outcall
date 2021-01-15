@@ -55,7 +55,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT * FROM groups");
+    query.prepare(QueryStringGetGroups());
     query.exec();
 
     while(query.next())
@@ -811,17 +811,9 @@ void ViewOrgContactDialog::onPlayAudioPhone()
  */
 void ViewOrgContactDialog::onCall()
 {
-    QSqlQuery query(m_db);
-
-    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
-    query.addBindValue(m_contactId);
-    query.exec();
-
-    if (query.size() == 1)
+    if (m_numbers.count() == 1)
     {
-        query.next();
-
-        QString number = query.value(0).toString();
+        QString number = m_numbers.at(0);
         QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
         g_asteriskManager->originateCall(g_personalNumber, number, protocol, g_personalNumber);
@@ -832,7 +824,7 @@ void ViewOrgContactDialog::onCall()
             m_chooseNumber->close();
 
         m_chooseNumber = new ChooseNumber;
-        m_chooseNumber->setValues(m_contactId);
+        m_chooseNumber->setValues(m_numbers);
         m_chooseNumber->show();
         m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }

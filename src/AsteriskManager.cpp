@@ -277,7 +277,8 @@ void AsteriskManager::parseEvent(const QString& eventData)
                 m_states.insert(exten, status);
             else
             {
-                emit extenStatusChanged(exten, status);
+                qint32 state = status.toInt();
+                emit extenStatusChanged(exten, state);
                 m_states.insert(exten, status);
             }
         }

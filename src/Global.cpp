@@ -15,6 +15,22 @@ const QString g_personalNumber = global::getExtensionNumber("extensions");
 const QString g_personalNumberName = global::getSettingsValue(global::getExtensionNumber("extensions"), "extensions_name").toString();
 const QString g_groupNumber = global::getGroupExtensionNumber("group_extensions");
 
+QString QueryStringGetGroups()
+{
+    QString language = global::getSettingsValue("language", "settings").toString();
+
+    QString queryString;
+
+    if (language == "Русский")
+        queryString = "SELECT number, name_ru FROM groups";
+    else if (language == "Українська")
+        queryString = "SELECT number, name_ukr FROM groups";
+    else if (language == "English")
+        queryString = "SELECT number, name_en FROM groups";
+
+    return queryString;
+}
+
 /**
  * Возвращает окно сообщения с информацией.
  */

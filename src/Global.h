@@ -18,6 +18,9 @@ extern bool g_ordersDbOpened;
 extern const QString g_personalNumber;
 extern const QString g_personalNumberName;
 extern const QString g_groupNumber;
+extern const QStringList g_regionsList;
+
+QString QueryStringGetGroups();
 
 qint32 MsgBoxInformation(const QString& text, const QString& title = APP_NAME, QWidget* parent = nullptr);
 

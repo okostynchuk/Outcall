@@ -27,12 +27,12 @@ public:
 
 private slots:
     void loadContacts();
-    void onExtenStatusChanged(const QString& exten, const QString& state);
+    void onExtenStatusChanged(const QString& exten, qint32& state);
 
     void on_callButton_clicked();
     void on_addReminderButton_clicked();
     void on_listWidget_clicked();
-    void setIcon(qint32 index, QString state);
+    void setIcon(qint32 index, qint32 state);
     void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent*);
     void keyPressEvent(QKeyEvent* event);

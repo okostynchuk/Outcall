@@ -58,18 +58,13 @@ PlaceCallDialog::~PlaceCallDialog()
 void PlaceCallDialog::showNumber(const QModelIndex& index)
 {
     QString id = m_queryModel->data(m_queryModel->index(index.row(), 0)).toString();
+    QString phones = m_queryModel->data(m_queryModel->index(index.row(), 2)).toString();
 
-    QSqlQuery query(m_db);
+    QStringList phonesList = phones.split(QRegularExpression("\n"));
 
-    query.prepare("SELECT fone FROM fones WHERE entry_id = ?");
-    query.addBindValue(id);
-    query.exec();
-
-    if (query.size() == 1)
+    if (phonesList.count() == 1)
     {
-        query.next();
-
-        QString number = query.value(0).toString();
+        QString number = phonesList.at(0);
         QString protocol = global::getSettingsValue(g_personalNumber, "extensions").toString();
 
         g_asteriskManager->originateCall(g_personalNumber, number, protocol, g_personalNumber);
@@ -79,7 +74,7 @@ void PlaceCallDialog::showNumber(const QModelIndex& index)
     else
     {
         m_chooseNumber = new ChooseNumber;
-        m_chooseNumber->setValues(id);
+        m_chooseNumber->setValues(phonesList);
         connect(m_chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
         m_chooseNumber->show();
         m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);

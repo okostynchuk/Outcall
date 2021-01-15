@@ -86,7 +86,7 @@ void InternalContactsDialog::loadContacts()
 
     for (qint32 i = 0; i < ui->listWidget->count(); ++i)
     {
-        QString state = m_states.value(ui->listWidget->item(i)->text().remove(3, ui->listWidget->item(i)->text().length()));
+        qint32 state = m_states.value(ui->listWidget->item(i)->text().remove(3, ui->listWidget->item(i)->text().length())).toInt();
 
         setIcon(i, state);
     }
@@ -96,26 +96,39 @@ void InternalContactsDialog::loadContacts()
             m_indexes.insert(ui->listWidget->item(i)->text().remove(QRegularExpression(" .+")), i);
 }
 
-void InternalContactsDialog::onExtenStatusChanged(const QString& exten, const QString& state)
+void InternalContactsDialog::onExtenStatusChanged(const QString& exten, qint32& state)
 {
     if (exten != g_personalNumber)
         setIcon(qint32(m_indexes.value(exten)), state);
 }
 
-void InternalContactsDialog::setIcon(qint32 index, QString state)
+void InternalContactsDialog::setIcon(qint32 index, qint32 state)
 {
     QString path;
 
-    if (state == "0")
-        path = ":/images/presence-idle.png";
-    else if (state == "1" || state == "2" || state == "8" ||state == "9")
-        path = ":/images/presence-busy.png";
-    else if (state == "4")
-        path = ":/images/presence-unavial.png";
-    else if (state == "-2" || state == "-1")
-        path = ":/images/presence-dnd.png";
-    else if (state == "16" || state == "17")
-        path = ":/images/presence-hold.png";
+    switch(state)
+    {
+        case 0:
+            path = ":/images/presence-idle.png";
+            break;
+        case 1:
+        case 2:
+        case 8:
+        case 9:
+            path = ":/images/presence-busy.png";
+            break;
+        case 4:
+            path = ":/images/presence-unavial.png";
+            break;
+        case -2:
+        case -1:
+            path = ":/images/presence-dnd.png";
+            break;
+        case 16:
+        case 17:
+            path = ":/images/presence-hold.png";
+            break;
+    }
 
     ui->listWidget->item(index)->setIcon(QIcon(path));
 }

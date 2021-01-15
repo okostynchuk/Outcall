@@ -55,7 +55,7 @@ signals:
     void callReceived(const QMap<QString, QVariant>& call);
     void error(const QAbstractSocket::SocketError& socketError, const QString& msg);
     void stateChanged(const AsteriskManager::AsteriskState& state);
-    void extenStatusChanged(const QString& exten, const QString& status);
+    void extenStatusChanged(const QString& exten, qint32& state);
 
 private slots:
     void login();
