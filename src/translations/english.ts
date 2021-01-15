@@ -113,15 +113,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>The specified manager number is not registered!</translation>
     </message>
 </context>
 <context>
@@ -243,15 +247,19 @@
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>The specified manager number is not registered!</translation>
     </message>
 </context>
 <context>
@@ -840,7 +848,7 @@
     </message>
     <message>
         <source>Номерa</source>
-        <translation>Phones</translation>
+        <translation type="vanished">Phones</translation>
     </message>
 </context>
 <context>
@@ -1268,15 +1276,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>The specified manager number is not registered!</translation>
     </message>
 </context>
 <context>
@@ -1371,15 +1383,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>The specified manager number is not registered!</translation>
     </message>
 </context>
 <context>
@@ -1894,6 +1910,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Connection to orders database not created!</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>bind</translation>
+    </message>
+    <message>
+        <source>За данным контактом уже закреплен менеджер!</source>
+        <translation>A manager has already been assigned to this contact!</translation>
+    </message>
+    <message>
+        <source>Произошла ошибка!</source>
+        <translation>An error has occurred!</translation>
     </message>
 </context>
 <context>
@@ -2431,15 +2459,15 @@ The app will be restarted!</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
     </message>
 </context>
 <context>
@@ -2678,15 +2706,15 @@ The app will be restarted!</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Cutting (6203):</translation>
+        <translation type="vanished">Cutting (6203):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Regions (6204):</translation>
+        <translation type="vanished">Regions (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Call Center (6207):</translation>
+        <translation type="vanished">Call Center (6207):</translation>
     </message>
 </context>
 </TS>

@@ -114,15 +114,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
 </context>
 <context>
@@ -244,15 +248,19 @@
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
 </context>
 <context>
@@ -841,7 +849,7 @@
     </message>
     <message>
         <source>Номерa</source>
-        <translation>Номерa</translation>
+        <translation type="vanished">Номерa</translation>
     </message>
 </context>
 <context>
@@ -1270,15 +1278,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
 </context>
 <context>
@@ -1373,15 +1385,19 @@
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
+    </message>
+    <message>
+        <source>Указанный номер менеджера не зарегистрирован!</source>
+        <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
 </context>
 <context>
@@ -1896,6 +1912,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Отсутствует подключение к базе заказов!</source>
         <translation>Отсутствует подключение к базе заказов!</translation>
+    </message>
+    <message>
+        <source>Привязать</source>
+        <translation>Привязать</translation>
+    </message>
+    <message>
+        <source>За данным контактом уже закреплен менеджер!</source>
+        <translation>За данным контактом уже закреплен менеджер!</translation>
+    </message>
+    <message>
+        <source>Произошла ошибка!</source>
+        <translation>Произошла ошибка!</translation>
     </message>
 </context>
 <context>
@@ -2434,15 +2462,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
     </message>
 </context>
 <context>
@@ -2681,15 +2709,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Распил (6203):</source>
-        <translation>Распил (6203):</translation>
+        <translation type="vanished">Распил (6203):</translation>
     </message>
     <message>
         <source>Регионы (6204):</source>
-        <translation>Регионы (6204):</translation>
+        <translation type="vanished">Регионы (6204):</translation>
     </message>
     <message>
         <source>Колл-центр (6207):</source>
-        <translation>Колл-центр (6207):</translation>
+        <translation type="vanished">Колл-центр (6207):</translation>
     </message>
 </context>
 </TS>
