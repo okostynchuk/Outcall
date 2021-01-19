@@ -127,6 +127,10 @@
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -260,6 +264,10 @@
     <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
     </message>
 </context>
 <context>
@@ -981,6 +989,14 @@
         <source>Менеджеры</source>
         <translation>Managers</translation>
     </message>
+    <message>
+        <source>Поиск по области</source>
+        <translation>Search by region</translation>
+    </message>
+    <message>
+        <source>Область</source>
+        <translation>Region</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
@@ -1290,6 +1306,10 @@
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1396,6 +1416,10 @@
     <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
     </message>
 </context>
 <context>
@@ -1913,11 +1937,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Привязать</source>
-        <translation>bind</translation>
+        <translation type="vanished">bind</translation>
     </message>
     <message>
         <source>За данным контактом уже закреплен менеджер!</source>
-        <translation>A manager has already been assigned to this contact!</translation>
+        <translation type="vanished">A manager has already been assigned to this contact!</translation>
     </message>
     <message>
         <source>Произошла ошибка!</source>
@@ -2469,6 +2493,10 @@ The app will be restarted!</translation>
         <source>Колл-центр (6207):</source>
         <translation type="vanished">Call Center (6207):</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -2715,6 +2743,10 @@ The app will be restarted!</translation>
     <message>
         <source>Колл-центр (6207):</source>
         <translation type="vanished">Call Center (6207):</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Region:</translation>
     </message>
 </context>
 </TS>

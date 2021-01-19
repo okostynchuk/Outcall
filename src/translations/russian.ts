@@ -128,6 +128,10 @@
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
+    </message>
 </context>
 <context>
     <name>AddExtensionDialog</name>
@@ -261,6 +265,10 @@
     <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Указанный номер менеджера не зарегистрирован!</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
     </message>
 </context>
 <context>
@@ -982,6 +990,14 @@
         <source>Менеджеры</source>
         <translation>Менеджеры</translation>
     </message>
+    <message>
+        <source>Поиск по области</source>
+        <translation>Поиск по области</translation>
+    </message>
+    <message>
+        <source>Область</source>
+        <translation>Область</translation>
+    </message>
 </context>
 <context>
     <name>DatabasesConnectDialog</name>
@@ -1292,6 +1308,10 @@
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Указанный номер менеджера не зарегистрирован!</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
+    </message>
 </context>
 <context>
     <name>EditOrgContactDialog</name>
@@ -1398,6 +1418,10 @@
     <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Указанный номер менеджера не зарегистрирован!</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
     </message>
 </context>
 <context>
@@ -1915,11 +1939,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Привязать</source>
-        <translation>Привязать</translation>
+        <translation type="vanished">Привязать</translation>
     </message>
     <message>
         <source>За данным контактом уже закреплен менеджер!</source>
-        <translation>За данным контактом уже закреплен менеджер!</translation>
+        <translation type="vanished">За данным контактом уже закреплен менеджер!</translation>
     </message>
     <message>
         <source>Произошла ошибка!</source>
@@ -2472,6 +2496,10 @@ p, li { white-space: pre-wrap; }
         <source>Колл-центр (6207):</source>
         <translation type="vanished">Колл-центр (6207):</translation>
     </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
+    </message>
 </context>
 <context>
     <name>ViewOrgContactDialog</name>
@@ -2718,6 +2746,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Колл-центр (6207):</source>
         <translation type="vanished">Колл-центр (6207):</translation>
+    </message>
+    <message>
+        <source>Область:</source>
+        <translation>Область:</translation>
     </message>
 </context>
 </TS>
