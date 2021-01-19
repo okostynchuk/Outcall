@@ -28,6 +28,8 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
+    ui->region->addItems(g_regionsList);
+
     QSqlQuery query(m_db);
 
     query.prepare(QueryStringGetGroups());
@@ -35,8 +37,8 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
 
     while(query.next())
     {
-        QLineEdit* line = new QLineEdit;
-        QLabel* label = new QLabel;
+        QLineEdit* line = new QLineEdit(this);
+        QLabel* label = new QLabel(this);
 
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
@@ -320,7 +322,9 @@ void EditContactDialog::onSave()
         return;
     }
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, entry_person_fname = ?, entry_person_mname = ?, entry_city = ?, entry_address = ?, entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
+    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_person_org_id = ?, entry_person_lname = ?, "
+                  "entry_person_fname = ?, entry_person_mname = ?, entry_region = ?, entry_city = ?, entry_address = ?, "
+                  "entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
     query.addBindValue("person");
 
     if (ui->lastName->text().isEmpty())
@@ -336,6 +340,7 @@ void EditContactDialog::onSave()
     query.addBindValue(lastName);
     query.addBindValue(firstName);
     query.addBindValue(patronymic);
+    query.addBindValue(ui->region->currentText());
     query.addBindValue(ui->city->text());
     query.addBindValue(ui->address->text());
     query.addBindValue(ui->email->text());
@@ -462,20 +467,21 @@ void EditContactDialog::setValues(const QString& id)
     }
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
-                  " entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_person_org_id FROM entry WHERE id = " + m_contactId);
+                  " entry_region, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_person_org_id FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
 
     ui->firstName->setText(query.value(0).toString());
     ui->patronymic->setText(query.value(1).toString());
     ui->lastName->setText(query.value(2).toString());
-    ui->city->setText(query.value(3).toString());
-    ui->address->setText(query.value(4).toString());
-    ui->email->setText(query.value(5).toString());
-    ui->vyborId->setText(query.value(6).toString());
-    ui->comment->setText(query.value(7).toString());
+    ui->region->setCurrentText(query.value(3).toString());
+    ui->city->setText(query.value(4).toString());
+    ui->address->setText(query.value(5).toString());
+    ui->email->setText(query.value(6).toString());
+    ui->vyborId->setText(query.value(7).toString());
+    ui->comment->setText(query.value(8).toString());
 
-    m_orgId = query.value(8).toString();
+    m_orgId = query.value(9).toString();
 }
 
 /**

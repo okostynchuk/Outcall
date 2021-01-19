@@ -196,12 +196,11 @@ PopupReminder::PopupReminder(const PopupReminderInfo& pri, QWidget* parent) :
     ui->comboBox->addItem(tr("Через 1 час"));
     ui->comboBox->addItem(tr("Через 24 часа"));
 
-    QString language = global::getSettingsValue("language", "settings").toString();
-    if (language == "Русский")
+    if (g_language == "Русский")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 16px;} ::drop-down{border: 0px;}");
-    else if (language == "Українська")
+    else if (g_language == "Українська")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 21px;} ::drop-down{border: 0px;}");
-    else if (language == "English")
+    else if (g_language == "English")
         ui->comboBox->setStyleSheet("*{background-color: #ffb64f; border: 1.5px solid #a53501; color: black; padding-left: 40px;} ::drop-down{border: 0px;}");
 
     qobject_cast<QListView*>(ui->comboBox->view())->setRowHidden(0, true);

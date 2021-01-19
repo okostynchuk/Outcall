@@ -606,7 +606,7 @@ QWidget* RemindersDialog::addWidgetContent(qint32 row_index, bool url)
 }
 
 /**
- *
+ * Реализация кнопки просмотра абонентов, которым отправлено напоминание
  */
 QWidget* RemindersDialog::addPushButtonGroup(qint32 row_index)
 {

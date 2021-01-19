@@ -81,6 +81,11 @@
           </item>
           <item>
            <property name="text">
+            <string>Поиск по области</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Поиск по заметке</string>
            </property>
           </item>

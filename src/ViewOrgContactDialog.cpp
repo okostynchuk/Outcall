@@ -11,6 +11,7 @@
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QCompleter>
 
 ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     QDialog(parent),
@@ -60,11 +61,11 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
 
     while(query.next())
     {
-        QLineEdit* line = new QLineEdit;
+        QLineEdit* line = new QLineEdit(this);
         line->setReadOnly(true);
         line->setStyleSheet("*{ background-color: #fffff8;}");
 
-        QLabel* label = new QLabel;
+        QLabel* label = new QLabel(this);
 
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
@@ -104,26 +105,27 @@ void ViewOrgContactDialog::setValues(const QString& id)
         if (m_managers.keys().contains(query.value(0).toString()))
             m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
 
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + m_contactId);
+    query.prepare("SELECT DISTINCT entry_org_name, entry_region, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
 
     ui->orgName->setText(query.value(0).toString());
+    ui->region->setText(query.value(1).toString());
 
-    ui->city->setText(query.value(1).toString());
-    ui->city->QWidget::setToolTip(query.value(1).toString());
+    ui->city->setText(query.value(2).toString());
+    ui->city->QWidget::setToolTip(query.value(2).toString());
     ui->city->setCursorPosition(0);
 
-    ui->address->setText(query.value(2).toString());
-    ui->address->QWidget::setToolTip(query.value(2).toString());
+    ui->address->setText(query.value(3).toString());
+    ui->address->QWidget::setToolTip(query.value(3).toString());
     ui->address->setCursorPosition(0);
 
-    ui->email->setText(query.value(3).toString());
-    ui->email->QWidget::setToolTip(query.value(3).toString());
+    ui->email->setText(query.value(4).toString());
+    ui->email->QWidget::setToolTip(query.value(4).toString());
     ui->email->setCursorPosition(0);
 
-    ui->vyborId->setText(query.value(4).toString());
-    ui->comment->setText(query.value(5).toString());
+    ui->vyborId->setText(query.value(5).toString());
+    ui->comment->setText(query.value(6).toString());
 
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();
@@ -181,12 +183,18 @@ void ViewOrgContactDialog::loadEmployees()
 
     if (m_filter)
     {
-        if (ui->comboBox->currentIndex() == 0)
-             queryString.append("AND ep.entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
-        else if (ui->comboBox->currentIndex() == 1)
+        switch (ui->comboBox->currentIndex())
+        {
+        case 0:
+            queryString.append("AND ep.entry_name LIKE '%" + ui->lineEdit->text() + "%' ");
+            break;
+        case 1:
             queryString.append("AND ep.entry_phone LIKE '%" + ui->lineEdit->text() + "%' ");
-        else if (ui->comboBox->currentIndex() == 2)
+            break;
+        case 2:
             queryString.append("AND ep.entry_comment LIKE '%" + ui->lineEdit->text() + "%' ");
+            break;
+        }
     }
 
     queryString.append("GROUP BY ep.entry_id ORDER BY entry_name ASC");

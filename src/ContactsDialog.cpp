@@ -41,6 +41,7 @@ ContactsDialog::ContactsDialog(QWidget* parent) :
     loadContacts();
 }
 
+
 ContactsDialog::~ContactsDialog()
 {
     delete ui;
@@ -192,7 +193,7 @@ void ContactsDialog::loadContacts()
     m_queryModel = new QSqlQueryModel(this);
 
     QString queryString = "SELECT e.entry_id, e.entry_type, e.entry_name, GROUP_CONCAT(DISTINCT e.entry_phone "
-                          "ORDER BY e.entry_id SEPARATOR '\n'), e.entry_city, e.entry_address, e.entry_email, "
+                          "ORDER BY e.entry_id SEPARATOR '\n'), e.entry_region, e.entry_city, e.entry_address, e.entry_email, "
                           "e.entry_vybor_id, e.entry_comment, (SELECT GROUP_CONCAT(manager_number SEPARATOR '\n') FROM managers m "
                           "WHERE m.entry_id = e.entry_id) FROM entry_phone e ";
 
@@ -202,12 +203,21 @@ void ContactsDialog::loadContacts()
 
     if (m_filter)
     {
-        if (ui->comboBox->currentIndex() == 0)
+        switch (ui->comboBox->currentIndex())
+        {
+        case 0:
             searchString.append("WHERE e.entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
-        else if (ui->comboBox->currentIndex() == 1)
+            break;
+        case 1:
             searchString.append("WHERE e.entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
-        else if (ui->comboBox->currentIndex() == 2)
+            break;
+        case 2:
+            searchString.append("WHERE e.entry_region LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
+            break;
+        case 3:
             searchString.append("WHERE e.entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ");
+            break;
+        }
     }
 
     queryCountString.append(searchString);
@@ -274,13 +284,14 @@ void ContactsDialog::loadContacts()
     m_queryModel->setHeaderData(2, Qt::Horizontal, tr("Тип"));
     m_queryModel->setHeaderData(3, Qt::Horizontal, tr("ФИО / Название"));
     m_queryModel->setHeaderData(4, Qt::Horizontal, tr("Телефон"));
-    m_queryModel->setHeaderData(5, Qt::Horizontal, tr("Город"));
-    m_queryModel->setHeaderData(6, Qt::Horizontal, tr("Адрес"));
-    m_queryModel->setHeaderData(7, Qt::Horizontal, tr("Email"));
-    m_queryModel->setHeaderData(8, Qt::Horizontal, tr("VyborID"));
-    m_queryModel->insertColumn(10);
-    m_queryModel->setHeaderData(10, Qt::Horizontal, tr("Заметка"));
-    m_queryModel->setHeaderData(11, Qt::Horizontal, tr("Менеджеры"));
+    m_queryModel->setHeaderData(5, Qt::Horizontal, tr("Область"));
+    m_queryModel->setHeaderData(6, Qt::Horizontal, tr("Город"));
+    m_queryModel->setHeaderData(7, Qt::Horizontal, tr("Адрес"));
+    m_queryModel->setHeaderData(8, Qt::Horizontal, tr("Email"));
+    m_queryModel->setHeaderData(9, Qt::Horizontal, tr("VyborID"));
+    m_queryModel->insertColumn(11);
+    m_queryModel->setHeaderData(11, Qt::Horizontal, tr("Заметка"));
+    m_queryModel->setHeaderData(12, Qt::Horizontal, tr("Менеджеры"));
 
     ui->tableView->setModel(m_queryModel);
 
@@ -288,16 +299,16 @@ void ContactsDialog::loadContacts()
     {
         ui->tableView->setIndexWidget(m_queryModel->index(row_index, 2), addImageLabel(row_index));
 
-        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(m_queryModel->data(m_queryModel->index(row_index, 9)).toString());
+        QRegularExpressionMatchIterator hrefIterator = m_hrefRegExp.globalMatch(m_queryModel->data(m_queryModel->index(row_index, 10)).toString());
 
         if (hrefIterator.hasNext())
-            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 10), addWidgetNote(row_index, true));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 11), addWidgetNote(row_index, true));
         else
-            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 10), addWidgetNote(row_index, false));
+            ui->tableView->setIndexWidget(m_queryModel->index(row_index, 11), addWidgetNote(row_index, false));
     }
 
     ui->tableView->setColumnHidden(1, true);
-    ui->tableView->setColumnHidden(9, true);
+    ui->tableView->setColumnHidden(10, true);
 
     ui->tableView->horizontalHeader()->setDefaultSectionSize(maximumWidth());
 
@@ -307,10 +318,10 @@ void ContactsDialog::loadContacts()
     if (ui->tableView->model()->columnCount() != 0)
     {
         ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
         ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
         ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Stretch);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(10, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+        ui->tableView->horizontalHeader()->setSectionResizeMode(11, QHeaderView::Stretch);
     }
 
     if (!m_selections.isEmpty())
@@ -354,7 +365,7 @@ QWidget* ContactsDialog::addWidgetNote(qint32 row_index, bool url)
 
     layout->addWidget(noteLabel);
 
-    QString note = m_queryModel->data(m_queryModel->index(row_index, 9)).toString();
+    QString note = m_queryModel->data(m_queryModel->index(row_index, 10)).toString();
 
     if (url)
     {

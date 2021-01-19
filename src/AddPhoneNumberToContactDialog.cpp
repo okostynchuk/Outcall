@@ -132,12 +132,18 @@ void AddPhoneNumberToContactDialog::loadContacts()
 
     if (m_filter == true)
     {
-        if (ui->comboBox->currentIndex() == 0)
+        switch (ui->comboBox->currentIndex())
+        {
+        case 0:
             searchString = "WHERE entry_name LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
-        else if (ui->comboBox->currentIndex() == 1)
+            break;
+        case 1:
             searchString = "WHERE entry_phone LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
-        else if (ui->comboBox->currentIndex() == 2)
+            break;
+        case 2:
             searchString = "WHERE entry_comment LIKE '%" + ui->lineEdit->text().replace(QRegularExpression("\'"), "\'\'") + "%' ";
+            break;
+        }
     }
 
     queryCountString.append(searchString);

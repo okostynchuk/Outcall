@@ -76,25 +76,24 @@ qint32 main(qint32 argc, char* argv[])
             }
     }
 
-    QString language = global::getSettingsValue("language", "settings").toString();
     QTranslator translator;
     QTranslator contextTranslator;
 
-    if (language == "Русский")
+    if (g_language == "Русский")
     {
         translator.load(":/translations/russian.qm");
         contextTranslator.load(":/translations/russianContext.qm");
         app.installTranslator(&translator);
         app.installTranslator(&contextTranslator);
     }
-    else if (language == "Українська")
+    else if (g_language == "Українська")
     {        
         translator.load(":/translations/ukrainian.qm");
         contextTranslator.load(":/translations/ukrainianContext.qm");
         app.installTranslator(&translator);
         app.installTranslator(&contextTranslator);
     }
-    else if (language == "English")
+    else if (g_language == "English")
     {
         translator.load(":/translations/english.qm");
         app.installTranslator(&translator);
@@ -204,6 +203,8 @@ qint32 main(qint32 argc, char* argv[])
         else
             MsgBoxError(QObject::tr("Отсутствует подключение к базе заказов!"));
     }
+
+    global::getRegionsList();
 
     QString username  = global::getSettingsValue("username", "settings").toString();
     QByteArray secret = global::getSettingsValue("password", "settings").toByteArray();

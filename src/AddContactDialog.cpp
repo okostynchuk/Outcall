@@ -32,6 +32,8 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
+    ui->region->addItems(g_regionsList);
+
     QSqlQuery query(m_db);
 
     query.prepare(QueryStringGetGroups());
@@ -39,8 +41,8 @@ AddContactDialog::AddContactDialog(QWidget* parent) :
 
     while(query.next())
     {
-        QLineEdit* line = new QLineEdit;
-        QLabel* label = new QLabel;
+        QLineEdit* line = new QLineEdit(this);
+        QLabel* label = new QLabel(this);
 
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
@@ -214,8 +216,8 @@ void AddContactDialog::onSave()
         return;
     }
 
-    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO entry (entry_type, entry_name, entry_person_org_id, entry_person_lname, entry_person_fname, entry_person_mname, entry_region, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     query.addBindValue("person");
 
     if (ui->lastName->text().isEmpty())
@@ -231,6 +233,7 @@ void AddContactDialog::onSave()
     query.addBindValue(lastName);
     query.addBindValue(firstName);
     query.addBindValue(patronymic);
+    query.addBindValue(ui->region->currentText());
     query.addBindValue(ui->city->text());
     query.addBindValue(ui->address->text());
     query.addBindValue(ui->email->text());

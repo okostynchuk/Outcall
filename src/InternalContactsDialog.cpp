@@ -96,12 +96,18 @@ void InternalContactsDialog::loadContacts()
             m_indexes.insert(ui->listWidget->item(i)->text().remove(QRegularExpression(" .+")), i);
 }
 
+/**
+ * Изменение отображаемого статуса абонента
+ */
 void InternalContactsDialog::onExtenStatusChanged(const QString& exten, qint32& state)
 {
     if (exten != g_personalNumber)
         setIcon(qint32(m_indexes.value(exten)), state);
 }
 
+/**
+ * Установка отображаемого статуса абонента
+ */
 void InternalContactsDialog::setIcon(qint32 index, qint32 state)
 {
     QString path;
@@ -171,6 +177,9 @@ void InternalContactsDialog::on_addReminderButton_clicked()
     m_addReminderDialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+/**
+ * Активация кнопок при клике на элемент списка
+ */
 void InternalContactsDialog::on_listWidget_clicked()
 {
     ui->callButton->setDisabled(false);

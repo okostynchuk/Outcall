@@ -30,6 +30,8 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
 
+    ui->region->addItems(g_regionsList);
+
     QSqlQuery query(m_db);
 
     query.prepare(QueryStringGetGroups());
@@ -37,8 +39,8 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 
     while(query.next())
     {
-        QLineEdit* line = new QLineEdit;
-        QLabel* label = new QLabel;
+        QLineEdit* line = new QLineEdit(this);
+        QLabel* label = new QLabel(this);
 
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
@@ -320,11 +322,12 @@ void EditOrgContactDialog::onSave()
         return;
     }
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_city = ?, entry_address = ?, "
+    query.prepare("UPDATE entry SET entry_type = ?, entry_name = ?, entry_org_name = ?, entry_region = ?, entry_city = ?, entry_address = ?, "
                   "entry_email = ?, entry_vybor_id = ?, entry_comment = ? WHERE id = ?");
     query.addBindValue("org");
     query.addBindValue(orgName);
     query.addBindValue(orgName);
+    query.addBindValue(ui->region->currentText());
     query.addBindValue(ui->city->text());
     query.addBindValue(ui->address->text());
     query.addBindValue(ui->email->text());
@@ -435,17 +438,18 @@ void EditOrgContactDialog::setValues(const QString& id)
         }
     }
 
-    query.prepare("SELECT DISTINCT entry_org_name, entry_city, entry_address, entry_email, entry_vybor_id, "
+    query.prepare("SELECT DISTINCT entry_org_name, entry_region, entry_city, entry_address, entry_email, entry_vybor_id, "
                   "entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
 
     ui->orgName->setText(query.value(0).toString());
-    ui->city->setText(query.value(1).toString());
-    ui->address->setText(query.value(2).toString());
-    ui->email->setText(query.value(3).toString());
-    ui->vyborId->setText(query.value(4).toString());
-    ui->comment->setText(query.value(5).toString());
+    ui->region->setCurrentText(query.value(1).toString());
+    ui->city->setText(query.value(2).toString());
+    ui->address->setText(query.value(3).toString());
+    ui->email->setText(query.value(4).toString());
+    ui->vyborId->setText(query.value(5).toString());
+    ui->comment->setText(query.value(6).toString());
 }
 
 /**

@@ -21,13 +21,11 @@ AddReminderDialog::AddReminderDialog(QWidget* parent) :
 
     ui->employee->setText(g_personalNumberName);
 
-    QString language = global::getSettingsValue("language", "settings").toString();
-
-    if (language == "Русский")
+    if (g_language == "Русский")
         ui->calendarWidget->setLocale(QLocale::Russian);
-    else if (language == "Українська")
+    else if (g_language == "Українська")
         ui->calendarWidget->setLocale(QLocale::Ukrainian);
-    else if (language == "English")
+    else if (g_language == "English")
         ui->calendarWidget->setLocale(QLocale::English);
 
     ui->calendarWidget->setGridVisible(true);

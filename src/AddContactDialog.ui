@@ -414,7 +414,27 @@
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="3" column="1">
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Email:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Адрес:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
             <widget class="QLineEdit" name="vyborId">
              <property name="minimumSize">
               <size>
@@ -434,16 +454,6 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Адрес:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>Город:</string>
@@ -453,18 +463,8 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>Email:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="email">
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="address">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -501,8 +501,8 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="address">
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="email">
              <property name="minimumSize">
               <size>
                <width>235</width>
@@ -520,7 +520,7 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
               <string>VyborID:</string>
@@ -530,7 +530,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item row="2" column="1">
             <widget class="QLineEdit" name="city">
              <property name="minimumSize">
               <size>
@@ -548,6 +548,16 @@
               <enum>Qt::StrongFocus</enum>
              </property>
             </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>Область:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="region"/>
            </item>
           </layout>
          </item>

@@ -37,6 +37,9 @@ Player::~Player()
     delete ui;
 }
 
+/**
+ * Установка медиа-источника
+ */
 void Player::openMedia(QString recordpath)
 {
     QString path = "ftp://support:Lvp^^ej0@192.168.0.8/ftp_media/usb/" + recordpath.remove(0, 16);
@@ -45,22 +48,34 @@ void Player::openMedia(QString recordpath)
     m_mediaPlayer->play();
 }
 
+/**
+ * Получение длительности содержимого
+ */
 void Player::durationChanged(const qint32 duration)
 {
     m_duration = duration / 1000;
 }
 
+/**
+ * Отображение текущего положения проигрывания
+ */
 void Player::updateTime()
 {
     ui->duration->setText(QDateTime::fromTime_t(m_mediaPlayer->position() / 1000).toUTC().toString("mm:ss") + " / " + QDateTime::fromTime_t(m_duration).toUTC().toString("mm:ss"));
 }
 
+/**
+ * Изменение иконки при достижении конца записи
+ */
 void Player::stateChanged()
 {
     if (m_mediaPlayer->state() == QMediaPlayer::StoppedState)
         ui->play->setIcon(QIcon(":/images/play.png"));
 }
 
+/**
+ * Реализация кнопки проигрывания/паузы
+ */
 void Player::on_play_clicked()
 {
     if (m_mediaPlayer->state() == QMediaPlayer::PlayingState)
@@ -77,6 +92,9 @@ void Player::on_play_clicked()
     }
 }
 
+/**
+ * Реализация кнопки отключения звука
+ */
 void Player::on_mute_clicked()
 {
     if (m_mediaPlayer->isMuted())
@@ -93,6 +111,9 @@ void Player::on_mute_clicked()
     }
 }
 
+/**
+ * Выполняет обработку совершения операций с привязанным объектом.
+ */
 bool Player::eventFilter(QObject* watched, QEvent* event)
 {
     if (watched == ui->slider && event->type() == QEvent::MouseButtonRelease)

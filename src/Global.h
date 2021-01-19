@@ -5,6 +5,7 @@
 
 #include <QVariant>
 #include <QMessageBox>
+#include <QSqlDatabase>
 
 #define APP_NAME            "Outcall"
 #define ORGANIZATION_NAME   "Team Nonames"
@@ -18,7 +19,8 @@ extern bool g_ordersDbOpened;
 extern const QString g_personalNumber;
 extern const QString g_personalNumberName;
 extern const QString g_groupNumber;
-extern const QStringList g_regionsList;
+extern const QString g_language;
+extern QStringList g_regionsList;
 
 QString QueryStringGetGroups();
 
@@ -32,6 +34,8 @@ qint32 MsgBoxQuestion(const QString& text, const QString& title = APP_NAME, QWid
 
 namespace global
 {
+    void getRegionsList();
+
     void setSettingsValue(const QString& key, const QVariant& value, const QString& group = "");
 
     QVariant getSettingsValue(const QString& key, const QString& group = "", const QVariant& value = QVariant());

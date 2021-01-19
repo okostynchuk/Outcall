@@ -53,11 +53,11 @@ ViewContactDialog::ViewContactDialog(QWidget* parent) :
 
     while(query.next())
     {
-        QLineEdit* line = new QLineEdit;
+        QLineEdit* line = new QLineEdit(this);
         line->setReadOnly(true);
         line->setStyleSheet("*{ background-color: #fffff8;}");
 
-        QLabel* label = new QLabel;
+        QLabel* label = new QLabel(this);
 
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
@@ -214,7 +214,7 @@ void ViewContactDialog::setValues(const QString& id)
         if (m_managers.keys().contains(query.value(0).toString()))
             m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
 
-    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_city, "
+    query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, entry_region, entry_city, "
                   "entry_address, entry_email, entry_vybor_id, entry_comment FROM entry WHERE id = " + m_contactId);
     query.exec();
     query.next();
@@ -222,22 +222,23 @@ void ViewContactDialog::setValues(const QString& id)
     ui->firstName->setText(query.value(0).toString());
     ui->patronymic->setText(query.value(1).toString());
     ui->lastName->setText(query.value(2).toString());
+    ui->region->setText(query.value(3).toString());
 
-    ui->city->setText(query.value(3).toString());
-    ui->city->QWidget::setToolTip(query.value(3).toString());
+    ui->city->setText(query.value(4).toString());
+    ui->city->QWidget::setToolTip(query.value(4).toString());
     ui->city->setCursorPosition(0);
 
-    ui->address->setText(query.value(4).toString());
-    ui->address->QWidget::setToolTip(query.value(4).toString());
+    ui->address->setText(query.value(5).toString());
+    ui->address->QWidget::setToolTip(query.value(5).toString());
     ui->address->setCursorPosition(0);
 
-    ui->email->setText(query.value(5).toString());
-    ui->email->QWidget::setToolTip(query.value(5).toString());
+    ui->email->setText(query.value(6).toString());
+    ui->email->QWidget::setToolTip(query.value(6).toString());
     ui->email->setCursorPosition(0);
 
-    ui->vyborId->setText(query.value(6).toString());
+    ui->vyborId->setText(query.value(7).toString());
 
-    ui->comment->setText(query.value(7).toString());
+    ui->comment->setText(query.value(8).toString());
 
     if (ui->vyborId->text() == "0")
         ui->openAccessButton->hide();

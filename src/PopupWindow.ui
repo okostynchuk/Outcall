@@ -1986,9 +1986,9 @@ border-right-color: transparent;
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>30</x>
      <y>220</y>
-     <width>171</width>
+     <width>181</width>
      <height>91</height>
     </rect>
    </property>

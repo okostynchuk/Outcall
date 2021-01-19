@@ -107,7 +107,8 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
                 if (labels.value(g_groupNumber)->text().isEmpty())
                 {
                     QPushButton* button = new QPushButton(this);
-                    button->setText(tr("Привязать"));
+                    button->setIcon(QIcon(":/images/bind_2.png"));
+                    button->setMaximumSize(35, 20);
                     connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
 
                     button->setProperty("id", QVariant::fromValue(id));
@@ -233,47 +234,6 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
 
     m_timer.setInterval(timerDelay);
     m_timer.start();
-}
-
-void PopupWindow::onLinkButton()
-{
-    qint32 id = sender()->property("id").value<qint32>();
-
-    QPushButton* button = sender()->property("widget").value<QPushButton*>();
-    button->hide();
-
-    QSqlQuery query(m_db);
-
-    query.prepare("SELECT manager_number FROM managers WHERE entry_id = ? AND group_number = ?");
-    query.addBindValue(id);
-    query.addBindValue(g_groupNumber);
-    query.exec();
-
-    if (query.next())
-    {
-        if (query.value(0).toString().isEmpty())
-        {
-            query.prepare("UPDATE managers SET manager_number = ? WHERE entry_id = ? AND group_number = ?");
-            query.addBindValue(g_personalNumber);
-            query.addBindValue(id);
-            query.addBindValue(g_groupNumber);
-            query.exec();
-        }
-        else
-            MsgBoxInformation(tr("За данным контактом уже закреплен менеджер!"));
-    }
-    else
-    {
-        query.prepare("INSERT INTO managers (entry_id, group_number, manager_number)"
-                       "VALUES(?, ?, ?)");
-        query.addBindValue(id);
-        query.addBindValue(g_groupNumber);
-        query.addBindValue(g_personalNumber);
-        if (!query.exec())
-            MsgBoxError(tr("Произошла ошибка!"));
-    }
-
-    receiveData(true);
 }
 
 PopupWindow::~PopupWindow()
@@ -754,7 +714,8 @@ void PopupWindow::receiveData(bool update)
                     if (labels.value(g_groupNumber)->text().isEmpty())
                     {
                         QPushButton* button = new QPushButton(this);
-                        button->setText(tr("Привязать"));
+                        button->setIcon(QIcon(":/images/bind_2.png"));
+                        button->setMaximumSize(35, 20);
                         connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
 
                         button->setProperty("id", QVariant::fromValue(id));
@@ -859,6 +820,30 @@ void PopupWindow::keyPressEvent(QKeyEvent* event)
     }
     else
         QDialog::keyPressEvent(event);
+}
+
+/**
+ * Обработка нажатия кнопки привязки клиента
+ */
+void PopupWindow::onLinkButton()
+{
+    qint32 id = sender()->property("id").value<qint32>();
+
+    QPushButton* button = sender()->property("widget").value<QPushButton*>();
+    button->hide();
+
+    QSqlQuery query(m_db);
+
+    query.prepare("INSERT INTO managers (entry_id, group_number, manager_number)"
+                   "VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE manager_number = VALUES(manager_number)");
+    query.addBindValue(id);
+    query.addBindValue(g_groupNumber);
+    query.addBindValue(g_personalNumber);
+    if (!query.exec())
+        MsgBoxError(tr("Произошла ошибка!"));
+
+
+    receiveData(true);
 }
 
 /**
