@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>466</height>
+    <width>609</width>
+    <height>402</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -252,7 +252,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_3">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -268,7 +268,7 @@ background-color: #fffff8;
         <widget class="QLabel" name="label_5">
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -284,7 +284,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="fifthNumber">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>210</width>
                <height>20</height>
               </size>
              </property>
@@ -308,7 +308,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_19">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -320,7 +320,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_7">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -332,7 +332,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_6">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -344,7 +344,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="thirdNumber">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>210</width>
                <height>20</height>
               </size>
              </property>
@@ -368,7 +368,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="fourthNumber">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>210</width>
                <height>20</height>
               </size>
              </property>
@@ -392,7 +392,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_8">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -404,7 +404,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="secondNumber">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>210</width>
                <height>20</height>
               </size>
              </property>
@@ -428,7 +428,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_18">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -440,7 +440,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="firstNumber">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>210</width>
                <height>20</height>
               </size>
              </property>
@@ -460,7 +460,7 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="5" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -481,7 +481,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="vyborId">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>280</width>
                <height>20</height>
               </size>
              </property>
@@ -505,7 +505,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_12">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -517,7 +517,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="email">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>280</width>
                <height>20</height>
               </size>
              </property>
@@ -544,7 +544,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="city">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>280</width>
                <height>20</height>
               </size>
              </property>
@@ -568,7 +568,7 @@ background-color: #fffff8;
             <widget class="QLineEdit" name="address">
              <property name="minimumSize">
               <size>
-               <width>235</width>
+               <width>280</width>
                <height>20</height>
               </size>
              </property>
@@ -592,7 +592,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_11">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -604,7 +604,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_10">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -616,7 +616,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_9">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -626,6 +626,12 @@ background-color: #fffff8;
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="region">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">*{
 background-color: #fffff8;
@@ -640,7 +646,7 @@ background-color: #fffff8;
             <widget class="QLabel" name="label_2">
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -648,8 +654,14 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
+           <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -661,20 +673,14 @@ background-color: #fffff8;
        </item>
        <item row="3" column="0">
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_17">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Заметка:</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0" colspan="3">
           <widget class="QTextEdit" name="comment">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::StrongFocus</enum>
            </property>
@@ -688,6 +694,18 @@ background-color: #fffff0;
            </property>
            <property name="readOnly">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="3">
+          <widget class="QLabel" name="label_17">
+           <property name="font">
+            <font>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Заметка:</string>
            </property>
           </widget>
          </item>

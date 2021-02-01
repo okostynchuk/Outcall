@@ -212,7 +212,7 @@ text-align: center;
   <widget class="QPushButton" name="addReminderButton">
    <property name="geometry">
     <rect>
-     <x>362</x>
+     <x>360</x>
      <y>220</y>
      <width>35</width>
      <height>35</height>
@@ -1045,8 +1045,8 @@ QToolTip {
       <colorrole role="AlternateBase">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>127</red>
-         <green>127</green>
+         <red>0</red>
+         <green>0</green>
          <blue>255</blue>
         </color>
        </brush>
@@ -1182,8 +1182,8 @@ QToolTip {
       <colorrole role="AlternateBase">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>127</red>
-         <green>127</green>
+         <red>0</red>
+         <green>0</green>
          <blue>255</blue>
         </color>
        </brush>
@@ -1997,7 +1997,7 @@ border-right-color: transparent;
   <widget class="QPushButton" name="addPersonButton">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>320</x>
      <y>260</y>
      <width>35</width>
      <height>35</height>
@@ -2469,7 +2469,7 @@ border-right-color: transparent;
   <widget class="QPushButton" name="addOrgButton">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>360</x>
      <y>260</y>
      <width>35</width>
      <height>35</height>
@@ -2941,7 +2941,7 @@ border-right-color: transparent;
   <widget class="QPushButton" name="addPhoneNumberButton">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>267</x>
      <y>260</y>
      <width>47</width>
      <height>35</height>
@@ -3413,8 +3413,8 @@ border-right-color: transparent;
   <widget class="QPushButton" name="showCardButton">
    <property name="geometry">
     <rect>
-     <x>362</x>
-     <y>261</y>
+     <x>320</x>
+     <y>260</y>
      <width>35</width>
      <height>35</height>
     </rect>
@@ -3888,7 +3888,7 @@ border-right-color: transparent;
   <widget class="QPushButton" name="openAccessButton">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>360</x>
      <y>260</y>
      <width>35</width>
      <height>35</height>

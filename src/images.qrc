@@ -45,6 +45,6 @@
         <file>images/warning.png</file>
         <file>images/information.png</file>
         <file>images/error.png</file>
-        <file>images/bind_2.png</file>
+        <file>images/bindDepartment.png</file>
     </qresource>
 </RCC>

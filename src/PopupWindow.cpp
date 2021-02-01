@@ -107,8 +107,15 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
                 if (labels.value(g_groupNumber)->text().isEmpty())
                 {
                     QPushButton* button = new QPushButton(this);
-                    button->setIcon(QIcon(":/images/bind_2.png"));
-                    button->setMaximumSize(35, 20);
+                    button->setIcon(QIcon(":/images/bindDepartment.png"));
+                    button->setMaximumSize(40, 27);
+
+                    QPalette palette = button->palette();
+                    palette.setColor(QPalette::Button, QColor(Qt::blue));
+                    button->setAutoFillBackground(true);
+                    button->setPalette(palette);
+                    button->update();
+
                     connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
 
                     button->setProperty("id", QVariant::fromValue(id));
@@ -714,8 +721,15 @@ void PopupWindow::receiveData(bool update)
                     if (labels.value(g_groupNumber)->text().isEmpty())
                     {
                         QPushButton* button = new QPushButton(this);
-                        button->setIcon(QIcon(":/images/bind_2.png"));
-                        button->setMaximumSize(35, 20);
+                        button->setIcon(QIcon(":/images/bindDepartment.png"));
+                        button->setMaximumSize(40, 27);
+
+                        QPalette palette = button->palette();
+                        palette.setColor(QPalette::Button, QColor(Qt::blue));
+                        button->setAutoFillBackground(true);
+                        button->setPalette(palette);
+                        button->update();
+
                         connect(button, &QPushButton::clicked, this, &PopupWindow::onLinkButton);
 
                         button->setProperty("id", QVariant::fromValue(id));
