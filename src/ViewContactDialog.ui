@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>632</width>
-    <height>440</height>
+    <width>728</width>
+    <height>427</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -42,7 +42,7 @@
       <attribute name="title">
        <string>Резюме физ. лица</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_12">
+      <layout class="QGridLayout" name="gridLayout_13">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
@@ -344,118 +344,46 @@ background-color: #fffff8;
         </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Номера:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_11">
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="fourthNumber">
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_5">
              <property name="minimumSize">
               <size>
-               <width>210</width>
+               <width>0</width>
                <height>20</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
              </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
+             <property name="text">
+              <string>Номера:</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="fifthNumber">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_16">
              <property name="minimumSize">
               <size>
-               <width>210</width>
+               <width>0</width>
                <height>20</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
              </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
+             <property name="text">
+              <string>Комментарии:</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>2</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>3</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_19">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>5</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>4</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
             <widget class="QLabel" name="label_6">
              <property name="font">
               <font>
@@ -467,55 +395,7 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="thirdNumber">
-             <property name="minimumSize">
-              <size>
-               <width>210</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="secondNumber">
-             <property name="minimumSize">
-              <size>
-               <width>210</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-background-color: #fffff8;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
             <widget class="QLineEdit" name="firstNumber">
              <property name="minimumSize">
               <size>
@@ -539,7 +419,241 @@ background-color: #fffff8;
              </property>
             </widget>
            </item>
-           <item row="5" column="0" colspan="2">
+           <item row="1" column="2">
+            <widget class="QLineEdit" name="firstNumberComment">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>2</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="secondNumber">
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLineEdit" name="secondNumberComment">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>3</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="thirdNumber">
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLineEdit" name="thirdNumberComment">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>4</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="fourthNumber">
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLineEdit" name="fourthNumberComment">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>5</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="fifthNumber">
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QLineEdit" name="fifthNumberComment">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+background-color: #fffff8;
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -554,7 +668,7 @@ background-color: #fffff8;
            </item>
           </layout>
          </item>
-         <item>
+         <item row="0" column="1">
           <layout class="QGridLayout" name="gridLayout">
            <item row="2" column="1">
             <widget class="QLineEdit" name="city">
@@ -770,7 +884,7 @@ background-color: #fffff8;
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="1" column="0" colspan="3">
           <widget class="QTextEdit" name="comment">
@@ -1220,6 +1334,7 @@ background-color: #fffff0;
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget_2</tabstop>
   <tabstop>callButton</tabstop>
   <tabstop>openAccessButton</tabstop>
   <tabstop>addReminderButton</tabstop>
@@ -1228,11 +1343,17 @@ background-color: #fffff0;
   <tabstop>firstName</tabstop>
   <tabstop>patronymic</tabstop>
   <tabstop>firstNumber</tabstop>
+  <tabstop>firstNumberComment</tabstop>
   <tabstop>secondNumber</tabstop>
+  <tabstop>secondNumberComment</tabstop>
   <tabstop>thirdNumber</tabstop>
+  <tabstop>thirdNumberComment</tabstop>
   <tabstop>fourthNumber</tabstop>
+  <tabstop>fourthNumberComment</tabstop>
   <tabstop>fifthNumber</tabstop>
+  <tabstop>fifthNumberComment</tabstop>
   <tabstop>organization</tabstop>
+  <tabstop>region</tabstop>
   <tabstop>city</tabstop>
   <tabstop>address</tabstop>
   <tabstop>vyborId</tabstop>

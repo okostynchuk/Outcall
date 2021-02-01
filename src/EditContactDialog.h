@@ -58,8 +58,10 @@ private:
     QPointer<AddOrgToPerson> m_addOrgToPerson;
 
     QList<QLineEdit*> m_phones;
+    QList<QLineEdit*> m_phonesComments;
 
     QStringList m_oldPhones;
+    QStringList m_oldComments;
 
     QMap<QString, QLineEdit*> m_managers;
     QMap<QString, QString> m_oldManagers;

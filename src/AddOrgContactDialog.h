@@ -38,6 +38,7 @@ private:
     QSqlDatabase m_db;
 
     QList<QLineEdit*> m_phones;
+    QList<QLineEdit*> m_phonesComments;
 
     QMap<QString, QLineEdit*> m_managers;
 };

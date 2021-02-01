@@ -29,6 +29,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phonesComments = { ui->firstNumberComment, ui->secondNumberComment, ui->thirdNumberComment, ui->fourthNumberComment, ui->fifthNumberComment };
 
     ui->region->addItems(g_regionsList);
 
@@ -172,16 +173,21 @@ void EditOrgContactDialog::onSave()
     QString orgName = ui->orgName->text();
 
     QStringList actualPhonesList;
+    QStringList actualPhonesCommentsList;
 
     for (qint32 i = 0; i < m_phones.length(); ++i)
     {
         if (i < m_oldPhones.length() && m_phones.at(i)->text() == m_oldPhones.at(i))
+        {
             actualPhonesList.append(m_phones.at(i)->text());
+            actualPhonesCommentsList.append(m_phonesComments.at(i)->text());
+        }
         else
         {
             m_phones.at(i)->setStyleSheet("border: 1px solid grey");
 
             actualPhonesList.append(m_phones.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+            actualPhonesCommentsList.append(m_phonesComments.at(i)->text());
         }
     }
 
@@ -341,16 +347,18 @@ void EditOrgContactDialog::onSave()
         {
             if (i >= m_oldPhones.length())
             {
-                query.prepare("INSERT INTO fones (entry_id, fone)"
-                               "VALUES(?, ?)");
+                query.prepare("INSERT INTO fones (entry_id, fone, comment)"
+                               "VALUES(?, ?, ?)");
                 query.addBindValue(m_contactId);
                 query.addBindValue(actualPhonesList.at(i));
+                query.addBindValue(actualPhonesCommentsList.at(i));
                 query.exec();
             }
             else
             {
-                query.prepare("UPDATE fones SET fone = ? WHERE entry_id = ? AND fone = ?");
+                query.prepare("UPDATE fones SET fone = ?, comment = ? WHERE entry_id = ? AND fone = ?");
                 query.addBindValue(actualPhonesList.at(i));
+                 query.addBindValue(actualPhonesCommentsList.at(i));
                 query.addBindValue(m_contactId);
                 query.addBindValue(m_oldPhones.at(i));
                 query.exec();
@@ -424,6 +432,15 @@ void EditOrgContactDialog::setValues(const QString& id)
 
     for (qint32 i = 0; i < m_oldPhones.length(); ++i)
         m_phones.at(i)->setText(m_oldPhones.at(i));
+
+    query.prepare("SELECT comment FROM fones WHERE entry_id = " + m_contactId);
+        query.exec();
+
+        while (query.next())
+             m_oldComments.append(query.value(0).toString());
+
+        for (qint32 i = 0; i < m_oldComments.length(); ++i)
+            m_phonesComments.at(i)->setText(m_oldComments.at(i));
 
     query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();

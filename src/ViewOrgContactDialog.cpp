@@ -53,6 +53,7 @@ ViewOrgContactDialog::ViewOrgContactDialog(QWidget* parent) :
     ui->playAudioPhone->setDisabled(true);
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phonesComments = { ui->firstNumberComment, ui->secondNumberComment, ui->thirdNumberComment, ui->fourthNumberComment, ui->fifthNumberComment };
 
     QSqlQuery query(m_db);
 
@@ -97,6 +98,15 @@ void ViewOrgContactDialog::setValues(const QString& id)
 
     for (qint32 i = 0; i < m_numbers.length(); ++i)
         m_phones.at(i)->setText(m_numbers.at(i));
+
+    query.prepare("SELECT comment FROM fones WHERE entry_id = " + m_contactId);
+    query.exec();
+
+    while (query.next())
+         m_comments.append(query.value(0).toString());
+
+    for (qint32 i = 0; i < m_comments.length(); ++i)
+        m_phonesComments.at(i)->setText(m_comments.at(i));
 
     query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();

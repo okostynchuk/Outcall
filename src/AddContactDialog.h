@@ -50,6 +50,7 @@ private:
     QPointer<AddOrgToPerson> m_addOrgToPerson;
 
     QList<QLineEdit*> m_phones;
+    QList<QLineEdit*> m_phonesComments;
 
     QMap<QString, QLineEdit*> m_managers;
 

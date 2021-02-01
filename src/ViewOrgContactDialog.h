@@ -106,10 +106,12 @@ private:
     QWidget* loadName(const QString& src, const QString& dst);
 
     QStringList m_numbers;
+    QStringList m_comments;
 
     QMap<QString, QLineEdit*> m_managers;
 
     QList<QLineEdit*> m_phones;
+    QList<QLineEdit*> m_phonesComments;
 
     QList<QWidget*> m_widgets;
 };

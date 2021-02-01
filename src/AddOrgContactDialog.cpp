@@ -22,6 +22,7 @@ AddOrgContactDialog::AddOrgContactDialog(QWidget* parent) :
     connect(ui->saveButton, &QAbstractButton::clicked, this, &AddOrgContactDialog::onSave);
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phonesComments = { ui->firstNumberComment, ui->secondNumberComment, ui->thirdNumberComment, ui->fourthNumberComment, ui->fifthNumberComment };
 
     ui->region->addItems(g_regionsList);
 
@@ -71,12 +72,14 @@ void AddOrgContactDialog::onSave()
     QString orgName = ui->orgName->text();
 
     QStringList phonesListRegExp;
+    QStringList phoneCommentsList;
 
     for (qint32 i = 0; i < m_phones.length(); ++i)
     {
         m_phones.at(i)->setStyleSheet("border: 1px solid grey");
 
         phonesListRegExp.append(m_phones.at(i)->text().remove(QRegularExpression("^[\\+]?[3]?[8]?")));
+        phoneCommentsList.append(m_phonesComments.at(i)->text());
     }
 
     bool empty_field = false;
@@ -223,10 +226,11 @@ void AddOrgContactDialog::onSave()
     for (qint32 i = 0; i < m_phones.length(); ++i)
         if (!m_phones.at(i)->text().isEmpty())
         {
-            query.prepare("INSERT INTO fones (entry_id, fone)"
-                           "VALUES(?, ?)");
+            query.prepare("INSERT INTO fones (entry_id, fone, comment)"
+                           "VALUES(?, ?, ?)");
             query.addBindValue(id);
             query.addBindValue(phonesListRegExp.at(i));
+            query.addBindValue(phoneCommentsList.at(i));
             query.exec();
         }
 
