@@ -109,6 +109,7 @@ PopupWindow::PopupWindow(const PopupWindowInfo& pwi, QWidget* parent) :
                     QPushButton* button = new QPushButton(this);
                     button->setIcon(QIcon(":/images/bindDepartment.png"));
                     button->setMaximumSize(40, 27);
+                    button->setToolTip(tr(""));
 
                     QPalette palette = button->palette();
                     palette.setColor(QPalette::Button, QColor(Qt::blue));
@@ -723,6 +724,7 @@ void PopupWindow::receiveData(bool update)
                         QPushButton* button = new QPushButton(this);
                         button->setIcon(QIcon(":/images/bindDepartment.png"));
                         button->setMaximumSize(40, 27);
+                        button->setToolTip(tr(""));
 
                         QPalette palette = button->palette();
                         palette.setColor(QPalette::Button, QColor(Qt::blue));

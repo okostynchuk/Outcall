@@ -46,5 +46,7 @@
         <file>images/information.png</file>
         <file>images/error.png</file>
         <file>images/bindDepartment.png</file>
+        <file>images/arrowDown.png</file>
+        <file>images/arrowUp.png</file>
     </qresource>
 </RCC>
