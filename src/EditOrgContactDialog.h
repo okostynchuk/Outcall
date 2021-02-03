@@ -1,12 +1,15 @@
 #ifndef EDITORGCONTACTDIALOG_H
 #define EDITORGCONTACTDIALOG_H
 
+#include "ChooseNumber.h"
+
 #include <QDialog>
 #include <QLineEdit>
 #include <QValidator>
 #include <QKeyEvent>
 #include <QSqlDatabase>
 #include <QTextCursor>
+#include <QPointer>
 
 namespace Ui {
 class EditOrgContactDialog;
@@ -34,6 +37,8 @@ private slots:
     void onReturn();
     void onTextChanged();
     void onCursorPosChanged();
+    void on_phonesOrderButton_clicked();
+    void updatePhonesOrder();
 
     bool isPhone(QString* str);
 
@@ -48,6 +53,8 @@ private:
 
     QList<QLineEdit*> m_phones;
     QList<QLineEdit*> m_phonesComments;
+
+    QPointer<ChooseNumber> m_chooseNumber;
 
     QStringList m_oldPhones;
     QStringList m_oldComments;

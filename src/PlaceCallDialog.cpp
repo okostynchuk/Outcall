@@ -74,7 +74,7 @@ void PlaceCallDialog::showNumber(const QModelIndex& index)
     else
     {
         m_chooseNumber = new ChooseNumber;
-        m_chooseNumber->setValues(phonesList);
+        m_chooseNumber->setValues(id, 0);
         connect(m_chooseNumber, &ChooseNumber::sendNumber, this, &PlaceCallDialog::receiveNumber);
         m_chooseNumber->show();
         m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);

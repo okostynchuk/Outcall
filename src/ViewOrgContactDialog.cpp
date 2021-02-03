@@ -90,23 +90,20 @@ void ViewOrgContactDialog::setValues(const QString& id)
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + m_contactId);
+    query.prepare("SELECT fone, comment FROM fones WHERE entry_id = " + m_contactId + " ORDER BY priority");
     query.exec();
 
     while (query.next())
+    {
          m_numbers.append(query.value(0).toString());
+         m_comments.append(query.value(1).toString());
+    }
 
     for (qint32 i = 0; i < m_numbers.length(); ++i)
+    {
         m_phones.at(i)->setText(m_numbers.at(i));
-
-    query.prepare("SELECT comment FROM fones WHERE entry_id = " + m_contactId);
-    query.exec();
-
-    while (query.next())
-         m_comments.append(query.value(0).toString());
-
-    for (qint32 i = 0; i < m_comments.length(); ++i)
         m_phonesComments.at(i)->setText(m_comments.at(i));
+    }
 
     query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();
@@ -842,7 +839,7 @@ void ViewOrgContactDialog::onCall()
             m_chooseNumber->close();
 
         m_chooseNumber = new ChooseNumber;
-        m_chooseNumber->setValues(m_numbers);
+        m_chooseNumber->setValues(m_contactId, 0);
         m_chooseNumber->show();
         m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
     }

@@ -27,6 +27,7 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     connect(ui->comment, &QTextEdit::cursorPositionChanged, this, &EditOrgContactDialog::onCursorPosChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
+    connect(ui->phonesOrderButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::on_phonesOrderButton_clicked);
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
     m_phonesComments = { ui->firstNumberComment, ui->secondNumberComment, ui->thirdNumberComment, ui->fourthNumberComment, ui->fifthNumberComment };
@@ -67,6 +68,18 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
 EditOrgContactDialog::~EditOrgContactDialog()
 {
     delete ui;
+}
+
+void EditOrgContactDialog::on_phonesOrderButton_clicked()
+{
+    if (!m_chooseNumber.isNull())
+        m_chooseNumber->close();
+
+    m_chooseNumber = new ChooseNumber;
+    connect(m_chooseNumber, &ChooseNumber::phonesOrderChanged, this, &EditOrgContactDialog::updatePhonesOrder);
+    m_chooseNumber->setValues(m_contactId, 1);
+    m_chooseNumber->show();
+    m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 /**
@@ -358,7 +371,7 @@ void EditOrgContactDialog::onSave()
             {
                 query.prepare("UPDATE fones SET fone = ?, comment = ? WHERE entry_id = ? AND fone = ?");
                 query.addBindValue(actualPhonesList.at(i));
-                 query.addBindValue(actualPhonesCommentsList.at(i));
+                query.addBindValue(actualPhonesCommentsList.at(i));
                 query.addBindValue(m_contactId);
                 query.addBindValue(m_oldPhones.at(i));
                 query.exec();
@@ -424,24 +437,6 @@ void EditOrgContactDialog::setValues(const QString& id)
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT entry_phone FROM entry_phone WHERE entry_id = " + m_contactId);
-    query.exec();
-
-    while (query.next())
-        m_oldPhones.append(query.value(0).toString());
-
-    for (qint32 i = 0; i < m_oldPhones.length(); ++i)
-        m_phones.at(i)->setText(m_oldPhones.at(i));
-
-    query.prepare("SELECT comment FROM fones WHERE entry_id = " + m_contactId);
-        query.exec();
-
-        while (query.next())
-             m_oldComments.append(query.value(0).toString());
-
-        for (qint32 i = 0; i < m_oldComments.length(); ++i)
-            m_phonesComments.at(i)->setText(m_oldComments.at(i));
-
     query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();
 
@@ -453,6 +448,13 @@ void EditOrgContactDialog::setValues(const QString& id)
 
             m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
         }
+    }
+
+    updatePhonesOrder();
+
+    if (m_oldPhones.length() > 1)
+    {
+        ui->phonesOrderButton->setEnabled(true);
     }
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_region, entry_city, entry_address, entry_email, entry_vybor_id, "
@@ -467,6 +469,29 @@ void EditOrgContactDialog::setValues(const QString& id)
     ui->email->setText(query.value(4).toString());
     ui->vyborId->setText(query.value(5).toString());
     ui->comment->setText(query.value(6).toString());
+}
+
+void EditOrgContactDialog::updatePhonesOrder()
+{
+    if (!m_oldPhones.isEmpty())
+        m_oldPhones.clear();
+    if (!m_oldComments.isEmpty())
+        m_oldComments.clear();
+
+    QSqlQuery query(m_db);
+    query.prepare("SELECT fone, comment FROM fones WHERE entry_id = " + m_contactId + " ORDER BY priority");
+    query.exec();
+
+    while (query.next())
+    {
+        m_oldPhones.append(query.value(0).toString());
+        m_oldComments.append(query.value(1).toString());
+    }
+
+    for (qint32 i = 0; i < m_oldPhones.length(); ++i)
+        m_phones.at(i)->setText(m_oldPhones.at(i));
+    for (qint32 i = 0; i < m_oldComments.length(); ++i)
+        m_phonesComments.at(i)->setText(m_oldComments.at(i));
 }
 
 /**
