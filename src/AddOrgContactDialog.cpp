@@ -226,10 +226,11 @@ void AddOrgContactDialog::onSave()
     for (qint32 i = 0; i < m_phones.length(); ++i)
         if (!m_phones.at(i)->text().isEmpty())
         {
-            query.prepare("INSERT INTO fones (entry_id, fone, comment)"
-                           "VALUES(?, ?, ?)");
+            query.prepare("INSERT INTO fones (entry_id, fone, priority, comment)"
+                           "VALUES(?, ?, ?, ?)");
             query.addBindValue(id);
             query.addBindValue(phonesListRegExp.at(i));
+            query.addBindValue(i);
             query.addBindValue(phoneCommentsList.at(i));
             query.exec();
         }

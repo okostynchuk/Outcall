@@ -268,6 +268,7 @@ void AsteriskManager::parseEvent(const QString& eventData)
     {
         QMap<QString, QString> eventValues;
         getEventValues(eventData, eventValues);
+
         if (eventValues.value("Context") == "hintextens")
         {
             const QString exten  = eventValues.value("Exten");
