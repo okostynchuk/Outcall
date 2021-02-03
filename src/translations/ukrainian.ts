@@ -113,24 +113,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Зазначений номер менеджера не зареєстрований!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
     </message>
 </context>
 <context>
@@ -251,24 +243,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Зазначений номер менеджера не зареєстрований!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
     </message>
 </context>
 <context>
@@ -856,8 +840,12 @@
         <translation>Оберіть номер</translation>
     </message>
     <message>
-        <source>Номерa</source>
-        <translation type="vanished">Номери</translation>
+        <source>Сохранить</source>
+        <translation>Зберегти</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
     </message>
 </context>
 <context>
@@ -1293,24 +1281,36 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Зазначений номер менеджера не зареєстрований!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Изменить тип контакта на организацию</source>
+        <translation>Змінити тип контакту на організацію</translation>
+    </message>
+    <message>
+        <source>Изменить порядок номеров</source>
+        <translation>Змінити порядок номерів</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
+    </message>
+    <message>
+        <source>Предупреждение</source>
+        <translation>Попередження</translation>
+    </message>
+    <message>
+        <source>Измененные данные не сохранятся! Вы уверены, что хотите продолжить?</source>
+        <translation>Змінені дані не будуть збережені! Ви впевнені, що хочете продовжити?</translation>
+    </message>
+    <message>
+        <source>Тип контакта успешно изменен!</source>
+        <translation>Тип контакту успішно змінено!</translation>
     </message>
 </context>
 <context>
@@ -1404,24 +1404,36 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - поля обов&apos;язкові до заповнення</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>Зазначений номер менеджера не зареєстрований!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Изменить тип контакта на физ. лицо</source>
+        <translation>Змінити тип контакту на фіз. особу</translation>
+    </message>
+    <message>
+        <source>Изменить порядок номеров</source>
+        <translation>Змінити порядок номерів</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
+    </message>
+    <message>
+        <source>Предупреждение</source>
+        <translation>Попередження</translation>
+    </message>
+    <message>
+        <source>Измененные данные не сохранятся! Все сотрудник организации будут откреплены! Вы уверены, что хотите продолжить?</source>
+        <translation>Змінені дані не будуть збережені! Все співробітник організації будуть відкріплені! Ви впевнені, що хочете продовжити?</translation>
+    </message>
+    <message>
+        <source>Тип контакта успешно изменен!</source>
+        <translation>Тип контакту успішно змінено!</translation>
     </message>
 </context>
 <context>
@@ -1938,16 +1950,12 @@ p, li { white-space: pre-wrap; }
         <translation>Відсутнє підключення до бази замовлень!</translation>
     </message>
     <message>
-        <source>Привязать</source>
-        <translation type="vanished">Прив&apos;язати</translation>
-    </message>
-    <message>
-        <source>За данным контактом уже закреплен менеджер!</source>
-        <translation type="vanished">За даним контактом вже закріплений менеджер!</translation>
-    </message>
-    <message>
         <source>Произошла ошибка!</source>
         <translation>Виникла помилка!</translation>
+    </message>
+    <message>
+        <source>Привязать клиента к себе</source>
+        <translation>Прив&apos;язати клієнта до себе</translation>
     </message>
 </context>
 <context>
@@ -2484,20 +2492,12 @@ p, li { white-space: pre-wrap; }
         <translation>Прийнятий</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
     </message>
 </context>
 <context>
@@ -2735,20 +2735,12 @@ p, li { white-space: pre-wrap; }
         <translation>Прийнятий</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Розпил (6203):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Регіони (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Колл-центр (6207):</translation>
-    </message>
-    <message>
         <source>Область:</source>
         <translation>Область:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Коментарі:</translation>
     </message>
 </context>
 </TS>

@@ -42,6 +42,9 @@ EditContactDialog::EditContactDialog(QWidget* parent) :
         QLineEdit* line = new QLineEdit(this);
         QLabel* label = new QLabel(this);
 
+        label->setMinimumHeight(20);
+        line->setMinimumHeight(20);
+
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
 
@@ -186,18 +189,32 @@ void EditContactDialog::changeEntryType()
     QString patronymic = ui->patronymic->text();
     QString orgName = lastName + firstName + patronymic;
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_person_org_id = NULL, entry_org_name = ? WHERE id = ?");
+    qint32 msgBox = QMessageBox::information(this, tr("Предупреждение"), tr("Измененные данные не сохранятся!"
+                                                                            " Вы уверены, что хотите продолжить?"), QMessageBox::Ok, QMessageBox::Cancel);
 
-    query.addBindValue("org");
-    query.addBindValue(orgName);
-    query.addBindValue(m_contactId);
-    query.exec();
+    switch (msgBox)
+    {
+    case QMessageBox::Ok:
 
-    emit sendData(true, this->pos().x(), this->pos().y());
+        query.prepare("UPDATE entry SET entry_type = ?, entry_person_org_id = NULL, entry_org_name = ? WHERE id = ?");
 
-    close();
+        query.addBindValue("org");
+        query.addBindValue(orgName);
+        query.addBindValue(m_contactId);
+        query.exec();
 
-    MsgBoxInformation(tr("Тип контакта успешно изменен!"));
+        emit sendData(true, this->pos().x(), this->pos().y());
+
+        close();
+
+        MsgBoxInformation(tr("Тип контакта успешно изменен!"));
+        break;
+    case QMessageBox::Cancel:
+        return;
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -448,8 +465,6 @@ void EditContactDialog::onSave()
 
     emit sendData(true, this->pos().x(), this->pos().y());
 
-    close();
-
     MsgBoxInformation(tr("Запись успешно изменена!"));
 }
 
@@ -506,9 +521,7 @@ void EditContactDialog::setValues(const QString& id)
     updatePhonesOrder();
 
     if (m_oldPhones.length() > 1)
-    {
         ui->phonesOrderButton->setEnabled(true);
-    }
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
                   " entry_region, entry_city, entry_address, entry_email, entry_vybor_id, entry_comment, entry_person_org_id FROM entry WHERE id = " + m_contactId);

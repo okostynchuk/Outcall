@@ -45,6 +45,9 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
         QLineEdit* line = new QLineEdit(this);
         QLabel* label = new QLabel(this);
 
+        label->setMinimumHeight(20);
+        line->setMinimumHeight(20);
+
         m_managers.insert(query.value(0).toString(), line);
         label->setText(query.value(1).toString() + " (" + query.value(0).toString() + "):");
 
@@ -187,22 +190,36 @@ void EditOrgContactDialog::changeEntryType()
     QString orgName = ui->orgName->text();
     QString firstName = orgName;
 
-    query.prepare("UPDATE entry SET entry_type = ?, entry_person_fname = ?, entry_org_name = NULL WHERE id = ?");
+    qint32 msgBox = QMessageBox::information(this, tr("Предупреждение"), tr("Измененные данные не сохранятся! Все сотрудник организации будут откреплены!"
+                                                                            " Вы уверены, что хотите продолжить?"), QMessageBox::Ok, QMessageBox::Cancel);
 
-    query.addBindValue("person");
-    query.addBindValue(firstName);
-    query.addBindValue(m_contactId);
-    query.exec();
+    switch (msgBox)
+    {
+    case QMessageBox::Ok:
+        query.prepare("UPDATE entry SET entry_type = ?, entry_person_fname = ?, entry_org_name = NULL WHERE id = ?");
 
-    query.prepare("UPDATE entry SET entry_person_org_id = NULL WHERE entry_person_org_id = ?");
-    query.addBindValue(m_contactId);
-    query.exec();
+        query.addBindValue("person");
+        query.addBindValue(firstName);
+        query.addBindValue(m_contactId);
+        query.exec();
 
-    emit sendData(true, this->pos().x(), this->pos().y());
+        query.prepare("UPDATE entry SET entry_person_org_id = NULL WHERE entry_person_org_id = ?");
+        query.addBindValue(m_contactId);
+        query.exec();
 
-    close();
+        emit sendData(true, this->pos().x(), this->pos().y());
 
-    MsgBoxInformation(tr("Тип контакта успешно изменен!"));
+        close();
+
+        MsgBoxInformation(tr("Тип контакта успешно изменен!"));
+
+        break;
+    case QMessageBox::Cancel:
+        return;
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -436,8 +453,6 @@ void EditOrgContactDialog::onSave()
 
     emit sendData(true, this->pos().x(), this->pos().y());
 
-    close();
-
     MsgBoxInformation(tr("Запись успешно изменена!"));
 }
 
@@ -482,9 +497,7 @@ void EditOrgContactDialog::setValues(const QString& id)
     updatePhonesOrder();
 
     if (m_oldPhones.length() > 1)
-    {
         ui->phonesOrderButton->setEnabled(true);
-    }
 
     query.prepare("SELECT DISTINCT entry_org_name, entry_region, entry_city, entry_address, entry_email, entry_vybor_id, "
                   "entry_comment FROM entry WHERE id = " + m_contactId);

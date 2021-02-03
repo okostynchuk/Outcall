@@ -112,24 +112,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
     </message>
 </context>
 <context>
@@ -250,24 +242,16 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
     </message>
 </context>
 <context>
@@ -855,8 +839,12 @@
         <translation>Choose the number</translation>
     </message>
     <message>
-        <source>Номерa</source>
-        <translation type="vanished">Phones</translation>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
     </message>
 </context>
 <context>
@@ -1291,24 +1279,36 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Изменить тип контакта на организацию</source>
+        <translation>Change contact type to organization</translation>
+    </message>
+    <message>
+        <source>Изменить порядок номеров</source>
+        <translation>Change phone numbers order</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
+    </message>
+    <message>
+        <source>Предупреждение</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <source>Измененные данные не сохранятся! Вы уверены, что хотите продолжить?</source>
+        <translation>Changed data will not be saved! Are you sure you want to continue?</translation>
+    </message>
+    <message>
+        <source>Тип контакта успешно изменен!</source>
+        <translation>Contact type was successfully changed!</translation>
     </message>
 </context>
 <context>
@@ -1402,24 +1402,36 @@
         <translation>&lt;span style = &quot;color: red;&quot;&gt;*&lt;/span&gt; - required fields</translation>
     </message>
     <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
         <source>Указанный номер менеджера не зарегистрирован!</source>
         <translation>The specified manager number is not registered!</translation>
     </message>
     <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Изменить тип контакта на физ. лицо</source>
+        <translation>Change the type of contact to private</translation>
+    </message>
+    <message>
+        <source>Изменить порядок номеров</source>
+        <translation>Change phones number order</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
+    </message>
+    <message>
+        <source>Предупреждение</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <source>Измененные данные не сохранятся! Все сотрудник организации будут откреплены! Вы уверены, что хотите продолжить?</source>
+        <translation>Changed data will not be saved! All employees of the organization will be detached! Are you sure you want to continue?</translation>
+    </message>
+    <message>
+        <source>Тип контакта успешно изменен!</source>
+        <translation>Contact type changed successfully!</translation>
     </message>
 </context>
 <context>
@@ -1936,16 +1948,12 @@ p, li { white-space: pre-wrap; }
         <translation>Connection to orders database not created!</translation>
     </message>
     <message>
-        <source>Привязать</source>
-        <translation type="vanished">bind</translation>
-    </message>
-    <message>
-        <source>За данным контактом уже закреплен менеджер!</source>
-        <translation type="vanished">A manager has already been assigned to this contact!</translation>
-    </message>
-    <message>
         <source>Произошла ошибка!</source>
         <translation>An error has occurred!</translation>
+    </message>
+    <message>
+        <source>Привязать клиента к себе</source>
+        <translation>Bind a client to yourself</translation>
     </message>
 </context>
 <context>
@@ -2482,20 +2490,12 @@ The app will be restarted!</translation>
         <translation>Accepted</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
     </message>
 </context>
 <context>
@@ -2733,20 +2733,12 @@ The app will be restarted!</translation>
         <translation>Accepted</translation>
     </message>
     <message>
-        <source>Распил (6203):</source>
-        <translation type="vanished">Cutting (6203):</translation>
-    </message>
-    <message>
-        <source>Регионы (6204):</source>
-        <translation type="vanished">Regions (6204):</translation>
-    </message>
-    <message>
-        <source>Колл-центр (6207):</source>
-        <translation type="vanished">Call Center (6207):</translation>
-    </message>
-    <message>
         <source>Область:</source>
         <translation>Region:</translation>
+    </message>
+    <message>
+        <source>Комментарии:</source>
+        <translation>Comments:</translation>
     </message>
 </context>
 </TS>
