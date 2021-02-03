@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
+    <width>524</width>
     <height>457</height>
    </rect>
   </property>
@@ -133,7 +133,7 @@
         <string>Изменить порядок номеров</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">							</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string/>
@@ -398,13 +398,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
@@ -452,13 +452,13 @@ border-left: none;
          </property>
          <property name="minimumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
@@ -506,13 +506,13 @@ border-left: none;
          </property>
          <property name="minimumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
@@ -547,13 +547,13 @@ border-left: none;
          </property>
          <property name="minimumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
@@ -643,13 +643,13 @@ border-left: none;
          </property>
          <property name="minimumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>90</width>
            <height>20</height>
           </size>
          </property>

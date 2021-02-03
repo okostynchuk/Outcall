@@ -17,6 +17,8 @@ ChooseNumber::ChooseNumber(QWidget* parent) :
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
     m_phones = { ui->firstNumber, ui->secondNumber, ui->thirdNumber, ui->fourthNumber, ui->fifthNumber };
+    m_phonesComments = { ui->firstNumberComment, ui->secondNumberComment, ui->thirdNumberComment, ui->fourthNumberComment, ui->fifthNumberComment };
+
 
     for (qint32 i = 0; i < m_phones.length(); ++i)
     {
