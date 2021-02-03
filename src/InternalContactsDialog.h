@@ -48,6 +48,20 @@ private:
 
     QMap<QString, QString> m_states;
     QMap<QString, qint32> m_indexes;
+
+    enum Status
+    {
+        Idle,
+        InUse,
+        Busy,
+        Unavailable = 4,
+        Ringing = 8,
+        InUseAndRinging,
+        Hold = 16,
+        InUseAndHold,
+        Removed = -2,
+        HintRemoved,
+    };
 };
 
 #endif // INTERNALCONTACTSDIALOG_H

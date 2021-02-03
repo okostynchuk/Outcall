@@ -114,25 +114,25 @@ void InternalContactsDialog::setIcon(qint32 index, qint32 state)
 
     switch(state)
     {
-        case 0:
+        case Idle:
             path = ":/images/presence-idle.png";
             break;
-        case 1:
-        case 2:
-        case 8:
-        case 9:
+        case InUse:
+        case Busy:
+        case Ringing:
+        case InUseAndRinging:
             path = ":/images/presence-busy.png";
             break;
-        case 4:
+        case Unavailable:
             path = ":/images/presence-unavial.png";
             break;
-        case -2:
-        case -1:
-            path = ":/images/presence-dnd.png";
-            break;
-        case 16:
-        case 17:
+        case Hold:
+        case InUseAndHold:
             path = ":/images/presence-hold.png";
+            break;
+        case Removed:
+        case HintRemoved:
+            path = ":/images/presence-dnd.png";
             break;
     }
 
