@@ -478,12 +478,12 @@ void EditContactDialog::setValues(const QString& id)
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT DISTINCT entry_name FROM entry_phone WHERE entry_id = "
-                  "(SELECT DISTINCT entry_person_org_id FROM entry_phone WHERE entry_id = " + m_contactId + ")");
+    query.prepare("SELECT DISTINCT entry_name FROM entry_phone WHERE entry_id = (SELECT DISTINCT entry_person_org_id FROM entry_phone WHERE entry_id = " + m_contactId + ")");
     query.exec();
-    query.next();
 
-    QString orgName = query.value(0).toString();
+    QString orgName;
+    if (query.next())
+         orgName = query.value("entry_name").toString();
 
     if (!orgName.isEmpty() && !orgName.isNull())
         ui->label_org->setText(orgName);
@@ -526,6 +526,7 @@ void EditContactDialog::setValues(const QString& id)
     ui->comment->setText(query.value(8).toString());
 
     m_orgId = query.value(9).toString();
+
 }
 
 void EditContactDialog::updatePhonesOrder()

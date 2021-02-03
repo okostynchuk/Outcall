@@ -61,6 +61,19 @@ void ChooseNumber::setValues(const QString id, qint32 status)
         phonesCount++;
     }
 
+    qint32 size = 57;
+
+    for (qint32 i = 0; i < m_phones.length(); ++i)
+        if (!m_phones.at(i)->text().isEmpty())
+        {
+            QWidget::setFixedHeight(size += 26);
+
+            m_phones.at(i)->setVisible(true);
+            m_phonesComments.at(i)->setVisible(true);
+        }
+
+    QWidget::setFixedHeight(size += 10);
+
     switch (status) {
     case call:
         for (qint32 i = 0; i < m_phones.length(); ++i)
@@ -122,20 +135,6 @@ void ChooseNumber::phonePriorityChanged()
 void ChooseNumber::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
-
-    qint32 size = 57;
-
-    for (qint32 i = 0; i < m_phones.length(); ++i)
-        if (!m_phones.at(i)->text().isEmpty())
-        {
-            QWidget::setFixedHeight(size += 26);
-
-            m_phones.at(i)->setVisible(true);
-            m_phonesComments.at(i)->setVisible(true);
-        }
-
-
-    QWidget::setFixedHeight(size += 10);
 }
 
 /**
