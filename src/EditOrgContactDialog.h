@@ -34,6 +34,7 @@ private slots:
     void onReturn();
     void onTextChanged();
     void onCursorPosChanged();
+    void changeEntryType();
 
     bool isPhone(QString* str);
 

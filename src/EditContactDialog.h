@@ -22,6 +22,7 @@ class EditContactDialog : public QDialog
 
 signals:
     void sendData(bool update, qint32 x, qint32 y);
+    void sendDataUpdate(bool update);
 
 public slots:
     void receiveOrg(const QString& id, const QString& name);
@@ -39,6 +40,7 @@ private slots:
     void onReturn();
     void onTextChanged();
     void onCursorPosChanged();
+    void changeEntryType();
 
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();

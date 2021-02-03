@@ -49,5 +49,6 @@
         <file>images/arrowDown.png</file>
         <file>images/arrowUp.png</file>
         <file>images/phoneOrder.png</file>
+        <file>images/changeEntryType.png</file>
     </qresource>
 </RCC>

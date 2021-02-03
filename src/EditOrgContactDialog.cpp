@@ -23,8 +23,9 @@ EditOrgContactDialog::EditOrgContactDialog(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowFlags(windowFlags() & Qt::WindowMinimizeButtonHint);
 
-    connect(ui->comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
+    connect(ui->changeEntryTypeButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::changeEntryType);
     connect(ui->comment, &QTextEdit::cursorPositionChanged, this, &EditOrgContactDialog::onCursorPosChanged);
+    connect(ui->comment, &QTextEdit::textChanged, this, &EditOrgContactDialog::onTextChanged);
     connect(ui->backButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onReturn);
     connect(ui->saveButton, &QAbstractButton::clicked, this, &EditOrgContactDialog::onSave);
 
@@ -161,6 +162,34 @@ void EditOrgContactDialog::setPos(qint32 x, qint32 y)
     {
         this->move(x, y);
     }
+}
+
+/**
+ * Выполняет изменение типа контакта на физ. лицо.
+ */
+void EditOrgContactDialog::changeEntryType()
+{
+    QSqlQuery query(m_db);
+
+    QString orgName = ui->orgName->text();
+    QString firstName = orgName;
+
+    query.prepare("UPDATE entry SET entry_type = ?, entry_person_fname = ?, entry_org_name = NULL WHERE id = ?");
+
+    query.addBindValue("person");
+    query.addBindValue(firstName);
+    query.addBindValue(m_contactId);
+    query.exec();
+
+    query.prepare("UPDATE entry SET entry_person_org_id = NULL WHERE entry_person_org_id = ?");
+    query.addBindValue(m_contactId);
+    query.exec();
+
+    emit sendData(true, this->pos().x(), this->pos().y());
+
+    close();
+
+    MsgBoxInformation(tr("Тип контакта успешно изменен!"));
 }
 
 /**

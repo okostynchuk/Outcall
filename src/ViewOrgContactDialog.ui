@@ -281,7 +281,7 @@ background-color: #fffff8;
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_14">
            <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_3" columnminimumwidth="12,0,0,0">
+            <layout class="QGridLayout" name="gridLayout_3" columnminimumwidth="12,0,0">
              <property name="horizontalSpacing">
               <number>0</number>
              </property>
@@ -321,21 +321,23 @@ background-color: #fffff8;
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_6">
+             <item row="1" column="2">
+              <widget class="QLineEdit" name="firstNumberComment">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>100</width>
                  <height>20</height>
                 </size>
                </property>
-               <property name="font">
-                <font>
-                 <pointsize>8</pointsize>
-                </font>
+               <property name="styleSheet">
+                <string notr="true">* {
+border: 1px solid gray;
+background-color: #fffff8;
+border-left: none;
+}</string>
                </property>
-               <property name="text">
-                <string>1</string>
+               <property name="readOnly">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -354,6 +356,24 @@ background-color: #fffff8;
                </property>
                <property name="text">
                 <string>2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>1</string>
                </property>
               </widget>
              </item>
@@ -387,23 +407,39 @@ background-color: #fffff8;
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QLineEdit" name="firstNumberComment">
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_19">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>0</width>
                  <height>20</height>
                 </size>
                </property>
-               <property name="styleSheet">
-                <string notr="true">* {
-border: 1px solid gray;
-background-color: #fffff8;
-border-left: none;
-}</string>
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                </font>
                </property>
-               <property name="readOnly">
-                <bool>true</bool>
+               <property name="text">
+                <string>5</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_18">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>4</string>
                </property>
               </widget>
              </item>
@@ -467,8 +503,8 @@ background-color: #fffff8;
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_18">
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_8">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -481,30 +517,12 @@ background-color: #fffff8;
                 </font>
                </property>
                <property name="text">
-                <string>4</string>
+                <string>3</string>
                </property>
               </widget>
              </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="label_19">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>8</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>5</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="2">
-              <widget class="QLineEdit" name="fifthNumberComment">
+             <item row="2" column="2">
+              <widget class="QLineEdit" name="secondNumberComment">
                <property name="minimumSize">
                 <size>
                  <width>100</width>
@@ -523,8 +541,8 @@ border-left: none;
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
-              <widget class="QLineEdit" name="secondNumberComment">
+             <item row="5" column="2">
+              <widget class="QLineEdit" name="fifthNumberComment">
                <property name="minimumSize">
                 <size>
                  <width>100</width>
@@ -570,24 +588,6 @@ background-color: #fffff8;
                </property>
                <property name="readOnly">
                 <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_8">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>8</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>3</string>
                </property>
               </widget>
              </item>
@@ -660,19 +660,6 @@ background-color: #fffff8;
                 <bool>true</bool>
                </property>
               </widget>
-             </item>
-             <item row="0" column="3" rowspan="6">
-              <spacer name="horizontalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </item>
