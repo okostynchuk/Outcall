@@ -340,7 +340,7 @@ QPushButton:pressed
           </font>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
           <string>00:00/00:00</string>
@@ -466,6 +466,7 @@ QSlider::handle::horizontal::pressed {
   <tabstop>slider</tabstop>
   <tabstop>mute</tabstop>
   <tabstop>volume</tabstop>
+  <tabstop>duration</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>
