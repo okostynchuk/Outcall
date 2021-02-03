@@ -375,7 +375,6 @@ void EditContactDialog::onSave()
                 query.addBindValue(m_contactId);
                 query.addBindValue(m_oldPhones.at(i));
                 query.exec();
-
             }
         }
 

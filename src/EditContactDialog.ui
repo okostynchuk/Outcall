@@ -21,23 +21,6 @@
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="1">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Организация:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_org">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -50,7 +33,24 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Организация:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
+      <widget class="QLabel" name="label_org">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QPushButton" name="deleteOrgButton">
        <property name="maximumSize">
         <size>
@@ -87,7 +87,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QPushButton" name="addOrgButton">
        <property name="maximumSize">
         <size>
@@ -112,6 +112,41 @@
         <size>
          <width>24</width>
          <height>23</height>
+        </size>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="phoneOrderButton">
+       <property name="minimumSize">
+        <size>
+         <width>36</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>36</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Изменить порядок номеров</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="images.qrc">
+         <normaloff>:/images/phoneOrder.png</normaloff>:/images/phoneOrder.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>26</width>
+         <height>26</height>
         </size>
        </property>
        <property name="autoDefault">
@@ -494,7 +529,7 @@
       </layout>
      </item>
      <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout_2" columnminimumwidth="16,0,0,0">
+      <layout class="QGridLayout" name="gridLayout_2" columnminimumwidth="16,0,0,0,0">
        <property name="horizontalSpacing">
         <number>0</number>
        </property>
@@ -508,19 +543,6 @@
          </property>
          <property name="text">
           <string>Номера:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_8">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Комментарии:</string>
          </property>
         </widget>
        </item>
@@ -562,22 +584,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QLineEdit" name="firstNumberComment">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">* {
-border: 1px solid gray;
-border-left: none;
-}</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_28">
          <property name="minimumSize">
@@ -601,22 +607,6 @@ border-left: none;
          </property>
          <property name="text">
           <string>3</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLineEdit" name="secondNumberComment">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">* {
-border: 1px solid gray;
-border-left: none;
-}</string>
          </property>
         </widget>
        </item>
@@ -670,38 +660,6 @@ border-left: none;
          </property>
         </widget>
        </item>
-       <item row="3" column="2">
-        <widget class="QLineEdit" name="thirdNumberComment">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">* {
-border: 1px solid gray;
-border-left: none;
-}</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QLineEdit" name="fifthNumberComment">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">* {
-border: 1px solid gray;
-border-left: none;
-}</string>
-         </property>
-        </widget>
-       </item>
        <item row="4" column="1">
         <widget class="QLineEdit" name="fourthNumber">
          <property name="sizePolicy">
@@ -724,22 +682,6 @@ border-left: none;
          </property>
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QLineEdit" name="fourthNumberComment">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">* {
-border: 1px solid gray;
-border-left: none;
-}</string>
          </property>
         </widget>
        </item>
@@ -794,7 +736,7 @@ border-left: none;
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="3">
+       <item row="6" column="0" colspan="4">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -807,7 +749,7 @@ border-left: none;
          </property>
         </spacer>
        </item>
-       <item row="0" column="3" rowspan="6">
+       <item row="0" column="4" rowspan="6">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -819,6 +761,99 @@ border-left: none;
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="QLineEdit" name="firstNumberComment">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">* {
+border: 1px solid gray;
+border-left: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" colspan="2">
+        <widget class="QLineEdit" name="secondNumberComment">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">* {
+border: 1px solid gray;
+border-left: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2">
+        <widget class="QLineEdit" name="thirdNumberComment">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">* {
+border: 1px solid gray;
+border-left: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2" colspan="2">
+        <widget class="QLineEdit" name="fourthNumberComment">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">* {
+border: 1px solid gray;
+border-left: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="2">
+        <widget class="QLineEdit" name="fifthNumberComment">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">* {
+border: 1px solid gray;
+border-left: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="2">
+        <widget class="QLabel" name="label_8">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Комментарии:</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
