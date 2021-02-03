@@ -455,7 +455,7 @@ void PopupReminder::onCall()
                 m_chooseNumber->close();
 
             m_chooseNumber = new ChooseNumber;
-            m_chooseNumber->setValues(m_pri.numbers);
+            m_chooseNumber->setValues(m_pri.call_id, 0);
             m_chooseNumber->show();
             m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
         }

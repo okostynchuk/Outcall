@@ -2,6 +2,7 @@
 #define EDITCONTACTDIALOG_H
 
 #include "AddOrgToPerson.h"
+#include "ChooseNumber.h"
 
 #include <QDialog>
 #include <QValidator>
@@ -41,9 +42,11 @@ private slots:
     void onTextChanged();
     void onCursorPosChanged();
     void changeEntryType();
+    void updatePhonesOrder();
 
     void on_addOrgButton_clicked();
     void on_deleteOrgButton_clicked();
+    void on_phonesOrderButton_clicked();
 
     bool isPhone(QString* str);
 
@@ -58,6 +61,7 @@ private:
     QSqlDatabase m_db;
 
     QPointer<AddOrgToPerson> m_addOrgToPerson;
+    QPointer<ChooseNumber> m_chooseNumber;
 
     QList<QLineEdit*> m_phones;
     QList<QLineEdit*> m_phonesComments;
@@ -67,6 +71,8 @@ private:
 
     QMap<QString, QLineEdit*> m_managers;
     QMap<QString, QString> m_oldManagers;
+
+    QMap<QString, qint32> m_move;
 
     QString m_contactId;
     QString m_orgId;

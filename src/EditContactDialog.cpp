@@ -68,6 +68,18 @@ EditContactDialog::~EditContactDialog()
     delete ui;
 }
 
+void EditContactDialog::on_phonesOrderButton_clicked()
+{
+    if (!m_chooseNumber.isNull())
+        m_chooseNumber->close();
+
+    m_chooseNumber = new ChooseNumber;
+    connect(m_chooseNumber, &ChooseNumber::phonesOrderChanged, this, &EditContactDialog::updatePhonesOrder);
+    m_chooseNumber->setValues(m_contactId, 1);
+    m_chooseNumber->show();
+    m_chooseNumber->setAttribute(Qt::WA_DeleteOnClose);
+}
+
 /**
  * Выполняет сохранение позиции текстового курсора.
  */
@@ -387,8 +399,7 @@ void EditContactDialog::onSave()
         {
             if (i >= m_oldPhones.length())
             {
-                query.prepare("INSERT INTO fones (entry_id, fone, comment)"
-                               "VALUES(?, ?, ?)");
+                query.prepare("INSERT INTO fones (entry_id, fone, comment) VALUES(?, ?, ?)");
                 query.addBindValue(m_contactId);
                 query.addBindValue(actualPhonesList.at(i));
                 query.addBindValue(actualPhonesCommentsList.at(i));
@@ -467,34 +478,17 @@ void EditContactDialog::setValues(const QString& id)
 
     QSqlQuery query(m_db);
 
-    query.prepare("SELECT entry_phone, (SELECT DISTINCT entry_name FROM entry_phone WHERE entry_id = "
-                  "(SELECT DISTINCT entry_person_org_id FROM entry_phone WHERE entry_id = " + m_contactId + ")) "
-                  "FROM entry_phone WHERE entry_id = " + m_contactId);
+    query.prepare("SELECT DISTINCT entry_name FROM entry_phone WHERE entry_id = "
+                  "(SELECT DISTINCT entry_person_org_id FROM entry_phone WHERE entry_id = " + m_contactId + ")");
     query.exec();
+    query.next();
 
-    while (query.next())
-        m_oldPhones.append(query.value(0).toString());
-
-    for (qint32 i = 0; i < m_oldPhones.length(); ++i)
-        m_phones.at(i)->setText(m_oldPhones.at(i));
-
-    query.first();
-
-    QString orgName = query.value(1).toString();
+    QString orgName = query.value(0).toString();
 
     if (!orgName.isEmpty() && !orgName.isNull())
         ui->label_org->setText(orgName);
     else
         ui->label_org->setText(tr("Нет"));
-
-    query.prepare("SELECT comment FROM fones WHERE entry_id = " + m_contactId);
-    query.exec();
-
-    while (query.next())
-         m_oldComments.append(query.value(0).toString());
-
-    for (qint32 i = 0; i < m_oldComments.length(); ++i)
-        m_phonesComments.at(i)->setText(m_oldComments.at(i));
 
     query.prepare("SELECT group_number, manager_number FROM managers WHERE entry_id = " + m_contactId);
     query.exec();
@@ -507,6 +501,13 @@ void EditContactDialog::setValues(const QString& id)
 
             m_managers.value(query.value(0).toString())->setText(query.value(1).toString());
         }
+    }
+
+    updatePhonesOrder();
+
+    if (m_oldPhones.length() > 1)
+    {
+        ui->phonesOrderButton->setEnabled(true);
     }
 
     query.prepare("SELECT DISTINCT entry_person_fname, entry_person_mname, entry_person_lname, "
@@ -525,6 +526,29 @@ void EditContactDialog::setValues(const QString& id)
     ui->comment->setText(query.value(8).toString());
 
     m_orgId = query.value(9).toString();
+}
+
+void EditContactDialog::updatePhonesOrder()
+{
+    if (!m_oldPhones.isEmpty())
+        m_oldPhones.clear();
+    if (!m_oldComments.isEmpty())
+        m_oldComments.clear();
+
+    QSqlQuery query(m_db);
+    query.prepare("SELECT fone, comment FROM fones WHERE entry_id = " + m_contactId + " ORDER BY priority");
+    query.exec();
+
+    while (query.next())
+    {
+        m_oldPhones.append(query.value(0).toString());
+        m_oldComments.append(query.value(1).toString());
+    }
+
+    for (qint32 i = 0; i < m_oldPhones.length(); ++i)
+        m_phones.at(i)->setText(m_oldPhones.at(i));
+    for (qint32 i = 0; i < m_oldComments.length(); ++i)
+        m_phonesComments.at(i)->setText(m_oldComments.at(i));
 }
 
 /**

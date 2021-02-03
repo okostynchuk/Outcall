@@ -10,6 +10,7 @@
 #include <QEvent>
 #include <QLineEdit>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 class PlaceCallDialog;
 
@@ -23,19 +24,24 @@ class ChooseNumber : public QDialog
 
 signals:
     void sendNumber(const QString& number);
+    void phonesOrderChanged();
 
 public:
     explicit ChooseNumber(QWidget* parent = 0);
     ~ChooseNumber();
 
-    void setValues(const QStringList &numbers);
+    void setValues(const QString id, qint32 status);
 
 private slots:
     void onCall(const QString& number);
 
+    void phonePriorityChanged();
+
     void showEvent(QShowEvent* event);
 
     bool eventFilter(QObject* target, QEvent* event);
+
+    void on_saveButton_clicked();
 
 private:
     Ui::ChooseNumber* ui;
@@ -44,6 +50,12 @@ private:
 
     QList<QLineEdit*> m_phones;
     QList<QLineEdit*> m_phonesComments;
+
+    enum Statuses
+    {
+        call,
+        orderChange,
+    };
 };
 
 #endif // CHOOSENUMBER_H
