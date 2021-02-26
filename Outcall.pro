@@ -7,7 +7,7 @@ QT += multimedia
 
 include($$PWD/QSimpleUpdater/QSimpleUpdater.pri)
 
-VERSION = 1.0.4
+VERSION = 1.0.5
 
 QMAKE_TARGET_PRODUCT = Outcall
 QMAKE_TARGET_COMPANY = Team Nonames
