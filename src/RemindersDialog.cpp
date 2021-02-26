@@ -92,6 +92,14 @@ RemindersDialog::RemindersDialog(QWidget* parent) :
 
     m_remindersThreadManager->moveToThread(m_remindersThread);
 
+    query.prepare("SELECT id, datetime, content FROM reminders WHERE phone_to = '" + g_personalNumberName + "' AND datetime < '" + QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss") + "' AND active IS TRUE");
+    query.exec();
+
+    while (query.next())
+    {
+        onPastNotify(query.value(0).toString(), query.value(1).value<QDateTime>(), query.value(2).toString());
+    }
+
     connect(m_remindersThread, &QThread::started, m_remindersThreadManager, &RemindersThreadManager::process);
     connect(m_remindersThreadManager, &RemindersThreadManager::notify, this, &RemindersDialog::onNotify);
     connect(m_remindersThreadManager, &RemindersThreadManager::finished, m_remindersThread, &QThread::quit);
@@ -1114,6 +1122,12 @@ void RemindersDialog::onNotify(const QString& id, const QDateTime& dateTime, con
     if (m_showReminder)
         PopupReminder::showReminder(this, id, dateTime, note);
 }
+
+void RemindersDialog::onPastNotify(const QString& id, const QDateTime& dateTime, const QString& note)
+{
+    PopupReminder::showReminder(this, id, dateTime, note);
+}
+
 
 /**
  * Выполняет операции для последующего перехода на предыдущую страницу.

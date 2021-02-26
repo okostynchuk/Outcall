@@ -44,6 +44,7 @@ private slots:
     void deleteObjects();
     void checkBoxStateChanged();
     void onNotify(const QString& id, const QDateTime& dateTime, const QString& note);
+    void onPastNotify(const QString& id, const QDateTime& dateTime, const QString& note);
     void onUpdate();
     void updateCount();
     void onTabChanged();
